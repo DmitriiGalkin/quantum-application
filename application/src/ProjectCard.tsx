@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  CircularProgress,
   IconButton,
   Typography,
 } from '@mui/material';
@@ -52,18 +51,17 @@ function ProjectCard({ project, generateImageHandler, isGeneratingImage }: Proje
             '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
             boxShadow: 3,
             borderRadius: 16,
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'row',
           }}
         >
           {/* Кнопка с иконкой в правом верхнем углу */}
           {isGeneratingImage && (
-            <>
-              <CircularProgress size={20} sx={{ mr: 1, color: 'primary.contrastText' }} />
-              Генерирую...
-            </>
+            <Typography color="text.secondary" sx={{ paddingLeft: 2 }}>Генерирую...</Typography>
           )}
           {generateImageHandler && (
             <IconButton
-              sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
               aria-label="Сгенерировать обложку"
               // Здесь будет обработчик клика на генерацию
               onClick={e => {

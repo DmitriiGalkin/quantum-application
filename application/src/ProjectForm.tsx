@@ -51,6 +51,8 @@ function ProjectForm({
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [imageUploadError, setImageUploadError] = useState<string | null>(null);
 
+  console.log(image,'image');
+
   async function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
@@ -65,12 +67,12 @@ function ProjectForm({
       const formData = new FormData();
       formData.append('image', file);
 
-      const uploadedImageUrl = await apiFetch<string>('/image', {
+      const uploadedImage = await apiFetch<{ url: string }>('/image', {
         method: 'POST',
         body: formData,
       });
 
-      setImage(uploadedImageUrl);
+      setImage(uploadedImage.url);
     } catch (error) {
       setImageUploadError('Не удалось загрузить изображение. Попробуйте ещё раз.');
     } finally {

@@ -1,8 +1,8 @@
-import GigaChat, { detectImage } from 'gigachat';
+import { detectImage } from 'gigachat';
 import S3 from '../s3.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuid } from 'uuid';
-import { Agent } from 'node:https';
+import assistant from '../assistant.js';
 
 function buildProjectImagePrompt(project) {
   return [
@@ -13,17 +13,6 @@ function buildProjectImagePrompt(project) {
     `Описание проекта: ${project.description || ''}`,
   ].join('\n');
 }
-
-const httpsAgent = new Agent({
-  rejectUnauthorized: false,
-});
-
-const giga = new GigaChat({
-  timeout: 600,
-  model: 'GigaChat',
-  credentials: process.env.GIGA_CREDENTIALS,
-  httpsAgent: httpsAgent,
-});
 
 export async function generateProjectImage(project) {
   // --- Блок генерации изображения (пример использования GigaChat) ---
@@ -39,7 +28,7 @@ export async function generateProjectImage(project) {
       function_call: 'auto',
     };
     console.log(payload,'payload');
-    const imageResponse = await giga.chat(payload);
+    const imageResponse = await assistant.chat(payload);
 
     //console.log(JSON.stringify(imageResponse), 'imageResponse');
 
@@ -47,7 +36,7 @@ export async function generateProjectImage(project) {
     //console.log(detectedImage, 'detectedImage');
 
     if (detectedImage && detectedImage.uuid) {
-      const image = await giga.getImage(detectedImage.uuid);
+      const image = await assistant.getImage(detectedImage.uuid);
       return image.content;
     } else {
       return null;

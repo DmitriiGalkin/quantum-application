@@ -15,14 +15,9 @@ import {
 import { generateProjectImage } from '../services/imageGenerationService.js';
 import { uploadImage } from '../services/imageGenerationService.js';
 
-// --- Функции контроллера ---
-
-// Все функции объявлены как const и собраны в объект в конце файла
-
 export default {
   generateImage: async (req, res) => {
     try {
-      // Проверка авторизации
       if (!req.passport) {
         return res.status(401).json({
           error: true,
@@ -30,15 +25,13 @@ export default {
         });
       }
 
-      const messageId = req.params.id;
-
-      const message = await ChatMessage.findById(messageId);
+      const message = await ChatMessage.findById(req.params.id);
       const metadata = JSON.parse(message.metadata);
 
       const imageBinary = await generateProjectImage(metadata);
       const image = await uploadImage(imageBinary);
 
-      await ChatMessage.update(messageId, { metadata: { ...metadata, image } });
+      await ChatMessage.update(req.params.id, { metadata: { ...metadata, image } });
 
       return res.json({
         image,
@@ -53,7 +46,6 @@ export default {
   },
   createMessage: async (req, res) => {
     try {
-      // Проверка авторизации
       if (!req.passport) {
         return res.status(401).json({
           error: true,
@@ -78,6 +70,7 @@ export default {
         chatId,
         passportId: req.passport.id,
         firstMessage: message,
+        target: req.body.target,
       });
 
       // 2. Сохраняем сообщение пользователя
@@ -94,29 +87,16 @@ export default {
       // 3. Проверка на команду создания проекта
       if (isCreateProjectIdeaCommand(message)) {
         const recentMessages = await ChatMessage.findLastByChatId(chat.id, 10);
-        const idea = findLastProjectIdea(recentMessages);
 
-        if (!idea) {
-          const assistantMessage = await createAssistantMessage({
-            chatId: chat.id,
-            content: 'Не нашёл готовой идеи проекта в переписке. Давайте сначала сформулируем её.',
-          });
-          await Chat.touch(chat.id);
-          return res.json({
-            chatId: chat.id,
-            messages: [normalizeMessage(userMessage), normalizeMessage(assistantMessage)],
-          });
-        }
-
-        const createdProjectId = await createProjectFromIdea({
-          idea,
+        await createProjectFromIdea({
+          idea: findLastProjectIdea(recentMessages),
           passportId: req.passport.id,
         });
 
         const assistantMessage = await createAssistantMessage({
           chatId: chat.id,
           content:
-            'Поздравляем! Идея проекта создана. Мы уже начали подбирать куратора для идеи проекта вашего ребенка. После того как куратор проекта будет назначен, он возмет на себя ответственность по оформлению проекта, выбору места и времени проведения встреч по проекту.',
+            'Поздравляем! Ваша идея проекта создана и мы уже начали подбирать куратора. После того как куратор проекта будет назначен, он возмет на себя ответственность по оформлению проекта, выбору места и времени проведения встреч по проекту.',
         });
 
         await Chat.touch(chat.id);
@@ -135,20 +115,21 @@ export default {
         chat,
         passport: req.passport,
       });
-      //console.log('assistantContent:', assistantContent);
+
 
       const assistantMessage = await createAssistantMessage({
         chatId: chat.id,
         ...assistantContent,
       });
 
+
       await Chat.touch(chat.id);
 
-      const freshUserMessage = await ChatMessage.findById(userMessageId);
+      //const freshUserMessage = await ChatMessage.findById(userMessageId);
 
       res.json({
         chatId: chat.id,
-        messages: [normalizeMessage(freshUserMessage), normalizeMessage(assistantMessage)],
+        message: normalizeMessage(assistantMessage),
       });
     } catch (err) {
       console.error('chat.createMessage error:', err);
@@ -161,11 +142,7 @@ export default {
 
   findMessages: async (req, res) => {
     try {
-      if (!req.passport) {
-        return res.status(401).json({ error: true, message: 'Требуется авторизация' });
-      }
-
-      const chat = await Chat.findByIdAndPassportId(req.params.id, req.passport.id);
+      const chat = await Chat.findById(req.params.id);
 
       if (!chat) {
         return res

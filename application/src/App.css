@@ -1,2 +1,65 @@
 body { margin: 0;}
 html { font-size: 80%; }
+
+.pulse-circle {
+    width: 10px; /* Начальный размер */
+    height: 10px; /* Начальный размер */
+
+    background-color: #4CAF50; /* Цвет (например, зеленый) */
+
+    border-radius: 50%; /* Делаем круг */
+
+    /* Анимация */
+    animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+
+    /* Тень для объема (опционально) */
+    box-shadow: 0 0 0 rgba(76, 175, 80, 0.7);
+}
+
+/* --- 3. Ключевые кадры анимации --- */
+@keyframes pulse {
+    from {
+        box-shadow: 0 0 0 0 rgba(76,175,80,0.7);
+    }
+    to {
+        box-shadow: 0 0 0 10px rgba(76,175,80,0);
+        opacity: 0;
+    }
+}
+
+.typing-dots {
+    display: inline-block; /* Чтобы не занимать всю строку */
+    text-align: left; /* Выравнивание по левому краю, как у текста */
+}
+
+.typing-dots span {
+    display: inline-block;
+    width: 10px; /* Размер кружочка */
+    height: 10px; /* Размер кружочка */
+
+    margin: 0 3px; /* Отступы между точками */
+
+    border-radius: 50%; /* Делаем круг */
+    background-color: #666; /* Цвет точек (серый) */
+
+    opacity: 0; /* Изначально точки невидимы */
+
+    animation: bounce 1.4s infinite ease-in-out;
+}
+
+/* Задержка для каждой точки, чтобы они загорались по очереди */
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+/* Третий не имеет задержки, он начинает с 0s */
+
+/* Ключевые кадры анимации */
+@keyframes bounce {
+    0%, 80%, 100% {
+        opacity: 0;
+        transform: scale(0); /* Уменьшаем до точки */
+    }
+    40% {
+        opacity: 1;
+        transform: scale(1); /* Нормальный размер */
+    }
+}

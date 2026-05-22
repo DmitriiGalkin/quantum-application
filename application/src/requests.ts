@@ -1,5 +1,5 @@
 import { apiFetch } from './api';
-import type { Place, Project } from './types';
+import type { Passport, Place, Project, User } from './types';
 import type { ExtendedMeet } from './MeetCard';
 import type { ProjectFormValues } from './ProjectForm';
 
@@ -34,7 +34,7 @@ export type ChatMessage = {
 
 export type SendMessageResponse = {
   chatId: number;
-  messages: ChatMessage[];
+  message: ChatMessage;
 };
 
 export async function fetchProject(id: string): Promise<ExtendedProject> {
@@ -77,12 +77,16 @@ export async function fetchMessages(chatId: number): Promise<ChatMessage[]> {
   return apiFetch<ChatMessage[]>(`/chat/${chatId}/messages`);
 }
 
+export type ChatTarget = 'user' | 'idea' | 'project';
+
 export async function sendMessage({
   chatId,
   message,
+  target,
 }: {
   chatId: number | null;
   message: string;
+  target: ChatTarget;
 }): Promise<SendMessageResponse> {
   return apiFetch<SendMessageResponse>('/chat', {
     method: 'POST',
@@ -92,6 +96,7 @@ export async function sendMessage({
     body: JSON.stringify({
       chatId,
       message,
+      target,
     }),
   });
 }
@@ -120,4 +125,18 @@ export async function generateImage(messageId: number) {
     },
     body: undefined,
   });
+}
+
+export type Type = 'self' | 'ideas' | 'projects' | null;
+
+interface ExtendedPassport extends Passport {
+  users?: User[];
+}
+
+export async function fetchPassport(): Promise<ExtendedPassport> {
+  return apiFetch<ExtendedPassport>('/passport');
+}
+
+export async function fetchProjects(type: Type, userId: number): Promise<Project[]> {
+  return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
 }

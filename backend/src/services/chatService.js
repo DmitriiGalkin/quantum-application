@@ -16,7 +16,7 @@ function normalizeMessage(row) {
 }
 
 // Функция для получения или создания чата
-async function getOrCreateChat({ chatId, passportId, firstMessage }) {
+async function getOrCreateChat({ chatId, passportId, firstMessage, target }) {
   if (chatId) {
     // Прямой вызов модели
     const existingChat = await Chat.findByIdAndPassportId(chatId, passportId);
@@ -36,6 +36,7 @@ async function getOrCreateChat({ chatId, passportId, firstMessage }) {
   const createdChatId = await Chat.create({
     passportId,
     title,
+    target,
   });
 
   // Находим и возвращаем созданный чат как объект

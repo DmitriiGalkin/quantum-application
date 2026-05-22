@@ -1,15 +1,6 @@
-import GigaChat from 'gigachat';
-import { Agent } from 'node:https';
+
 import { convertToProjectObject } from './helper.js';
-
-const httpsAgent = new Agent({
-  rejectUnauthorized: false,
-});
-
-const gigaClient = new GigaChat({
-  credentials: process.env.GIGA_CREDENTIALS,
-  httpsAgent,
-});
+import assistant from '../assistant.js';
 
 const SYSTEM_PROMPT = `Роль и экспертиза
 Ты — ассистент образовательного проекта для детей. Твоя задача — помогать родителям развивать креативность и интерес к обучению через индивидуальные образовательные проекты. Ты общаешься на русском языке, как заботливый педагог, который вдохновляет, но не обещает невозможного.
@@ -49,33 +40,6 @@ export async function generateAssistantAnswer({ messages }) {
       );
     }
 
-    // Определяем схему для самой идеи
-    // const ideaSchema = {
-    //   type: 'object',
-    //   properties: {
-    //     title: { type: 'string' },
-    //     description: { type: 'string' },
-    //   },
-    //   required: ['title', 'description'],
-    // };
-    //
-    // // Определяем схему для финального ответа
-    // const responseSchema = {
-    //   type: 'object',
-    //   properties: {
-    //     status: { type: 'string', enum: ['success', 'error', 'collecting'] },
-    //     idea: ideaSchema,
-    //   },
-    //   required: ['status', 'idea', 'message'],
-    // };
-
-    // Название функции должно быть в стиле snake_case или camelCase
-    // const generateIdeaTool = {
-    //   name: 'generate_project_idea',
-    //   description:
-    //     'Генерирует идею образовательного проекта для ребенка на основе запроса родителя.',
-    //   parameters: responseSchema, // Схема входных параметров (в данном случае это и есть наш ответ)
-    // };
 
     const payload = {
       messages: [
@@ -85,31 +49,10 @@ export async function generateAssistantAnswer({ messages }) {
         },
         ...messages.map(m => ({ role: m.role, content: m.content })),
       ],
-      //functions: 'auto',
-      //function_call: { name: 'generate_project_idea' },
     };
 
     // 3. Отправка запроса к API
-    const resp = await gigaClient.chat(payload);
-
-    // // 3. Финальный вызов для генерации текста (Content)
-    // const finalResp = await gigaClient.chat({
-    //   messages: [
-    //     { role: 'system', content: SYSTEM_PROMPT },
-    //     { role: 'user', content: 'Ребенок любит динозавров, возраст 7 лет.' },
-    //     {
-    //       role: 'assistant',
-    //       // Сообщаем модели, что данные получены и их нужно использовать
-    //       content: `Вот данные проекта, которые я подготовил:
-    //   Название: ${toolData.idea.title}
-    //   Описание: ${toolData.idea.description}
-    //
-    //   Пожалуйста, составь на основе этих данных дружелюбный ответ для родителя, используя эту информацию. Не повторяй JSON-структуру.`
-    //     }
-    //   ],
-    // });
-
-    // console.log(payload, 'payload');
+    const resp = await assistant.chat(payload);
 
     // 4. Проверка структуры ответа от API
     if (!resp || !resp.choices || resp.choices.length === 0) {
@@ -119,7 +62,6 @@ export async function generateAssistantAnswer({ messages }) {
     const parsedData = resp.choices[0]?.message.content;
     console.log('Content: ', parsedData);
 
-    // const parsedData = resp.choices[0]?.message?.function_call?.arguments;
 
     // 1. Разделяем текст и JSON
     // Ищем начало блока кода ``` или просто первую скобку {
@@ -131,7 +73,6 @@ export async function generateAssistantAnswer({ messages }) {
     const jsonString = jsonStartIndex !== -1 ? parsedData.slice(jsonStartIndex).trim() : null; // Строка JSON
 
     // 2. Парсим JSON
-    //const structuredData = JSON.parse(jsonString);
 
     console.log(userMessage, 'userMessage');
     console.log(jsonString, 'jsonString');

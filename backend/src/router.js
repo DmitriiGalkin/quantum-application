@@ -16,6 +16,10 @@ import chat from './controllers/chat.js';
 import strategies from './strategies.js';
 import { checkConstructor } from './helper.js';
 
+import multer from 'multer';
+
+const upload = multer({ storage: multer.memoryStorage() });
+
 const router = express.Router();
 
 /**
@@ -54,7 +58,7 @@ router.post('/passport/googleLogin', passportController.googleLogin);
 /**
  * Картинки
  */
-router.post('/image', image.upload);
+router.post('/image', upload.single('image'), image.upload);
 
 /**
  * Проекты

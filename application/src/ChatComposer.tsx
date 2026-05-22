@@ -1,22 +1,17 @@
 import { Box, Container, IconButton, Stack, TextField } from '@mui/material';
-import MicIcon from '@mui/icons-material/Mic';
 import SendIcon from '@mui/icons-material/Send';
 
 type ChatComposerProps = {
   message: string;
-  isListening: boolean;
   isSending: boolean;
   onMessageChange: (message: string) => void;
-  onMicrophoneClick: () => void;
   onSendMessage: () => void;
 };
 
 function ChatComposer({
   message,
-  isListening,
   isSending,
   onMessageChange,
-  onMicrophoneClick,
   onSendMessage,
 }: ChatComposerProps) {
   return (
@@ -55,18 +50,6 @@ function ChatComposer({
               onSendMessage();
             }}
           />
-
-          <IconButton
-            aria-label={isListening ? 'Остановить запись' : 'Говорить'}
-            onClick={onMicrophoneClick}
-            sx={{
-              color: isListening ? '#FF8F28' : '#111827',
-              border: 1,
-              borderColor: isListening ? '#FF8F28' : 'divider',
-            }}
-          >
-            <MicIcon />
-          </IconButton>
 
           <IconButton
             aria-label="Отправить"

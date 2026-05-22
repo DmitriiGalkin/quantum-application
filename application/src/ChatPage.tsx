@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   AppBar,
-  Avatar,
   Box,
   Container,
   IconButton,
@@ -11,12 +10,13 @@ import {
   Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { fetchMessages, sendMessage, type ChatMessage } from './requests';
+import { fetchMessages, sendMessage, type ChatTarget, fetchPassport } from './requests';
 import ChatWelcome from './ChatWelcome';
 import ChatMessageList from './ChatMessageList';
 import type { SpeechRecognition } from './chatUtils';
 import ChatComposer from './ChatComposer';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getAccessToken } from './api.ts';
 
 type SpeechRecognitionConstructor = new () => SpeechRecognition;
 
@@ -28,59 +28,90 @@ declare global {
 }
 
 function ChatPage() {
+  const accessToken = getAccessToken();
   const [searchParams] = useSearchParams();
-  const target = searchParams.get('target');
+  const target = searchParams.get('target') as ChatTarget;
+  const queryClient = useQueryClient();
 
   const [message, setMessage] = useState('');
   const [chatId, setChatId] = useState<number | null>(null);
-  const [sendMessages, setSendMessages] = useState<ChatMessage[]>([]);
-  const [isListening, setIsListening] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-
-
-  const { data: serverMessages = [], isLoading: isMessagesLoading } = useQuery({
-    // Уникальный ключ запроса. Если chatId null, запрос не выполнится.
-    queryKey: ['chat', chatId],
-    queryFn: () => fetchMessages(chatId!), // Вызываем функцию API
-    enabled: !!chatId, // Запрос активен только если chatId существует (аналог if (!chatId) return)
-    // staleTime: 1000 * 60 * 5, // Необязательно: данные считаются "свежими" 5 минут (не будет рефетча)
+  const mutation = useMutation({
+    mutationFn: sendMessage,
   });
 
-  const messages = [...serverMessages, ...sendMessages];
+  const { data: messages = [], isLoading: isMessagesLoading } = useQuery({
+    queryKey: ['messages', chatId],
+    queryFn: () => fetchMessages(chatId!),
+    enabled: !!chatId,
+  });
 
-  async function sendChatMessage(text: string) {
-    const trimmedMessage = text.trim();
+  const { data: passport } = useQuery({
+    queryKey: ['passport'],
+    queryFn: fetchPassport,
+    enabled: Boolean(accessToken),
+  });
 
-    if (!trimmedMessage || isSending) {
-      return;
-    }
-
-    setIsSending(true);
-
-    try {
-      const response = await sendMessage({
-        chatId,
-        message: trimmedMessage,
-      });
-
-      setChatId(response.chatId);
-      localStorage.setItem('active_chat_id', String(response.chatId));
-      setSendMessages(currentMessages => [...currentMessages, ...response.messages]);
-
-      if (trimmedMessage === message.trim()) {
-        setMessage('');
-      }
-    } catch (error) {
-      console.log(error, 'error');
-      alert('Не удалось отправить сообщение. Попробуйте ещё раз.');
-    } finally {
-      setIsSending(false);
+  const getCaption = (target: ChatTarget): string => {
+    switch (target) {
+      case 'idea':
+        return 'Помогаю придумать идею проекта';
+      case 'user':
+        return 'Помогаю придумать идею проекта';
+      default:
+        return 'Отдыхаю'
     }
   }
 
+  async function sendChatMessage(text: string) {
+    const message = text.trim();
+
+    if (!message || mutation.isPending) {
+      return;
+    }
+
+    // --- ОПТИМИСТИЧЕСКОЕ ОБНОВЛЕНИЕ ---
+    // Мы сразу добавляем сообщение в локальный кэш, чтобы пользователь видел его мгновенно.
+    queryClient.setQueryData(
+      ['messages', chatId], // Ключ запроса, который мы использовали в useQuery для получения сообщений
+      (oldMessages = []) => [
+        ...(oldMessages as []),
+        {
+          id: Math.random().toString(), // Временный ID
+          content: message,
+          role: 'user', // Или какая роль у отправителя
+          createdAt: new Date().toISOString(),
+          isOptimistic: true, // Флаг, чтобы можно было красиво отрисовать "серое" сообщение
+        },
+      ],
+    );
+
+    mutation.mutate(
+      { chatId, message, target },
+      {
+        onSuccess: response => {
+          localStorage.setItem('active_chat_id', String(response.chatId));
+          setMessage('');
+          queryClient.setQueryData(['messages', chatId], oldMessages => [
+            ...(oldMessages as []),
+            response.message,
+          ]);
+        },
+        onError: (error) => {
+          console.error('Ошибка отправки:', error);
+          alert('Не удалось отправить сообщение. Попробуйте ещё раз.');
+
+          queryClient.setQueryData(
+            ['messages', chatId],
+            (oldMessages = []) => [
+              ...(oldMessages as []).slice(0, -1),
+            ],
+          );
+        },
+      },
+    );
+  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -92,53 +123,8 @@ function ChatPage() {
   useEffect(() => {
       const savedChatId = localStorage.getItem('active_chat_id');
       if (savedChatId) setChatId(Number(savedChatId))
-  }, []); // Пустой массив зависимостей - выполнится один раз при монтировании
+  }, []);
 
-
-  const handleMicrophoneClick = () => {
-    if (isListening) {
-      recognitionRef.current?.stop();
-      setIsListening(false);
-      return;
-    }
-
-    const SpeechRecognitionApi = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognitionApi) {
-      alert('Распознавание речи не поддерживается в этом браузере.');
-      return;
-    }
-
-    const recognition = new SpeechRecognitionApi();
-
-    recognition.lang = 'ru-RU';
-    recognition.interimResults = true;
-    recognition.continuous = true;
-
-    recognition.onresult = event => {
-      const transcript = Array.from(
-        { length: event.results.length },
-        (_, index) => event.results[index][0].transcript,
-      ).join(' ');
-
-      setMessage(transcript);
-      console.log(transcript);
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-      recognitionRef.current = null;
-    };
-
-    recognition.onerror = () => {
-      setIsListening(false);
-      recognitionRef.current = null;
-    };
-
-    recognitionRef.current = recognition;
-    setIsListening(true);
-    recognition.start();
-  };
 
   const handleSendMessage = async () => {
     await sendChatMessage(message);
@@ -160,16 +146,17 @@ function ChatPage() {
           <IconButton component={Link} to="/" aria-label="Назад" sx={{ color: 'white' }}>
             <ArrowBackIcon />
           </IconButton>
-
-          <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', color: 'white' }}>
-            <Avatar sx={{ bgcolor: '#111827', color: 'white' }}>AI</Avatar>
-            <Box>
-              <Typography sx={{ fontWeight: 800, lineHeight: 1.2 }}>Чат</Typography>
+          <Box>
+            <Typography sx={{ fontWeight: 800, lineHeight: 1.2, color: 'white' }}>
+              Ассистент
+            </Typography>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', color: 'white' }}>
+              <span className="pulse-circle"></span>
               <Typography variant="caption" sx={{ opacity: 0.9 }}>
-                Идеи и рекомендации
+                {getCaption(target)}
               </Typography>
-            </Box>
-          </Stack>
+            </Stack>
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -195,20 +182,19 @@ function ChatPage() {
           <ChatMessageList
             chatId={chatId as number}
             messages={messages}
-            isSending={isSending}
+            isSending={mutation.isPending}
             onCreateProjectIdea={() => {
               sendChatMessage('Создать идею проекта');
             }}
+            users={passport.users}
           />
         </Stack>
       </Container>
       <Box ref={messagesEndRef} />
       <ChatComposer
         message={message}
-        isListening={isListening}
-        isSending={isSending}
+        isSending={mutation.isPending}
         onMessageChange={setMessage}
-        onMicrophoneClick={handleMicrophoneClick}
         onSendMessage={handleSendMessage}
       />
     </Box>

@@ -22,11 +22,11 @@ class Chat {
   static async create(data) {
     const sql = `
       INSERT INTO \`chat\`
-        (passportId, title, summary)
+        (passportId, title, target)
       VALUES
         (?, ?, ?)
     `;
-    const values = [data.passportId, data.title || null, data.summary || null];
+    const values = [data.passportId, data.title || null, data.target || null];
 
     try {
       const [result] = await pool.query(sql, values);

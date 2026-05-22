@@ -10,40 +10,52 @@ import s3Client from '../s3.js'; // Импортируем ES-модуль
 export default {
   upload: async (req, res) => {
     console.log('Пошла загрузка');
+    // Файл доступен в req.file
+    if (!req.file) {
+      return res.status(400).send('Файл не загружен');
+    }
+    console.log('Информация о файле:', req.file);
 
-    const form = formidable({ multiples: false });
+    // - originalname: исходное имя файла
+    // - filename: имя файла на сервере (например, с хэшем)
+    // - path: путь до файла на сервере
+    // - size: размер файла
+    // - mimetype: MIME-тип
 
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        return res.status(500).json({ error: 'Ошибка при парсинге формы' });
-      }
+    try {
+      const filename = uuidv4() + path.extname(req.file.originalname);
+      //const fileContent = fs.readFileSync(req.file.path + req.file.filename);
 
-      const file = files.image;
-      if (!file) {
-        return res.status(400).json({ error: 'Файл не найден' });
-      }
+      const params = {
+        Bucket: 'quantum-education',
+        Key: filename,
+        Body: req.file.buffer,
+        ContentType: mime.getType(req.file.mimetype),
+        CacheControl: 'max-age=' + 3600 * 24 * 365, // например, кэшировать на год
+      };
 
-      const filename = uuidv4() + path.extname(file.originalFilename);
-      const filePath = file.filepath;
+      await s3Client.send(new PutObjectCommand(params));
 
-      try {
-        const fileContent = fs.readFileSync(filePath);
+      const fileUrl = `https://storage.yandexcloud.net/quantum-education/${filename}`;
+      res.json({ url: fileUrl });
+    } catch (error) {
+      console.error('Ошибка загрузки в S3:', error);
+      res.status(500).json({ error: 'Ошибка при загрузке файла' });
+    }
 
-        const params = {
-          Bucket: 'quantum-education',
-          Key: filename,
-          Body: fileContent,
-          ContentType: mime.getType(file.originalFilename),
-        };
+    //const form = formidable({ multiples: false });
 
-        await s3Client.send(new PutObjectCommand(params));
-
-        const fileUrl = `https://storage.yandexcloud.net/quantum-education/${filename}`;
-        res.json({ url: fileUrl });
-      } catch (error) {
-        console.error('Ошибка загрузки в S3:', error);
-        res.status(500).json({ error: 'Ошибка при загрузке файла' });
-      }
-    });
+    // form.parse(req, async (err, fields, files) => {
+    //   if (err) {
+    //     return res.status(500).json({ error: 'Ошибка при парсинге формы' });
+    //   }
+    //
+    //   const file = files.image;
+    //   if (!file) {
+    //     return res.status(400).json({ error: 'Файл не найден' });
+    //   }
+    //
+    //
+    // });
   }
 }

@@ -1,10 +1,12 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import ProjectCard from './ProjectCard';
 import Message from './Message';
 import { type ChatMessage, generateImage } from './requests';
 import { getProjectFromMetadata } from './chatUtils';
 import ReactMarkdown from 'markdown-to-jsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import UserCard from './UserCard.tsx';
+import type { User } from './types.ts';
 
 
 type ChatMessageListProps = {
@@ -12,6 +14,7 @@ type ChatMessageListProps = {
   messages: ChatMessage[];
   isSending: boolean;
   onCreateProjectIdea: () => void;
+  users: User[];
 };
 
 function ChatMessageList({
@@ -19,6 +22,7 @@ function ChatMessageList({
   messages,
   isSending,
   onCreateProjectIdea,
+  users,
 }: ChatMessageListProps) {
   const queryClient = useQueryClient();
 
@@ -61,6 +65,7 @@ function ChatMessageList({
                   <Button
                     variant="contained" // Оставляем contained для оранжевого фона
                     fullWidth
+                    size="large"
                     sx={{
                       mt: 1.5,
 
@@ -92,6 +97,26 @@ function ChatMessageList({
           </Box>
         );
       })}
+
+      <Message role={'assistant'}>
+        <Typography>Интересно, чья это идея?</Typography>
+      </Message>
+
+      <Stack spacing={2} sx={{ flexGrow: 1 }} direction="row">
+        {users.map(user => (
+          <UserCard user={user} />
+        ))}
+      </Stack>
+
+      {isSending && (
+        <Message role={'assistant'}>
+          <div className="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </Message>
+      )}
     </>
   );
 }

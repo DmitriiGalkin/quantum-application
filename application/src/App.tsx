@@ -22,6 +22,7 @@ import {
 import KeyIcon from '@mui/icons-material/Key';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import MenuIcon from '@mui/icons-material/Menu';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import FolderIcon from '@mui/icons-material/Folder';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
@@ -33,9 +34,8 @@ import PlaceSelectPage from './PlaceSelectPage';
 import ChatPage from './ChatPage';
 import ProjectCard from './ProjectCard';
 import './App.css';
-import type { Passport, Project, User } from './types';
 import { useQuery } from '@tanstack/react-query';
-import { apiFetch } from './api.ts';
+import { fetchPassport, fetchProjects, type Type } from './requests.ts';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
@@ -57,20 +57,6 @@ function saveAccessTokenFromUrl() {
   window.history.replaceState({}, document.title, `${url.pathname}${url.search}${url.hash}`);
 
   return accessToken;
-}
-
-type Type = 'self' | 'ideas' | 'projects' | null;
-
-interface ExtendedPassport extends Passport {
-  users?: User[];
-}
-
-async function fetchPassport(): Promise<ExtendedPassport> {
-  return apiFetch<ExtendedPassport>('/passport');
-}
-
-async function fetchProjects(type: Type, userId: number): Promise<Project[]> {
-  return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
 }
 
 const authStrategies = [
@@ -118,7 +104,6 @@ function HomePage() {
   } = useQuery({
     queryKey: ['projects', type],
     queryFn: () => fetchProjects(type, 1),
-    //enabled: accessToken !== null,
   });
 
   return (
@@ -133,36 +118,27 @@ function HomePage() {
           backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
         }}
       >
-        <Toolbar sx={{ gap: 2 }}>
-          {accessToken ? (
-            <Stack
-              direction="row"
-              spacing={1.5}
-              sx={{
-                flexGrow: 1,
-                alignItems: 'center',
-                cursor: 'pointer',
-                color: 'white',
-              }}
-              onClick={() => setIsMenuOpen(currentValue => !currentValue)}
-            >
-              <Avatar
-                src={currentUser?.image || undefined}
-                alt={currentUser?.title || 'Пользователь'}
-                sx={{ border: '2px solid white' }}
-              />
-              <Typography sx={{ fontWeight: 700 }} component="span" variant="subtitle1">
-                {currentUser?.title || 'Пользователь'}
-              </Typography>
-            </Stack>
-          ) : (
-            <div>
-              <Typography sx={{ fontWeight: 700 }} component="span" variant="subtitle1">
-                Quantum
-              </Typography>
-            </div>
-          )}
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            aria-label="open drawer"
+            sx={{ mr: 2, color: 'white' }}
+            onClick={() => setIsMenuOpen(currentValue => !currentValue)}
+          >
+            <MenuIcon />
+          </IconButton>
 
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              color: 'white',
+              flexGrow: 1,
+            }}
+          >
+            Quantum
+          </Typography>
           <IconButton
             component={Link}
             to="/chat"
@@ -222,6 +198,28 @@ function HomePage() {
                     <AddIcon />
                   </ListItemIcon>
                   <ListItemText primary="Новая идея" />
+                </ListItemButton>
+
+                <ListItemButton
+                  component={Link}
+                  to="/chat?target=user"
+                  onClick={() => {
+                    localStorage.removeItem('active_chat_id');
+                  }}
+                  sx={{
+                    mb: 1,
+                    borderRadius: 2,
+                    bgcolor: 'primary.main',
+                    color: 'primary.contrastText',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Новый ребенок" />
                 </ListItemButton>
 
                 <ListItemButton
