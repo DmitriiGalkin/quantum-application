@@ -186,7 +186,7 @@ function ChatPage() {
             onCreateProjectIdea={() => {
               sendChatMessage('Создать идею проекта');
             }}
-            users={passport.users}
+            users={passport?.users || []}
           />
         </Stack>
       </Container>
