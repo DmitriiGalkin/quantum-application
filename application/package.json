@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:ssr": "node server.js",
-    "build": "tsc -b && vite build",
+    "build": "set NODE_ENV=production&& tsc -b && vite build",
     "build:production": "NODE_ENV=production tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -22,6 +22,7 @@
     "leaflet": "^1.9.4",
     "markdown-to-jsx": "^9.8.0",
     "multer": "^2.1.1",
+    "normalize.css": "^8.0.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-markdown": "^8.0.7",
