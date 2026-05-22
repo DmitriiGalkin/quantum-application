@@ -4,12 +4,14 @@ import path from 'path';
 import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import { fileURLToPath } from 'url';
+import compression from 'compression';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function createServer() {
   const app = express();
+  app.use(compression());
 
   const isProd = true // process.env.NODE_ENV === 'production'
   ;
