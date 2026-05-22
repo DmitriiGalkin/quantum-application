@@ -80,7 +80,7 @@ pipeline {
                     -v "$WORKSPACE:/workspace" \
                     -w /workspace \
                     "$NODE_IMAGE" \
-                    sh -lc "cd application && npm ci && NODE_ENV=production && npm run build && test -f dist/index.html && cd ../backend && npm ci"
+                    sh -lc "cd application && npm ci && npm run build:production && test -f dist/index.html && cd ../backend && npm ci"
                 '''
             }
         }
