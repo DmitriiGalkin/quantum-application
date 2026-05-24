@@ -15,7 +15,6 @@ import participation from './controllers/participation.js';
 import chat from './controllers/chat.js';
 import strategies from './strategies.js';
 import { checkConstructor } from './helper.js';
-
 import multer from 'multer';
 
 const upload = multer({ storage: multer.memoryStorage() });

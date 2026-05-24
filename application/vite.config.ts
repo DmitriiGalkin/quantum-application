@@ -6,4 +6,8 @@ export default defineConfig({
   server: {
     allowedHosts: ['q3-dev.ru'],
   },
+  optimizeDeps: {
+    // Добавляем плагин для оптимизации MUI
+    include: ['@babel/preset-env'],
+  },
 });
