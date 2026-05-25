@@ -6,6 +6,7 @@ export default {
     try {
       // Добавляем passportId из авторизованного пользователя
       const userData = { ...req.body, passportId: req.passport.id };
+      console.log(userData,'userData')
 
       // Прямой вызов метода модели. Он вернет ID созданного пользователя.
       const userId = await User.create(userData);

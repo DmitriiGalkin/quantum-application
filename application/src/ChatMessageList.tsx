@@ -1,20 +1,20 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import ProjectCard from './ProjectCard';
 import Message from './Message';
 import { type ChatMessage, generateImage } from './requests';
-import { getProjectFromMetadata } from './chatUtils';
+import { getObjectFromMetadata } from './chatUtils';
 import ReactMarkdown from 'markdown-to-jsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+import type { Project, User } from './types.ts';
 import UserCard from './UserCard.tsx';
-import type { User } from './types.ts';
-
 
 type ChatMessageListProps = {
   chatId: number;
   messages: ChatMessage[];
   isSending: boolean;
-  onCreateProjectIdea: () => void;
-  users: User[];
+  onCreateProjectIdea: (project: Project) => void;
+  onCreateUser: (user: User) => void;
 };
 
 function ChatMessageList({
@@ -22,7 +22,7 @@ function ChatMessageList({
   messages,
   isSending,
   onCreateProjectIdea,
-  users,
+  onCreateUser,
 }: ChatMessageListProps) {
   const queryClient = useQueryClient();
 
@@ -37,7 +37,7 @@ function ChatMessageList({
   return (
     <>
       {messages.map((chatMessage, index) => {
-        const project = getProjectFromMetadata(chatMessage.metadata);
+        const metadata = getObjectFromMetadata(chatMessage.metadata);
         const isLastMessage = index === messages.length - 1;
 
         return (
@@ -53,15 +53,15 @@ function ChatMessageList({
               </Typography>
             </Message>
 
-            {project && (
+            {metadata?.target === 'idea' && (
               <Box sx={{ mt: 2, alignItems: 'center' }}>
                 <ProjectCard
-                  project={project}
+                  project={metadata.data as Project}
                   isGeneratingImage={generateImageMutation.isPending}
                   generateImageHandler={() => generateImageMutation.mutate(chatMessage.id)}
                 />
 
-                {isLastMessage && !project.id && (
+                {isLastMessage && !metadata.data.id && (
                   <Button
                     variant="contained" // Оставляем contained для оранжевого фона
                     fullWidth
@@ -87,9 +87,47 @@ function ChatMessageList({
                         transition: 'all 0.1s ease-in-out', // Плавный переход
                       },
                     }}
-                    onClick={onCreateProjectIdea}
+                    onClick={() => onCreateProjectIdea(metadata.data as Project)}
                   >
                     {isSending ? 'Отправляем...' : 'Создать идею проекта'}
+                  </Button>
+                )}
+              </Box>
+            )}
+
+            {metadata?.target === 'user' && (
+              <Box sx={{ mt: 2, alignItems: 'center' }}>
+                <UserCard user={metadata.data as User} />
+
+                {isLastMessage && !metadata.data.id && (
+                  <Button
+                    variant="contained" // Оставляем contained для оранжевого фона
+                    fullWidth
+                    size="large"
+                    sx={{
+                      mt: 1.5,
+
+                      // --- СТИЛИ СООБЩЕНИЯ ПОЛЬЗОВАТЕЛЯ ---
+                      alignSelf: 'flex-end', // Прижимаем к правому краю (как у пользователя)
+                      borderRadius: 16, // Скругление для "пузыря" справа
+                      bgcolor: '#FFB628', // Оранжевый цвет пользователя
+                      color: 'white', // Белый текст
+
+                      boxShadow: 'none', // Убираем тень для чистоты
+
+                      // Показываем, что на кнопку можно нажать
+                      cursor: 'pointer',
+
+                      // Эффект при наведении (делаем чуть ярче)
+                      '&:hover': {
+                        opacity: 0.8, // Становится чуть менее прозрачным при наведении
+                        transform: 'scale(1.01)', // Легкое увеличение для интерактивности
+                        transition: 'all 0.1s ease-in-out', // Плавный переход
+                      },
+                    }}
+                    onClick={() => onCreateUser(metadata.data as User)}
+                  >
+                    {isSending ? 'Отправляем...' : 'Создать карточку ребенка'}
                   </Button>
                 )}
               </Box>
@@ -98,15 +136,15 @@ function ChatMessageList({
         );
       })}
 
-      <Message role={'assistant'}>
-        <Typography>Интересно, чья это идея?</Typography>
-      </Message>
+      {/*<Message role={'assistant'}>*/}
+      {/*  <Typography>Интересно, чья это идея?</Typography>*/}
+      {/*</Message>*/}
 
-      <Stack spacing={2} sx={{ flexGrow: 1 }} direction="row">
-        {users.map(user => (
-          <UserCard user={user} />
-        ))}
-      </Stack>
+      {/*<Stack spacing={2} sx={{ flexGrow: 1 }} direction="row">*/}
+      {/*  {users.map(user => (*/}
+      {/*    <UserCard key={user.id} user={user} />*/}
+      {/*  ))}*/}
+      {/*</Stack>*/}
 
       {isSending && (
         <Message role={'assistant'}>
@@ -121,4 +159,4 @@ function ChatMessageList({
   );
 }
 
-export default ChatMessageList;
+export default React.memo(ChatMessageList);

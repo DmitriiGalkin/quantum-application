@@ -7,6 +7,7 @@ class User {
     this.title = data.title;
     this.age = data.age;
     this.image = data.image;
+    this.description = data.description;
     this.deletedAt = data.deletedAt;
   }
 
@@ -15,10 +16,10 @@ class User {
   static async create(userData) {
     try {
       // В запросе используются только поля, которые есть в модели
-      const [result] = await pool.query('INSERT INTO `user` (title, passportId) VALUES (?, ?)', [
-        userData.title,
-        userData.passportId,
-      ]);
+      const [result] = await pool.query(
+        'INSERT INTO `user` (title, passportId, description, age) VALUES (?, ?, ?, ?)',
+        [userData.title, userData.passportId, userData.description, userData.age],
+      );
       return result.insertId;
     } catch (err) {
       console.error('User.create error:', err);

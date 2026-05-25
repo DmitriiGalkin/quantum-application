@@ -14,6 +14,7 @@ import {
 } from '../services/projectIdeaService.js';
 import { generateProjectImage } from '../services/imageGenerationService.js';
 import { uploadImage } from '../services/imageGenerationService.js';
+import { userGenerateAssistantAnswer } from '../services/userAssistantService.js';
 
 export default {
   generateImage: async (req, res) => {
@@ -72,6 +73,8 @@ export default {
         firstMessage: message,
         target: req.body.target,
       });
+      console.log(chat, 'chat ==================');
+
 
       // 2. Сохраняем сообщение пользователя
       const userMessageId = await ChatMessage.create({
@@ -107,15 +110,20 @@ export default {
         });
       }
 
+
       // 4. Генерация ответа ассистента
       const recentMessages = await ChatMessage.findLastByChatId(chat.id, 10);
-
-      const assistantContent = await generateAssistantAnswer({
-        messages: recentMessages,
-        chat,
-        passport: req.passport,
-      });
-
+      const assistantContent = chat.target === 'user'
+        ? await userGenerateAssistantAnswer({
+            messages: recentMessages,
+            chat,
+            passport: req.passport,
+          })
+        : await generateAssistantAnswer({
+            messages: recentMessages,
+            chat,
+            passport: req.passport,
+          });
 
       const assistantMessage = await createAssistantMessage({
         chatId: chat.id,
@@ -130,6 +138,7 @@ export default {
       res.json({
         chatId: chat.id,
         message: normalizeMessage(assistantMessage),
+        target: chat.target
       });
     } catch (err) {
       console.error('chat.createMessage error:', err);
@@ -152,7 +161,10 @@ export default {
 
       const messages = await ChatMessage.findByChatId(chat.id);
 
-      res.json(messages.map(normalizeMessage));
+      res.json({
+        ...chat,
+        messages: messages.map(normalizeMessage),
+      });
     } catch (err) {
       console.error('chat.findMessages error:', err);
       res.status(500).json({ error: true, message: 'Не удалось получить сообщения' });

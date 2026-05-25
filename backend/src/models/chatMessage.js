@@ -9,6 +9,7 @@ class ChatMessage {
     this.role = data.role;
     this.content = data.content;
     this.source = data.source || 'text';
+    this.target = data.target;
     this.metadata = data.metadata ? JSON.stringify(data.metadata) : null;
     // Добавим дату создания, если она приходит из БД
     this.createdAt = data.createdAt;

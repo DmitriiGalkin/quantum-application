@@ -8,6 +8,7 @@ class Chat {
     this.title = data.title;
     this.summary = data.summary;
     this.updatedAt = data.updatedAt;
+    this.target = data.target;
     // Добавим поле для последнего сообщения, если оно есть (из JOIN запроса)
     this.lastMessage = data.lastMessage;
   }

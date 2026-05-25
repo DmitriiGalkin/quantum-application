@@ -2,29 +2,16 @@ body { margin: 0;}
 html { font-size: 80%; }
 
 .pulse-circle {
-    width: 10px; /* Начальный размер */
-    height: 10px; /* Начальный размер */
+    width: 6px; /* Начальный размер */
+    height: 6px; /* Начальный размер */
 
-    background-color: #4CAF50; /* Цвет (например, зеленый) */
+    background-color: #ffffff; /* Цвет (например, зеленый) */
 
     border-radius: 50%; /* Делаем круг */
 
     /* Анимация */
-    animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    animation: blink-animation 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
 
-    /* Тень для объема (опционально) */
-    box-shadow: 0 0 0 rgba(76, 175, 80, 0.7);
-}
-
-/* --- 3. Ключевые кадры анимации --- */
-@keyframes pulse {
-    from {
-        box-shadow: 0 0 0 0 rgba(76,175,80,0.7);
-    }
-    to {
-        box-shadow: 0 0 0 10px rgba(76,175,80,0);
-        opacity: 0;
-    }
 }
 
 .typing-dots {
@@ -62,4 +49,19 @@ html { font-size: 80%; }
         opacity: 1;
         transform: scale(1); /* Нормальный размер */
     }
+}
+
+/* 1. Определяем саму анимацию */
+@keyframes blink-animation {
+    0%   { opacity: 1; } /* Текст полностью виден в начале */
+    50%  { opacity: 0.3; } /* Текст становится невидимым в середине */
+    100% { opacity: 1; } /* Текст снова становится видимым в конце */
+}
+
+/* 2. Применяем анимацию к нужному элементу */
+.blink {
+    animation: blink-animation /* Название анимации */
+    3s            /* Длительность одного цикла (1 секунда) */
+    linear        /* Скорость анимации (постоянная) */
+    infinite;     /* Бесконечное повторение */
 }

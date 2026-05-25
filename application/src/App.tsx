@@ -1,20 +1,15 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import { lazy, Suspense } from 'react';
-import LoadingPage from './LoadingPage.tsx';
-
-// Ленивый импорт компонентов
-const HomePage = lazy(() => import('./HomePage'));
-const ChatPage = lazy(() => import('./ChatPage'));
-const CreateProjectPage = lazy(() => import('./CreateProjectPage'));
-const ProjectPage = lazy(() => import('./ProjectPage'));
-const EditProjectPage = lazy(() => import('./EditProjectPage'));
-const PlaceSelectPage = lazy(() => import('./PlaceSelectPage'));
-const NotFoundPage = lazy(() => import('./NotFoundPage'));
+import HomePage from './HomePage'
+import ChatPage from './ChatPage';
+import CreateProjectPage from './CreateProjectPage';
+import ProjectPage from './ProjectPage';
+import EditProjectPage from './EditProjectPage';
+import PlaceSelectPage from './PlaceSelectPage';
+import NotFoundPage from './NotFoundPage';
 
 function App() {
   return (
-    <Suspense fallback={<LoadingPage />}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/chat" element={<ChatPage />} />
@@ -24,7 +19,6 @@ function App() {
         <Route path="/project/:id/edit/place" element={<PlaceSelectPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </Suspense>
   );
 }
 

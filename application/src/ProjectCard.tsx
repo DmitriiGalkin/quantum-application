@@ -58,7 +58,9 @@ function ProjectCard({ project, generateImageHandler, isGeneratingImage }: Proje
         >
           {/* Кнопка с иконкой в правом верхнем углу */}
           {isGeneratingImage && (
-            <Typography color="text.secondary" sx={{ paddingLeft: 2 }}>Генерирую...</Typography>
+            <Typography className="blink" color="text.secondary" sx={{ paddingLeft: 2 }}>
+              Генерирую...
+            </Typography>
           )}
           {generateImageHandler && (
             <IconButton

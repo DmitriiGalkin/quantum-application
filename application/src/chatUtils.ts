@@ -1,4 +1,4 @@
-import type { Project } from './types';
+import type { Project, User } from './types';
 
 export type SpeechRecognitionConstructor = new () => SpeechRecognition;
 
@@ -24,7 +24,12 @@ export type SpeechRecognitionEvent = {
   };
 };
 
-export function getProjectFromMetadata(metadata: unknown): Project | null {
+interface Meta {
+  target: string;
+  data: Project | User;
+}
+
+export function getObjectFromMetadata(metadata: unknown): Meta | null {
   if (!metadata) {
     return null;
   }
@@ -34,11 +39,13 @@ export function getProjectFromMetadata(metadata: unknown): Project | null {
       console.log(metadata, 'metadata metadata');
 
       console.log(JSON.parse(metadata), 'getProjectFromMetadata metadata');
-      return JSON.parse(metadata) as Project;
+      const m = JSON.parse(metadata);
+
+      return m as Meta;
     } catch {
       return null;
     }
   }
 
-  return metadata as Project;
+  return metadata as Meta;
 }

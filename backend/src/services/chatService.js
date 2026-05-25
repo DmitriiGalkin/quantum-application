@@ -39,6 +39,8 @@ async function getOrCreateChat({ chatId, passportId, firstMessage, target }) {
     target,
   });
 
+  console.log(createdChatId, 'createdChatId');
+
   // Находим и возвращаем созданный чат как объект
   return Chat.findById(createdChatId);
 }

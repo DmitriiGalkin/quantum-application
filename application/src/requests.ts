@@ -1,7 +1,8 @@
-import { apiFetch } from './api';
+import { apiFetch, getAccessToken } from './api';
 import type { Passport, Place, Project, User } from './types';
 import type { ExtendedMeet } from './MeetCard';
 import type { ProjectFormValues } from './ProjectForm';
+import { useQuery } from '@tanstack/react-query';
 
 export interface ExtendedProject extends Project {
   passport?: {
@@ -21,6 +22,10 @@ export interface ExtendedProject extends Project {
   }[];
 }
 
+export type ChatTarget = 'user' | 'idea' | 'project' | 'none';
+
+export type Workflow = 'create_idea';
+
 export type ChatMessage = {
   id: number;
   chatId: number;
@@ -31,6 +36,11 @@ export type ChatMessage = {
   metadata: unknown;
   createdAt: string;
 };
+
+export type Chat = {
+  target: ChatTarget;
+  messages: ChatMessage[];
+}
 
 export type SendMessageResponse = {
   chatId: number;
@@ -73,11 +83,10 @@ export async function fetchPlaces(): Promise<Place[]> {
   return apiFetch<Place[]>('/places');
 }
 
-export async function fetchMessages(chatId: number): Promise<ChatMessage[]> {
-  return apiFetch<ChatMessage[]>(`/chat/${chatId}/messages`);
+export async function fetchMessages(chatId: number): Promise<Chat> {
+  return apiFetch<Chat>(`/chat/${chatId}`);
 }
 
-export type ChatTarget = 'user' | 'idea' | 'project';
 
 export async function sendMessage({
   chatId,
@@ -98,6 +107,16 @@ export async function sendMessage({
       message,
       target,
     }),
+  });
+}
+
+export async function createUser(user: User): Promise<{id: number; message: string}> {
+  return apiFetch<{ id: number; message: string }>('/user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
   });
 }
 
@@ -140,3 +159,15 @@ export async function fetchPassport(): Promise<ExtendedPassport> {
 export async function fetchProjects(type: Type, userId: number): Promise<Project[]> {
   return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
 }
+
+export const usePassport = () => {
+  const accessToken = getAccessToken();
+
+  const { data: passport } = useQuery({
+    queryKey: ['passport'],
+    queryFn: fetchPassport,
+    enabled: Boolean(accessToken),
+  });
+
+  return passport
+};

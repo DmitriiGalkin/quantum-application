@@ -1,36 +1,57 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import {
-  AppBar,
-  Box,
-  Container,
-  IconButton,
-  Stack,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Box, Container, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { fetchMessages, sendMessage, type ChatTarget, fetchPassport } from './requests';
+import {
+  fetchMessages,
+  sendMessage,
+  type Chat,
+  //usePassport,
+  type ChatMessage,
+  type Workflow, createUser, type ChatTarget,
+} from './requests';
 import ChatWelcome from './ChatWelcome';
 import ChatMessageList from './ChatMessageList';
-import type { SpeechRecognition } from './chatUtils';
 import ChatComposer from './ChatComposer';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getAccessToken } from './api.ts';
+import { getCaption } from './helper.ts';
+import type { User } from './types.ts';
 
-type SpeechRecognitionConstructor = new () => SpeechRecognition;
-
-declare global {
-  interface Window {
-    SpeechRecognition?: SpeechRecognitionConstructor;
-    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+const createDefaultChat = (workflow: Workflow): Chat => {
+  switch (workflow) {
+    case 'create_idea':
+      return {
+        target: 'user',
+        messages: [
+          {
+            id: null,
+            chatId: null,
+            passportId: null,
+            role: 'assistant',
+            content: 'Раскажи о своем чаде?',
+            source: 'text',
+            metadata: null,
+            createdAt: null,
+          },
+        ],
+      };
   }
-}
+};
+
+const getWorkflowTarget = (workflow: Workflow, target: ChatTarget) => {
+  const activeUserId = localStorage.getItem('active_user_id');
+  switch (workflow) {
+    case 'create_idea': {
+      if (!activeUserId) return 'user';
+      if (target === 'user' && activeUserId) return 'idea';
+      return 'none';
+    }
+  }
+};
 
 function ChatPage() {
-  const accessToken = getAccessToken();
   const [searchParams] = useSearchParams();
-  const target = searchParams.get('target') as ChatTarget;
+  const workflow = searchParams.get('workflow') as Workflow;
   const queryClient = useQueryClient();
 
   const [message, setMessage] = useState('');
@@ -41,30 +62,39 @@ function ChatPage() {
     mutationFn: sendMessage,
   });
 
-  const { data: messages = [], isLoading: isMessagesLoading } = useQuery({
-    queryKey: ['messages', chatId],
+  const { data: chat = createDefaultChat(workflow), isLoading: isMessagesLoading } = useQuery({
+    queryKey: ['chat', chatId],
     queryFn: () => fetchMessages(chatId!),
     enabled: !!chatId,
   });
 
-  const { data: passport } = useQuery({
-    queryKey: ['passport'],
-    queryFn: fetchPassport,
-    enabled: Boolean(accessToken),
+  const mutation2 = useMutation({
+    mutationFn: createUser,
   });
 
-  const getCaption = (target: ChatTarget): string => {
-    switch (target) {
-      case 'idea':
-        return 'Помогаю придумать идею проекта';
-      case 'user':
-        return 'Помогаю придумать идею проекта';
-      default:
-        return 'Отдыхаю'
-    }
+  const messages = useMemo(() => {
+    return (chat?.messages as ChatMessage[]) || [];
+  }, [chat]); // Пересоздаем массив только если объект chat изменился
+
+  const target = chat?.target || 'none';
+  const wTarget = getWorkflowTarget(workflow, chat.target);
+
+  function createUserHandler (user: User) {
+    mutation2.mutate(
+      user,
+      {
+        onSuccess: response => {
+          localStorage.setItem('active_user_id', String(response.id));
+        },
+        onError: error => {
+          console.error('Ошибка отправки:', error);
+          alert('Не удалось сохранить карточку ребенка. Попробуйте ещё раз.');
+        },
+      },
+    );
   }
 
-  async function sendChatMessage(text: string) {
+  function sendChatMessage(text: string) {
     const message = text.trim();
 
     if (!message || mutation.isPending) {
@@ -74,40 +104,49 @@ function ChatPage() {
     // --- ОПТИМИСТИЧЕСКОЕ ОБНОВЛЕНИЕ ---
     // Мы сразу добавляем сообщение в локальный кэш, чтобы пользователь видел его мгновенно.
     queryClient.setQueryData(
-      ['messages', chatId], // Ключ запроса, который мы использовали в useQuery для получения сообщений
-      (oldMessages = []) => [
-        ...(oldMessages as []),
-        {
-          id: Math.random().toString(), // Временный ID
-          content: message,
-          role: 'user', // Или какая роль у отправителя
-          createdAt: new Date().toISOString(),
-          isOptimistic: true, // Флаг, чтобы можно было красиво отрисовать "серое" сообщение
-        },
-      ],
+      ['chat', chatId], // Ключ запроса, который мы использовали в useQuery для получения сообщений
+      (oldChat: Chat) => {
+        return {
+          ...oldChat,
+          messages: [
+            ...((oldChat?.messages as []) || []),
+            {
+              id: Math.random().toString(), // Временный ID
+              content: message,
+              role: 'user', // Или какая роль у отправителя
+              createdAt: new Date().toISOString(),
+              isOptimistic: true, // Флаг, чтобы можно было красиво отрисовать "серое" сообщение
+            },
+          ],
+        };
+      },
     );
 
+    console.log(chatId, 'chatId');
     mutation.mutate(
-      { chatId, message, target },
+      { chatId, message, target: wTarget },
       {
         onSuccess: response => {
           localStorage.setItem('active_chat_id', String(response.chatId));
           setMessage('');
-          queryClient.setQueryData(['messages', chatId], oldMessages => [
-            ...(oldMessages as []),
-            response.message,
-          ]);
+          setChatId(response.chatId);
+          queryClient.setQueryData(['chat', chatId], (oldChat: Chat) => {
+            return {
+              ...oldChat,
+              messages: [...(oldChat.messages as []), response.message],
+            };
+          });
         },
-        onError: (error) => {
+        onError: error => {
           console.error('Ошибка отправки:', error);
           alert('Не удалось отправить сообщение. Попробуйте ещё раз.');
 
-          queryClient.setQueryData(
-            ['messages', chatId],
-            (oldMessages = []) => [
-              ...(oldMessages as []).slice(0, -1),
-            ],
-          );
+          queryClient.setQueryData(['chat', chatId], (oldChat: Chat) => {
+            return {
+              ...oldChat,
+              messages: [...(oldChat.messages as []).slice(0, -1)],
+            };
+          });
         },
       },
     );
@@ -121,14 +160,11 @@ function ChatPage() {
   }, [messages]);
 
   useEffect(() => {
-      const savedChatId = localStorage.getItem('active_chat_id');
-      if (savedChatId) setChatId(Number(savedChatId))
+    const savedChatId = localStorage.getItem('active_chat_id');
+    if (savedChatId) setChatId(Number(savedChatId));
   }, []);
 
-
-  const handleSendMessage = async () => {
-    await sendChatMessage(message);
-  };
+  const handleSendMessage = () => sendChatMessage(message);
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
@@ -153,7 +189,7 @@ function ChatPage() {
             <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', color: 'white' }}>
               <span className="pulse-circle"></span>
               <Typography variant="caption" sx={{ opacity: 0.9 }}>
-                {getCaption(target)}
+                {getCaption(wTarget)}
               </Typography>
             </Stack>
           </Box>
@@ -186,7 +222,8 @@ function ChatPage() {
             onCreateProjectIdea={() => {
               sendChatMessage('Создать идею проекта');
             }}
-            users={passport?.users || []}
+            onCreateUser={createUserHandler}
+            //users={passport?.users || []}
           />
         </Stack>
       </Container>

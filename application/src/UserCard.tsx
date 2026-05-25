@@ -36,8 +36,14 @@ function UserCard ({ user }: UserCardProps) {
           {user.age} лет
         </Typography>
       )}
+
+      {user.description !== null && user.description !== undefined && (
+        <Typography>
+          {user.description}
+        </Typography>
+      )}
     </Paper>
-  )
+  );
 }
 
 export default UserCard;
