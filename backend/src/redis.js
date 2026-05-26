@@ -4,7 +4,7 @@ import { promisify } from 'util';
 
 // Создаем клиента. В новых версиях redis-клиента это делается так.
 const client = createClient({
-  url: 'redis://localhost:6379', // Укажите ваш адрес Redis, если он другой
+  url: `redis://${process.env.DB_HOST}:6379`, // Укажите ваш адрес Redis, если он другой
 });
 
 // Обработка ошибок подключения
@@ -12,7 +12,7 @@ client.on('error', err => {
   console.error('Redis Client Error:', err);
 });
 client.on('connect', () => {
-  console.log('✅ Redis успешно подключён и загружен.');
+  console.log('✅ Redis успешно подключён на порту 6379');
 });
 
 // Подключаемся к серверу

@@ -74,6 +74,6 @@ if (!isDev) {
   });
 } else {
   http.createServer(app).listen(port, () => {
-    console.log(`✅ HTTP server running on http://localhost:${port}`);
+    console.log(`✅ HTTP server listening on port ${port}`);
   });
 }
