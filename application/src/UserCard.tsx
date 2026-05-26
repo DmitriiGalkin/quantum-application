@@ -1,11 +1,14 @@
-import { Avatar, Paper, Stack, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import type { User } from './types.ts';
 
 type UserCardProps = {
   user: User;
 };
 
-function UserCard ({ user }: UserCardProps) {
+function UserCard({ user }: UserCardProps) {
   return (
     <Paper
       component="article"
@@ -31,11 +34,7 @@ function UserCard ({ user }: UserCardProps) {
         <Stack direction="column" spacing={1}>
           <Stack direction="row" spacing={1}>
             <Typography sx={{ fontWeight: 800 }}>{user.title ?? 'Без имени'}</Typography>
-            {user.age !== null && user.age !== undefined && (
-              <Typography>
-                {user.age} лет
-              </Typography>
-            )}
+            {user.age !== null && user.age !== undefined && <Typography>{user.age} лет</Typography>}
           </Stack>
           {user.description !== null && user.description !== undefined && (
             <Typography>{user.description}</Typography>

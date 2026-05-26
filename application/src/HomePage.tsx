@@ -1,24 +1,22 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Alert,
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Stack,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import KeyIcon from '@mui/icons-material/Key';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -30,12 +28,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ProjectCard from './ProjectCard';
 import './App.css';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  fetchCreateChat,
-  fetchPassport,
-  fetchProjects,
-  type Type,
-} from './requests.ts';
+import { fetchCreateChat, fetchPassport, fetchProjects, type Type } from './requests.ts';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 const ACCESS_TOKEN_STORAGE_KEY = 'access_token';

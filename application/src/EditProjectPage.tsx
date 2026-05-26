@@ -1,18 +1,16 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  Alert,
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  CircularProgress,
-  Container,
-  IconButton,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ProjectForm, { type ProjectFormValues } from './ProjectForm';

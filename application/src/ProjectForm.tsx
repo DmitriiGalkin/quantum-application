@@ -1,16 +1,14 @@
 import { type ChangeEvent, type FormEvent, type ReactNode, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SaveIcon from '@mui/icons-material/Save';

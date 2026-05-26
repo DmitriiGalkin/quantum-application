@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), visualizer({ open: true })],
   server: {
     allowedHosts: ['q3-dev.ru'],
   },
   optimizeDeps: {
-    // Добавляем плагин для оптимизации MUI
-    include: ['@babel/preset-env'],
+    include: ['@emotion/react', '@emotion/styled', '@mui/material'],
   },
 });

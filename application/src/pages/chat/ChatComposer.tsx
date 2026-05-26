@@ -1,4 +1,8 @@
-import { Box, Container, IconButton, Stack, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 
 type ChatComposerProps = {
@@ -8,12 +12,7 @@ type ChatComposerProps = {
   onSendMessage: () => void;
 };
 
-function ChatComposer({
-  message,
-  isSending,
-  onMessageChange,
-  onSendMessage,
-}: ChatComposerProps) {
+function ChatComposer({ message, isSending, onMessageChange, onSendMessage }: ChatComposerProps) {
   return (
     <Box
       component="footer"

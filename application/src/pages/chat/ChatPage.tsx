@@ -1,6 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { AppBar, Box, Container, IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   fetchMessages,

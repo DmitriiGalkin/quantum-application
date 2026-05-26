@@ -1,4 +1,6 @@
-import { Box, Stack, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import Message from './Message';
 import { type ChatMessage } from '../../requests';
 import ReactMarkdown from 'markdown-to-jsx';
@@ -14,14 +16,10 @@ type ChatMessageListProps = {
   isSending: boolean;
 };
 
-function ChatMessageList({
-  messages,
-  isSending,
-}: ChatMessageListProps) {
-
+function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
   return (
     <>
-      {messages.map((chatMessage) => {
+      {messages.map(chatMessage => {
         return (
           <Box
             key={chatMessage.id}
