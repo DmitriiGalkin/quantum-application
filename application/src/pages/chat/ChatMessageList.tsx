@@ -35,15 +35,13 @@ function ChatMessageList({
                   <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
                 </Typography>
 
-                {chatMessage?.meta?.target === 'user' && (
+                {chatMessage?.meta?.target === 'user' && !!chatMessage?.meta?.data && (
                   <UserCard user={chatMessage?.meta?.data as User} />
                 )}
-                {chatMessage?.meta?.target === 'idea' && (
+                {chatMessage?.meta?.target === 'idea' && !!chatMessage?.meta?.data && (
                   <ProjectCard project={chatMessage?.meta?.data as Project} />
                 )}
-                {chatMessage?.meta?.target === 'auth' && (
-                  <StrategieList />
-                )}
+                {chatMessage?.meta?.target === 'auth' && <StrategieList />}
               </Stack>
             </Message>
           </Box>

@@ -83,7 +83,8 @@ function ChatPage() {
   // });
 
   useEffect(() => {
-    const currentMessage = localStorage.getItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY); // Если нет записи, вернем на главную
+    const currentMessage = localStorage.getItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY);
+    console.log('currentMessage', currentMessage);
     if (currentMessage) {
       sendMessage(currentMessage);
       localStorage.removeItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY);

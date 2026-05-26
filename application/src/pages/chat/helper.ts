@@ -28,27 +28,6 @@ export const getCaption = (target: ChatTarget): string => {
   }
 };
 
-export const createDefaultChat = (workflow: Workflow): Chat => {
-  switch (workflow) {
-    case 'user_idea_passport':
-      return {
-        target: 'user',
-        messages: [
-          {
-            id: null,
-            chatId: null,
-            passportId: null,
-            role: 'assistant',
-            content: 'Раскажи о своем чаде?',
-            source: 'text',
-            metadata: null,
-            createdAt: null,
-          },
-        ],
-      };
-  }
-};
-
 export const addOptimisticMessage = (content: string, role?: ChatMessageRole) => (oldChat: Chat) => {
   return {
     ...oldChat,

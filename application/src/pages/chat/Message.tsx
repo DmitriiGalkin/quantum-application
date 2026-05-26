@@ -1,5 +1,6 @@
 import { Paper } from '@mui/material';
 import type { ChatMessage } from '../../requests.ts';
+import React from 'react';
 
 type ChatBubbleProps = {
   role: ChatMessage['role'];

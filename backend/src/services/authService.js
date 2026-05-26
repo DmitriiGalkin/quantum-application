@@ -1,7 +1,7 @@
 export async function authAssistant() {
   try {
     return {
-      content: 'Пожалуйста авторизуйетсь удобным для Вас способом',
+      content: 'В завершение создания идеи, пожалуйста авторизуйетсь удобным для Вас способом:',
       metadata: JSON.stringify({ target: 'auth', data: ['google', 'yandex'] }),
     };
   } catch (error) {

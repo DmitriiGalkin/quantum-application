@@ -99,8 +99,13 @@ const selectAssistant = (workflow, meta) => {
     if (!meta?.idea) {
       return generateAssistantAnswer;
     }
+    if (!meta?.passport) {
+      return authAssistant;
+    }
 
-    return authAssistant;
+    return async () => ({
+      content: 'Идея проекта Вашего ребенка создана. Сейчас чат можно закрыть, но вы всегда можете ко мне вернуться и я помогу создать новую идею для вашего ребенка.',
+    });
   }
 };
 

@@ -84,6 +84,7 @@ export default {
 
       const allMessages = await ChatMessage.findLastByChatId(chat.id, 50);
       const meta = getMetaMessages(allMessages)
+      meta.passport = req.passport;
 
       console.log(meta, 'meta');
 
@@ -107,7 +108,6 @@ export default {
       //     message: normalizeMessage(assistantMessage),
       //   });
       // }
-
 
       const assistant = selectAssistant(chat.target, meta)
 
