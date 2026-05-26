@@ -1,8 +1,12 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import Message from './Message';
 import { type ChatMessage } from '../../requests';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
+import ProjectCard from '../../ProjectCard.tsx';
+import type { Project, User } from '../../types.ts';
+import UserCard from '../../UserCard.tsx';
+import StrategieList from '../../StrategieList.tsx';
 
 type ChatMessageListProps = {
   chatId: number;
@@ -26,9 +30,21 @@ function ChatMessageList({
             }}
           >
             <Message role={chatMessage.role}>
-              <Typography>
-                <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
-              </Typography>
+              <Stack spacing={2}>
+                <Typography>
+                  <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
+                </Typography>
+
+                {chatMessage?.meta?.target === 'user' && (
+                  <UserCard user={chatMessage?.meta?.data as User} />
+                )}
+                {chatMessage?.meta?.target === 'idea' && (
+                  <ProjectCard project={chatMessage?.meta?.data as Project} />
+                )}
+                {chatMessage?.meta?.target === 'auth' && (
+                  <StrategieList />
+                )}
+              </Stack>
             </Message>
           </Box>
         );

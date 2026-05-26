@@ -1,37 +1,26 @@
-import { useRef, useState, useEffect, useMemo } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { AppBar, Box, Container, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   fetchMessages,
   fetchSendMessage,
-  type ChatMessage,
-  type Workflow,
-  generateImage,
 } from '../../requests';
-import ChatWelcome from './ChatWelcome';
 import ChatMessageList from './ChatMessageList';
 import ChatComposer from './ChatComposer';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   addMessage,
   addOptimisticMessage,
-  createDefaultChat,
   deleteOptimisticMessage,
-  getCaption,
-  getWorkflowTarget,
 } from './helper.ts';
-import type { Project, User } from '../../types.ts';
-import { getObjectFromMetadata } from '../../chatUtils.ts';
-import UserCard from '../../UserCard.tsx';
-import ProjectCard from '../../ProjectCard.tsx';
-import Message from './Message.tsx';
+
+const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
+
 
 function ChatPage() {
   const { id } = useParams<{ id: string }>();
   const chatId = Number(id);
-  const [searchParams] = useSearchParams();
-  const workflow = searchParams.get('workflow') as Workflow;
   const queryClient = useQueryClient();
 
   const [message, setMessage] = useState('');
@@ -41,11 +30,12 @@ function ChatPage() {
     mutationFn: fetchSendMessage,
   });
 
-  const { data: messages, isLoading: isMessagesLoading } = useQuery({
+  const { data: chat, isLoading: isMessagesLoading } = useQuery({
     queryKey: ['chat', chatId],
     queryFn: () => fetchMessages(chatId),
     enabled: !!chatId,
   });
+  const messages = chat?.messages || [];
 
   function sendMessage(text: string) {
     const message = text.trim();
@@ -58,7 +48,7 @@ function ChatPage() {
     setMessage('');
 
     mutation.mutate(
-      { chatId, message, target: wTarget },
+      { chatId, message },
       {
         onSuccess: response => {
           queryClient.setQueryData(['chat', chatId], addMessage(response.message));
@@ -82,25 +72,23 @@ function ChatPage() {
 
   const sendMessageHandle = () => sendMessage(message);
 
-  const lastMessage = messages[messages.length-1];
-  const metadata = getObjectFromMetadata(lastMessage?.metadata);
-  console.log(metadata, 'metadata');
+  const metadata = {} as any //getObjectFromMetadata(lastMessage?.metadata);
+  console.log('metadata', metadata);
 
-  const generateImageMutation = useMutation({
-    mutationFn: generateImage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['chat', chatId] });
-    },
-  });
+  // const generateImageMutation = useMutation({
+  //   mutationFn: generateImage,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['chat', chatId] });
+  //   },
+  // });
 
-  const meta = messages.reduce((acc, message) => {
-    const metadata = getObjectFromMetadata(message.metadata);
-    if (!metadata) return acc;
-    acc[metadata.target] = metadata.data;
-    return acc;
-  }, {});
-
-  console.log(meta, 'meta');
+  useEffect(() => {
+    const currentMessage = localStorage.getItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY); // Если нет записи, вернем на главную
+    if (currentMessage) {
+      sendMessage(currentMessage);
+      localStorage.removeItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY);
+    }
+  }, []);
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
@@ -125,7 +113,7 @@ function ChatPage() {
             <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', color: 'white' }}>
               <span className="pulse-circle"></span>
               <Typography variant="caption" sx={{ opacity: 0.9 }}>
-                {getCaption(wTarget)}
+                тест
               </Typography>
             </Stack>
           </Box>
@@ -143,7 +131,7 @@ function ChatPage() {
         }}
       >
         <Stack spacing={2} sx={{ flexGrow: 1 }}>
-          {target === 'idea' && <ChatWelcome />}
+          {/*{target === 'idea' && <ChatWelcome />}*/}
 
           {isMessagesLoading && (
             <Typography color="text.secondary" sx={{ alignSelf: 'center' }}>
@@ -157,31 +145,6 @@ function ChatPage() {
             isSending={mutation.isPending}
           />
 
-          {metadata?.target === 'idea' && !!lastMessage && (
-            <>
-              <ProjectCard
-                project={metadata.data as Project}
-                isGeneratingImage={generateImageMutation.isPending}
-                generateImageHandler={() => generateImageMutation.mutate(lastMessage.id)}
-              />
-              <Message role={'user'} onClick={() => sendMessage('Создать идею проекта')}>
-                <Typography>Создать идею проекта</Typography>
-              </Message>
-            </>
-          )}
-
-          {metadata?.target === 'user' && !!lastMessage && (
-            <>
-              <UserCard user={metadata.data as User} />
-              <Message
-                role={'user'}
-                onClick={() => sendMessage('Создать карточку ученика')}
-                isLastMessage={true}
-              >
-                <Typography>Создать карточку ученика</Typography>
-              </Message>
-            </>
-          )}
         </Stack>
       </Container>
       <Box ref={messagesEndRef} />

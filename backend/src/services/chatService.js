@@ -1,5 +1,16 @@
 import Chat from '../models/chat.js';
 import ChatMessage from '../models/chatMessage.js';
+import { userGenerateAssistantAnswer } from './userAssistantService.js';
+import { generateAssistantAnswer,  } from './assistantService.js';
+import { authAssistant } from './authService.js';
+
+const getMetaMessages = allMessages =>
+  allMessages.reduce((acc, message) => {
+    const metadata = getObjectFromMetadata(message.metadata);
+    if (!metadata) return acc;
+    acc[metadata.target] = metadata.data;
+    return acc;
+  }, {});
 
 // Эта функция остается без изменений, так как она просто форматирует данные.
 function normalizeMessage(row) {
@@ -12,6 +23,7 @@ function normalizeMessage(row) {
     source: row.source,
     metadata: row.metadata,
     createdAt: row.createdAt,
+    meta: getObjectFromMetadata(row.metadata),
   };
 }
 
@@ -62,8 +74,41 @@ async function createAssistantMessage({ chatId, content, metadata = null }) {
   return ChatMessage.findById(assistantMessageId);
 }
 
+
+function getObjectFromMetadata(metadata) {
+  if (!metadata) {
+    return null;
+  }
+
+  if (typeof metadata === 'string') {
+    try {
+      return JSON.parse(metadata);
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
+}
+
+const selectAssistant = (workflow, meta) => {
+  if (workflow === 'user_idea_passport') {
+    if (!meta?.user) {
+      return userGenerateAssistantAnswer;
+    }
+    if (!meta?.idea) {
+      return generateAssistantAnswer;
+    }
+
+    return authAssistant;
+  }
+};
+
 export {
   normalizeMessage,
   getOrCreateChat,
   createAssistantMessage,
+  getObjectFromMetadata,
+  selectAssistant,
+  getMetaMessages,
 };

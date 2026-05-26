@@ -11,7 +11,6 @@ type ChatBubbleProps = {
 export default function ChatBubble({ role, children, onClick, isLastMessage }: ChatBubbleProps) {
   const isUserMessage = role === 'user';
   const userBgColor = isLastMessage ? '#FFB628' : '#FFD130';
-  console.log('userBgColor', userBgColor);
 
   return (
     <Paper

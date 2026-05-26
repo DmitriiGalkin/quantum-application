@@ -39,6 +39,8 @@ import {
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
+const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
+const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 function saveAccessTokenFromUrl() {
   if (typeof window === 'undefined') {
@@ -56,10 +58,14 @@ function saveAccessTokenFromUrl() {
   url.searchParams.delete('access_token');
   window.history.replaceState({}, document.title, `${url.pathname}${url.search}${url.hash}`);
 
+  const currentPath = localStorage.getItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY) || '/'; // Если нет записи, вернем на главную
+  window.location.href = currentPath;
+  localStorage.removeItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
+
   return accessToken;
 }
 
-const authStrategies = [
+export const strategies = [
   {
     title: 'Google',
     href: `${API_URL}/login/google`,
@@ -109,6 +115,7 @@ function HomePage() {
     queryFn: () => fetchProjects(type, 1),
   });
 
+  // @ts-ignore
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
       <AppBar
@@ -143,20 +150,20 @@ function HomePage() {
             Quantum
           </Typography>
           <IconButton
-            component={Link}
             color="primary"
             aria-label="Идеи от АИ"
             sx={{ color: 'white' }}
             onClick={() => {
-              const activeChatId = localStorage.getItem('active_chat_id');
-              if(activeChatId) {
+              const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+
+              if (activeChatId) {
                 navigate(`/chat/${activeChatId}`);
               }
               mutation.mutate(
                 { workflow: 'user_idea_passport' },
                 {
                   onSuccess: chatId => {
-                    localStorage.setItem('active_chat_id', String(chatId));
+                    localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
                     navigate(`/chat/${chatId}`);
                   },
                   onError: error => {
@@ -312,6 +319,7 @@ function HomePage() {
                     to="/"
                     onClick={() => {
                       localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+                      localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
                       setAccessToken(null);
                     }}
                     sx={{ borderRadius: 2 }}
@@ -363,7 +371,7 @@ function HomePage() {
               </Box>
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
-                {authStrategies.map(strategy => (
+                {strategies.map(strategy => (
                   <Button
                     component="a"
                     variant="contained"

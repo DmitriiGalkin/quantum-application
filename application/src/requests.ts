@@ -22,6 +22,8 @@ export interface ExtendedProject extends Project {
   }[];
 }
 
+export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
+
 export type ChatTarget = 'user' | 'idea' | 'project' | 'none';
 
 export type Workflow = 'user_idea_passport' | 'passport_project' | 'idea';
@@ -37,11 +39,20 @@ export type ChatMessage = {
   source: 'text' | 'voice';
   metadata: unknown;
   createdAt: string;
+  meta: {
+    target: ChatMetaType;
+    data: unknown;
+  };
 };
 
 export type Chat = {
-  target: ChatTarget;
+  workflow: Workflow;
   messages: ChatMessage[];
+  meta?: {
+    user?: User
+    idea?: Project
+    auth?: string[]
+  }
 };
 
 export type SendMessageResponse = {
@@ -104,13 +115,11 @@ export async function fetchCreateChat({ workflow }: { workflow: Workflow }): Pro
 export async function fetchSendMessage({
   chatId,
   message,
-  target,
 }: {
   chatId: number | null;
   message: string;
-  target: ChatTarget;
 }): Promise<SendMessageResponse> {
-  return apiFetch<SendMessageResponse>('/chat', {
+  return apiFetch<SendMessageResponse>(`/message`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -118,7 +127,6 @@ export async function fetchSendMessage({
     body: JSON.stringify({
       chatId,
       message,
-      target,
     }),
   });
 }

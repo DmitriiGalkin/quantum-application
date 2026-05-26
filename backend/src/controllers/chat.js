@@ -2,18 +2,11 @@ import Chat from '../models/chat.js';
 import ChatMessage from '../models/chatMessage.js';
 import {
   normalizeMessage,
-  getOrCreateChat,
-  createAssistantMessage,
+  createAssistantMessage, getObjectFromMetadata, selectAssistant, getMetaMessages,
 } from '../services/chatService.js';
-import { generateAssistantAnswer } from '../services/assistantService.js';
 
-import {
-  isCreateCommand,
-  parseMetadata, createSystemCreateMessage,
-} from '../services/projectIdeaService.js';
 import { generateProjectImage } from '../services/imageGenerationService.js';
 import { uploadImage } from '../services/imageGenerationService.js';
-import { userGenerateAssistantAnswer } from '../services/userAssistantService.js';
 
 export default {
   generateImage: async (req, res) => {
@@ -47,6 +40,16 @@ export default {
   create: async (req, res) => {
     try {
       const chatId = await Chat.create({ target: req.body.workflow });
+      const assistant = selectAssistant(req.body.workflow);
+      const assistantContent = await assistant({
+        messages: [],
+      });
+
+      await createAssistantMessage({
+        chatId,
+        ...assistantContent,
+      });
+
       return res.json(chatId);
     } catch (err) {
       console.error('chat.create error:', err);
@@ -58,18 +61,8 @@ export default {
   },
   createMessage: async (req, res) => {
     try {
-      if (!req.passport) {
-        return res.status(401).json({
-          error: true,
-          message: 'Требуется авторизация',
-        });
-      }
-
       const message = String(req.body.message || '').trim();
-      const chatId = req.body.chatId || null;
-      const source = req.body.source === 'voice' ? 'voice' : 'text';
 
-      // Валидация сообщения
       if (!message) {
         return res.status(400).json({
           error: true,
@@ -77,60 +70,51 @@ export default {
         });
       }
 
-      // 1. Получаем или создаем чат
-      const chat = await getOrCreateChat({
-        chatId,
-        passportId: req.passport.id,
-        firstMessage: message,
-        target: req.body.target,
-      });
-      console.log(chat, 'chat ==================');
+      const chatId = req.body.chatId || null;
+      const chat = await Chat.findById(chatId);
 
       // 2. Сохраняем сообщение пользователя
-      const userMessageId = await ChatMessage.create({
+      await ChatMessage.create({
         chatId: chat.id,
-        passportId: req.passport.id,
         content: message,
-        source,
         role: 'user',
       });
 
 
-      // 3. Проверка на команду создания
-      if (isCreateCommand(message)) {
-        const recentMessages = await ChatMessage.findLastByChatId(chat.id, 2);
-        console.log(recentMessages, 'recentMessages');
-        const metadata = parseMetadata(recentMessages[0].metadata);
 
-        const systemMessage = await createSystemCreateMessage(metadata, req.passport.id);
+      const allMessages = await ChatMessage.findLastByChatId(chat.id, 50);
+      const meta = getMetaMessages(allMessages)
 
-        const assistantMessage = await createAssistantMessage({
-          chatId: chat.id,
-          content: systemMessage,
-        });
+      console.log(meta, 'meta');
 
-        await Chat.touch(chat.id);
+      // // 3. Проверка на команду создания
+      // if (isCreateCommand(message)) {
+      //   const recentMessages = await ChatMessage.findLastByChatId(chat.id, 2);
+      //   console.log(recentMessages, 'recentMessages');
+      //   const metadata = parseMetadata(recentMessages[0].metadata);
+      //
+      //   const systemMessage = await createSystemCreateMessage(metadata, req.passport.id);
+      //
+      //   const assistantMessage = await createAssistantMessage({
+      //     chatId: chat.id,
+      //     content: systemMessage,
+      //   });
+      //
+      //   await Chat.touch(chat.id);
+      //
+      //   return res.json({
+      //     chatId: chat.id,
+      //     message: normalizeMessage(assistantMessage),
+      //   });
+      // }
 
-        return res.json({
-          chatId: chat.id,
-          message: normalizeMessage(assistantMessage),
-        });
-      }
 
-      // 4. Генерация ответа ассистента
-      const recentMessages = await ChatMessage.findLastByChatId(chat.id, 10);
-      const assistantContent =
-        chat.target === 'user'
-          ? await userGenerateAssistantAnswer({
-              messages: recentMessages,
-              chat,
-              passport: req.passport,
-            })
-          : await generateAssistantAnswer({
-              messages: recentMessages,
-              chat,
-              passport: req.passport,
-            });
+      const assistant = selectAssistant(chat.target, meta)
+
+      // 4. Генерация ответа выбранным ассистентом
+      const assistantContent = await assistant({
+        messages: allMessages,
+      });
 
       const assistantMessage = await createAssistantMessage({
         chatId: chat.id,
@@ -144,7 +128,7 @@ export default {
       res.json({
         chatId: chat.id,
         message: normalizeMessage(assistantMessage),
-        target: chat.target,
+        meta,
       });
     } catch (err) {
       console.error('chat.createMessage error:', err);
@@ -166,10 +150,12 @@ export default {
       }
 
       const messages = await ChatMessage.findByChatId(chat.id);
+      const meta = getMetaMessages(messages);
 
       res.json({
         ...chat,
         messages: messages.map(normalizeMessage),
+        meta,
       });
     } catch (err) {
       console.error('chat.findMessages error:', err);
