@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import type { Project } from './types';
-import { AutoAwesome } from '@mui/icons-material';
+import AutoAwesome from '@mui/icons-material/AutoAwesome';
 
 type ProjectCardProps = {
   project: Project;
