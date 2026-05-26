@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Alert,
   AppBar,
@@ -29,8 +29,13 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import AddIcon from '@mui/icons-material/Add';
 import ProjectCard from './ProjectCard';
 import './App.css';
-import { useQuery } from '@tanstack/react-query';
-import { fetchPassport, fetchProjects, type Type } from './requests.ts';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  fetchCreateChat,
+  fetchPassport,
+  fetchProjects,
+  type Type,
+} from './requests.ts';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
@@ -68,11 +73,16 @@ const authStrategies = [
 ];
 
 function HomePage() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [type, setType] = useState<Type>(null);
 
   const initialAccessToken = saveAccessTokenFromUrl();
+
+  const mutation = useMutation({
+    mutationFn: fetchCreateChat,
+  });
 
   useEffect(() => {
     if (!accessToken && initialAccessToken) {
@@ -134,10 +144,28 @@ function HomePage() {
           </Typography>
           <IconButton
             component={Link}
-            to="/chat"
             color="primary"
             aria-label="Идеи от АИ"
             sx={{ color: 'white' }}
+            onClick={() => {
+              const activeChatId = localStorage.getItem('active_chat_id');
+              if(activeChatId) {
+                navigate(`/chat/${activeChatId}`);
+              }
+              mutation.mutate(
+                { workflow: 'user_idea_passport' },
+                {
+                  onSuccess: chatId => {
+                    localStorage.setItem('active_chat_id', String(chatId));
+                    navigate(`/chat/${chatId}`);
+                  },
+                  onError: error => {
+                    console.error('Ошибка отправки:', error);
+                    alert('Не удалось создать чат. Попробуйте ещё раз.');
+                  },
+                },
+              );
+            }}
           >
             <AutoAwesomeIcon />
           </IconButton>

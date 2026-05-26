@@ -38,8 +38,10 @@ export function getObjectFromMetadata(metadata: unknown): Meta | null {
     try {
       console.log(metadata, 'metadata metadata');
 
-      console.log(JSON.parse(metadata), 'getProjectFromMetadata metadata');
       const m = JSON.parse(metadata);
+
+      console.log(m, 'm');
+
 
       return m as Meta;
     } catch {
@@ -47,5 +49,5 @@ export function getObjectFromMetadata(metadata: unknown): Meta | null {
     }
   }
 
-  return metadata as Meta;
+  return null;
 }

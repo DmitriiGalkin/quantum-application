@@ -1,9 +1,12 @@
 import Project from '../models/project.js';
+import User from '../models/user.js';
 
-function isCreateProjectIdeaCommand(message) {
+function isCreateCommand(message) {
   const normalizedMessage = message.trim().toLowerCase();
 
   return [
+    'создать',
+    'создать карточку ученика',
     'создать идею проекта',
     'создай идею проекта',
     'создать проект',
@@ -11,7 +14,24 @@ function isCreateProjectIdeaCommand(message) {
   ].includes(normalizedMessage);
 }
 
-function parseMetadata(metadata) {
+export async function createSystemCreateMessage(metadata, passportId) {
+  console.log(metadata, 'metadata');
+  switch (metadata.target) {
+    case 'idea': {
+      await Project.create({ ...metadata.data, passportId });
+
+      return 'Поздравляем! Ваша идея проекта создана и мы уже начали подбирать куратора. После того как куратор проекта будет назначен, он возмет на себя ответственность по оформлению проекта, выбору места и времени проведения встреч по проекту.';
+    }
+
+    case 'user': {
+      await User.create({ ...metadata.data, passportId });
+
+      return 'Карточка создана';
+    }
+  }
+}
+
+export function parseMetadata(metadata) {
   if (!metadata) {
     return null;
   }
@@ -27,41 +47,4 @@ function parseMetadata(metadata) {
   }
 }
 
-function findLastProjectIdea(messages) {
-  for (let index = messages.length - 1; index >= 0; index -= 1) {
-    const metadata = parseMetadata(messages[index].metadata);
-
-    if (metadata?.title || metadata?.description) {
-      return metadata;
-    }
-  }
-
-  return null;
-}
-
-// --- ГЛАВНОЕ ИЗМЕНЕНИЕ ---
-// Функция createProjectFromIdea теперь является асинхронной,
-// потому что она вызывает асинхронный метод Project.create.
-async function createProjectFromIdea({ idea, passportId }) {
-  // Проверяем, что идея существует, чтобы избежать ошибок
-  if (!idea) {
-    throw new Error('No idea provided to create a project');
-  }
-
-  let image = idea.image || null;
-
-  // Возвращаем ID созданного проекта, как и ожидал контроллер
-  return await Project.create({
-    passportId,
-    title: idea.title || 'Идея проекта',
-    description: idea.description || '',
-    image,
-    placeId: idea.placeId || null,
-  });
-}
-
-export {
-  isCreateProjectIdeaCommand,
-  findLastProjectIdea,
-  createProjectFromIdea,
-};
+export { isCreateCommand };

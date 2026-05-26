@@ -8,9 +8,8 @@ import {
 import { generateAssistantAnswer } from '../services/assistantService.js';
 
 import {
-  isCreateProjectIdeaCommand,
-  findLastProjectIdea,
-  createProjectFromIdea,
+  isCreateCommand,
+  parseMetadata, createSystemCreateMessage,
 } from '../services/projectIdeaService.js';
 import { generateProjectImage } from '../services/imageGenerationService.js';
 import { uploadImage } from '../services/imageGenerationService.js';
@@ -45,6 +44,18 @@ export default {
       });
     }
   },
+  create: async (req, res) => {
+    try {
+      const chatId = await Chat.create({ target: req.body.workflow });
+      return res.json(chatId);
+    } catch (err) {
+      console.error('chat.create error:', err);
+      res.status(err.status || 500).json({
+        error: true,
+        message: err.message || 'Не удалось создать новый чат',
+      });
+    }
+  },
   createMessage: async (req, res) => {
     try {
       if (!req.passport) {
@@ -75,7 +86,6 @@ export default {
       });
       console.log(chat, 'chat ==================');
 
-
       // 2. Сохраняем сообщение пользователя
       const userMessageId = await ChatMessage.create({
         chatId: chat.id,
@@ -85,51 +95,47 @@ export default {
         role: 'user',
       });
 
-      const userMessage = await ChatMessage.findById(userMessageId);
 
-      // 3. Проверка на команду создания проекта
-      if (isCreateProjectIdeaCommand(message)) {
-        const recentMessages = await ChatMessage.findLastByChatId(chat.id, 10);
+      // 3. Проверка на команду создания
+      if (isCreateCommand(message)) {
+        const recentMessages = await ChatMessage.findLastByChatId(chat.id, 2);
+        console.log(recentMessages, 'recentMessages');
+        const metadata = parseMetadata(recentMessages[0].metadata);
 
-        await createProjectFromIdea({
-          idea: findLastProjectIdea(recentMessages),
-          passportId: req.passport.id,
-        });
+        const systemMessage = await createSystemCreateMessage(metadata, req.passport.id);
 
         const assistantMessage = await createAssistantMessage({
           chatId: chat.id,
-          content:
-            'Поздравляем! Ваша идея проекта создана и мы уже начали подбирать куратора. После того как куратор проекта будет назначен, он возмет на себя ответственность по оформлению проекта, выбору места и времени проведения встреч по проекту.',
+          content: systemMessage,
         });
 
         await Chat.touch(chat.id);
 
         return res.json({
           chatId: chat.id,
-          messages: [normalizeMessage(userMessage), normalizeMessage(assistantMessage)],
+          message: normalizeMessage(assistantMessage),
         });
       }
 
-
       // 4. Генерация ответа ассистента
       const recentMessages = await ChatMessage.findLastByChatId(chat.id, 10);
-      const assistantContent = chat.target === 'user'
-        ? await userGenerateAssistantAnswer({
-            messages: recentMessages,
-            chat,
-            passport: req.passport,
-          })
-        : await generateAssistantAnswer({
-            messages: recentMessages,
-            chat,
-            passport: req.passport,
-          });
+      const assistantContent =
+        chat.target === 'user'
+          ? await userGenerateAssistantAnswer({
+              messages: recentMessages,
+              chat,
+              passport: req.passport,
+            })
+          : await generateAssistantAnswer({
+              messages: recentMessages,
+              chat,
+              passport: req.passport,
+            });
 
       const assistantMessage = await createAssistantMessage({
         chatId: chat.id,
         ...assistantContent,
       });
-
 
       await Chat.touch(chat.id);
 
@@ -138,7 +144,7 @@ export default {
       res.json({
         chatId: chat.id,
         message: normalizeMessage(assistantMessage),
-        target: chat.target
+        target: chat.target,
       });
     } catch (err) {
       console.error('chat.createMessage error:', err);

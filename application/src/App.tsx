@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomePage from './HomePage'
-import ChatPage from './ChatPage';
+import ChatPage from './pages/chat/ChatPage.tsx';
 import CreateProjectPage from './CreateProjectPage';
 import ProjectPage from './ProjectPage';
 import EditProjectPage from './EditProjectPage';
@@ -12,7 +12,7 @@ function App() {
   return (
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat/:id" element={<ChatPage />} />
         <Route path="/project/create" element={<CreateProjectPage />} />
         <Route path="/project/:id" element={<ProjectPage />} />
         <Route path="/project/:id/edit" element={<EditProjectPage />} />

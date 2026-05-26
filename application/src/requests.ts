@@ -24,13 +24,15 @@ export interface ExtendedProject extends Project {
 
 export type ChatTarget = 'user' | 'idea' | 'project' | 'none';
 
-export type Workflow = 'create_idea';
+export type Workflow = 'user_idea_passport' | 'passport_project' | 'idea';
+
+export type ChatMessageRole = 'user' | 'assistant' | 'system';
 
 export type ChatMessage = {
   id: number;
   chatId: number;
   passportId: number | null;
-  role: 'user' | 'assistant' | 'system';
+  role: ChatMessageRole;
   content: string;
   source: 'text' | 'voice';
   metadata: unknown;
@@ -40,7 +42,7 @@ export type ChatMessage = {
 export type Chat = {
   target: ChatTarget;
   messages: ChatMessage[];
-}
+};
 
 export type SendMessageResponse = {
   chatId: number;
@@ -87,8 +89,19 @@ export async function fetchMessages(chatId: number): Promise<Chat> {
   return apiFetch<Chat>(`/chat/${chatId}`);
 }
 
+export async function fetchCreateChat({ workflow }: { workflow: Workflow }): Promise<number> {
+  return apiFetch<any>('/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      workflow,
+    }),
+  });
+}
 
-export async function sendMessage({
+export async function fetchSendMessage({
   chatId,
   message,
   target,
@@ -110,7 +123,7 @@ export async function sendMessage({
   });
 }
 
-export async function createUser(user: User): Promise<{id: number; message: string}> {
+export async function createUser(user: User): Promise<{ id: number; message: string }> {
   return apiFetch<{ id: number; message: string }>('/user', {
     method: 'POST',
     headers: {
@@ -169,5 +182,5 @@ export const usePassport = () => {
     enabled: Boolean(accessToken),
   });
 
-  return passport
+  return passport;
 };
