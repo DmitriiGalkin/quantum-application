@@ -4,7 +4,7 @@ import { promisify } from 'util';
 
 // Создаем клиента. В новых версиях redis-клиента это делается так.
 const client = createClient({
-  url: `redis://172.17.0.1:6379`, // Укажите ваш адрес Redis, если он другой
+  url: `redis://${process.env.DB_HOST}:6379`, // Укажите ваш адрес Redis, если он другой
 });
 
 // Обработка ошибок подключения
