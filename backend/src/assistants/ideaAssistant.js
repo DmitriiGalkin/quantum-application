@@ -1,5 +1,5 @@
 
-import { convertToProjectObject, convertToUserObject } from '../services/helper.js';
+import { convertToProjectObject, convertToUserObject } from './helper.js';
 import assistant from '../assistant.js';
 
 const SYSTEM_PROMPT = `Роль и экспертиза

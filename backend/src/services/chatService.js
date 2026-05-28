@@ -20,7 +20,6 @@ function normalizeMessage(row) {
     passportId: row.passportId,
     role: row.role,
     content: row.content,
-    source: row.source,
     metadata: row.metadata,
     createdAt: row.createdAt,
     meta: getObjectFromMetadata(row.metadata),
@@ -66,7 +65,6 @@ async function createAssistantMessage({ chatId, content, metadata = null }) {
     role: 'assistant',
     content,
     metadata,
-    source: 'text',
   });
 
   // Находим и возвращаем полное сообщение (включая ID, createdAt и т.д.)
@@ -94,10 +92,10 @@ function getObjectFromMetadata(metadata) {
 const selectAssistant = (workflow, meta) => {
   if (workflow === 'user_idea_passport') {
     //console.log(meta,'meta selectAssistant')
-    if (!meta?.user || meta?.user?.status !== "подтверждено") {
+    if (!meta?.user) {
       return userAssistantAnswer;
     }
-    if (!meta?.idea || meta?.idea?.status !== "подтверждено") {
+    if (!meta?.idea) {
       return ideaAssistantAnswer;
     }
     if (!meta?.passport) {

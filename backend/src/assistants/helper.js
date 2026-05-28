@@ -65,17 +65,14 @@ export const convertToUserObject = jsonString => {
 
   try {
     const data = JSON.parse(cleanString);
-    console.log(data, 'data');
 
     // Проверяем, что структура объекта соответствует ожидаемому типу
     if (
-        typeof data.status === 'string' &&
       typeof data.title === 'string' &&
       typeof data.description === 'string' &&
       typeof data.age === 'string'
     ) {
       return {
-        status: data.status,
         title: data.title,
         description: data.description,
         age: Number(data.age),

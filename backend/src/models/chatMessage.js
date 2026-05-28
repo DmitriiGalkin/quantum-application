@@ -8,10 +8,8 @@ class ChatMessage {
     this.passportId = data.passportId;
     this.role = data.role;
     this.content = data.content;
-    this.source = data.source || 'text';
     this.target = data.target;
     this.metadata = data.metadata ? JSON.stringify(data.metadata) : null;
-    // Добавим дату создания, если она приходит из БД
     this.createdAt = data.createdAt;
   }
 
@@ -25,17 +23,16 @@ class ChatMessage {
   static async create(data) {
     const sql = `
       INSERT INTO chatMessage
-        (chatId, passportId, role, content, source, metadata)
+        (chatId, passportId, role, content, metadata)
       VALUES
-        (?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?)
     `;
 
     const values = [
       data.chatId,
       data.passportId || null,
       data.role,
-      data.content || 'text',
-      data.source || 'text',
+      data.content || null,
       data.metadata || null,
     ];
 
