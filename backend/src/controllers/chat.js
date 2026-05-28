@@ -17,6 +17,7 @@ export default {
           description: "Увлечена рисованием хомяков",
           age: "10"
         }}
+      console.log('create')
       const assistant = selectAssistant(req.body.workflow, meta);
       const assistantContent = await assistant({
         messages: [],

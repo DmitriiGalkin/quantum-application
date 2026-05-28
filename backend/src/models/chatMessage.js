@@ -23,9 +23,9 @@ class ChatMessage {
   static async create(data) {
     const sql = `
       INSERT INTO chatMessage
-        (chatId, passportId, role, content, metadata)
+        (chatId, passportId, role, content, metadata, target)
       VALUES
-        (?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?)
     `;
 
     const values = [
@@ -34,6 +34,7 @@ class ChatMessage {
       data.role,
       data.content || null,
       data.metadata || null,
+      data.target || null,
     ];
 
     try {

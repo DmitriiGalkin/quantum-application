@@ -83,3 +83,44 @@ export const convertToUserObject = jsonString => {
     return null;
   }
 };
+
+
+export const convertToTeacherObject = jsonString => {
+  if (typeof jsonString !== 'string') {
+    console.error('Ошибка: на вход должна быть передана строка.');
+    return null;
+  }
+
+  let cleanString = jsonString.trim();
+
+  // Убираем внешние кавычки, если они есть
+  if (cleanString.startsWith('"') && cleanString.endsWith('"')) {
+    cleanString = cleanString.slice(1, -1).trim();
+  }
+
+  cleanString = cleanString.replace(/\n/g, '');
+  cleanString = cleanString.replace(/`/g, '');
+
+
+  try {
+    const data = JSON.parse(cleanString);
+
+    // Проверяем, что структура объекта соответствует ожидаемому типу
+    if (
+        typeof data.profession  === 'string' &&
+        typeof data.interests === 'string' &&
+        typeof data.experience === 'string'
+    ) {
+      return {
+        description: 'Профессия:' + data.profession + ', Интересы:' + data.interests + ', Опыт работы с детьми: '  + data.experience,
+      };
+    } else {
+      console.error('Ошибка: структура JSON не соответствует ожидаемому формату.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Ошибка парсинга JSON:', error.message);
+    return null;
+  }
+};
+

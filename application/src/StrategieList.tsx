@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { strategies } from './HomePage.tsx';
+import { strategies } from './helper.ts';
 
 function StrategieList() {
   return (

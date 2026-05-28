@@ -74,8 +74,8 @@ router.post('/project/:id/generateImage', passportController.usePassport, projec
  * Чат
  */
 router.get('/chats', passportController.usePassport, chat.findAll);
-router.get('/chat/:id', passportController.usePassport, chat.findMessages);
 router.post('/chat', chat.create);
+router.get('/chat/:id', passportController.usePassport, chat.findMessages);
 //router.post('/chat', passportController.usePassport, chat.createMessage);
 
 router.post('/message', passportController.usePassport, chat.createMessage);

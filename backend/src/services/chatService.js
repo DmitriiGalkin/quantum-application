@@ -5,6 +5,9 @@ import { ideaAssistantAnswer } from '../assistants/ideaAssistant.js';
 import { authAssistant } from './authService.js';
 import User from "../models/user.js";
 import Project from "../models/project.js";
+import {teacherAssistantAnswer} from "../assistants/teacherAssistant.js";
+import {projectAssistantAnswer} from "../assistants/projectAssistant.js";
+
 
 const getMetaMessages = allMessages =>
   allMessages.reduce((acc, message) => {
@@ -59,12 +62,13 @@ async function getOrCreateChat({ chatId, passportId, firstMessage, target }) {
 }
 
 // Функция для создания сообщения от ассистента
-async function createAssistantMessage({ chatId, content, metadata = null }) {
+async function createAssistantMessage({ chatId, content, metadata = null, target }) {
   // Создаем сообщение в БД
   const assistantMessageId = await ChatMessage.create({
     chatId,
     passportId: null,
     role: 'assistant',
+    target,
     content,
     metadata,
   });
@@ -92,30 +96,52 @@ function getObjectFromMetadata(metadata) {
 }
 
 const selectAssistant = (workflow, meta) => {
-  if (workflow === 'user_idea_passport') {
-    //console.log(meta,'meta selectAssistant')
-    if (!meta?.user) {
-      return userAssistantAnswer;
-    }
-    if (!meta?.idea) {
-      return ideaAssistantAnswer;
-    }
-    if (!meta?.passport) {
-      return authAssistant;
-    }
+  console.log(meta,'meta selectAssistant')
 
-    return async () => {
-      // Создать ребенка
-      const userId = await User.create({...meta.user, passportId: meta.passport.id })
-
-      // Создать идею проекта
-      const projectId = await Project.create({...meta.idea, passportId: meta.passport.id })
-
-
-      return {
-        content: `Идея проекта Вашего ребенка <a href="/project/${projectId}">создана</a>. Сейчас чат можно закрыть, но вы всегда можете ко мне вернуться и я помогу создать новую идею для вашего ребенка.`,
+  switch (workflow) {
+    case 'user_idea_auth': {
+      if (!meta?.user) {
+        return userAssistantAnswer;
       }
-    };
+      if (!meta?.idea) {
+        return ideaAssistantAnswer;
+      }
+      if (!meta?.passport) {
+        return authAssistant;
+      }
+
+      return async () => {
+        const userId = await User.create({...meta.user, passportId: meta.passport.id })
+        const projectId = await Project.create({...meta.idea, passportId: meta.passport.id })
+
+        return {
+          content: `Идея проекта Вашего ребенка <a href="/project/${projectId}">создана</a>. Сейчас чат можно закрыть, но вы всегда можете ко мне вернуться и я помогу создать новую идею для вашего ребенка.`,
+        }
+      };
+    }
+
+    case 'teacher_project_passport':{
+      if (!meta?.teacher) {
+        return teacherAssistantAnswer;
+      }
+      if (!meta?.project) {
+        return projectAssistantAnswer;
+      }
+
+      return async () => {
+        return {
+          content: 'next',
+        }
+      };
+    }
+
+    default: {
+      return async () => {
+        return {
+          content: 'Сценарий не выявлен',
+        }
+      };
+    }
   }
 };
 

@@ -26,7 +26,7 @@ export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
 
 export type ChatTarget = 'user' | 'idea' | 'project' | 'none';
 
-export type Workflow = 'user_idea_passport' | 'passport_project' | 'idea';
+export type Workflow = 'user_idea_auth' | 'teacher_project_passport' | 'idea';
 
 export type ChatMessageRole = 'user' | 'assistant' | 'system';
 

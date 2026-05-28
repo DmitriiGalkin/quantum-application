@@ -96,7 +96,7 @@ export default {
         recommendMeet: recommendMeetsArr[index],
       }));
 
-      await redis.set(cacheKey, JSON.stringify(response), 'EX', 600);
+      await redis.set(cacheKey, JSON.stringify(response), 'EX', 10);
 
       res.json(response);
     } catch (err) {
