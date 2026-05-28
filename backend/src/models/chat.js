@@ -13,8 +13,6 @@ class Chat {
     this.lastMessage = data.lastMessage;
   }
 
-  // --- СТАТИЧЕСКИЕ МЕТОДЫ (для работы с БД) ---
-
   /**
    * Создает новый чат.
    * @param {Object} data - Данные для вставки.

@@ -65,18 +65,13 @@ export default {
     try {
       // 1. Пытаемся получить данные из кэша Redis
       const cachedData = await redis.get(cacheKey);
-      console.log(cachedData, 'cachedData');
 
       if (cachedData) {
-        // 2. Если данные есть в кэше, возвращаем их сразу (из JSON-строки)
-        console.log('🚀 Cache HIT: Отдаем данные из Redis');
         return res.json(JSON.parse(cachedData));
       }
 
       // Передаем параметры запроса и ID текущего пользователя
       const params = { ...req.query, passportId: req.passport?.id };
-
-      console.log('📖 Cache MISS: Данных в кэше нет, идем в основную БД');
 
       const projects = await Project.findAll(params);
 

@@ -356,7 +356,7 @@ function HomePage() {
             >
               <Box>
                 <Typography sx={{ fontWeight: 800 }} id="auth-section-title" variant="h5">
-                  Войти в аккаунт
+                  Войти в 244221111
                 </Typography>
                 <Typography color="text.secondary" sx={{ mt: 0.5 }}>
                   Выберите удобный способ авторизации

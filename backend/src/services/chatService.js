@@ -1,7 +1,7 @@
 import Chat from '../models/chat.js';
 import ChatMessage from '../models/chatMessage.js';
-import { userGenerateAssistantAnswer } from './userAssistantService.js';
-import { generateAssistantAnswer,  } from './assistantService.js';
+import { userAssistantAnswer } from '../assistants/userAssistant.js';
+import { ideaAssistantAnswer } from '../assistants/ideaAssistant.js';
 import { authAssistant } from './authService.js';
 
 const getMetaMessages = allMessages =>
@@ -93,11 +93,12 @@ function getObjectFromMetadata(metadata) {
 
 const selectAssistant = (workflow, meta) => {
   if (workflow === 'user_idea_passport') {
-    if (!meta?.user) {
-      return userGenerateAssistantAnswer;
+    //console.log(meta,'meta selectAssistant')
+    if (!meta?.user || meta?.user?.status !== "подтверждено") {
+      return userAssistantAnswer;
     }
-    if (!meta?.idea) {
-      return generateAssistantAnswer;
+    if (!meta?.idea || meta?.idea?.status !== "подтверждено") {
+      return ideaAssistantAnswer;
     }
     if (!meta?.passport) {
       return authAssistant;

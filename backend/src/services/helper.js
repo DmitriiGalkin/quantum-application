@@ -9,28 +9,30 @@ export const convertToProjectObject = (jsonString) => {
   // Убираем внешние кавычки, если они есть
   if (cleanString.startsWith('"') && cleanString.endsWith('"')) {
     cleanString = cleanString.slice(1, -1).trim();
-    console.log(cleanString, 'cleanString');
+    //console.log(cleanString, 'cleanString');
   }
 
   cleanString = cleanString.replace(/\n/g, '');
   cleanString = cleanString.replace(/`/g, '');
 
 
-  console.log(cleanString, 'cleanString');
+  //console.log(cleanString, 'cleanString');
 
   try {
     const data = JSON.parse(cleanString);
-    console.log(data, 'data');
+    //console.log(data, 'data');
 
     // Проверяем, что структура объекта соответствует ожидаемому типу
     if (
       typeof data.title === 'string' &&
       typeof data.description === 'string' &&
+      typeof data.status === 'string' &&
       Array.isArray(data.steps) &&
       data.steps.every(step => typeof step === 'string')
     ) {
       return {
         title: data.title,
+        status: data.status,
         description: data.description,
         steps: data.steps,
       };
@@ -55,13 +57,11 @@ export const convertToUserObject = jsonString => {
   // Убираем внешние кавычки, если они есть
   if (cleanString.startsWith('"') && cleanString.endsWith('"')) {
     cleanString = cleanString.slice(1, -1).trim();
-    console.log(cleanString, 'cleanString');
   }
 
   cleanString = cleanString.replace(/\n/g, '');
   cleanString = cleanString.replace(/`/g, '');
 
-  console.log(cleanString, 'cleanString');
 
   try {
     const data = JSON.parse(cleanString);
@@ -69,11 +69,13 @@ export const convertToUserObject = jsonString => {
 
     // Проверяем, что структура объекта соответствует ожидаемому типу
     if (
+        typeof data.status === 'string' &&
       typeof data.title === 'string' &&
       typeof data.description === 'string' &&
       typeof data.age === 'string'
     ) {
       return {
+        status: data.status,
         title: data.title,
         description: data.description,
         age: Number(data.age),

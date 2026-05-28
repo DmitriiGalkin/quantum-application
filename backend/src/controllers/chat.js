@@ -5,8 +5,8 @@ import {
   createAssistantMessage, getObjectFromMetadata, selectAssistant, getMetaMessages,
 } from '../services/chatService.js';
 
-import { generateProjectImage } from '../services/imageGenerationService.js';
-import { uploadImage } from '../services/imageGenerationService.js';
+import { generateProjectImage } from '../assistants/imageAssistant.js';
+import { uploadImage } from '../assistants/imageAssistant.js';
 
 export default {
   generateImage: async (req, res) => {
