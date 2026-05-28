@@ -68,6 +68,7 @@ router.post('/project', passportController.usePassport, checkConstructor, projec
 router.put('/project/:id', passportController.usePassport, checkConstructor, project.update);
 router.delete('/project/:id', passportController.usePassport, project.delete);
 router.get('/project/:id/meta', project.meta);
+router.post('/project/:id/generateImage', passportController.usePassport, project.generateImage);
 
 /**
  * Чат
@@ -78,7 +79,6 @@ router.post('/chat', chat.create);
 //router.post('/chat', passportController.usePassport, chat.createMessage);
 
 router.post('/message', passportController.usePassport, chat.createMessage);
-router.post('/message/:id/generateImage', passportController.usePassport, chat.generateImage);
 
 /**
  * Места

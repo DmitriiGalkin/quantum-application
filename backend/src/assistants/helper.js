@@ -20,19 +20,16 @@ export const convertToProjectObject = (jsonString) => {
 
   try {
     const data = JSON.parse(cleanString);
-    //console.log(data, 'data');
 
     // Проверяем, что структура объекта соответствует ожидаемому типу
     if (
       typeof data.title === 'string' &&
       typeof data.description === 'string' &&
-      typeof data.status === 'string' &&
       Array.isArray(data.steps) &&
       data.steps.every(step => typeof step === 'string')
     ) {
       return {
         title: data.title,
-        status: data.status,
         description: data.description,
         steps: data.steps,
       };

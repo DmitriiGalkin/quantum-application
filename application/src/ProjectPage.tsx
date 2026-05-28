@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -19,7 +18,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import MeetCard from './MeetCard';
-import { createVisit, deleteVisit, fetchProject } from './requests.ts';
+import {createVisit, deleteVisit, fetchProject, generateImage} from './requests.ts';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import AutoAwesome from "@mui/icons-material/AutoAwesome";
 
 function ProjectPage() {
   const navigate = useNavigate();
@@ -39,6 +42,13 @@ function ProjectPage() {
       queryClient.invalidateQueries({ queryKey: ['project', id] });
     },
   });
+
+    const generateImageMutation = useMutation({
+        mutationFn: generateImage,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['project', id] });
+        },
+    });
 
   const {
     data: project,
@@ -83,53 +93,95 @@ function ProjectPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
-      <Container maxWidth="md" sx={{ py: { xs: 2, sm: 4 } }}>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{ mb: 2, alignItems: 'center', justifyContent: 'space-between' }}
+        <AppBar
+            position="sticky"
+            color="inherit"
+            elevation={1}
+            sx={{
+                borderBottom: 1,
+                borderColor: 'divider',
+                backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
+            }}
         >
-          <Button
-            type="button"
-            variant="text"
-            startIcon={<ArrowBackIcon />}
-            onClick={() => navigate(-1)}
-          >
-            Назад
-          </Button>
-
-          <Button
-            component={Link}
-            to={`/project/${id}/edit`}
-            variant="outlined"
-            startIcon={<EditIcon />}
-          >
-            Редактировать
-          </Button>
-        </Stack>
+            <Toolbar>
+                <IconButton
+                    size="large"
+                    edge="start"
+                    aria-label="open drawer"
+                    sx={{ mr: 2, color: 'white' }}
+                    onClick={() => navigate(-1)}
+                >
+                    <ArrowBackIcon />
+                </IconButton>
+                <Box sx={{ flexGrow: 1 }} />
+                <IconButton edge="start" color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
+                    <EditIcon />
+                </IconButton>
+            </Toolbar>
+        </AppBar>
+        {/*<Stack*/}
+        {/*  direction="row"*/}
+        {/*  spacing={2}*/}
+        {/*  sx={{ mb: 2, alignItems: 'center', justifyContent: 'space-between' }}*/}
+        {/*>*/}
+        {/*</Stack>*/}
 
         <Card
           elevation={0}
           sx={{
             overflow: 'hidden',
-            borderRadius: 4,
             border: 1,
             borderColor: 'divider',
           }}
         >
-          <CardMedia
-            component="img"
-            height="360"
-            image={project.image || 'https://thumbs.dreamstime.com/z/none-165853060.jpg'}
-            alt={project.title || 'Проект'}
-            sx={{
-              objectFit: 'cover',
-              height: {
-                xs: 220,
-                sm: 360,
-              },
-            }}
-          />
+
+            <Box sx={{ position: 'relative', width: '100%' }}>
+                <CardMedia
+                    component="img"
+                    height="360"
+                    image={project.image || `/bg.jpeg`}
+                    alt={project.title || 'Проект'}
+                    sx={{
+                        objectFit: 'cover',
+                        height: {
+                            xs: 220,
+                            sm: 360,
+                        },
+                    }}
+                />
+
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Полупрозрачный фон для читаемости
+                        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
+                        boxShadow: 3,
+                        borderRadius: 16,
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                    }}
+                >
+                    {/* Кнопка с иконкой в правом верхнем углу */}
+                    {generateImageMutation.isPending && (
+                        <Typography className="blink" color="text.secondary" sx={{ paddingLeft: 2 }}>
+                            Генерирую...
+                        </Typography>
+                    )}
+                        <IconButton
+                            aria-label="Сгенерировать обложку"
+                            // Здесь будет обработчик клика на генерацию
+                            onClick={e => {
+                                e.stopPropagation();
+                                generateImageMutation.mutate(project.id);
+                            }}
+                        >
+                            <AutoAwesome fontSize="large" />
+                        </IconButton>
+                </Box>
+            </Box>
 
           <CardContent sx={{ p: { xs: 2.5, sm: 4 } }}>
             <Stack spacing={3}>
@@ -237,7 +289,6 @@ function ProjectPage() {
             </Stack>
           </CardContent>
         </Card>
-      </Container>
     </Box>
   );
 }

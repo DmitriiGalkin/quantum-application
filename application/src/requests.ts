@@ -157,8 +157,8 @@ export async function deleteVisit(visitId: number) {
   });
 }
 
-export async function generateImage(messageId: number) {
-  return apiFetch(`/message/${messageId}/generateImage`, {
+export async function generateImage(projectId: number) {
+  return apiFetch(`/project/${projectId}/generateImage`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

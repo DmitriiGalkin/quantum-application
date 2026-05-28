@@ -3,6 +3,8 @@ import ChatMessage from '../models/chatMessage.js';
 import { userAssistantAnswer } from '../assistants/userAssistant.js';
 import { ideaAssistantAnswer } from '../assistants/ideaAssistant.js';
 import { authAssistant } from './authService.js';
+import User from "../models/user.js";
+import Project from "../models/project.js";
 
 const getMetaMessages = allMessages =>
   allMessages.reduce((acc, message) => {
@@ -102,9 +104,18 @@ const selectAssistant = (workflow, meta) => {
       return authAssistant;
     }
 
-    return async () => ({
-      content: 'Идея проекта Вашего ребенка создана. Сейчас чат можно закрыть, но вы всегда можете ко мне вернуться и я помогу создать новую идею для вашего ребенка.',
-    });
+    return async () => {
+      // Создать ребенка
+      const userId = await User.create({...meta.user, passportId: meta.passport.id })
+
+      // Создать идею проекта
+      const projectId = await Project.create({...meta.idea, passportId: meta.passport.id })
+
+
+      return {
+        content: `Идея проекта Вашего ребенка <a href="/project/${projectId}">создана</a>. Сейчас чат можно закрыть, но вы всегда можете ко мне вернуться и я помогу создать новую идею для вашего ребенка.`,
+      }
+    };
   }
 };
 

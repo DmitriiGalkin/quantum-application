@@ -9,40 +9,18 @@ import { generateProjectImage } from '../assistants/imageAssistant.js';
 import { uploadImage } from '../assistants/imageAssistant.js';
 
 export default {
-  generateImage: async (req, res) => {
-    try {
-      if (!req.passport) {
-        return res.status(401).json({
-          error: true,
-          message: 'Требуется авторизация',
-        });
-      }
-
-      const message = await ChatMessage.findById(req.params.id);
-      const metadata = JSON.parse(message.metadata);
-
-      const imageBinary = await generateProjectImage(metadata);
-      const image = await uploadImage(imageBinary);
-
-      await ChatMessage.update(req.params.id, { metadata: { ...metadata, image } });
-
-      return res.json({
-        image,
-      });
-    } catch (err) {
-      console.error('chat.generateImage error:', err);
-      res.status(err.status || 500).json({
-        error: true,
-        message: err.message || 'Не удалось сгенерировать изображение для сообщения',
-      });
-    }
-  },
   create: async (req, res) => {
     try {
       const chatId = await Chat.create({ target: req.body.workflow });
-      const assistant = selectAssistant(req.body.workflow);
+      const meta = { user: {
+          title: "Катя",
+          description: "Увлечена рисованием хомяков",
+          age: "10"
+        }}
+      const assistant = selectAssistant(req.body.workflow, meta);
       const assistantContent = await assistant({
         messages: [],
+        meta,
       });
 
       await createAssistantMessage({
@@ -83,7 +61,11 @@ export default {
 
 
       const allMessages = await ChatMessage.findLastByChatId(chat.id, 50);
-      const meta = getMetaMessages(allMessages)
+      const meta = {...getMetaMessages(allMessages), user: {
+          "title": "Катя",
+          "description": "Увлечена рисованием хомяков",
+          "age": "10"
+        }}
       meta.passport = req.passport;
 
       console.log(meta, 'meta');
@@ -112,9 +94,24 @@ export default {
       const assistant = selectAssistant(chat.target, meta)
 
       // 4. Генерация ответа выбранным ассистентом
-      const assistantContent = await assistant({
+      let assistantContent = await assistant({
         messages: allMessages,
+        meta,
       });
+
+      console.log(assistantContent,'assistantContent')
+
+      // Если от ассистента получили готовую мету,
+      // то обновляем общую мету и запускаем процесс обращени к ассистенту еще раз
+      if (assistantContent.meta) {
+        console.log(assistantContent.meta, 'assistantContent');
+        const newMeta = {...meta, [assistantContent.meta.target]: assistantContent.meta.data}
+        const assistant = selectAssistant(chat.target, newMeta)
+        assistantContent = await assistant({
+          messages: allMessages,
+          meta: newMeta,
+        });
+      }
 
       const assistantMessage = await createAssistantMessage({
         chatId: chat.id,

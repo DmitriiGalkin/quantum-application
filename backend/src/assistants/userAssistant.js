@@ -5,7 +5,7 @@ const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как заботливый педагог.
 
-Ззадача узнать от родителя информацию о ребенке: возраст, имя, 2-3 увлечения (ОБЯЗАТЕЛЬНО).
+Задача узнать от родителя информацию о ребенке: возраст, имя, 2-3 увлечения (ОБЯЗАТЕЛЬНО).
 Нужно, чтобы родитель сказал конкретное имя ребенка и конкретные увлечения.
 
 Правила форматирования ответа
@@ -27,7 +27,7 @@ const SYSTEM_PROMPT = `
 - БЕЗ использования JSON формата.
 - Не используй фраз: "Подтверждаю информацию"
 4. Если информация ПОДТВЕРЖДЕНА пользователем (Например: "Верно"):
-- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами title, description, age. Пример: { "status": "не подтверждено", "title": "Иван", "description": "Увлекается рисованием, игрой на скрипке и иногда играет в лего", "age": "12" }.
+- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами title, description, age. Пример: { "title": "Иван", "description": "Увлекается рисованием, игрой на скрипке и иногда играет в лего", "age": "12" }.
 - Все поля должны быть заполнены.
 - Этот блок должен быть единственным.
 `;
@@ -66,22 +66,20 @@ export async function userAssistantAnswer({ messages }) {
       jsonStartIndex !== -1 ? parsedData.slice(0, jsonStartIndex).trim() : parsedData; // Текст для пользователя
     const jsonString = jsonStartIndex !== -1 ? parsedData.slice(jsonStartIndex).trim() : null; // Строка JSON
 
-    // 2. Парсим JSON
-    //console.log('Agent: user');
-    //console.log(userMessage, 'userMessage');
-    //console.log(jsonString, 'jsonString');
-
     const metadata = jsonString
       ? JSON.stringify({
           target: 'user',
           data: convertToUserObject(jsonString),
         })
       : null;
-    //console.log(metadata, 'metadata');
 
     return {
       content: userMessage,
-      metadata: metadata,
+      metadata,
+      meta: jsonString ? {
+        target: 'user',
+        data: convertToUserObject(jsonString),
+      } : null
     };
   } catch (error) {
     // --- БЛОК ЛОГИРОВАНИЯ И ВОЗВРАТА ОШИБКИ ---

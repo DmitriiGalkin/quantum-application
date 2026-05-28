@@ -6,6 +6,7 @@ import Meet from '../models/meet.js';
 import Place from '../models/place.js';
 import Participation from '../models/participation.js';
 import redis from '../redis.js';
+import {generateProjectImage, uploadImage} from "../assistants/imageAssistant.js";
 
 export default {
   create: async (req, res) => {
@@ -164,7 +165,37 @@ export default {
       res.status(500).send({ error: true, message: 'Не удалось получить проект' });
     }
   },
+  generateImage: async (req, res) => {
+    try {
+      if (!req.passport) {
+        return res.status(401).json({
+          error: true,
+          message: 'Требуется авторизация',
+        });
+      }
 
+      const projectId = req.params.id;
+      const project = await Project.findById(projectId);
+
+      if (!project) {
+        return res.status(404).json({ error: true, message: 'Проект не найден' });
+      }
+
+      const imageBinary = await generateProjectImage(project);
+      const image = await uploadImage(imageBinary);
+
+      const obj = new Project({...project, image});
+      await Project.update(req.params.id, obj);
+      res.json({ error: false, message: 'Проект обновлен' });
+
+    } catch (err) {
+      console.error('chat.generateImage error:', err);
+      res.status(err.status || 500).json({
+        error: true,
+        message: err.message || 'Не удалось сгенерировать изображение для сообщения',
+      });
+    }
+  },
   meta: async (req, res) => {
     try {
       const project = await Project.findById(req.params.id);

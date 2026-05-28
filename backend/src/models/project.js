@@ -15,7 +15,10 @@ class Project {
 
   static async create(data) {
     try {
-      const [result] = await pool.query('INSERT INTO project SET ?', data);
+      const [result] = await pool.query(
+          'INSERT INTO project SET `title` = :title, `description` = :description, `passportId` = :passportId',
+          data // Передаем объект data как есть
+      );
       return result.insertId;
     } catch (err) {
       console.error('Project.create error:', err);
