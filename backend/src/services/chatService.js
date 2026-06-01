@@ -1,5 +1,5 @@
 import Chat from '../models/chat.js';
-import ChatMessage from '../models/chatMessage.js';
+import Message from '../models/message.js';
 import { userAssistantAnswer } from '../assistants/userAssistant.js';
 import { ideaAssistantAnswer } from '../assistants/ideaAssistant.js';
 import { authAssistant } from './authService.js';
@@ -7,6 +7,7 @@ import User from "../models/user.js";
 import Project from "../models/project.js";
 import {teacherAssistantAnswer} from "../assistants/teacherAssistant.js";
 import {projectAssistantAnswer} from "../assistants/projectAssistant.js";
+import Participation from "../models/participation.js";
 
 
 const getMetaMessages = allMessages =>
@@ -64,7 +65,7 @@ async function getOrCreateChat({ chatId, passportId, firstMessage, target }) {
 // Функция для создания сообщения от ассистента
 async function createAssistantMessage({ chatId, content, metadata = null, target }) {
   // Создаем сообщение в БД
-  const assistantMessageId = await ChatMessage.create({
+  const assistantMessageId = await Message.create({
     chatId,
     passportId: null,
     role: 'assistant',
@@ -75,7 +76,7 @@ async function createAssistantMessage({ chatId, content, metadata = null, target
 
   // Находим и возвращаем полное сообщение (включая ID, createdAt и т.д.)
   // Это исправляет логическую ошибку, где возвращался только ID.
-  return ChatMessage.findById(assistantMessageId);
+  return Message.findById(assistantMessageId);
 }
 
 
@@ -95,11 +96,18 @@ function getObjectFromMetadata(metadata) {
   return null;
 }
 
-const selectAssistant = (workflow, meta) => {
+/**
+ * Выбор ассистента
+ * @param target - цель кейся
+ * @param meta - Все что знаем о текущей сессии пользователя
+ */
+const selectAssistant = (target, meta) => {
   console.log(meta,'meta selectAssistant')
 
-  switch (workflow) {
-    case 'user_idea_auth': {
+  switch (target) {
+
+    // Создание идеи
+    case 'idea': {
       if (!meta?.user) {
         return userAssistantAnswer;
       }
@@ -112,25 +120,48 @@ const selectAssistant = (workflow, meta) => {
 
       return async () => {
         const userId = await User.create({...meta.user, passportId: meta.passport.id })
-        const projectId = await Project.create({...meta.idea, passportId: meta.passport.id })
+        const projectId = await Project.create({...meta.idea, userId })
+        const participationId = await Participation.create({ projectId, userId })
 
         return {
           content: `Идея проекта Вашего ребенка <a href="/project/${projectId}">создана</a>. Сейчас чат можно закрыть, но вы всегда можете ко мне вернуться и я помогу создать новую идею для вашего ребенка.`,
+          target: 'idea',
         }
       };
     }
 
-    case 'teacher_project_passport':{
+    // Создание проекта
+    case 'project':{
       if (!meta?.teacher) {
         return teacherAssistantAnswer;
       }
       if (!meta?.project) {
         return projectAssistantAnswer;
       }
+      if (!meta?.passport) {
+        return authAssistant;
+      }
+      console.log(meta,'meta projectAssistantAnswer')
+
+
+      return async () => {
+        const projectId = await Project.updatePassportId(meta.project.id, { passportId: meta.passport.id })
+
+        return {
+          content: `Все выяснили, теперь вы учитель <a href="/project/${meta.project.id}">проекта</a>. Ваша первоочередная задача создать встречу, а я Вам с этим помогу`,
+        }
+      };
+    }
+
+    // Создание встречи
+    case 'meet': {
+      if (!meta?.meet) {
+        return meetAssistantAnswer;
+      }
 
       return async () => {
         return {
-          content: 'next',
+          content: 'Все выяснили, можно создавать встречу',
         }
       };
     }

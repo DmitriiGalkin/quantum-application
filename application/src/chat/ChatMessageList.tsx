@@ -1,14 +1,11 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Message from './Message';
-import { type ChatMessage } from '../../requests';
+import Message from './Message.tsx';
+import { type ChatMessage } from '../requests.ts';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
-import ProjectCard from '../../ProjectCard.tsx';
-import type { Project, User } from '../../types.ts';
-import UserCard from '../../UserCard.tsx';
-import StrategieList from '../../StrategieList.tsx';
+import StrategieList from '../StrategieList.tsx';
 
 type ChatMessageListProps = {
   chatId: number;
@@ -32,29 +29,12 @@ function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
                 <Typography>
                   <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
                 </Typography>
-
-                {chatMessage?.meta?.target === 'user' && !!chatMessage?.meta?.data && (
-                  <UserCard user={chatMessage?.meta?.data as User} />
-                )}
-                {chatMessage?.meta?.target === 'idea' && !!chatMessage?.meta?.data && (
-                  <ProjectCard project={chatMessage?.meta?.data as Project} />
-                )}
                 {chatMessage?.meta?.target === 'auth' && <StrategieList />}
               </Stack>
             </Message>
           </Box>
         );
       })}
-
-      {/*<Message role={'assistant'}>*/}
-      {/*  <Typography>Интересно, чья это идея?</Typography>*/}
-      {/*</Message>*/}
-
-      {/*<Stack spacing={2} sx={{ flexGrow: 1 }} direction="row">*/}
-      {/*  {users.map(user => (*/}
-      {/*    <UserCard key={user.id} user={user} />*/}
-      {/*  ))}*/}
-      {/*</Stack>*/}
 
       {isSending && (
         <Message role={'assistant'}>

@@ -1,3 +1,4 @@
+import {type ChatTarget} from "./requests.ts";
 
 export const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
@@ -24,6 +25,27 @@ export const saveAccessTokenFromUrl = () => {
     localStorage.removeItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
 
     return accessToken;
+}
+
+
+const TARGET_STORAGE_KEY = 'target';
+
+export const useTarget = (): ChatTarget => {
+    if (typeof window === 'undefined') {
+        return null;
+    }
+
+    const url = new URL(window.location.href);
+    const target = url.searchParams.get('target');
+
+    if (!target) {
+        return localStorage.getItem(TARGET_STORAGE_KEY) as ChatTarget;
+    }
+
+    localStorage.setItem(TARGET_STORAGE_KEY, target);
+    url.searchParams.delete('target');
+
+    return target as ChatTarget;
 }
 
 export const strategies = [

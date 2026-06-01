@@ -1,5 +1,4 @@
-import { convertToUserObject } from './helper.js';
-import assistant from '../assistant.js';
+import {baseAssistantAnswer} from "./assistant.js";
 
 const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -32,71 +31,19 @@ const SYSTEM_PROMPT = `
 - Этот блок должен быть единственным.
 `;
 
-//Reasoning and Acting
 export async function userAssistantAnswer({ messages }) {
-  try {
-    const payload = {
-      messages: [
-        {
-          role: 'system',
-          content: SYSTEM_PROMPT,
-        },
-        ...messages.map(m => ({ role: m.role, content: m.content })),
-      ],
-    };
-
-    console.log(payload);
-    // 3. Отправка запроса к API
-    const resp = await assistant.chat(payload);
-
-    // 4. Проверка структуры ответа от API
-    if (!resp || !resp.choices || resp.choices.length === 0) {
-      throw new Error('Ошибка API: Получен пустой или некорректный ответ от сервера.');
-    }
-
-    const parsedData = resp.choices[0]?.message.content;
-    console.log('Content: ', parsedData);
-
-    // 1. Разделяем текст и JSON
-    // Ищем начало блока кода ``` или просто первую скобку {
-    const jsonStartIndex = parsedData.indexOf('{');
-    // console.log('jsonStartIndex: ', jsonStartIndex);
-
-    const userMessage =
-      jsonStartIndex !== -1 ? parsedData.slice(0, jsonStartIndex).trim() : parsedData; // Текст для пользователя
-    const jsonString = jsonStartIndex !== -1 ? parsedData.slice(jsonStartIndex).trim() : null; // Строка JSON
-
-    const metadata = jsonString
-      ? JSON.stringify({
-          target: 'user',
-          data: convertToUserObject(jsonString),
-        })
-      : null;
-
-    return {
-      content: userMessage,
-      metadata,
-      meta: jsonString ? {
-        target: 'user',
-        data: convertToUserObject(jsonString),
-      } : null
-    };
-  } catch (error) {
-    // --- БЛОК ЛОГИРОВАНИЯ И ВОЗВРАТА ОШИБКИ ---
-
-    // Логируем техническую ошибку для разработчика
-    console.error('Ошибка в generateAssistantAnswer:', error);
-
-    // Возвращаем объект в СТРОГОМ формате, который ожидает ваш фронтенд/контроллер.
-    // Это предотвращает падение всего приложения на клиенте.
-    return {
-      status: 'error', // Добавляем статус ошибки
-      message:
-        'Упс! Кажется, наш помощник немного устал и не смог ответить прямо сейчас. Пожалуйста, попробуйте задать вопрос позже.',
-      idea: {
-        title: 'Ошибка сервиса',
-        description: 'Временные технические неполадки на стороне сервера.',
-      },
-    };
-  }
+  return baseAssistantAnswer({
+    messages,
+    prompt: SYSTEM_PROMPT,
+    schema: (data) =>
+        typeof data.title === 'string' &&
+        typeof data.description === 'string' &&
+        typeof data.age === 'string',
+    transformer: (data) => ({
+      title: data.title,
+      description: data.description,
+      age: Number(data.age), // Преобразуем возраст в число здесь
+    }),
+    meta: { target: 'user' },
+  });
 }

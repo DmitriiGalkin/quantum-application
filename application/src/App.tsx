@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomePage from './HomePage'
-import ChatPage from './pages/chat/ChatPage.tsx';
+import ChatPage from './chat/ChatPage.tsx';
 import CreateProjectPage from './CreateProjectPage';
-import ProjectPage from './ProjectPage';
+import ProjectPage from './project/ProjectPage.tsx';
 import EditProjectPage from './EditProjectPage';
 import PlaceSelectPage from './PlaceSelectPage';
 import NotFoundPage from './NotFoundPage';

@@ -1,126 +1,33 @@
-export const convertToProjectObject = (jsonString) => {
-  if (typeof jsonString !== 'string') {
-    console.error('Ошибка: на вход должна быть передана строка.');
+
+
+/**
+ * Ищет и возвращает первый валидный JSON-объект или массив в строке.
+ * @param {string} text - Строка, в которой нужно найти JSON.
+ * @returns {any|null} - Распарсенный объект/значение или null, если JSON не найден или некорректен.
+ */
+export function extractJsonFromString(text) {
+  if (typeof text !== 'string') {
+    console.error('Входное значение должно быть строкой.');
     return null;
   }
 
-  let cleanString = jsonString.trim();
+  // Регулярное выражение для поиска текста в фигурных или квадратных скобках.
+  // Флаг 's' (dotAll) позволяет точке . захватывать переносы строк.
+  const jsonRegex = /($$.*$$|\{.*\})/s;
 
-  // Убираем внешние кавычки, если они есть
-  if (cleanString.startsWith('"') && cleanString.endsWith('"')) {
-    cleanString = cleanString.slice(1, -1).trim();
-    //console.log(cleanString, 'cleanString');
+  // Ищем совпадение в строке
+  const match = text.match(jsonRegex);
+
+  if (!match) {
+    console.log('JSON-объект или массив не найден.');
+    return null;
   }
 
-  cleanString = cleanString.replace(/\n/g, '');
-  cleanString = cleanString.replace(/`/g, '');
-
-
-  //console.log(cleanString, 'cleanString');
-
   try {
-    const data = JSON.parse(cleanString);
-
-    // Проверяем, что структура объекта соответствует ожидаемому типу
-    if (
-      typeof data.title === 'string' &&
-      typeof data.description === 'string' &&
-      Array.isArray(data.steps) &&
-      data.steps.every(step => typeof step === 'string')
-    ) {
-      return {
-        title: data.title,
-        description: data.description,
-        steps: data.steps,
-      };
-    } else {
-      console.error('Ошибка: структура JSON не соответствует ожидаемому формату.');
-      return null;
-    }
+    return JSON.parse(match[0]);
   } catch (error) {
     console.error('Ошибка парсинга JSON:', error.message);
     return null;
   }
 }
-
-export const convertToUserObject = jsonString => {
-  if (typeof jsonString !== 'string') {
-    console.error('Ошибка: на вход должна быть передана строка.');
-    return null;
-  }
-
-  let cleanString = jsonString.trim();
-
-  // Убираем внешние кавычки, если они есть
-  if (cleanString.startsWith('"') && cleanString.endsWith('"')) {
-    cleanString = cleanString.slice(1, -1).trim();
-  }
-
-  cleanString = cleanString.replace(/\n/g, '');
-  cleanString = cleanString.replace(/`/g, '');
-
-
-  try {
-    const data = JSON.parse(cleanString);
-
-    // Проверяем, что структура объекта соответствует ожидаемому типу
-    if (
-      typeof data.title === 'string' &&
-      typeof data.description === 'string' &&
-      typeof data.age === 'string'
-    ) {
-      return {
-        title: data.title,
-        description: data.description,
-        age: Number(data.age),
-      };
-    } else {
-      console.error('Ошибка: структура JSON не соответствует ожидаемому формату.');
-      return null;
-    }
-  } catch (error) {
-    console.error('Ошибка парсинга JSON:', error.message);
-    return null;
-  }
-};
-
-
-export const convertToTeacherObject = jsonString => {
-  if (typeof jsonString !== 'string') {
-    console.error('Ошибка: на вход должна быть передана строка.');
-    return null;
-  }
-
-  let cleanString = jsonString.trim();
-
-  // Убираем внешние кавычки, если они есть
-  if (cleanString.startsWith('"') && cleanString.endsWith('"')) {
-    cleanString = cleanString.slice(1, -1).trim();
-  }
-
-  cleanString = cleanString.replace(/\n/g, '');
-  cleanString = cleanString.replace(/`/g, '');
-
-
-  try {
-    const data = JSON.parse(cleanString);
-
-    // Проверяем, что структура объекта соответствует ожидаемому типу
-    if (
-        typeof data.profession  === 'string' &&
-        typeof data.interests === 'string' &&
-        typeof data.experience === 'string'
-    ) {
-      return {
-        description: 'Профессия:' + data.profession + ', Интересы:' + data.interests + ', Опыт работы с детьми: '  + data.experience,
-      };
-    } else {
-      console.error('Ошибка: структура JSON не соответствует ожидаемому формату.');
-      return null;
-    }
-  } catch (error) {
-    console.error('Ошибка парсинга JSON:', error.message);
-    return null;
-  }
-};
 

@@ -28,10 +28,16 @@ import AddIcon from '@mui/icons-material/Add';
 import ProjectCard from './ProjectCard';
 import './App.css';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchCreateChat, fetchPassport, fetchProjects, type Type } from './requests.ts';
-import {ACCESS_TOKEN_STORAGE_KEY, saveAccessTokenFromUrl, strategies} from "./helper.ts";
+import {fetchCreateChat, fetchPassport, fetchProjects, type Type} from './requests.ts';
+import {
+    ACCESS_TOKEN_STORAGE_KEY,
+    saveAccessTokenFromUrl,
+    strategies, useTarget
+} from "./helper.ts";
 
 const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
+
+
 
 function HomePage() {
   const navigate = useNavigate();
@@ -40,6 +46,8 @@ function HomePage() {
   const [type, setType] = useState<Type>(null);
 
   const initialAccessToken = saveAccessTokenFromUrl();
+  const target = useTarget();
+
 
   const mutation = useMutation({
     mutationFn: fetchCreateChat,
@@ -116,10 +124,10 @@ function HomePage() {
               }
 
               mutation.mutate(
-                { workflow: 'teacher_project_passport' }, //user_idea_auth
+                { target: target || 'none' },
                 {
                   onSuccess: chatId => {
-                    localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
+                      localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
                     navigate(`/chat/${chatId}`);
                   },
                   onError: error => {

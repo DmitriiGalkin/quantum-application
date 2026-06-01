@@ -4,7 +4,7 @@ import {
   type ChatMessageRole,
   type Workflow,
   type ChatTarget,
-} from '../../requests.ts';
+} from '../requests.ts';
 
 export const getWorkflowTarget = (workflow: Workflow, target: ChatTarget) => {
   const activeUserId = localStorage.getItem('activeUserId');

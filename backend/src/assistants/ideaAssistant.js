@@ -1,8 +1,7 @@
 
-import { convertToProjectObject } from './helper.js';
-import assistant from '../assistant.js';
+import {baseAssistantAnswer} from "./assistant.js";
 
-const getPrompt = (user) => `
+const getIdeaPrompt = (user) => `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как заботливый педагог.
 
@@ -33,66 +32,19 @@ const getPrompt = (user) => `
 `;
 
 export async function ideaAssistantAnswer({ messages, meta }) {
-  try {
-    const payload = {
-      messages: [
-        {
-          role: 'system',
-          content: getPrompt(meta.user),
-        },
-        ...messages.map(m => ({ role: m.role, content: m.content })),
-      ],
-    };
-    console.log(payload);
-
-
-    // 3. Отправка запроса к API
-    const resp = await assistant.chat(payload);
-
-    // 4. Проверка структуры ответа от API
-    if (!resp || !resp.choices || resp.choices.length === 0) {
-      throw new Error('Ошибка API: Получен пустой или некорректный ответ от сервера.');
-    }
-
-    const parsedData = resp.choices[0]?.message.content;
-    console.log('Content: ', parsedData);
-
-
-    // 1. Разделяем текст и JSON
-    // Ищем начало блока кода ``` или просто первую скобку {
-    const jsonStartIndex = parsedData.indexOf('{');
-
-    const userMessage =
-      jsonStartIndex !== -1 ? parsedData.slice(0, jsonStartIndex).trim() : parsedData; // Текст для пользователя
-    const jsonString = jsonStartIndex !== -1 ? parsedData.slice(jsonStartIndex).trim() : null; // Строка JSON
-
-    // 2. Парсим JSON
-    console.log(jsonString,'jsonString')
-
-    const metadata = jsonString
-      ? JSON.stringify({
-          target: 'idea',
-          data: convertToProjectObject(jsonString),
-        })
-      : null;
-
-    return {
-      content: userMessage,
-      metadata,
-      meta: jsonString ? {
-        target: 'idea',
-        data: convertToProjectObject(jsonString),
-      } : null
-    };
-  } catch (error) {
-    console.error(error);
-
-    // Возвращаем объект в СТРОГОМ формате, который ожидает ваш фронтенд/контроллер.
-    // Это предотвращает падение всего приложения на клиенте.
-    return {
-      status: 'error', // Добавляем статус ошибки
-      message:
-        'Упс! Кажется, наш помощник немного устал и не смог ответить прямо сейчас. Пожалуйста, попробуйте задать вопрос позже.',
-    };
-  }
+  return baseAssistantAnswer({
+    messages,
+    meta: { ...meta, target: 'idea' },
+    prompt: getIdeaPrompt(meta.user), // Передаем функцию для промпта
+    schema:  (data) =>
+        typeof data.title === 'string' &&
+        typeof data.description === 'string' &&
+        Array.isArray(data.steps) &&
+        data.steps.every(step => typeof step === 'string'),
+    transformer:  (data) => ({
+      title: data.title,
+      description: data.description,
+      steps: data.steps,
+    })
+  });
 }

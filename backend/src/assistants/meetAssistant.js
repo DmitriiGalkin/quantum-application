@@ -1,0 +1,58 @@
+import Project from "../models/project.js";
+import {baseAssistantAnswer} from "./assistant.js";
+
+const getPrompt = (ideas, meta) => {
+  const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title, description: idea.description }));
+
+  return `
+Ты — ассистент образовательного проекта для детей.
+Ты общаешься на русском языке, как коллега.
+
+Задача помочь учителю (${meta.teacher.description}) создать встречу по проекту.
+Нужно, чтобы пользователь выбрал конкретную дату, время, продолжительность и место встречи.
+
+Проект:
+${JSON.stringify(meta.project)}
+
+Места:
+${JSON.stringify(meta.places)}
+
+Правила форматирования ответа:
+- Никогда не повторяй слова пользователя.
+- Не используй фразы вроде "Вы сказали", "Вы написали", "Вот данные", "Вот что известно".
+- Ответ должен быть только по существу задачи.
+- Ответ должен начинаться с заглавной буквы.
+      
+Пошаговый процесс (ВСЕГДА СЛЕДУЙ ПОРЯДКУ ДЕЙСТВИЙ)
+1. Проанализируй, что мы знаем об проекте и подбери ему место, дату, продолжительность и время проведения.
+2. Если список НЕ СФОРМИРОВАН:
+- Если информации мало, задавай вопросы для уточнения.
+- Задай 1–3 уточняющих вопросов (например: «Когда Вам удобно провести встречу?», «Где удобнее провести встречу по проекту?», «Как долго будет длиться встреча?»).
+3. Если дата, время и место СФОРМИРОВАНЫ:
+- Обобщи сказанное об встрече: дата, время, продолжительность и место. И задай вопрос (Например: "Все верно?")
+- БЕЗ использования JSON формата.
+- Не используй фраз: "Подтверждаю информацию"
+4. Если информация ПОДТВЕРЖДЕНА пользователем (Например: "Верно"):
+- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами startedAt, duration, placeId. Пример: { "startedAt": "2026-11-17 15:00:00", "duration": "60", "placeId": "85" }.
+- Все поля должны быть заполнены.
+- Этот блок должен быть единственным.
+`;
+}
+
+export async function meetAssistantAnswer({ messages, meta }) {
+  const ideas = await Project.findAll();
+  return baseAssistantAnswer({
+    messages: messages.filter(m => m.target === 'project'), // Фильтрация сообщений, если нужна только здесь
+    meta,
+    prompt: getPrompt(ideas, meta),
+    schema: (data) =>
+        typeof data.startedAt === 'string' &&
+        typeof data.duration === 'string' &&
+        typeof data.placeId === 'string',
+    transformer: (data) => ({
+      startedAt: data.startedAt,
+      duration: data.duration,
+      placeId: Number(data.placeId),
+    })
+  })
+}

@@ -10,15 +10,14 @@ import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import MeetCard from './MeetCard';
-import {createVisit, deleteVisit, fetchProject, generateImage} from './requests.ts';
+import MeetCard from '../MeetCard.tsx';
+import {createVisit, deleteVisit, fetchProject, generateImage} from '../requests.ts';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -119,12 +118,6 @@ function ProjectPage() {
                 </IconButton>
             </Toolbar>
         </AppBar>
-        {/*<Stack*/}
-        {/*  direction="row"*/}
-        {/*  spacing={2}*/}
-        {/*  sx={{ mb: 2, alignItems: 'center', justifyContent: 'space-between' }}*/}
-        {/*>*/}
-        {/*</Stack>*/}
 
         <Card
           elevation={0}
@@ -218,7 +211,7 @@ function ProjectPage() {
               <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
                 <AvatarGroup max={5}>
                   {(project?.participations || []).map(participant => (
-                    <Avatar src={participant.image} alt="Участник" key={participant.id} />
+                    <Avatar src={participant.user.image} alt="Участник" key={participant.id} />
                   ))}
                 </AvatarGroup>
 
@@ -235,57 +228,47 @@ function ProjectPage() {
                   gap: 2,
                 }}
               >
-                <Paper
-                  elevation={0}
-                  sx={{
-                    p: 2,
-                    borderRadius: 3,
-                    bgcolor: 'grey.100',
-                  }}
-                >
-                  <Typography variant="body2" color="text.secondary">
-                    Место
-                  </Typography>
-                  <Typography sx={{ fontWeight: 800 }}>{project?.place?.title}</Typography>
-                </Paper>
 
-                <Paper
-                  elevation={0}
-                  sx={{
-                    p: 2,
-                    borderRadius: 3,
-                    bgcolor: 'grey.100',
-                  }}
-                >
-                  <Typography variant="body2" color="text.secondary">
-                    Организатор
-                  </Typography>
-                  <Typography sx={{ fontWeight: 800 }}>{project?.passport?.title}</Typography>
-                </Paper>
+                  {project?.passport && (
+                      <Paper
+                          elevation={0}
+                          sx={{
+                              p: 2,
+                              borderRadius: 3,
+                              bgcolor: 'grey.100',
+                          }}
+                      >
+                          <Typography variant="body2" color="text.secondary">
+                              Учитель
+                          </Typography>
+                          <Typography sx={{ fontWeight: 800 }}>{project?.passport?.title}</Typography>
+                      </Paper>
+                  )}
+
               </Box>
 
-              <Divider />
-
-              <Box component="section">
-                <Typography component="h2" variant="h4" sx={{ mb: 2.5, fontWeight: 900 }}>
-                  Расписание
-                </Typography>
-                <Stack spacing={2}>
-                  {(project?.meets || [])
-                    .filter(meeting => !meeting.deletedAt)
-                    .map(meeting => (
-                      <MeetCard
-                        meeting={meeting}
-                        key={meeting.id}
-                        isVisitActionPending={
-                          createVisitMutation.isPending || deleteVisitMutation.isPending
-                        }
-                        onCreateVisit={meetId => createVisitMutation.mutate(meetId)}
-                        onDeleteVisit={visitId => deleteVisitMutation.mutate(visitId)}
-                      />
-                    ))}
-                </Stack>{' '}
-              </Box>
+                {project?.meets.length > 0 && (
+                    <Box component="section">
+                        <Typography component="h2" variant="h4" sx={{ mb: 2.5, fontWeight: 900 }}>
+                            Расписание
+                        </Typography>
+                        <Stack spacing={2}>
+                            {(project?.meets || [])
+                                .filter(meeting => !meeting.deletedAt)
+                                .map(meeting => (
+                                    <MeetCard
+                                        meeting={meeting}
+                                        key={meeting.id}
+                                        isVisitActionPending={
+                                            createVisitMutation.isPending || deleteVisitMutation.isPending
+                                        }
+                                        onCreateVisit={meetId => createVisitMutation.mutate(meetId)}
+                                        onDeleteVisit={visitId => deleteVisitMutation.mutate(visitId)}
+                                    />
+                                ))}
+                        </Stack>{' '}
+                    </Box>
+                )}
             </Stack>
           </CardContent>
         </Card>

@@ -67,9 +67,9 @@ export default {
       // 1. Пытаемся получить данные из кэша Redis
       const cachedData = await redis.get(cacheKey);
 
-      if (cachedData) {
-        return res.json(JSON.parse(cachedData));
-      }
+      // if (cachedData) {
+      //   return res.json(JSON.parse(cachedData));
+      // }
 
       // Передаем параметры запроса и ID текущего пользователя
       const params = { ...req.query, passportId: req.passport?.id };
@@ -116,9 +116,10 @@ export default {
       }
 
       // Получаем все связанные данные параллельно для ускорения
-      const [place, passport] = await Promise.all([
+      const [place, passport, user] = await Promise.all([
         Place.findById(project.placeId),
         Passport.findById(project.passportId),
+        User.findById(project.userId),
       ]);
 
       const [participations, meets] = await Promise.all([
@@ -153,6 +154,7 @@ export default {
       res.json({
         ...project,
         passport,
+        user,
         place,
         meets: meetsWithDetails,
         participations: participations.map((p, idx) => ({

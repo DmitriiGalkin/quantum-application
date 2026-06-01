@@ -11,9 +11,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   fetchMessages,
   fetchSendMessage,
-} from '../../requests';
-import ChatMessageList from './ChatMessageList';
-import ChatComposer from './ChatComposer';
+} from '../requests.ts';
+import ChatMessageList from './ChatMessageList.tsx';
+import ChatComposer from './ChatComposer.tsx';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   addMessage,

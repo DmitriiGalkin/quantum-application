@@ -1,5 +1,5 @@
 import Chat from '../models/chat.js';
-import ChatMessage from '../models/chatMessage.js';
+import Message from '../models/message.js';
 import {
   normalizeMessage,
   createAssistantMessage, getObjectFromMetadata, selectAssistant, getMetaMessages,
@@ -11,14 +11,10 @@ import { uploadImage } from '../assistants/imageAssistant.js';
 export default {
   create: async (req, res) => {
     try {
-      const chatId = await Chat.create({ target: req.body.workflow });
-      const meta = { user: {
-          title: "Катя",
-          description: "Увлечена рисованием хомяков",
-          age: "10"
-        }}
-      console.log('create')
-      const assistant = selectAssistant(req.body.workflow, meta);
+      const chatId = await Chat.create({ target: req.body.target });
+      const meta = {}
+
+      const assistant = selectAssistant(req.body.target, meta);
       const assistantContent = await assistant({
         messages: [],
         meta,
@@ -51,46 +47,25 @@ export default {
 
       const chatId = req.body.chatId || null;
       const chat = await Chat.findById(chatId);
+      const lastMessage = await Message.findLastByChatId(chat.id, 1);
+
 
       // 2. Сохраняем сообщение пользователя
-      await ChatMessage.create({
+      const messageId = await Message.create({
         chatId: chat.id,
         content: message,
         role: 'user',
+        target: lastMessage[0]?.target,
       });
 
-
-
-      const allMessages = await ChatMessage.findLastByChatId(chat.id, 50);
-      const meta = {...getMetaMessages(allMessages), user: {
-          "title": "Катя",
-          "description": "Увлечена рисованием хомяков",
-          "age": "10"
-        }}
+      const allMessages = await Message.findLastByChatId(chat.id, 50);
+      const meta = {...getMetaMessages(allMessages), teacher: {
+          description: "Профессия: учитель начальных классов, Интересы: чтение классики, интеллектуальные игры, руководство детскими клубами, Опыт работы с детьми: 10 часов в день, полная занятость в школе"
+        } }
+      console.log(meta, 'meta');
       meta.passport = req.passport;
 
       console.log(meta, 'meta');
-
-      // // 3. Проверка на команду создания
-      // if (isCreateCommand(message)) {
-      //   const recentMessages = await ChatMessage.findLastByChatId(chat.id, 2);
-      //   console.log(recentMessages, 'recentMessages');
-      //   const metadata = parseMetadata(recentMessages[0].metadata);
-      //
-      //   const systemMessage = await createSystemCreateMessage(metadata, req.passport.id);
-      //
-      //   const assistantMessage = await createAssistantMessage({
-      //     chatId: chat.id,
-      //     content: systemMessage,
-      //   });
-      //
-      //   await Chat.touch(chat.id);
-      //
-      //   return res.json({
-      //     chatId: chat.id,
-      //     message: normalizeMessage(assistantMessage),
-      //   });
-      // }
 
       const assistant = selectAssistant(chat.target, meta)
 
@@ -105,13 +80,21 @@ export default {
       // Если от ассистента получили готовую мету,
       // то обновляем общую мету и запускаем процесс обращени к ассистенту еще раз
       if (assistantContent.meta) {
-        console.log(assistantContent.meta, 'assistantContent');
+
+        // Обновляем сообщение пользователя
+        await Message.update(messageId, { metadata: assistantContent.meta });
+
+        console.log(assistantContent.meta, 'assistantContent.meta');
         const newMeta = {...meta, [assistantContent.meta.target]: assistantContent.meta.data}
+        console.log(newMeta, 'newMeta');
+
+
         const assistant = selectAssistant(chat.target, newMeta)
         assistantContent = await assistant({
           messages: allMessages,
           meta: newMeta,
         });
+
       }
 
       const assistantMessage = await createAssistantMessage({
@@ -147,7 +130,7 @@ export default {
           .json({ error: true, message: 'Чат не найден или у вас нет доступа' });
       }
 
-      const messages = await ChatMessage.findByChatId(chat.id);
+      const messages = await Message.findByChatId(chat.id);
       const meta = getMetaMessages(messages);
 
       res.json({

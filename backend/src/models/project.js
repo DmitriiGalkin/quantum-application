@@ -6,6 +6,7 @@ class Project {
     this.title = data.title;
     this.description = data.description;
     this.image = data.image;
+    this.userId = data.userId;
     this.passportId = data.passportId;
     this.placeId = data.placeId;
     this.deletedAt = data.deletedAt;
@@ -16,7 +17,7 @@ class Project {
   static async create(data) {
     try {
       const [result] = await pool.query(
-          'INSERT INTO project SET `title` = :title, `description` = :description, `passportId` = :passportId',
+          'INSERT INTO project SET `title` = :title, `description` = :description, `userId` = :userId',
           data // Передаем объект data как есть
       );
       return result.insertId;
@@ -33,6 +34,22 @@ class Project {
       WHERE id = ?
     `;
     const values = [obj.title, obj.description, obj.image, obj.placeId, id];
+
+    try {
+      await pool.query(sql, values);
+    } catch (err) {
+      console.error('Project.update error:', err);
+      throw err;
+    }
+  }
+
+  static async updatePassportId(id, obj) {
+    const sql = `
+      UPDATE project 
+      SET passportId = ? 
+      WHERE id = ?
+    `;
+    const values = [obj.passportId, id];
 
     try {
       await pool.query(sql, values);

@@ -1,11 +1,14 @@
 import { apiFetch, getAccessToken } from './api';
-import type { Passport, Place, Project, User } from './types';
+import type {Meet, Passport, Place, Project, User} from './types';
 import type { ExtendedMeet } from './MeetCard';
 import type { ProjectFormValues } from './ProjectForm';
 import { useQuery } from '@tanstack/react-query';
 
 export interface ExtendedProject extends Project {
   passport?: {
+    title: string;
+  };
+  user?: {
     title: string;
   };
   place?: {
@@ -19,14 +22,13 @@ export interface ExtendedProject extends Project {
     title: string;
     id: string;
     image: string;
+    user?: User;
   }[];
 }
 
 export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
 
-export type ChatTarget = 'user' | 'idea' | 'project' | 'none';
-
-export type Workflow = 'user_idea_auth' | 'teacher_project_passport' | 'idea';
+export type ChatTarget = 'user' | 'teacher' | 'idea' | 'project' | 'meet' | 'none';
 
 export type ChatMessageRole = 'user' | 'assistant' | 'system';
 
@@ -45,14 +47,21 @@ export type ChatMessage = {
   };
 };
 
+export interface Meta {
+  user?: User
+  idea?: Project
+  teacher?: Passport
+  project?: Project
+  projects?: Project[]
+  places?: Place[]
+  meet?: Meet
+  auth?: string[]
+}
+
 export type Chat = {
-  workflow: Workflow;
+  workflow: ChatTarget;
   messages: ChatMessage[];
-  meta?: {
-    user?: User
-    idea?: Project
-    auth?: string[]
-  }
+  meta?: Meta
 };
 
 export type SendMessageResponse = {
@@ -100,14 +109,14 @@ export async function fetchMessages(chatId: number): Promise<Chat> {
   return apiFetch<Chat>(`/chat/${chatId}`);
 }
 
-export async function fetchCreateChat({ workflow }: { workflow: Workflow }): Promise<number> {
+export async function fetchCreateChat({ target }: { target: ChatTarget }): Promise<number> {
   return apiFetch<any>('/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      workflow,
+      target,
     }),
   });
 }

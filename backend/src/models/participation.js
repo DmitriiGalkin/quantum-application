@@ -19,7 +19,10 @@ class Participation {
    */
   static async create(data) {
     try {
-      const [result] = await pool.query('INSERT INTO participation SET ?', data);
+      const [result] = await pool.query(
+          'INSERT INTO `participation` (projectId, userId) VALUES (?, ?)',
+          [data.projectId, data.userId],
+      );
       return result.insertId;
     } catch (err) {
       console.error('Participation.create error:', err);

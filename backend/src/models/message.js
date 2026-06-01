@@ -1,7 +1,7 @@
 import pool from '../db.js'; // Импортируем пул соединений
 
 // Конструктор для создания объекта сообщения
-class ChatMessage {
+class Message {
   constructor(data) {
     this.id = data.id;
     this.chatId = data.chatId;
@@ -49,17 +49,17 @@ class ChatMessage {
   /**
    * Находит сообщение по ID.
    * @param {number} id - ID сообщения.
-   * @returns {Promise<ChatMessage|null>} - Объект сообщения или null.
+   * @returns {Promise<Message|null>} - Объект сообщения или null.
    */
   static async findById(id) {
     const [rows] = await pool.query('SELECT * FROM chatMessage WHERE id = ?', [id]);
-    return rows.length > 0 ? new ChatMessage(rows[0]) : null;
+    return rows.length > 0 ? new Message(rows[0]) : null;
   }
 
   /**
    * Находит все сообщения в чате.
    * @param {number} chatId - ID чата.
-   * @returns {Promise<ChatMessage[]>} - Массив сообщений.
+   * @returns {Promise<Message[]>} - Массив сообщений.
    */
   static async findByChatId(chatId) {
     const sql = `
@@ -69,14 +69,14 @@ class ChatMessage {
       ORDER BY createdAt ASC, id ASC
     `;
     const [rows] = await pool.query(sql, [chatId]);
-    return rows.map(row => new ChatMessage(row));
+    return rows.map(row => new Message(row));
   }
 
   /**
    * Находит последние N сообщений в чате.
    * @param {number} chatId - ID чата.
    * @param {number} limit - Количество сообщений.
-   * @returns {Promise<ChatMessage[]>} - Массив сообщений в правильном порядке.
+   * @returns {Promise<Message[]>} - Массив сообщений в правильном порядке.
    */
   static async findLastByChatId(chatId, limit) {
     const sql = `
@@ -90,7 +90,7 @@ class ChatMessage {
     const [rows] = await pool.query(sql, [chatId, limit]);
 
     // Реверс нужен, чтобы вернуть сообщения в хронологическом порядке (старый -> новый)
-    return rows.reverse().map(row => new ChatMessage(row));
+    return rows.reverse().map(row => new Message(row));
   }
 
   /**
@@ -149,4 +149,4 @@ class ChatMessage {
   }
 }
 
-export default ChatMessage;
+export default Message;

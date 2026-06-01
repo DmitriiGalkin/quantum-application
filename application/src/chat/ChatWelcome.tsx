@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Message from './Message';
+import Message from './Message.tsx';
 
 function ChatWelcome() {
   return (
