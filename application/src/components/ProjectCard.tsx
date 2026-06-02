@@ -1,10 +1,9 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import type { Project } from './types';
+import type { Project } from '../types.ts';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 
 type ProjectCardProps = {
@@ -32,14 +31,6 @@ function ProjectCard({ project, generateImageHandler, isGeneratingImage }: Proje
     >
       {/* Родительский контейнер для позиционирования иконки */}
       <Box sx={{ position: 'relative', width: '100%' }}>
-        <CardMedia
-          component="img"
-          height="90"
-          image={project.image || `/bg.jpeg`}
-          alt={project.title || 'Проект'}
-          sx={{ objectFit: 'cover' }}
-        />
-
         <Box
           sx={{
             position: 'absolute',
@@ -76,6 +67,9 @@ function ProjectCard({ project, generateImageHandler, isGeneratingImage }: Proje
       </Box>
 
       <CardContent sx={{ flexGrow: 1 }}>
+          <Typography sx={{ fontWeight: 800 }} gutterBottom>
+              {project.passportId}
+          </Typography>
         <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom>
           {project.title}
         </Typography>

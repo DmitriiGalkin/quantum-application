@@ -22,7 +22,7 @@ class Message {
    */
   static async create(data) {
     const sql = `
-      INSERT INTO chatMessage
+      INSERT INTO message
         (chatId, passportId, role, content, metadata, target)
       VALUES
         (?, ?, ?, ?, ?, ?)
@@ -41,7 +41,7 @@ class Message {
       const [result] = await pool.query(sql, values);
       return result.insertId; // Возвращаем ID созданной записи
     } catch (err) {
-      console.error('ChatMessage.create error:', err);
+      console.error('message.create error:', err);
       throw err; // Выбрасываем ошибку, чтобы её поймал контроллер
     }
   }
@@ -52,7 +52,7 @@ class Message {
    * @returns {Promise<Message|null>} - Объект сообщения или null.
    */
   static async findById(id) {
-    const [rows] = await pool.query('SELECT * FROM chatMessage WHERE id = ?', [id]);
+    const [rows] = await pool.query('SELECT * FROM message WHERE id = ?', [id]);
     return rows.length > 0 ? new Message(rows[0]) : null;
   }
 
@@ -64,7 +64,7 @@ class Message {
   static async findByChatId(chatId) {
     const sql = `
       SELECT *
-      FROM chatMessage
+      FROM message
       WHERE chatId = ?
       ORDER BY createdAt ASC, id ASC
     `;
@@ -81,7 +81,7 @@ class Message {
   static async findLastByChatId(chatId, limit) {
     const sql = `
       SELECT *
-      FROM chatMessage
+      FROM message
       WHERE chatId = ?
       ORDER BY createdAt DESC, id DESC
       LIMIT ?
@@ -128,7 +128,7 @@ class Message {
     }
 
     const sql = `
-      UPDATE chatMessage
+      UPDATE message
       SET ${sqlParts.join(', ')}
       WHERE id = ?
     `;
@@ -143,7 +143,7 @@ class Message {
 
       return result.affectedRows;
     } catch (err) {
-      console.error('ChatMessage.update error:', err);
+      console.error('message.update error:', err);
       throw err; // Выбрасываем ошибку для обработки в контроллере
     }
   }

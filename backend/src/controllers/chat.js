@@ -2,11 +2,9 @@ import Chat from '../models/chat.js';
 import Message from '../models/message.js';
 import {
   normalizeMessage,
-  createAssistantMessage, getObjectFromMetadata, selectAssistant, getMetaMessages,
+  createAssistantMessage, selectAssistant, getMetaMessages,
 } from '../services/chatService.js';
 
-import { generateProjectImage } from '../assistants/imageAssistant.js';
-import { uploadImage } from '../assistants/imageAssistant.js';
 
 export default {
   create: async (req, res) => {

@@ -2,8 +2,6 @@
 
 import express from 'express';
 import passport from 'passport';
-
-// Импортируем контроллеры и вспомогательные модули
 import user from './controllers/user.js';
 import passportController from './controllers/passport.js';
 import meet from './controllers/meet.js';
@@ -11,6 +9,7 @@ import visit from './controllers/visit.js';
 import image from './controllers/image.js';
 import place from './controllers/place.js';
 import project from './controllers/project.js';
+import idea from './controllers/idea.js';
 import participation from './controllers/participation.js';
 import chat from './controllers/chat.js';
 import strategies from './strategies.js';
@@ -58,6 +57,12 @@ router.post('/passport/googleLogin', passportController.googleLogin);
  * Картинки
  */
 router.post('/image', upload.single('image'), image.upload);
+
+/**
+ * Идеи
+ */
+router.get('/ideas', passportController.usePassport, idea.findAll);
+router.get('/idea/:id', passportController.usePassport, idea.findById);
 
 /**
  * Проекты

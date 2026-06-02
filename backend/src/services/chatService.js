@@ -7,7 +7,8 @@ import User from "../models/user.js";
 import Project from "../models/project.js";
 import {teacherAssistantAnswer} from "../assistants/teacherAssistant.js";
 import {projectAssistantAnswer} from "../assistants/projectAssistant.js";
-import Participation from "../models/participation.js";
+import Idea from "../models/idea.js";
+import IdeaUser from "../models/ideaUser.js";
 
 
 const getMetaMessages = allMessages =>
@@ -120,11 +121,11 @@ const selectAssistant = (target, meta) => {
 
       return async () => {
         const userId = await User.create({...meta.user, passportId: meta.passport.id })
-        const projectId = await Project.create({...meta.idea, userId })
-        const participationId = await Participation.create({ projectId, userId })
+        const ideaId = await Idea.create({...meta.idea, userId, passportId: meta.passport.id })
+        await IdeaUser.create({ ideaId, userId })
 
         return {
-          content: `Идея проекта Вашего ребенка <a href="/project/${projectId}">создана</a>. Сейчас чат можно закрыть, но вы всегда можете ко мне вернуться и я помогу создать новую идею для вашего ребенка.`,
+          content: `Идея проекта Вашего ребенка <a href="/idea/${ideaId}">создана</a>. Сейчас чат можно закрыть, но вы всегда можете ко мне вернуться и я помогу создать новую идею для вашего ребенка.`,
           target: 'idea',
         }
       };
@@ -141,14 +142,12 @@ const selectAssistant = (target, meta) => {
       if (!meta?.passport) {
         return authAssistant;
       }
-      console.log(meta,'meta projectAssistantAnswer')
-
 
       return async () => {
-        const projectId = await Project.updatePassportId(meta.project.id, { passportId: meta.passport.id })
+        const projectId = await Project.create({...meta.project, passportId: meta.passport.id, ideaId: meta.project.id})
 
         return {
-          content: `Все выяснили, теперь вы учитель <a href="/project/${meta.project.id}">проекта</a>. Ваша первоочередная задача создать встречу, а я Вам с этим помогу`,
+          content: `Все выяснили, теперь вы учитель <a href="/project/${projectId}">проекта</a>. Ваша первоочередная задача создать встречу, а я Вам с этим помогу`,
         }
       };
     }

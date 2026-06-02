@@ -43,6 +43,16 @@ export interface Project {
   deletedAt: string | null
 }
 
+export interface Idea {
+  id: number
+  userId: number | null
+  passportId: number | null
+  title: string | null
+  description: string | null
+  image: string | null
+  deletedAt: string | null
+}
+
 export interface Place {
   id: number;
   title?: string;

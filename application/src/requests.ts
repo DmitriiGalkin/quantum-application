@@ -1,5 +1,5 @@
 import { apiFetch, getAccessToken } from './api';
-import type {Meet, Passport, Place, Project, User} from './types';
+import type {Idea, Meet, Passport, Place, Project, User} from './types';
 import type { ExtendedMeet } from './MeetCard';
 import type { ProjectFormValues } from './ProjectForm';
 import { useQuery } from '@tanstack/react-query';
@@ -188,6 +188,10 @@ export async function fetchPassport(): Promise<ExtendedPassport> {
 
 export async function fetchProjects(type: Type, userId: number): Promise<Project[]> {
   return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
+}
+
+export async function fetchIdeas(userId: number): Promise<Idea[]> {
+  return apiFetch<Idea[]>('/ideas' + '?userId=' + userId);
 }
 
 export const usePassport = () => {
