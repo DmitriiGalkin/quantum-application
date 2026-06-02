@@ -54,7 +54,7 @@ function ProjectsPage() {
         isError: isProjectsError,
     } = useQuery({
         queryKey: ['projects', variant, passport?.users?.[0]?.id],
-        queryFn: () => fetchProjects(variant as Type, passport?.users?.[0]?.id),
+        queryFn: () => fetchProjects(variant as Type, passport?.users?.[0]?.id || 0),
     });
 
   return (

@@ -16,8 +16,8 @@ function UserGroup({ users }: UserGroupProps) {
 
 <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
         <AvatarGroup max={5}>
-            {(users || []).map(user => (
-                <Avatar src={user.image} alt="Участник" key={user.id} />
+            {users.map(user => (
+                <Avatar src={user.image || ''} alt="Участник" key={user.id} />
         ))}
         </AvatarGroup>
 

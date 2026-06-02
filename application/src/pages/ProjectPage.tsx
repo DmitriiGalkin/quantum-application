@@ -206,7 +206,8 @@ function ProjectPage() {
                 </Typography>
               </Box>
 
-                <UserGroup users={project.users} />
+                <UserGroup users={project.users || []} />
+
 
               <Box
                 sx={{
@@ -237,7 +238,7 @@ function ProjectPage() {
 
               </Box>
 
-                {project?.meets.length > 0 && (
+                {Boolean(project?.meets) && (
                     <Box component="section">
                         <Typography component="h2" variant="h4" sx={{ mb: 2.5, fontWeight: 900 }}>
                             Расписание

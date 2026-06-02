@@ -2,20 +2,9 @@ import {
   type Chat,
   type ChatMessage,
   type ChatMessageRole,
-  type Workflow,
   type ChatTarget,
 } from '../requests.ts';
 
-export const getWorkflowTarget = (workflow: Workflow, target: ChatTarget) => {
-  const activeUserId = localStorage.getItem('activeUserId');
-  switch (workflow) {
-    case 'user_idea_passport': {
-      if (!activeUserId) return 'user';
-      if (target === 'user' && activeUserId) return 'idea';
-      return 'none';
-    }
-  }
-};
 
 export const getCaption = (target: ChatTarget): string => {
   switch (target) {

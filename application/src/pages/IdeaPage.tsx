@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
@@ -22,6 +19,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
+import UserGroup from "../components/UserGroup.tsx";
 
 function IdeaPage() {
   const navigate = useNavigate();
@@ -208,15 +206,7 @@ function IdeaPage() {
                 </Typography>
               </Box>
 
-              <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-                <AvatarGroup max={5}>
-                  {(project?.users || []).map(user => (
-                    <Avatar src={user.image} alt="Участник" key={user.id} />
-                  ))}
-                </AvatarGroup>
-
-                <Chip label="+5 участников" color="primary" variant="outlined" />
-              </Stack>
+              <UserGroup users={project.users || []} />
 
               <Box
                 sx={{
@@ -247,7 +237,7 @@ function IdeaPage() {
 
               </Box>
 
-                {project?.meets.length > 0 && (
+                {Boolean(project?.meets) && (
                     <Box component="section">
                         <Typography component="h2" variant="h4" sx={{ mb: 2.5, fontWeight: 900 }}>
                             Расписание

@@ -23,7 +23,12 @@ import {ACCESS_TOKEN_STORAGE_KEY, saveAccessTokenFromUrl} from "../helper.ts";
 
 const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
-function HomeDrawer({ isMenuOpen, setIsMenuOpen }) {
+interface HomeDrawerProps {
+  isMenuOpen: boolean;
+  setIsMenuOpen: (isMenuOpen: boolean) => void;
+}
+
+function HomeDrawer({ isMenuOpen, setIsMenuOpen }: HomeDrawerProps ) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const initialAccessToken = saveAccessTokenFromUrl();

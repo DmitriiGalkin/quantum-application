@@ -46,7 +46,7 @@ function ProjectCard({ project }: ProjectCardProps) {
 
         <Typography color="text.secondary" gutterBottom>{project.description}</Typography>
 
-             <UserGroup users={project.users} />
+          <UserGroup users={project.users || []} />
 
 
           <Stack direction="row" spacing={1.25} sx={{ minWidth: 140, alignItems: 'center', justifyContent: 'flex-end' }}>

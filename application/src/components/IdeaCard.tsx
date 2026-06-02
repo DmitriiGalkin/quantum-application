@@ -19,11 +19,6 @@ type IdeaCardProps = {
 function IdeaCard({ idea, generateImageHandler, isGeneratingImage }: IdeaCardProps) {
     const [liked, setLiked] = useState(false);
     const [likesCount, setLikesCount] = useState(124);
-    const handleLike = (e) => {
-        e.stopPropagation();
-        setLiked(!liked);
-        setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
-    };
 
     return (
     <Card
@@ -91,7 +86,11 @@ function IdeaCard({ idea, generateImageHandler, isGeneratingImage }: IdeaCardPro
         <Typography color="text.secondary">{idea.description}</Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <IconButton
-                  onClick={handleLike}
+                  onClick={(e) => {
+                      e.stopPropagation();
+                      setLiked(!liked);
+                      setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
+                  }}
                   color={liked ? 'error' : 'default'}
                   sx={{ transition: 'all 0.2s ease-in-out' }}
               >

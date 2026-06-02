@@ -30,7 +30,7 @@ export const saveAccessTokenFromUrl = () => {
 
 const TARGET_STORAGE_KEY = 'target';
 
-export const useTarget = (): ChatTarget => {
+export const useTarget = (): ChatTarget | null => {
     if (typeof window === 'undefined') {
         return null;
     }
