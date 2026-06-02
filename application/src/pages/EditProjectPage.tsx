@@ -13,8 +13,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import ProjectForm, { type ProjectFormValues } from './ProjectForm';
-import { type ExtendedProject, fetchProject, updateProject } from './requests';
+import ProjectForm, { type ProjectFormValues } from '../ProjectForm.tsx';
+import { type ExtendedProject, fetchProject, updateProject } from '../requests.ts';
 
 function toFormValues(project: ExtendedProject): ProjectFormValues {
   return {
@@ -143,7 +143,7 @@ function EditProjectPage() {
                       Участники
                     </Typography>
 
-                    {project.participations?.length ? (
+                    {project.users?.length ? (
                       <Box
                         sx={{
                           display: 'grid',
@@ -154,11 +154,11 @@ function EditProjectPage() {
                           gap: 2,
                         }}
                       >
-                        {project.participations.map(participant => (
+                        {project.users.map(user => (
                           <Paper
                             component="article"
                             elevation={0}
-                            key={participant.id}
+                            key={user.id}
                             sx={{
                               p: 2,
                               textAlign: 'center',
@@ -167,8 +167,8 @@ function EditProjectPage() {
                             }}
                           >
                             <Avatar
-                              src={participant.image ?? undefined}
-                              alt={participant.title ?? 'Участник'}
+                              src={user.image ?? undefined}
+                              alt={user.title ?? 'Участник'}
                               sx={{
                                 width: 64,
                                 height: 64,
@@ -178,12 +178,12 @@ function EditProjectPage() {
                             />
 
                             <Typography sx={{ fontWeight: 800 }}>
-                              {participant.title ?? 'Без имени'}
+                              {user.title ?? 'Без имени'}
                             </Typography>
 
-                            {participant.age !== null && participant.age !== undefined && (
+                            {user.age !== null && user.age !== undefined && (
                               <Typography variant="body2" color="text.secondary">
-                                {participant.age} лет
+                                {user.age} лет
                               </Typography>
                             )}
                           </Paper>

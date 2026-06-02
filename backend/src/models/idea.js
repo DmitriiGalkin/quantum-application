@@ -64,8 +64,8 @@ class Idea {
 
     // Условие для JOIN (participation)
     if (params?.variant === 'participation' && params?.userId) {
-      sql += ' LEFT JOIN participation ON participation.projectId = idea.id';
-      conditions.push('participation.userId = ?');
+      sql += ' LEFT JOIN projectUser ON projectUser.projectId = idea.id';
+      conditions.push('projectUser.userId = ?');
       values.push(params.userId);
     }
 

@@ -6,6 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import type { Idea } from '../types';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
+import { useState } from "react";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 type IdeaCardProps = {
   idea: Idea;
@@ -14,7 +17,15 @@ type IdeaCardProps = {
 };
 
 function IdeaCard({ idea, generateImageHandler, isGeneratingImage }: IdeaCardProps) {
-  return (
+    const [liked, setLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(124);
+    const handleLike = (e) => {
+        e.stopPropagation();
+        setLiked(!liked);
+        setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
+    };
+
+    return (
     <Card
       component="article"
       elevation={0}
@@ -78,6 +89,18 @@ function IdeaCard({ idea, generateImageHandler, isGeneratingImage }: IdeaCardPro
           {idea.title}
         </Typography>
         <Typography color="text.secondary">{idea.description}</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <IconButton
+                  onClick={handleLike}
+                  color={liked ? 'error' : 'default'}
+                  sx={{ transition: 'all 0.2s ease-in-out' }}
+              >
+                  {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              </IconButton>
+              <Typography variant="body1">
+                  {likesCount.toLocaleString()}
+              </Typography>
+          </Box>
       </CardContent>
     </Card>
   );

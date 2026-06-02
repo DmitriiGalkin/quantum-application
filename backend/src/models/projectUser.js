@@ -1,6 +1,6 @@
 import pool from '../db.js'; // Импортируем пул соединений
 
-class Participation {
+class ProjectUser {
   constructor(data) {
     this.id = data.id;
     this.userId = data.userId;
@@ -10,8 +10,6 @@ class Participation {
     this.updatedAt = data.updatedAt;
   }
 
-  // --- СТАТИЧЕСКИЕ МЕТОДЫ ---
-
   /**
    * Создает новую запись об участии.
    * @param {Object} data - Данные для вставки (userId, projectId).
@@ -20,12 +18,12 @@ class Participation {
   static async create(data) {
     try {
       const [result] = await pool.query(
-          'INSERT INTO `participation` (projectId, userId) VALUES (?, ?)',
+          'INSERT INTO `projectUser` (projectId, userId) VALUES (?, ?)',
           [data.projectId, data.userId],
       );
       return result.insertId;
     } catch (err) {
-      console.error('Participation.create error:', err);
+      console.error('projectUser.create error:', err);
       throw err;
     }
   }
@@ -37,9 +35,9 @@ class Participation {
    */
   static async delete(id) {
     try {
-      await pool.query('DELETE FROM participation WHERE id = ?', [id]);
+      await pool.query('DELETE FROM projectUser WHERE id = ?', [id]);
     } catch (err) {
-      console.error('Participation.delete error:', err);
+      console.error('projectUser.delete error:', err);
       throw err;
     }
   }
@@ -51,9 +49,9 @@ class Participation {
    */
   static async deleteByUserId(userId) {
     try {
-      await pool.query('DELETE FROM participation WHERE userId = ?', [userId]);
+      await pool.query('DELETE FROM projectUser WHERE userId = ?', [userId]);
     } catch (err) {
-      console.error('Participation.deleteByUserId error:', err);
+      console.error('projectUser.deleteByUserId error:', err);
       throw err;
     }
   }
@@ -61,14 +59,14 @@ class Participation {
   /**
    * Находит участие по ID.
    * @param {number} id - ID записи.
-   * @returns {Promise<Participation|null>}
+   * @returns {Promise<ProjectUser|null>}
    */
   static async findById(id) {
     try {
-      const [rows] = await pool.query('SELECT * FROM participation WHERE id = ?', [id]);
-      return rows.length > 0 ? new Participation(rows[0]) : null;
+      const [rows] = await pool.query('SELECT * FROM projectUser WHERE id = ?', [id]);
+      return rows.length > 0 ? new ProjectUser(rows[0]) : null;
     } catch (err) {
-      console.error('Participation.findById error:', err);
+      console.error('projectUser.findById error:', err);
       throw err;
     }
   }
@@ -76,16 +74,16 @@ class Participation {
   /**
    * Находит все участия в проекте.
    * @param {number} projectId - ID проекта.
-   * @returns {Promise<Participation[]>}
+   * @returns {Promise<ProjectUser[]>}
    */
   static async findByProjectId(projectId) {
     try {
-      const [rows] = await pool.query('SELECT * FROM participation WHERE projectId = ?', [
+      const [rows] = await pool.query('SELECT * FROM projectUser WHERE projectId = ?', [
         projectId,
       ]);
-      return rows.map(row => new Participation(row));
+      return rows.map(row => new ProjectUser(row));
     } catch (err) {
-      console.error('Participation.findByProjectId error:', err);
+      console.error('projectUser.findByProjectId error:', err);
       throw err;
     }
   }
@@ -94,18 +92,18 @@ class Participation {
    * Проверяет, участвует ли пользователь в проекте.
    * @param {number} userId - ID пользователя.
    * @param {number} projectId - ID проекта.
-   * @returns {Promise<Participation|null>}
+   * @returns {Promise<ProjectUser|null>}
    */
   static async findByUserAndProjectIds(userId, projectId) {
     try {
-      const sql = 'SELECT * FROM participation WHERE userId = ? AND projectId = ?';
+      const sql = 'SELECT * FROM projectUser WHERE userId = ? AND projectId = ?';
       const [rows] = await pool.query(sql, [userId, projectId]);
-      return rows.length > 0 ? new Participation(rows[0]) : null;
+      return rows.length > 0 ? new ProjectUser(rows[0]) : null;
     } catch (err) {
-      console.error('Participation.findByUserAndProjectIds error:', err);
+      console.error('projectUser.findByUserAndProjectIds error:', err);
       throw err;
     }
   }
 }
 
-export default Participation;
+export default ProjectUser;

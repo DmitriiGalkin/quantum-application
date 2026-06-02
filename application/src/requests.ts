@@ -1,6 +1,6 @@
 import { apiFetch, getAccessToken } from './api';
 import type {Idea, Meet, Passport, Place, Project, User} from './types';
-import type { ExtendedMeet } from './MeetCard';
+import type { ExtendedMeet } from './components/MeetCard.tsx';
 import type { ProjectFormValues } from './ProjectForm';
 import { useQuery } from '@tanstack/react-query';
 
@@ -17,13 +17,7 @@ export interface ExtendedProject extends Project {
     description: string;
   };
   meets?: ExtendedMeet[];
-  participations?: {
-    age: null;
-    title: string;
-    id: string;
-    image: string;
-    user?: User;
-  }[];
+  users?: User[];
 }
 
 export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
@@ -176,7 +170,7 @@ export async function generateImage(projectId: number) {
   });
 }
 
-export type Type = 'self' | 'ideas' | 'projects' | null;
+export type Type = 'self' | 'participation' | null;
 
 interface ExtendedPassport extends Passport {
   users?: User[];
@@ -190,8 +184,8 @@ export async function fetchProjects(type: Type, userId: number): Promise<Project
   return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
 }
 
-export async function fetchIdeas(userId: number): Promise<Idea[]> {
-  return apiFetch<Idea[]>('/ideas' + '?userId=' + userId);
+export async function fetchIdeas(type: Type, userId: number): Promise<Idea[]> {
+  return apiFetch<Idea[]>('/ideas' + '?variant=' + type + '&userId=' + userId);
 }
 
 export const usePassport = () => {

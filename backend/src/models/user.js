@@ -73,6 +73,22 @@ class User {
     }
   }
 
+  static async findByProjectId(projectId) {
+    try {
+      const sql = `
+        SELECT DISTINCT user.*
+        FROM user
+        LEFT JOIN projectUser ON user.id = projectUser.userId
+        WHERE projectUser.projectId = ?
+      `;
+      const [rows] = await pool.query(sql, [projectId]);
+      return rows.map(row => new User(row));
+    } catch (err) {
+      console.error('User.findByProjectId error:', err);
+      throw err;
+    }
+  }
+
   // Участники встречи (через JOIN с таблицей visit)
   static async findByMeet(meetId) {
     try {

@@ -16,14 +16,14 @@ import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import MeetCard from '../MeetCard.tsx';
+import MeetCard from '../components/MeetCard.tsx';
 import {createVisit, deleteVisit, fetchProject, generateImage} from '../requests.ts';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 
-function ProjectPage() {
+function IdeaPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
@@ -210,8 +210,8 @@ function ProjectPage() {
 
               <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
                 <AvatarGroup max={5}>
-                  {(project?.participations || []).map(participant => (
-                    <Avatar src={participant.user.image} alt="Участник" key={participant.id} />
+                  {(project?.users || []).map(user => (
+                    <Avatar src={user.image} alt="Участник" key={user.id} />
                   ))}
                 </AvatarGroup>
 
@@ -276,4 +276,4 @@ function ProjectPage() {
   );
 }
 
-export default ProjectPage;
+export default IdeaPage;

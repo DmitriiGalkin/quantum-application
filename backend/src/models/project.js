@@ -64,10 +64,9 @@ class Project {
     const conditions = [];
     const values = [];
 
-    // Условие для JOIN (participation)
     if (params?.variant === 'participation' && params?.userId) {
-      sql += ' LEFT JOIN participation ON participation.projectId = project.id';
-      conditions.push('participation.userId = ?');
+      sql += ' LEFT JOIN projectUser ON projectUser.projectId = project.id';
+      conditions.push('projectUser.userId = ?');
       values.push(params.userId);
     }
 
@@ -94,6 +93,8 @@ class Project {
     if (conditions.length > 0) {
       sql += ' WHERE ' + conditions.join(' AND ');
     }
+
+    console.log(sql, values);
 
     try {
       const [rows] = await pool.query(sql, values);

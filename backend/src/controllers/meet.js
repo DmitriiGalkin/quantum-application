@@ -82,7 +82,7 @@ export default {
         LEFT JOIN place pl ON pl.id = p.placeId
         LEFT JOIN visit v ON v.meetId = m.id
         LEFT JOIN user u ON u.id = v.userId AND u.deletedAt IS NULL
-        WHERE ${isForPassport ? 'm.passportId = ?' : 'EXISTS (SELECT 1 FROM participation WHERE projectId = m.projectId AND userId = ?)'}
+        WHERE ${isForPassport ? 'm.passportId = ?' : 'EXISTS (SELECT 1 FROM projectUser WHERE projectId = m.projectId AND userId = ?)'}
         ORDER BY m.startedAt DESC
       `;
 

@@ -1,10 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import Alert from '@mui/material/Alert';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -13,13 +11,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import MenuIcon from '@mui/icons-material/Menu';
-import ProjectCard from '../components/ProjectCard.tsx';
 import '../App.css';
-import {useMutation, useQuery} from '@tanstack/react-query';
-import {fetchCreateChat, fetchIdeas, fetchProjects} from '../requests.ts';
+import {useMutation} from '@tanstack/react-query';
+import {fetchCreateChat} from '../requests.ts';
 import {saveAccessTokenFromUrl, strategies, useTarget} from "../helper.ts";
-import HomeDrawer from "./HomeDrawer.tsx";
-import IdeaCard from "../components/IdeaCard.tsx";
+import HomeDrawer from "../components/HomeDrawer.tsx";
 
 const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
@@ -44,24 +40,6 @@ function HomePage() {
       });
     }
   }, [accessToken, initialAccessToken]);
-
-    const {
-        data: projects = [],
-        isLoading: isProjectsLoading,
-        isError: isProjectsError,
-    } = useQuery({
-        queryKey: ['projects', 'self'],
-        queryFn: () => fetchProjects('projects', 1),
-    });
-
-  const {
-    data: ideas = [],
-    isLoading: isIdeasLoading,
-    isError: isIdeasError,
-  } = useQuery({
-    queryKey: ['ideas'],
-    queryFn: () => fetchIdeas(1),
-  });
 
   // @ts-ignore
   return (
@@ -131,7 +109,7 @@ function HomePage() {
       {accessToken && <HomeDrawer isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}/>}
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        {!accessToken && (
+        {!accessToken ? (
           <Paper
             component="section"
             elevation={0}
@@ -182,84 +160,9 @@ function HomePage() {
               </Stack>
             </Stack>
           </Paper>
+        ) : (
+            <Box>Здравствуйте, вы у нас не впервые</Box>
         )}
-          <Box component="section">
-              <Typography sx={{ fontWeight: 900, mb: 3 }} variant="h4">
-                  Идеи
-              </Typography>
-
-              {isIdeasLoading && (
-                  <Stack
-                      direction="row"
-                      spacing={2}
-                      sx={{
-                          alignItems: 'center',
-                      }}
-                  >
-                      <CircularProgress size={24} />
-                      <Typography>Загрузка идей...</Typography>
-                  </Stack>
-              )}
-
-              {isIdeasError && <Alert severity="error">Не удалось загрузить идеи.</Alert>}
-
-              {!isIdeasLoading && !isIdeasError && (
-                  <Box
-                      sx={{
-                          display: 'grid',
-                          gridTemplateColumns: {
-                              xs: '1fr',
-                              sm: 'repeat(2, minmax(0, 1fr))',
-                              md: 'repeat(3, minmax(0, 1fr))',
-                          },
-                          gap: 3,
-                      }}
-                  >
-                      {ideas.map(idea => (
-                          <IdeaCard idea={idea} key={idea.id} />
-                      ))}
-                  </Box>
-              )}
-          </Box>
-
-        <Box component="section">
-          <Typography sx={{ fontWeight: 900, mb: 3 }} variant="h4">
-            Проекты
-          </Typography>
-
-          {isProjectsLoading && (
-            <Stack
-              direction="row"
-              spacing={2}
-              sx={{
-                alignItems: 'center',
-              }}
-            >
-              <CircularProgress size={24} />
-              <Typography>Загрузка проектов...</Typography>
-            </Stack>
-          )}
-
-          {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
-
-          {!isProjectsLoading && !isProjectsError && (
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: {
-                  xs: '1fr',
-                  sm: 'repeat(2, minmax(0, 1fr))',
-                  md: 'repeat(3, minmax(0, 1fr))',
-                },
-                gap: 3,
-              }}
-            >
-              {projects.map(project => (
-                <ProjectCard project={project} key={project.id} />
-              ))}
-            </Box>
-          )}
-        </Box>
       </Container>
     </Box>
   );

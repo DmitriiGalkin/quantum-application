@@ -46,8 +46,8 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen }) {
 
   return (
         <Drawer open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
-          <Box sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <Stack spacing={3}>
+          <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Stack spacing={3} sx={{ p:3 }}>
               <Stack
                 direction="row"
                 spacing={2}
@@ -72,6 +72,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen }) {
 
               <List disablePadding>
                 <ListItemButton
+
                   component={Link}
                   to="/chat?target=idea"
                   onClick={() => {
@@ -97,11 +98,12 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen }) {
 
                 <ListItemButton
                   component={Link}
-                  to="/"
+                  to="/ideas?variant=self"
                   onClick={() => {
                     setIsMenuOpen(false);
                   }}
                   sx={{ borderRadius: 2 }}
+                  //selected
                 >
                   <ListItemIcon sx={{ minWidth: 40 }}>
                     <LightbulbIcon />
@@ -111,7 +113,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen }) {
 
                 <ListItemButton
                     component={Link}
-                    to="/"
+                    to="/projects?variant=participation"
                     onClick={() => {
                       setIsMenuOpen(false);
                     }}
@@ -137,7 +139,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen }) {
               </List>
             </Stack>
 
-            <Box sx={{ mt: 'auto' }}>
+            <Box sx={{ p:3, mt: 'auto', backgroundColor: 'gray' }}>
               <List disablePadding>
                 <ListItemButton
                   component={Link}
@@ -161,7 +163,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen }) {
 
                 <ListItemButton
                   component={Link}
-                  to="/"
+                  to="/projects?variant=self"
                   onClick={() => setIsMenuOpen(false)}
                   sx={{ borderRadius: 2 }}
                 >

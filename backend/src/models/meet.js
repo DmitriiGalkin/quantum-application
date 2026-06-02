@@ -135,7 +135,7 @@ class Meet {
       const sql = `
         SELECT DISTINCT m.*
         FROM meet m
-               JOIN participation p ON p.projectId = m.projectId
+               JOIN projectUser p ON p.projectId = m.projectId
         WHERE p.userId = ?
           AND m.startedAt >= CURDATE()
           AND m.deletedAt IS NULL

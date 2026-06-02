@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { useNavigate } from 'react-router-dom';
 import './PlaceSelectPage.css';
 import { useQuery } from '@tanstack/react-query';
-import { fetchPlaces } from './requests';
+import { fetchPlaces } from '../requests.ts';
 
 function PlaceSelectPage() {
   const navigate = useNavigate();

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import type { Meet, User } from './types';
+import type { Meet, User } from '../types.ts';
 
 export interface ExtendedMeet extends Meet {
   visits?: {

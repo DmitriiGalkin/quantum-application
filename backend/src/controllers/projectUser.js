@@ -1,4 +1,4 @@
-import Participation from '../models/participation.js';
+import ProjectUser from '../models/projectUser.js';
 import Project from '../models/project.js';
 
 function getPassportUserIds(req) {
@@ -15,11 +15,11 @@ export default {
       }
 
       // 2. Проверяем, не состоит ли пользователь уже в проекте
-      const currentParticipation = await Participation.findByUserAndProjectIds(
+      const currentProjectUser = await ProjectUser.findByUserAndProjectIds(
         req.body.userId,
         req.body.projectId,
       );
-      if (currentParticipation) {
+      if (currentProjectUser) {
         return res.status(409).json({ error: true, message: 'Вы уже состоите в проекте' });
       }
 
@@ -31,13 +31,13 @@ export default {
       }
 
       // 4. Создаем участие
-      const participation = new Participation(req.body);
-      const participationId = await Participation.create(participation);
+      const projectUser = new ProjectUser(req.body);
+      const projectUserId = await ProjectUser.create(projectUser);
 
       // Возвращаем ID созданной записи
-      res.status(201).json(participationId);
+      res.status(201).json(projectUserId);
     } catch (err) {
-      console.error('participation.create error:', err);
+      console.error('projectUser.create error:', err);
       res.status(500).json({ error: true, message: 'Не удалось создать участие в проекте' });
     }
   },
@@ -45,13 +45,13 @@ export default {
   delete: async (req, res) => {
     try {
       // 1. Находим участие по ID из параметров запроса
-      const participation = await Participation.findById(req.params.id);
-      if (!participation) {
+      const projectUser = await ProjectUser.findById(req.params.id);
+      if (!projectUser) {
         return res.status(404).json({ error: true, message: 'Участие не существует' });
       }
 
       // 2. Находим проект для проверки прав владельца
-      const project = await Project.findById(participation.projectId);
+      const project = await Project.findById(projectUser.projectId);
       if (!project) {
         return res.status(404).json({ error: true, message: 'Связанный проект не найден' });
       }
@@ -59,7 +59,7 @@ export default {
       // 3. Проверяем права доступа:
       // - Либо это собственный ребенок пользователя (isOwnChild)
       // - Либо пользователь является владельцем проекта (isProjectOwner)
-      const isOwnChild = getPassportUserIds(req).includes(participation.userId);
+      const isOwnChild = getPassportUserIds(req).includes(projectUser.userId);
       const isProjectOwner = project.passportId === req.passport.id;
 
       if (!isOwnChild && !isProjectOwner) {
@@ -67,11 +67,11 @@ export default {
       }
 
       // 4. Удаляем участие
-      await Participation.delete(participation.id);
+      await ProjectUser.delete(projectUser.id);
 
       res.json({ error: false, message: 'Удаление участия в проекте' });
     } catch (err) {
-      console.error('participation.delete error:', err);
+      console.error('projectUser.delete error:', err);
       res.status(500).json({ error: true, message: 'Не удалось удалить участие в проекте' });
     }
   },

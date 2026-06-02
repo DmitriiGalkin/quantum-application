@@ -1,5 +1,5 @@
 import User from '../models/user.js';
-import Participation from '../models/participation.js';
+import ProjectUser from '../models/projectUser.js';
 
 export default {
   create: async (req, res) => {
@@ -52,7 +52,7 @@ export default {
       }
 
       // 3. Удаляем связанные участия в проектах (каскадное удаление)
-      await Participation.deleteByUserId(userId);
+      await ProjectUser.deleteByUserId(userId);
 
       // 4. Удаляем самого пользователя (логическое удаление)
       await User.delete(userId);

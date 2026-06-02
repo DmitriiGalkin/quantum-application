@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { User } from './types.ts';
+import type { User } from '../types.ts';
 
 type UserCardProps = {
   user: User;

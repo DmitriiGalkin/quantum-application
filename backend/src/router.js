@@ -10,7 +10,7 @@ import image from './controllers/image.js';
 import place from './controllers/place.js';
 import project from './controllers/project.js';
 import idea from './controllers/idea.js';
-import participation from './controllers/participation.js';
+import projectUser from './controllers/projectUser.js';
 import chat from './controllers/chat.js';
 import strategies from './strategies.js';
 import { checkConstructor } from './helper.js';
@@ -94,8 +94,8 @@ router.post('/place', passportController.usePassport, place.create);
 /**
  * Участие в проекте
  */
-router.post('/participation', passportController.usePassport, participation.create);
-router.delete('/participation/:id', passportController.usePassport, participation.delete);
+router.post('/projectUser', passportController.usePassport, projectUser.create);
+router.delete('/projectUser/:id', passportController.usePassport, projectUser.delete);
 
 /**
  * Встречи

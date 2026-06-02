@@ -4,7 +4,7 @@ import Passport from '../models/passport.js';
 import Visit from '../models/visit.js';
 import Meet from '../models/meet.js';
 import Place from '../models/place.js';
-import Participation from '../models/participation.js';
+import ProjectUser from '../models/projectUser.js';
 import redis from '../redis.js';
 import {generateProjectImage, uploadImage} from "../assistants/imageAssistant.js";
 
@@ -77,23 +77,23 @@ export default {
       const projects = await Project.findAll(params);
 
       // Получаем дополнительные данные для каждого проекта параллельно
-      const [places, participationsArr, recommendMeetsArr] = await Promise.all([
-        // 1. Места (Places)
+      const [places, usersArr, recommendMeetsArr, passportsArr] = await Promise.all([
         Promise.all(projects.map(p => Place.findById(p.placeId))),
 
-        // 2. Участники (Participations + Users)
-        Promise.all(projects.map(p => Participation.findByProjectId(p.id))),
+        Promise.all(projects.map(p => User.findByProjectId(p.id))),
 
-        // 3. Рекомендации (Meets + Visits + Users)
         Promise.all(projects.map(p => Meet.findRecommendationByProjectId(p.id))),
+
+        Promise.all(projects.map(p => Passport.findById(p.passportId))),
       ]);
 
       // Формируем итоговый ответ, объединяя данные
       const response = projects.map((project, index) => ({
         ...project,
         place: places[index],
-        participations: participationsArr[index],
+        users: usersArr[index],
         recommendMeet: recommendMeetsArr[index],
+        passport: passportsArr[index],
       }));
 
       await redis.set(cacheKey, JSON.stringify(response), 'EX', 10);
@@ -122,15 +122,10 @@ export default {
         User.findById(project.userId),
       ]);
 
-      const [participations, meets] = await Promise.all([
-        Participation.findByProjectId(projectId),
+      const [projectUser, meets] = await Promise.all([
+        User.findByProjectId(projectId),
         Meet.findByProjectId(projectId),
       ]);
-
-      // Получаем пользователей для участников проекта
-      const usersForParticipations = await Promise.all(
-        participations.map(p => User.findById(p.userId)),
-      );
 
       // Получаем данные для встреч (Visits и их Users)
       const meetsWithDetails = await Promise.all(
@@ -157,10 +152,7 @@ export default {
         user,
         place,
         meets: meetsWithDetails,
-        participations: participations.map((p, idx) => ({
-          ...p,
-          user: usersForParticipations[idx],
-        })),
+        users: projectUser,
       });
     } catch (err) {
       console.error('project.findById error:', err);

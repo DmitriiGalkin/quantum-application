@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
@@ -16,14 +13,15 @@ import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import MeetCard from '../MeetCard.tsx';
+import MeetCard from '../components/MeetCard.tsx';
 import {createVisit, deleteVisit, fetchProject, generateImage} from '../requests.ts';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
+import UserGroup from "../components/UserGroup.tsx";
 
-function IdeaPage() {
+function ProjectPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
@@ -208,15 +206,7 @@ function IdeaPage() {
                 </Typography>
               </Box>
 
-              <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-                <AvatarGroup max={5}>
-                  {(project?.participations || []).map(participant => (
-                    <Avatar src={participant.user.image} alt="Участник" key={participant.id} />
-                  ))}
-                </AvatarGroup>
-
-                <Chip label="+5 участников" color="primary" variant="outlined" />
-              </Stack>
+                <UserGroup users={project.users} />
 
               <Box
                 sx={{
@@ -276,4 +266,4 @@ function IdeaPage() {
   );
 }
 
-export default IdeaPage;
+export default ProjectPage;

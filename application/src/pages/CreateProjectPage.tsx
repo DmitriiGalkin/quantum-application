@@ -6,8 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ProjectForm, { type ProjectFormValues } from './ProjectForm';
-import { createProject } from './requests';
+import ProjectForm, { type ProjectFormValues } from '../ProjectForm.tsx';
+import { createProject } from '../requests.ts';
 import { useMutation } from '@tanstack/react-query';
 
 function CreateProjectPage() {

@@ -12,14 +12,14 @@ import {
   fetchMessages,
   fetchSendMessage,
 } from '../requests.ts';
-import ChatMessageList from './ChatMessageList.tsx';
-import ChatComposer from './ChatComposer.tsx';
+import ChatMessageList from '../components/ChatMessageList.tsx';
+import ChatComposer from '../components/ChatComposer.tsx';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   addMessage,
   addOptimisticMessage,
   deleteOptimisticMessage,
-} from './helper.ts';
+} from '../components/helper.ts';
 
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
