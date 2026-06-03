@@ -26,12 +26,18 @@ const router = express.Router();
 const authProviders = ['google', 'yandex'];
 
 authProviders.forEach(provider => {
-  passport.use(provider, strategies[provider]);
+  // @ts-ignore
+  if (strategies[provider]) {
+    // @ts-ignore
+    passport.use(provider, strategies[provider]);
+  } else {
+    console.error(`Стратегия для провайдера ${provider} не найдена.`);
+  }
 
   router.get(`/login/${provider}`, passport.authenticate(provider));
   router.get(`/oauth2/redirect/${provider}`, (req, res, next) => {
     // Используем промисифицированную версию authenticate для совместимости с async/await
-    passport.authenticate(provider, (err, user) => {
+    passport.authenticate(provider, (err: any, user: { username: any; }) => {
       if (err || !user) {
         return res.redirect('/login');
       }

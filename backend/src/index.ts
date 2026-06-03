@@ -8,7 +8,7 @@ import http from 'http';
 import https from 'https';
 import fs from 'fs';
 import path, { resolve } from 'path'; // Импортируем весь модуль path и деструктурируем resolve
-import router from './router.js'; // Не забываем расширение .js
+import router from './router'; // Не забываем расширение .js
 
 // 2. Конфигурация
 const port = process.env.PORT || 4000;
@@ -38,26 +38,6 @@ app.use('/', router);
 // 5. Обработка ошибок 404
 app.use((req, res, next) => {
   next(createError(404));
-});
-
-// 6. Обработчик ошибок (Error Handler)
-app.use((err, req, res, next) => {
-  // Проверяем, не отправлен ли уже ответ (например, при обрыве соединения)
-  if (res.headersSent) {
-    return next(err);
-  }
-
-  // В разработке можно отправлять стэк ошибки, в продакшене — только сообщение
-  const errorResponse = {
-    status: err.status || 500,
-    message: err.message,
-  };
-
-  if (!isDev) {
-    errorResponse.stack = undefined; // Скрываем стэк в продакшене
-  }
-
-  res.status(errorResponse.status).json(errorResponse);
 });
 
 // 7. Запуск сервера (HTTP или HTTPS)
