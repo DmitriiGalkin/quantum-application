@@ -1,5 +1,3 @@
-// router.js
-
 import express, { RequestHandler } from 'express';
 import passport from 'passport';
 import multer from 'multer';

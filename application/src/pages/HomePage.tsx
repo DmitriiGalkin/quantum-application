@@ -1,37 +1,18 @@
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import MenuIcon from '@mui/icons-material/Menu';
 import '../App.css';
-import {useMutation} from '@tanstack/react-query';
-import {fetchCreateChat} from '../requests.ts';
-import {saveAccessTokenFromUrl, strategies, useTarget} from "../helper.ts";
-import HomeDrawer from "../components/HomeDrawer.tsx";
-
-const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
+import { saveAccessTokenFromUrl, strategies } from '../helper.ts';
+import Header from '../components/Header.tsx';
 
 
 function HomePage() {
-  const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-
   const initialAccessToken = saveAccessTokenFromUrl();
-  const target = useTarget();
-
-
-  const mutation = useMutation({
-    mutationFn: fetchCreateChat,
-  });
 
   useEffect(() => {
     if (!accessToken && initialAccessToken) {
@@ -44,70 +25,7 @@ function HomePage() {
   // @ts-ignore
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
-      <AppBar
-        position="sticky"
-        color="inherit"
-        elevation={1}
-        sx={{
-          borderBottom: 1,
-          borderColor: 'divider',
-          backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            aria-label="open drawer"
-            sx={{ mr: 2, color: 'white' }}
-            onClick={() => setIsMenuOpen(currentValue => !currentValue)}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              color: 'white',
-              flexGrow: 1,
-            }}
-          >
-            Quantum
-          </Typography>
-          <IconButton
-            color="primary"
-            aria-label="Идеи от АИ"
-            sx={{ color: 'white' }}
-            onClick={() => {
-              const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
-
-              if (activeChatId) {
-                return navigate(`/chat/${activeChatId}`);
-              }
-
-              mutation.mutate(
-                { target: target || 'none' },
-                {
-                  onSuccess: chatId => {
-                      localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
-                    navigate(`/chat/${chatId}`);
-                  },
-                  onError: error => {
-                    console.error('Ошибка отправки:', error);
-                    alert('Не удалось создать чат. Попробуйте ещё раз.');
-                  },
-                },
-              );
-            }}
-          >
-            <AutoAwesomeIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
-      {accessToken && <HomeDrawer isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}/>}
-
+      <Header/>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         {!accessToken ? (
           <Paper
