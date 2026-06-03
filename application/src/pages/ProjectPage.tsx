@@ -218,7 +218,6 @@ function ProjectPage() {
                   gap: 2,
                 }}
               >
-
                   {project?.passport && (
                       <Paper
                           elevation={0}
