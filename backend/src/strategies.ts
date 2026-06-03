@@ -1,7 +1,7 @@
 import GoogleStrategy from 'passport-google-oauth20';
 import { Strategy as YandexStrategy } from 'passport-yandex'; // Импорт с алиасом
 
-import Passport from './models/passport.ts'; // Обновляем расширение на .js
+import Passport from './models/passport.js'; // Обновляем расширение на .js
 
 const API_URL = process.env.VITE_API_URL || process.env.BACKEND_SERVER;
 
@@ -9,7 +9,7 @@ const API_URL = process.env.VITE_API_URL || process.env.BACKEND_SERVER;
  * Основная функция для поиска или создания пользователя.
  * Теперь она async и использует try/catch для обработки ошибок.
  */
-async function findOrCreate(accessToken, refreshToken, profile, done) {
+async function findOrCreate(accessToken: string, refreshToken: string, profile: any, done: any) {
   try {
     const email =
       profile.emails && profile.emails.length
@@ -27,6 +27,7 @@ async function findOrCreate(accessToken, refreshToken, profile, done) {
     }
 
     const newUserData = {
+      id: 1,
       accessToken,
       title: profile.displayName,
       image,
@@ -49,7 +50,7 @@ async function findOrCreate(accessToken, refreshToken, profile, done) {
  * Функция для создания экземпляра стратегии.
  * Логика остается прежней, так как она синхронная.
  */
-function createStrategy(Strategy, provider, options = {}) {
+function createStrategy(Strategy: any, provider: any, options = {}) {
   return new Strategy(
     {
       clientID: process.env[`${provider}_STRATEGY_CLIENT_ID`],
@@ -59,7 +60,7 @@ function createStrategy(Strategy, provider, options = {}) {
     },
     // ВАЖНО: Асинхронные функции в стратегиях Passport требуют особого подхода.
     // Мы оборачиваем нашу async-функцию в функцию, которая принимает `done`.
-    (accessToken, refreshToken, profile, done) => {
+    (accessToken: string, refreshToken: string, profile: any, done: any) => {
       findOrCreate(accessToken, refreshToken, profile, done).catch(done);
     },
   );

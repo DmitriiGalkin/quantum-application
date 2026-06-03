@@ -44,7 +44,7 @@
   "scripts": {
     "start": "node src",
     "nodemonstart": "nodemon src/index.ts",
-    "dev": "node --watch --loader ts-node/esm src/index.ts"
+    "dev": "nodemon --watch 'src/**/*.ts' --exec \"ts-node -T src/index.ts\""
   },
   "eslintConfig": {
     "extends": [

@@ -5,7 +5,7 @@ import {
   createAssistantMessage,
   selectAssistant,
   getMetaMessages,
-} from '../services/chatService.js';
+} from '../services/chatService';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
 import { Chat as IChat, type ChatMessage } from '../../../application/src/requests';

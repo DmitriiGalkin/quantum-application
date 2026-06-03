@@ -1,5 +1,5 @@
-import assistant from "../assistant.js";
-import {extractJsonFromString} from "./helper.js";
+import assistant from "../assistant.ts";
+import {extractJsonFromString} from "./helper";
 
 /**
  * Базовая функция для взаимодействия с ассистентом.

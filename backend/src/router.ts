@@ -2,18 +2,17 @@ import express, { RequestHandler } from 'express';
 import passport from 'passport';
 import multer from 'multer';
 
-import user from './controllers/user.js';
-import passportController from './controllers/passport.js';
-import meet from './controllers/meet.js';
-import visit from './controllers/visit.js';
-import image from './controllers/image.js';
-import place from './controllers/place.js';
-import project from './controllers/project.js';
-import idea from './controllers/idea.js';
-import projectUser from './controllers/projectUser.js';
-import chat from './controllers/chat.js';
-import strategies from './strategies.js';
-import { checkConstructor } from './helper.js';
+import user from './controllers/user';
+import passportController from './controllers/passport';
+import meet from './controllers/meet';
+import visit from './controllers/visit';
+import image from './controllers/image';
+import place from './controllers/place';
+import project from './controllers/project';
+import idea from './controllers/idea';
+import projectUser from './controllers/projectUser';
+import chat from './controllers/chat';
+import strategies from './strategies';
 import { User } from '../../application/src/types'; // Импортируем пул соединений
 
 export interface Passport {
@@ -106,9 +105,9 @@ router.get('/projects', passportController.usePassport, project.findAll as unkno
 // @ts-ignore
 router.get('/project/:id', passportController.usePassport, project.findById as unknown as RequestHandler);
 // @ts-ignore
-router.post('/project', passportController.usePassport, checkConstructor, project.create as unknown as RequestHandler);
+router.post('/project', passportController.usePassport, project.create as unknown as RequestHandler);
 // @ts-ignore
-router.put('/project/:id', passportController.usePassport, checkConstructor, project.update as unknown as RequestHandler);
+router.put('/project/:id', passportController.usePassport, project.update as unknown as RequestHandler);
 // @ts-ignore
 router.delete('/project/:id', passportController.usePassport, project.delete as unknown as RequestHandler);
 // @ts-ignore
@@ -152,9 +151,9 @@ router.get('/meets', passportController.usePassport, meet.findAll as unknown as 
 // @ts-ignore
 router.get('/meet/:id', passportController.usePassport, meet.findById as unknown as RequestHandler);
 // @ts-ignore
-router.post('/meet', passportController.usePassport, checkConstructor, meet.create as unknown as RequestHandler);
+router.post('/meet', passportController.usePassport, meet.create as unknown as RequestHandler);
 // @ts-ignore
-router.put('/meet/:id', passportController.usePassport, checkConstructor, meet.update as unknown as RequestHandler);
+router.put('/meet/:id', passportController.usePassport, meet.update as unknown as RequestHandler);
 // @ts-ignore
 router.delete('/meet/:id', passportController.usePassport, meet.delete as unknown as RequestHandler);
 
@@ -174,9 +173,9 @@ router.delete('/visit/:id', passportController.usePassport, visit.delete as unkn
 // @ts-ignore
 router.get('/user/:id', passportController.usePassport, user.findById as unknown as RequestHandler);
 // @ts-ignore
-router.post('/user', passportController.usePassport, checkConstructor, user.create as unknown as RequestHandler);
+router.post('/user', passportController.usePassport, user.create as unknown as RequestHandler);
 // @ts-ignore
-router.put('/user/:id', passportController.usePassport, checkConstructor, user.update as unknown as RequestHandler);
+router.put('/user/:id', passportController.usePassport, user.update as unknown as RequestHandler);
 // @ts-ignore
 router.delete('/user/:id', passportController.usePassport, user.delete as unknown as RequestHandler);
 

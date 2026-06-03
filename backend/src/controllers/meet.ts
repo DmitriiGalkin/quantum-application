@@ -3,7 +3,7 @@ import Visit from '../models/visit.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
 import { Meet as IMeet } from '../../../application/src/types'; // Импортируем пул соединений
-import pool from "../db.js";
+import pool from "../db";
 import { RowDataPacket } from 'mysql2/promise';
 
 export default {

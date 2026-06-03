@@ -1,4 +1,5 @@
-import pool from '../db.js'; // Импортируем пул соединений
+import pool from '../db'; // Импортируем пул соединений
+// @ts-ignore
 import { User } from '../../../application/src/types'; // Импортируем пул соединений
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 

@@ -1,4 +1,4 @@
-import {baseAssistantAnswer} from "./assistant.js";
+import {baseAssistantAnswer} from "./assistant.ts";
 
 const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.

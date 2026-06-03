@@ -18,6 +18,7 @@ async function checkConnection() {
 
     connection.release();
   } catch (err) {
+    // @ts-ignore
     console.error('❌ Не удалось подключиться к базе данных:', err.message);
   }
 }
@@ -25,6 +26,7 @@ async function checkConnection() {
 checkConnection();
 
 // Обработка глобальных ошибок пула (например, потеря соединения)
+// @ts-ignore
 pool.on('error', err => {
   console.error('❗ Ошибка в пуле соединений MySQL:', err);
 });

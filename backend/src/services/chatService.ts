@@ -1,26 +1,31 @@
-import Chat from '../models/chat.ts';
-import Message from '../models/message.ts';
-import { userAssistantAnswer } from '../assistants/userAssistant.js';
-import { ideaAssistantAnswer } from '../assistants/ideaAssistant.js';
-import { authAssistant } from './authService.js';
-import User from "../models/user.ts";
-import Project from "../models/project.ts";
-import {teacherAssistantAnswer} from "../assistants/teacherAssistant.js";
-import {projectAssistantAnswer} from "../assistants/projectAssistant.js";
-import Idea from "../models/idea.ts";
-import IdeaUser from "../models/ideaUser.ts";
+import Message from '../models/message';
+import { userAssistantAnswer } from 'assistants/userAssistant';
+import { ideaAssistantAnswer } from 'assistants/ideaAssistant';
+import { authAssistant } from './authService';
+import User from "../models/user";
+import Project from "../models/project";
+import {teacherAssistantAnswer} from 'assistants/teacherAssistant';
+import {projectAssistantAnswer} from 'assistants/projectAssistant';
+import Idea from "../models/idea";
+import IdeaUser from "../models/ideaUser";
+import type { ChatMessage, ChatTarget, Meta } from '../../../application/src/requests';
+import { User as IUser } from '../../../application/src/types'; // Импортируем пул соединений
+import { Idea as IIdea } from '../../../application/src/types'; // Импортируем пул соединений
+import { Project as IProject } from '../../../application/src/types';
+import { meetAssistantAnswer } from 'assistants/meetAssistant'; // Импортируем пул соединений
 
 
-const getMetaMessages = allMessages =>
-  allMessages.reduce((acc, message) => {
-    const metadata = getObjectFromMetadata(message.metadata);
+const getMetaMessages = (allMessages: ChatMessage[]) =>
+  allMessages.reduce((acc: Meta, message: ChatMessage) => {
+    const metadata = getObjectFromMetadata(message.metadata as any);
     if (!metadata) return acc;
+    // @ts-ignore
     acc[metadata.target] = metadata.data;
     return acc;
   }, {});
 
 // Эта функция остается без изменений, так как она просто форматирует данные.
-function normalizeMessage(row) {
+function normalizeMessage(row: any) {
   return {
     id: row.id,
     chatId: row.chatId,
@@ -33,40 +38,11 @@ function normalizeMessage(row) {
   };
 }
 
-// Функция для получения или создания чата
-async function getOrCreateChat({ chatId, passportId, firstMessage, target }) {
-  if (chatId) {
-    // Прямой вызов модели
-    const existingChat = await Chat.findByIdAndPassportId(chatId, passportId);
-
-    if (!existingChat) {
-      const error = new Error('Чат не найден или у вас нет доступа');
-      error.status = 404;
-      throw error;
-    }
-
-    return existingChat;
-  }
-
-  // Логика для создания нового чата, если ID не был передан
-  const title = firstMessage.length > 80 ? `${firstMessage.slice(0, 80)}...` : firstMessage;
-
-  const createdChatId = await Chat.create({
-    passportId,
-    title,
-    target,
-  });
-
-  console.log(createdChatId, 'createdChatId');
-
-  // Находим и возвращаем созданный чат как объект
-  return Chat.findById(createdChatId);
-}
-
 // Функция для создания сообщения от ассистента
-async function createAssistantMessage({ chatId, content, metadata = null, target }) {
+async function createAssistantMessage({ chatId, content, metadata = null, target }: { chatId: number, content:string, metadata: string | null, target: ChatTarget }) {
   // Создаем сообщение в БД
   const assistantMessageId = await Message.create({
+    id: 1,
     chatId,
     passportId: null,
     role: 'assistant',
@@ -81,7 +57,7 @@ async function createAssistantMessage({ chatId, content, metadata = null, target
 }
 
 
-function getObjectFromMetadata(metadata) {
+function getObjectFromMetadata(metadata: string) {
   if (!metadata) {
     return null;
   }
@@ -97,13 +73,7 @@ function getObjectFromMetadata(metadata) {
   return null;
 }
 
-/**
- * Выбор ассистента
- * @param target - цель кейся
- * @param meta - Все что знаем о текущей сессии пользователя
- */
-const selectAssistant = (target, meta) => {
-  console.log(meta,'meta selectAssistant')
+const selectAssistant = (target: ChatTarget, meta: Meta) => {
 
   switch (target) {
 
@@ -120,8 +90,8 @@ const selectAssistant = (target, meta) => {
       }
 
       return async () => {
-        const userId = await User.create({...meta.user, passportId: meta.passport.id })
-        const ideaId = await Idea.create({...meta.idea, userId, passportId: meta.passport.id })
+        const userId = await User.create({id:1, ...meta.user, passportId: meta.passport?.id } as IUser)
+        const ideaId = await Idea.create({ ...meta.idea, userId, passportId: meta.passport?.id } as IIdea);
         await IdeaUser.create({ ideaId, userId })
 
         return {
@@ -144,7 +114,7 @@ const selectAssistant = (target, meta) => {
       }
 
       return async () => {
-        const projectId = await Project.create({...meta.project, passportId: meta.passport.id, ideaId: meta.project.id})
+        const projectId = await Project.create({...meta.project, passportId: meta.passport?.id, ideaId: meta.project?.id} as IProject)
 
         return {
           content: `Все выяснили, теперь вы учитель <a href="/project/${projectId}">проекта</a>. Ваша первоочередная задача создать встречу, а я Вам с этим помогу`,
@@ -177,7 +147,6 @@ const selectAssistant = (target, meta) => {
 
 export {
   normalizeMessage,
-  getOrCreateChat,
   createAssistantMessage,
   getObjectFromMetadata,
   selectAssistant,

@@ -1,5 +1,5 @@
 import { apiFetch, getAccessToken } from './api';
-import type {Idea, Meet, Passport, Place, Project, User} from './types';
+import type { Chat, Idea, Meet, Passport, Place, Project, User } from './types';
 import type { ExtendedMeet } from './components/MeetCard.tsx';
 import type { ProjectFormValues } from './ProjectForm';
 import { useQuery } from '@tanstack/react-query';
@@ -32,10 +32,9 @@ export type ChatMessage = {
   passportId: number | null;
   role: ChatMessageRole;
   content: string;
-  source: 'text' | 'voice';
   metadata: unknown;
-  createdAt: string;
-  meta: {
+  createdAt?: string;
+  meta?: {
     target: ChatMetaType;
     data: unknown;
   };
@@ -43,25 +42,18 @@ export type ChatMessage = {
 };
 
 export interface Meta {
-  user?: User
-  idea?: Project
-  teacher?: Passport
-  project?: Project
-  projects?: Project[]
-  places?: Place[]
-  meet?: Meet
-  auth?: string[]
+  user?: User;
+  idea?: Project;
+  teacher?: Passport;
+  project?: Project;
+  projects?: Project[];
+  passport?: Passport;
+  places?: Place[];
+  meet?: Meet;
+  auth?: string[];
 }
 
-export interface Chat {
-  id: number;
-  workflow: ChatTarget;
-  messages: ChatMessage[];
-  passportId: number;
-  target: string
-  title: string
-  meta?: Meta
-};
+
 
 export type SendMessageResponse = {
   chatId: number;

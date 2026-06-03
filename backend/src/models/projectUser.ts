@@ -1,4 +1,4 @@
-import pool from '../db.js';
+import pool from '../db';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { ProjectUser } from '../../../application/src/types'; // Импортируем пул соединений
 

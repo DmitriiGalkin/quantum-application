@@ -1,5 +1,5 @@
 import Project from "../models/project.ts";
-import {baseAssistantAnswer} from "./assistant.js";
+import {baseAssistantAnswer} from "./assistant.ts";
 
 const getPrompt = (ideas, meta) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title, description: idea.description }));

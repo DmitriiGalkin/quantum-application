@@ -1,5 +1,5 @@
 
-import {baseAssistantAnswer} from "./assistant.js";
+import {baseAssistantAnswer} from "./assistant.ts";
 
 const getIdeaPrompt = (user) => `
 Ты — ассистент образовательного проекта для детей.

@@ -1,3 +1,5 @@
+import type { ChatMessage, Meta } from './requests.ts';
+
 export interface Meet {
   id: number;
   projectId: number;
@@ -83,3 +85,12 @@ export interface ProjectUser {
   projectId: number;
   userId: number;
 }
+
+export interface Chat {
+  id: number;
+  passportId: number;
+  target: string;
+  title: string;
+  meta?: Meta;
+  messages?: ChatMessage[];
+};

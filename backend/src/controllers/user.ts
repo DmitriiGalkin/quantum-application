@@ -2,12 +2,12 @@ import User from '../models/user.js';
 import ProjectUser from '../models/projectUser.js';
 import { Response } from 'express';
 import { RequestWithPassport } from '../router';
-import { User as TUser } from '../../../application/src/types'; // Импортируем пул соединений
+import { User as IUser } from '../../../application/src/types'; // Импортируем пул соединений
 
 export default {
   create: async (req: RequestWithPassport, res: Response) => {
     try {
-      const userId = await User.create({ ...req.body, passportId: req.passport.id } as unknown as TUser);
+      const userId = await User.create({ ...req.body, passportId: req.passport.id } as unknown as IUser);
       res.status(201).json({ message: 'Участник создан', id: userId });
     } catch (err) {
       console.error('user.create error:', err);
@@ -17,7 +17,7 @@ export default {
 
   update: async (req: RequestWithPassport, res: Response) => {
     try {
-      await User.update(req.body as unknown as TUser);
+      await User.update(req.body as unknown as IUser);
       res.json({ error: false, message: 'Участник успешно обновлен' });
     } catch (err) {
       console.error('user.update error:', err);

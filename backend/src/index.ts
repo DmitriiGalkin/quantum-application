@@ -8,7 +8,7 @@ import http from 'http';
 import https from 'https';
 import fs from 'fs';
 import path, { resolve } from 'path'; // Импортируем весь модуль path и деструктурируем resolve
-import router from './router.js';
+import router from './router';
 
 // 2. Конфигурация
 const port = process.env.PORT || 4000;
