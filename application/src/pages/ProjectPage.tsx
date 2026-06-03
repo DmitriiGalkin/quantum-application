@@ -208,7 +208,6 @@ function ProjectPage() {
 
                 <UserGroup users={project.users || []} />
 
-
               <Box
                 sx={{
                   display: 'grid',
