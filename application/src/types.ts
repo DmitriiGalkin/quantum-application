@@ -24,12 +24,12 @@ export interface Passport {
   provider: string | null;
   providerId: string | null;
   title: string | null;
-  description: string | null;
+  description?: string | null;
   email: string | null;
-  avatar: string | null;
-  createdAt: string | null;
-  updatedAt: string | null;
-  access_token: string | null;
+  image: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  accessToken: string | null;
 }
 
 export interface Project {

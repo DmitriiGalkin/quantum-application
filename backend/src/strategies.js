@@ -1,7 +1,7 @@
 import GoogleStrategy from 'passport-google-oauth20';
 import { Strategy as YandexStrategy } from 'passport-yandex'; // Импорт с алиасом
 
-import Passport from './models/passport.js'; // Обновляем расширение на .js
+import Passport from './models/passport.ts'; // Обновляем расширение на .js
 
 const API_URL = process.env.VITE_API_URL || process.env.BACKEND_SERVER;
 

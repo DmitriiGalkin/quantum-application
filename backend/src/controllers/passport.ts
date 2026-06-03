@@ -16,7 +16,7 @@ export default {
       }
 
       // Используем ID из уже авторизованного паспорта (из req.passport.id)
-      await Passport.update(Number(req.passport.id), new Passport(req.body));
+      await Passport.update(Number(req.passport.id), req.body);
 
       res.json({ error: false, message: 'Профиль успешно обновлен' });
     } catch (err) {
@@ -44,14 +44,16 @@ export default {
       }
 
       const newPassportData = {
-        token: access_token,
+        id: 1,
+        provider: 'google',
+        providerId: '1',
+        accessToken: access_token,
         title: name,
         image: picture,
         email: email,
       };
 
-      const newPassport = new Passport(newPassportData);
-      await Passport.create(newPassport);
+      await Passport.create(newPassportData);
 
       res.json({ error: false, message: 'Новый пользователь успешно создан' });
     } catch (err) {
