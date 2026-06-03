@@ -1,5 +1,5 @@
 import Project from '../models/project.js';
-import User from '../models/user.js';
+import User from '../models/user.ts';
 import Passport from '../models/passport.js';
 import Visit from '../models/visit.js';
 import Meet from '../models/meet.js';

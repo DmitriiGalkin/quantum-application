@@ -3,7 +3,7 @@ import Message from '../models/message.js';
 import { userAssistantAnswer } from '../assistants/userAssistant.js';
 import { ideaAssistantAnswer } from '../assistants/ideaAssistant.js';
 import { authAssistant } from './authService.js';
-import User from "../models/user.js";
+import User from "../models/user.ts";
 import Project from "../models/project.js";
 import {teacherAssistantAnswer} from "../assistants/teacherAssistant.js";
 import {projectAssistantAnswer} from "../assistants/projectAssistant.js";

@@ -1,4 +1,4 @@
-import User from '../models/user.js';
+import User from '../models/user.ts';
 import Passport from '../models/passport.js';
 import Idea from "../models/idea.js";
 import IdeaUser from "../models/ideaUser.js";

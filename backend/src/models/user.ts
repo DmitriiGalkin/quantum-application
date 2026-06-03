@@ -1,25 +1,17 @@
 import pool from '../db.js'; // Импортируем пул соединений
+import { User } from '../../../application/src/types'; // Импортируем пул соединений
+import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
-class User {
-  constructor(data) {
-    this.id = data.id;
-    this.passportId = data.passportId;
-    this.title = data.title;
-    this.age = data.age;
-    this.image = data.image;
-    this.description = data.description;
-    this.deletedAt = data.deletedAt;
-  }
-
-  // --- СТАТИЧЕСКИЕ МЕТОДЫ ---
-
-  static async create(userData) {
+class UserModel {
+  static async create(userData: User) {
     try {
       // В запросе используются только поля, которые есть в модели
-      const [result] = await pool.query(
-        'INSERT INTO `user` (title, passportId, description, age) VALUES (?, ?, ?, ?)',
-        [userData.title, userData.passportId, userData.description, userData.age],
-      );
+      const [result] = await pool.query<ResultSetHeader>('INSERT INTO `user` (title, passportId, description, age) VALUES (?, ?, ?, ?)', [
+        userData.title,
+        userData.passportId,
+        userData.description,
+        userData.age,
+      ]);
       return result.insertId;
     } catch (err) {
       console.error('User.create error:', err);
@@ -27,21 +19,16 @@ class User {
     }
   }
 
-  static async update(userData) {
+  static async update(userData: User) {
     try {
-      await pool.query('UPDATE user SET title=?, age=?, image=? WHERE id = ?', [
-        userData.title,
-        userData.age,
-        userData.image,
-        userData.id,
-      ]);
+      await pool.query('UPDATE user SET title=?, age=?, image=? WHERE id = ?', [userData.title, userData.age, userData.image, userData.id]);
     } catch (err) {
       console.error('User.update error:', err);
       throw err;
     }
   }
 
-  static async delete(id) {
+  static async delete(id: string) {
     try {
       await pool.query('UPDATE user SET deletedAt = NOW() WHERE id = ?', [id]);
     } catch (err) {
@@ -50,9 +37,9 @@ class User {
     }
   }
 
-  static async findById(id) {
+  static async findById(id: string) {
     try {
-      const [rows] = await pool.query('SELECT * FROM `user` WHERE id = ?', [id]);
+      const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM `user` WHERE id = ?', [id]);
       return rows.length > 0 ? rows[0] : null;
     } catch (err) {
       console.error('User.findById error:', err);
@@ -60,20 +47,17 @@ class User {
     }
   }
 
-  static async findByPassportId(passportId) {
+  static async findByPassportId(passportId: string) {
     try {
-      const [rows] = await pool.query(
-        'SELECT * FROM user WHERE passportId = ? AND deletedAt IS NULL',
-        [passportId],
-      );
-      return rows.map(row => new User(row));
+      const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM user WHERE passportId = ? AND deletedAt IS NULL', [passportId]);
+      return rows as User[];
     } catch (err) {
       console.error('User.findByPassportId error:', err);
       throw err;
     }
   }
 
-  static async findByProjectId(projectId) {
+  static async findByProjectId(projectId: string) {
     try {
       const sql = `
         SELECT DISTINCT user.*
@@ -81,8 +65,8 @@ class User {
         LEFT JOIN projectUser ON user.id = projectUser.userId
         WHERE projectUser.projectId = ?
       `;
-      const [rows] = await pool.query(sql, [projectId]);
-      return rows.map(row => new User(row));
+      const [rows] = await pool.query<RowDataPacket[]>(sql, [projectId]);
+      return rows as User[];
     } catch (err) {
       console.error('User.findByProjectId error:', err);
       throw err;
@@ -90,7 +74,7 @@ class User {
   }
 
   // Участники встречи (через JOIN с таблицей visit)
-  static async findByMeet(meetId) {
+  static async findByMeet(meetId: string) {
     try {
       const sql = `
         SELECT DISTINCT user.*
@@ -99,8 +83,8 @@ class User {
         WHERE visit.meetId = ?
           AND user.deletedAt IS NULL
       `;
-      const [rows] = await pool.query(sql, [meetId]);
-      return rows.map(row => new User(row));
+      const [rows] = await pool.query<RowDataPacket[]>(sql, [meetId]);
+      return rows as User[];
     } catch (err) {
       console.error('User.findByMeet error:', err);
       throw err;
@@ -108,4 +92,4 @@ class User {
   }
 }
 
-export default User;
+export default UserModel;

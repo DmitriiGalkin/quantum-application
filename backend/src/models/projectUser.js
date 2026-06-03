@@ -44,7 +44,7 @@ class ProjectUser {
 
   /**
    * Удаляет все участия пользователя.
-   * @param {number} userId - ID пользователя.
+   * @param {string} userId - ID пользователя.
    * @returns {Promise<void>}
    */
   static async deleteByUserId(userId) {

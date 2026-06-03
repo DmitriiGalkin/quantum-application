@@ -1,31 +1,23 @@
 import User from '../models/user.js';
 import ProjectUser from '../models/projectUser.js';
+import { Response } from 'express';
+import { RequestWithPassport } from '../router';
+import { User as TUser } from '../../../application/src/types'; // Импортируем пул соединений
 
 export default {
-  create: async (req, res) => {
+  create: async (req: RequestWithPassport, res: Response) => {
     try {
-      // Добавляем passportId из авторизованного пользователя
-      const userData = { ...req.body, passportId: req.passport.id };
-      console.log(userData,'userData')
-
-      // Прямой вызов метода модели. Он вернет ID созданного пользователя.
-      const userId = await User.create(userData);
-
-      // Возвращаем успех с ID (или весь объект, по желанию)
+      const userId = await User.create({ ...req.body, passportId: req.passport.id } as unknown as TUser);
       res.status(201).json({ message: 'Участник создан', id: userId });
     } catch (err) {
       console.error('user.create error:', err);
       res.status(500).json({ error: true, message: 'Не удалось создать участника' });
     }
   },
-  update: async (req, res) => {
+
+  update: async (req: RequestWithPassport, res: Response) => {
     try {
-      // Создаем экземпляр модели из тела запроса
-      const userToUpdate = new User(req.body);
-
-      // Прямой вызов метода обновления. Предполагаем, что ID уже есть в req.body.
-      await User.update(userToUpdate);
-
+      await User.update(req.body as unknown as TUser);
       res.json({ error: false, message: 'Участник успешно обновлен' });
     } catch (err) {
       console.error('user.update error:', err);
@@ -33,28 +25,23 @@ export default {
     }
   },
 
-  delete: async (req, res) => {
+  delete: async (req: RequestWithPassport, res: Response) => {
     try {
       const userId = req.params.id;
       const currentPassportId = req.passport.id;
 
-      // 1. Проверяем, существует ли пользователь
       const user = await User.findById(userId);
       if (!user) {
         return res.status(404).json({ error: true, message: 'Участник не найден' });
       }
 
-      // 2. Проверяем права доступа (владелец ли пытается удалить)
       if (user.passportId !== currentPassportId) {
         return res
           .status(403)
           .json({ error: true, message: 'Нет прав на удаление этого участника' });
       }
 
-      // 3. Удаляем связанные участия в проектах (каскадное удаление)
       await ProjectUser.deleteByUserId(userId);
-
-      // 4. Удаляем самого пользователя (логическое удаление)
       await User.delete(userId);
 
       res.json({ error: false, message: 'Участник и его участия в проектах удалены' });
@@ -63,7 +50,8 @@ export default {
       res.status(500).json({ error: true, message: 'Не удалось удалить участника' });
     }
   },
-  findById: async (req, res) => {
+
+  findById: async (req: RequestWithPassport, res: Response) => {
     try {
       const user = await User.findById(req.params.id);
 

@@ -1,5 +1,5 @@
 import Project from '../models/project.js';
-import User from '../models/user.js';
+import User from '../models/user.ts';
 
 function isCreateCommand(message) {
   const normalizedMessage = message.trim().toLowerCase();
