@@ -2,9 +2,10 @@ import ProjectUser from '../models/projectUser.js';
 import Project from '../models/project.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
+import { ProjectUser as IProjectUser } from '../../../application/src/types'; // Импортируем пул соединений
 
 // Вспомогательная функция остается без изменений, так как она работает с объектами req.users
-function getPassportUserIds(req) {
+function getPassportUserIds(req: RequestWithPassport) {
   return (req.users || []).map(user => user.id);
 }
 
@@ -14,7 +15,7 @@ export default {
    */
   create: async (req: RequestWithPassport, res: Response) => {
     try {
-      const { projectId, userId } = req.body;
+      const { projectId, userId } = req.body as any;
 
       if (!projectId || !userId) {
         return res.status(400).json({ error: true, message: 'projectId и userId обязательны' });
@@ -43,8 +44,7 @@ export default {
       }
 
       // 4. Создаем участие
-      const newProjectUser = new ProjectUser(req.body);
-      const projectUserId = await ProjectUser.create(newProjectUser);
+      const projectUserId = await ProjectUser.create(req.body as unknown as IProjectUser);
 
       // Возвращаем ID созданной записи со статусом 201 Created
       res.status(201).json(projectUserId);

@@ -1,6 +1,7 @@
 import Place from '../models/place.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
+import { Place as IPlace } from '../../../application/src/types'; // Импортируем пул соединений
 
 export default {
   /**
@@ -22,14 +23,14 @@ export default {
   create: async (req: RequestWithPassport, res: Response) => {
     try {
       // Проверка на пустое тело запроса
-      if (Object.keys(req.body).length === 0) {
+      if (Object.keys(req.body as unknown as IPlace).length === 0) {
         return res
           .status(400)
           .json({ error: true, message: 'Пожалуйста, предоставьте все необходимые поля' });
       }
 
       // Вызов метода модели для создания записи
-      const newPlaceId = await Place.create(req.body);
+      const newPlaceId = await Place.create(req.body as unknown as IPlace);
 
       // Возвращаем ID созданного места со статусом 201 Created
       res.status(201).json({ message: 'Место успешно создано', id: newPlaceId });

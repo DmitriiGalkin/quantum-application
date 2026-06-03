@@ -2,8 +2,9 @@ import Meet from '../models/meet.js';
 import Visit from '../models/visit.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
+import { Visit as IVisit } from '../../../application/src/types'; // Импортируем пул соединений
 
-function getPassportUserIds(req) {
+function getPassportUserIds(req: RequestWithPassport) {
   return (req.users || []).map(user => user.id);
 }
 
@@ -13,7 +14,6 @@ async function findVisitAndMeet({ visitId }: { visitId: string }) {
 
   if (!visit) {
     const error = new Error('Участие не существует');
-    error.status = 404;
     throw error;
   }
 
@@ -21,7 +21,6 @@ async function findVisitAndMeet({ visitId }: { visitId: string }) {
 
   if (!meet) {
     const error = new Error('Встреча не найдена');
-    error.status = 404;
     throw error;
   }
 
@@ -34,7 +33,7 @@ export default {
    */
   create: async (req: RequestWithPassport, res: Response) => {
     try {
-      const { meetId, userId } = req.body;
+      const { meetId, userId } = req.body as any;
 
       if (!meetId || !userId) {
         return res.status(400).json({ error: true, message: 'meetId и userId обязательны' });
@@ -59,8 +58,7 @@ export default {
           .json({ error: true, message: 'Нельзя добавлять участника отличного от себя' });
       }
 
-      const visit = new Visit(req.body);
-      await Visit.create(visit);
+      await Visit.create(req.body as unknown as IVisit);
 
       res.status(201).json({ error: false, message: 'Участие создано' });
     } catch (err) {
@@ -88,8 +86,8 @@ export default {
     } catch (err) {
       console.error('visit.delete error:', err);
       res
-        .status(err.status || 500)
-        .json({ error: true, message: err.message || 'Не удалось удалить участие' });
+        .status(500)
+        .json({ error: true, message: 'Не удалось удалить участие' });
     }
   },
 
@@ -104,47 +102,10 @@ export default {
         return res.status(400).json({ error: true, message: 'Параметр userId обязателен' });
       }
 
-      const sql = `
-        SELECT v.*,
-               m.id AS meet_id, m.startedAt AS meet_startedAt, m.projectId AS meet_projectId,
-               p.id AS project_id, p.title AS project_title, p.placeId AS project_placeId,
-               pl.id AS place_id, pl.title AS place_title, pl.latitude, pl.longitude
-        FROM visit v
-        LEFT JOIN meet m ON m.id = v.meetId AND m.deletedAt IS NULL
-        LEFT JOIN project p ON p.id = m.projectId AND p.deletedAt IS NULL
-        LEFT JOIN place pl ON pl.id = p.placeId
-        WHERE v.userId = ?
-        ORDER BY m.startedAt DESC
-      `;
+      const [rows] = await Visit.findAll(userId);
 
-      const [rows] = await Visit.pool.query(sql, [userId]);
 
-      // Группируем данные. Ключевое изменение: используем meet_id для проверки наличия встречи.
-      const result = rows.map(row => ({
-        ...row,
-        meet: row.meet_id
-          ? {
-            id: row.meet_id,
-            startedAt: row.meet_startedAt,
-            project: row.project_id
-              ? {
-                id: row.project_id,
-                title: row.project_title,
-                place: row.place_id
-                  ? {
-                    id: row.place_id,
-                    title: row.place_title,
-                    latitude: row.latitude,
-                    longitude: row.longitude,
-                  }
-                  : null,
-              }
-              : null,
-          }
-          : null,
-      }));
-
-      res.json(result);
+      res.json(rows);
     } catch (err) {
       console.error('visit.findAll error:', err);
       res.status(500).json({ error: true, message: 'Не удалось получить посещения' });

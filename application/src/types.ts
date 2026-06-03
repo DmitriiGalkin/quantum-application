@@ -28,6 +28,7 @@ export interface Passport {
   avatar: string | null;
   createdAt: string | null;
   updatedAt: string | null;
+  access_token: string | null;
 }
 
 export interface Project {
@@ -40,7 +41,7 @@ export interface Project {
   longitude: number | null;
   title: string | null;
   description: string | null;
-  image: string | null;
+  image?: string | null;
   deletedAt: string | null;
 }
 

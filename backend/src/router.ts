@@ -32,6 +32,8 @@ export interface Passport {
 export interface RequestWithPassport extends Request {
   params: Record<string, string>;
   passport: Passport;
+  query: Record<string, string>;
+  users: User[];
 }
 
 const upload = multer({ storage: multer.memoryStorage() });

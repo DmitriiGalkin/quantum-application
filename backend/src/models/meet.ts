@@ -27,7 +27,7 @@ class MeetModel {
     }
   }
 
-  static async delete(id: string): Promise<void> {
+  static async delete(id: number): Promise<void> {
     try {
       await pool.query('UPDATE meet SET deletedAt = NOW() WHERE id = ?', [id]);
     } catch (err) {

@@ -2,6 +2,13 @@ import pool from '../db.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { Project } from '../../../application/src/types'; // Импортируем пул соединений
 
+export interface IParams {
+  variant?: 'participation' | 'self' | 'recommendation';
+  userId?: string | number;
+  passportId?: string | number;
+  deleted?: 'true' | 'false';
+}
+
 class ProjectModel {
   static async create(data: Project): Promise<number> {
     try {
@@ -16,7 +23,7 @@ class ProjectModel {
     }
   }
 
-  static async update(id: string | number, obj: { title?: string; description?: string; image?: string }): Promise<void> {
+  static async update(id: string | number, obj: Project): Promise<void> {
     const sql = `
       UPDATE project 
       SET title = COALESCE(?, title), 
@@ -45,12 +52,7 @@ class ProjectModel {
     }
   }
 
-  static async findAll(params: {
-    variant?: 'participation' | 'self' | 'recommendation';
-    userId?: string | number;
-    passportId?: string | number;
-    deleted?: 'true' | 'false';
-  }): Promise<Project[]> {
+  static async findAll(params: IParams): Promise<Project[]> {
     let sql = 'SELECT project.* FROM project WHERE 1=1'; // Использование WHERE 1=1 упрощает добавление условий
     const values: (string | number)[] = [];
 
@@ -97,7 +99,7 @@ class ProjectModel {
 
     try {
       const [rows] = await pool.query<RowDataPacket[]>(sql, [id]);
-      return rows.length > 0 ? rows[0] as Project : null;
+      return rows.length > 0 ? (rows[0] as Project) : null;
     } catch (err) {
       console.error('Project.findById error:', err);
       throw err;

@@ -1,25 +1,22 @@
-import Project from '../models/project.js';
-import User from '../models/user.js'; // Предполагаем, что это .js файл с TS-типами или уже .ts
+import Project, { IParams } from '../models/project.js';
+import User from '../models/user.js';
 import Passport from '../models/passport.js';
 import Visit from '../models/visit.js';
 import Meet from '../models/meet.js';
-import Place from '../models/place.js';
 import { generateProjectImage, uploadImage } from "../assistants/imageAssistant.js";
 import { Response } from 'express';
 import { RequestWithPassport } from '../router';
-
+import { Project as IProject } from '../../../application/src/types'; // Импортируем пул соединений
 
 export default {
   create: async (req: RequestWithPassport, res: Response) => {
     try {
-      // Проверяем авторизацию перед доступом к req.passport.id
       if (!req.passport) {
         return res.status(401).json({ error: true, message: 'Требуется авторизация' });
       }
 
-      const projectData = { ...req.body, passportId: req.passport.id };
-      const result = await Project.create(projectData);
-      res.status(201).json({ message: 'Проект создан', id: result.insertId });
+      const result = await Project.create({ ...req.body, passportId: req.passport.id } as unknown as IProject);
+      res.status(201).json({ message: 'Проект создан', id: result });
     } catch (err) {
       console.error('project.create error:', err);
       res.status(500).json({ error: 'Ошибка при создании проекта' });
@@ -28,8 +25,7 @@ export default {
 
   update: async (req: RequestWithPassport, res: Response) => {
     try {
-      const obj = new Project(req.body);
-      await Project.update(req.params.id, obj);
+      await Project.update(req.params.id, req.body as unknown as IProject);
       res.json({ error: false, message: 'Проект обновлен' });
     } catch (err) {
       console.error('project.update error:', err);
@@ -65,27 +61,17 @@ export default {
   },
 
   findAll: async (req: RequestWithPassport, res: Response) => {
-    const cacheKey = 'all_projects_list';
-
     try {
-      // const cachedData = await redis.get(cacheKey);
-      // if (cachedData) {
-      //   return res.json(JSON.parse(cachedData));
-      // }
+      const projects = await Project.findAll({ ...req.query, passportId: req.passport?.id } as unknown as IParams);
 
-      const params = { ...req.query, passportId: req.passport?.id };
-      const projects = await Project.findAll(params);
-
-      const [places, usersArr, recommendMeetsArr, passportsArr] = await Promise.all([
-        Promise.all(projects.map(p => Place.findById(p.placeId))),
+      const [usersArr, recommendMeetsArr, passportsArr] = await Promise.all([
         Promise.all(projects.map(p => User.findByProjectId(p.id))),
         Promise.all(projects.map(p => Meet.findRecommendationByProjectId(p.id))),
-        Promise.all(projects.map(p => Passport.findById(p.passportId))),
+        Promise.all(projects.map(p => Passport.findById(p.passportId as number))),
       ]);
 
       const response = projects.map((project, index) => ({
         ...project,
-        place: places[index],
         users: usersArr[index],
         recommendMeet: recommendMeetsArr[index],
         passport: passportsArr[index],
@@ -102,30 +88,20 @@ export default {
 
   findById: async (req: RequestWithPassport, res: Response) => {
     try {
-      const projectId = req.params.id;
+      const projectId = Number(req.params.id);
 
       const project = await Project.findById(projectId);
       if (!project) {
         return res.status(404).json({ error: true, message: 'Проект не найден' });
       }
 
-      const [place, passport, user] = await Promise.all([
-        Place.findById(project.placeId),
-        Passport.findById(project.passportId),
-        User.findById(project.userId),
-      ]);
+      const [passport, user] = await Promise.all([Passport.findById(project.passportId as number), User.findById(project.userId as number)]);
 
-      const [projectUsers, meets] = await Promise.all([
-        User.findByProjectId(projectId),
-        Meet.findByProjectId(projectId),
-      ]);
+      const [projectUsers, meets] = await Promise.all([User.findByProjectId(projectId), Meet.findByProjectId(projectId)]);
 
       const meetsWithDetails = await Promise.all(
         meets.map(async meet => {
-          const [visits, usersForVisits] = await Promise.all([
-            Visit.findByMeet(meet.id),
-            User.findByMeet(meet.id),
-          ]);
+          const [visits, usersForVisits] = await Promise.all([Visit.findByMeet(meet.id), User.findByMeet(meet.id)]);
 
           const visitsWithUsers = visits.map((visit, idx) => ({
             ...visit,
@@ -140,7 +116,6 @@ export default {
         ...project,
         passport,
         user,
-        place,
         meets: meetsWithDetails,
         users: projectUsers,
       });
@@ -163,9 +138,37 @@ export default {
       const imageBinary = await generateProjectImage(project);
       const image = await uploadImage(imageBinary);
 
-      const updatedProject = { ...project, image };
-      await Project.update(req.params.id, new Project(updatedProject));
+      await Project.update(req.params.id, { ...project, image });
 
       res.json({ error: false, message: 'Изображение проекта обновлено' });
     } catch (err) {
-      console.
+      console.error('chat.generateImage error:', err);
+      res.status(500).json({
+        error: true,
+        message: 'Не удалось сгенерировать изображение для сообщения',
+      });
+    }
+  },
+  meta: async (req: RequestWithPassport, res: Response) => {
+    try {
+      const project = await Project.findById(req.params.id);
+
+      if (!project) {
+        return res.status(404).json({ error: true, message: 'Проект не существует' });
+      }
+
+      res.json({
+        title: `${project.title} | Quantum`,
+        description: project.description,
+        ogSiteName: 'Quantum | Проекты',
+        ogType: 'article',
+        ogTitle: project.title,
+        ogDescription: project.description,
+        ogImage: project.image,
+      });
+    } catch (err) {
+      console.error('project.meta error:', err);
+      res.status(500).json({ error: true, message: 'Не удалось получить meta проекта' });
+    }
+  },
+};

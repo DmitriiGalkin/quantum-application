@@ -60,12 +60,73 @@ class VisitModel {
     }
   }
 
-  static async findByMeet(meetId: string) {
+  static async findByMeet(meetId: number) {
     try {
       const [rows] = await pool.query('SELECT * FROM visit WHERE meetId = ?', [meetId]);
-      return rows;
+      return rows as Visit[];
     } catch (err) {
       console.error('Visit.findByMeet error:', err);
+      throw err;
+    }
+  }
+
+
+  /**
+   * Получение всех встреч для конкретного пользователя
+   * Оптимизированный запрос с JOIN для сборки вложенной структуры данных.
+   */
+  static async findAll(userId: string) {
+    try {
+      const sql = `
+        SELECT v.*,
+               m.id        AS meet_id,
+               m.startedAt AS meet_startedAt,
+               m.projectId AS meet_projectId,
+               p.id        AS project_id,
+               p.title     AS project_title,
+               p.placeId   AS project_placeId,
+               pl.id       AS place_id,
+               pl.title    AS place_title,
+               pl.latitude,
+               pl.longitude
+        FROM visit v
+               LEFT JOIN meet m ON m.id = v.meetId AND m.deletedAt IS NULL
+               LEFT JOIN project p ON p.id = m.projectId AND p.deletedAt IS NULL
+               LEFT JOIN place pl ON pl.id = p.placeId
+        WHERE v.userId = ?
+        ORDER BY m.startedAt DESC
+      `;
+
+      const [rows] = await pool.query<RowDataPacket[]>(sql, [userId]);
+
+      // Группируем данные. Ключевое изменение: используем meet_id для проверки наличия встречи.
+      const result = rows.map(row => ({
+        ...row,
+        meet: row.meet_id
+          ? {
+              id: row.meet_id,
+              startedAt: row.meet_startedAt,
+              project: row.project_id
+                ? {
+                    id: row.project_id,
+                    title: row.project_title,
+                    place: row.place_id
+                      ? {
+                          id: row.place_id,
+                          title: row.place_title,
+                          latitude: row.latitude,
+                          longitude: row.longitude,
+                        }
+                      : null,
+                  }
+                : null,
+            }
+          : null,
+      }));
+
+      return result;
+    } catch (err) {
+      console.error('visit. error:', err);
       throw err;
     }
   }

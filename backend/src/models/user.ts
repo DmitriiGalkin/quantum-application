@@ -37,7 +37,7 @@ class UserModel {
     }
   }
 
-  static async findById(id: string) {
+  static async findById(id: number) {
     try {
       const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM `user` WHERE id = ?', [id]);
       return rows.length > 0 ? rows[0] : null;
@@ -47,7 +47,7 @@ class UserModel {
     }
   }
 
-  static async findByPassportId(passportId: string) {
+  static async findByPassportId(passportId: number) {
     try {
       const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM user WHERE passportId = ? AND deletedAt IS NULL', [passportId]);
       return rows as User[];
@@ -57,7 +57,7 @@ class UserModel {
     }
   }
 
-  static async findByProjectId(projectId: string) {
+  static async findByProjectId(projectId: number) {
     try {
       const sql = `
         SELECT DISTINCT user.*
@@ -74,7 +74,7 @@ class UserModel {
   }
 
   // Участники встречи (через JOIN с таблицей visit)
-  static async findByMeet(meetId: string) {
+  static async findByMeet(meetId: number) {
     try {
       const sql = `
         SELECT DISTINCT user.*
