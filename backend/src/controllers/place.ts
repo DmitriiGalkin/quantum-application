@@ -1,9 +1,13 @@
 import Place from '../models/place.js';
+import { Response } from 'express'; // Импортируем нужные типы
+import { RequestWithPassport } from '../router';
 
 export default {
-  findAll: async (req, res) => {
+  /**
+   * Получение списка всех мест
+   */
+  findAll: async (req: RequestWithPassport, res: Response) => {
     try {
-      // Прямой вызов асинхронного метода модели
       const places = await Place.findAll();
       res.json(places);
     } catch (err) {
@@ -12,7 +16,10 @@ export default {
     }
   },
 
-  create: async (req, res) => {
+  /**
+   * Создание нового места
+   */
+  create: async (req: RequestWithPassport, res: Response) => {
     try {
       // Проверка на пустое тело запроса
       if (Object.keys(req.body).length === 0) {
@@ -21,11 +28,10 @@ export default {
           .json({ error: true, message: 'Пожалуйста, предоставьте все необходимые поля' });
       }
 
-      // Прямой вызов асинхронного метода модели
-      // Метод create() теперь возвращает ID созданной записи
+      // Вызов метода модели для создания записи
       const newPlaceId = await Place.create(req.body);
 
-      // Возвращаем ID созданного места с правильным статусом 201 (Created)
+      // Возвращаем ID созданного места со статусом 201 Created
       res.status(201).json({ message: 'Место успешно создано', id: newPlaceId });
     } catch (err) {
       console.error('place.create error:', err);

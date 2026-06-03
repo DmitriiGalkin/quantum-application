@@ -1,40 +1,52 @@
 import ProjectUser from '../models/projectUser.js';
 import Project from '../models/project.js';
+import { Response } from 'express'; // Импортируем нужные типы
+import { RequestWithPassport } from '../router';
 
+// Вспомогательная функция остается без изменений, так как она работает с объектами req.users
 function getPassportUserIds(req) {
   return (req.users || []).map(user => user.id);
 }
 
 export default {
-  create: async (req, res) => {
+  /**
+   * Добавление пользователя в проект
+   */
+  create: async (req: RequestWithPassport, res: Response) => {
     try {
+      const { projectId, userId } = req.body;
+
+      if (!projectId || !userId) {
+        return res.status(400).json({ error: true, message: 'projectId и userId обязательны' });
+      }
+
       // 1. Проверяем, существует ли проект
-      const project = await Project.findById(req.body.projectId);
+      const project = await Project.findById(projectId);
       if (!project) {
         return res.status(404).json({ error: true, message: 'Проект не найден' });
       }
 
       // 2. Проверяем, не состоит ли пользователь уже в проекте
       const currentProjectUser = await ProjectUser.findByUserAndProjectIds(
-        req.body.userId,
-        req.body.projectId,
+        userId,
+        projectId,
       );
       if (currentProjectUser) {
         return res.status(409).json({ error: true, message: 'Вы уже состоите в проекте' });
       }
 
       // 3. Проверяем права доступа (можно ли добавлять этого пользователя)
-      if (!getPassportUserIds(req).includes(req.body.userId)) {
+      if (!getPassportUserIds(req).includes(userId)) {
         return res
           .status(403)
           .json({ error: true, message: 'Нельзя добавлять участника отличного от себя' });
       }
 
       // 4. Создаем участие
-      const projectUser = new ProjectUser(req.body);
-      const projectUserId = await ProjectUser.create(projectUser);
+      const newProjectUser = new ProjectUser(req.body);
+      const projectUserId = await ProjectUser.create(newProjectUser);
 
-      // Возвращаем ID созданной записи
+      // Возвращаем ID созданной записи со статусом 201 Created
       res.status(201).json(projectUserId);
     } catch (err) {
       console.error('projectUser.create error:', err);
@@ -42,10 +54,15 @@ export default {
     }
   },
 
-  delete: async (req, res) => {
+  /**
+   * Удаление пользователя из проекта
+   */
+  delete: async (req: RequestWithPassport, res: Response) => {
     try {
+      const participationId = req.params.id;
+
       // 1. Находим участие по ID из параметров запроса
-      const projectUser = await ProjectUser.findById(req.params.id);
+      const projectUser = await ProjectUser.findById(participationId);
       if (!projectUser) {
         return res.status(404).json({ error: true, message: 'Участие не существует' });
       }
@@ -60,7 +77,7 @@ export default {
       // - Либо это собственный ребенок пользователя (isOwnChild)
       // - Либо пользователь является владельцем проекта (isProjectOwner)
       const isOwnChild = getPassportUserIds(req).includes(projectUser.userId);
-      const isProjectOwner = project.passportId === req.passport.id;
+      const isProjectOwner = project.passportId === req.passport?.id; // Используем optional chaining
 
       if (!isOwnChild && !isProjectOwner) {
         return res.status(403).json({ error: true, message: 'Нет прав на удаление' });
@@ -69,7 +86,7 @@ export default {
       // 4. Удаляем участие
       await ProjectUser.delete(projectUser.id);
 
-      res.json({ error: false, message: 'Удаление участия в проекте' });
+      res.json({ error: false, message: 'Удаление участия в проекте прошло успешно' });
     } catch (err) {
       console.error('projectUser.delete error:', err);
       res.status(500).json({ error: true, message: 'Не удалось удалить участие в проекте' });

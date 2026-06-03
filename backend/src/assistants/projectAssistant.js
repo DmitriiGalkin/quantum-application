@@ -1,4 +1,4 @@
-import Project from "../models/project.js";
+import Project from "../models/project.ts";
 import {baseAssistantAnswer} from "./assistant.js";
 
 const getSystemPrompt = (ideas, teacher) => {

@@ -39,6 +39,7 @@ export type ChatMessage = {
     target: ChatMetaType;
     data: unknown;
   };
+  target: ChatTarget;
 };
 
 export interface Meta {
@@ -52,9 +53,12 @@ export interface Meta {
   auth?: string[]
 }
 
-export type Chat = {
+export interface Chat {
   workflow: ChatTarget;
   messages: ChatMessage[];
+  passportId: number;
+  target: string
+  title: string
   meta?: Meta
 };
 

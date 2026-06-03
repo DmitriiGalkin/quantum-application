@@ -3,14 +3,14 @@ import { User } from '../../../application/src/types'; // Импортируем
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 class UserModel {
-  static async create(userData: User) {
+  static async create(data: User) {
     try {
       // В запросе используются только поля, которые есть в модели
       const [result] = await pool.query<ResultSetHeader>('INSERT INTO `user` (title, passportId, description, age) VALUES (?, ?, ?, ?)', [
-        userData.title,
-        userData.passportId,
-        userData.description,
-        userData.age,
+        data.title,
+        data.passportId,
+        data.description,
+        data.age,
       ]);
       return result.insertId;
     } catch (err) {

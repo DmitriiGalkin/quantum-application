@@ -1,14 +1,14 @@
-import Chat from '../models/chat.js';
-import Message from '../models/message.js';
+import Chat from '../models/chat.ts';
+import Message from '../models/message.ts';
 import { userAssistantAnswer } from '../assistants/userAssistant.js';
 import { ideaAssistantAnswer } from '../assistants/ideaAssistant.js';
 import { authAssistant } from './authService.js';
 import User from "../models/user.ts";
-import Project from "../models/project.js";
+import Project from "../models/project.ts";
 import {teacherAssistantAnswer} from "../assistants/teacherAssistant.js";
 import {projectAssistantAnswer} from "../assistants/projectAssistant.js";
-import Idea from "../models/idea.js";
-import IdeaUser from "../models/ideaUser.js";
+import Idea from "../models/idea.ts";
+import IdeaUser from "../models/ideaUser.ts";
 
 
 const getMetaMessages = allMessages =>

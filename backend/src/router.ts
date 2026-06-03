@@ -5,7 +5,7 @@ import passport from 'passport';
 import multer from 'multer';
 
 import user from './controllers/user.js';
-import passportController from './controllers/passport.js';
+import passportController from './controllers/passport';
 import meet from './controllers/meet.js';
 import visit from './controllers/visit.js';
 import image from './controllers/image.js';

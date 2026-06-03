@@ -1,4 +1,4 @@
-import Project from '../models/project.js';
+import Project from '../models/project.ts';
 import User from '../models/user.ts';
 
 function isCreateCommand(message) {

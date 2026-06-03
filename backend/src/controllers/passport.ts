@@ -1,21 +1,24 @@
 import Passport from '../models/passport.js';
-import User from '../models/user.ts';
+import User from '../models/user.js'; // Предполагаем, что это .js файл с TS-типами
 import jwt from 'jsonwebtoken';
+import { Response } from 'express'; // Импортируем нужные типы
+import { RequestWithPassport } from '../router';
 
 export default {
-  update: async (req, res) => {
+  /**
+   * Обновление профиля пользователя (middleware usePassport должен быть вызван до этого)
+   */
+  update: async (req: RequestWithPassport, res: Response) => {
     try {
-      // Проверка, что тело запроса не пустое
       if (Object.keys(req.body).length === 0) {
         return res
           .status(400)
           .json({ error: true, message: 'Пожалуйста, предоставьте данные для обновления' });
       }
 
-      // Обновляем данные в БД
+      // Используем ID из уже авторизованного паспорта (из req.passport.id)
       await Passport.update(req.passport.id, new Passport(req.body));
 
-      // Возвращаем успех. В реальном приложении лучше вернуть обновленные данные.
       res.json({ error: false, message: 'Профиль успешно обновлен' });
     } catch (err) {
       console.error('Passport update error:', err);
@@ -23,25 +26,24 @@ export default {
     }
   },
 
-  googleLogin: async (req, res) => {
+  /**
+   * Вход через Google OAuth
+   */
+  googleLogin: async (req: RequestWithPassport, res: Response) => {
     try {
       const { email, access_token, name, picture } = req.body;
 
-      // Проверка входящих данных
       if (!email || !access_token) {
         return res.status(400).json({ error: true, message: 'Не хватает данных от провайдера' });
       }
 
-      // Ищем пользователя по email
       const existingPassport = await Passport.findByEmail(email);
 
       if (existingPassport) {
-        // Если пользователь есть - обновляем его токен
         await Passport.updateTokenById(access_token, existingPassport.id);
         return res.json({ error: false, message: 'Токен пользователя обновлен' });
       }
 
-      // Если пользователя нет - создаем нового
       const newPassportData = {
         token: access_token,
         title: name,
@@ -59,15 +61,11 @@ export default {
     }
   },
 
-  login: async (req, res) => {
+  /**
+   * Стандартный вход (логин)
+   */
+  login: async (req: RequestWithPassport, res: Response) => {
     try {
-      // В вашем коде был хардкод findById(1). Это небезопасно.
-      // Предполагаем, что мы ищем по email и паролю из req.body.
-      // Для примера оставим логику генерации токена.
-
-      // В реальности здесь должна быть проверка email/password
-      // const user = await Passport.findByCredentials(req.body.email, req.body.password);
-
       // Генерируем JWT токен. Секретный ключ должен быть в переменной окружения.
       const token = jwt.sign({ id: req.passport.id }, process.env.JWT_SECRET || 'shhhhh', {
         expiresIn: '1h',
@@ -83,32 +81,36 @@ export default {
     }
   },
 
-  findById: async (req, res) => {
+  /**
+   * Получение информации о текущем профиле
+   * Логика изменена: теперь мы просто возвращаем то, что уже есть в req.passport
+   */
+  findById: async (req: RequestWithPassport, res: Response) => {
     try {
-      // Так как мы уже авторизовали пользователя в middleware,
-      // его данные уже находятся в req.passport.
-      // Запрашивать их снова из БД не обязательно.
-
+      // Проверка на наличие passport в запросе (установлено middleware)
       if (!req.passport) {
         return res.status(401).json({ error: true, message: 'Пользователь не авторизован' });
       }
 
+      // Возвращаем паспорт напрямую из объекта запроса
       res.json(req.passport);
     } catch (err) {
       console.error('Find by ID error:', err);
       res.status(500).json({ error: true, message: 'Ошибка получения данных профиля' });
     }
   },
-  all: async (req, res) => {
+
+  /**
+   * Получение полной информации: профиль + связанные пользователи
+   */
+  all: async (req: RequestWithPassport, res: Response) => {
     try {
       if (!req.passport) {
         return res.status(401).json({ error: true, message: 'Паспорт отсутствует' });
       }
 
-      // Получаем список связанных пользователей
       const users = await User.findByPassportId(req.passport.id);
 
-      // Отправляем объект паспорта и массив пользователей
       res.json({
         ...req.passport,
         users,
@@ -119,31 +121,29 @@ export default {
     }
   },
 
-  usePassport: async (req, res, next) => {
+  /**
+   * Middleware для проверки токена доступа
+   */
+  usePassport: async (req: RequestWithPassport, res: Response, next: Function) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-      // Если токена нет, просто идем дальше
+      // Если токена нет, идем дальше (неавторизованный доступ)
       return next();
     }
 
     try {
-      // Ищем паспорт по токену
       const passport = await Passport.findByAccessToken(token);
 
       if (!passport) {
-        // Токен не найден в базе. Возможно, он протух или отозван.
         return res.status(401).json({ error: true, message: 'Токен недействителен или протух' });
       }
 
-      // Присваиваем паспорт объекту запроса для использования в других обработчиках
       req.passport = passport;
-
-      // Получаем связанных пользователей и также кладем в запрос
       req.users = await User.findByPassportId(passport.id);
 
-      next(); // Передаем управление следующему middleware/роуту
+      next(); // Передаем управление следующему обработчику
     } catch (err) {
       console.error('Auth middleware error:', err);
       return res.status(401).json({ error: true, message: 'Ошибка авторизации' });

@@ -1,11 +1,10 @@
-// controllers/meetController.js
 import Meet from '../models/meet.js';
 import Visit from '../models/visit.js';
-
-// Все функции собраны в один объект для экспорта по умолчанию
+import { Response } from 'express'; // Импортируем нужные типы
+import { RequestWithPassport } from '../router';
 
 export default {
-  create: async (req, res) => {
+  create: async (req: RequestWithPassport, res: Response) => {
     try {
       const meetData = { ...req.body, passportId: req.passport.id };
       const meetId = await Meet.create(meetData);
@@ -16,10 +15,9 @@ export default {
     }
   },
 
-  update: async (req, res) => {
+  update: async (req: RequestWithPassport, res: Response) => {
     try {
-      // Обновляем данные напрямую из тела запроса
-      await Meet.update(req.params.id, req.body);
+      await Meet.update({id: req.params.id, ...req.body});
       res.json({ error: false, message: 'Встреча обновлена' });
     } catch (err) {
       console.error('meet.update error:', err);
@@ -27,8 +25,7 @@ export default {
     }
   },
 
-  // Ключ в объекте должен быть 'delete', чтобы использовать его как meet.delete
-  delete: async (req, res) => {
+  delete: async (req: RequestWithPassport, res: Response) => {
     try {
       const meet = await Meet.findById(req.params.id);
 
@@ -48,8 +45,9 @@ export default {
     }
   },
 
-  toggleUserMeet: async (req, res) => {
+  toggleUserMeet: async (req: RequestWithPassport, res: Response) => {
     try {
+      // Предполагаем, что middleware уже положил пользователя в req.user
       const existingVisit = await Visit.findByUserAndMeetIds(req.user.id, req.params.meetId);
 
       if (existingVisit) {
@@ -65,30 +63,26 @@ export default {
     }
   },
 
-  findAll: async (req, res) => {
+  findAll: async (req: RequestWithPassport, res: Response) => {
     try {
       const isForPassport = req.query.isForPassport === 'true';
       const userIdForQuery = isForPassport ? req.passport.id : req.query.userId;
 
       const sql = `
-        SELECT 
-          m.*,
-          p.id AS project_id, p.title AS project_title, p.placeId AS project_placeId,
-          pl.id AS place_id, pl.title AS place_title,
-          v.id AS visit_id, v.userId AS visit_userId,
-          u.id AS user_id, u.title AS user_title
+        SELECT m.*, p.id AS project_id, p.title AS project_title, pl.id AS place_id, pl.title AS place_title,
+               v.id AS visit_id, u.id AS user_id, u.title AS user_title
         FROM meet m
-        LEFT JOIN project p ON p.id = m.projectId AND p.deletedAt IS NULL
-        LEFT JOIN place pl ON pl.id = p.placeId
-        LEFT JOIN visit v ON v.meetId = m.id
-        LEFT JOIN user u ON u.id = v.userId AND u.deletedAt IS NULL
+               LEFT JOIN project p ON p.id = m.projectId AND p.deletedAt IS NULL
+               LEFT JOIN place pl ON pl.id = p.placeId
+               LEFT JOIN visit v ON v.meetId = m.id
+               LEFT JOIN user u ON u.id = v.userId AND u.deletedAt IS NULL
         WHERE ${isForPassport ? 'm.passportId = ?' : 'EXISTS (SELECT 1 FROM projectUser WHERE projectId = m.projectId AND userId = ?)'}
         ORDER BY m.startedAt DESC
       `;
 
       const [rows] = await Meet.pool.query(sql, [userIdForQuery]);
 
-      const meetsMap = new Map();
+      const meetsMap = new Map<number, any>();
 
       rows.forEach(row => {
         if (!meetsMap.has(row.id)) {
@@ -97,10 +91,10 @@ export default {
             id: row.id,
             project: row.project_id
               ? {
-                  id: row.project_id,
-                  title: row.project_title,
-                  place: row.place_id ? { id: row.place_id, title: row.place_title } : null,
-                }
+                id: row.project_id,
+                title: row.project_title,
+                place: row.place_id ? { id: row.place_id, title: row.place_title } : null,
+              }
               : null,
             visits: [],
           });
@@ -118,26 +112,20 @@ export default {
       res.json(result);
     } catch (err) {
       console.error('meet.findAll error:', err);
-      res
-        .status(500)
-        .json({ error: true, message: 'Ошибка при выполнении запроса к базе данных.' });
+      res.status(500).json({ error: true, message: 'Ошибка при выполнении запроса к базе данных.' });
     }
   },
 
-  findById: async (req, res) => {
+  findById: async (req: RequestWithPassport, res: Response) => {
     try {
       const sql = `
-        SELECT
-          m.*,
-          p.id AS project_id, p.title AS project_title, p.placeId AS project_placeId,
-          pl.id AS place_id, pl.title AS place_title,
-          v.id AS visit_id, v.userId AS visit_userId,
-          u.id AS user_id, u.title AS user_title
+        SELECT m.*, p.id AS project_id, p.title AS project_title, pl.id AS place_id, pl.title AS place_title,
+               v.id AS visit_id, u.id AS user_id, u.title AS user_title
         FROM meet m
-        LEFT JOIN project p ON p.id = m.projectId AND p.deletedAt IS NULL
-        LEFT JOIN place pl ON pl.id = p.placeId
-        LEFT JOIN visit v ON v.meetId = m.id
-        LEFT JOIN user u ON u.id = v.userId AND u.deletedAt IS NULL
+               LEFT JOIN project p ON p.id = m.projectId AND p.deletedAt IS NULL
+               LEFT JOIN place pl ON pl.id = p.placeId
+               LEFT JOIN visit v ON v.meetId = m.id
+               LEFT JOIN user u ON u.id = v.userId AND u.deletedAt IS NULL
         WHERE m.id = ?
       `;
 
@@ -154,10 +142,10 @@ export default {
         id: meetRow.id,
         project: meetRow.project_id
           ? {
-              id: meetRow.project_id,
-              title: meetRow.project_title,
-              place: meetRow.place_id ? { id: meetRow.place_id, title: meetRow.place_title } : null,
-            }
+            id: meetRow.project_id,
+            title: meetRow.project_title,
+            place: meetRow.place_id ? { id: meetRow.place_id, title: meetRow.place_title } : null,
+          }
           : null,
         visits: [],
       };
@@ -174,9 +162,7 @@ export default {
       res.json(result);
     } catch (err) {
       console.error('meet.findById error:', err);
-      res
-        .status(500)
-        .json({ error: true, message: 'Ошибка при выполнении запроса к базе данных.' });
+      res.status(500).json({ error: true, message: 'Ошибка при выполнении запроса к базе данных.' });
     }
   },
 };
