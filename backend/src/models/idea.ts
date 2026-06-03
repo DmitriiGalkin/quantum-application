@@ -2,6 +2,13 @@ import pool from '../db.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { Idea } from '../../../application/src/types'; // Импортируем пул соединений
 
+export interface IParams {
+  variant?: 'participation' | 'self' | 'recommendation';
+  userId?: string | number;
+  passportId?: string | number;
+  deleted?: 'true' | 'false';
+}
+
 class IdeaModel {
   static async create(data: Idea): Promise<number> {
     try {
@@ -47,12 +54,7 @@ class IdeaModel {
     }
   }
 
-  static async findAll(params: {
-    variant?: 'participation' | 'self' | 'recommendation';
-    userId?: string | number;
-    passportId?: string | number;
-    deleted?: 'true' | 'false';
-  }): Promise<RowDataPacket[]> {
+  static async findAll(params: IParams): Promise<RowDataPacket[]> {
     let sql = 'SELECT idea.* FROM idea WHERE 1=1';
     const values: (string | number)[] = [];
 

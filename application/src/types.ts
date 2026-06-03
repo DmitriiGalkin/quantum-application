@@ -5,6 +5,7 @@ export interface Meet {
   duration: string | null;
   startedAt: string;
   deletedAt: string | null;
+  passportId: number | null;
 }
 
 export interface User {

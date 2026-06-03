@@ -1,6 +1,6 @@
 import User from '../models/user.js'; // Предполагаем, что это .js файл с TS-типами
 import Passport from '../models/passport.js';
-import Idea from "../models/idea.js";
+import Idea, { IParams } from '../models/idea.js';
 import IdeaUser from "../models/ideaUser.js";
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
@@ -11,10 +11,7 @@ export default {
    */
   findAll: async (req: RequestWithPassport, res: Response) => {
     try {
-      // Передаем параметры запроса и ID текущего пользователя
-      const params = { ...req.query, passportId: req.passport?.id };
-
-      const ideas = await Idea.findAll(params);
+      const ideas = await Idea.findAll({ ...req.query, passportId: req.passport?.id } as unknown as IParams);
 
       // Получаем участников для каждой идеи параллельно
       const [ideaUsers] = await Promise.all([
@@ -49,8 +46,8 @@ export default {
 
       // Параллельно получаем создателя идеи и его паспорт
       const [passport, user] = await Promise.all([
-        Passport.findById(idea.passportId),
-        User.findById(idea.userId),
+        Passport.findById(idea.passportId || 0),
+        User.findById(idea.userId || 0),
       ]);
 
       // Получаем список связей "идея-пользователь" (участников)

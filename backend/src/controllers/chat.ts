@@ -8,6 +8,7 @@ import {
 } from '../services/chatService.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
+import { Chat as IChat, type ChatMessage } from '../../../application/src/requests';
 
 export default {
   /**
@@ -15,11 +16,11 @@ export default {
    */
   create: async (req: RequestWithPassport, res: Response) => {
     try {
-      const chatId = await Chat.create({ target: req.body.target });
+      const chatId = await Chat.create({ target: (req.body as any)?.target } as unknown as IChat);
 
       // Инициализация метаданных и выбор ассистента
       const meta = {};
-      const assistant = selectAssistant(req.body.target, meta);
+      const assistant = selectAssistant((req.body as any)?.target, meta);
       const assistantContent = await assistant({
         messages: [],
         meta,
@@ -33,19 +34,16 @@ export default {
       return res.json(chatId);
     } catch (err) {
       console.error('chat.create error:', err);
-      res.status(err.status || 500).json({
+      res.status(500).json({
         error: true,
-        message: err.message || 'Не удалось создать новый чат',
+        message: 'Не удалось создать новый чат',
       });
     }
   },
 
-  /**
-   * Отправка сообщения в существующий чат
-   */
   createMessage: async (req: RequestWithPassport, res: Response) => {
     try {
-      const messageText = String(req.body.message || '').trim();
+      const messageText = String((req.body as any)?.message || '').trim();
       if (!messageText) {
         return res.status(400).json({
           error: true,
@@ -53,7 +51,7 @@ export default {
         });
       }
 
-      const chatId = req.body.chatId;
+      const chatId = (req.body as any)?.chatId;
       if (!chatId) {
         return res.status(400).json({ error: true, message: 'ID чата обязателен' });
       }
@@ -74,7 +72,7 @@ export default {
         content: messageText,
         role: 'user',
         target: lastUserMessage?.target, // Используем цель из последнего сообщения, если есть
-      });
+      } as ChatMessage);
 
       // Подготовка мета-данных
       const meta = {...getMetaMessages(allMessages), teacher: {
@@ -123,9 +121,9 @@ export default {
       });
     } catch (err) {
       console.error('chat.createMessage error:', err);
-      res.status(err.status || 500).json({
+      res.status( 500).json({
         error: true,
-        message: err.message || 'Не удалось отправить сообщение',
+        message: 'Не удалось отправить сообщение',
       });
     }
   },
@@ -169,7 +167,7 @@ export default {
         });
       }
 
-      const chats = await Chat.findAllByPassportId(req.passport.id);
+      const chats = await Chat.findAllByPassportId(req.passport.id || 0);
 
       res.json(chats);
     } catch (err) {

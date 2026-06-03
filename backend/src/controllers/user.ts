@@ -30,7 +30,7 @@ export default {
       const userId = req.params.id;
       const currentPassportId = req.passport.id;
 
-      const user = await User.findById(userId);
+      const user = await User.findById(Number(userId));
       if (!user) {
         return res.status(404).json({ error: true, message: 'Участник не найден' });
       }
@@ -53,7 +53,7 @@ export default {
 
   findById: async (req: RequestWithPassport, res: Response) => {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(Number(req.params.id));
 
       if (!user) {
         return res.status(404).json({ error: true, message: 'Участник не найден' });

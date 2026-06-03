@@ -54,6 +54,7 @@ export interface Meta {
 }
 
 export interface Chat {
+  id: number;
   workflow: ChatTarget;
   messages: ChatMessage[];
   passportId: number;

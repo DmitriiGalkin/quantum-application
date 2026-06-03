@@ -2,12 +2,14 @@ import Meet from '../models/meet.js';
 import Visit from '../models/visit.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
+import { Meet as IMeet } from '../../../application/src/types'; // Импортируем пул соединений
+import pool from "../db.js";
+import { RowDataPacket } from 'mysql2/promise';
 
 export default {
   create: async (req: RequestWithPassport, res: Response) => {
     try {
-      const meetData = { ...req.body, passportId: req.passport.id };
-      const meetId = await Meet.create(meetData);
+      const meetId = await Meet.create({ ...req.body, passportId: req.passport.id } as unknown as IMeet);
       res.status(201).json({ message: 'Встреча создана', id: meetId });
     } catch (err) {
       console.error('meet.create error:', err);
@@ -17,7 +19,7 @@ export default {
 
   update: async (req: RequestWithPassport, res: Response) => {
     try {
-      await Meet.update({id: req.params.id, ...req.body});
+      await Meet.update({id: Number(req.params.id), ...req.body} as unknown as IMeet);
       res.json({ error: false, message: 'Встреча обновлена' });
     } catch (err) {
       console.error('meet.update error:', err);
@@ -37,29 +39,11 @@ export default {
         return res.status(403).json({ error: true, message: 'Нет прав на удаление' });
       }
 
-      await Meet.delete(req.params.id);
+      await Meet.delete(Number(req.params.id));
       res.json({ error: false, message: 'Встреча удалена' });
     } catch (err) {
       console.error('meet.delete error:', err);
       res.status(500).json({ error: true, message: 'Не удалось удалить встречу' });
-    }
-  },
-
-  toggleUserMeet: async (req: RequestWithPassport, res: Response) => {
-    try {
-      // Предполагаем, что middleware уже положил пользователя в req.user
-      const existingVisit = await Visit.findByUserAndMeetIds(req.user.id, req.params.meetId);
-
-      if (existingVisit) {
-        await Visit.delete(existingVisit.id);
-        return res.json({ error: false, message: 'Участник удален с встречи' });
-      } else {
-        await Visit.create({ userId: req.user.id, meetId: req.params.meetId });
-        return res.json({ error: false, message: 'Участник добавлен на встречу' });
-      }
-    } catch (err) {
-      console.error('meet.toggleUserMeet error:', err);
-      res.status(500).json({ error: true, message: 'Не удалось изменить участие во встрече' });
     }
   },
 
@@ -80,7 +64,7 @@ export default {
         ORDER BY m.startedAt DESC
       `;
 
-      const [rows] = await Meet.pool.query(sql, [userIdForQuery]);
+      const [rows] = await pool.query<RowDataPacket[]>(sql, [userIdForQuery]);
 
       const meetsMap = new Map<number, any>();
 
@@ -129,7 +113,7 @@ export default {
         WHERE m.id = ?
       `;
 
-      const [rows] = await Meet.pool.query(sql, [req.params.id]);
+      const [rows] = await pool.query<RowDataPacket[]>(sql, [req.params.id]);
 
       if (rows.length === 0) {
         return res.status(404).json({ error: true, message: 'Встреча не найдена' });
@@ -152,6 +136,7 @@ export default {
 
       rows.forEach(row => {
         if (row.visit_id) {
+          // @ts-ignore
           result.visits.push({
             id: row.visit_id,
             user: row.user_id ? { id: row.user_id, title: row.user_title } : null,

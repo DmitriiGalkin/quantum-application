@@ -2,7 +2,9 @@ import { PutObjectCommand } from '@aws-sdk/client-s3';
 import formidable from 'formidable'; // Парсер для multipart/form-data
 import fs from 'fs';
 import path from 'path';
+// @ts-ignore
 import mime from 'mime';
+// @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 import s3Client from '../s3.js';
 import { Response } from 'express'; // Импортируем нужные типы
@@ -18,8 +20,10 @@ export default {
       const form = new formidable.IncomingForm();
 
       // Парсим входящий запрос. Это асинхронная операция.
+      // @ts-ignore
       const { files } = await new Promise((resolve, reject) => {
-        form.parse(req, (err, fields, files) => {
+        // @ts-ignore
+        form.parse(req, (err, fields: any, files) => {
           if (err) return reject(err);
           resolve({ fields, files });
         });
