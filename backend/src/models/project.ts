@@ -53,7 +53,7 @@ class ProjectModel {
   }
 
   static async findAll(params: IParams): Promise<Project[]> {
-    let sql = 'SELECT project.* FROM project WHERE 1=1'; // Использование WHERE 1=1 упрощает добавление условий
+    let sql = 'SELECT project.* FROM project';
     const values: (string | number)[] = [];
 
     if (params?.variant === 'participation' && params?.userId) {

@@ -9,10 +9,10 @@ import {projectAssistantAnswer} from 'assistants/projectAssistant';
 import Idea from "../models/idea";
 import IdeaUser from "../models/ideaUser";
 import type { ChatMessage, ChatTarget, Meta } from '../../../application/src/requests';
-import { User as IUser } from '../../../application/src/types'; // Импортируем пул соединений
-import { Idea as IIdea } from '../../../application/src/types'; // Импортируем пул соединений
+import { User as IUser } from '../../../application/src/types';
+import { Idea as IIdea } from '../../../application/src/types';
 import { Project as IProject } from '../../../application/src/types';
-import { meetAssistantAnswer } from 'assistants/meetAssistant'; // Импортируем пул соединений
+import { meetAssistantAnswer } from 'assistants/meetAssistant';
 
 
 const getMetaMessages = (allMessages: ChatMessage[]) =>
