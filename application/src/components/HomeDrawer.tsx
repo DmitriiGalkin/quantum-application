@@ -144,20 +144,14 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen }: HomeDrawerProps ) {
               </List>
             </Stack>
 
-            <Box sx={{ p:3, mt: 'auto', backgroundColor: 'gray' }}>
+            <Box sx={{ p:3, mt: 'auto', backgroundColor: 'gray', filter: 'invert(1)' }}>
               <List disablePadding>
                 <ListItemButton
                   component={Link}
                   to="/project/create"
                   onClick={() => setIsMenuOpen(false)}
                   sx={{
-                    mb: 1,
                     borderRadius: 2,
-                    bgcolor: 'primary.main',
-                    color: 'primary.contrastText',
-                    '&:hover': {
-                      bgcolor: 'primary.dark',
-                    },
                   }}
                 >
                   <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
