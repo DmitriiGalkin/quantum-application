@@ -6,10 +6,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const apps = [
   {
     name: 'backend',
-    script: path.join(__dirname, 'backend/src/index.ts'),
+    script: 'sh',
+    args: '-lc "cd ./backend && npm run build && node dist/index.ts"',
     env: {
       NODE_ENV: 'node',
     },
+    cwd: '/workspace',
     out_file: '/dev/stdout',
     error_file: '/dev/stderr',
     merge_logs: true,
@@ -18,7 +20,7 @@ export const apps = [
   },
   {
     name: 'application',
-    script: path.join(__dirname, 'application/server.ts'),
+    script: 'application/server.ts',
     out_file: '/dev/stdout',
     error_file: '/dev/stderr',
     merge_logs: true,
@@ -26,3 +28,4 @@ export const apps = [
     interpreter: 'node',
   },
 ];
+
