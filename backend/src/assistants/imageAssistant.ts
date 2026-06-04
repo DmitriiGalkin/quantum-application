@@ -1,8 +1,8 @@
 import { detectImage } from 'gigachat';
-import S3 from '../s3.ts';
+import S3 from '../s3';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuid } from 'uuid';
-import assistant from '../assistant.ts';
+import assistant from '../assistant';
 
 function buildProjectImagePrompt(project) {
   return [

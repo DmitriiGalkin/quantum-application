@@ -1,14 +1,14 @@
-import Chat from '../models/chat.js';
+import ChatModel from '../models/chat.js';
 import Message from '../models/message.js';
 import {
   normalizeMessage,
   createAssistantMessage,
   selectAssistant,
-  getMetaMessages,
+  getMetaMessages, CreateAssistantMessage,
 } from '../services/chatService';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
-import { Chat as IChat, type ChatMessage } from '../../../application/src/requests';
+import type { Chat, ChatMessage, ChatTarget, Meta } from '../../../application/src/types';
 
 export default {
   /**
@@ -16,7 +16,7 @@ export default {
    */
   create: async (req: RequestWithPassport, res: Response) => {
     try {
-      const chatId = await Chat.create({ target: (req.body as any)?.target } as unknown as IChat);
+      const chatId = await ChatModel.create({ target: (req.body as any)?.target } as unknown as Chat);
 
       // Инициализация метаданных и выбор ассистента
       const meta = {};
@@ -29,7 +29,7 @@ export default {
       await createAssistantMessage({
         chatId,
         ...assistantContent,
-      });
+      } as CreateAssistantMessage);
 
       return res.json(chatId);
     } catch (err) {
@@ -57,7 +57,7 @@ export default {
       }
 
       // Проверяем существование чата
-      const chat = await Chat.findById(chatId);
+      const chat = await ChatModel.findById(chatId);
       if (!chat) {
         return res.status(404).json({ error: true, message: 'Чат не найден' });
       }
@@ -81,26 +81,26 @@ export default {
       meta.passport = req.passport; // Добавляем данные о пользователе
 
       // Выбор ассистента на основе цели чата
-      const assistant = selectAssistant(chat.target, meta);
+      const assistant = selectAssistant(chat.target as ChatTarget, meta as Meta);
 
       // Генерация ответа от ассистента
       let assistantContent = await assistant({
-        messages: [...allMessages, { id: userMessageId, content: messageText, role: 'user' }],
+        messages: [...allMessages, { id: userMessageId, content: messageText, role: 'user' } as any],
         meta,
       });
 
       // Логика рекурсивного вызова ассистента при наличии новой меты
-      if (assistantContent.meta) {
+      if ((assistantContent as any)?.meta) {
         // Обновляем пользовательское сообщение метаданными
-        await Message.update(userMessageId, { metadata: assistantContent.meta });
+        await Message.update(userMessageId, { metadata: (assistantContent as any)?.meta });
 
         // Формируем новую мету
-        const newMeta = {...meta, [assistantContent.meta.target]: assistantContent.meta.data};
+        const newMeta = { ...meta, [(assistantContent as any)?.meta.target]: (assistantContent as any)?.meta.data };
 
         // Повторный вызов ассистента с обновленной метой
-        const updatedAssistant = selectAssistant(chat.target, newMeta);
+        const updatedAssistant = selectAssistant(chat.target as ChatTarget, newMeta as any);
         assistantContent = await updatedAssistant({
-          messages: [...allMessages, { id: userMessageId, content: messageText, role: 'user' }],
+          messages: [...allMessages, { id: userMessageId, content: messageText, role: 'user' } as any],
           meta: newMeta,
         });
       }
@@ -109,10 +109,10 @@ export default {
       const assistantMessage = await createAssistantMessage({
         chatId: chat.id,
         ...assistantContent,
-      });
+      } as CreateAssistantMessage);
 
       // Обновляем время последнего изменения чата
-      await Chat.touch(chat.id);
+      await ChatModel.touch(chat.id);
 
       res.json({
         chatId: chat.id,
@@ -133,7 +133,7 @@ export default {
    */
   findMessages: async (req: RequestWithPassport, res: Response) => {
     try {
-      const chat = await Chat.findById(req.params.id);
+      const chat = await ChatModel.findById(req.params.id);
 
       if (!chat) {
         return res
@@ -167,7 +167,7 @@ export default {
         });
       }
 
-      const chats = await Chat.findAllByPassportId(req.passport.id || 0);
+      const chats = await ChatModel.findAllByPassportId(req.passport.id || 0);
 
       res.json(chats);
     } catch (err) {

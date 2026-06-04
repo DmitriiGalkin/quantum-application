@@ -1,7 +1,8 @@
 
-import {baseAssistantAnswer} from "./assistant.ts";
+import {baseAssistantAnswer} from "./assistant";
+import { User as IUser, type ChatMessage } from '../../../application/src/types';
 
-const getIdeaPrompt = (user) => `
+const getIdeaPrompt = (user: IUser) => `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как заботливый педагог.
 
@@ -31,20 +32,25 @@ const getIdeaPrompt = (user) => `
 - Этот блок должен быть единственным.
 `;
 
-export async function ideaAssistantAnswer({ messages, meta }) {
+export interface AssistantAnswer {
+  messages: ChatMessage[];
+  meta: any;
+}
+
+export async function ideaAssistantAnswer({ messages, meta }: AssistantAnswer) {
   return baseAssistantAnswer({
     messages,
     meta: { ...meta, target: 'idea' },
     prompt: getIdeaPrompt(meta.user), // Передаем функцию для промпта
-    schema:  (data) =>
-        typeof data.title === 'string' &&
-        typeof data.description === 'string' &&
-        Array.isArray(data.steps) &&
-        data.steps.every(step => typeof step === 'string'),
-    transformer:  (data) => ({
+    schema: (data: any) =>
+      typeof data.title === 'string' &&
+      typeof data.description === 'string' &&
+      Array.isArray(data.steps) &&
+      data.steps.every((step: any) => typeof step === 'string'),
+    transformer: (data: any) => ({
       title: data.title,
       description: data.description,
       steps: data.steps,
-    })
+    }),
   });
 }

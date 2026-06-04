@@ -1,4 +1,5 @@
-import {baseAssistantAnswer} from "./assistant.ts";
+import {baseAssistantAnswer} from "./assistant";
+import { AssistantAnswer } from 'assistants/ideaAssistant';
 
 const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -31,15 +32,12 @@ const SYSTEM_PROMPT = `
 - Этот блок должен быть единственным.
 `;
 
-export async function userAssistantAnswer({ messages }) {
+export async function userAssistantAnswer({ messages }: AssistantAnswer) {
   return baseAssistantAnswer({
     messages,
     prompt: SYSTEM_PROMPT,
-    schema: (data) =>
-        typeof data.title === 'string' &&
-        typeof data.description === 'string' &&
-        typeof data.age === 'string',
-    transformer: (data) => ({
+    schema: (data: any) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'string',
+    transformer: (data: any) => ({
       title: data.title,
       description: data.description,
       age: Number(data.age), // Преобразуем возраст в число здесь

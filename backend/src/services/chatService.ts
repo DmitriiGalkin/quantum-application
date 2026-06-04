@@ -8,7 +8,7 @@ import {teacherAssistantAnswer} from 'assistants/teacherAssistant';
 import {projectAssistantAnswer} from 'assistants/projectAssistant';
 import Idea from "../models/idea";
 import IdeaUser from "../models/ideaUser";
-import type { ChatMessage, ChatTarget, Meta } from '../../../application/src/requests';
+import type { ChatMessage, ChatTarget, Meta } from '../../../application/src/types';
 import { User as IUser } from '../../../application/src/types';
 import { Idea as IIdea } from '../../../application/src/types';
 import { Project as IProject } from '../../../application/src/types';
@@ -38,8 +38,15 @@ function normalizeMessage(row: any) {
   };
 }
 
+export interface CreateAssistantMessage {
+  chatId: number;
+  content: string;
+  metadata: string | null;
+  target: ChatTarget;
+}
+
 // Функция для создания сообщения от ассистента
-async function createAssistantMessage({ chatId, content, metadata = null, target }: { chatId: number, content:string, metadata: string | null, target: ChatTarget }) {
+async function createAssistantMessage({ chatId, content, metadata = null, target }: CreateAssistantMessage) {
   // Создаем сообщение в БД
   const assistantMessageId = await Message.create({
     id: 1,
@@ -91,7 +98,7 @@ const selectAssistant = (target: ChatTarget, meta: Meta) => {
 
       return async () => {
         const userId = await User.create({id:1, ...meta.user, passportId: meta.passport?.id } as IUser)
-        const ideaId = await Idea.create({ ...meta.idea, userId, passportId: meta.passport?.id } as IIdea);
+        const ideaId = await Idea.create({ ...meta.idea, userId, passportId: meta.passport?.id } as unknown as IIdea);
         await IdeaUser.create({ ideaId, userId })
 
         return {

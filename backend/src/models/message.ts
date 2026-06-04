@@ -1,6 +1,6 @@
 import pool from '../db';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import type { ChatMessage } from '../../../application/src/requests';
+import type { ChatMessage } from '../../../application/src/types';
 
 class MessageModel {
   static async create(data: ChatMessage): Promise<number> {

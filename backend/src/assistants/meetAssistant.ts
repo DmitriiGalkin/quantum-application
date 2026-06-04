@@ -1,9 +1,9 @@
-import Project from "../models/project.ts";
-import {baseAssistantAnswer} from "./assistant.ts";
+import Project from "../models/project";
+import {baseAssistantAnswer} from "./assistant";
+import { Idea } from '../../../application/src/types';
+import { AssistantAnswer } from 'assistants/ideaAssistant';
 
-const getPrompt = (ideas, meta) => {
-  const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title, description: idea.description }));
-
+const getPrompt = (meta: any) => {
   return `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как коллега.
@@ -37,22 +37,18 @@ ${JSON.stringify(meta.places)}
 - Все поля должны быть заполнены.
 - Этот блок должен быть единственным.
 `;
-}
+};
 
-export async function meetAssistantAnswer({ messages, meta }) {
-  const ideas = await Project.findAll();
+export async function meetAssistantAnswer({ messages, meta }: AssistantAnswer) {
   return baseAssistantAnswer({
     messages: messages.filter(m => m.target === 'project'), // Фильтрация сообщений, если нужна только здесь
     meta,
-    prompt: getPrompt(ideas, meta),
-    schema: (data) =>
-        typeof data.startedAt === 'string' &&
-        typeof data.duration === 'string' &&
-        typeof data.placeId === 'string',
-    transformer: (data) => ({
+    prompt: getPrompt(meta),
+    schema: (data: any) => typeof data.startedAt === 'string' && typeof data.duration === 'string' && typeof data.placeId === 'string',
+    transformer: (data: any) => ({
       startedAt: data.startedAt,
       duration: data.duration,
       placeId: Number(data.placeId),
-    })
-  })
+    }),
+  });
 }

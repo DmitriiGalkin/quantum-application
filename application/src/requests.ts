@@ -1,5 +1,5 @@
 import { apiFetch, getAccessToken } from './api';
-import type { Chat, Idea, Meet, Passport, Place, Project, User } from './types';
+import type { Chat, ChatMessage, ChatTarget, Idea, Meet, Passport, Place, Project, User } from './types';
 import type { ExtendedMeet } from './components/MeetCard.tsx';
 import type { ProjectFormValues } from './ProjectForm';
 import { useQuery } from '@tanstack/react-query';
@@ -14,41 +14,6 @@ export interface ExtendedProject extends Project {
   meets?: ExtendedMeet[];
   users?: User[];
 }
-
-export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
-
-export type ChatTarget = 'user' | 'teacher' | 'idea' | 'project' | 'meet' | 'none';
-
-export type ChatMessageRole = 'user' | 'assistant' | 'system';
-
-export type ChatMessage = {
-  id: number;
-  chatId: number;
-  passportId: number | null;
-  role: ChatMessageRole;
-  content: string;
-  metadata: unknown;
-  createdAt?: string;
-  meta?: {
-    target: ChatMetaType;
-    data: unknown;
-  };
-  target: ChatTarget;
-};
-
-export interface Meta {
-  user?: User;
-  idea?: Project;
-  teacher?: Passport;
-  project?: Project;
-  projects?: Project[];
-  passport?: Passport;
-  places?: Place[];
-  meet?: Meet;
-  auth?: string[];
-}
-
-
 
 export type SendMessageResponse = {
   chatId: number;

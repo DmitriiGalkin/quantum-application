@@ -1,4 +1,5 @@
-import {baseAssistantAnswer} from "./assistant.ts";
+import {baseAssistantAnswer} from "./assistant";
+import { AssistantAnswer } from 'assistants/ideaAssistant';
 
 const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -31,15 +32,12 @@ const SYSTEM_PROMPT = `
 - Этот блок должен быть единственным.
 `;
 
-export async function teacherAssistantAnswer({ messages }) {
+export async function teacherAssistantAnswer({ messages }: AssistantAnswer) {
   return baseAssistantAnswer({
     messages,
     prompt: SYSTEM_PROMPT, // Передаем константу напрямую или через функцию
-    schema: (data) =>
-        typeof data.profession === 'string' &&
-        typeof data.interests === 'string' &&
-        typeof data.experience === 'string',
-    transformer: (data) => ({
+    schema: (data: any) => typeof data.profession === 'string' && typeof data.interests === 'string' && typeof data.experience === 'string',
+    transformer: (data: any) => ({
       description: `Профессия: ${data.profession}, Интересы: ${data.interests}, Опыт работы с детьми: ${data.experience}`,
     }),
     meta: { target: 'teacher' }, // Мета-данные можно передать здесь

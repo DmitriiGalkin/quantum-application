@@ -1,7 +1,9 @@
-import Project from "../models/project.ts";
-import {baseAssistantAnswer} from "./assistant.ts";
+import IdeaModel from "../models/idea";
+import {baseAssistantAnswer} from "./assistant";
+import { Idea, Passport } from '../../../application/src/types';
+import { AssistantAnswer } from 'assistants/ideaAssistant';
 
-const getSystemPrompt = (ideas, teacher) => {
+const getSystemPrompt = (ideas: Idea[], teacher: Passport) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));
 
   return `
@@ -31,16 +33,15 @@ ${JSON.stringify(filterIdeas)}
 `;
 }
 
-export async function projectAssistantAnswer({ messages, meta }) {
-  const ideas = await Project.findAll();
+export async function projectAssistantAnswer({ messages, meta }: AssistantAnswer) {
+  const ideas = await IdeaModel.findAll();
   return baseAssistantAnswer({
     messages,
-    meta: { ...meta, target: 'project'},
+    meta: { ...meta, target: 'project' },
     prompt: getSystemPrompt(ideas, meta.teacher),
-    schema: (data) =>
-        typeof data.id === 'string',
-    transformer: (data) => ({
+    schema: (data: any) => typeof data.id === 'string',
+    transformer: (data: any) => ({
       id: Number(data.id),
-    })
+    }),
   });
 }

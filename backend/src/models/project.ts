@@ -27,11 +27,10 @@ class ProjectModel {
     const sql = `
       UPDATE project 
       SET title = COALESCE(?, title), 
-          description = COALESCE(?, description), 
-          image = COALESCE(?, image) 
+          description = COALESCE(?, description)
       WHERE id = ?
     `;
-    const values = [obj.title, obj.description, obj.image, id];
+    const values = [obj.title, obj.description, id];
 
     try {
       await pool.query(sql, values);
@@ -52,7 +51,7 @@ class ProjectModel {
     }
   }
 
-  static async findAll(params: IParams): Promise<Project[]> {
+  static async findAll(params?: IParams): Promise<Project[]> {
     let sql = 'SELECT project.* FROM project';
     const values: (string | number)[] = [];
 

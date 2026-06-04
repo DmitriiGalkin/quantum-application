@@ -1,5 +1,3 @@
-import type { ChatMessage, Meta } from './requests.ts';
-
 export interface Meet {
   id: number;
   projectId: number;
@@ -89,4 +87,37 @@ export interface Chat {
   title: string;
   meta?: Meta;
   messages?: ChatMessage[];
+}
+
+export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
+
+export type ChatTarget = 'user' | 'teacher' | 'idea' | 'project' | 'meet' | 'none';
+
+export type ChatMessageRole = 'user' | 'assistant' | 'system';
+
+export type ChatMessage = {
+  id: number;
+  chatId: number;
+  passportId: number | null;
+  role: ChatMessageRole;
+  content: string;
+  metadata: unknown;
+  createdAt?: string;
+  meta?: {
+    target: ChatMetaType;
+    data: unknown;
+  };
+  target: ChatTarget;
+};
+
+export interface Meta {
+  user?: User;
+  idea?: Project;
+  teacher?: Passport;
+  project?: Project;
+  projects?: Project[];
+  passport?: Passport;
+  places?: Place[];
+  meet?: Meet;
+  auth?: string[];
 }

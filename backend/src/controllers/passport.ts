@@ -16,7 +16,7 @@ export default {
       }
 
       // Используем ID из уже авторизованного паспорта (из req.passport.id)
-      await Passport.update(Number(req.passport.id), req.body);
+      await Passport.update(Number(req.passport.id), req.body as unknown as IPassport);
 
       res.json({ error: false, message: 'Профиль успешно обновлен' });
     } catch (err) {

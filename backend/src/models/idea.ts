@@ -54,7 +54,7 @@ class IdeaModel {
     }
   }
 
-  static async findAll(params: IParams): Promise<RowDataPacket[]> {
+  static async findAll(params?: IParams): Promise<Idea[]> {
     let sql = 'SELECT idea.* FROM idea WHERE 1=1';
     const values: (string | number)[] = [];
 
@@ -81,7 +81,7 @@ class IdeaModel {
 
     try {
       const [rows] = await pool.query<RowDataPacket[]>(sql, values);
-      return rows;
+      return rows as Idea[];
     } catch (err) {
       console.error('idea.findAll error:', err);
       throw err;
