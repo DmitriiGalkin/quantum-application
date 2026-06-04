@@ -80,7 +80,7 @@ pipeline {
                     -v "$WORKSPACE:/workspace" \
                     -w /workspace \
                     "$NODE_IMAGE" \
-                    sh -lc "cd application && npm ci && npm run build:production && test -f dist/index.html && cd ../backend && npm ci"
+                    sh -lc "cd application && npm ci && npm run build:production && test -f dist/index.html && cd ../backend && npm ci && npm run build && test -f dist/index.js"
                 '''
             }
         }
@@ -105,7 +105,7 @@ pipeline {
                       -v "/etc/ssl/quantum:/run/secrets/ssl:ro" \
                       -w /workspace \
                       "$NODE_IMAGE" \
-                          sh -lc "npm install -g pm2 && npx pm2-runtime --require ts-node/register/transpile-only ecosystem.config.mjs"
+                          sh -lc "npm install -g pm2 && npx pm2-runtime ecosystem.config.mjs"
 
                   sleep 5
 
