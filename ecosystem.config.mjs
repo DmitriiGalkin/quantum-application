@@ -14,6 +14,7 @@ export const apps = [
     error_file: '/dev/stderr',
     merge_logs: true,
     log_date_format: 'YYYY-MM-DD HH:mm:ss',
+    interpreter: 'node',
   },
   {
     name: 'application',
@@ -22,5 +23,6 @@ export const apps = [
     error_file: '/dev/stderr',
     merge_logs: true,
     log_date_format: 'YYYY-MM-DD HH:mm:ss',
+    interpreter: 'node',
   },
 ];
