@@ -3,6 +3,7 @@ module.exports = {
     {
       name: 'backend',
       script: 'backend/src/index.ts',
+      interpreter: 'ts-node',
       out_file: '/dev/stdout',
       error_file: '/dev/stderr',
       merge_logs: true,
