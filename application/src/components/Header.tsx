@@ -39,7 +39,6 @@ function Header() {
     }
   }, [accessToken, initialAccessToken]);
 
-
   const mutation = useMutation({
     mutationFn: fetchCreateChat,
   });
@@ -144,14 +143,9 @@ function Header() {
               justifyContent: 'space-between',
             }}
           >
-            <Box>
-              <Typography sx={{ fontWeight: 800 }} id="auth-section-title" variant="h5">
-                Войти в 244221111
-              </Typography>
-              <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-                Выберите удобный способ авторизации
-              </Typography>
-            </Box>
+            <Typography color="text.secondary" sx={{ mt: 0.5 }}>
+              Выберите удобный способ авторизации
+            </Typography>
 
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
               {strategies.map(strategy => (
