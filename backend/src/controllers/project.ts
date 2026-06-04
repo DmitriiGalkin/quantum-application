@@ -3,9 +3,8 @@ import User from '../models/user.js';
 import Passport from '../models/passport.js';
 import MeetUser from '../models/meetUser.js';
 import Meet from '../models/meet.js';
-import { generateProjectImage, uploadImage } from "../assistants/imageAssistant";
 import { Response } from 'express';
-import { RequestWithPassport } from '../router';
+import { RequestWithPassport } from 'router';
 import { Project as IProject } from '../../../application/src/types'; // Импортируем пул соединений
 
 export default {

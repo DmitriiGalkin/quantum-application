@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Message from './Message.tsx';
-import { type ChatMessage } from '../requests.ts';
+import { type ChatMessage } from '../types.ts';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
 import StrategieList from '../StrategieList.tsx';

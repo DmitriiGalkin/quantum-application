@@ -1,30 +1,29 @@
-import {type ChatTarget} from "./requests.ts";
+import {type ChatTarget} from "./types.ts";
 
 export const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 
 export const saveAccessTokenFromUrl = () => {
-    if (typeof window === 'undefined') {
-        return null;
-    }
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
-    const url = new URL(window.location.href);
-    const accessToken = url.searchParams.get('access_token');
+  const url = new URL(window.location.href);
+  const accessToken = url.searchParams.get('access_token');
 
-    if (!accessToken) {
-        return localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-    }
+  if (!accessToken) {
+    return localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+  }
 
-    localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
-    url.searchParams.delete('access_token');
-    window.history.replaceState({}, document.title, `${url.pathname}${url.search}${url.hash}`);
+  localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
+  url.searchParams.delete('access_token');
+  window.history.replaceState({}, document.title, `${url.pathname}${url.search}${url.hash}`);
 
-    const currentPath = localStorage.getItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY) || '/'; // Если нет записи, вернем на главную
-    window.location.href = currentPath;
-    localStorage.removeItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
+  window.location.href = localStorage.getItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY) || '/'; // Если нет записи, вернем на главную;
+  localStorage.removeItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
 
-    return accessToken;
+  return accessToken;
 }
 
 

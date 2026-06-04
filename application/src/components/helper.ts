@@ -2,7 +2,7 @@ import {
   type ChatMessage,
   type ChatMessageRole,
   type ChatTarget,
-} from '../requests';
+} from '../types.ts';
 import type { Chat } from '../types.ts';
 
 
