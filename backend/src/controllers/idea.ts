@@ -5,6 +5,7 @@ import IdeaUser from "../models/ideaUser.js";
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
 import Project from 'models/project';
+import Place from 'models/place';
 
 export default {
   /**
@@ -34,6 +35,31 @@ export default {
     }
   },
 
+  // generateImage: async (req: RequestWithPassport, res: Response) => {
+  //   try {
+  //     // Middleware должен гарантировать наличие req.passport
+  //     const projectId = req.params.id;
+  //     const project = await Project.findById(projectId);
+  //
+  //     if (!project) {
+  //       return res.status(404).json({ error: true, message: 'Проект не найден' });
+  //     }
+  //
+  //     const imageBinary = await generateProjectImage(project);
+  //     const image = await uploadImage(imageBinary);
+  //
+  //     await Project.update(req.params.id, { ...project, image });
+  //
+  //     res.json({ error: false, message: 'Изображение проекта обновлено' });
+  //   } catch (err) {
+  //     console.error('chat.generateImage error:', err);
+  //     res.status(500).json({
+  //       error: true,
+  //       message: 'Не удалось сгенерировать изображение для сообщения',
+  //     });
+  //   }
+  // },
+
   /**
    * Получение детальной информации о конкретной идее по ID
    */
@@ -55,14 +81,16 @@ export default {
       ]);
 
       // Получаем список связей "идея-пользователь" (участников)
-      const [ideaUsers] = await Promise.all([
-        IdeaUser.findByIdeaId(ideaId),
-      ]);
+      const [ideaUsers] = await Promise.all([IdeaUser.findByIdeaId(ideaId)]);
 
       // Для каждого участника находим его данные
-      const usersForIdeaUsers = await Promise.all(
-        ideaUsers.map(iu => User.findById(iu.userId))
-      );
+      const usersForIdeaUsers = await Promise.all(ideaUsers.map(iu => User.findById(iu.userId)));
+
+      // Для каждого участника находим его данные
+      const usersForProjects = await Promise.all(projects.map(project => User.findByProjectId(project.id)));
+      const projectPassport = await Promise.all(projects.map(project => Passport.findById(project.passportId)));
+      const projectPlaces = await Promise.all(projects.map(project => Place.findById(project.placeId)));
+
 
       // Формируем финальный объект ответа со всеми вложенными данными
       res.json({
@@ -73,7 +101,12 @@ export default {
           ...iu,
           user: usersForIdeaUsers[idx], // Добавляем объект пользователя к каждому участнику
         })),
-        projects,
+        projects: projects.map((project, idx) => ({
+          ...project,
+          passport: projectPassport[idx],
+          place: projectPlaces[idx],
+          users: usersForProjects[idx], // Добавляем объект пользователя к каждому участнику
+        })),
       });
     } catch (err) {
       console.error('idea.findById error:', err);

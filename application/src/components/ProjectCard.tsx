@@ -1,12 +1,10 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import CardMedia from "@mui/material/CardMedia";
-import type {ExtendedProject} from "../requests.ts";
-import SchoolIcon from '@mui/icons-material/School';
-import Stack from "@mui/material/Stack";
-import UserGroup from "./UserGroup.tsx";
-
+import type { ExtendedProject } from '../requests.ts';
+import Stack from '@mui/material/Stack';
+import UserGroup from './UserGroup.tsx';
+import Box from "@mui/material/Box";
 
 type ProjectCardProps = {
   project: ExtendedProject;
@@ -29,32 +27,39 @@ function ProjectCard({ project }: ProjectCardProps) {
       }}
       onClick={() => project.id && (window.location.href = `/project/${project.id}`)}
     >
-      {/* Родительский контейнер для позиционирования иконки */}
-        <CardMedia
-            component="img"
-            height="90"
-            image={project.image || `/bg.jpeg`}
-            alt={project.title || 'Идея'}
-            sx={{ objectFit: 'cover' }}
-        />
-
       <CardContent sx={{ flexGrow: 1 }}>
-
-        <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom>
+        <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom noWrap>
           {project.title}
         </Typography>
+        <Typography
+          color="text.secondary"
+          gutterBottom
+          sx={{
+            display: '-webkit-box',
+            overflow: 'hidden',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 3,
+          }}
+        >
+          {project.description}
+        </Typography>
 
-        <Typography color="text.secondary" gutterBottom>{project.description}</Typography>
-
+        <Stack direction="row" sx={{justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Аватарки учеников */}
           <UserGroup users={project.users || []} />
 
+          {/* Информация о кураторе */}
+          <Box sx={{ textAlign: 'right' }}>
+            <Typography variant="body2" color="text.primary">
+              Куратор:
+            </Typography>
+            <Typography variant="body1">{project?.passport?.title}</Typography>
+          </Box>
+        </Stack>
 
-          <Stack direction="row" spacing={1.25} sx={{ minWidth: 140, alignItems: 'center', justifyContent: 'flex-end' }}>
-
-              <Typography>
-                  {project?.passport?.title}
-              </Typography><SchoolIcon />
-          </Stack>
+        <Typography variant="body2" color="text.secondary">
+          {project?.place?.title}
+        </Typography>
       </CardContent>
     </Card>
   );

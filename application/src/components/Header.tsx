@@ -10,7 +10,7 @@ import Toolbar from '@mui/material/Toolbar';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeDrawer from '../components/HomeDrawer.tsx';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
@@ -46,16 +46,17 @@ function Header() {
             <MenuIcon />
           </IconButton>
 
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              color: 'white',
-              flexGrow: 1,
-            }}
-          >
-            Quantum
-          </Typography>
+          <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                color: 'white',
+              }}
+            >
+              Quantum
+            </Typography>
+          </Link>
           <IconButton
             color="primary"
             aria-label="Идеи от АИ"

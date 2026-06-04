@@ -14,23 +14,24 @@ import projectUser from './controllers/projectUser';
 import chat from './controllers/chat';
 import strategies from './strategies';
 import { User } from '../../application/src/types'; // Импортируем пул соединений
+import { Passport as IPassport } from '../../application/src/types'; // Импортируем пул соединений
 
-export interface Passport {
-  id: number | null;
-  provider: string | null;
-  providerId: string | null;
-  title: string | null;
-  description: string | null;
-  email: string | null;
-  avatar: string | null;
-  createdAt: string | null;
-  updatedAt: string | null;
-}
+// export interface Passport {
+//   id: number | null;
+//   provider: string | null;
+//   providerId: string | null;
+//   title: string | null;
+//   description: string | null;
+//   email: string | null;
+//   avatar: string | null;
+//   createdAt: string | null;
+//   updatedAt: string | null;
+// }
 
 
 export interface RequestWithPassport extends Request {
   params: Record<string, string>;
-  passport: Passport;
+  passport: IPassport;
   query: Record<string, string>;
   users: User[];
 }
@@ -113,7 +114,7 @@ router.delete('/project/:id', passportController.usePassport, project.delete as 
 // @ts-ignore
 router.get('/project/:id/meta', project.meta);
 // @ts-ignore
-router.post('/project/:id/generateImage', passportController.usePassport, project.generateImage as unknown as RequestHandler);
+//router.post('/project/:id/generateImage', passportController.usePassport, project.generateImage as unknown as RequestHandler);
 
 /**
  * Чат

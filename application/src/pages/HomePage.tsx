@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import '../App.css';
 import { saveAccessTokenFromUrl, strategies } from '../helper.ts';
 import Header from '../components/Header.tsx';
+import { MapComponent } from '../components/MeetMap.tsx';
 
 
 function HomePage() {
@@ -25,8 +26,11 @@ function HomePage() {
   // @ts-ignore
   return (
     <Box sx={{ minHeight: '100vh' }}>
-      <Header/>
-      <Container maxWidth="lg" sx={{ py: 2 }}>
+      <Header />
+
+      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
+        <Typography sx={{ fontWeight: 800 }}>Добро пожаловать на страницу нашего проекта</Typography>
+        <MapComponent lat={55.75} lng={37.62} zoom={12} />
         {!accessToken ? (
           <Paper
             component="section"
@@ -62,13 +66,7 @@ function HomePage() {
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
                 {strategies.map(strategy => (
-                  <Button
-                    component="a"
-                    variant="contained"
-                    href={strategy.href}
-                    key={strategy.title}
-                    sx={{ minWidth: 120 }}
-                  >
+                  <Button component="a" variant="contained" href={strategy.href} key={strategy.title} sx={{ minWidth: 120 }}>
                     <Box component="span" sx={{ mr: 1, fontWeight: 900 }}>
                       {strategy.icon}
                     </Box>
@@ -79,7 +77,7 @@ function HomePage() {
             </Stack>
           </Paper>
         ) : (
-            <Box>Здравствуйте, вы у нас не впервые</Box>
+          <Box>Здравствуйте, вы у нас не впервые</Box>
         )}
       </Container>
     </Box>

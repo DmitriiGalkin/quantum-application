@@ -26,7 +26,7 @@ class PlaceModel {
     }
   }
 
-  static async findById(id: string): Promise<Place | null> {
+  static async findById(id: number): Promise<Place | null> {
     try {
       const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM place WHERE id = ?', [id]);
       return rows.length > 0 ? rows[0] as Place : null;

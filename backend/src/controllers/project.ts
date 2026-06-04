@@ -95,7 +95,7 @@ export default {
         return res.status(404).json({ error: true, message: 'Проект не найден' });
       }
 
-      const [passport, user] = await Promise.all([Passport.findById(project.passportId as number), User.findById(project.userId as number)]);
+      const [passport] = await Promise.all([Passport.findById(project.passportId as number)]);
 
       const [projectUsers, meets] = await Promise.all([User.findByProjectId(projectId), Meet.findByProjectId(projectId)]);
 
@@ -115,7 +115,6 @@ export default {
       res.json({
         ...project,
         passport,
-        user,
         meets: meetsWithDetails,
         users: projectUsers,
       });
@@ -125,30 +124,7 @@ export default {
     }
   },
 
-  generateImage: async (req: RequestWithPassport, res: Response) => {
-    try {
-      // Middleware должен гарантировать наличие req.passport
-      const projectId = req.params.id;
-      const project = await Project.findById(projectId);
 
-      if (!project) {
-        return res.status(404).json({ error: true, message: 'Проект не найден' });
-      }
-
-      const imageBinary = await generateProjectImage(project);
-      const image = await uploadImage(imageBinary);
-
-      await Project.update(req.params.id, { ...project, image });
-
-      res.json({ error: false, message: 'Изображение проекта обновлено' });
-    } catch (err) {
-      console.error('chat.generateImage error:', err);
-      res.status(500).json({
-        error: true,
-        message: 'Не удалось сгенерировать изображение для сообщения',
-      });
-    }
-  },
   meta: async (req: RequestWithPassport, res: Response) => {
     try {
       const project = await Project.findById(req.params.id);
@@ -164,7 +140,7 @@ export default {
         ogType: 'article',
         ogTitle: project.title,
         ogDescription: project.description,
-        ogImage: project.image,
+        //ogImage: project.idea.image,
       });
     } catch (err) {
       console.error('project.meta error:', err);

@@ -36,15 +36,11 @@ export interface Passport {
 
 export interface Project {
   id: number;
-  userId: number | null;
-  passportId: number | null;
-  placeId: number | null;
+  passportId: number;
+  placeId: number;
   ideaId: number | null;
-  latitude: number | null;
-  longitude: number | null;
   title: string | null;
   description: string | null;
-  image?: string | null;
   deletedAt: string | null;
 }
 

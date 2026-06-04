@@ -17,7 +17,6 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
-import MeetCard from '../components/MeetCard.tsx';
 import ProjectCard from '../components/ProjectCard.tsx';
 
 function IdeaPage() {
@@ -69,11 +68,11 @@ function IdeaPage() {
 
   return (
     // Оборачиваем весь контент в Container для контроля ширины
-    <>
+    <Box sx={{ minHeight: '100vh' }}>
       <AppBar
         position="sticky"
         color="inherit"
-        elevation={1}
+        elevation={0}
         sx={{
           borderBottom: 1,
           borderColor: 'divider',
@@ -90,14 +89,14 @@ function IdeaPage() {
           </IconButton>
         </Toolbar>
       </AppBar>
+
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
         <Card
           elevation={0}
           sx={{
-            overflow: 'hidden',
             border: 1,
             borderColor: 'divider',
-            mt: { xs: -8, sm: -10 }, // Отступ сверху для красоты на моб. устройствах
+            borderRadius: 4,
           }}
         >
           <Box sx={{ position: 'relative', width: '100%' }}>
@@ -171,40 +170,43 @@ function IdeaPage() {
                   {idea.description}
                 </Typography>
               </Box>
-
-              <Box
-                sx={{
-                  display: 'grid',
-                  gridTemplateColumns: {
-                    xs: '1fr', // На моб. устройствах - одна колонка (сначала Учитель, потом Расписание)
-                    md: '1fr 2fr', // На средних и больших - две колонки (Учитель слева, Расписание справа)
-                  },
-                  gap: { xs: 3, md: 4 }, // Отступы между колонками сетки
-                }}
-              >
-                {Boolean(idea.projects) && (
-                  <Box component="section">
-                    <Typography component="h2" variant="h4" sx={{ mb: { xs: 2, md: 3 }, fontWeight: 900 }}>
-                      Проекты по идее
-                    </Typography>
-
-                    {/* Адаптивная сетка для карточек встреч */}
-                    <Stack spacing={2}>
-                      {(idea.projects || []).map(project => (
-                        <ProjectCard
-                          project={project}
-                          key={project.id}
-                        />
-                      ))}
-                    </Stack>
-                  </Box>
-                )}
-              </Box>
             </Stack>
           </CardContent>
         </Card>
+        <Typography component="h6" variant="h6" sx={{ pt: 2, mb: { xs: 2, md: 3 }, fontWeight: 900, color: 'white' }}>
+          Проекты по идее
+        </Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr', // На моб. устройствах - одна колонка (сначала Учитель, потом Расписание)
+              md: '1fr 2fr', // На средних и больших - две колонки (Учитель слева, Расписание справа)
+            },
+            gap: { xs: 3, md: 4 }, // Отступы между колонками сетки
+          }}
+        >
+          {Boolean(idea.projects) && (
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, minmax(0, 1fr))',
+                  md: 'repeat(3, minmax(0, 1fr))',
+                },
+                gap: 2,
+              }}
+            >
+              {' '}
+              {(idea.projects || []).map(project => (
+                <ProjectCard project={project} key={project.id} />
+              ))}
+            </Box>
+          )}
+        </Box>
       </Container>
-    </>
+    </Box>
   );
 }
 

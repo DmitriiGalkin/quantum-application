@@ -5,12 +5,7 @@ import type { ProjectFormValues } from './ProjectForm';
 import { useQuery } from '@tanstack/react-query';
 
 export interface ExtendedProject extends Project {
-  passport?: {
-    title: string;
-  };
-  user?: {
-    title: string;
-  };
+  passport?: Passport;
   place?: {
     address: string;
     title: string;
@@ -66,7 +61,7 @@ export async function fetchProject(id: string): Promise<ExtendedProject> {
 
 export interface ExtendedIdea extends Idea {
   user: User;
-  projects: Project[];
+  projects: ExtendedProject[];
 }
 
 export async function fetchIdea(id: string): Promise<ExtendedIdea> {

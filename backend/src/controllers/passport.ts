@@ -125,7 +125,7 @@ export default {
   /**
    * Middleware для проверки токена доступа
    */
-  usePassport: async (req: Request, res: Response, next: Function) => {
+  usePassport: async (req: RequestWithPassport, res: Response, next: Function) => {
     // @ts-ignore
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -138,11 +138,14 @@ export default {
     try {
       const passport = await Passport.findByAccessToken(token);
 
+
       if (!passport) {
         return res.status(401).json({ error: true, message: 'Токен недействителен или протух' });
       }
 
       //req.users = await User.findByPassportId(req.passport.id || 0);
+
+      req.passport = passport as IPassport;
 
       next(); // Передаем управление следующему обработчику
     } catch (err) {

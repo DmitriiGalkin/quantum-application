@@ -17,7 +17,6 @@ type IdeaCardProps = {
 function IdeaCard({ idea }: IdeaCardProps) {
     const [liked, setLiked] = useState(false);
     const [likesCount, setLikesCount] = useState(124);
-    console.log(idea, 'idea');
     return (
       <Card
         component="article"
