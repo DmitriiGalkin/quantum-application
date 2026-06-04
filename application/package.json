@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite  --host 0.0.0.0",
-    "dev:ssr": "node server.js",
+    "dev:ssr": "node server.ts",
     "build": "set NODE_ENV=production&& tsc -b && vite build",
     "build:production": "NODE_ENV=production tsc -b && vite build",
     "lint": "eslint .",
