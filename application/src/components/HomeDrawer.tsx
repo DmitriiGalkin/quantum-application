@@ -1,4 +1,3 @@
-import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -19,15 +18,15 @@ import AddIcon from '@mui/icons-material/Add';
 import '../App.css';
 import {useQuery} from '@tanstack/react-query';
 import {fetchPassport} from '../requests.ts';
-import {ACCESS_TOKEN_STORAGE_KEY, saveAccessTokenFromUrl} from "../helper.ts";
+import {ACCESS_TOKEN_STORAGE_KEY} from "../helper.ts";
 
 const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 interface HomeDrawerProps {
   isMenuOpen: boolean;
   setIsMenuOpen: (isMenuOpen: boolean) => void;
-  accessToken?: string;
-  setAccessToken: () => void;
+  accessToken?: string | null;
+  setAccessToken: (a: null) => void;
 }
 
 function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: HomeDrawerProps) {

@@ -1,9 +1,9 @@
 import {
-  type Chat,
   type ChatMessage,
   type ChatMessageRole,
   type ChatTarget,
-} from '../requests.ts';
+} from '../requests';
+import type { Chat } from '../types.ts';
 
 
 export const getCaption = (target: ChatTarget): string => {

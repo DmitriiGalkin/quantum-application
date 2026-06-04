@@ -77,7 +77,6 @@ export async function createProject(values: ProjectFormValues): Promise<number> 
     body: JSON.stringify({
       title: values.title,
       description: values.description,
-      image: values.image || null,
     }),
   });
 }
@@ -91,7 +90,6 @@ export async function updateProject(projectId: number, values: ProjectFormValues
     body: JSON.stringify({
       title: values.title,
       description: values.description,
-      image: values.image || null,
     }),
   });
 }

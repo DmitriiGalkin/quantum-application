@@ -50,7 +50,6 @@ function CreateProjectPage() {
           initialValues={{
             title: '',
             description: '',
-            image: '',
           }}
           submitButtonText="Создать проект"
           submittingButtonText="Создаём..."

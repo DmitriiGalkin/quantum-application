@@ -89,4 +89,4 @@ export interface Chat {
   title: string;
   meta?: Meta;
   messages?: ChatMessage[];
-};
+}

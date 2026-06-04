@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FormEvent, type ReactNode, useState } from 'react';
+import {  type FormEvent, type ReactNode, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -9,15 +9,12 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SaveIcon from '@mui/icons-material/Save';
-import { apiFetch } from './api';
 
 export interface ProjectFormValues {
   title: string;
   description: string;
-  image: string;
 }
 
 interface ProjectFormProps {
@@ -45,39 +42,6 @@ function ProjectForm({
 }: ProjectFormProps) {
   const [title, setTitle] = useState(initialValues.title);
   const [description, setDescription] = useState(initialValues.description);
-  const [image, setImage] = useState(initialValues.image);
-  const [isImageUploading, setIsImageUploading] = useState(false);
-  const [imageUploadError, setImageUploadError] = useState<string | null>(null);
-
-  console.log(image,'image');
-
-  async function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    setIsImageUploading(true);
-    setImageUploadError(null);
-
-    try {
-      const formData = new FormData();
-      formData.append('image', file);
-
-      const uploadedImage = await apiFetch<{ url: string }>('/image', {
-        method: 'POST',
-        body: formData,
-      });
-
-      setImage(uploadedImage.url);
-    } catch (error) {
-      setImageUploadError('Не удалось загрузить изображение. Попробуйте ещё раз.');
-    } finally {
-      setIsImageUploading(false);
-      event.target.value = '';
-    }
-  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -85,7 +49,6 @@ function ProjectForm({
     onSubmit({
       title,
       description,
-      image,
     });
   }
 
@@ -120,77 +83,6 @@ function ProjectForm({
                 onChange={event => setDescription(event.target.value)}
                 fullWidth
               />
-              <Stack spacing={2}>
-                {imageUploadError && <Alert severity="error">{imageUploadError}</Alert>}
-
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={2}
-                  sx={{
-                    alignItems: { xs: 'stretch', sm: 'center' },
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Box>
-                    <Typography variant="body2" color="text.secondary">
-                      Обложка проекта
-                    </Typography>
-                    <Typography sx={{ fontWeight: 800 }}>
-                      {image ? 'Изображение загружено' : 'Загрузите изображение для карточки'}
-                    </Typography>
-                  </Box>
-
-                  <Button
-                    component="label"
-                    variant="contained"
-                    startIcon={<CloudUploadIcon />}
-                    disabled={isImageUploading}
-                  >
-                    {isImageUploading ? 'Загружаем...' : 'Выбрать файл'}
-                    <Box
-                      component="input"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      sx={{
-                        clip: 'rect(0 0 0 0)',
-                        clipPath: 'inset(50%)',
-                        height: 1,
-                        overflow: 'hidden',
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        whiteSpace: 'nowrap',
-                        width: 1,
-                      }}
-                    />
-                  </Button>
-                </Stack>
-
-                {image && (
-                  <Box
-                    component="img"
-                    src={image}
-                    alt="Обложка проекта"
-                    sx={{
-                      width: '100%',
-                      maxHeight: 320,
-                      objectFit: 'cover',
-                      borderRadius: 3,
-                      border: 1,
-                      borderColor: 'divider',
-                    }}
-                  />
-                )}
-
-                <TextField
-                  label="Ссылка на изображение"
-                  type="url"
-                  value={image}
-                  onChange={event => setImage(event.target.value)}
-                  fullWidth
-                />
-              </Stack>
             </Stack>
           </CardContent>
         </Card>
@@ -249,7 +141,7 @@ function ProjectForm({
           variant="contained"
           size="large"
           startIcon={<SaveIcon />}
-          disabled={isSubmitting || isImageUploading}
+          disabled={isSubmitting}
           sx={{
             alignSelf: { xs: 'stretch', sm: 'flex-end' },
             px: 4,

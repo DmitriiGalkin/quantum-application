@@ -20,7 +20,6 @@ function toFormValues(project: ExtendedProject): ProjectFormValues {
   return {
     title: project.title ?? '',
     description: project.description ?? '',
-    image: project.image ?? '',
   };
 }
 

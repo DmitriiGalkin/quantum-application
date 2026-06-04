@@ -1,6 +1,6 @@
 // src/components/MapComponent.tsx
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import L, { Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaces } from '../requests.ts';
@@ -12,7 +12,7 @@ interface Props {
   zoom: number;
 }
 
-function addMinutes(timeStr, minutes) {
+function addMinutes(timeStr: string, minutes: number) {
   // Парсим часы и минуты из строки
   const [hours, mins] = timeStr.split(':').map(Number);
 
@@ -27,7 +27,7 @@ function addMinutes(timeStr, minutes) {
   return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
 }
 
-function extractTime(isoString) {
+function extractTime(isoString: string) {
   // Регулярное выражение для выделения часов и минут
   const match = isoString.match(/\d\d:\d\d/);
 
@@ -36,7 +36,7 @@ function extractTime(isoString) {
 }
 
 export function MapComponent({ lat, lng, zoom }: Props) {
-  const mapRef = useRef<HTMLElement | null>(null);
+  const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<LeafletMap | null>(null);
   const markersRef = useRef<LeafletMarker[]>([]);
   const { data: places = [] } = useQuery({
@@ -45,6 +45,7 @@ export function MapComponent({ lat, lng, zoom }: Props) {
   });
   console.log(places, 'places');
 
+  // @ts-ignore
   useEffect(() => {
     if (!mapRef.current) return;
 
