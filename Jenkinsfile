@@ -105,7 +105,7 @@ pipeline {
                       -v "/etc/ssl/quantum:/run/secrets/ssl:ro" \
                       -w /workspace \
                       "$NODE_IMAGE" \
-                          sh -lc "npm install -g pm2 && pm2-runtime ecosystem.config.cjs"
+                          sh -lc "npm install -g pm2 && npx ts-node --loader ts-node/esm ./node_modules/pm2/bin/pm2-runtime.js ecosystem.config.cjs"
 
                   sleep 5
 
