@@ -74,14 +74,13 @@ class UserModel {
     }
   }
 
-  // Участники встречи (через JOIN с таблицей visit)
   static async findByMeet(meetId: number) {
     try {
       const sql = `
         SELECT DISTINCT user.*
         FROM user
-        LEFT JOIN visit ON user.id = visit.userId
-        WHERE visit.meetId = ?
+        LEFT JOIN meetUser ON user.id = meetUser.userId
+        WHERE meetUser.meetId = ?
           AND user.deletedAt IS NULL
       `;
       const [rows] = await pool.query<RowDataPacket[]>(sql, [meetId]);

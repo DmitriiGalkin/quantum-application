@@ -1,14 +1,14 @@
 import pool from '../db';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise'; // Импортируем пул соединений
-import { Visit } from '../../../application/src/types'; // Импортируем пул соединений
+import { MeetUser } from '../../../application/src/types'; // Импортируем пул соединений
 
-class VisitModel {
-  static async create(visitData: Visit) {
+class MeetUserModel {
+  static async create(data: MeetUser) {
     try {
-      const [result] = await pool.query<ResultSetHeader>('INSERT INTO visit (userId, meetId) VALUES (?, ?)', [visitData.userId, visitData.meetId]);
+      const [result] = await pool.query<ResultSetHeader>('INSERT INTO meetUser (userId, meetId) VALUES (?, ?)', [data.userId, data.meetId]);
       return result.insertId;
     } catch (err) {
-      console.error('Visit.create error:', err);
+      console.error('meetUser.create error:', err);
       throw err;
     }
   }
@@ -16,19 +16,19 @@ class VisitModel {
   static async delete(id: string) {
     try {
       // ИСПРАВЛЕНИЕ БЕЗОПАСНОСТИ: Используем плейсхолдер, а не интерполяцию!
-      await pool.query('DELETE FROM visit WHERE id = ?', [id]);
+      await pool.query('DELETE FROM meetUser WHERE id = ?', [id]);
     } catch (err) {
-      console.error('Visit.delete error:', err);
+      console.error('meetUser.delete error:', err);
       throw err;
     }
   }
 
   static async findById(id: string) {
     try {
-      const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM visit WHERE id = ?', [id]);
+      const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM meetUser WHERE id = ?', [id]);
       return rows.length > 0 ? rows[0] : null;
     } catch (err) {
-      console.error('Visit.findById error:', err);
+      console.error('meetUser.findById error:', err);
       throw err;
     }
   }
@@ -36,40 +36,39 @@ class VisitModel {
   static async findByUserId(userId: string) {
     try {
       const sql = `
-        SELECT visit.*, meet.startedAt 
-        FROM visit 
-        LEFT JOIN meet ON meet.id = visit.meetId 
+        SELECT meetUser.*, meet.startedAt 
+        FROM meetUser 
+        LEFT JOIN meet ON meet.id = meetUser.meetId 
         WHERE userId = ? 
         ORDER BY meet.startedAt DESC
       `;
       const [rows] = await pool.query(sql, [userId]);
       return rows;
     } catch (err) {
-      console.error('Visit.findByUserId error:', err);
+      console.error('meetUser.findByUserId error:', err);
       throw err;
     }
   }
 
   static async findByUserAndMeetIds(userId: string, meetId: string) {
     try {
-      const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM visit WHERE userId = ? AND meetId = ?', [userId, meetId]);
+      const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM meetUser WHERE userId = ? AND meetId = ?', [userId, meetId]);
       return rows.length > 0 ? rows[0] : null;
     } catch (err) {
-      console.error('Visit.findByUserAndMeetIds error:', err);
+      console.error('meetUser.findByUserAndMeetIds error:', err);
       throw err;
     }
   }
 
   static async findByMeet(meetId: number) {
     try {
-      const [rows] = await pool.query('SELECT * FROM visit WHERE meetId = ?', [meetId]);
-      return rows as Visit[];
+      const [rows] = await pool.query('SELECT * FROM meetUser WHERE meetId = ?', [meetId]);
+      return rows as MeetUser[];
     } catch (err) {
-      console.error('Visit.findByMeet error:', err);
+      console.error('MeetUser.findByMeet error:', err);
       throw err;
     }
   }
-
 
   /**
    * Получение всех встреч для конкретного пользователя
@@ -89,7 +88,7 @@ class VisitModel {
                pl.title    AS place_title,
                pl.latitude,
                pl.longitude
-        FROM visit v
+        FROM meetUser v
                LEFT JOIN meet m ON m.id = v.meetId AND m.deletedAt IS NULL
                LEFT JOIN project p ON p.id = m.projectId AND p.deletedAt IS NULL
                LEFT JOIN place pl ON pl.id = p.placeId
@@ -126,10 +125,10 @@ class VisitModel {
 
       return result;
     } catch (err) {
-      console.error('visit. error:', err);
+      console.error('meetUser. error:', err);
       throw err;
     }
   }
 }
 
-export default VisitModel;
+export default MeetUserModel;

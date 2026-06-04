@@ -68,7 +68,7 @@ export interface Place {
   image?: string;
 }
 
-export interface Visit {
+export interface MeetUser {
   id: number;
   meetId: number;
   userId: number;

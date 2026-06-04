@@ -4,6 +4,7 @@ import Idea, { IParams } from '../models/idea.js';
 import IdeaUser from "../models/ideaUser.js";
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
+import Project from 'models/project';
 
 export default {
   /**
@@ -14,13 +15,15 @@ export default {
       const ideas = await Idea.findAll({ ...req.query, passportId: req.passport?.id } as unknown as IParams);
 
       // Получаем участников для каждой идеи параллельно
-      const [ideaUsers] = await Promise.all([
+      const [users, ideaUsers] = await Promise.all([
+        Promise.all(ideas.map(idea => User.findById(idea.userId))),
         Promise.all(ideas.map(p => IdeaUser.findByIdeaId(p.id))),
       ]);
 
       // Формируем ответ, добавляя информацию об участниках к каждой идее
       const response = ideas.map((idea, index) => ({
         ...idea,
+        user: users[index],
         ideaUsers: ideaUsers[index],
       }));
 
@@ -45,9 +48,10 @@ export default {
       }
 
       // Параллельно получаем создателя идеи и его паспорт
-      const [passport, user] = await Promise.all([
+      const [passport, user, projects] = await Promise.all([
         Passport.findById(idea.passportId || 0),
         User.findById(idea.userId || 0),
+        Project.findByIdeaId(idea.id),
       ]);
 
       // Получаем список связей "идея-пользователь" (участников)
@@ -69,6 +73,7 @@ export default {
           ...iu,
           user: usersForIdeaUsers[idx], // Добавляем объект пользователя к каждому участнику
         })),
+        projects,
       });
     } catch (err) {
       console.error('idea.findById error:', err);

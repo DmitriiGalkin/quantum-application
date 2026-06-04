@@ -28,7 +28,7 @@ function Header() {
       <AppBar
         position="sticky"
         color="inherit"
-        elevation={1}
+        elevation={0}
         sx={{
           borderBottom: 1,
           borderColor: 'divider',

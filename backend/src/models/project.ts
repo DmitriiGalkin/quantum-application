@@ -89,11 +89,6 @@ class ProjectModel {
     }
   }
 
-  /**
-   * Находит проект по ID.
-   * @param {string|number} id - ID проекта.
-   * @returns {Promise<Project | null>}
-   */
   static async findById(id: string | number): Promise<Project | null> {
     const sql = 'SELECT * FROM project WHERE id = ? AND deletedAt IS NULL'; // Не возвращаем логически удаленные
 
@@ -102,6 +97,18 @@ class ProjectModel {
       return rows.length > 0 ? (rows[0] as Project) : null;
     } catch (err) {
       console.error('Project.findById error:', err);
+      throw err;
+    }
+  }
+
+  static async findByIdeaId(id: number): Promise<Project[]> {
+    const sql = 'SELECT * FROM project WHERE ideaId = ? AND deletedAt IS NULL';
+
+    try {
+      const [rows] = await pool.query<RowDataPacket[]>(sql, [id]);
+      return rows as Project[];
+    } catch (err) {
+      console.error('Project.findByIdeaId error:', err);
       throw err;
     }
   }

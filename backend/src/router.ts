@@ -5,7 +5,7 @@ import multer from 'multer';
 import user from './controllers/user';
 import passportController from './controllers/passport';
 import meet from './controllers/meet';
-import visit from './controllers/visit';
+import meetUser from './controllers/meetUser';
 import image from './controllers/image';
 import place from './controllers/place';
 import project from './controllers/project';
@@ -161,11 +161,11 @@ router.delete('/meet/:id', passportController.usePassport, meet.delete as unknow
  * Посещения
  */
 // @ts-ignore
-router.get('/visits', passportController.usePassport, visit.findAll as unknown as RequestHandler);
+router.get('/meetUser', passportController.usePassport, meetUser.findAll as unknown as RequestHandler);
 // @ts-ignore
-router.post('/visit', passportController.usePassport, visit.create as unknown as RequestHandler);
+router.post('/meetUser', passportController.usePassport, meetUser.create as unknown as RequestHandler);
 // @ts-ignore
-router.delete('/visit/:id', passportController.usePassport, visit.delete as unknown as RequestHandler);
+router.delete('/meetUser/:id', passportController.usePassport, meetUser.delete as unknown as RequestHandler);
 
 /**
  * Пользователи (Ребенок)

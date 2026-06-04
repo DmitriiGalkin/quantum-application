@@ -1,7 +1,7 @@
 import Project, { IParams } from '../models/project.js';
 import User from '../models/user.js';
 import Passport from '../models/passport.js';
-import Visit from '../models/visit.js';
+import MeetUser from '../models/meetUser.js';
 import Meet from '../models/meet.js';
 import { generateProjectImage, uploadImage } from "../assistants/imageAssistant";
 import { Response } from 'express';
@@ -101,14 +101,14 @@ export default {
 
       const meetsWithDetails = await Promise.all(
         meets.map(async meet => {
-          const [visits, usersForVisits] = await Promise.all([Visit.findByMeet(meet.id), User.findByMeet(meet.id)]);
+          const [meetUsers, usersForMeetUsers] = await Promise.all([MeetUser.findByMeet(meet.id), User.findByMeet(meet.id)]);
 
-          const visitsWithUsers = visits.map((visit, idx) => ({
-            ...visit,
-            user: usersForVisits[idx],
+          const meetUsersWithUsers = meetUsers.map((meetUser, idx) => ({
+            ...meetUser,
+            user: usersForMeetUsers[idx],
           }));
 
-          return { ...meet, visits: visitsWithUsers };
+          return { ...meet, meetUsers: meetUsersWithUsers };
         }),
       );
 

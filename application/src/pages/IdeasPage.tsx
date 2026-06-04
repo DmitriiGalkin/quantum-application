@@ -25,14 +25,10 @@ function IdeasPage() {
 
   // @ts-ignore
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+    <Box sx={{ minHeight: '100vh' }}>
       <Header />
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container maxWidth="lg" sx={{ py: 2 }}>
         <Box component="section">
-          <Typography sx={{ fontWeight: 900, mb: 3 }} variant="h4">
-            Идеи
-          </Typography>
-
           {isIdeasLoading && (
             <Stack
               direction="row"
@@ -57,7 +53,7 @@ function IdeasPage() {
                   sm: 'repeat(2, minmax(0, 1fr))',
                   md: 'repeat(3, minmax(0, 1fr))',
                 },
-                gap: 3,
+                gap: 2,
               }}
             >
               {ideas.map(idea => (

@@ -24,9 +24,9 @@ function HomePage() {
 
   // @ts-ignore
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+    <Box sx={{ minHeight: '100vh' }}>
       <Header/>
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container maxWidth="lg" sx={{ py: 2 }}>
         {!accessToken ? (
           <Paper
             component="section"

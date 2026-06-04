@@ -1,30 +1,30 @@
 import Meet from '../models/meet.js';
-import Visit from '../models/visit.js';
+import MeetUser from '../models/meetUser.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
-import { Visit as IVisit } from '../../../application/src/types'; // Импортируем пул соединений
+import { MeetUser as IMeetUser } from '../../../application/src/types'; // Импортируем пул соединений
 
 function getPassportUserIds(req: RequestWithPassport) {
   return (req.users || []).map(user => user.id);
 }
 
 // Эта функция не экспортируется, так как используется только внутри этого модуля
-async function findVisitAndMeet({ visitId }: { visitId: string }) {
-  const visit = await Visit.findById(visitId);
+async function findMeetUserAndMeet({ meetUserId }: { meetUserId: string }) {
+  const meetUser = await MeetUser.findById(meetUserId);
 
-  if (!visit) {
+  if (!meetUser) {
     const error = new Error('Участие не существует');
     throw error;
   }
 
-  const meet = await Meet.findById(visit.meetId);
+  const meet = await Meet.findById(meetUser.meetId);
 
   if (!meet) {
     const error = new Error('Встреча не найдена');
     throw error;
   }
 
-  return { visit, meet };
+  return { meetUser, meet };
 }
 
 export default {
@@ -46,8 +46,8 @@ export default {
       }
 
       // Проверка на дублирование участия
-      const currentVisit = await Visit.findByUserAndMeetIds(userId, meetId);
-      if (currentVisit) {
+      const currentMeetUser = await MeetUser.findByUserAndMeetIds(userId, meetId);
+      if (currentMeetUser) {
         return res.status(409).json({ error: true, message: 'Участие уже существует' });
       }
 
@@ -58,11 +58,11 @@ export default {
           .json({ error: true, message: 'Нельзя добавлять участника отличного от себя' });
       }
 
-      await Visit.create(req.body as unknown as IVisit);
+      await MeetUser.create(req.body as unknown as IMeetUser);
 
       res.status(201).json({ error: false, message: 'Участие создано' });
     } catch (err) {
-      console.error('visit.create error:', err);
+      console.error('MeetUser.create error:', err);
       res.status(500).json({ error: true, message: 'Не удалось создать участие' });
     }
   },
@@ -73,18 +73,18 @@ export default {
   delete: async (req: RequestWithPassport, res: Response) => {
     try {
       const { id } = req.params; // Используем деструктуризацию для ясности
-      const { visit } = await findVisitAndMeet({ visitId: id });
+      const { meetUser } = await findMeetUserAndMeet({ meetUserId: id });
 
       // Проверка прав доступа перед удалением
-      if (!getPassportUserIds(req).includes(visit.userId)) {
+      if (!getPassportUserIds(req).includes(meetUser.userId)) {
         return res.status(403).json({ error: true, message: 'Нет прав на удаление' });
       }
 
-      await Visit.delete(id);
+      await MeetUser.delete(id);
 
       res.json({ error: false, message: 'Участник удален из встречи' });
     } catch (err) {
-      console.error('visit.delete error:', err);
+      console.error('meetUser.delete error:', err);
       res
         .status(500)
         .json({ error: true, message: 'Не удалось удалить участие' });
@@ -102,12 +102,12 @@ export default {
         return res.status(400).json({ error: true, message: 'Параметр userId обязателен' });
       }
 
-      const [rows] = await Visit.findAll(userId);
+      const [rows] = await MeetUser.findAll(userId);
 
 
       res.json(rows);
     } catch (err) {
-      console.error('visit.findAll error:', err);
+      console.error('meetUser.findAll error:', err);
       res.status(500).json({ error: true, message: 'Не удалось получить посещения' });
     }
   },

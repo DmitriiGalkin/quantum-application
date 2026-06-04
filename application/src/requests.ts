@@ -64,6 +64,15 @@ export async function fetchProject(id: string): Promise<ExtendedProject> {
   return apiFetch<ExtendedProject>(`/project/${id}`);
 }
 
+export interface ExtendedIdea extends Idea {
+  user: User;
+  projects: Project[];
+}
+
+export async function fetchIdea(id: string): Promise<ExtendedIdea> {
+  return apiFetch<ExtendedIdea>(`/idea/${id}`);
+}
+
 export async function createProject(values: ProjectFormValues): Promise<number> {
   return apiFetch<number>('/project', {
     method: 'POST',
@@ -181,8 +190,12 @@ export async function fetchProjects(type: Type, userId: number): Promise<Project
   return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
 }
 
-export async function fetchIdeas(type: Type, userId: number): Promise<Idea[]> {
-  return apiFetch<Idea[]>('/ideas' + '?variant=' + type + '&userId=' + userId);
+export interface ExtendedIdea extends Idea {
+  user: User;
+}
+
+export async function fetchIdeas(type: Type, userId: number): Promise<ExtendedIdea[]> {
+  return apiFetch<ExtendedIdea[]>('/ideas' + '?variant=' + type + '&userId=' + userId);
 }
 
 export const usePassport = () => {

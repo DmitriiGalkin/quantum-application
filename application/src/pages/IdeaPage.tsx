@@ -6,60 +6,45 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CircularProgress from '@mui/material/CircularProgress';
-import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container'; // Импортируем Container
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetchIdea, generateImage } from '../requests.ts';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import MeetCard from '../components/MeetCard.tsx';
-import {createVisit, deleteVisit, fetchProject, generateImage} from '../requests.ts';
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import AutoAwesome from "@mui/icons-material/AutoAwesome";
-import UserGroup from "../components/UserGroup.tsx";
+import ProjectCard from '../components/ProjectCard.tsx';
 
 function IdeaPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
 
-  const createVisitMutation = useMutation({
-    mutationFn: createVisit,
+  const generateImageMutation = useMutation({
+    mutationFn: generateImage,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project', id] });
     },
   });
-
-  const deleteVisitMutation = useMutation({
-    mutationFn: deleteVisit,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['project', id] });
-    },
-  });
-
-    const generateImageMutation = useMutation({
-        mutationFn: generateImage,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['project', id] });
-        },
-    });
 
   const {
-    data: project,
+    data: idea,
     isLoading: isProjectLoading,
     isError: isProjectError,
   } = useQuery({
     queryKey: ['project', id],
-    queryFn: () => fetchProject(id as string),
+    queryFn: () => fetchIdea(id as string),
     enabled: Boolean(id),
   });
 
   useEffect(() => {
-    document.title = project?.title || 'Проект';
-  }, [project?.title]);
+    document.title = idea?.title || 'Идея';
+  }, [idea?.title]);
 
   if (!id) {
     return (
@@ -71,108 +56,97 @@ function IdeaPage() {
 
   if (isProjectLoading) {
     return (
-      <Container maxWidth="sm" sx={{ py: 8 }}>
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-          <CircularProgress size={24} />
-          <Typography>Загрузка проекта...</Typography>
-        </Stack>
-      </Container>
+      <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+        <CircularProgress size={24} />
+        <Typography>Загрузка идеи...</Typography>
+      </Stack>
     );
   }
 
-  if (isProjectError || !project) {
-    return (
-      <Container maxWidth="sm" sx={{ py: 8 }}>
-        <Alert severity="error">Не удалось загрузить проект.</Alert>
-      </Container>
-    );
+  if (isProjectError || !idea) {
+    return <Alert severity="error">Не удалось загрузить идею.</Alert>;
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
-        <AppBar
-            position="sticky"
-            color="inherit"
-            elevation={1}
-            sx={{
-                borderBottom: 1,
-                borderColor: 'divider',
-                backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
-            }}
-        >
-            <Toolbar>
-                <IconButton
-                    size="large"
-                    edge="start"
-                    aria-label="open drawer"
-                    sx={{ mr: 2, color: 'white' }}
-                    onClick={() => navigate(-1)}
-                >
-                    <ArrowBackIcon />
-                </IconButton>
-                <Box sx={{ flexGrow: 1 }} />
-                <IconButton edge="start" color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
-                    <EditIcon />
-                </IconButton>
-            </Toolbar>
-        </AppBar>
-
+    // Оборачиваем весь контент в Container для контроля ширины
+    <>
+      <AppBar
+        position="sticky"
+        color="inherit"
+        elevation={1}
+        sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
+        }}
+      >
+        <Toolbar>
+          <IconButton size="large" edge="start" aria-label="open drawer" sx={{ mr: 2, color: 'white' }} onClick={() => navigate(-1)}>
+            <ArrowBackIcon />
+          </IconButton>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton edge="start" color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
+            <EditIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
         <Card
           elevation={0}
           sx={{
             overflow: 'hidden',
             border: 1,
             borderColor: 'divider',
+            mt: { xs: -8, sm: -10 }, // Отступ сверху для красоты на моб. устройствах
           }}
         >
-
-            <Box sx={{ position: 'relative', width: '100%' }}>
-                <CardMedia
-                    component="img"
-                    height="360"
-                    image={project.image || `/bg.jpeg`}
-                    alt={project.title || 'Проект'}
-                    sx={{
-                        objectFit: 'cover',
-                        height: {
-                            xs: 220,
-                            sm: 360,
-                        },
-                    }}
-                />
-
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: 8,
-                        right: 8,
-                        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Полупрозрачный фон для читаемости
-                        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
-                        boxShadow: 3,
-                        borderRadius: 16,
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                    }}
-                >
-                    {/* Кнопка с иконкой в правом верхнем углу */}
-                    {generateImageMutation.isPending && (
-                        <Typography className="blink" color="text.secondary" sx={{ paddingLeft: 2 }}>
-                            Генерирую...
-                        </Typography>
-                    )}
-                        <IconButton
-                            aria-label="Сгенерировать обложку"
-                            // Здесь будет обработчик клика на генерацию
-                            onClick={e => {
-                                e.stopPropagation();
-                                generateImageMutation.mutate(project.id);
-                            }}
-                        >
-                            <AutoAwesome fontSize="large" />
-                        </IconButton>
-                </Box>
+          <Box sx={{ position: 'relative', width: '100%' }}>
+            <CardMedia
+              component="img"
+              // Адаптивная высота изображения
+              height="360"
+              image={idea.image || `/bg.jpeg`}
+              alt={idea.title || 'Проект'}
+              sx={{
+                objectFit: 'cover',
+                height: {
+                  xs: 220, // Высота на самых маленьких экранах
+                  sm: 360, // Высота на средних и больших экранах
+                },
+              }}
+            />
+            {/* Блок с кнопкой генерации */}
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
+                boxShadow: 3,
+                borderRadius: '50%', // Делаем круглым
+                padding: '6px', // Добавляем отступ для иконки
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}
+            >
+              {generateImageMutation.isPending && (
+                <Typography className="blink" color="text.secondary" sx={{ paddingLeft: 1 }}>
+                  Генерирую...
+                </Typography>
+              )}
+              <IconButton
+                aria-label="Сгенерировать обложку"
+                onClick={e => {
+                  e.stopPropagation();
+                  generateImageMutation.mutate(idea.id);
+                }}
+              >
+                <AutoAwesome fontSize="large" />
+              </IconButton>
             </Box>
+          </Box>
 
           <CardContent sx={{ p: { xs: 2.5, sm: 4 } }}>
             <Stack spacing={3}>
@@ -181,88 +155,56 @@ function IdeaPage() {
                   component="h1"
                   variant="h3"
                   sx={{
-                    fontSize: {
-                      xs: '2rem',
-                      sm: '3rem',
-                    },
-                    fontWeight: 900,
+                    fontSize: { xs: '1.75rem', sm: '2.5rem' }, // Адаптивный размер шрифта
                   }}
                 >
-                  {project.title}
+                  {idea.title}
                 </Typography>
 
                 <Typography
                   color="text.secondary"
                   sx={{
-                    mt: 1.5,
-                    fontSize: {
-                      xs: '1rem',
-                      sm: '1.1rem',
-                    },
-                    lineHeight: 1.7,
+                    mt: { xs: 1.5, sm: 2 }, // Адаптивный отступ сверху
+                    fontSize: { xs: '0.9rem', sm: '1rem' }, // Адаптивный размер шрифта
                   }}
                 >
-                  {project.description}
+                  {idea.description}
                 </Typography>
               </Box>
-
-              <UserGroup users={project.users || []} />
 
               <Box
                 sx={{
                   display: 'grid',
                   gridTemplateColumns: {
-                    xs: '1fr',
-                    sm: 'repeat(3, minmax(0, 1fr))',
+                    xs: '1fr', // На моб. устройствах - одна колонка (сначала Учитель, потом Расписание)
+                    md: '1fr 2fr', // На средних и больших - две колонки (Учитель слева, Расписание справа)
                   },
-                  gap: 2,
+                  gap: { xs: 3, md: 4 }, // Отступы между колонками сетки
                 }}
               >
+                {Boolean(idea.projects) && (
+                  <Box component="section">
+                    <Typography component="h2" variant="h4" sx={{ mb: { xs: 2, md: 3 }, fontWeight: 900 }}>
+                      Проекты по идее
+                    </Typography>
 
-                  {project?.passport && (
-                      <Paper
-                          elevation={0}
-                          sx={{
-                              p: 2,
-                              borderRadius: 3,
-                              bgcolor: 'grey.100',
-                          }}
-                      >
-                          <Typography variant="body2" color="text.secondary">
-                              Учитель
-                          </Typography>
-                          <Typography sx={{ fontWeight: 800 }}>{project?.passport?.title}</Typography>
-                      </Paper>
-                  )}
-
-              </Box>
-
-                {Boolean(project?.meets) && (
-                    <Box component="section">
-                        <Typography component="h2" variant="h4" sx={{ mb: 2.5, fontWeight: 900 }}>
-                            Расписание
-                        </Typography>
-                        <Stack spacing={2}>
-                            {(project?.meets || [])
-                                .filter(meeting => !meeting.deletedAt)
-                                .map(meeting => (
-                                    <MeetCard
-                                        meeting={meeting}
-                                        key={meeting.id}
-                                        isVisitActionPending={
-                                            createVisitMutation.isPending || deleteVisitMutation.isPending
-                                        }
-                                        onCreateVisit={meetId => createVisitMutation.mutate(meetId)}
-                                        onDeleteVisit={visitId => deleteVisitMutation.mutate(visitId)}
-                                    />
-                                ))}
-                        </Stack>{' '}
-                    </Box>
+                    {/* Адаптивная сетка для карточек встреч */}
+                    <Stack spacing={2}>
+                      {(idea.projects || []).map(project => (
+                        <ProjectCard
+                          project={project}
+                          key={project.id}
+                        />
+                      ))}
+                    </Stack>
+                  </Box>
                 )}
+              </Box>
             </Stack>
           </CardContent>
         </Card>
-    </Box>
+      </Container>
+    </>
   );
 }
 

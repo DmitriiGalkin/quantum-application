@@ -29,15 +29,11 @@ function ProjectsPage() {
     });
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+    <Box sx={{ minHeight: '100vh' }}>
       <Header />
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box component="section">
-          <Typography sx={{ fontWeight: 900, mb: 3 }} variant="h4">
-            Проекты
-          </Typography>
-
           {isProjectsLoading && (
             <Stack
               direction="row"
