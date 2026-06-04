@@ -1,0 +1,24 @@
+.custom-map-marker {
+    position: relative;
+}
+.marker-pin {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background: #ff5a5f;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 0;
+    top: 0;
+}
+.marker-text {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 30px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+    transform: rotate(0deg);
+}

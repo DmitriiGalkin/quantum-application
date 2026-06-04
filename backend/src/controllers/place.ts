@@ -1,7 +1,8 @@
 import Place from '../models/place.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router';
-import { Place as IPlace } from '../../../application/src/types'; // Импортируем пул соединений
+import { Place as IPlace } from '../../../application/src/types';
+import Meet from 'models/meet'; // Импортируем пул соединений
 
 export default {
   /**
@@ -10,7 +11,14 @@ export default {
   findAll: async (req: RequestWithPassport, res: Response) => {
     try {
       const places = await Place.findAll();
-      res.json(places);
+      const meetsForPlaces = await Promise.all(places.map(place => Meet.findByPlaceId(place.id)));
+
+      res.json(
+        places.map((place, idx) => ({
+          ...place,
+          meets: meetsForPlaces[idx],
+        })),
+      );
     } catch (err) {
       console.error('place.findAll error:', err);
       res.status(500).json({ error: true, message: 'Не удалось получить список мест' });
@@ -24,9 +32,7 @@ export default {
     try {
       // Проверка на пустое тело запроса
       if (Object.keys(req.body as unknown as IPlace).length === 0) {
-        return res
-          .status(400)
-          .json({ error: true, message: 'Пожалуйста, предоставьте все необходимые поля' });
+        return res.status(400).json({ error: true, message: 'Пожалуйста, предоставьте все необходимые поля' });
       }
 
       // Вызов метода модели для создания записи

@@ -18,6 +18,8 @@ function PlaceSelectPage() {
     queryFn: fetchPlaces,
   });
 
+  console.log(places, 'places')
+
   useEffect(() => {
     let isMounted = true;
 

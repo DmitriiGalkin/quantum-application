@@ -96,8 +96,16 @@ export async function updateProject(projectId: number, values: ProjectFormValues
   });
 }
 
-export async function fetchPlaces(): Promise<Place[]> {
-  return apiFetch<Place[]>('/places');
+export interface ExtendedMeetMap extends Meet {
+  title: string;
+}
+
+export interface ExtendedPlace extends Place {
+  meets: ExtendedMeetMap[];
+}
+
+export async function fetchPlaces(): Promise<ExtendedPlace[]> {
+  return apiFetch<ExtendedPlace[]>('/places');
 }
 
 export async function fetchMessages(chatId: number): Promise<Chat> {

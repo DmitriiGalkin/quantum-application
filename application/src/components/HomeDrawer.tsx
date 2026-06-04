@@ -26,21 +26,11 @@ const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 interface HomeDrawerProps {
   isMenuOpen: boolean;
   setIsMenuOpen: (isMenuOpen: boolean) => void;
+  accessToken?: string;
+  setAccessToken: () => void;
 }
 
-function HomeDrawer({ isMenuOpen, setIsMenuOpen }: HomeDrawerProps ) {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-
-  const initialAccessToken = saveAccessTokenFromUrl();
-
-  useEffect(() => {
-    if (!accessToken && initialAccessToken) {
-      window.requestAnimationFrame(() => {
-        setAccessToken(initialAccessToken);
-      });
-    }
-  }, [accessToken, initialAccessToken]);
-
+function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: HomeDrawerProps) {
   const { data: passport } = useQuery({
     queryKey: ['passport'],
     queryFn: fetchPassport,
@@ -174,6 +164,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen }: HomeDrawerProps ) {
                 localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
                 localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
                 setAccessToken(null);
+                setIsMenuOpen(false);
               }}
               sx={{ borderRadius: 2 }}
             >

@@ -74,6 +74,24 @@ class MeetModel {
     }
   }
 
+  static async findByPlaceId(id: number): Promise<Meet[]> {
+    try {
+      const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT meet.*, project.title
+        FROM meet
+        LEFT JOIN project ON project.id = meet.projectId
+        WHERE meet.placeId = ?
+      `,
+        [id],
+        
+      );  console.log(rows, 'rows');    return rows as Meet[];
+    } catch (err) {
+      console.error('Meet.findByPlaceId error:', err);
+      throw err;
+    }
+  }
+
   static async findByProjectId(projectId: string | number): Promise<Meet[]> {
     try {
       const [rows] = await pool.query<RowDataPacket[]>(
