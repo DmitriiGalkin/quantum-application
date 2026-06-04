@@ -1,10 +1,10 @@
+const path = require('path');
+
 export default {
   apps: [
     {
       name: 'backend',
-      script: 'sh',
-      args: '-lc "cd ./backend && npm run build && node dist/index.ts"',
-      cwd: '/workspace',
+      script: path.join(__dirname, 'backend/src/index.ts'),
       out_file: '/dev/stdout',
       error_file: '/dev/stderr',
       merge_logs: true,
