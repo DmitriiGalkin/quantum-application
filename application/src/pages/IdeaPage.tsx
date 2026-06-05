@@ -176,16 +176,7 @@ function IdeaPage() {
         <Typography component="h6" variant="h6" sx={{ pt: 2, mb: { xs: 2, md: 3 }, fontWeight: 900, color: 'white' }}>
           Проекты по идее
         </Typography>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: {
-              xs: '1fr', // На моб. устройствах - одна колонка (сначала Учитель, потом Расписание)
-              md: '1fr 2fr', // На средних и больших - две колонки (Учитель слева, Расписание справа)
-            },
-            gap: { xs: 3, md: 4 }, // Отступы между колонками сетки
-          }}
-        >
+
           {Boolean(idea.projects) && (
             <Box
               sx={{
@@ -204,7 +195,7 @@ function IdeaPage() {
               ))}
             </Box>
           )}
-        </Box>
+
       </Container>
     </Box>
   );
