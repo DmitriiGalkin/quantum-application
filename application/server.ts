@@ -31,6 +31,8 @@ async function server() {
 
     app.use(vite.middlewares);
   } else {
+    console.log(path.resolve(__dirname, 'dist'), "path.resolve(__dirname, 'dist')");
+
     app.use(
       express.static(path.resolve(__dirname, 'dist'), {
         index: false,
