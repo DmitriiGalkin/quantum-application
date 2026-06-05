@@ -1,5 +1,5 @@
 import { baseAssistantAnswer } from './assistant.js';
-import { AssistantAnswer } from 'assistants/ideaAssistant.js';
+import { AssistantAnswer } from '../assistants/ideaAssistant.js';
 
 const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.

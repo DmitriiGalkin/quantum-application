@@ -1,18 +1,18 @@
 import Message from '../models/message.js';
-import { userAssistantAnswer } from 'assistants/userAssistant.js';
-import { ideaAssistantAnswer } from 'assistants/ideaAssistant.js';
+import { userAssistantAnswer } from '../assistants/userAssistant.js';
+import { ideaAssistantAnswer } from '../assistants/ideaAssistant.js';
 import { authAssistant } from './authService.js';
 import User from '../models/user.js';
 import Project from '../models/project.js';
-import { teacherAssistantAnswer } from 'assistants/teacherAssistant.js';
-import { projectAssistantAnswer } from 'assistants/projectAssistant.js';
+import { teacherAssistantAnswer } from '../assistants/teacherAssistant.js';
+import { projectAssistantAnswer } from '../assistants/projectAssistant.js';
 import Idea from '../models/idea.js';
 import IdeaUser from '../models/ideaUser.js';
 import type { ChatMessage, ChatTarget, Meta } from '../../../application/src/types.js';
 import { User as IUser } from '../../../application/src/types.js';
 import { Idea as IIdea } from '../../../application/src/types.js';
 import { Project as IProject } from '../../../application/src/types.js';
-import { meetAssistantAnswer } from 'assistants/meetAssistant.js';
+import { meetAssistantAnswer } from '../assistants/meetAssistant.js';
 
 
 const getMetaMessages = (allMessages: ChatMessage[]) =>
