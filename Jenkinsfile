@@ -80,7 +80,7 @@ pipeline {
                     -v "$WORKSPACE:/workspace" \
                     -w /workspace \
                     "$NODE_IMAGE" \
-                    sh -lc "cd application && npm ci --include=dev && npm run build:production && test -f dist/index.html && cd ../backend && npm ci --include=dev && npm run build && test -f dist/index.js"
+                    sh -lc "cd application && npm ci --include=dev && npm run build:production && test -f dist/index.html && test -f dist/server.js  && cd ../backend && npm ci --include=dev && npm run build && test -f dist/index.js"
                 '''
             }
         }
