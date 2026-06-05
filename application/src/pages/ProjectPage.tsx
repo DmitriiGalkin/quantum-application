@@ -196,7 +196,7 @@ function ProjectPage() {
           <Grid size={{ xs: 12, md: 8 }}>
             {Boolean(project?.meets) && (
               <Box component="section">
-                <Typography component="h2" variant="h4" sx={{ mb: 2.5, fontWeight: 900 }}>
+                <Typography component="h6" variant="h6" sx={{ pt: 2, mb: { xs: 2, md: 3 }, fontWeight: 900, color: 'white' }}>
                   Расписание
                 </Typography>
                 <Stack spacing={2}>
