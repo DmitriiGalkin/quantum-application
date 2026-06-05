@@ -51,9 +51,9 @@ async function server() {
         template = await vite.transformIndexHtml(url, template);
         render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
       } else {
-        template = fs.readFileSync(path.resolve(__dirname, 'dist/client/index.html'), 'utf-8');
+        template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
         // @ts-ignore
-        render = (await import('./dist/src/entry-server.js')).render;
+        render = (await import('./src/entry-server.js')).render;
       }
 
       const { html, meta } = await render(url);

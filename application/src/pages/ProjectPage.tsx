@@ -162,7 +162,7 @@ function ProjectPage() {
                         bgcolor: 'grey.100',
                       }}
                     >
-                      <Stack spacing={3} direction="row">
+                      <Stack spacing={2} direction="row">
                         <Avatar
                           src={project?.passport?.image || undefined}
                           alt={project?.passport?.title || 'Учитель'}
