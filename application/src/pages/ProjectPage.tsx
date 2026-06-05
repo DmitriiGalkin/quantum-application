@@ -19,6 +19,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import UserGroup from '../components/UserGroup.tsx';
+import Grid from "@mui/material/Grid";
 
 function ProjectPage() {
   const navigate = useNavigate();
@@ -104,114 +105,119 @@ function ProjectPage() {
       </AppBar>
 
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
-        <Card
-          elevation={0}
-          sx={{
-            border: 1,
-            borderColor: 'divider',
-            borderRadius: 4,
-          }}
-        >
-          <CardMedia
-            component="img"
-            height="360"
-            image={`/bg.jpeg`}
-            alt={project.title || 'Проект'}
-            sx={{
-              objectFit: 'cover',
-              height: {
-                xs: 220,
-                sm: 360,
-              },
-            }}
-          />
-
-          <CardContent sx={{ p: { xs: 2.5, sm: 4 } }}>
-            <Stack spacing={3}>
-              <Box>
-                <Typography
-                  component="h1"
-                  variant="h3"
-                  sx={{
-                    fontSize: {
-                      xs: '2rem',
-                      sm: '3rem',
-                    },
-                    fontWeight: 900,
-                  }}
-                >
-                  {project.title}
-                </Typography>
-
-                <Typography
-                  color="text.secondary"
-                  sx={{
-                    mt: 1.5,
-                    fontSize: {
-                      xs: '1rem',
-                      sm: '1.1rem',
-                    },
-                    lineHeight: 1.7,
-                  }}
-                >
-                  {project.description}
-                </Typography>
-              </Box>
-
-              <UserGroup users={project.users || []} />
-
-              <Box
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Card
+              elevation={0}
+              sx={{
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 4,
+              }}
+            >
+              <CardMedia
+                component="img"
+                height="360"
+                image={`/bg.jpeg`}
+                alt={project.title || 'Проект'}
                 sx={{
-                  display: 'grid',
-                  gridTemplateColumns: {
-                    xs: '1fr',
-                    sm: 'repeat(3, minmax(0, 1fr))',
+                  objectFit: 'cover',
+                  height: {
+                    xs: 220,
+                    sm: 360,
                   },
-                  gap: 2,
                 }}
-              >
-                {project?.passport && (
-                  <Paper
-                    elevation={0}
+              />
+
+              <CardContent sx={{ p: { xs: 2.5, sm: 4 } }}>
+                <Stack spacing={3}>
+                  <Box>
+                    <Typography
+                      component="h1"
+                      variant="h3"
+                      sx={{
+                        fontSize: {
+                          xs: '2rem',
+                          sm: '3rem',
+                        },
+                        fontWeight: 900,
+                      }}
+                    >
+                      {project.title}
+                    </Typography>
+
+                    <Typography
+                      color="text.secondary"
+                      sx={{
+                        mt: 1.5,
+                        fontSize: {
+                          xs: '1rem',
+                          sm: '1.1rem',
+                        },
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      {project.description}
+                    </Typography>
+                  </Box>
+
+                  <UserGroup users={project.users || []} />
+
+                  <Box
                     sx={{
-                      p: 2,
-                      borderRadius: 3,
-                      bgcolor: 'grey.100',
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(3, minmax(0, 1fr))',
+                      },
+                      gap: 2,
                     }}
                   >
-                    <Typography variant="body2" color="text.secondary">
-                      Учитель
-                    </Typography>
-                    <Typography sx={{ fontWeight: 800 }}>{project?.passport?.title}</Typography>
-                  </Paper>
-                )}
+                    {project?.passport && (
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          p: 2,
+                          borderRadius: 3,
+                          bgcolor: 'grey.100',
+                        }}
+                      >
+                        <Typography variant="body2" color="text.secondary">
+                          Учитель
+                        </Typography>
+                        <Typography sx={{ fontWeight: 800 }}>{project?.passport?.title}</Typography>
+                      </Paper>
+                    )}
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid size={{ xs: 12, md: 8 }}>
+            {Boolean(project?.meets) && (
+              <Box component="section">
+                <Typography component="h2" variant="h4" sx={{ mb: 2.5, fontWeight: 900 }}>
+                  Расписание
+                </Typography>
+                <Stack spacing={2}>
+                  {(project?.meets || [])
+                    .filter(meeting => !meeting.deletedAt)
+                    .map(meeting => (
+                      <MeetCard
+                        meeting={meeting}
+                        key={meeting.id}
+                        isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
+                        onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}
+                        onDeleteMeetUser={meetUserId => {
+                          deleteMeetUserMutation.mutate(meetUserId);
+                        }}
+                      />
+                    ))}
+                </Stack>{' '}
               </Box>
-
-              {Boolean(project?.meets) && (
-                <Box component="section">
-                  <Typography component="h2" variant="h4" sx={{ mb: 2.5, fontWeight: 900 }}>
-                    Расписание
-                  </Typography>
-                  <Stack spacing={2}>
-                    {(project?.meets || [])
-                      .filter(meeting => !meeting.deletedAt)
-                      .map(meeting => (
-                        <MeetCard
-                          meeting={meeting}
-                          key={meeting.id}
-                          isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
-                          onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}
-                          onDeleteMeetUser={meetUserId => {
-                            deleteMeetUserMutation.mutate(meetUserId);
-                          }}
-                        />
-                      ))}
-                  </Stack>{' '}
-                </Box>
-              )}
-            </Stack>
-          </CardContent>
-        </Card>
+            )}
+          </Grid>
+        </Grid>
       </Container>
     </Box>
   );
