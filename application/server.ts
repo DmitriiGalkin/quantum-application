@@ -9,6 +9,7 @@ import compression from 'compression';
 
 dotenv.config();
 
+// @ts-ignore
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -61,7 +62,7 @@ async function server() {
         .replace('<!--app-og-site-name-->', escapeHtml(meta.ogSiteName));
       res.status(200).set({ 'Content-Type': 'text/html' }).end(appHtml);
     } catch (e) {
-      vite.ssrFixStacktrace(e);
+      vite.ssrFixStacktrace(e as any);
       console.error(e);
       res.status(500).end(e instanceof Error ? e.message : String(e));
     }
@@ -87,7 +88,7 @@ async function server() {
 
 server();
 
-function escapeHtml(value) {
+function escapeHtml(value: string) {
   return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
