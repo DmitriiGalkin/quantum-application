@@ -1,11 +1,9 @@
-// src/components/MapComponent.tsx
-
 import { useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaces } from '../requests.ts';
 import './MeetMap.css';
+import leaflet from 'leaflet';
 
-// Оставил интерфейс и вспомогательные функции неизменными
 interface Props {
   lat: number;
   lng: number;
@@ -27,71 +25,73 @@ function extractTime(isoString: string) {
 
 export function MapComponent({ lat, lng, zoom }: Props) {
   const mapRef = useRef<HTMLDivElement | null>(null);
-  const mapInstance = useRef<any | null>(null);
-  const markersRef = useRef<any[]>([]);
+  const mapInstance = useRef<L.Map | null>(null);
+  const markersGroupRef = useRef<L.LayerGroup | null>(null); // Группа для маркеров
   const { data: places = [] } = useQuery({
     queryKey: ['places'],
     queryFn: fetchPlaces,
   });
 
-  /* 🔥 Главное изменение */
+  // Эффект №1: Создание карты (один раз)
   useEffect(() => {
-    async function initMap() {
-      // Динамически подгружаем Leaflet только в браузере
+    async function createMap() {
       const L = await import('leaflet');
 
-      const placeIcon = L.default.divIcon({
-        className: 'custom-map-marker',
-        html: `
-          <div class="marker-pin"></div>
-          <div class="marker-text">${places.length}</div>
-        `,
-        iconSize: [30, 42],
-        iconAnchor: [15, 42],
-        popupAnchor: [0, -40],
+      const map = L.map(mapRef.current!, {
+        center: [lat, lng],
+        zoom: zoom,
+        scrollWheelZoom: false, // Опционально
       });
 
-      const map = L.default.map(mapRef.current!).setView([lat, lng], zoom);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
+
       mapInstance.current = map;
-
-      L.default
-        .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors', maxZoom: 19 })
-        .addTo(map);
-
-      markersRef.current = places.map(place => {
-        const meetsList = place.meets
-          .map(m => `<li>${extractTime(m.startedAt)} - ${addMinutes(extractTime(m.startedAt), 90)}: ${m.title}</li>`)
-          .join('');
-
-        const marker = L.default
-          .marker([place.latitude, place.longitude], {
-            icon: placeIcon,
-            title: place.title,
-          })
-          .addTo(map).bindPopup(`
-              <div class="place-popup">
-                  <h4><b>${place.title}</b></h4>
-                  <ul>${meetsList}</ul>
-                  <p>Адрес: ${place.address}</p>
-              </div>
-            `);
-
-        marker.on('click', () => map.setView([place.latitude, place.longitude], 14));
-        return marker;
-      });
+      markersGroupRef.current = L.layerGroup().addTo(map);
     }
 
-    if (mapRef.current && !mapInstance.current) {
-      void initMap();
+    if (!mapInstance.current && mapRef.current) {
+      void createMap(); // Ждем завершения загрузки Leaflet
     }
 
     return () => {
       if (mapInstance.current) {
-        mapInstance.current.off();
-        mapInstance.current.remove();
+        mapInstance.current.remove(); // ✅ Правильный метод уничтожения карты
       }
     };
-  }, [lat, lng, zoom, places]); // ⚠️ Без изменений в deps!
+  }, []);
+
+  // Эффект №2: Обновление данных и камеры
+  useEffect(() => {
+    if (!mapInstance.current || !markersGroupRef.current) return;
+
+    const L = leaflet; // Теперь листлет загружен синхронно
+
+    const getPlaceIcon = (count: number) => L.divIcon({
+      className: 'custom-map-marker',
+      html: `<div class="marker-pin"></div><div class="marker-text">${count}</div>`,
+      iconSize: [30, 42],
+    });
+
+    // Удаляем старые маркеры
+    markersGroupRef.current.clearLayers();
+
+    // Ставим новые
+    places.forEach(place => {
+      const meetsList = place.meets
+        .map(m => `<li>${extractTime(m.startedAt)} - ${addMinutes(extractTime(m.startedAt), 90)}: ${m.title}</li>`)
+        .join('');
+      const marker = L.marker([place.latitude, place.longitude], { icon: getPlaceIcon(place.meets.length) }).bindPopup(`<div class="place-popup">
+                  <h4><b>${place.title}</b></h4>
+                  <ul>${meetsList}</ul>
+                  <p>Адрес: ${place.address}</p>
+              </div>`);
+
+      marker.addTo(markersGroupRef.current as any);
+    });
+
+    // Перемещаемся плавно
+    mapInstance.current.flyTo([lat, lng], zoom, { animate: true });
+  }, [lat, lng, zoom, places]);
 
   return (
     <div
