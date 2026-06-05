@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaces } from '../requests.ts';
 import './MeetMap.css';
-import leaflet from 'leaflet';
 
 interface Props {
   lat: number;
@@ -27,6 +26,8 @@ export function MapComponent({ lat, lng, zoom }: Props) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<L.Map | null>(null);
   const markersGroupRef = useRef<L.LayerGroup | null>(null); // Группа для маркеров
+  const leafletRef = useRef<typeof import('leaflet') | null>(null);
+
   const { data: places = [] } = useQuery({
     queryKey: ['places'],
     queryFn: fetchPlaces,
@@ -36,6 +37,7 @@ export function MapComponent({ lat, lng, zoom }: Props) {
   useEffect(() => {
     async function createMap() {
       const L = await import('leaflet');
+      leafletRef.current = L;
 
       const map = L.map(mapRef.current!, {
         center: [lat, lng],
@@ -62,9 +64,9 @@ export function MapComponent({ lat, lng, zoom }: Props) {
 
   // Эффект №2: Обновление данных и камеры
   useEffect(() => {
-    if (!mapInstance.current || !markersGroupRef.current) return;
+    if (!mapInstance.current || !markersGroupRef.current || !leafletRef.current) return;
 
-    const L = leaflet; // Теперь листлет загружен синхронно
+    const L = leafletRef.current;
 
     const getPlaceIcon = (count: number) => L.divIcon({
       className: 'custom-map-marker',

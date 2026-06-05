@@ -31,7 +31,6 @@ function IdeaCard({ idea }: IdeaCardProps) {
           overflow: 'hidden',
           cursor: idea.id ? 'pointer' : 'default', // Убираем курсор, если ссылки нет
         }}
-        onClick={() => idea.id && (window.location.href = `/idea/${idea.id}`)}
       >
         <CardMedia component="img" height="90" image={idea.image || `/bg.jpeg`} alt={idea.title || 'Идея'} sx={{ objectFit: 'cover' }} />
         <CardContent sx={{ flexGrow: 1 }}>

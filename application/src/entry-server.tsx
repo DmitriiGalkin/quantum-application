@@ -56,11 +56,13 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
     const projectMatch = url.match(/^\/project\/([^/]+)/)
 
     if (projectMatch) {
+
+      console.log(projectMatch, 'projectMatch');
         const projectId = projectMatch[1]
-        console.log('11', API_URL)
-        const response = await fetch(`${API_URL}/meta/project/${projectId}`)
-        console.log('12')
-        const projectMeta = await response.json()
+        const response = await fetch(`${API_URL}/project/${projectId}/meta`);
+        const projectMeta = await response.json();
+
+        console.log(projectMeta, 'projectMeta');
 
         return {
             title: projectMeta.title,
@@ -85,21 +87,22 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
 }
 
 export async function render(url: string) {
-    const meta = await getMetaByUrl(url)
-    const queryClient = new QueryClient()
+  const meta = await getMetaByUrl(url);
+  console.log(meta, 'meta');
+  const queryClient = new QueryClient();
 
-    const html = renderToString(
-        <React.StrictMode>
-            <QueryClientProvider client={queryClient}>
-                <StaticRouter location={url}>
-                    <App />
-                </StaticRouter>
-            </QueryClientProvider>
-        </React.StrictMode>,
-    )
+  const html = renderToString(
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <StaticRouter location={url}>
+          <App />
+        </StaticRouter>
+      </QueryClientProvider>
+    </React.StrictMode>,
+  );
 
-    return {
-        html,
-        meta,
-    }
+  return {
+    html,
+    meta,
+  };
 }

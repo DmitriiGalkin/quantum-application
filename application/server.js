@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import https from 'node:https';
 import fs from 'fs';
 import path from 'path';
@@ -6,10 +7,12 @@ import { createServer } from 'vite';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
 
+dotenv.config();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const isProd = true // process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production'
 
 async function server() {
   const app = express();
@@ -20,13 +23,13 @@ async function server() {
     root: __dirname,
     // @ts-ignore
     middlewareMode: isProd ? 'ssr' : true, // В проде используем ssr, в деве — middleware
-    https: isProd
-      ? undefined
-      : {
-          // В деве Vite сам поднимает HMR сервер с https, если нужно
-          key: fs.readFileSync(process.env.SSL_KEY_PATH || ''),
-          cert: fs.readFileSync(process.env.SSL_CERT_PATH || ''),
-        },
+    // https: isProd
+    //   ? undefined
+    //   : {
+    //       // В деве Vite сам поднимает HMR сервер с https, если нужно
+    //       key: fs.readFileSync(process.env.SSL_KEY_PATH || ''),
+    //       cert: fs.readFileSync(process.env.SSL_CERT_PATH || ''),
+    //     },
     appType: 'custom',
   });
 
@@ -58,30 +61,33 @@ async function server() {
         .replace('<!--app-og-site-name-->', escapeHtml(meta.ogSiteName));
       res.status(200).set({ 'Content-Type': 'text/html' }).end(appHtml);
     } catch (e) {
-      vite.ssrFixStacktrace(e as any);
+      vite.ssrFixStacktrace(e);
       console.error(e);
       res.status(500).end(e instanceof Error ? e.message : String(e));
     }
   });
 
-  // Создаём HTTPS-сервер
-  const httpsServer = https.createServer(
-    {
-      key: fs.readFileSync(process.env.SSL_KEY_PATH || '/run/secrets/ssl/private.key'),
-      cert: fs.readFileSync(process.env.SSL_CERT_PATH || '/run/secrets/ssl/certificate.crt'),
-    },
-    app,
-  );
+  if (isProd) {
+    // Создаём HTTPS-сервер
+    const httpsServer = https.createServer(
+      {
+        key: fs.readFileSync(process.env.SSL_KEY_PATH || '/run/secrets/ssl/private.key'),
+        cert: fs.readFileSync(process.env.SSL_CERT_PATH || '/run/secrets/ssl/certificate.crt'),
+      },
+      app,
+    );
 
-  httpsServer.listen(443, () => {
-    console.log('HTTPS сервер запущен на порту 443');
-  });
-  //app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+    httpsServer.listen(443, () => {
+      console.log('HTTPS сервер запущен на порту 443');
+    });
+  } else {
+    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+  }
 }
 
 server();
 
-function escapeHtml(value: string) {
+function escapeHtml(value) {
   return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
