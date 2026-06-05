@@ -14,11 +14,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import MeetCard from '../components/MeetCard.tsx';
-import { createVisit, deleteVisit, fetchProject, generateImage } from '../requests.ts';
+import { createMeetUser, deleteMeetUser, fetchProject } from '../requests.ts';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import UserGroup from '../components/UserGroup.tsx';
 
 function ProjectPage() {
@@ -26,22 +25,15 @@ function ProjectPage() {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
 
-  const createVisitMutation = useMutation({
-    mutationFn: createVisit,
+  const createMeetUserMutation = useMutation({
+    mutationFn: createMeetUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project', id] });
     },
   });
 
-  const deleteVisitMutation = useMutation({
-    mutationFn: deleteVisit,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['project', id] });
-    },
-  });
-
-  const generateImageMutation = useMutation({
-    mutationFn: generateImage,
+  const deleteMeetUserMutation = useMutation({
+    mutationFn: deleteMeetUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project', id] });
     },
@@ -101,22 +93,11 @@ function ProjectPage() {
         }}
       >
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            aria-label="open drawer"
-            sx={{ mr: 2, color: 'white' }}
-            onClick={() => navigate(-1)}
-          >
+          <IconButton size="large" edge="start" aria-label="open drawer" sx={{ mr: 2, color: 'white' }} onClick={() => navigate(-1)}>
             <ArrowBackIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton
-            edge="start"
-            color="inherit"
-            sx={{ color: 'white' }}
-            onClick={() => navigate(`/project/${id}/edit`)}
-          >
+          <IconButton edge="start" color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
             <EditIcon />
           </IconButton>
         </Toolbar>
@@ -130,53 +111,19 @@ function ProjectPage() {
           borderColor: 'divider',
         }}
       >
-        <Box sx={{ position: 'relative', width: '100%' }}>
-          <CardMedia
-            component="img"
-            height="360"
-            image={`/bg.jpeg`}
-            alt={project.title || 'Проект'}
-            sx={{
-              objectFit: 'cover',
-              height: {
-                xs: 220,
-                sm: 360,
-              },
-            }}
-          />
-
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 8,
-              right: 8,
-              backgroundColor: 'rgba(255, 255, 255, 0.8)', // Полупрозрачный фон для читаемости
-              '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
-              boxShadow: 3,
-              borderRadius: 16,
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}
-          >
-            {/* Кнопка с иконкой в правом верхнем углу */}
-            {generateImageMutation.isPending && (
-              <Typography className="blink" color="text.secondary" sx={{ paddingLeft: 2 }}>
-                Генерирую...
-              </Typography>
-            )}
-            <IconButton
-              aria-label="Сгенерировать обложку"
-              // Здесь будет обработчик клика на генерацию
-              onClick={e => {
-                e.stopPropagation();
-                generateImageMutation.mutate(project.id);
-              }}
-            >
-              <AutoAwesome fontSize="large" />
-            </IconButton>
-          </Box>
-        </Box>
+        <CardMedia
+          component="img"
+          height="360"
+          image={`/bg.jpeg`}
+          alt={project.title || 'Проект'}
+          sx={{
+            objectFit: 'cover',
+            height: {
+              xs: 220,
+              sm: 360,
+            },
+          }}
+        />
 
         <CardContent sx={{ p: { xs: 2.5, sm: 4 } }}>
           <Stack spacing={3}>
@@ -251,11 +198,9 @@ function ProjectPage() {
                       <MeetCard
                         meeting={meeting}
                         key={meeting.id}
-                        isVisitActionPending={
-                          createVisitMutation.isPending || deleteVisitMutation.isPending
-                        }
-                        onCreateVisit={meetId => createVisitMutation.mutate(meetId)}
-                        onDeleteVisit={visitId => deleteVisitMutation.mutate(visitId)}
+                        isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
+                        onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}
+                        onDeleteMeetUser={meetUserId => deleteMeetUserMutation.mutate(meetUserId)}
                       />
                     ))}
                 </Stack>{' '}

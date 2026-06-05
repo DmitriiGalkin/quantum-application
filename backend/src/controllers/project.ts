@@ -98,23 +98,29 @@ export default {
 
       const [projectUsers, meets] = await Promise.all([User.findByProjectId(projectId), Meet.findByProjectId(projectId)]);
 
-      const meetsWithDetails = await Promise.all(
-        meets.map(async meet => {
-          const [meetUsers, usersForMeetUsers] = await Promise.all([MeetUser.findByMeet(meet.id), User.findByMeet(meet.id)]);
+      // const meetsWithDetails = await Promise.all(
+      //   meets.map(async meet => {
+      //     const [meetUsers, usersForMeetUsers] = await Promise.all([MeetUser.findByMeet(meet.id), User.findByMeet(meet.id)]);
+      //
+      //     const meetUsersWithUsers = meetUsers.map((meetUser, idx) => ({
+      //       ...meetUser,
+      //       user: usersForMeetUsers[idx],
+      //     }));
+      //
+      //     return { ...meet, users: meetUsersWithUsers };
+      //   }),
+      // );
 
-          const meetUsersWithUsers = meetUsers.map((meetUser, idx) => ({
-            ...meetUser,
-            user: usersForMeetUsers[idx],
-          }));
+      const usersForMeets = await Promise.all(meets.map(meet => User.findByMeetId(meet.id)));
 
-          return { ...meet, meetUsers: meetUsersWithUsers };
-        }),
-      );
 
       res.json({
         ...project,
         passport,
-        meets: meetsWithDetails,
+        meets: meets.map((meet, idx) => ({
+          ...meet,
+          users: usersForMeets[idx],
+        })),
         users: projectUsers,
       });
     } catch (err) {

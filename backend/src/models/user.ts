@@ -74,7 +74,7 @@ class UserModel {
     }
   }
 
-  static async findByMeet(meetId: number) {
+  static async findByMeetId(meetId: number) {
     try {
       const sql = `
         SELECT DISTINCT user.*

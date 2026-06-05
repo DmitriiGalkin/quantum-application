@@ -25,7 +25,7 @@ function ProjectCard({ project }: ProjectCardProps) {
         overflow: 'hidden',
         cursor: project.id ? 'pointer' : 'default', // Убираем курсор, если ссылки нет
       }}
-      onClick={() => console.log('1')}
+      onClick={() => project.id && (window.location.href = `/project/${project.id}`)}
     >
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom noWrap>
@@ -44,7 +44,7 @@ function ProjectCard({ project }: ProjectCardProps) {
           {project.description}
         </Typography>
 
-        <Stack direction="row" sx={{justifyContent: 'space-between', alignItems: 'center' }}>
+        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Аватарки учеников */}
           <UserGroup users={project.users || []} />
 

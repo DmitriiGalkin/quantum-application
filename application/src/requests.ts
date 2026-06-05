@@ -116,8 +116,8 @@ export async function createUser(user: User): Promise<{ id: number; message: str
   });
 }
 
-export async function createVisit(meetId: number) {
-  return apiFetch('/visit', {
+export async function createMeetUser(meetId: number) {
+  return apiFetch('/meetUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -126,8 +126,8 @@ export async function createVisit(meetId: number) {
   });
 }
 
-export async function deleteVisit(visitId: number) {
-  return apiFetch(`/visit/${visitId}`, {
+export async function deleteMeetUser(meetUserId: number) {
+  return apiFetch(`/meetUser/${meetUserId}`, {
     method: 'DELETE',
   });
 }

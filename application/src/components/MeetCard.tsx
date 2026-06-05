@@ -1,35 +1,53 @@
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import type { Meet, User } from '../types.ts';
+import InfoItem from './InfoItem.tsx';
 
 export interface ExtendedMeet extends Meet {
-  visits?: {
-    id: number;
-    userId: number;
-    user: User;
-  }[];
+  users: User[];
 }
 
 type MeetCardProps = {
   meeting: ExtendedMeet;
-  isVisitActionPending: boolean;
-  onCreateVisit: (meetId: number) => void;
-  onDeleteVisit: (visitId: number) => void;
+  isMeetUserActionPending: boolean;
+  onCreateMeetUser: (meetId: number) => void;
+  onDeleteMeetUser: (meetUserId: number) => void;
 };
 
-function MeetCard({ meeting, isVisitActionPending, onCreateVisit, onDeleteVisit }: MeetCardProps) {
+
+function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDeleteMeetUser }: MeetCardProps) {
   const startedAt = new Date(meeting.startedAt);
-  const currentUserVisit = meeting.visits?.find(visit => visit.userId === 2);
+  const currentUserVisit = meeting.users?.find(user => user.id === 2);
   const isCurrentUserVisited = Boolean(currentUserVisit);
+
+  const infoItems = [
+    {
+      icon: EventIcon,
+      value: startedAt.toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+      }),
+      sx: { minWidth: 140 }, // Увеличиваем ширину только для этого элемента
+    },
+    {
+      icon: ScheduleIcon,
+      value: startedAt.toLocaleTimeString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    },
+    {
+      icon: PaymentsIcon,
+      value: meeting.price ? `${meeting.price} ₽` : 'Бесплатно',
+    },
+  ];
 
   return (
     <Paper
@@ -50,54 +68,21 @@ function MeetCard({ meeting, isVisitActionPending, onCreateVisit, onDeleteVisit 
           alignItems: { xs: 'stretch', md: 'center' },
         }}
       >
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ flexGrow: 1 }}>
-          <Stack direction="row" spacing={1.25} sx={{ minWidth: 140, alignItems: 'center' }}>
-            <EventIcon color="primary" />
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Дата
-              </Typography>
-              <Typography sx={{ fontWeight: 800 }}>
-                {startedAt.toLocaleDateString('ru-RU', {
-                  day: 'numeric',
-                  month: 'long',
-                })}
-              </Typography>
-            </Box>
-          </Stack>
-
-          <Stack direction="row" spacing={1.25} sx={{ minWidth: 120, alignItems: 'center' }}>
-            <ScheduleIcon color="primary" />
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Время
-              </Typography>
-              <Typography sx={{ fontWeight: 800 }}>
-                {startedAt.toLocaleTimeString('ru-RU', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Typography>
-            </Box>
-          </Stack>
-
-          <Stack direction="row" spacing={1.25} sx={{ minWidth: 120, alignItems: 'center' }}>
-            <PaymentsIcon color="primary" />
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Цена
-              </Typography>
-              <Typography sx={{ fontWeight: 800 }}>
-                {meeting.price ? `${meeting.price} ₽` : 'Бесплатно'}
-              </Typography>
-            </Box>
-          </Stack>
+        <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
+          {infoItems.map((item, index) => (
+            <InfoItem
+              key={index} // В реальном проекте лучше использовать уникальный ID из данных
+              icon={item.icon}
+              value={item.value}
+              sx={item.sx}
+            />
+          ))}
         </Stack>
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
           <AvatarGroup max={5}>
-            {(meeting?.visits || []).map(visit => (
-              <Avatar src={visit.user.image || undefined} alt="Участник" key={visit.user.id} />
+            {(meeting?.users || []).map(user => (
+              <Avatar src={user.image || undefined} alt="Участник" key={user.id} />
             ))}
           </AvatarGroup>
 
@@ -107,18 +92,18 @@ function MeetCard({ meeting, isVisitActionPending, onCreateVisit, onDeleteVisit 
         <Button
           variant="contained"
           size="large"
-          disabled={isVisitActionPending}
+          disabled={isMeetUserActionPending}
           onClick={() => {
             if (currentUserVisit?.id) {
-              onDeleteVisit(currentUserVisit.id);
+              onDeleteMeetUser(currentUserVisit.id);
 
               return;
             }
 
-            onCreateVisit(meeting.id);
+            onCreateMeetUser(meeting.id);
           }}
         >
-          {isVisitActionPending ? 'Отправка...' : isCurrentUserVisited ? 'Выйти' : 'Участвовать'}
+          {isMeetUserActionPending ? 'Отправка...' : isCurrentUserVisited ? 'Выйти' : 'Участвовать'}
         </Button>
       </Stack>
     </Paper>
