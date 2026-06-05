@@ -4,8 +4,8 @@ import Idea, { IParams } from '../models/idea.js';
 import IdeaUser from "../models/ideaUser.js";
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router.js';
-import Project from 'models/project.js';
-import Place from 'models/place.js';
+import Project from '../models/project.js';
+import Place from '../models/place.js';
 
 export default {
   /**

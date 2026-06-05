@@ -2,7 +2,7 @@ import Place from '../models/place.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router.js';
 import { Place as IPlace } from '../../../application/src/types.js';
-import Meet from 'models/meet.js'; // Импортируем пул соединений
+import Meet from '../models/meet.js'; // Импортируем пул соединений
 
 export default {
   /**
