@@ -44,7 +44,7 @@ export interface Project {
 
 export interface Idea {
   id: number;
-  userId: number | null;
+  userId: number;
   passportId: number | null;
   title: string | null;
   description: string | null;

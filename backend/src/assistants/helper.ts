@@ -1,11 +1,9 @@
-
-
 /**
  * Ищет и возвращает первый валидный JSON-объект или массив в строке.
  * @param {string} text - Строка, в которой нужно найти JSON.
  * @returns {any|null} - Распарсенный объект/значение или null, если JSON не найден или некорректен.
  */
-export function extractJsonFromString(text) {
+export function extractJsonFromString(text: string): any | null {
   if (typeof text !== 'string') {
     console.error('Входное значение должно быть строкой.');
     return null;
@@ -26,7 +24,7 @@ export function extractJsonFromString(text) {
   try {
     return JSON.parse(match[0]);
   } catch (error) {
-    console.error('Ошибка парсинга JSON:', error.message);
+    console.error('Ошибка парсинга JSON:', (error as any).message);
     return null;
   }
 }
