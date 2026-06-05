@@ -81,7 +81,7 @@ function ProjectPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+    <Box sx={{ minHeight: '100vh' }}>
       <AppBar
         position="sticky"
         color="inherit"
@@ -107,9 +107,9 @@ function ProjectPage() {
         <Card
           elevation={0}
           sx={{
-            overflow: 'hidden',
             border: 1,
             borderColor: 'divider',
+            borderRadius: 4,
           }}
         >
           <CardMedia

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "module": "CommonJS",
-    "target": "es2021",
+    "module": "nodenext",
+    "target": "ESNext",
     "esModuleInterop": true,
   },
   "include": ["server.ts"]
