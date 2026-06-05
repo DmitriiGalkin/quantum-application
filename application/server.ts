@@ -9,11 +9,10 @@ import compression from 'compression';
 
 dotenv.config();
 
-// @ts-ignore
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production';
 
 async function server() {
   const app = express();
@@ -39,14 +38,18 @@ async function server() {
     );
   }
 
-  app.use(async (req, res) => {
+  app.use(async (req, res, next) => {
     const url = req.originalUrl;
+
+    // 🔥 КЛЮЧЕВОЙ ФИКС (иначе MIME ошибка)
+    if (isProd && url.includes('.')) {
+      return next();
+    }
 
     try {
       let template: string;
       let render: (url: string) => Promise<any>;
 
-      console.log(isProd, 'isProd');
       if (!isProd) {
         template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
         template = await vite.transformIndexHtml(url, template);
@@ -68,11 +71,15 @@ async function server() {
         .replace('<!--app-og-image-->', escapeHtml(meta.ogImage))
         .replace('<!--app-og-type-->', escapeHtml(meta.ogType))
         .replace('<!--app-og-site-name-->', escapeHtml(meta.ogSiteName));
+
       res.status(200).set({ 'Content-Type': 'text/html' }).end(appHtml);
-    } catch (e) {
-      //vite.ssrFixStacktrace(e as any);
+    } catch (e: any) {
+      if (!isProd && vite) {
+        vite.ssrFixStacktrace(e);
+      }
+
       console.error(e);
-      res.status(500).end(e instanceof Error ? e.message : String(e));
+      res.status(500).end(e?.message || 'Internal Server Error');
     }
   });
 
@@ -82,7 +89,7 @@ async function server() {
         key: fs.readFileSync(process.env.SSL_KEY_PATH || '/run/secrets/ssl/private.key'),
         cert: fs.readFileSync(process.env.SSL_CERT_PATH || '/run/secrets/ssl/certificate.crt'),
       },
-      app,
+      app
     );
 
     httpsServer.listen(443, () => {
@@ -95,11 +102,11 @@ async function server() {
 
 server();
 
-function escapeHtml(value: string) {
+function escapeHtml(value: string = '') {
   return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
+    .replaceAll("'", '&#39;');
 }
