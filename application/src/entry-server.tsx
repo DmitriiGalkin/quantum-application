@@ -88,7 +88,6 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
 
 export async function render(url: string) {
   const meta = await getMetaByUrl(url);
-  console.log(meta, 'meta');
   const queryClient = new QueryClient();
 
   const html = renderToString(
