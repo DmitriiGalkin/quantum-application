@@ -8,7 +8,7 @@
     "dev:ssr": "node server.ts",
     "build:server": "tsc -p tsconfig.ssr.json",
     "build:client": "vite build",
-    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist",
     "build": "npm run build:client && npm run build:ssr && npm run build:server",
     "build:production": "NODE_ENV=production npm run build:client && npm run build:ssr && npm run build:server",
     "lint": "eslint .",
