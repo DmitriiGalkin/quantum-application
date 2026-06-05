@@ -117,14 +117,13 @@ function ProjectPage() {
             >
               <CardMedia
                 component="img"
-                height="360"
                 image={`/bg.jpeg`}
                 alt={project.title || 'Проект'}
                 sx={{
                   objectFit: 'cover',
                   height: {
-                    xs: 220,
-                    sm: 360,
+                    xs: 90,
+                    sm: 120,
                   },
                 }}
               />
