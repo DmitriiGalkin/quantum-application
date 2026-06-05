@@ -35,7 +35,7 @@ const getHttpsOptions = (mode: string) => {
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
   server: {
-    allowedHosts: ['q3-dev.ru'],
+    allowedHosts: ['localhost', '0.0.0.0', 'q3-dev.ru'],
     // Вызываем нашу функцию и передаем результат в опцию 'https'
     https: getHttpsOptions(mode),
   },

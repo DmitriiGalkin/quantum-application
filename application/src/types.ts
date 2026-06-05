@@ -20,9 +20,9 @@ export interface User {
 }
 
 export interface Passport {
-  id: number | null;
-  provider: string | null;
-  providerId: string | null;
+  id: number;
+  provider: string;
+  providerId: string;
   title: string | null;
   description?: string | null;
   email: string | null;
@@ -36,7 +36,7 @@ export interface Project {
   id: number;
   passportId: number;
   placeId: number;
-  ideaId: number | null;
+  ideaId: number;
   title: string | null;
   description: string | null;
   deletedAt: string | null;
