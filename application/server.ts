@@ -40,9 +40,11 @@ async function server() {
 
   app.use(async (req, res, next) => {
     const url = req.originalUrl;
+    console.log('url', url);
 
     // 🔥 КЛЮЧЕВОЙ ФИКС (иначе MIME ошибка)
     if (isProd && url.includes('.')) {
+      console.log('pre next')
       return next();
     }
 
