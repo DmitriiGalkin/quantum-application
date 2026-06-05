@@ -9,7 +9,7 @@
     "build:ssr": "tsc -p tsconfig.ssr.json",
     "build:client": "vite build",
     "build": "npm run build:client && npm run build:ssr",
-    "build:production": "NODE_ENV=production npm run build:client && build:ssr",
+    "build:production": "NODE_ENV=production npm run build:client && npm run build:ssr",
     "lint": "eslint .",
     "preview": "vite preview"
   },
