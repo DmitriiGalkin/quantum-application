@@ -1,7 +1,4 @@
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
 import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import EventIcon from '@mui/icons-material/Event';
@@ -9,9 +6,14 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import type { Meet, User } from '../types.ts';
 import InfoItem from './InfoItem.tsx';
+import UserGroup from './UserGroup.tsx';
+
+interface ExtendedUser extends User {
+  meetUserId: number;
+}
 
 export interface ExtendedMeet extends Meet {
-  users: User[];
+  users: ExtendedUser[];
 }
 
 type MeetCardProps = {
@@ -24,8 +26,8 @@ type MeetCardProps = {
 
 function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDeleteMeetUser }: MeetCardProps) {
   const startedAt = new Date(meeting.startedAt);
-  const currentUserVisit = meeting.users?.find(user => user.id === 2);
-  const isCurrentUserVisited = Boolean(currentUserVisit);
+  const currentMeetUser = meeting.users?.find(user => user.id === 2);
+  const isCurrentUserVisited = Boolean(currentMeetUser);
 
   const infoItems = [
     {
@@ -34,7 +36,6 @@ function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDelete
         day: 'numeric',
         month: 'long',
       }),
-      sx: { minWidth: 140 }, // Увеличиваем ширину только для этого элемента
     },
     {
       icon: ScheduleIcon,
@@ -68,25 +69,16 @@ function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDelete
           alignItems: { xs: 'stretch', md: 'center' },
         }}
       >
+        <UserGroup users={meeting.users || []} />
+
         <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
           {infoItems.map((item, index) => (
             <InfoItem
               key={index} // В реальном проекте лучше использовать уникальный ID из данных
               icon={item.icon}
               value={item.value}
-              sx={item.sx}
             />
           ))}
-        </Stack>
-
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-          <AvatarGroup max={5}>
-            {(meeting?.users || []).map(user => (
-              <Avatar src={user.image || undefined} alt="Участник" key={user.id} />
-            ))}
-          </AvatarGroup>
-
-          <Chip label="+5 участников" color="primary" variant="outlined" />
         </Stack>
 
         <Button
@@ -94,8 +86,9 @@ function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDelete
           size="large"
           disabled={isMeetUserActionPending}
           onClick={() => {
-            if (currentUserVisit?.id) {
-              onDeleteMeetUser(currentUserVisit.id);
+            console.log('onClick', currentMeetUser);
+            if (currentMeetUser?.meetUserId) {
+              onDeleteMeetUser(currentMeetUser.meetUserId);
 
               return;
             }

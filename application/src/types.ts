@@ -9,7 +9,7 @@ export interface Meet {
 }
 
 export interface User {
-  id: number | null;
+  id: number;
   passportId: number | null;
   title: string | null;
   description: string | null;

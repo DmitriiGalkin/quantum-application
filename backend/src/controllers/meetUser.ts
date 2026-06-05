@@ -2,29 +2,11 @@ import Meet from '../models/meet.js';
 import MeetUser from '../models/meetUser.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router.js';
-import { MeetUser as IMeetUser } from '../../../application/src/types.js'; // Импортируем пул соединений
+import { MeetUser as IMeetUser } from '../../../application/src/types.js';
+import User from 'models/user.js'; // Импортируем пул соединений
 
-function getPassportUserIds(req: RequestWithPassport) {
+function getPassportUserIds(req: RequestWithPassport): number[] {
   return (req.users || []).map(user => user.id);
-}
-
-// Эта функция не экспортируется, так как используется только внутри этого модуля
-async function findMeetUserAndMeet({ meetUserId }: { meetUserId: string }) {
-  const meetUser = await MeetUser.findById(meetUserId);
-
-  if (!meetUser) {
-    const error = new Error('Участие не существует');
-    throw error;
-  }
-
-  const meet = await Meet.findById(meetUser.meetId);
-
-  if (!meet) {
-    const error = new Error('Встреча не найдена');
-    throw error;
-  }
-
-  return { meetUser, meet };
 }
 
 export default {
@@ -51,11 +33,11 @@ export default {
         return res.status(409).json({ error: true, message: 'Участие уже существует' });
       }
 
+      const allowUsers = await User.findByPassportId(req.passport.id || 0);
+
       // Проверка прав доступа
-      if (!getPassportUserIds(req).includes(userId)) {
-        return res
-          .status(403)
-          .json({ error: true, message: 'Нельзя добавлять участника отличного от себя' });
+      if (!allowUsers.map(user => user.id).includes(userId)) {
+        return res.status(403).json({ error: true, message: 'Нельзя добавлять чужого участника' });
       }
 
       await MeetUser.create(req.body as unknown as IMeetUser);
@@ -73,15 +55,25 @@ export default {
   delete: async (req: RequestWithPassport, res: Response) => {
     try {
       const { id } = req.params; // Используем деструктуризацию для ясности
-      const { meetUser } = await findMeetUserAndMeet({ meetUserId: id });
+      const meetUser = await MeetUser.findById(id);
 
-      // Проверка прав доступа перед удалением
-      if (!getPassportUserIds(req).includes(meetUser.userId)) {
+      if (!meetUser) {
+        const error = new Error('Участие не существует');
+        throw error;
+      }
+
+      if (!req.passport) {
+        return res.status(401).json({ error: true, message: 'Нет авторизации' });
+      }
+
+      const allowUsers = await User.findByPassportId(req.passport.id || 0);
+
+
+      if (!allowUsers.map((user)=>user.id).includes(meetUser.userId)) {
         return res.status(403).json({ error: true, message: 'Нет прав на удаление' });
       }
 
       await MeetUser.delete(id);
-
       res.json({ error: false, message: 'Участник удален из встречи' });
     } catch (err) {
       console.error('meetUser.delete error:', err);

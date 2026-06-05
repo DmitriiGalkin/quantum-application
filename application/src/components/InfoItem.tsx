@@ -8,12 +8,11 @@ type IconComponent = React.ComponentType<any>;
 interface InfoItemProps {
   icon: IconComponent;
   value: string;
-  sx: any;
 }
 
 // Компонент принимает иконку, название и значение
 // sx применяется к корневому Stack для кастомизации
-const InfoItem = ({ icon: Icon, value, sx }: InfoItemProps) => {
+const InfoItem = ({ icon: Icon, value }: InfoItemProps) => {
   return (
     <Stack
       direction="row"
@@ -21,7 +20,6 @@ const InfoItem = ({ icon: Icon, value, sx }: InfoItemProps) => {
       sx={{
         minWidth: 80, // Базовая ширина
         alignItems: 'center',
-        ...sx, // Позволяет переопределить стили при необходимости
       }}
     >
       <Icon color="primary" />

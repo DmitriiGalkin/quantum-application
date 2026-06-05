@@ -200,7 +200,9 @@ function ProjectPage() {
                         key={meeting.id}
                         isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
                         onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}
-                        onDeleteMeetUser={meetUserId => deleteMeetUserMutation.mutate(meetUserId)}
+                        onDeleteMeetUser={meetUserId => {
+                          deleteMeetUserMutation.mutate(meetUserId)
+                        }}
                       />
                     ))}
                 </Stack>{' '}

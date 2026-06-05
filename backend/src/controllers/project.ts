@@ -98,19 +98,6 @@ export default {
 
       const [projectUsers, meets] = await Promise.all([User.findByProjectId(projectId), Meet.findByProjectId(projectId)]);
 
-      // const meetsWithDetails = await Promise.all(
-      //   meets.map(async meet => {
-      //     const [meetUsers, usersForMeetUsers] = await Promise.all([MeetUser.findByMeet(meet.id), User.findByMeet(meet.id)]);
-      //
-      //     const meetUsersWithUsers = meetUsers.map((meetUser, idx) => ({
-      //       ...meetUser,
-      //       user: usersForMeetUsers[idx],
-      //     }));
-      //
-      //     return { ...meet, users: meetUsersWithUsers };
-      //   }),
-      // );
-
       const usersForMeets = await Promise.all(meets.map(meet => User.findByMeetId(meet.id)));
 
 

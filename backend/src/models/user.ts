@@ -77,7 +77,7 @@ class UserModel {
   static async findByMeetId(meetId: number) {
     try {
       const sql = `
-        SELECT DISTINCT user.*
+        SELECT DISTINCT user.*, meetUser.id as meetUserId
         FROM user
         LEFT JOIN meetUser ON user.id = meetUser.userId
         WHERE meetUser.meetId = ?

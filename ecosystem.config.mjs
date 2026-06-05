@@ -18,7 +18,7 @@ export const apps = [
   },
   {
     name: 'application',
-    script: path.join(__dirname, 'application/server.ts'),
+    script: path.join(__dirname, 'application/server.js'),
     out_file: '/dev/stdout',
     error_file: '/dev/stderr',
     merge_logs: true,
