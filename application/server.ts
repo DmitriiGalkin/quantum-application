@@ -54,7 +54,7 @@ async function server() {
       } else {
         template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
         // @ts-ignore
-        render = (await import('./dist/server/entry-server.js')).render;
+        render = (await import('./server/entry-server.js')).render;
       }
 
       const { html, meta } = await render(url);
