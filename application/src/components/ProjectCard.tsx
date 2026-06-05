@@ -25,7 +25,7 @@ function ProjectCard({ project }: ProjectCardProps) {
         overflow: 'hidden',
         cursor: project.id ? 'pointer' : 'default', // Убираем курсор, если ссылки нет
       }}
-      onClick={() => project.id && (window.location.href = `/project/${project.id}`)}
+      onClick={() => console.log('1')}
     >
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom noWrap>

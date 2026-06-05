@@ -85,7 +85,8 @@ class MeetModel {
       `,
         [id],
         
-      );  console.log(rows, 'rows');    return rows as Meet[];
+      );
+      return rows as Meet[];
     } catch (err) {
       console.error('Meet.findByPlaceId error:', err);
       throw err;
