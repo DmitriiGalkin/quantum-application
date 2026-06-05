@@ -78,6 +78,7 @@
     "@types/node": "^18.19.130",
     "@types/passport": "^1.0.17",
     "@types/react-swipeable-views": "^0.13.1",
+    "@types/uuid": "^11.0.0",
     "@types/yup": "^0.32.0",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.2",

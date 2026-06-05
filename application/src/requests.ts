@@ -1,6 +1,6 @@
-import { apiFetch, getAccessToken } from './api';
 import type { Chat, ChatMessage, ChatTarget, Idea, Meet, Passport, Place, Project, User } from './types';
 import type { ExtendedMeet } from './components/MeetCard.tsx';
+import { apiFetch, getAccessToken } from './api.ts';
 import type { ProjectFormValues } from './ProjectForm';
 import { useQuery } from '@tanstack/react-query';
 

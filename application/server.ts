@@ -2,32 +2,19 @@ import https from 'node:https';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import { createServer as createViteServer } from 'vite';
+import { createServer } from 'vite';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-async function createServer() {
+async function server() {
   const app = express();
   app.use(compression());
 
-  const isProd = true // process.env.NODE_ENV === 'production'
-  ;
   // Создаем Vite сервер в режиме middleware
-  const vite = await createViteServer({
-    root: __dirname,
-    middlewareMode: isProd ? 'ssr' : true, // В проде используем ssr, в деве — middleware
-    https: isProd
-      ? undefined
-      : {
-          // В деве Vite сам поднимает HMR сервер с https, если нужно
-          key: fs.readFileSync(process.env.SSL_KEY_PATH),
-          cert: fs.readFileSync(process.env.SSL_CERT_PATH),
-        },
-    appType: 'custom',
-  });
+  const vite = await createServer();
 
   app.use(vite.middlewares);
 
@@ -57,7 +44,7 @@ async function createServer() {
         .replace('<!--app-og-site-name-->', escapeHtml(meta.ogSiteName));
       res.status(200).set({ 'Content-Type': 'text/html' }).end(appHtml);
     } catch (e) {
-      vite.ssrFixStacktrace(e);
+      vite.ssrFixStacktrace(e as any);
       console.error(e);
       res.status(500).end(e instanceof Error ? e.message : String(e));
     }
@@ -78,9 +65,9 @@ async function createServer() {
   //app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 }
 
-createServer();
+server();
 
-function escapeHtml(value) {
+function escapeHtml(value: string) {
   return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')

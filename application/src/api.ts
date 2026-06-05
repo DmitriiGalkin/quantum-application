@@ -14,28 +14,30 @@ export function setAccessToken(accessToken: string) {
 }
 
 export function removeAccessToken() {
-    localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY)
+  localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
 }
 
-export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-    const accessToken = getAccessToken()
+const apiFetch = async function <T>(path: string, options: RequestInit = {}): Promise<T> {
+  const accessToken = getAccessToken();
 
-    const response = await fetch(`${API_URL}${path}`, {
-        ...options,
-        headers: {
-            ...(options.headers || {}),
-            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-        },
-    })
+  const response = await fetch(`${API_URL}${path}`, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
+  });
 
-    if (response.status === 401) {
-        removeAccessToken()
-        throw new Error('Требуется повторная авторизация')
-    }
+  if (response.status === 401) {
+    removeAccessToken();
+    throw new Error('Требуется повторная авторизация');
+  }
 
-    if (!response.ok) {
-        throw new Error('Ошибка запроса')
-    }
+  if (!response.ok) {
+    throw new Error('Ошибка запроса');
+  }
 
-    return response.json()
-}
+  return response.json();
+};
+
+export { apiFetch };

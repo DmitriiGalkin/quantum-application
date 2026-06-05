@@ -7,8 +7,6 @@ import { MapComponent } from '../components/MeetMap.tsx';
 
 
 function HomePage() {
-
-  // @ts-ignore
   return (
     <Box sx={{ minHeight: '100vh' }}>
       <Header/>

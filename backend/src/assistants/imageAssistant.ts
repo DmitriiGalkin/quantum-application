@@ -3,8 +3,9 @@ import S3 from '../s3';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuid } from 'uuid';
 import assistant from '../assistant';
+import { Project } from '../../../application/src/types';
 
-function buildProjectImagePrompt(project) {
+function buildProjectImagePrompt(project: Project) {
   return [
     'Сгенерируй изображение 256px на 256px',
     'Сделай яркую, дружелюбную, современную иллюстрацию без текста на изображении.',
@@ -14,7 +15,7 @@ function buildProjectImagePrompt(project) {
   ].join('\n');
 }
 
-export async function generateProjectImage(project) {
+export async function generateProjectImage(project: Project) {
   // --- Блок генерации изображения (пример использования GigaChat) ---
   // Этот блок можно вынести в отдельную функцию или сервис, если он нужен постоянно.
   try {
@@ -46,7 +47,7 @@ export async function generateProjectImage(project) {
   }
 }
 
-export async function uploadImage(imageBinary) {
+export async function uploadImage(imageBinary: any) {
   try {
     const buffer = Buffer.from(imageBinary, 'binary');
     const name = uuid() + '.jpg';
