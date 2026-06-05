@@ -1,7 +1,7 @@
-import Project from "../models/project";
-import {baseAssistantAnswer} from "./assistant";
-import { Idea } from '../../../application/src/types';
-import { AssistantAnswer } from 'assistants/ideaAssistant';
+import Project from '../models/project.js';
+import { baseAssistantAnswer } from './assistant.js';
+import { Idea } from '../../../application/src/types.js';
+import { AssistantAnswer } from 'assistants/ideaAssistant.js';
 
 const getPrompt = (meta: any) => {
   return `

@@ -1,9 +1,9 @@
-import Meet from '../models/meet';
-import MeetUser from '../models/meetUser';
+import Meet from '../models/meet.js';
+import MeetUser from '../models/meetUser.js';
 import { Response } from 'express'; // Импортируем нужные типы
-import { RequestWithPassport } from '../router';
-import { Meet as IMeet } from '../../../application/src/types'; // Импортируем пул соединений
-import pool from "../db";
+import { RequestWithPassport } from '../router.js';
+import { Meet as IMeet } from '../../../application/src/types.js'; // Импортируем пул соединений
+import pool from '../db.js';
 import { RowDataPacket } from 'mysql2/promise';
 
 export default {

@@ -2,8 +2,8 @@ import Passport from '../models/passport.js';
 import User from '../models/user.js'; // Предполагаем, что это .js файл с TS-типами
 import jwt from 'jsonwebtoken';
 import { Response } from 'express'; // Импортируем нужные типы
-import { RequestWithPassport } from '../router';
-import { Passport as IPassport } from '../../../application/src/types'; // Импортируем пул соединений
+import { RequestWithPassport } from '../router.js';
+import { Passport as IPassport } from '../../../application/src/types.js'; // Импортируем пул соединений
 
 export default {
   /**

@@ -1,9 +1,11 @@
+// @ts-ignore
 import { detectImage } from 'gigachat';
-import S3 from '../s3';
+import S3 from '../s3.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
+// @ts-ignore
 import { v4 as uuid } from 'uuid';
-import assistant from '../assistant';
-import { Project } from '../../../application/src/types';
+import assistant from '../assistant.js';
+import { Project } from '../../../application/src/types.js';
 
 function buildProjectImagePrompt(project: Project) {
   return [

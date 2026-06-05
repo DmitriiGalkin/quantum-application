@@ -1,8 +1,8 @@
 import ProjectUser from '../models/projectUser.js';
 import Project from '../models/project.js';
 import { Response } from 'express'; // Импортируем нужные типы
-import { RequestWithPassport } from '../router';
-import { ProjectUser as IProjectUser } from '../../../application/src/types'; // Импортируем пул соединений
+import { RequestWithPassport } from '../router.js';
+import { ProjectUser as IProjectUser } from '../../../application/src/types.js'; // Импортируем пул соединений
 
 // Вспомогательная функция остается без изменений, так как она работает с объектами req.users
 function getPassportUserIds(req: RequestWithPassport) {

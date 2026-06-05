@@ -1,6 +1,6 @@
-import pool from '../db';
+import pool from '../db.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { IdeaUser } from '../../../application/src/types'; // Импортируем пул соединений
+import { IdeaUser } from '../../../application/src/types.js'; // Импортируем пул соединений
 
 class IdeaUserModel {
   static async create(data: { userId: string | number; ideaId: string | number }): Promise<number> {

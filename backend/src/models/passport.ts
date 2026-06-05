@@ -1,5 +1,5 @@
-import pool from '../db'; // Импортируем пул соединений
-import { Passport } from '../../../application/src/types';
+import pool from '../db.js'; // Импортируем пул соединений
+import { Passport } from '../../../application/src/types.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 class PassportModel {

@@ -1,18 +1,18 @@
-import Message from '../models/message';
-import { userAssistantAnswer } from 'assistants/userAssistant';
-import { ideaAssistantAnswer } from 'assistants/ideaAssistant';
-import { authAssistant } from './authService';
-import User from "../models/user";
-import Project from "../models/project";
-import {teacherAssistantAnswer} from 'assistants/teacherAssistant';
-import {projectAssistantAnswer} from 'assistants/projectAssistant';
-import Idea from "../models/idea";
-import IdeaUser from "../models/ideaUser";
-import type { ChatMessage, ChatTarget, Meta } from '../../../application/src/types';
-import { User as IUser } from '../../../application/src/types';
-import { Idea as IIdea } from '../../../application/src/types';
-import { Project as IProject } from '../../../application/src/types';
-import { meetAssistantAnswer } from 'assistants/meetAssistant';
+import Message from '../models/message.js';
+import { userAssistantAnswer } from 'assistants/userAssistant.js';
+import { ideaAssistantAnswer } from 'assistants/ideaAssistant.js';
+import { authAssistant } from './authService.js';
+import User from '../models/user.js';
+import Project from '../models/project.js';
+import { teacherAssistantAnswer } from 'assistants/teacherAssistant.js';
+import { projectAssistantAnswer } from 'assistants/projectAssistant.js';
+import Idea from '../models/idea.js';
+import IdeaUser from '../models/ideaUser.js';
+import type { ChatMessage, ChatTarget, Meta } from '../../../application/src/types.js';
+import { User as IUser } from '../../../application/src/types.js';
+import { Idea as IIdea } from '../../../application/src/types.js';
+import { Project as IProject } from '../../../application/src/types.js';
+import { meetAssistantAnswer } from 'assistants/meetAssistant.js';
 
 
 const getMetaMessages = (allMessages: ChatMessage[]) =>

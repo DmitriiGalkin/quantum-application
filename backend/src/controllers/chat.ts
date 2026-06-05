@@ -1,14 +1,9 @@
 import ChatModel from '../models/chat.js';
 import Message from '../models/message.js';
-import {
-  normalizeMessage,
-  createAssistantMessage,
-  selectAssistant,
-  getMetaMessages, CreateAssistantMessage,
-} from '../services/chatService';
+import { normalizeMessage, createAssistantMessage, selectAssistant, getMetaMessages, CreateAssistantMessage } from '../services/chatService.js';
 import { Response } from 'express'; // Импортируем нужные типы
-import { RequestWithPassport } from '../router';
-import type { Chat, ChatMessage, ChatTarget, Meta } from '../../../application/src/types';
+import { RequestWithPassport } from '../router.js';
+import type { Chat, ChatMessage, ChatTarget, Meta } from '../../../application/src/types.js';
 
 export default {
   /**

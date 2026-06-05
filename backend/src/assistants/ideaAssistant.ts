@@ -1,6 +1,6 @@
 
-import {baseAssistantAnswer} from "./assistant";
-import { User as IUser, type ChatMessage } from '../../../application/src/types';
+import { baseAssistantAnswer } from './assistant.js';
+import { User as IUser, type ChatMessage } from '../../../application/src/types.js';
 
 const getIdeaPrompt = (user: IUser) => `
 Ты — ассистент образовательного проекта для детей.

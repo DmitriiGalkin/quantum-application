@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
-    // ... другие опции
     "rootDir": "src",
     "outDir": "./dist",
-    "module": "commonjs",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
     "target": "ESNext",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "allowArbitraryExtensions": true, // Позволяет импортировать файлы .mts
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

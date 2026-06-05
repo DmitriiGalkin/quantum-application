@@ -2,19 +2,19 @@ import express, { RequestHandler } from 'express';
 import passport from 'passport';
 import multer from 'multer';
 
-import user from './controllers/user';
-import passportController from './controllers/passport';
-import meet from './controllers/meet';
-import meetUser from './controllers/meetUser';
-import image from './controllers/image';
-import place from './controllers/place';
-import project from './controllers/project';
-import idea from './controllers/idea';
-import projectUser from './controllers/projectUser';
-import chat from './controllers/chat';
-import strategies from './strategies';
-import { User } from '../../application/src/types'; // Импортируем пул соединений
-import { Passport as IPassport } from '../../application/src/types'; // Импортируем пул соединений
+import user from './controllers/user.js';
+import passportController from './controllers/passport.js';
+import meet from './controllers/meet.js';
+import meetUser from './controllers/meetUser.js';
+import image from './controllers/image.js';
+import place from './controllers/place.js';
+import project from './controllers/project.js';
+import idea from './controllers/idea.js';
+import projectUser from './controllers/projectUser.js';
+import chat from './controllers/chat.js';
+import strategies from './strategies.js';
+import { User } from '../../application/src/types.js'; // Импортируем пул соединений
+import { Passport as IPassport } from '../../application/src/types.js'; // Импортируем пул соединений
 
 // export interface Passport {
 //   id: number | null;

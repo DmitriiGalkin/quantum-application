@@ -1,7 +1,7 @@
-import IdeaModel from "../models/idea";
-import {baseAssistantAnswer} from "./assistant";
-import { Idea, Passport } from '../../../application/src/types';
-import { AssistantAnswer } from 'assistants/ideaAssistant';
+import IdeaModel from '../models/idea.js';
+import { baseAssistantAnswer } from './assistant.js';
+import { Idea, Passport } from '../../../application/src/types.js';
+import { AssistantAnswer } from 'assistants/ideaAssistant.js';
 
 const getSystemPrompt = (ideas: Idea[], teacher: Passport) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));

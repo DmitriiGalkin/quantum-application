@@ -1,3 +1,4 @@
+// @ts-ignore
 import GigaChat from 'gigachat';
 import { Agent } from 'node:https';
 

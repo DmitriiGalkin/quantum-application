@@ -1,8 +1,8 @@
 import Meet from '../models/meet.js';
 import MeetUser from '../models/meetUser.js';
 import { Response } from 'express'; // Импортируем нужные типы
-import { RequestWithPassport } from '../router';
-import { MeetUser as IMeetUser } from '../../../application/src/types'; // Импортируем пул соединений
+import { RequestWithPassport } from '../router.js';
+import { MeetUser as IMeetUser } from '../../../application/src/types.js'; // Импортируем пул соединений
 
 function getPassportUserIds(req: RequestWithPassport) {
   return (req.users || []).map(user => user.id);

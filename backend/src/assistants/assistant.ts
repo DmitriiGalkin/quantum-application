@@ -1,6 +1,6 @@
-import assistant from "../assistant";
-import {extractJsonFromString} from "./helper";
-import { type ChatMessage } from '../../../application/src/types';
+import assistant from '../assistant.js';
+import { extractJsonFromString } from './helper.js';
+import { type ChatMessage } from '../../../application/src/types.js';
 
 export interface BaseAssistantAnswer {
   prompt: string;
