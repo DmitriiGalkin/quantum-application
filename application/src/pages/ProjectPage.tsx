@@ -20,6 +20,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import UserGroup from '../components/UserGroup.tsx';
 import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
 
 function ProjectPage() {
   const navigate = useNavigate();
@@ -131,17 +132,7 @@ function ProjectPage() {
               <CardContent sx={{ p: { xs: 2.5, sm: 4 } }}>
                 <Stack spacing={3}>
                   <Box>
-                    <Typography
-                      component="h1"
-                      variant="h3"
-                      sx={{
-                        fontSize: {
-                          xs: '2rem',
-                          sm: '3rem',
-                        },
-                        fontWeight: 900,
-                      }}
-                    >
+                    <Typography component="h4" variant="h4">
                       {project.title}
                     </Typography>
 
@@ -162,32 +153,30 @@ function ProjectPage() {
 
                   <UserGroup users={project.users || []} />
 
-                  <Box
-                    sx={{
-                      display: 'grid',
-                      gridTemplateColumns: {
-                        xs: '1fr',
-                        sm: 'repeat(3, minmax(0, 1fr))',
-                      },
-                      gap: 2,
-                    }}
-                  >
-                    {project?.passport && (
-                      <Paper
-                        elevation={0}
-                        sx={{
-                          p: 2,
-                          borderRadius: 3,
-                          bgcolor: 'grey.100',
-                        }}
-                      >
-                        <Typography variant="body2" color="text.secondary">
-                          Учитель
-                        </Typography>
-                        <Typography sx={{ fontWeight: 800 }}>{project?.passport?.title}</Typography>
-                      </Paper>
-                    )}
-                  </Box>
+                  {project?.passport && (
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 2,
+                        borderRadius: 3,
+                        bgcolor: 'grey.100',
+                      }}
+                    >
+                      <Stack spacing={3} direction="row">
+                        <Avatar
+                          src={project?.passport?.image || undefined}
+                          alt={project?.passport?.title || 'Учитель'}
+                          sx={{ width: 56, height: 56 }}
+                        />
+                        <Box>
+                          <Typography variant="body2" color="text.secondary">
+                            Учитель
+                          </Typography>
+                          <Typography sx={{ fontWeight: 800 }}>{project?.passport?.title}</Typography>
+                        </Box>
+                      </Stack>
+                    </Paper>
+                  )}
                 </Stack>
               </CardContent>
             </Card>

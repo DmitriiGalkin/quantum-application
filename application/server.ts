@@ -39,7 +39,7 @@ async function server() {
     );
   }
 
-  app.use('/:path(*)', async (req, res) => {
+  app.use(async (req, res) => {
     const url = req.originalUrl;
 
     try {
