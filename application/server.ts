@@ -9,12 +9,26 @@ import compression from 'compression';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const isProd = true // process.env.NODE_ENV === 'production'
+
 async function server() {
   const app = express();
   app.use(compression());
 
   // Создаем Vite сервер в режиме middleware
-  const vite = await createServer();
+  const vite = await createServer({
+    root: __dirname,
+    // @ts-ignore
+    middlewareMode: isProd ? 'ssr' : true, // В проде используем ssr, в деве — middleware
+    https: isProd
+      ? undefined
+      : {
+          // В деве Vite сам поднимает HMR сервер с https, если нужно
+          key: fs.readFileSync(process.env.SSL_KEY_PATH || ''),
+          cert: fs.readFileSync(process.env.SSL_CERT_PATH || ''),
+        },
+    appType: 'custom',
+  });
 
   app.use(vite.middlewares);
 
