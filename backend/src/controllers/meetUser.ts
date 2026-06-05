@@ -3,11 +3,7 @@ import MeetUser from '../models/meetUser.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router.js';
 import { MeetUser as IMeetUser } from '../../../application/src/types.js';
-import User from 'models/user.js'; // Импортируем пул соединений
-
-function getPassportUserIds(req: RequestWithPassport): number[] {
-  return (req.users || []).map(user => user.id);
-}
+import User from '../models/user.js'; // Импортируем пул соединений
 
 export default {
   /**
