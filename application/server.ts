@@ -44,9 +44,11 @@ async function server() {
     const url = req.originalUrl;
     console.log('url', url);
 
-    // 🔥 КЛЮЧЕВОЙ ФИКС (иначе MIME ошибка)
-    if (isProd && url.includes('.')) {
-      console.log('pre next')
+    const pathname = new URL(url, 'http://localhost').pathname;
+    const isAsset = /\.[a-zA-Z0-9]+$/.test(pathname);
+
+    if (isProd && isAsset) {
+      console.log('pre next');
       return next();
     }
 
