@@ -9,9 +9,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowArbitraryExtensions": true,
-    "baseUrl": ".",
     "paths": {
-      "@shared/types": ["../packages/types"],
       "*": ["src/*"]
     }
   },

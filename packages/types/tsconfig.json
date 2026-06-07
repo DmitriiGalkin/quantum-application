@@ -2,8 +2,9 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "module": "ESNext",
+    "target": "ESNext"
   },
   "include": ["src"]
 }
