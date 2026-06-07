@@ -12,7 +12,8 @@
     "allowArbitraryExtensions": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/types": ["../packages/types"]
+      "@shared/types": ["../packages/types"],
+      "*": ["src/*"]
     }
   },
   "include": ["src/**/*"],
