@@ -161,7 +161,7 @@ export interface ExtendedIdea extends Idea {
 }
 
 export async function fetchIdeas(type: Type, userId?: number): Promise<ExtendedIdea[]> {
-  return apiFetch<ExtendedIdea[]>('/ideas' + '?variant=' + type + userId ? ('&userId=' + userId) : '');
+  return apiFetch<ExtendedIdea[]>('/ideas' + '?variant=' + type + (userId ? ('&userId=' + userId) : ''));
 }
 
 export const usePassport = () => {

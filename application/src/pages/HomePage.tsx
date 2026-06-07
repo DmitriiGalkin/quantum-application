@@ -20,7 +20,7 @@ function HomePage() {
     isLoading: isIdeasLoading,
     isError: isIdeasError,
   } = useQuery({
-    queryKey: ['ideas'],
+    queryKey: ['ideasHome'],
     queryFn: () => fetchIdeas(null),
   });
 
