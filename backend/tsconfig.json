@@ -1,20 +1,4 @@
 {
-  "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "./dist",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "skipLibCheck": true,
-    "target": "ESNext",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "allowArbitraryExtensions": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": ["src/*"]
-    }
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "files": [],
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "../packages/types" }]
 }

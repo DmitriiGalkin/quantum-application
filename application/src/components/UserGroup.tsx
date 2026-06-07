@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack";
-import type { User } from "../types.ts";
+import type { User } from '@shared/types';
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";

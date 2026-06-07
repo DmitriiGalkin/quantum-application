@@ -8,7 +8,7 @@ import { teacherAssistantAnswer } from '../assistants/teacherAssistant.js';
 import { projectAssistantAnswer } from '../assistants/projectAssistant.js';
 import Idea from '../models/idea.js';
 import IdeaUser from '../models/ideaUser.js';
-import type { ChatMessage, ChatTarget, Meta } from '../../../application/src/types.js';
+import type { ChatMessage, ChatTarget, Meta } from '@shared/types';
 import { User as IUser } from '../../../application/src/types.js';
 import { Idea as IIdea } from '../../../application/src/types.js';
 import { Project as IProject } from '../../../application/src/types.js';

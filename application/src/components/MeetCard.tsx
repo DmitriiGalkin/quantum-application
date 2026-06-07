@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import type { Meet, User } from '../types.ts';
+import type { User, Meet } from '@shared/types';
 import InfoItem from './InfoItem.tsx';
 import UserGroup from './UserGroup.tsx';
 

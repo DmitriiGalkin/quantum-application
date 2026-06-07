@@ -1,4 +1,4 @@
-import {type ChatTarget} from "./types.ts";
+import type { ChatTarget } from '@shared/types';
 
 export const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';

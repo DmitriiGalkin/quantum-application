@@ -1,5 +1,5 @@
 import Paper from '@mui/material/Paper';
-import type { ChatMessage } from '../types.ts';
+import type { ChatMessage } from '@shared/types';
 import React from 'react';
 
 type ChatBubbleProps = {

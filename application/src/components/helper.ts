@@ -1,9 +1,4 @@
-import {
-  type ChatMessage,
-  type ChatMessageRole,
-  type ChatTarget,
-} from '../types.ts';
-import type { Chat } from '../types.ts';
+import type { Chat, ChatMessage, ChatMessageRole, ChatTarget } from '@shared/types';
 
 
 export const getCaption = (target: ChatTarget): string => {
