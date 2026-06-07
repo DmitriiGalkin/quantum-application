@@ -1,9 +1,0 @@
-{
-  "name": "quantum",
-  "private": true,
-  "workspaces": [
-    "application",
-    "backend",
-    "packages/*"
-  ]
-}
