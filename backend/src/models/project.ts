@@ -1,6 +1,6 @@
 import pool from '../db.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { Project } from '../../../application/src/types.js'; // Импортируем пул соединений
+import { Project } from '@shared/types'; // Импортируем пул соединений
 
 export interface IParams {
   variant?: 'participation' | 'self' | 'recommendation';

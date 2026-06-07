@@ -1,6 +1,6 @@
 import IdeaModel from '../models/idea.js';
 import { baseAssistantAnswer } from './assistant.js';
-import { Idea, Passport } from '../../../application/src/types.js';
+import { Idea, Passport } from '@shared/types';
 import { AssistantAnswer } from '../assistants/ideaAssistant.js';
 
 const getSystemPrompt = (ideas: Idea[], teacher: Passport) => {

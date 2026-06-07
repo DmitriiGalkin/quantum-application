@@ -2,7 +2,7 @@ import Meet from '../models/meet.js';
 import MeetUser from '../models/meetUser.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router.js';
-import { Meet as IMeet } from '../../../application/src/types.js'; // Импортируем пул соединений
+import { Meet as IMeet } from '@shared/types'; // Импортируем пул соединений
 import pool from '../db.js';
 import { RowDataPacket } from 'mysql2/promise';
 

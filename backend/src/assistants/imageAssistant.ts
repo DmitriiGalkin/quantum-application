@@ -5,7 +5,7 @@ import { PutObjectCommand } from '@aws-sdk/client-s3';
 // @ts-ignore
 import { v4 as uuid } from 'uuid';
 import assistant from '../assistant.js';
-import { Project } from '../../../application/src/types.js';
+import { Project } from '@shared/types';
 
 function buildProjectImagePrompt(project: Project) {
   return [

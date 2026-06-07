@@ -1,6 +1,6 @@
 import pool from '../db.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { Meet } from '../../../application/src/types.js'; // Импортируем пул соединений
+import { Meet } from '@shared/types'; // Импортируем пул соединений
 
 class MeetModel {
   static async create(data: Meet): Promise<number> {

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@shared/types": "file:../packages/types",
     "@a2a-js/sdk": "^0.3.13",
     "@aws-sdk/client-s3": "^3.312.0",
     "@js-joda/core": "^5.5.3",

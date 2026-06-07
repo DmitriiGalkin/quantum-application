@@ -2,7 +2,7 @@ import Meet from '../models/meet.js';
 import MeetUser from '../models/meetUser.js';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router.js';
-import { MeetUser as IMeetUser } from '../../../application/src/types.js';
+import { MeetUser as IMeetUser } from '@shared/types';
 import User from '../models/user.js'; // Импортируем пул соединений
 
 export default {

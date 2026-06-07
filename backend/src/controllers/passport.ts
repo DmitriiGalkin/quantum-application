@@ -3,7 +3,7 @@ import User from '../models/user.js'; // Предполагаем, что это
 import jwt from 'jsonwebtoken';
 import { Response } from 'express'; // Импортируем нужные типы
 import { RequestWithPassport } from '../router.js';
-import { Passport as IPassport } from '../../../application/src/types.js'; // Импортируем пул соединений
+import { Passport as IPassport } from '@shared/types'; // Импортируем пул соединений
 
 export default {
   /**

@@ -13,8 +13,8 @@ import idea from './controllers/idea.js';
 import projectUser from './controllers/projectUser.js';
 import chat from './controllers/chat.js';
 import strategies from './strategies.js';
-import { User } from '../../application/src/types.js'; // Импортируем пул соединений
-import { Passport as IPassport } from '../../application/src/types.js'; // Импортируем пул соединений
+import { User } from '@shared/types'; // Импортируем пул соединений
+import { Passport as IPassport } from '@shared/types'; // Импортируем пул соединений
 
 // export interface Passport {
 //   id: number | null;

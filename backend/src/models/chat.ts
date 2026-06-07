@@ -1,6 +1,6 @@
 import pool from '../db.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { Chat } from '../../../application/src/types.js';
+import { Chat } from '@shared/types';
 
 class ChatModel {
   static async create(data: Chat): Promise<number> {

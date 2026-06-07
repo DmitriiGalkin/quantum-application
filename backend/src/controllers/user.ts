@@ -2,7 +2,7 @@ import User from '../models/user.js';
 import ProjectUser from '../models/projectUser.js';
 import { Response } from 'express';
 import { RequestWithPassport } from '../router.js';
-import { User as IUser } from '../../../application/src/types.js'; // Импортируем пул соединений
+import { User as IUser } from '@shared/types'; // Импортируем пул соединений
 
 export default {
   create: async (req: RequestWithPassport, res: Response) => {

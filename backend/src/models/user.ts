@@ -1,6 +1,6 @@
 import pool from '../db.js'; // Импортируем пул соединений
 // @ts-ignore
-import { User } from '../../../application/src/types.js'; // Импортируем пул соединений
+import { User } from '@shared/types'; // Импортируем пул соединений
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 class UserModel {
