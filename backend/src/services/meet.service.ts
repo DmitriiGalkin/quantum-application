@@ -1,4 +1,4 @@
-import Meet from '../models/meet.js';
+import Meet from '../models/meet.repository.js';
 
 export class MeetService {
   static async create(data: any) {
@@ -6,7 +6,7 @@ export class MeetService {
   }
 
   static async update(data: any) {
-    return Meet.update(data);
+    return Meet.update(data.id, data);
   }
 
   static async remove(id: number) {

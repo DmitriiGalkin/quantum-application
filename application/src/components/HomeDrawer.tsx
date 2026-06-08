@@ -83,12 +83,11 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
 
             <ListItemButton
               component={Link}
-              to="/ideas?variant=self"
+              to={`/user/${currentUser?.id}/ideas`}
               onClick={() => {
                 setIsMenuOpen(false);
               }}
               sx={{ borderRadius: 2 }}
-              //selected
             >
               <ListItemIcon sx={{ minWidth: 40 }}>
                 <LightbulbIcon />
@@ -98,7 +97,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
 
             <ListItemButton
               component={Link}
-              to="/projects?variant=participation"
+              to={`/user/${currentUser?.id}/projects`}
               onClick={() => {
                 setIsMenuOpen(false);
               }}

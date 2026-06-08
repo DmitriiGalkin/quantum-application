@@ -1,4 +1,4 @@
-import IdeaModel from '../models/idea.js';
+import IdeaModel from '../models/idea.repository.js';
 import { baseAssistantAnswer } from './assistant.js';
 import { Idea, Passport } from '@shared/types';
 import { AssistantAnswer } from '../assistants/ideaAssistant.js';

@@ -1,48 +1,14 @@
-import {
-  type Chat,
-  type ChatMessage,
-  type ChatTarget,
-  type Idea,
-  type Meet,
-  type Passport,
-  type Place,
-  type Project,
-  type User,
-  type IParams,
-  type IdeaDto,
-} from '@shared/types';
-import type { ExtendedMeet } from './components/MeetCard.tsx';
+import type { Chat, ChatTarget, IParams, IdeaDto, ProjectDto, PassportDto, PlaceDto } from '@shared/types';
 import { apiFetch, getAccessToken } from './api.ts';
 import type { ProjectFormValues } from './ProjectForm';
 import { useQuery } from '@tanstack/react-query';
 
-export interface ExtendedProject extends Project {
-  passport?: Passport;
-  place?: {
-    address: string;
-    title: string;
-    description: string;
-  };
-  meets?: ExtendedMeet[];
-  users?: User[];
+export async function fetchProject(id: string): Promise<ProjectDto> {
+  return apiFetch<ProjectDto>(`/project/${id}`);
 }
 
-export type SendMessageResponse = {
-  chatId: number;
-  message: ChatMessage;
-};
-
-export async function fetchProject(id: string): Promise<ExtendedProject> {
-  return apiFetch<ExtendedProject>(`/project/${id}`);
-}
-
-export interface ExtendedIdea extends Idea {
-  user: User;
-  projects: ExtendedProject[];
-}
-
-export async function fetchIdea(id: string): Promise<ExtendedIdea> {
-  return apiFetch<ExtendedIdea>(`/idea/${id}`);
+export async function fetchIdea(id: string): Promise<IdeaDto> {
+  return apiFetch<IdeaDto>(`/idea/${id}`);
 }
 
 export async function createProject(values: ProjectFormValues): Promise<number> {
@@ -71,16 +37,12 @@ export async function updateProject(projectId: number, values: ProjectFormValues
   });
 }
 
-export interface ExtendedMeetMap extends Meet {
-  title: string;
-}
+// export interface ExtendedMeetMap extends Meet {
+//   title: string;
+// }
 
-export interface ExtendedPlace extends Place {
-  meets: ExtendedMeetMap[];
-}
-
-export async function fetchPlaces(): Promise<ExtendedPlace[]> {
-  return apiFetch<ExtendedPlace[]>('/places');
+export async function fetchPlaces(): Promise<PlaceDto[]> {
+  return apiFetch<PlaceDto[]>('/places');
 }
 
 export async function fetchMessages(chatId: number): Promise<Chat> {
@@ -99,14 +61,8 @@ export async function fetchCreateChat({ target }: { target: ChatTarget }): Promi
   });
 }
 
-export async function fetchSendMessage({
-  chatId,
-  message,
-}: {
-  chatId: number | null;
-  message: string;
-}): Promise<SendMessageResponse> {
-  return apiFetch<SendMessageResponse>(`/message`, {
+export async function fetchSendMessage({ chatId, message }: { chatId: number | null; message: string }): Promise<any> {
+  return apiFetch<any>(`/message`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -118,7 +74,7 @@ export async function fetchSendMessage({
   });
 }
 
-export async function createUser(user: User): Promise<{ id: number; message: string }> {
+export async function createUser(user: any): Promise<{ id: number; message: string }> {
   return apiFetch<{ id: number; message: string }>('/user', {
     method: 'POST',
     headers: {
@@ -156,20 +112,24 @@ export async function generateImage(projectId: number) {
 
 export type Type = 'self' | 'participation' | null;
 
-interface ExtendedPassport extends Passport {
-  users?: User[];
+export async function fetchPassport(): Promise<PassportDto> {
+  return apiFetch<PassportDto>('/passport');
 }
 
-export async function fetchPassport(): Promise<ExtendedPassport> {
-  return apiFetch<ExtendedPassport>('/passport');
+export async function fetchProjects(): Promise<ProjectDto[]> {
+  return apiFetch<ProjectDto[]>('/projects');
 }
 
-export async function fetchProjects(type: Type, userId: number): Promise<Project[]> {
-  return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
+export async function fetchUserProjects({ userId }: IParams): Promise<ProjectDto[]> {
+  return apiFetch<ProjectDto[]>(`/user/${userId}/projects`);
 }
 
-export async function fetchIdeas({ variant, userId }: IParams): Promise<IdeaDto[]> {
-  return apiFetch<ExtendedIdea[]>('/ideas' + '?variant=' + variant + (userId ? '&userId=' + userId : ''));
+export async function fetchIdeas(): Promise<IdeaDto[]> {
+  return apiFetch<IdeaDto[]>('/ideas');
+}
+
+export async function fetchUserIdeas({ userId }: IParams): Promise<IdeaDto[]> {
+  return apiFetch<IdeaDto[]>(`/user/${userId}/ideas`);
 }
 
 export const usePassport = () => {

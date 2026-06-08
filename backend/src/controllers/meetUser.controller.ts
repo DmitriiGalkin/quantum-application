@@ -1,17 +1,18 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { MeetUserService } from '../services/meetUser.service.js';
+import { MeetUser } from '@shared/types';
 
-const create: ControllerWithAuth = async (req, res) => {
+const create: ControllerWithAuth<{}> = async (req, res) => {
   try {
     await MeetUserService.create(req.passport!, req.body);
 
-    ok(res, { message: 'Участие создано' }, 201);
+    ok(res, { message: 'Участие создано' });
   } catch (err: any) {
     fail(res, err.message || 'Не удалось создать участие');
   }
 };
 
-const remove: ControllerWithAuth = async (req, res) => {
+const remove: ControllerWithAuth<{}> = async (req, res) => {
   try {
     await MeetUserService.remove(req.passport!, Number(req.params.id));
 
@@ -21,12 +22,12 @@ const remove: ControllerWithAuth = async (req, res) => {
   }
 };
 
-const findAll: ControllerWithAuth = async (req, res) => {
+const findAll: ControllerWithAuth<MeetUser[]> = async (req, res) => {
   try {
     const userId = Number(req.query.userId);
 
     if (!userId) {
-      return fail(res, 'userId обязателен', 400);
+      fail(res, 'userId обязателен', 400);
     }
 
     const rows = await MeetUserService.findAll(userId);

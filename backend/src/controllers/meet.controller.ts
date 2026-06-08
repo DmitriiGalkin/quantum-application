@@ -34,11 +34,11 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
     const meet = await MeetService.findById(Number(req.params.id));
 
     if (!meet) {
-      return fail(res, 'Встреча не существует', 404);
+      fail(res, 'Встреча не существует', 404);
     }
 
     if (meet.passportId !== req.passport!.id) {
-      return fail(res, 'Нет прав на удаление', 403);
+      fail(res, 'Нет прав на удаление', 403);
     }
 
     await MeetService.remove(Number(req.params.id));
@@ -49,27 +49,25 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
-const findAll: ControllerWithAuth<MeetDto[]> = async (req, res) => {
+const findAll = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,
       passportId: req.passport!.id,
     });
 
-    const dto = meets.map(toMeetDto);
-
-    ok(res, dto);
+    ok(res, meets.map(toMeetDto));
   } catch (err) {
     fail(res, 'Ошибка при получении списка встреч');
   }
 };
 
-const findById: ControllerWithAuth<MeetDto> = async (req, res) => {
+const findById = async (req, res) => {
   try {
     const meet = await MeetService.findById(Number(req.params.id));
 
     if (!meet) {
-      return fail(res, 'Встреча не найдена', 404);
+      fail(res, 'Встреча не найдена', 404);
     }
 
     ok(res, toMeetDto(meet));

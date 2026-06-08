@@ -1,4 +1,4 @@
-import { UserRepository } from '../models/user.repository.js';
+import UserRepository from '../models/user.repository.js';
 import { IParams } from '@shared/types';
 import IdeaRepository from '../models/idea.repository.js';
 import IdeaUserRepository from '../models/ideaUser.repository.js';

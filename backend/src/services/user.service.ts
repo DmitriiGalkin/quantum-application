@@ -27,7 +27,7 @@ export class UserService {
       throw new Error('Нет прав на удаление этого участника');
     }
 
-    await ProjectUserRepository.deleteByUserId(String(userId));
+    await ProjectUserRepository.deleteByUserId(userId);
     await UserRepository.delete(userId);
   }
 

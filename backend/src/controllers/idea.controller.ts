@@ -3,27 +3,26 @@ import { IdeaDto, IParams } from '@shared/types';
 import { toIdeaDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
 
-const findAll: ControllerWithAuth<IdeaDto[]> = async (req, res) => {
-  try {
-    const ideas = await IdeaService.findAll({
-      ...req.query,
-      passportId: req.passport?.id,
-    } as IParams);
-
-    const dto = ideas.map(toIdeaDto);
-
-    ok(res, dto);
-  } catch (err) {
-    fail(res, 'Не удалось получить список идей');
-  }
+const findAllPublic = async (req, res) => {
+  const ideas = await IdeaService.findAll(req.query);
+  ok(res, ideas.map(toIdeaDto));
 };
 
-const findById: ControllerWithAuth<IdeaDto> = async (req, res) => {
+const findByUserId = async (req, res) => {
+  const ideas = await IdeaService.findAll({
+    ...req.query,
+    userId: req.params.id,
+  });
+
+  ok(res, ideas.map(toIdeaDto));
+};
+
+const findById = async (req, res) => {
   try {
     const idea = await IdeaService.findById(Number(req.params.id));
 
     if (!idea) {
-      return fail(res, 'Идея не найдена', 404);
+      fail(res, 'Идея не найдена', 404);
     }
 
     ok(res, toIdeaDto(idea));
@@ -37,7 +36,7 @@ const generateImage: ControllerWithAuth<{ message: string }> = async (req, res) 
     const project = await IdeaService.generateProjectImage(Number(req.params.id));
 
     if (!project) {
-      return fail(res, 'Проект не найден', 404);
+      fail(res, 'Проект не найден', 404);
     }
 
     ok(res, { message: 'Изображение проекта обновлено' });
@@ -47,7 +46,8 @@ const generateImage: ControllerWithAuth<{ message: string }> = async (req, res) 
 };
 
 export default {
-  findAll,
+  findAllPublic,
+  findByUserId,
   findById,
   generateImage,
 };

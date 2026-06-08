@@ -1,8 +1,9 @@
-import { normalizeMessage, createAssistantMessage, selectAssistant, getMetaMessages } from '../services/chatService.js';
+import { normalizeMessage, createAssistantMessage, selectAssistant, getMetaMessages } from './helper.js';
 
-import type { Chat, ChatMessage, ChatTarget, Meta, Passport } from '@shared/types';
+import type { Chat, ChatTarget, Meta } from '@shared/types';
 import ChatRepository from '../models/chat.repository.js';
 import MessageRepository from '../models/message.repository.js';
+import { Passport } from '../entities/passport.js';
 
 export class ChatService {
   static async create(passport: Passport, body: any) {
@@ -23,7 +24,7 @@ export class ChatService {
     await createAssistantMessage({
       chatId,
       ...assistantContent,
-    });
+    } as any);
 
     return chatId;
   }
@@ -54,7 +55,7 @@ export class ChatService {
       content: messageText,
       role: 'user',
       target: lastUserMessage?.target,
-    } as ChatMessage);
+    });
 
     const meta: Meta = {
       ...getMetaMessages(allMessages),
@@ -117,7 +118,7 @@ export class ChatService {
     };
   }
 
-  static async findMessages(passport: Passport, chatId: string | number) {
+  static async findMessages(chatId: number) {
     const chat = await ChatRepository.findById(chatId);
 
     if (!chat) {

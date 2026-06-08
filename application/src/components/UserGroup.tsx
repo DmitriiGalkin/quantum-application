@@ -1,11 +1,12 @@
 import Stack from "@mui/material/Stack";
-import type { User } from '@shared/types';
+import type { UserDto } from '@shared/types';
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 
+
 type UserGroupProps = {
-    users: User[];
+  users: UserDto[];
 };
 
 function UserGroup({ users }: UserGroupProps) {

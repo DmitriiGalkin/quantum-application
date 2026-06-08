@@ -11,10 +11,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import IdeaCard from '../components/IdeaCard.tsx';
+import Footer from './Footer.tsx';
 
 
 function HomePage() {
-
   const {
     data: ideas = [],
     isLoading: isIdeasLoading,
@@ -78,6 +78,7 @@ function HomePage() {
           )}
         </Box>
       </Container>
+      <Footer />
     </Box>
   );
 }

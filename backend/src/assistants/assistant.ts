@@ -1,10 +1,10 @@
 import assistant from '../assistant.js';
 import { extractJsonFromString } from './helper.js';
-import type { ChatMessage } from '@shared/types';
+import type { MessageDto } from '@shared/types';
 
 export interface BaseAssistantAnswer {
   prompt: string;
-  messages: ChatMessage[];
+  messages: MessageDto[];
   schema: any;
   transformer: any;
   meta: any;

@@ -1,164 +1,111 @@
-import express, { RequestHandler } from 'express';
+import express from 'express';
 import passport from 'passport';
 import multer from 'multer';
+import { RequestHandler } from 'express';
 
-import user from './controllers/user.js';
-import passportController from './controllers/passport.js';
-import meet from './controllers/meet.js';
-import meetUser from './controllers/meetUser.js';
-import image from './controllers/image.js';
-import place from './controllers/place.js';
-import project from './controllers/project.js';
-import idea from './controllers/idea.js';
-import newIdeaController from './controllers/idea.controller.js';
-import projectUser from './controllers/projectUser.js';
-import chat from './controllers/chat.js';
+import user from './controllers/user.controller.js';
+import passportController from './controllers/passport.controller.js';
+import meet from './controllers/meet.controller.js';
+import meetUser from './controllers/meetUser.controller.js';
+import image from './controllers/image.controller.js';
+import place from './controllers/place.controller.js';
+import project from './controllers/project.controller.js';
+import idea from './controllers/idea.controller.js';
+import projectUser from './controllers/projectUser.controller.js';
+import chat from './controllers/chat.controller.js';
 import strategies from './strategies.js';
-
-
+import { ControllerWithAuth } from './controllers/helper.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
+const publicRouter = express.Router();
+const privateRouter = express.Router();
 
-/**
- * Стратегии авторизации
- */
-const authProviders = ['google', 'yandex'];
+const withAuth =
+  <T>(controller: ControllerWithAuth<T>): RequestHandler =>
+  async (req, res, next) => {
+    try {
+      await controller(req as any, res as any);
+    } catch (err) {
+      next(err);
+    }
+  };
 
-authProviders.forEach(provider => {
-  // @ts-ignore
-  if (strategies[provider]) {
-    // @ts-ignore
-    passport.use(provider, strategies[provider]);
-  } else {
+privateRouter.use(passportController.usePassport);
+
+const registerOAuth = (provider: string) => {
+  const strategy = strategies[provider];
+
+  if (!strategy) {
     console.error(`Стратегия для провайдера ${provider} не найдена.`);
+    return;
   }
 
-  router.get(`/login/${provider}`, passport.authenticate(provider));
-  router.get(`/oauth2/redirect/${provider}`, (req, res, next) => {
-    // Используем промисифицированную версию authenticate для совместимости с async/await
-    passport.authenticate(provider, (err: any, user: { username: any }) => {
+  passport.use(provider, strategy);
+
+  publicRouter.get(`/login/${provider}`, passport.authenticate(provider));
+
+  publicRouter.get(`/oauth2/redirect/${provider}`, (req, res, next) => {
+    passport.authenticate(provider, (err: any, user: any) => {
       if (err || !user) {
         return res.redirect('/login');
       }
-      // Успешная аутентификация
+
       return res.redirect(`${process.env.FRONTEND_SERVER}/?access_token=${user.username}`);
     })(req, res, next);
   });
-});
+};
 
+['google', 'yandex'].forEach(registerOAuth);
 
-/**
- * Родитель (Passport)
- */
-// @ts-ignore
-router.get('/passport', passportController.usePassport, passportController.all as unknown as RequestHandler);
-// @ts-ignore
-router.put('/passport', passportController.usePassport, passportController.update as unknown as RequestHandler);
+publicRouter.post('/passport/login', passportController.login);
+publicRouter.post('/passport/googleLogin', passportController.googleLogin);
+publicRouter.get('/ideas', idea.findAllPublic);
+publicRouter.get('/idea/:id', idea.findById);
+publicRouter.get('/projects', project.findAll);
+publicRouter.get('/project/:id', project.findById);
+publicRouter.get('/project/:id/meta', project.meta);
+publicRouter.get('/meets', meet.findAll);
+publicRouter.get('/meet/:id', meet.findById);
+publicRouter.get('/user/:id', user.findById);
+publicRouter.get('/places', place.findAll);
 
-/**
- * Авторизация
- */
-// @ts-ignore
-router.post('/passport/login', passportController.login);
-// @ts-ignore
-router.post('/passport/googleLogin', passportController.googleLogin);
+// Private
+privateRouter.get('/passport', withAuth(passportController.all));
+privateRouter.put('/passport', withAuth(passportController.update));
 
-/**
- * Картинки
- */
-router.post('/image', upload.single('image'), image.upload as unknown as RequestHandler);
+privateRouter.post('/image', upload.single('image'), withAuth(image.upload));
 
-/**
- * Идеи
- */
-// @ts-ignore
-router.get('/ideas', passportController.usePassport, newIdeaController.findAll as unknown as RequestHandler);
-// @ts-ignore
-router.get('/idea/:id', passportController.usePassport, idea.findById as unknown as RequestHandler);
+privateRouter.post('/project', withAuth(project.create));
+privateRouter.put('/project/:id', withAuth(project.update));
+privateRouter.delete('/project/:id', withAuth(project.delete));
 
+privateRouter.get('/chats', withAuth(chat.findAll));
+privateRouter.get('/chat/:id', withAuth(chat.findMessages));
+privateRouter.post('/chat', withAuth(chat.create));
 
-/**
- * Проекты
- */
-// @ts-ignore
-router.get('/projects', passportController.usePassport, project.findAll as unknown as RequestHandler);
-// @ts-ignore
-router.get('/project/:id', passportController.usePassport, project.findById as unknown as RequestHandler);
-// @ts-ignore
-router.post('/project', passportController.usePassport, project.create as unknown as RequestHandler);
-// @ts-ignore
-router.put('/project/:id', passportController.usePassport, project.update as unknown as RequestHandler);
-// @ts-ignore
-router.delete('/project/:id', passportController.usePassport, project.delete as unknown as RequestHandler);
-// @ts-ignore
-router.get('/project/:id/meta', project.meta);
-// @ts-ignore
-//router.post('/project/:id/generateImage', passportController.usePassport, project.generateImage as unknown as RequestHandler);
+privateRouter.post('/message', withAuth(chat.createMessage));
 
-/**
- * Чат
- */
-// @ts-ignore
-router.get('/chats', passportController.usePassport, chat.findAll as unknown as RequestHandler);
-router.post('/chat', chat.create as unknown as RequestHandler);
-// @ts-ignore
-router.get('/chat/:id', passportController.usePassport, chat.findMessages as unknown as RequestHandler);
-//router.post('/chat', passportController.usePassport, chat.createMessage);
-// @ts-ignore
-router.post('/message', passportController.usePassport, chat.createMessage as unknown as RequestHandler);
+privateRouter.post('/place', withAuth(place.create));
 
-/**
- * Места
- */
-// @ts-ignore
-router.get('/places', passportController.usePassport, place.findAll as unknown as RequestHandler);
-// @ts-ignore
-router.post('/place', passportController.usePassport, place.create as unknown as RequestHandler);
+privateRouter.post('/projectUser', withAuth(projectUser.create));
+privateRouter.delete('/projectUser/:id', withAuth(projectUser.delete));
 
-/**
- * Участие в проекте
- */
-// @ts-ignore
-router.post('/projectUser', passportController.usePassport, projectUser.create as unknown as RequestHandler);
-// @ts-ignore
-router.delete('/projectUser/:id', passportController.usePassport, projectUser.delete as unknown as RequestHandler);
+privateRouter.post('/meet', withAuth(meet.create));
+privateRouter.put('/meet/:id', withAuth(meet.update));
+privateRouter.delete('/meet/:id', withAuth(meet.delete));
 
-/**
- * Встречи
- */
-// @ts-ignore
-router.get('/meets', passportController.usePassport, meet.findAll as unknown as RequestHandler);
-// @ts-ignore
-router.get('/meet/:id', passportController.usePassport, meet.findById as unknown as RequestHandler);
-// @ts-ignore
-router.post('/meet', passportController.usePassport, meet.create as unknown as RequestHandler);
-// @ts-ignore
-router.put('/meet/:id', passportController.usePassport, meet.update as unknown as RequestHandler);
-// @ts-ignore
-router.delete('/meet/:id', passportController.usePassport, meet.delete as unknown as RequestHandler);
+privateRouter.post('/meetUser', withAuth(meetUser.create));
+privateRouter.delete('/meetUser/:id', withAuth(meetUser.delete));
 
-/**
- * Посещения
- */
-// @ts-ignore
-router.get('/meetUser', passportController.usePassport, meetUser.findAll as unknown as RequestHandler);
-// @ts-ignore
-router.post('/meetUser', passportController.usePassport, meetUser.create as unknown as RequestHandler);
-// @ts-ignore
-router.delete('/meetUser/:id', passportController.usePassport, meetUser.delete as unknown as RequestHandler);
+privateRouter.post('/user', withAuth(user.create));
+privateRouter.get('/user/:id/ideas', idea.findByUserId);
+privateRouter.get('/user/:id/projects', project.findByUserId);
+privateRouter.put('/user/:id', withAuth(user.update));
+privateRouter.delete('/user/:id', withAuth(user.delete));
 
-/**
- * Пользователи (Ребенок)
- */
-// @ts-ignore
-router.get('/user/:id', passportController.usePassport, user.findById as unknown as RequestHandler);
-// @ts-ignore
-router.post('/user', passportController.usePassport, user.create as unknown as RequestHandler);
-// @ts-ignore
-router.put('/user/:id', passportController.usePassport, user.update as unknown as RequestHandler);
-// @ts-ignore
-router.delete('/user/:id', passportController.usePassport, user.delete as unknown as RequestHandler);
+router.use(publicRouter);
+router.use(privateRouter);
 
 export default router;

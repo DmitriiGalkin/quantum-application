@@ -1,6 +1,6 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import { IdeaDto } from '@shared/types';
+import { Place } from '@shared/types';
 
 const findAll = async (req, res) => {
   try {
@@ -14,7 +14,7 @@ const findAll = async (req, res) => {
 const create: ControllerWithAuth<{}> = async (req, res) => {
   try {
     const id = await PlaceService.create(req.body);
-    ok(res, { message: 'Место успешно создано', id }, 201);
+    ok(res, { message: 'Место успешно создано', id });
   } catch (err) {
     fail(res, 'Не удалось создать место');
   }

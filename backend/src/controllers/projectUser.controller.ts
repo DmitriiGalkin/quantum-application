@@ -1,17 +1,17 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { ProjectUserService } from '../services/projectUser.service.js';
 
-const create: ControllerWithAuth = async (req, res) => {
+const create: ControllerWithAuth<number> = async (req, res) => {
   try {
     const result = await ProjectUserService.create(req.passport!, req.body);
 
-    ok(res, result, 201);
+    ok(res, result);
   } catch (err: any) {
     fail(res, err.message || 'Не удалось создать участие в проекте');
   }
 };
 
-const remove: ControllerWithAuth = async (req, res) => {
+const remove: ControllerWithAuth<{}> = async (req, res) => {
   try {
     await ProjectUserService.remove(req.passport!, Number(req.params.id));
 

@@ -14,7 +14,7 @@ interface IdeaRow extends RowDataPacket {
 
 class IdeaRepository {
   // ✅ CREATE
-  static async create(data: IdeaRow): Promise<number> {
+  static async create(data: any): Promise<number> {
     try {
       const [result] = await pool.query<ResultSetHeader>(
         `INSERT INTO idea (title, description, userId, passportId)
@@ -59,43 +59,23 @@ class IdeaRepository {
     }
   }
 
-  // ✅ FIND ALL (без any и без кастов)
-  static async findAll(params?: IParams): Promise<IdeaRow[]> {
-    let sql = 'SELECT idea.* FROM idea';
+  static async findAll(params: IParams = {}) {
+    let sql = 'SELECT idea.* FROM idea WHERE 1=1 ';
     const values: (string | number)[] = [];
 
-    if (params?.variant === 'participation' && params?.userId) {
-      sql += `
-        LEFT JOIN projectUser 
-        ON projectUser.projectId = idea.id 
-        AND projectUser.userId = ?
-      `;
+    if (params.userId) {
+      sql += ` AND idea.userId = ? `;
       values.push(params.userId);
     }
 
-    if (params?.variant === 'self' && params?.passportId) {
-      sql += ' AND idea.passportId = ?';
-      values.push(params.passportId);
-    }
-
-    if (params?.variant === 'recommendation' && params?.passportId) {
-      sql += ' AND idea.passportId != ?';
-      values.push(params.passportId);
-    }
-
-    if (params?.deleted === 'true') {
+    if (params.deleted === 'true') {
       sql += ' AND idea.deletedAt IS NOT NULL';
     } else {
       sql += ' AND idea.deletedAt IS NULL';
     }
 
-    try {
-      const [rows] = await pool.query<IdeaRow[]>(sql, values);
-      return rows;
-    } catch (err) {
-      console.error('idea.findAll error:', err);
-      throw err;
-    }
+    const [rows] = await pool.query<IdeaRow[]>(sql, values);
+    return rows;
   }
 
   // ✅ FIND BY ID

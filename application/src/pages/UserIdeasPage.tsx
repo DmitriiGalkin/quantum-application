@@ -6,18 +6,22 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
-import { fetchIdeas } from '../requests.ts';
+import { fetchUserIdeas } from '../requests.ts';
 import IdeaCard from '../components/IdeaCard.tsx';
 import Header from '../components/Header.tsx';
+import { useParams } from 'react-router-dom';
 
 function IdeasPage() {
+  const { id } = useParams();
+  const userId = id ? Number(id) : undefined;
+
   const {
     data: ideas = [],
     isLoading: isIdeasLoading,
     isError: isIdeasError,
   } = useQuery({
-    queryKey: ['ideas'],
-    queryFn: () => fetchIdeas(),
+    queryKey: ['ideas', userId],
+    queryFn: () => fetchUserIdeas({ userId }),
   });
 
   return (

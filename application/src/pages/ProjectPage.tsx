@@ -192,7 +192,7 @@ function ProjectPage() {
                     .filter(meeting => !meeting.deletedAt)
                     .map(meeting => (
                       <MeetCard
-                        meeting={meeting}
+                        meet={meeting}
                         key={meeting.id}
                         isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
                         onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}

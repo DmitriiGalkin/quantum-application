@@ -1,9 +1,9 @@
 import Paper from '@mui/material/Paper';
-import type { ChatMessage } from '@shared/types';
+import type { MessageDto } from '@shared/types';
 import React from 'react';
 
 type ChatBubbleProps = {
-  role: ChatMessage['role'];
+  role: MessageDto['role'];
   children: React.ReactNode;
   onClick?: () => void;
   isLastMessage?: boolean;

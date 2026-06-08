@@ -34,7 +34,7 @@ class UserRepository {
     }
   }
 
-  static async delete(id: string) {
+  static async delete(id: number) {
     try {
       await pool.query('UPDATE user SET deletedAt = NOW() WHERE id = ?', [id]);
     } catch (err) {

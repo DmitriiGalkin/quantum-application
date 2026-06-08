@@ -2,6 +2,7 @@ import ProjectRepository from '../models/project.repository.js';
 import MeetRepository from '../models/meet.repository.js';
 import UserRepository from '../models/user.repository.js';
 import PassportRepository from '../models/passport.repository.js';
+import { IParams } from '@shared/types';
 
 export class ProjectService {
   static async create(passport: any, data: any) {
@@ -32,7 +33,7 @@ export class ProjectService {
     await ProjectRepository.delete(projectId);
   }
 
-  static async findAll(params: any) {
+  static async findAll(params: IParams) {
     const projects = await ProjectRepository.findAll(params);
 
     const [usersArr, meetsArr, passportsArr] = await Promise.all([

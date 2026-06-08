@@ -4,29 +4,21 @@ import Stack from '@mui/material/Stack';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import type { User, Meet } from '@shared/types';
+import type { MeetDto } from '@shared/types';
 import InfoItem from './InfoItem.tsx';
 import UserGroup from './UserGroup.tsx';
 
-interface ExtendedUser extends User {
-  meetUserId: number;
-}
-
-export interface ExtendedMeet extends Meet {
-  users: ExtendedUser[];
-}
-
 type MeetCardProps = {
-  meeting: ExtendedMeet;
+  meet: MeetDto;
   isMeetUserActionPending: boolean;
   onCreateMeetUser: (meetId: number) => void;
   onDeleteMeetUser: (meetUserId: number) => void;
 };
 
 
-function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDeleteMeetUser }: MeetCardProps) {
-  const startedAt = new Date(meeting.startedAt);
-  const currentMeetUser = meeting.users?.find(user => user.id === 2);
+function MeetCard({ meet, isMeetUserActionPending, onCreateMeetUser, onDeleteMeetUser }: MeetCardProps) {
+  const startedAt = new Date(meet.startedAt);
+  const currentMeetUser = meet.users?.find(user => user.id === 2);
   const isCurrentUserVisited = Boolean(currentMeetUser);
 
   const infoItems = [
@@ -46,7 +38,7 @@ function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDelete
     },
     {
       icon: PaymentsIcon,
-      value: meeting.price ? `${meeting.price} ₽` : 'Бесплатно',
+      value: meet.price ? `${meet.price} ₽` : 'Бесплатно',
     },
   ];
 
@@ -69,7 +61,7 @@ function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDelete
           alignItems: { xs: 'stretch', md: 'center' },
         }}
       >
-        <UserGroup users={meeting.users || []} />
+        <UserGroup users={meet.users || []} />
 
         <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
           {infoItems.map((item, index) => (
@@ -93,7 +85,7 @@ function MeetCard({ meeting, isMeetUserActionPending, onCreateMeetUser, onDelete
               return;
             }
 
-            onCreateMeetUser(meeting.id);
+            onCreateMeetUser(meet.id);
           }}
         >
           {isMeetUserActionPending ? 'Отправка...' : isCurrentUserVisited ? 'Выйти' : 'Участвовать'}

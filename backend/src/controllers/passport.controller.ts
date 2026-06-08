@@ -1,5 +1,7 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
+import { ok, fail } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
+import PassportRepository from '../models/passport.repository.js';
+import { toPassport } from '../mappers/passport.mapper.js';
 
 const update = async (req, res) => {
   try {
@@ -43,11 +45,43 @@ const findById = async (req, res) => {
 const all = async (req, res) => {
   try {
     const data = await AuthService.getFullProfile(req.passport!);
-    ok(res, data);
+    ok(res, toPassport(data));
   } catch (err) {
     fail(res, 'Ошибка получения полной информации');
   }
 };
+
+/**
+ * Middleware для проверки токена доступа
+ */
+const usePassport = async (req, res, next: Function) => {
+  // @ts-ignore
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    // Если токена нет, идем дальше (неавторизованный доступ)
+    return next();
+  }
+
+  try {
+    const passport = await PassportRepository.findByAccessToken(token);
+
+
+    if (!passport) {
+      return res.status(401).json({ error: true, message: 'Токен недействителен или протух' });
+    }
+
+    //req.users = await User.findByPassportId(req.passport.id || 0);
+
+    req.passport = passport;
+
+    next(); // Передаем управление следующему обработчику
+  } catch (err) {
+    console.error('Auth middleware error:', err);
+    return res.status(401).json({ error: true, message: 'Ошибка авторизации' });
+  }
+}
 
 export default {
   update,
@@ -55,4 +89,5 @@ export default {
   login,
   findById,
   all,
+  usePassport,
 };

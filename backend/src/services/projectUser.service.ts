@@ -13,7 +13,7 @@ export class ProjectUserService {
   /**
    * Добавление пользователя в проект
    */
-  static async create(passport: Passport, body: IProjectUser) {
+  static async create(passport: Passport, body: any) {
     const { projectId, userId } = body;
 
     if (!projectId || !userId) {

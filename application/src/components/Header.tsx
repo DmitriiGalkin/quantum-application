@@ -19,6 +19,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
@@ -55,71 +56,73 @@ function Header() {
           backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
         }}
       >
-        <Toolbar>
-          {accessToken && (
-            <IconButton
-              size="large"
-              edge="start"
-              aria-label="open drawer"
-              sx={{ mr: 2, color: 'white' }}
-              onClick={() => setIsMenuOpen(currentValue => !currentValue)}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
+        <Container maxWidth="lg">
+          <Toolbar>
+            {accessToken && (
+              <IconButton
+                size="large"
+                edge="start"
+                aria-label="open drawer"
+                sx={{ mr: 2, color: 'white' }}
+                onClick={() => setIsMenuOpen(currentValue => !currentValue)}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
 
-          <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                color: 'white',
-              }}
-            >
-              Quantum
-            </Typography>
-          </Link>
+            <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  color: 'white',
+                }}
+              >
+                Quantum
+              </Typography>
+            </Link>
 
-          {!accessToken && (
+            {!accessToken && (
+              <IconButton
+                color="primary"
+                aria-label="Авторизация"
+                sx={{ color: 'white' }}
+                onClick={() => setIsAuthModalOpen(true)} // Показываем модалку
+              >
+                <AccountCircleIcon /> {/* Иконка профиля */}
+              </IconButton>
+            )}
+
             <IconButton
               color="primary"
-              aria-label="Авторизация"
+              aria-label="Идеи от АИ"
               sx={{ color: 'white' }}
-              onClick={() => setIsAuthModalOpen(true)} // Показываем модалку
+              onClick={() => {
+                const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+
+                if (activeChatId) {
+                  return navigate(`/chat/${activeChatId}`);
+                }
+
+                mutation.mutate(
+                  { target: target || 'none' },
+                  {
+                    onSuccess: chatId => {
+                      localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
+                      navigate(`/chat/${chatId}`);
+                    },
+                    onError: error => {
+                      console.error('Ошибка отправки:', error);
+                      alert('Не удалось создать чат. Попробуйте ещё раз.');
+                    },
+                  },
+                );
+              }}
             >
-              <AccountCircleIcon /> {/* Иконка профиля */}
+              <AutoAwesomeIcon />
             </IconButton>
-          )}
-
-          <IconButton
-            color="primary"
-            aria-label="Идеи от АИ"
-            sx={{ color: 'white' }}
-            onClick={() => {
-              const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
-
-              if (activeChatId) {
-                return navigate(`/chat/${activeChatId}`);
-              }
-
-              mutation.mutate(
-                { target: target || 'none' },
-                {
-                  onSuccess: chatId => {
-                    localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
-                    navigate(`/chat/${chatId}`);
-                  },
-                  onError: error => {
-                    console.error('Ошибка отправки:', error);
-                    alert('Не удалось создать чат. Попробуйте ещё раз.');
-                  },
-                },
-              );
-            }}
-          >
-            <AutoAwesomeIcon />
-          </IconButton>
-        </Toolbar>
+          </Toolbar>
+        </Container>
       </AppBar>
 
       <HomeDrawer isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} accessToken={accessToken} setAccessToken={setAccessToken} />

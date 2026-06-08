@@ -1,7 +1,7 @@
 import { MessageRow } from '../models/message.repository.js';
-import { ChatMessage, ChatMessageRole, ChatTarget } from '@shared/types';
+import { MessageDto, ChatMessageRole, ChatTarget } from '@shared/types';
 
-export const toMessage = (row: MessageRow): ChatMessage => ({
+export const toMessage = (row: MessageRow): MessageDto => ({
   id: row.id,
   chatId: row.chatId,
   passportId: row.passportId,

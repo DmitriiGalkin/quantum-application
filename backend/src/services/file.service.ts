@@ -6,14 +6,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
 import s3Client from '../s3.js';
-import type { RequestWithPassport } from '../router.js';
+import type { RequestWithPassport } from '../controllers/helper.js';
 
 export class FileService {
   static async upload(req: RequestWithPassport): Promise<string> {
     const form = new formidable.IncomingForm();
 
     const { files } = await new Promise<{ files: any }>((resolve, reject) => {
-      form.parse(req, (err, fields, files) => {
+      form.parse(req as any, (err, fields, files) => {
         if (err) return reject(err);
         resolve({ files });
       });

@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,25 +8,21 @@ import Typography from '@mui/material/Typography';
 import ProjectCard from '../components/ProjectCard.tsx';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
-import { fetchProjects, type Type, usePassport } from '../requests.ts';
+import { fetchUserProjects } from '../requests.ts';
 import Header from '../components/Header.tsx';
 
+function UserProjectsPage() {
+  const { id } = useParams();
+  const userId = id ? Number(id) : undefined;
 
-function ProjectsPage() {
-    const passport = usePassport()
-    const [searchParams] = useSearchParams();
-
-    // Получаем значение параметра 'target'
-    const variant = searchParams.get('variant'); // Результат: "idea"
-
-    const {
-        data: projects = [],
-        isLoading: isProjectsLoading,
-        isError: isProjectsError,
-    } = useQuery({
-        queryKey: ['projects', variant, passport?.users?.[0]?.id],
-        queryFn: () => fetchProjects(variant as Type, passport?.users?.[0]?.id || 0),
-    });
+  const {
+    data: projects = [],
+    isLoading: isProjectsLoading,
+    isError: isProjectsError,
+  } = useQuery({
+    queryKey: ['projects', userId],
+    queryFn: () => fetchUserProjects({ userId }),
+  });
 
   return (
     <Box sx={{ minHeight: '100vh' }}>
@@ -72,4 +68,4 @@ function ProjectsPage() {
   );
 }
 
-export default ProjectsPage;
+export default UserProjectsPage;

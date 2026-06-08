@@ -1,97 +1,10 @@
-// @ts-ignore
-import { RowDataPacket } from 'mysql2';
-
-/* Базовые типы */
-
-export interface Meet {
-  id: number;
-  projectId: number;
-  price: number | null;
-  duration: string | null;
-  startedAt: string;
-  deletedAt: string | null;
-  passportId: number | null;
-}
-
-export interface User extends RowDataPacket {
-  id: number;
-  passportId: number | null;
-  title: string | null;
-  description: string | null;
-  age: number | null;
-  image: string | null;
-  createdAt: string | null;
-  deletedAt: string | null;
-}
-
-export interface Passport {
-  id: number;
-  provider: string;
-  providerId: string;
-  title: string | null;
-  description?: string | null;
-  email: string | null;
-  image: string | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
-  accessToken: string | null;
-}
-
-export interface Project {
-  id: number;
-  passportId: number;
-  placeId: number;
-  ideaId: number;
-  title: string | null;
-  description: string | null;
-  deletedAt: string | null;
-}
-
-export interface Idea {
-  id: number;
-  userId: number;
-  passportId: number | null;
-  title: string | null;
-  description: string | null;
-  image: string | null;
-  deletedAt: string | null;
-}
-
-export interface Place {
-  id: number;
-  title?: string;
-  description?: string;
-  address?: string;
-  latitude: number;
-  longitude: number;
-  image?: string;
-}
-
-export interface MeetUser {
-  id: number;
-  meetId: number;
-  userId: number;
-}
-
-export interface IdeaUser extends RowDataPacket {
-  id: number;
-  ideaId: number;
-  userId: number;
-}
-
-export interface ProjectUser {
-  id: number;
-  projectId: number;
-  userId: number;
-}
-
 export interface Chat {
   id: number;
   passportId: number;
   target: string;
   title: string;
   meta?: Meta;
-  messages?: ChatMessage[];
+  messages?: MessageDto[];
 }
 
 export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
@@ -100,7 +13,7 @@ export type ChatTarget = 'user' | 'teacher' | 'idea' | 'project' | 'meet' | 'non
 
 export type ChatMessageRole = 'user' | 'assistant' | 'system';
 
-export type ChatMessage = {
+export type MessageDto = {
   id: number;
   chatId: number;
   passportId: number | null;
@@ -116,35 +29,29 @@ export type ChatMessage = {
 };
 
 export interface Meta {
-  user?: User;
-  idea?: Project;
-  teacher?: Passport;
-  project?: Project;
-  projects?: Project[];
-  passport?: Passport;
-  places?: Place[];
-  meet?: Meet;
+  user?: any;
+  idea?: any;
+  teacher?: PassportDto;
+  project?: any;
+  projects?: any[];
+  passport?: PassportDto;
+  places?: any[];
+  meet?: MeetDto;
   auth?: string[];
 }
 
 /* Типы для методов */
-
 export interface IParams {
-  variant?: 'participation' | 'self' | 'recommendation';
   userId?: string | number;
   passportId?: string | number;
   deleted?: 'true' | 'false';
 }
 
-export interface IIdeaWithRelations extends Idea {
-  user: User | null;
-  ideaUsers: IdeaUser[];
-}
-
 export interface IdeaDto {
   id: number;
-  title: string | null;
+  title: string;
   description: string | null;
+  image: string | null;
 
   user: {
     id: number;
@@ -171,28 +78,78 @@ export interface MeetDto {
     } | null;
   } | null;
 
-  meetUsers: {
+  users: {
     id: number;
-    user: {
-      id: number;
-      title: string;
-    } | null;
+    meetUserId: number;
+    title: string;
+    age: number | null;
+    image: string | null;
   }[];
 }
 
-export interface PlaceDto extends Place {}
-
-export interface IMeetUserWithUser {
+export interface UserDto {
   id: number;
-  user: User | null;
+  title: string | null;
+  age: number | null;
+  image: string | null;
 }
 
-export interface IMeetWithRelations extends Meet {
-  project:
-    | (Project & {
-        place: Place | null;
-      })
-    | null;
+export interface PlaceDto {
+  id: number;
+  title?: string;
+  description?: string;
+  address?: string;
+  latitude: number;
+  longitude: number;
+  image?: string;
 
-  meetUsers: IMeetUserWithUser[];
+  meets: {
+    id: number;
+    startedAt: string;
+    duration?: number;
+    price?: number;
+    project: {
+      title: string;
+    };
+  }[];
+}
+
+export interface ProjectDto {
+  id: number;
+  passportId: number;
+  placeId: number;
+  ideaId: number;
+  title: string | null;
+  description: string | null;
+
+  passport?: {
+    title: string;
+  } | null;
+  place?: {
+    address: string;
+    title: string;
+    description: string;
+  };
+  meets?: {
+    id: number;
+    startedAt: string;
+    duration?: number;
+    price?: number;
+  }[];
+  users?: {
+    title: string;
+    age: number | null;
+    image: string | null;
+  }[];
+}
+
+export interface PassportDto {
+  id: number;
+  title: string;
+  users?: {
+    id: number;
+    title: string;
+    age: number | null;
+    image: string | null;
+  }[];
 }

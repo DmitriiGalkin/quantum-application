@@ -1,12 +1,14 @@
 import { RowDataPacket } from 'mysql2/promise';
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
+import { IParams } from '@shared/types';
 
 export interface ProjectRow extends RowDataPacket {
   id: number;
   title: string;
   description: string | null;
   ideaId: number;
+  placeId: number;
   passportId: number;
   deletedAt: string | null;
 }
@@ -47,40 +49,27 @@ class ProjectRepository {
     await pool.query('UPDATE project SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?', [id]);
   }
 
-  // 🔥 FIND ALL (исправленный builder)
-  static async findAll(params?: ProjectParams): Promise<ProjectRow[]> {
-    let sql = 'SELECT project.* FROM project';
-    const values: number[] = [];
-    const conditions: string[] = [];
+  static async findAll(params: IParams = {}): Promise<ProjectRow[]> {
+    let sql = 'SELECT project.* FROM project WHERE 1=1 ';
+    const values: (string | number)[] = [];
 
-    // 👉 JOIN
-    if (params?.variant === 'participation' && params.userId) {
-      sql += ' LEFT JOIN projectUser ON projectUser.projectId = project.id';
-      conditions.push('projectUser.userId = ?');
+    // участие пользователя (через projectUser)
+    if (params.userId) {
+      sql += `
+      AND EXISTS (
+        SELECT 1 FROM projectUser pu
+        WHERE pu.projectId = project.id
+        AND pu.userId = ?
+      )
+    `;
       values.push(params.userId);
     }
 
-    // 👉 фильтры
-    if (params?.variant === 'self' && params.passportId) {
-      conditions.push('project.passportId = ?');
-      values.push(params.passportId);
-    }
-
-    if (params?.variant === 'recommendation' && params.passportId) {
-      conditions.push('project.passportId != ?');
-      values.push(params.passportId);
-    }
-
-    // 👉 deleted
-    if (params?.deleted === 'true') {
-      conditions.push('project.deletedAt IS NOT NULL');
+    // deleted
+    if (params.deleted === 'true') {
+      sql += ' AND project.deletedAt IS NOT NULL';
     } else {
-      conditions.push('project.deletedAt IS NULL');
-    }
-
-    // 👉 WHERE (фикс бага!)
-    if (conditions.length > 0) {
-      sql += ' WHERE ' + conditions.join(' AND ');
+      sql += ' AND project.deletedAt IS NULL';
     }
 
     const [rows] = await pool.query<ProjectRow[]>(sql, values);

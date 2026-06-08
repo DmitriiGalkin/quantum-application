@@ -1,4 +1,4 @@
-import Meet from '../models/meet.js';
+import Meet from '../models/meet.repository.js';
 import MeetUserRepository from '../models/meetUser.repository.js';
 import UserRepository from '../models/user.repository.js';
 import type { Passport } from '@shared/types';

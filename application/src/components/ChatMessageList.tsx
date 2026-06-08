@@ -2,14 +2,14 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Message from './Message.tsx';
-import type { ChatMessage } from '@shared/types';
+import type { MessageDto } from '@shared/types';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
 import StrategieList from '../StrategieList.tsx';
 
 type ChatMessageListProps = {
   chatId: number;
-  messages: ChatMessage[];
+  messages: MessageDto[];
   isSending: boolean;
 };
 

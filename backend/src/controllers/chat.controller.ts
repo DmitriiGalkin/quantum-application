@@ -1,8 +1,7 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { ChatService } from '../services/chat.service.js';
-import type { ChatMessage } from '@shared/types';
 
-const create: ControllerWithAuth = async (req, res) => {
+const create: ControllerWithAuth<unknown> = async (req, res) => {
   try {
     const chatId = await ChatService.create(req.passport!, req.body);
 
@@ -12,7 +11,7 @@ const create: ControllerWithAuth = async (req, res) => {
   }
 };
 
-const createMessage: ControllerWithAuth = async (req, res) => {
+const createMessage: ControllerWithAuth<unknown> = async (req, res) => {
   try {
     const result = await ChatService.createMessage(req.passport!, req.body);
 
@@ -22,7 +21,7 @@ const createMessage: ControllerWithAuth = async (req, res) => {
   }
 };
 
-const findMessages: ControllerWithAuth = async (req, res) => {
+const findMessages: ControllerWithAuth<unknown> = async (req, res) => {
   try {
     const result = await ChatService.findMessages(req.passport!, req.params.id);
 
@@ -32,7 +31,7 @@ const findMessages: ControllerWithAuth = async (req, res) => {
   }
 };
 
-const findAll: ControllerWithAuth = async (req, res) => {
+const findAll: ControllerWithAuth<unknown> = async (req, res) => {
   try {
     const chats = await ChatService.findAll(req.passport!);
 
