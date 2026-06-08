@@ -13,14 +13,6 @@ export interface ProjectRow extends RowDataPacket {
   deletedAt: string | null;
 }
 
-export interface ProjectParams {
-  variant?: 'participation' | 'self' | 'recommendation';
-  userId?: number;
-  passportId?: number;
-  deleted?: 'true' | 'false';
-}
-
-
 class ProjectRepository {
   // ✅ CREATE
   static async create(data: { title: string; description?: string | null; ideaId: number; passportId: number }): Promise<number> {
@@ -63,6 +55,12 @@ class ProjectRepository {
       )
     `;
       values.push(params.userId);
+    }
+
+    // проекты конкретного passport
+    if (params.passportId) {
+      sql += ' AND project.passportId = ?';
+      values.push(params.passportId);
     }
 
     // deleted

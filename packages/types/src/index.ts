@@ -105,12 +105,11 @@ export interface PlaceDto {
 
   meets: {
     id: number;
+    projectId: number;
     startedAt: string;
     duration?: number;
     price?: number;
-    project: {
-      title: string;
-    };
+    title: string;
   }[];
 }
 

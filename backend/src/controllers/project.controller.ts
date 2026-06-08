@@ -50,6 +50,15 @@ const findByUserId = async (req, res) => {
   ok(res, ideas.map(toProjectDto));
 };
 
+const findByPassportId = async (req, res) => {
+  const ideas = await ProjectService.findAll({
+    ...req.query,
+    passportId: req.passport.id,
+  });
+
+  ok(res, ideas.map(toProjectDto));
+};
+
 const findById = async (req, res) => {
   try {
     const data = await ProjectService.findById(Number(req.params.id));
@@ -77,5 +86,6 @@ export default {
   findAll,
   findByUserId,
   findById,
+  findByPassportId,
   meta,
 };

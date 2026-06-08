@@ -11,6 +11,7 @@ import PlaceSelectPage from './pages/PlaceSelectPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import UserIdeasPage from './pages/UserIdeasPage.tsx';
 import UserProjectsPage from './pages/UserProjectsPage.tsx';
+import PassportProjectsPage from './pages/PassportProjectsPage.tsx';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/user/:id/ideas" element={<UserIdeasPage />} />
       <Route path="/user/:id/projects" element={<UserProjectsPage />} />
+      <Route path="/passport/projects" element={<PassportProjectsPage />} />
       <Route path="/ideas" element={<IdeasPage />} />
       <Route path="/chat/:id" element={<ChatPage />} />
       <Route path="/idea/:id" element={<IdeaPage />} />

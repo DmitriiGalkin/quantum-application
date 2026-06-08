@@ -134,7 +134,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
               <ListItemText primary="Новый проект" />
             </ListItemButton>
 
-            <ListItemButton component={Link} to="/projects?variant=self" onClick={() => setIsMenuOpen(false)} sx={{ borderRadius: 2 }}>
+            <ListItemButton component={Link} to="/passport/projects" onClick={() => setIsMenuOpen(false)} sx={{ borderRadius: 2 }}>
               <ListItemIcon sx={{ minWidth: 40 }}>
                 <FolderIcon />
               </ListItemIcon>

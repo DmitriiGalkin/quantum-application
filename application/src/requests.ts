@@ -124,6 +124,10 @@ export async function fetchUserProjects({ userId }: IParams): Promise<ProjectDto
   return apiFetch<ProjectDto[]>(`/user/${userId}/projects`);
 }
 
+export async function fetchPassportProjects(): Promise<ProjectDto[]> {
+  return apiFetch<ProjectDto[]>(`/passport/projects`);
+}
+
 export async function fetchIdeas(): Promise<IdeaDto[]> {
   return apiFetch<IdeaDto[]>('/ideas');
 }

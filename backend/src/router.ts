@@ -72,6 +72,7 @@ publicRouter.get('/user/:id', user.findById);
 publicRouter.get('/places', place.findAll);
 
 // Private
+privateRouter.get('/passport/projects', project.findByPassportId);
 privateRouter.get('/passport', withAuth(passportController.all));
 privateRouter.put('/passport', withAuth(passportController.update));
 

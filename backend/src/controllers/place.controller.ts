@@ -1,6 +1,5 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import { Place } from '@shared/types';
 
 const findAll = async (req, res) => {
   try {
