@@ -1,8 +1,8 @@
 
 import { baseAssistantAnswer } from './assistant.js';
-import { User as IUser, type MessageDto } from '@shared/types';
+import type { UserDto, MessageDto } from '@shared/types';
 
-const getIdeaPrompt = (user: IUser) => `
+const getIdeaPrompt = (user: UserDto) => `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как заботливый педагог.
 

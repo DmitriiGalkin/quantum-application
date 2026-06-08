@@ -1,7 +1,10 @@
 import { User } from '../entities/user.js';
+import type { UserDto } from '@shared/types';
 
-export const toUser = (row: any): User => ({
+export const toUser = (row: User): UserDto => ({
   id: row.id,
-  passportId: row.passportId,
   title: row.title,
+  description: row.description,
+  age: row.age,
+  image: row.image,
 });

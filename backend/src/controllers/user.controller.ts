@@ -1,10 +1,10 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { UserService } from '../services/user.service.js';
-import type { User as IUser } from '@shared/types';
+import type { UserDto } from '@shared/types';
 
 const create: ControllerWithAuth<any> = async (req, res) => {
   try {
-    const result = await UserService.create(req.passport!, req.body as unknown as IUser);
+    const result = await UserService.create(req.passport!, req.body as unknown as UserDto);
 
     ok(res, { message: 'Участник создан', ...result });
   } catch (err: any) {
@@ -14,7 +14,7 @@ const create: ControllerWithAuth<any> = async (req, res) => {
 
 const update: ControllerWithAuth<any> = async (req, res) => {
   try {
-    await UserService.update(req.passport!, req.body as unknown as IUser);
+    await UserService.update(req.passport!, req.body as unknown as UserDto);
 
     ok(res, { message: 'Участник успешно обновлен' });
   } catch (err: any) {

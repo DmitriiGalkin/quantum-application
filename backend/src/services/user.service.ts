@@ -1,22 +1,23 @@
-import type { Passport, User as IUser } from '@shared/types';
+import type { PassportDto, UserDto } from '@shared/types';
 import UserRepository from '../models/user.repository.js';
 import ProjectUserRepository from '../models/projectUser.repository.js';
+import { User } from '../entities/user.js';
 
 export class UserService {
-  static async create(passport: Passport, body: IUser) {
+  static async create(passport: PassportDto, body: UserDto) {
     const id = await UserRepository.create({
       ...body,
       passportId: passport.id,
-    } as IUser);
+    } as User);
 
     return { id };
   }
 
-  static async update(passport: Passport, body: IUser) {
-    await UserRepository.update(body as IUser);
+  static async update(passport: PassportDto, body: UserDto) {
+    await UserRepository.update(body);
   }
 
-  static async remove(passport: Passport, userId: number) {
+  static async remove(passport: PassportDto, userId: number) {
     const user = await UserRepository.findById(userId);
 
     if (!user) {

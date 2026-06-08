@@ -11,6 +11,7 @@ import IdeaUserRepository from '../models/ideaUser.repository.js';
 import ProjectRepository from '../models/project.repository.js';
 import MessageRepository from '../models/message.repository.js';
 import UserRepository from '../models/user.repository.js';
+import type { User } from '../entities/user.js';
 
 /**
  * Собирает мета-данные из сообщений
@@ -90,7 +91,7 @@ const selectAssistant = (target: ChatTarget, meta: Meta) => {
         const userId = await UserRepository.create({
           ...meta.user,
           passportId: meta.passport?.id,
-        } as UserDto);
+        } as User);
 
         const ideaId = await IdeaRepository.create({
           ...meta.idea,

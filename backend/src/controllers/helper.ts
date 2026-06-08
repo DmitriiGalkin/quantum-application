@@ -1,13 +1,12 @@
 import { Response } from 'express';
-import { User } from '@shared/types'; // Импортируем пул соединений
-import { Passport as IPassport } from '@shared/types';
+import type { UserDto, PassportDto } from '@shared/types'; // Импортируем пул соединений
 import { ApiResponse } from '../types/api.js'; // Импортируем пул соединений
 
 export interface RequestWithPassport extends Request {
   params: Record<string, string>;
-  passport: IPassport;
+  passport: PassportDto;
   query: Record<string, string>;
-  users: User[];
+  users: UserDto[];
 }
 
 

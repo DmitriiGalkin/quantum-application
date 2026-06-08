@@ -1,10 +1,10 @@
 import Meet from '../models/meet.repository.js';
 import MeetUserRepository from '../models/meetUser.repository.js';
 import UserRepository from '../models/user.repository.js';
-import type { Passport } from '@shared/types';
+import type { PassportDto } from '@shared/types';
 
 export class MeetUserService {
-  static async create(passport: Passport, body: any) {
+  static async create(passport: PassportDto, body: any) {
     const { meetId, userId } = body;
 
     if (!meetId || !userId) {
@@ -30,7 +30,7 @@ export class MeetUserService {
     return MeetUserRepository.create({ meetId, userId });
   }
 
-  static async remove(passport: Passport, id: number) {
+  static async remove(passport: PassportDto, id: number) {
     const meetUser = await MeetUserRepository.findById(id);
 
     if (!meetUser) {

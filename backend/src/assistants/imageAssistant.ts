@@ -2,12 +2,11 @@
 import { detectImage } from 'gigachat';
 import S3 from '../s3.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
-// @ts-ignore
 import { v4 as uuid } from 'uuid';
 import assistant from '../assistant.js';
-import { Project } from '@shared/types';
+import type { ProjectDto } from '@shared/types';
 
-function buildProjectImagePrompt(project: Project) {
+function buildProjectImagePrompt(project: ProjectDto) {
   return [
     'Сгенерируй изображение 256px на 256px',
     'Сделай яркую, дружелюбную, современную иллюстрацию без текста на изображении.',
@@ -17,7 +16,7 @@ function buildProjectImagePrompt(project: Project) {
   ].join('\n');
 }
 
-export async function generateProjectImage(project: Project) {
+export async function generateProjectImage(project: ProjectDto) {
   // --- Блок генерации изображения (пример использования GigaChat) ---
   // Этот блок можно вынести в отдельную функцию или сервис, если он нужен постоянно.
   try {
@@ -30,7 +29,7 @@ export async function generateProjectImage(project: Project) {
       ],
       function_call: 'auto',
     };
-    console.log(payload,'payload');
+    console.log(payload, 'payload');
     const imageResponse = await assistant.chat(payload);
 
     //console.log(JSON.stringify(imageResponse), 'imageResponse');

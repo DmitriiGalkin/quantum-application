@@ -112,6 +112,7 @@ export interface MeetDto {
 export interface UserDto {
   id: number;
   title: string | null;
+  description: string | null;
   age: number | null;
   image: string | null;
 }
@@ -175,6 +176,7 @@ export interface ProjectDto {
 export interface PassportDto {
   id: number;
   title: string;
+  description: string | null;
   users?: {
     id: number;
     title: string;

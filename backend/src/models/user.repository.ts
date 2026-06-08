@@ -1,6 +1,7 @@
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import pool from '../db.js';
-import { User } from '@shared/types';
+import type { UserDto } from '@shared/types';
+import type { User } from '../entities/user.js';
 
 interface UserRow extends RowDataPacket {
   id: number;
@@ -25,7 +26,7 @@ class UserRepository {
     }
   }
 
-  static async update(userData: User) {
+  static async update(userData: UserDto) {
     try {
       await pool.query('UPDATE user SET title=?, age=?, image=? WHERE id = ?', [userData.title, userData.age, userData.image, userData.id]);
     } catch (err) {

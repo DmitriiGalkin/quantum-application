@@ -1,4 +1,4 @@
-import type { Passport, ProjectUser as IProjectUser } from '@shared/types';
+import type { PassportDto } from '@shared/types';
 import ProjectRepository from '../models/project.repository.js';
 import ProjectUserRepository from '../models/projectUser.repository.js';
 import UserRepository from '../models/user.repository.js';
@@ -13,7 +13,7 @@ export class ProjectUserService {
   /**
    * Добавление пользователя в проект
    */
-  static async create(passport: Passport, body: any) {
+  static async create(passport: PassportDto, body: any) {
     const { projectId, userId } = body;
 
     if (!projectId || !userId) {
@@ -39,7 +39,7 @@ export class ProjectUserService {
     const id = await ProjectUserRepository.create({
       projectId,
       userId,
-    } as IProjectUser);
+    });
 
     return { id };
   }
@@ -47,7 +47,7 @@ export class ProjectUserService {
   /**
    * Удаление пользователя из проекта
    */
-  static async remove(passport: Passport, participationId: number) {
+  static async remove(passport: PassportDto, participationId: number) {
     const projectUser = await ProjectUserRepository.findById(participationId);
 
     if (!projectUser) {

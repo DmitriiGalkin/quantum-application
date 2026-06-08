@@ -1,9 +1,9 @@
-import IdeaModel from '../models/idea.repository.js';
+import IdeaModel, { IdeaRow } from '../models/idea.repository.js';
 import { baseAssistantAnswer } from './assistant.js';
-import { Idea, Passport } from '@shared/types';
+import type { PassportDto } from '@shared/types';
 import { AssistantAnswer } from '../assistants/ideaAssistant.js';
 
-const getSystemPrompt = (ideas: Idea[], teacher: Passport) => {
+const getSystemPrompt = (ideas: IdeaRow[], teacher: PassportDto) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));
 
   return `

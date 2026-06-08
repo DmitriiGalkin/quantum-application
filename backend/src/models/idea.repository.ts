@@ -2,7 +2,7 @@ import pool from '../db.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import type { IParams } from '@shared/types';
 
-interface IdeaRow extends RowDataPacket {
+export interface IdeaRow extends RowDataPacket {
   id: number;
   userId: number;
   passportId: number | null;
