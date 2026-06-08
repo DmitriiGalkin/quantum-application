@@ -43,9 +43,18 @@ export function MapComponent({ lat, lng, zoom }: Props) {
         center: [lat, lng],
         zoom: zoom,
         scrollWheelZoom: false, // Опционально
+        attributionControl: false,
       });
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
+      L.control
+        .attribution({
+          prefix: false,
+        })
+        .addTo(map);
+
+      map.attributionControl.addAttribution('© OpenStreetMap');
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
       mapInstance.current = map;
       markersGroupRef.current = L.layerGroup().addTo(map);
@@ -68,11 +77,12 @@ export function MapComponent({ lat, lng, zoom }: Props) {
 
     const L = leafletRef.current;
 
-    const getPlaceIcon = (count: number) => L.divIcon({
-      className: 'custom-map-marker',
-      html: `<div class="marker-pin"></div><div class="marker-text">${count}</div>`,
-      iconSize: [30, 42],
-    });
+    const getPlaceIcon = (count: number) =>
+      L.divIcon({
+        className: 'custom-map-marker',
+        html: `<div class="marker-pin"></div><div class="marker-text">${count}</div>`,
+        iconSize: [30, 42],
+      });
 
     // Удаляем старые маркеры
     markersGroupRef.current.clearLayers();
@@ -80,7 +90,10 @@ export function MapComponent({ lat, lng, zoom }: Props) {
     // Ставим новые
     places.forEach(place => {
       const meetsList = place.meets
-        .map(m => `<li><span>${extractTime(m.startedAt)} - ${addMinutes(extractTime(m.startedAt), 90)}</span> <a href="/project/${m.projectId}">${m.title}</a></li>`)
+        .map(
+          m =>
+            `<li><span>${extractTime(m.startedAt)} - ${addMinutes(extractTime(m.startedAt), 90)}</span> <a href="/project/${m.projectId}">${m.title}</a></li>`,
+        )
         .join('');
       const marker = L.marker([place.latitude, place.longitude], { icon: getPlaceIcon(place.meets.length) }).bindPopup(`<div class="place-popup">
                   <h4><b>${place.title}</b></h4>
