@@ -1,7 +1,6 @@
-import pool from '../db.js'; // Импортируем пул соединений
-// @ts-ignore
-import { User } from '@shared/types'; // Импортируем пул соединений
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import pool from '../db.js';
+import { User } from '@shared/types';
 
 interface UserRow extends RowDataPacket {
   id: number;
@@ -9,7 +8,7 @@ interface UserRow extends RowDataPacket {
   title: string;
 }
 
-export class UserRepository {
+class UserRepository {
   static async create(data: User) {
     try {
       // В запросе используются только поля, которые есть в модели
@@ -97,3 +96,5 @@ export class UserRepository {
     }
   }
 }
+
+export default UserRepository;

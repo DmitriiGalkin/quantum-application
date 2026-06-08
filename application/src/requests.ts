@@ -9,7 +9,7 @@ import {
   type Project,
   type User,
   type IParams,
-  type GetIdea, type IIdeaWithRelations,
+  type IdeaDto,
 } from '@shared/types';
 import type { ExtendedMeet } from './components/MeetCard.tsx';
 import { apiFetch, getAccessToken } from './api.ts';
@@ -168,7 +168,7 @@ export async function fetchProjects(type: Type, userId: number): Promise<Project
   return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
 }
 
-export async function fetchIdeas({ variant, userId }: IParams): Promise<IIdeaWithRelations[]> {
+export async function fetchIdeas({ variant, userId }: IParams): Promise<IdeaDto[]> {
   return apiFetch<ExtendedIdea[]>('/ideas' + '?variant=' + variant + (userId ? '&userId=' + userId : ''));
 }
 

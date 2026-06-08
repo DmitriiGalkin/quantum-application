@@ -140,3 +140,59 @@ export interface IIdeaWithRelations extends Idea {
   user: User | null;
   ideaUsers: IdeaUser[];
 }
+
+export interface IdeaDto {
+  id: number;
+  title: string | null;
+  description: string | null;
+
+  user: {
+    id: number;
+    title: string;
+  } | null;
+
+  participants: {
+    userId: number;
+  }[];
+}
+
+export interface MeetDto {
+  id: number;
+  startedAt: string;
+  duration?: number;
+  price?: number;
+
+  project: {
+    id: number;
+    title: string;
+    place: {
+      id: number;
+      title: string;
+    } | null;
+  } | null;
+
+  meetUsers: {
+    id: number;
+    user: {
+      id: number;
+      title: string;
+    } | null;
+  }[];
+}
+
+export interface PlaceDto extends Place {}
+
+export interface IMeetUserWithUser {
+  id: number;
+  user: User | null;
+}
+
+export interface IMeetWithRelations extends Meet {
+  project:
+    | (Project & {
+        place: Place | null;
+      })
+    | null;
+
+  meetUsers: IMeetUserWithUser[];
+}

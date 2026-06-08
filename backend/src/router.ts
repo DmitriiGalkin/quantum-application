@@ -10,6 +10,7 @@ import image from './controllers/image.js';
 import place from './controllers/place.js';
 import project from './controllers/project.js';
 import idea from './controllers/idea.js';
+import newIdeaController from './controllers/idea.controller.js';
 import projectUser from './controllers/projectUser.js';
 import chat from './controllers/chat.js';
 import strategies from './strategies.js';
@@ -73,7 +74,7 @@ router.post('/image', upload.single('image'), image.upload as unknown as Request
  * Идеи
  */
 // @ts-ignore
-router.get('/ideas', passportController.usePassport, idea.findAll as unknown as RequestHandler);
+router.get('/ideas', passportController.usePassport, newIdeaController.findAll as unknown as RequestHandler);
 // @ts-ignore
 router.get('/idea/:id', passportController.usePassport, idea.findById as unknown as RequestHandler);
 

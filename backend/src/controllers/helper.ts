@@ -9,17 +9,7 @@ export interface RequestWithPassport extends Request {
   users: User[];
 }
 
-export type ApiSuccess<T> = {
-  data: T;
-  error: false;
-};
 
-export type ApiError = {
-  error: true;
-  message: string;
-};
-
-export type ApiResponse<T> = ApiSuccess<T> | ApiError;
 
 export type TypedResponse<T> = Response<ApiResponse<T>>;
 

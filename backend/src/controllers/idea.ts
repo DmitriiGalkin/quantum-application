@@ -6,63 +6,32 @@ import IdeaUser from "../models/ideaUser.js";
 import { Response } from 'express'; // Импортируем нужные типы
 import Project from '../models/project.js';
 import Place from '../models/place.js';
-import { ControllerWithAuth, ok, fail } from './helper.js';
-
-const findAll: ControllerWithAuth<IIdeaWithRelations[]> = async (req, res) => {
-  try {
-    const ideas = await Idea.findAll({
-      ...req.query,
-      passportId: req.passport?.id,
-    } as unknown as IParams);
-
-    const [users, ideaUsers] = await Promise.all([
-      Promise.all(ideas.map(i => User.findById(i.userId))),
-      Promise.all(ideas.map(i => IdeaUser.findByIdeaId(i.id))),
-    ]);
-
-    const response= ideas.map((idea, index) => ({
-      ...idea,
-      user: users[index],
-      ideaUsers: ideaUsers[index],
-    }));
-
-    ok(res, response);
-  } catch (err) {
-    console.error('idea.findAll error:', err);
-    fail(res, 'Не удалось получить список идей');
-  }
-};
 
 export default {
-  /**
-   * Получение списка всех идей с учетом параметров запроса
-   */
-  findAll,
+  generateImage: async (req: RequestWithPassport, res: Response) => {
+    try {
+      // Middleware должен гарантировать наличие req.passport
+      const projectId = req.params.id;
+      const project = await Project.findById(projectId);
 
-  // generateImage: async (req: RequestWithPassport, res: Response) => {
-  //   try {
-  //     // Middleware должен гарантировать наличие req.passport
-  //     const projectId = req.params.id;
-  //     const project = await Project.findById(projectId);
-  //
-  //     if (!project) {
-  //       return res.status(404).json({ error: true, message: 'Проект не найден' });
-  //     }
-  //
-  //     const imageBinary = await generateProjectImage(project);
-  //     const image = await uploadImage(imageBinary);
-  //
-  //     await Project.update(req.params.id, { ...project, image });
-  //
-  //     res.json({ error: false, message: 'Изображение проекта обновлено' });
-  //   } catch (err) {
-  //     console.error('chat.generateImage error:', err);
-  //     res.status(500).json({
-  //       error: true,
-  //       message: 'Не удалось сгенерировать изображение для сообщения',
-  //     });
-  //   }
-  // },
+      if (!project) {
+        return res.status(404).json({ error: true, message: 'Проект не найден' });
+      }
+
+      const imageBinary = await generateProjectImage(project);
+      const image = await uploadImage(imageBinary);
+
+      await Project.update(req.params.id, { ...project, image });
+
+      res.json({ error: false, message: 'Изображение проекта обновлено' });
+    } catch (err) {
+      console.error('chat.generateImage error:', err);
+      res.status(500).json({
+        error: true,
+        message: 'Не удалось сгенерировать изображение для сообщения',
+      });
+    }
+  },
 
   /**
    * Получение детальной информации о конкретной идее по ID
