@@ -12,6 +12,7 @@ export const toProjectDto = (project: any): ProjectDto => ({
   })),
   passport: {
     title: project.passport.title,
+    image: project.passport.image,
   },
   passportId: project.passportId,
   placeId: project.placeId,
