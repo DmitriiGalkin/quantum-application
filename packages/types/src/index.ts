@@ -1,3 +1,8 @@
+// @ts-ignore
+import { RowDataPacket } from 'mysql2';
+
+/* Базовые типы */
+
 export interface Meet {
   id: number;
   projectId: number;
@@ -8,7 +13,7 @@ export interface Meet {
   passportId: number | null;
 }
 
-export interface User {
+export interface User extends RowDataPacket {
   id: number;
   passportId: number | null;
   title: string | null;
@@ -68,7 +73,7 @@ export interface MeetUser {
   userId: number;
 }
 
-export interface IdeaUser {
+export interface IdeaUser extends RowDataPacket {
   id: number;
   ideaId: number;
   userId: number;
@@ -120,4 +125,18 @@ export interface Meta {
   places?: Place[];
   meet?: Meet;
   auth?: string[];
+}
+
+/* Типы для методов */
+
+export interface IParams {
+  variant?: 'participation' | 'self' | 'recommendation';
+  userId?: string | number;
+  passportId?: string | number;
+  deleted?: 'true' | 'false';
+}
+
+export interface IIdeaWithRelations extends Idea {
+  user: User | null;
+  ideaUsers: IdeaUser[];
 }

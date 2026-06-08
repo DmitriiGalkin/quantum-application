@@ -1,39 +1,43 @@
 import User from '../models/user.js'; // Предполагаем, что это .js файл с TS-типами
 import Passport from '../models/passport.js';
-import Idea, { IParams } from '../models/idea.js';
+import Idea from '../models/idea.js';
+import type { IIdeaWithRelations, IParams } from '@shared/types'; // Импортируем пул соединений
 import IdeaUser from "../models/ideaUser.js";
 import { Response } from 'express'; // Импортируем нужные типы
-import { RequestWithPassport } from '../router.js';
 import Project from '../models/project.js';
 import Place from '../models/place.js';
+import { ControllerWithAuth, ok, fail } from './helper.js';
+
+const findAll: ControllerWithAuth<IIdeaWithRelations[]> = async (req, res) => {
+  try {
+    const ideas = await Idea.findAll({
+      ...req.query,
+      passportId: req.passport?.id,
+    } as unknown as IParams);
+
+    const [users, ideaUsers] = await Promise.all([
+      Promise.all(ideas.map(i => User.findById(i.userId))),
+      Promise.all(ideas.map(i => IdeaUser.findByIdeaId(i.id))),
+    ]);
+
+    const response= ideas.map((idea, index) => ({
+      ...idea,
+      user: users[index],
+      ideaUsers: ideaUsers[index],
+    }));
+
+    ok(res, response);
+  } catch (err) {
+    console.error('idea.findAll error:', err);
+    fail(res, 'Не удалось получить список идей');
+  }
+};
 
 export default {
   /**
    * Получение списка всех идей с учетом параметров запроса
    */
-  findAll: async (req: RequestWithPassport, res: Response) => {
-    try {
-      const ideas = await Idea.findAll({ ...req.query, passportId: req.passport?.id } as unknown as IParams);
-
-      // Получаем участников для каждой идеи параллельно
-      const [users, ideaUsers] = await Promise.all([
-        Promise.all(ideas.map(idea => User.findById(idea.userId))),
-        Promise.all(ideas.map(p => IdeaUser.findByIdeaId(p.id))),
-      ]);
-
-      // Формируем ответ, добавляя информацию об участниках к каждой идее
-      const response = ideas.map((idea, index) => ({
-        ...idea,
-        user: users[index],
-        ideaUsers: ideaUsers[index],
-      }));
-
-      res.json(response);
-    } catch (err) {
-      console.error('idea.findAll error:', err);
-      res.status(500).json({ error: true, message: 'Не удалось получить список идей' });
-    }
-  },
+  findAll,
 
   // generateImage: async (req: RequestWithPassport, res: Response) => {
   //   try {
@@ -90,7 +94,6 @@ export default {
       const usersForProjects = await Promise.all(projects.map(project => User.findByProjectId(project.id)));
       const projectPassport = await Promise.all(projects.map(project => Passport.findById(project.passportId)));
       const projectPlaces = await Promise.all(projects.map(project => Place.findById(project.placeId)));
-
 
       // Формируем финальный объект ответа со всеми вложенными данными
       res.json({

@@ -1,0 +1,40 @@
+import { Response } from 'express';
+import { User } from '@shared/types'; // Импортируем пул соединений
+import { Passport as IPassport } from '@shared/types'; // Импортируем пул соединений
+
+export interface RequestWithPassport extends Request {
+  params: Record<string, string>;
+  passport: IPassport;
+  query: Record<string, string>;
+  users: User[];
+}
+
+export type ApiSuccess<T> = {
+  data: T;
+  error: false;
+};
+
+export type ApiError = {
+  error: true;
+  message: string;
+};
+
+export type ApiResponse<T> = ApiSuccess<T> | ApiError;
+
+export type TypedResponse<T> = Response<ApiResponse<T>>;
+
+export type ControllerWithAuth<T> = (req: RequestWithPassport, res: TypedResponse<T>) => Promise<void>;
+
+export const ok = <T>(res: Response, data: T) => {
+  return res.json({
+    data,
+    error: false,
+  });
+};
+
+export const fail = (res: Response, message: string, status = 500) => {
+  return res.status(status).json({
+    error: true,
+    message,
+  });
+};

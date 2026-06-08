@@ -38,9 +38,9 @@ class UserModel {
     }
   }
 
-  static async findById(id: number) {
+  static async findById(id: number): Promise<User | null> {
     try {
-      const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM `user` WHERE id = ?', [id]);
+      const [rows] = await pool.query<User[]>('SELECT * FROM `user` WHERE id = ?', [id]);
       return rows.length > 0 ? rows[0] : null;
     } catch (err) {
       console.error('User.findById error:', err);

@@ -1,4 +1,16 @@
-import type { Chat, ChatMessage, ChatTarget, Idea, Meet, Passport, Place, Project, User } from '@shared/types';
+import {
+  type Chat,
+  type ChatMessage,
+  type ChatTarget,
+  type Idea,
+  type Meet,
+  type Passport,
+  type Place,
+  type Project,
+  type User,
+  type IParams,
+  type GetIdea, type IIdeaWithRelations,
+} from '@shared/types';
 import type { ExtendedMeet } from './components/MeetCard.tsx';
 import { apiFetch, getAccessToken } from './api.ts';
 import type { ProjectFormValues } from './ProjectForm';
@@ -156,12 +168,8 @@ export async function fetchProjects(type: Type, userId: number): Promise<Project
   return apiFetch<Project[]>('/projects' + '?variant=' + type + '&userId=' + userId);
 }
 
-export interface ExtendedIdea extends Idea {
-  user: User;
-}
-
-export async function fetchIdeas(type: Type, userId?: number): Promise<ExtendedIdea[]> {
-  return apiFetch<ExtendedIdea[]>('/ideas' + '?variant=' + type + (userId ? ('&userId=' + userId) : ''));
+export async function fetchIdeas({ variant, userId }: IParams): Promise<IIdeaWithRelations[]> {
+  return apiFetch<ExtendedIdea[]>('/ideas' + '?variant=' + variant + (userId ? '&userId=' + userId : ''));
 }
 
 export const usePassport = () => {

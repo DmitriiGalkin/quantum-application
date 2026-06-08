@@ -13,28 +13,8 @@ import idea from './controllers/idea.js';
 import projectUser from './controllers/projectUser.js';
 import chat from './controllers/chat.js';
 import strategies from './strategies.js';
-import { User } from '@shared/types'; // Импортируем пул соединений
-import { Passport as IPassport } from '@shared/types'; // Импортируем пул соединений
-
-// export interface Passport {
-//   id: number | null;
-//   provider: string | null;
-//   providerId: string | null;
-//   title: string | null;
-//   description: string | null;
-//   email: string | null;
-//   avatar: string | null;
-//   createdAt: string | null;
-//   updatedAt: string | null;
-// }
 
 
-export interface RequestWithPassport extends Request {
-  params: Record<string, string>;
-  passport: IPassport;
-  query: Record<string, string>;
-  users: User[];
-}
 
 const upload = multer({ storage: multer.memoryStorage() });
 

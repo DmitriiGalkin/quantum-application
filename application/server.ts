@@ -42,7 +42,6 @@ async function server() {
 
   app.use(async (req, res, next) => {
     const url = req.originalUrl;
-    console.log('url', url);
 
     const pathname = new URL(url, 'http://localhost').pathname;
     const isAsset = /\.[a-zA-Z0-9]+$/.test(pathname);

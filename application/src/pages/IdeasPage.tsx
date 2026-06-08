@@ -20,7 +20,7 @@ function IdeasPage() {
     isError: isIdeasError,
   } = useQuery({
     queryKey: ['ideas', passport?.users?.[0]?.id],
-    queryFn: () => fetchIdeas('self', passport?.users?.[0]?.id || 0),
+    queryFn: () => fetchIdeas({ variant: 'self', userId: passport?.users?.[0]?.id || 0 }),
   });
 
   // @ts-ignore
