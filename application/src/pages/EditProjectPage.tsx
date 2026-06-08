@@ -14,9 +14,10 @@ import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ProjectForm, { type ProjectFormValues } from '../ProjectForm.tsx';
-import { type ExtendedProject, fetchProject, updateProject } from '../requests.ts';
+import { fetchProject, updateProject } from '../requests.ts';
+import type { ProjectDto } from '@shared/types';
 
-function toFormValues(project: ExtendedProject): ProjectFormValues {
+function toFormValues(project: ProjectDto): ProjectFormValues {
   return {
     title: project.title ?? '',
     description: project.description ?? '',

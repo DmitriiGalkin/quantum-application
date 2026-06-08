@@ -4,8 +4,8 @@ import Paper from '@mui/material/Paper';
 import '../App.css';
 import Header from '../components/Header.tsx';
 import { MapComponent } from '../components/MeetMap.tsx';
-import { useQuery } from '@tanstack/react-query';
-import { fetchIdeas } from '../requests.ts';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { fetchIdeas, fetchLike, fetchUnlike } from '../requests.ts';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
@@ -21,7 +21,15 @@ function HomePage() {
     isError: isIdeasError,
   } = useQuery({
     queryKey: ['ideasHome'],
-    queryFn: () => fetchIdeas({}),
+    queryFn: () => fetchIdeas(),
+  });
+
+  const mutationLike = useMutation({
+    mutationFn: fetchLike,
+  });
+
+  const mutationUnlike = useMutation({
+    mutationFn: fetchUnlike,
   });
 
   return (
@@ -72,7 +80,7 @@ function HomePage() {
               }}
             >
               {ideas.map(idea => (
-                <IdeaCard idea={idea} key={idea.id} />
+                <IdeaCard idea={idea} key={idea.id} like={a => mutationLike.mutate(a)} unlike={a => mutationUnlike.mutate(a)} />
               ))}
             </Box>
           )}

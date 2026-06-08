@@ -189,7 +189,6 @@ function ProjectPage() {
                 </Typography>
                 <Stack spacing={2}>
                   {(project?.meets || [])
-                    .filter(meeting => !meeting.deletedAt)
                     .map(meeting => (
                       <MeetCard
                         meet={meeting}

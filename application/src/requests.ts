@@ -110,7 +110,6 @@ export async function generateImage(projectId: number) {
   });
 }
 
-export type Type = 'self' | 'participation' | null;
 
 export async function fetchPassport(): Promise<PassportDto> {
   return apiFetch<PassportDto>('/passport');
@@ -129,12 +128,30 @@ export async function fetchPassportProjects(): Promise<ProjectDto[]> {
 }
 
 export async function fetchIdeas(): Promise<IdeaDto[]> {
-  return apiFetch<IdeaDto[]>('/ideas');
+  return apiFetch<IdeaDto[]>('/ideas?currentUserId=2');
 }
 
 export async function fetchUserIdeas({ userId }: IParams): Promise<IdeaDto[]> {
   return apiFetch<IdeaDto[]>(`/user/${userId}/ideas`);
 }
+
+export async function fetchLike({ userId, ideaId }: IParams): Promise<IdeaDto[]> {
+  return apiFetch<IdeaDto[]>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: undefined,
+  });
+}
+
+export async function fetchUnlike({ userId, ideaId }: IParams): Promise<IdeaDto[]> {
+  return apiFetch<IdeaDto[]>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
+    method: 'DELETE',
+  });
+}
+
+;
 
 export const usePassport = () => {
   const accessToken = getAccessToken();

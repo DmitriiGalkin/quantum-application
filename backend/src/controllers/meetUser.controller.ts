@@ -1,6 +1,5 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { MeetUserService } from '../services/meetUser.service.js';
-import { MeetUser } from '@shared/types';
 
 const create: ControllerWithAuth<{}> = async (req, res) => {
   try {
@@ -22,7 +21,7 @@ const remove: ControllerWithAuth<{}> = async (req, res) => {
   }
 };
 
-const findAll: ControllerWithAuth<MeetUser[]> = async (req, res) => {
+const findAll = async (req, res) => {
   try {
     const userId = Number(req.query.userId);
 

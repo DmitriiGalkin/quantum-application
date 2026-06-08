@@ -5,7 +5,7 @@ import { projectAssistantAnswer } from '../assistants/projectAssistant.js';
 import { meetAssistantAnswer } from '../assistants/meetAssistant.js';
 
 
-import type { MessageDto, ChatTarget, Meta, User as IUser, Idea as IIdea, Project as IProject } from '@shared/types';
+import type { MessageDto, ChatTarget, Meta, UserDto, ProjectDto } from '@shared/types';
 import IdeaRepository from '../models/idea.repository.js';
 import IdeaUserRepository from '../models/ideaUser.repository.js';
 import ProjectRepository from '../models/project.repository.js';
@@ -90,7 +90,7 @@ const selectAssistant = (target: ChatTarget, meta: Meta) => {
         const userId = await UserRepository.create({
           ...meta.user,
           passportId: meta.passport?.id,
-        } as IUser);
+        } as UserDto);
 
         const ideaId = await IdeaRepository.create({
           ...meta.idea,
@@ -118,7 +118,7 @@ const selectAssistant = (target: ChatTarget, meta: Meta) => {
           ...meta.project,
           passportId: meta.passport?.id,
           ideaId: (meta.project as any)?.id,
-        } as IProject);
+        } as ProjectDto);
 
         return {
           content: `Проект создан: <a href="/project/${projectId}">перейти</a>.`,

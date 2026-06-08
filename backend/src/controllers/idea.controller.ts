@@ -1,5 +1,4 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
-import { IdeaDto, IParams } from '@shared/types';
 import { toIdeaDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
 

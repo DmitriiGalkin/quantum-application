@@ -60,11 +60,33 @@ class IdeaRepository {
   }
 
   static async findAll(params: IParams = {}) {
-    let sql = 'SELECT idea.* FROM idea WHERE 1=1 ';
+    const select: string[] = ['idea.*'];
+
     const values: (string | number)[] = [];
 
+    // isLiked (только если есть пользователь)
+    if (params.currentUserId) {
+      select.push(`
+      EXISTS (
+        SELECT 1
+        FROM ideaUser iu
+        WHERE iu.ideaId = idea.id
+        AND iu.userId = ?
+      ) AS isLiked
+    `);
+
+      values.push(params.currentUserId);
+    }
+
+    let sql = `
+    SELECT ${select.join(', ')}
+    FROM idea
+    WHERE 1=1
+  `;
+
+    // filters
     if (params.userId) {
-      sql += ` AND idea.userId = ? `;
+      sql += ' AND idea.userId = ?';
       values.push(params.userId);
     }
 
@@ -77,12 +99,11 @@ class IdeaRepository {
     const [rows] = await pool.query<IdeaRow[]>(sql, values);
     return rows;
   }
+  static async findById(id: string | number) {
+    const sql = 'SELECT * FROM idea WHERE id = ?';
 
-  // ✅ FIND BY ID
-  static async findById(id: number): Promise<IdeaRow | null> {
     try {
-      const [rows] = await pool.query<IdeaRow[]>('SELECT * FROM idea WHERE id = ?', [id]);
-
+      const [rows] = await pool.query<IdeaRow[]>(sql, [id]);
       return rows[0] ?? null;
     } catch (err) {
       console.error('idea.findById error:', err);

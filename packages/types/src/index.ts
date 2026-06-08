@@ -31,7 +31,9 @@ export type MessageDto = {
 export interface Meta {
   user?: any;
   idea?: any;
-  teacher?: PassportDto;
+  teacher?: {
+    description: string;
+  };
   project?: any;
   projects?: any[];
   passport?: PassportDto;
@@ -45,6 +47,8 @@ export interface IParams {
   userId?: string | number;
   passportId?: string | number;
   deleted?: 'true' | 'false';
+  currentUserId?: number;
+  ideaId?: string | number;
 }
 
 export interface IdeaDto {
@@ -52,14 +56,32 @@ export interface IdeaDto {
   title: string;
   description: string | null;
   image: string | null;
+  userCount: number;
+  isLiked: boolean;
 
   user: {
     id: number;
     title: string;
+    age: number;
   } | null;
 
-  participants: {
-    userId: number;
+  projects: {
+    id: number;
+    title: string;
+    description: string | null;
+    passport: {
+      title: string;
+    };
+    place: {
+      address: string;
+      title: string;
+    };
+    users: {
+      id: number;
+      title: string;
+      age: number | null;
+      image: string | null
+    };
   }[];
 }
 
@@ -69,18 +91,18 @@ export interface MeetDto {
   duration?: number;
   price?: number;
 
-  project: {
-    id: number;
-    title: string;
-    place: {
-      id: number;
-      title: string;
-    } | null;
-  } | null;
+  // project: {
+  //   id: number;
+  //   title: string;
+  //   place: {
+  //     id: number;
+  //     title: string;
+  //   } | null;
+  // } | null;
 
   users: {
     id: number;
-    meetUserId: number;
+    meetUserId?: number;
     title: string;
     age: number | null;
     image: string | null;
@@ -123,6 +145,7 @@ export interface ProjectDto {
 
   passport?: {
     title: string;
+    image: string;
   } | null;
   place?: {
     address: string;
@@ -134,8 +157,15 @@ export interface ProjectDto {
     startedAt: string;
     duration?: number;
     price?: number;
+    users: {
+      id: number;
+      title: string;
+      age: number | null;
+      image: string | null;
+    }[];
   }[];
   users?: {
+    id: number;
     title: string;
     age: number | null;
     image: string | null;

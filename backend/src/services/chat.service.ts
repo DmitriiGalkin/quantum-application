@@ -29,7 +29,7 @@ export class ChatService {
     return chatId;
   }
 
-  static async createMessage(passport: Passport, body: any) {
+  static async createMessage(passport: any, body: any) {
     const messageText = String(body?.message || '').trim();
 
     if (!messageText) {
@@ -63,7 +63,7 @@ export class ChatService {
         description: 'Профессия: учитель начальных классов...',
       },
       passport,
-    } as Meta;
+    };
 
     const assistant = selectAssistant(chat.target as ChatTarget, meta);
 

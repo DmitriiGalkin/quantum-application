@@ -11,6 +11,7 @@ import image from './controllers/image.controller.js';
 import place from './controllers/place.controller.js';
 import project from './controllers/project.controller.js';
 import idea from './controllers/idea.controller.js';
+import ideaUser from './controllers/ideaUser.controller.js';
 import projectUser from './controllers/projectUser.controller.js';
 import chat from './controllers/chat.controller.js';
 import strategies from './strategies.js';
@@ -77,6 +78,9 @@ privateRouter.get('/passport', withAuth(passportController.all));
 privateRouter.put('/passport', withAuth(passportController.update));
 
 privateRouter.post('/image', upload.single('image'), withAuth(image.upload));
+
+privateRouter.post('/ideaUser', withAuth(ideaUser.create));
+privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));
 
 privateRouter.post('/project', withAuth(project.create));
 privateRouter.put('/project/:id', withAuth(project.update));

@@ -1,5 +1,6 @@
 import pool from '../db.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import { MeetUserRow } from './meetUser.repository.js';
 
 interface IdeaUserRow extends RowDataPacket {
   id: number;
@@ -12,6 +13,12 @@ class IdeaUserRepository {
   static async create(data: { userId: number; ideaId: number }): Promise<number> {
     try {
       const [result] = await pool.query<ResultSetHeader>('INSERT INTO ideaUser (ideaId, userId) VALUES (?, ?)', [data.ideaId, data.userId]);
+      await pool.query(
+        `UPDATE idea
+       SET userCount = COALESCE(userCount, 0) + 1
+       WHERE id = ?`,
+        [Number(data.ideaId)],
+      );
 
       return result.insertId;
     } catch (err) {
@@ -21,9 +28,15 @@ class IdeaUserRepository {
   }
 
   // ✅ DELETE by id
-  static async delete(id: number): Promise<void> {
+  static async delete(data: { userId: number; ideaId: number }): Promise<void> {
     try {
-      await pool.query('DELETE FROM ideaUser WHERE id = ?', [id]);
+      await pool.query('DELETE FROM ideaUser WHERE ideaId = ? AND userId = ?', [data.ideaId, data.userId]);
+      await pool.query(
+        `UPDATE idea
+       SET userCount = COALESCE(userCount, 0) - 1
+       WHERE id = ?`,
+        [Number(data.ideaId)],
+      );
     } catch (err) {
       console.error('IdeaUser.delete error:', err);
       throw err;
@@ -62,6 +75,12 @@ class IdeaUserRepository {
       console.error('IdeaUser.findByIdeaId error:', err);
       throw err;
     }
+  }
+
+  static async findByIdeaAndUserIds(ideaId: number, userId: number): Promise<IdeaUserRow | null> {
+    const [rows] = await pool.query<IdeaUserRow[]>('SELECT * FROM ideaUser WHERE ideaId = ? AND userId = ?', [ideaId, userId]);
+
+    return rows[0] ?? null;
   }
 }
 

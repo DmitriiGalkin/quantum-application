@@ -23,7 +23,7 @@ const createMessage: ControllerWithAuth<unknown> = async (req, res) => {
 
 const findMessages: ControllerWithAuth<unknown> = async (req, res) => {
   try {
-    const result = await ChatService.findMessages(req.passport!, req.params.id);
+    const result = await ChatService.findMessages(Number(req.params.id));
 
     ok(res, result);
   } catch (err: any) {

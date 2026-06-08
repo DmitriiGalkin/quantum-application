@@ -6,4 +6,6 @@ export interface Idea {
   description: string | null;
   image: string | null;
   deletedAt: string | null;
+  userCount: number;
+  isLiked: boolean;
 }
