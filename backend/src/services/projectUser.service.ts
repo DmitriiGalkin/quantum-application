@@ -1,7 +1,7 @@
-import type { PassportDto } from '@shared/types';
 import ProjectRepository from '../models/project.repository.js';
 import ProjectUserRepository from '../models/projectUser.repository.js';
 import UserRepository from '../models/user.repository.js';
+import type { Passport } from '../entities/passport.js';
 
 function getPassportUserIds(passportId: number) {
   // если у тебя раньше был req.users — лучше заменить на нормальный сервис/запрос
@@ -13,7 +13,7 @@ export class ProjectUserService {
   /**
    * Добавление пользователя в проект
    */
-  static async create(passport: PassportDto, body: any) {
+  static async create(passport: Passport, body: any) {
     const { projectId, userId } = body;
 
     if (!projectId || !userId) {
@@ -47,7 +47,7 @@ export class ProjectUserService {
   /**
    * Удаление пользователя из проекта
    */
-  static async remove(passport: PassportDto, participationId: number) {
+  static async remove(passport: Passport, participationId: number) {
     const projectUser = await ProjectUserRepository.findById(participationId);
 
     if (!projectUser) {
