@@ -6,6 +6,7 @@ import express from 'express';
 import { createServer } from 'vite';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
+import { PageMeta } from '@shared/types';
 
 dotenv.config();
 
@@ -53,7 +54,10 @@ async function server() {
 
     try {
       let template: string;
-      let render: (url: string) => Promise<any>;
+      let render: (url: string) => Promise<{
+        html: string;
+        meta: PageMeta;
+      }>;
 
       if (!isProd) {
         template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
@@ -70,7 +74,7 @@ async function server() {
       const appHtml = template
         .replace('<!--ssr-outlet-->', html)
         .replace('<!--app-title-->', escapeHtml(meta.title))
-        .replace('<!--app-description-->', escapeHtml(meta.description))
+        .replace('<!--app-description-->', escapeHtml(normalizeDescription(meta.description)))
         .replace('<!--app-og-title-->', escapeHtml(meta.ogTitle))
         .replace('<!--app-og-description-->', escapeHtml(meta.ogDescription))
         .replace('<!--app-og-image-->', escapeHtml(meta.ogImage))
@@ -114,4 +118,23 @@ function escapeHtml(value: string = '') {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+/**
+ * По правилам длина <!--app-description--> не более 160 символов. Функция красиво обрезает.
+ */
+function normalizeDescription (description: string, maxLength = 155)  {
+  if (!description) return '';
+
+  const clean = description.replace(/\s+/g, ' ').trim();
+
+  if (clean.length <= maxLength) {
+    return clean;
+  }
+
+  // обрезаем по словам, а не посередине
+  const truncated = clean.slice(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(' ');
+
+  return (lastSpace > 0 ? truncated.slice(0, lastSpace) : truncated) + '…';
 }

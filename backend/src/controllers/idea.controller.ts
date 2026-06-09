@@ -1,6 +1,7 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { toIdeaDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
+import { ProjectService } from '../services/project.service.js';
 
 const findAllPublic = async (req, res) => {
   const ideas = await IdeaService.findAll(req.query);
@@ -44,9 +45,19 @@ const generateImage: ControllerWithAuth<{ message: string }> = async (req, res) 
   }
 };
 
+const meta = async (req, res) => {
+  try {
+    const meta = await IdeaService.meta(req.params.id);
+    ok(res, meta);
+  } catch (err) {
+    fail(res, 'Не удалось получить meta проекта');
+  }
+};
+
 export default {
   findAllPublic,
   findByUserId,
   findById,
   generateImage,
+  meta,
 };

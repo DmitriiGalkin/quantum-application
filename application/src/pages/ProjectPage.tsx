@@ -21,6 +21,8 @@ import IconButton from '@mui/material/IconButton';
 import UserGroup from '../components/UserGroup.tsx';
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
+import Tooltip from '@mui/material/Tooltip';
+import ShareIcon from '@mui/icons-material/Share';
 
 function ProjectPage() {
   const navigate = useNavigate();
@@ -50,6 +52,20 @@ function ProjectPage() {
     queryFn: () => fetchProject(id as string),
     enabled: Boolean(id),
   });
+
+  const handleShare = async () => {
+    const url = window.location.href;
+
+    if (navigator.share) {
+      await navigator.share({
+        title: project.title,
+        text: project.description,
+        url,
+      });
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  };
 
   useEffect(() => {
     document.title = project?.title || 'Проект';
@@ -99,7 +115,15 @@ function ProjectPage() {
             <ArrowBackIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton edge="start" color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
+
+          {/* SHARE */}
+          <Tooltip title="Поделиться">
+            <IconButton onClick={handleShare} sx={{ color: 'white' }}>
+              <ShareIcon />
+            </IconButton>
+          </Tooltip>
+
+          <IconButton color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
             <EditIcon />
           </IconButton>
         </Toolbar>
@@ -188,18 +212,17 @@ function ProjectPage() {
                   Расписание
                 </Typography>
                 <Stack spacing={2}>
-                  {(project?.meets || [])
-                    .map(meeting => (
-                      <MeetCard
-                        meet={meeting}
-                        key={meeting.id}
-                        isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
-                        onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}
-                        onDeleteMeetUser={meetUserId => {
-                          deleteMeetUserMutation.mutate(meetUserId);
-                        }}
-                      />
-                    ))}
+                  {(project?.meets || []).map(meeting => (
+                    <MeetCard
+                      meet={meeting}
+                      key={meeting.id}
+                      isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
+                      onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}
+                      onDeleteMeetUser={meetUserId => {
+                        deleteMeetUserMutation.mutate(meetUserId);
+                      }}
+                    />
+                  ))}
                 </Stack>{' '}
               </Box>
             )}

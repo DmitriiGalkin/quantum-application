@@ -1,5 +1,5 @@
 import UserRepository from '../models/user.repository.js';
-import { IParams } from '@shared/types';
+import type { IParams, PageMeta } from '@shared/types';
 import IdeaRepository from '../models/idea.repository.js';
 import IdeaUserRepository from '../models/ideaUser.repository.js';
 import PassportRepository from '../models/passport.repository.js';
@@ -62,5 +62,18 @@ export class IdeaService {
     await ProjectRepository.update(projectId, { ...project, image });
 
     return project;
+  }
+
+  static async meta(id: number) {
+    const idea = await IdeaRepository.findById(id);
+    if (!idea) throw new Error('idea.service meta: не найдена идея');
+
+    return {
+      title: idea.title,
+      description: idea.description,
+      ogType: 'article',
+      ogTitle: idea.title,
+      ogDescription: idea.description,
+    } as PageMeta;
   }
 }

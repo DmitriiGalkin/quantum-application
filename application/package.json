@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite  --host 0.0.0.0",
-    "dev:ssr": "node server.ts",
+    "dev:ssr": "npx tsx server.ts",
     "build:server": "tsc -p tsconfig.ssr.json",
     "build:client": "vite build",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist/server",
@@ -15,6 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@shared/types": "file:../packages/types",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.0.1",

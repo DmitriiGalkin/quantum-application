@@ -6,18 +6,21 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
 import Container from '@mui/material/Container'; // Импортируем Container
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchIdea, generateImage } from '../requests.ts';
+import { fetchIdea,  generateImage } from '../requests.ts';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import ProjectCard from '../components/ProjectCard.tsx';
+import ShareIcon from '@mui/icons-material/Share';
+import Like from '../components/Like.tsx';
 
 function IdeaPage() {
   const navigate = useNavigate();
@@ -42,8 +45,23 @@ function IdeaPage() {
   });
 
   useEffect(() => {
-    document.title = idea?.title || 'Идея';
+    if (idea?.title) { document.title = idea?.title; }
   }, [idea?.title]);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+
+    if (navigator.share) {
+      await navigator.share({
+        title: idea.title,
+        text: idea.description,
+        url,
+      });
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  };
+
 
   if (!id) {
     return (
@@ -84,9 +102,24 @@ function IdeaPage() {
             <ArrowBackIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton edge="start" color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
-            <EditIcon />
-          </IconButton>
+
+          {/* SHARE */}
+          <Tooltip title="Поделиться">
+            <IconButton onClick={handleShare} sx={{ color: 'white' }}>
+              <ShareIcon />
+            </IconButton>
+          </Tooltip>
+
+          {/* FAVORITE */}
+          <Tooltip title="В избранное">
+            <Like isLiked={idea.isLiked} ideaId={idea.id} userId={2}/>
+          </Tooltip>
+
+          <Tooltip title="Редактировать">
+            <IconButton color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
 
@@ -177,25 +210,24 @@ function IdeaPage() {
           Проекты по идее
         </Typography>
 
-          {Boolean(idea.projects) && (
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: {
-                  xs: '1fr',
-                  sm: 'repeat(2, minmax(0, 1fr))',
-                  md: 'repeat(3, minmax(0, 1fr))',
-                },
-                gap: 2,
-              }}
-            >
-              {' '}
-              {(idea.projects || []).map(project => (
-                <ProjectCard project={project} key={project.id} />
-              ))}
-            </Box>
-          )}
-
+        {Boolean(idea.projects) && (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, minmax(0, 1fr))',
+                md: 'repeat(3, minmax(0, 1fr))',
+              },
+              gap: 2,
+            }}
+          >
+            {' '}
+            {(idea.projects || []).map(project => (
+              <ProjectCard project={project} key={project.id} />
+            ))}
+          </Box>
+        )}
       </Container>
     </Box>
   );

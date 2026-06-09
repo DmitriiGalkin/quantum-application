@@ -20,49 +20,43 @@ export default function Footer() {
               Quantum
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Modern platform for managing ideas and projects.
+              Современная платформа развития детских идей через проектную деятельность.
             </Typography>
           </Grid>
 
           {/* Column 2 */}
           <Grid size={{ xs: 12, sm: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
-              Product
+              Платформа
             </Typography>
-            <Link href="#" underline="hover" sx={{ display: 'block' }}>
-              Features
+            <Link href="/ideas" underline="hover" sx={{ display: 'block' }}>
+              <Typography>Идеи</Typography>
             </Link>
-            <Link href="#" underline="hover" sx={{ display: 'block' }}>
-              Pricing
-            </Link>
-            <Link href="#" underline="hover" sx={{ display: 'block' }}>
-              Docs
+            <Link href="/projects" underline="hover" sx={{ display: 'block' }}>
+              <Typography>Проекты</Typography>
             </Link>
           </Grid>
 
           {/* Column 3 */}
           <Grid size={{ xs: 12, sm: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
-              Company
+              Компания
             </Typography>
             <Link href="#" underline="hover" sx={{ display: 'block' }}>
-              About
+              <Typography>О нас</Typography>
             </Link>
             <Link href="#" underline="hover" sx={{ display: 'block' }}>
-              Blog
-            </Link>
-            <Link href="#" underline="hover" sx={{ display: 'block' }}>
-              Careers
+              <Typography>Миссия</Typography>
             </Link>
           </Grid>
 
           {/* Column 4 */}
           <Grid size={{ xs: 12, sm: 4 }}>
             <Typography variant="subtitle1" gutterBottom>
-              Contact
+              Контакты
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              support@quantum.app
+              4757037@gmail.ru
             </Typography>
           </Grid>
         </Grid>
