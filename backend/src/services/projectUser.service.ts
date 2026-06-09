@@ -1,5 +1,5 @@
 import ProjectRepository from '../repositories/project.repository.js';
-import ProjectUserRepository from '../repositories/projectUser.repository.js';
+import ProjectUserRepository from '../repositories/project-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
 

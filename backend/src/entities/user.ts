@@ -1,10 +1,12 @@
 export interface User {
   id: number;
-  passportId: number | null;
-  title: string | null;
+  passportId: number;
+  title: string;
   description: string | null;
   age: number | null;
   image: string | null;
-  createdAt: string | null;
-  deletedAt: string | null;
+}
+
+export interface UserWithMeet extends User {
+  meetUserId: number;
 }

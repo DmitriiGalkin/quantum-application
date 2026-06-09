@@ -1,23 +1,12 @@
-import { RowDataPacket } from 'mysql2/promise';
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
-
-export interface ChatRow extends RowDataPacket {
-  id: number;
-  passportId: number;
-  title: string | null;
-  target: string | null;
-  deletedAt: string | null;
-  updatedAt: string;
-
-  lastMessage?: string | null;
-  lastMessageAt?: string | null;
-  lastMessageRole?: string | null;
-}
+import type { ChatRow, ChatWithLastMessageRow } from '../entities/chat.db.js';
+import { mapChatRow, mapChatWithLastMessage } from '../mappers/chat.mapper.js';
+import type { Chat, ChatWithLastMessage, CreateChatInput } from '../entities/chat.js';
 
 class ChatRepository {
   // ✅ CREATE
-  static async create(data: { passportId: number; title?: string | null; target?: string | null }): Promise<number> {
+  static async create(data: CreateChatInput): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
       `INSERT INTO chat (passportId, title, target)
        VALUES (?, ?, ?)`,
@@ -28,7 +17,7 @@ class ChatRepository {
   }
 
   // ✅ FIND BY ID
-  static async findById(id: number): Promise<ChatRow | null> {
+  static async findById(id: number): Promise<Chat | null> {
     const [rows] = await pool.query<ChatRow[]>(
       `SELECT *
        FROM chat
@@ -38,11 +27,13 @@ class ChatRepository {
       [id],
     );
 
-    return rows[0] ?? null;
+    if (!rows[0]) return null;
+
+    return mapChatRow(rows[0]);
   }
 
   // ✅ ACTIVE CHAT
-  static async findActiveByPassportId(passportId: number): Promise<ChatRow | null> {
+  static async findActiveByPassportId(passportId: number): Promise<Chat | null> {
     const [rows] = await pool.query<ChatRow[]>(
       `SELECT *
        FROM chat
@@ -53,11 +44,11 @@ class ChatRepository {
       [passportId],
     );
 
-    return rows[0] ?? null;
+    return rows[0] ? mapChatRow(rows[0]) : null;
   }
 
   // ✅ FIND BY ID + PASSPORT
-  static async findByIdAndPassportId(id: number, passportId: number): Promise<ChatRow | null> {
+  static async findByIdAndPassportId(id: number, passportId: number): Promise<Chat | null> {
     const [rows] = await pool.query<ChatRow[]>(
       `SELECT *
        FROM chat
@@ -68,7 +59,7 @@ class ChatRepository {
       [id, passportId],
     );
 
-    return rows[0] ?? null;
+    return rows[0] ? mapChatRow(rows[0]) : null;
   }
 
   // ✅ TOUCH
@@ -82,15 +73,15 @@ class ChatRepository {
   }
 
   // 🔥 FIND ALL (с last message)
-  static async findAllByPassportId(passportId: number): Promise<ChatRow[]> {
-    const [rows] = await pool.query<ChatRow[]>(
+  static async findAllByPassportId(passportId: number): Promise<ChatWithLastMessage[]> {
+    const [rows] = await pool.query<ChatWithLastMessageRow[]>(
       `SELECT
          chat.*,
          lastMessage.content AS lastMessage,
          lastMessage.createdAt AS lastMessageAt,
          lastMessage.role AS lastMessageRole
        FROM chat
-       LEFT JOIN (
+              LEFT JOIN (
          SELECT m.chatId, m.content, m.createdAt, m.role
          FROM message m
          WHERE m.id = (
@@ -106,8 +97,7 @@ class ChatRepository {
       [passportId],
     );
 
-    // 👉 чистая сортировка (без cast)
-    return rows.sort((a, b) => {
+    return rows.map(mapChatWithLastMessage).sort((a, b) => {
       const dateA = new Date(a.lastMessageAt ?? a.updatedAt).getTime();
       const dateB = new Date(b.lastMessageAt ?? b.updatedAt).getTime();
       return dateB - dateA;

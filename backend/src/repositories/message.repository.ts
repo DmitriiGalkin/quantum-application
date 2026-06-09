@@ -1,32 +1,16 @@
-import { RowDataPacket } from 'mysql2/promise';
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
-import { ChatMessageRole, ChatTarget } from '@shared/types';
-
-export interface MessageRow extends RowDataPacket {
-  id: number;
-  chatId: number;
-  passportId: number | null;
-  role: ChatMessageRole;
-  content: string | null;
-  metadata: string | null; // 👈 В БД это строка!
-  target: ChatTarget;
-  createdAt: string;
-}
+import { MessageRow } from '../entities/message.db.js';
+import { mapMessageRow } from '../mappers/message.mapper.js';
+import { Message } from '../entities/message.js';
+import { CreateMessageInput, UpdateMessageInput } from '../entities/message.types.js';
 
 class MessageRepository {
   // ✅ CREATE
-  static async create(data: {
-    chatId: number;
-    passportId?: number | null;
-    role: string;
-    content?: string | null;
-    metadata?: object | null;
-    target?: string | null;
-  }): Promise<number> {
+  static async create(data: CreateMessageInput): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
       `INSERT INTO message
-       (chatId, passportId, role, content, metadata, target)
+         (chatId, passportId, role, content, metadata, target)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [
         data.chatId,
@@ -42,14 +26,14 @@ class MessageRepository {
   }
 
   // ✅ FIND BY ID
-  static async findById(id: number): Promise<MessageRow | null> {
-    const [rows] = await pool.query<MessageRow[]>('SELECT * FROM message WHERE id = ?', [id]);
+  static async findById(id: number): Promise<Message | null> {
+    const [rows] = await pool.query<MessageRow[]>(`SELECT * FROM message WHERE id = ?`, [id]);
 
-    return rows[0] ?? null;
+    return rows[0] ? mapMessageRow(rows[0]) : null;
   }
 
   // ✅ FIND BY CHAT
-  static async findByChatId(chatId: number): Promise<MessageRow[]> {
+  static async findByChatId(chatId: number): Promise<Message[]> {
     const [rows] = await pool.query<MessageRow[]>(
       `SELECT *
        FROM message
@@ -58,11 +42,11 @@ class MessageRepository {
       [chatId],
     );
 
-    return rows;
+    return rows.map(mapMessageRow);
   }
 
   // ✅ LAST MESSAGES
-  static async findLastByChatId(chatId: number, limit: number): Promise<MessageRow[]> {
+  static async findLastByChatId(chatId: number, limit: number): Promise<Message[]> {
     const [rows] = await pool.query<MessageRow[]>(
       `SELECT *
        FROM message
@@ -72,48 +56,26 @@ class MessageRepository {
       [chatId, limit],
     );
 
-    return rows.reverse(); // 👈 оставляем твою логику
+    return rows.reverse().map(mapMessageRow);
   }
 
   // ✅ UPDATE
-  static async update(
-    id: number,
-    updateData: {
-      content?: string;
-      metadata?: object;
-    },
-  ): Promise<number> {
-    if (!updateData || Object.keys(updateData).length === 0) {
-      throw new Error('Нет данных для обновления');
-    }
+  static async update(id: number, data: UpdateMessageInput): Promise<boolean> {
+    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
 
-    const sqlParts: string[] = [];
-    const values: (string | number)[] = [];
+    if (entries.length === 0) return false;
 
-    if (updateData.content !== undefined) {
-      sqlParts.push('content = ?');
-      values.push(updateData.content);
-    }
-
-    if (updateData.metadata !== undefined) {
-      sqlParts.push('metadata = ?');
-      values.push(JSON.stringify(updateData.metadata));
-    }
-
-    if (sqlParts.length === 0) {
-      throw new Error('Нет валидных полей для обновления');
-    }
-
-    values.push(id);
+    const fields = entries.map(([k]) => `${k} = ?`).join(', ');
+    const values = entries.map(([k, v]) => (k === 'metadata' && v !== null ? JSON.stringify(v) : v));
 
     const [result] = await pool.query<ResultSetHeader>(
       `UPDATE message
-       SET ${sqlParts.join(', ')}
+       SET ${fields}
        WHERE id = ?`,
-      values,
+      [...values, id],
     );
 
-    return result.affectedRows;
+    return result.affectedRows > 0;
   }
 }
 

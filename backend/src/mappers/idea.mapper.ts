@@ -1,4 +1,25 @@
 import { IdeaDto } from '@shared/types';
+import { Idea, IdeaWithLike } from '../entities/idea.js';
+import { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
+
+export function mapIdeaRow(row: IdeaRow): Idea {
+  return {
+    id: row.id,
+    userId: row.userId,
+    passportId: row.passportId,
+    title: row.title,
+    description: row.description,
+    image: row.image,
+    userCount: row.userCount,
+  };
+}
+
+export function mapIdeaWithLikeRow(row: IdeaWithLikeRow): IdeaWithLike {
+  return {
+    ...mapIdeaRow(row),
+    isLiked: Boolean(row.isLiked),
+  };
+}
 
 export const toIdeaDto = (idea: any): IdeaDto => {
   return {

@@ -1,7 +1,7 @@
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
-import { mapPlaceRow, type PlaceRow } from '../mappers/place.mapper.js';
+import { toPlace, type PlaceRow } from '../mappers/place.mapper.js';
 import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
 
 class PlaceRepository {
@@ -43,7 +43,7 @@ class PlaceRepository {
   static async findAll(): Promise<Place[]> {
     const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place');
 
-    return rows.map(mapPlaceRow);
+    return rows.map(toPlace);
   }
 
   // ✅ FIND BY ID
@@ -52,7 +52,7 @@ class PlaceRepository {
 
     if (!rows[0]) return null;
 
-    return mapPlaceRow(rows[0]);
+    return toPlace(rows[0]);
   }
 
   // ✅ FIND MOS.RU
@@ -65,7 +65,7 @@ class PlaceRepository {
       ['mos.ru'],
     );
 
-    return rows.map(mapPlaceRow);
+    return rows.map(toPlace);
   }
 }
 

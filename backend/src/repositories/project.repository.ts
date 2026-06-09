@@ -1,21 +1,14 @@
-import { RowDataPacket } from 'mysql2/promise';
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
-import { IParams } from '@shared/types';
-
-export interface ProjectRow extends RowDataPacket {
-  id: number;
-  title: string;
-  description: string | null;
-  ideaId: number;
-  placeId: number;
-  passportId: number;
-  deletedAt: string | null;
-}
+import { ProjectRow } from '../entities/project.db.js';
+import { mapProjectRow } from '../mappers/project.mapper.js';
+import { Project } from '../entities/project.js';
+import { CreateProjectInput, UpdateProjectInput } from '../entities/project.types.js';
+import type { IParams } from '@shared/types';
 
 class ProjectRepository {
   // ✅ CREATE
-  static async create(data: { title: string; description?: string | null; ideaId: number; passportId: number }): Promise<number> {
+  static async create(data: CreateProjectInput): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
       `INSERT INTO project (title, description, ideaId, passportId)
        VALUES (?, ?, ?, ?)`,
@@ -26,56 +19,54 @@ class ProjectRepository {
   }
 
   // ✅ UPDATE
-  static async update(id: number, data: Partial<ProjectRow>): Promise<void> {
-    await pool.query(
-      `UPDATE project
-       SET title = COALESCE(?, title),
-           description = COALESCE(?, description)
-       WHERE id = ?`,
-      [data.title, data.description, id],
-    );
+  static async update(id: number, data: UpdateProjectInput): Promise<boolean> {
+    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+
+    if (entries.length === 0) return false;
+
+    const fields = entries.map(([k]) => `${k} = ?`).join(', ');
+    const values = entries.map(([, v]) => v);
+
+    const [result] = await pool.query<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
+
+    return result.affectedRows > 0;
   }
 
   // ✅ DELETE (soft)
   static async delete(id: number): Promise<void> {
-    await pool.query('UPDATE project SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?', [id]);
+    await pool.query(`UPDATE project SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
   }
 
-  static async findAll(params: IParams = {}): Promise<ProjectRow[]> {
-    let sql = 'SELECT project.* FROM project WHERE 1=1 ';
+  // ✅ FIND ALL
+  static async findAll(params: IParams = {}): Promise<Project[]> {
+    let sql = `SELECT project.* FROM project WHERE 1=1`;
     const values: (string | number)[] = [];
 
-    // участие пользователя (через projectUser)
     if (params.userId) {
       sql += `
-      AND EXISTS (
-        SELECT 1 FROM projectUser pu
-        WHERE pu.projectId = project.id
-        AND pu.userId = ?
-      )
-    `;
+        AND EXISTS (
+          SELECT 1 FROM projectUser pu
+          WHERE pu.projectId = project.id
+            AND pu.userId = ?
+        )
+      `;
       values.push(params.userId);
     }
 
-    // проекты конкретного passport
     if (params.passportId) {
       sql += ' AND project.passportId = ?';
       values.push(params.passportId);
     }
 
-    // deleted
-    if (params.deleted === 'true') {
-      sql += ' AND project.deletedAt IS NOT NULL';
-    } else {
-      sql += ' AND project.deletedAt IS NULL';
-    }
+    sql += params.deleted === 'true' ? ' AND project.deletedAt IS NOT NULL' : ' AND project.deletedAt IS NULL';
 
     const [rows] = await pool.query<ProjectRow[]>(sql, values);
-    return rows;
+
+    return rows.map(mapProjectRow);
   }
 
   // ✅ FIND BY ID
-  static async findById(id: number): Promise<ProjectRow | null> {
+  static async findById(id: number): Promise<Project | null> {
     const [rows] = await pool.query<ProjectRow[]>(
       `SELECT *
        FROM project
@@ -84,11 +75,11 @@ class ProjectRepository {
       [id],
     );
 
-    return rows[0] ?? null;
+    return rows[0] ? mapProjectRow(rows[0]) : null;
   }
 
   // ✅ FIND BY IDEA
-  static async findByIdeaId(ideaId: number): Promise<ProjectRow[]> {
+  static async findByIdeaId(ideaId: number): Promise<Project[]> {
     const [rows] = await pool.query<ProjectRow[]>(
       `SELECT *
        FROM project
@@ -97,7 +88,7 @@ class ProjectRepository {
       [ideaId],
     );
 
-    return rows;
+    return rows.map(mapProjectRow);
   }
 }
 

@@ -14,7 +14,7 @@ export interface PlaceRow extends RowDataPacket {
   phone: string | null;
 }
 
-export function mapPlaceRow(row: PlaceRow): Place {
+export function toPlace(row: PlaceRow): Place {
   return {
     id: row.id,
     title: row.title,

@@ -1,5 +1,5 @@
 import Meet from '../repositories/meet.repository.js';
-import MeetUserRepository from '../repositories/meetUser.repository.js';
+import MeetUserRepository from '../repositories/meet-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
 

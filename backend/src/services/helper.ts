@@ -7,7 +7,7 @@ import { meetAssistantAnswer } from '../assistants/meetAssistant.js';
 
 import type { MessageDto, ChatTarget, Meta, UserDto, ProjectDto } from '@shared/types';
 import IdeaRepository from '../repositories/idea.repository.js';
-import IdeaUserRepository from '../repositories/ideaUser.repository.js';
+import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import MessageRepository from '../repositories/message.repository.js';
 import UserRepository from '../repositories/user.repository.js';

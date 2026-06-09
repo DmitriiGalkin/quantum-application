@@ -10,7 +10,7 @@ export class ChatService {
     const chatId = await ChatRepository.create({
       target: body?.target,
       passportId: passport.id,
-    } as Chat);
+    });
 
     const meta: Meta = {} as Meta;
 

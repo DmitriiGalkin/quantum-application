@@ -1,114 +1,89 @@
 import pool from '../db.js';
-import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import type { IParams } from '@shared/types';
-
-export interface IdeaRow extends RowDataPacket {
-  id: number;
-  userId: number;
-  passportId: number | null;
-  title: string | null;
-  description: string | null;
-  image: string | null;
-  deletedAt: string | null;
-}
+import { ResultSetHeader } from 'mysql2/promise';
+import { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
+import { mapIdeaRow, mapIdeaWithLikeRow } from '../mappers/idea.mapper.js';
+import { Idea, IdeaWithLike, CreateIdeaInput, UpdateIdeaInput, FindAllIdeaInput } from '../entities/idea.js';
 
 class IdeaRepository {
   // ✅ CREATE
-  static async create(data: any): Promise<number> {
-    try {
-      const [result] = await pool.query<ResultSetHeader>(
-        `INSERT INTO idea (title, description, userId, passportId)
-         VALUES (?, ?, ?, ?)`,
-        [data.title, data.description, data.userId, data.passportId],
-      );
+  static async create(data: CreateIdeaInput): Promise<number> {
+    const [result] = await pool.query<ResultSetHeader>(
+      `INSERT INTO idea (title, description, userId, passportId)
+       VALUES (?, ?, ?, ?)`,
+      [data.title, data.description, data.userId, data.passportId],
+    );
 
-      return result.insertId;
-    } catch (err) {
-      console.error('idea.create error:', err);
-      throw err;
-    }
+    return result.insertId;
   }
 
   // ✅ UPDATE
-  static async update(id: number, obj: Partial<IdeaRow>): Promise<void> {
-    const sql = `
-      UPDATE idea
-      SET title = COALESCE(?, title),
-          description = COALESCE(?, description),
-          image = COALESCE(?, image)
-      WHERE id = ?
-    `;
+  static async update(id: number, data: UpdateIdeaInput): Promise<boolean> {
+    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
 
-    const values = [obj.title, obj.description, obj.image, id];
+    if (entries.length === 0) return false;
 
-    try {
-      await pool.query(sql, values);
-    } catch (err) {
-      console.error('idea.update error:', err);
-      throw err;
-    }
+    const fields = entries.map(([k]) => `${k} = ?`).join(', ');
+    const values = entries.map(([, v]) => v);
+
+    const [result] = await pool.query<ResultSetHeader>(`UPDATE idea SET ${fields} WHERE id = ?`, [...values, id]);
+
+    return result.affectedRows > 0;
   }
 
   // ✅ DELETE (soft)
   static async delete(id: number): Promise<void> {
-    try {
-      await pool.query('UPDATE idea SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?', [id]);
-    } catch (err) {
-      console.error('idea.delete error:', err);
-      throw err;
-    }
+    await pool.query(`UPDATE idea SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
   }
 
-  static async findAll(params: IParams = {}) {
+  // ✅ FIND ALL
+  static async findAll(params: FindAllIdeaInput): Promise<(Idea | IdeaWithLike)[]> {
     const select: string[] = ['idea.*'];
-
     const values: (string | number)[] = [];
 
-    // isLiked (только если есть пользователь)
-    if (params.currentUserId) {
-      select.push(`
-      EXISTS (
-        SELECT 1
-        FROM ideaUser iu
-        WHERE iu.ideaId = idea.id
-        AND iu.userId = ?
-      ) AS isLiked
-    `);
+    const withLike = Boolean(params.currentUserId);
 
-      values.push(params.currentUserId);
+    if (withLike) {
+      select.push(`
+        EXISTS (
+          SELECT 1
+          FROM ideaUser iu
+          WHERE iu.ideaId = idea.id
+            AND iu.userId = ?
+        ) AS isLiked
+      `);
+
+      values.push(params.currentUserId!);
     }
 
     let sql = `
-    SELECT ${select.join(', ')}
-    FROM idea
-    WHERE 1=1
-  `;
+      SELECT ${select.join(', ')}
+      FROM idea
+      WHERE 1=1
+    `;
 
-    // filters
     if (params.userId) {
       sql += ' AND idea.userId = ?';
       values.push(params.userId);
     }
 
-    if (params.deleted === 'true') {
-      sql += ' AND idea.deletedAt IS NOT NULL';
-    } else {
-      sql += ' AND idea.deletedAt IS NULL';
+    sql += params.deleted === 'true' ? ' AND idea.deletedAt IS NOT NULL' : ' AND idea.deletedAt IS NULL';
+
+    if (withLike) {
+      const [rows] = await pool.query<IdeaWithLikeRow[]>(sql, values);
+      return rows.map(mapIdeaWithLikeRow);
     }
 
     const [rows] = await pool.query<IdeaRow[]>(sql, values);
-    return rows;
+    return rows.map(mapIdeaRow);
   }
-  static async findById(id: string | number) {
-    const sql = 'SELECT * FROM idea WHERE id = ?';
 
-    try {
-      const [rows] = await pool.query<IdeaRow[]>(sql, [id]);
-      return rows[0] ?? null;
-    } catch (err) {
-      console.error('idea.findById error:', err);
-      throw err;
-    }
+  // ✅ FIND BY ID
+  static async findById(id: number): Promise<Idea | null> {
+    const [rows] = await pool.query<IdeaRow[]>(`SELECT * FROM idea WHERE id = ?`, [id]);
+
+    if (!rows[0]) return null;
+
+    return mapIdeaRow(rows[0]);
   }
 }
 

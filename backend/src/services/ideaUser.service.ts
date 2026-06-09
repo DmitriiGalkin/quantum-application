@@ -1,5 +1,5 @@
 import UserRepository from '../repositories/user.repository.js';
-import IdeaUserRepository from '../repositories/ideaUser.repository.js';
+import IdeaUserRepository from '../repositories/idea-user.repository.js';
 
 export class IdeaUserService {
   static async create(passportId: number, body: any) {

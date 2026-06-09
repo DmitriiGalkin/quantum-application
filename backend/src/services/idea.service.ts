@@ -1,7 +1,7 @@
 import UserRepository from '../repositories/user.repository.js';
 import type { IParams, PageMeta } from '@shared/types';
 import IdeaRepository from '../repositories/idea.repository.js';
-import IdeaUserRepository from '../repositories/ideaUser.repository.js';
+import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
