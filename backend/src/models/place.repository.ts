@@ -1,32 +1,15 @@
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
-import { RowDataPacket } from 'mysql2/promise';
 
-interface PlaceRow extends RowDataPacket {
-  id: number;
-  title: string;
-  description: string | null;
-  latitude: number | null;
-  longitude: number | null;
-  provider: string | null;
-  providerId: number | null;
-  address: string | null;
-  phone: string | null;
-}
+import { mapPlaceRow } from '../mappers/place.mapper.js';
+import { CreatePlaceInput, Place, PlaceRow, UpdatePlaceInput } from '../entities/place.js';
 
 class PlaceRepository {
   // ✅ CREATE
-  static async create(data: {
-    title: string;
-    description?: string | null;
-    latitude?: number | null;
-    longitude?: number | null;
-    address?: string | null;
-    provider?: string | null;
-    providerId?: number | null;
-  }): Promise<number> {
+  static async create(data: CreatePlaceInput): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
-      `INSERT INTO place (title, description, latitude, longitude, address, provider, providerId)
+      `INSERT INTO place
+       (title, description, latitude, longitude, address, provider, providerId)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
         data.title,
@@ -42,101 +25,47 @@ class PlaceRepository {
     return result.insertId;
   }
 
-  // ✅ UPDATE
-  static async update(
-    id: number,
-    data: {
-      title?: string;
-      description?: string | null;
-      latitude?: number | null;
-      longitude?: number | null;
-      address?: string | null;
-      provider?: string | null;
-      providerId?: number | null;
-      phone?: string | null;
-      priceFrom?: number | null;
-    },
-  ): Promise<boolean> {
-    const fields: string[] = [];
-    const values: any[] = [];
+  // ✅ UPDATE (универсальный)
+  static async update(id: number, data: UpdatePlaceInput): Promise<boolean> {
+    const entries = Object.entries(data).filter(([, value]) => value !== undefined);
 
-    if (data.title !== undefined) {
-      fields.push('title = ?');
-      values.push(data.title);
-    }
+    if (entries.length === 0) return false;
 
-    if (data.description !== undefined) {
-      fields.push('description = ?');
-      values.push(data.description);
-    }
+    const fields = entries.map(([key]) => `${key} = ?`).join(', ');
+    const values = entries.map(([, value]) => value);
 
-    if (data.latitude !== undefined) {
-      fields.push('latitude = ?');
-      values.push(data.latitude);
-    }
-
-    if (data.longitude !== undefined) {
-      fields.push('longitude = ?');
-      values.push(data.longitude);
-    }
-
-    if (data.address !== undefined) {
-      fields.push('address = ?');
-      values.push(data.address);
-    }
-
-    if (data.provider !== undefined) {
-      fields.push('provider = ?');
-      values.push(data.provider);
-    }
-
-    if (data.providerId !== undefined) {
-      fields.push('providerId = ?');
-      values.push(data.providerId);
-    }
-
-    if (data.phone !== undefined) {
-      fields.push('phone = ?');
-      values.push(data.phone);
-    }
-
-    if (data.priceFrom !== undefined) {
-      fields.push('priceFrom = ?');
-      values.push(data.priceFrom);
-    }
-
-    // ❗ если нечего обновлять
-    if (fields.length === 0) {
-      return false;
-    }
-
-    const sql = `UPDATE place SET ${fields.join(', ')} WHERE id = ?`;
-    values.push(id);
-
-    const [result] = await pool.query<ResultSetHeader>(sql, values);
+    const [result] = await pool.query<ResultSetHeader>(`UPDATE place SET ${fields} WHERE id = ?`, [...values, id]);
 
     return result.affectedRows > 0;
   }
 
   // ✅ FIND ALL
-  static async findAll(): Promise<PlaceRow[]> {
+  static async findAll(): Promise<Place[]> {
     const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place');
 
-    return rows;
+    return rows.map(mapPlaceRow);
   }
 
   // ✅ FIND BY ID
-  static async findById(id: number): Promise<PlaceRow | null> {
+  static async findById(id: number): Promise<Place | null> {
     const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place WHERE id = ?', [id]);
 
-    return rows[0] ?? null;
+    if (!rows[0]) return null;
+
+    return mapPlaceRow(rows[0]);
   }
 
   // ✅ FIND MOS.RU
-  static async findMOSRU(): Promise<PlaceRow[]> {
-    const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place WHERE place.provider = "mos.ru" AND place.phone IS NULL ');
+  static async findMOSRU(): Promise<Place[]> {
+    const [rows] = await pool.query<PlaceRow[]>(
+      `SELECT * 
+       FROM place 
+       WHERE provider = ? 
+         AND phone IS NULL`,
+      ['mos.ru'],
+    );
 
-    return rows;
+    return rows.map(mapPlaceRow);
   }
 }
 

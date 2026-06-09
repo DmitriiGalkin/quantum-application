@@ -10,5 +10,5 @@
       "@shared/types": ["../packages/types"]
     }
   },
-  "include": ["server.ts", "parser.ts"]
+  "include": ["server.ts"]
 }

@@ -119,21 +119,14 @@ export interface UserDto {
 
 export interface PlaceDto {
   id: number;
-  title?: string;
-  description?: string;
-  address?: string;
-  latitude: number;
-  longitude: number;
-  image?: string;
+  title: string;
+  description: string | null;
+  address: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  image: string | null;
 
-  meets: {
-    id: number;
-    projectId: number;
-    startedAt: string;
-    duration?: number;
-    price?: number;
-    title: string;
-  }[];
+  meets: MeetDto[];
 }
 
 export interface ProjectDto {
