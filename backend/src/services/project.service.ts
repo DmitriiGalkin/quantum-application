@@ -1,7 +1,7 @@
-import ProjectRepository from '../models/project.repository.js';
-import MeetRepository from '../models/meet.repository.js';
-import UserRepository from '../models/user.repository.js';
-import PassportRepository from '../models/passport.repository.js';
+import ProjectRepository from '../repositories/project.repository.js';
+import MeetRepository from '../repositories/meet.repository.js';
+import UserRepository from '../repositories/user.repository.js';
+import PassportRepository from '../repositories/passport.repository.js';
 import { IParams } from '@shared/types';
 
 export class ProjectService {

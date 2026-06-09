@@ -1,6 +1,6 @@
 import { ok, fail } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
-import PassportRepository from '../models/passport.repository.js';
+import PassportRepository from '../repositories/passport.repository.js';
 import { toPassport } from '../mappers/passport.mapper.js';
 
 const update = async (req, res) => {

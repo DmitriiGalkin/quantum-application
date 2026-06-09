@@ -1,6 +1,6 @@
 import axios from 'axios';
 import 'dotenv/config'; // Импорт и вызов сразу
-import PlaceRepository from './models/place.repository.js';
+import PlaceRepository from './repositories/place.repository.js';
 
 // Получили места
 const response = await axios.get('https://www.mos.ru/api/mss-facade/v1/rental-public-space/spots?');

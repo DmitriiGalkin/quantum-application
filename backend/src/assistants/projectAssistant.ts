@@ -1,4 +1,4 @@
-import IdeaModel, { IdeaRow } from '../models/idea.repository.js';
+import IdeaModel, { IdeaRow } from '../repositories/idea.repository.js';
 import { baseAssistantAnswer } from './assistant.js';
 import type { PassportDto } from '@shared/types';
 import { AssistantAnswer } from '../assistants/ideaAssistant.js';

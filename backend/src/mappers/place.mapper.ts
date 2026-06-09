@@ -1,7 +1,20 @@
 import type { Place } from '../entities/place.js';
 import type { PlaceDto } from '@shared/types';
+import { RowDataPacket } from 'mysql2/promise';
 
-export function mapPlaceRow(row): Place {
+export interface PlaceRow extends RowDataPacket {
+  id: number;
+  title: string;
+  description: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  provider: string | null;
+  providerId: number | null;
+  address: string | null;
+  phone: string | null;
+}
+
+export function mapPlaceRow(row: PlaceRow): Place {
   return {
     id: row.id,
     title: row.title,

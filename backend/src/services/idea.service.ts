@@ -1,10 +1,10 @@
-import UserRepository from '../models/user.repository.js';
+import UserRepository from '../repositories/user.repository.js';
 import type { IParams, PageMeta } from '@shared/types';
-import IdeaRepository from '../models/idea.repository.js';
-import IdeaUserRepository from '../models/ideaUser.repository.js';
-import PassportRepository from '../models/passport.repository.js';
-import ProjectRepository from '../models/project.repository.js';
-import PlaceRepository from '../models/place.repository.js';
+import IdeaRepository from '../repositories/idea.repository.js';
+import IdeaUserRepository from '../repositories/ideaUser.repository.js';
+import PassportRepository from '../repositories/passport.repository.js';
+import ProjectRepository from '../repositories/project.repository.js';
+import PlaceRepository from '../repositories/place.repository.js';
 import { generateProjectImage, uploadImage } from '../assistants/imageAssistant.js';
 
 export class IdeaService {

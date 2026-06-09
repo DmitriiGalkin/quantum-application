@@ -1,5 +1,5 @@
-import PlaceRepository from '../models/place.repository.js';
-import MeetRepository from '../models/meet.repository.js';
+import PlaceRepository from '../repositories/place.repository.js';
+import MeetRepository from '../repositories/meet.repository.js';
 
 export class PlaceService {
   static async findAll() {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import 'dotenv/config'; // Импорт и вызов сразу
-import PlaceRepository from './models/place.repository.js';
+import PlaceRepository from './repositories/place.repository.js';
 import { Hall } from './mosrutype.js';
 
 const axiosInstance = axios.create({

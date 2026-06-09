@@ -1,8 +1,8 @@
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
-import { mapPlaceRow } from '../mappers/place.mapper.js';
-import { CreatePlaceInput, Place, PlaceRow, UpdatePlaceInput } from '../entities/place.js';
+import { mapPlaceRow, type PlaceRow } from '../mappers/place.mapper.js';
+import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
 
 class PlaceRepository {
   // ✅ CREATE

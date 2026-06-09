@@ -1,6 +1,6 @@
 import type { UserDto } from '@shared/types';
-import UserRepository from '../models/user.repository.js';
-import ProjectUserRepository from '../models/projectUser.repository.js';
+import UserRepository from '../repositories/user.repository.js';
+import ProjectUserRepository from '../repositories/projectUser.repository.js';
 import type { User } from '../entities/user.js';
 import type { Passport } from '../entities/passport.js';
 

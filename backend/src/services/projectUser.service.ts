@@ -1,6 +1,6 @@
-import ProjectRepository from '../models/project.repository.js';
-import ProjectUserRepository from '../models/projectUser.repository.js';
-import UserRepository from '../models/user.repository.js';
+import ProjectRepository from '../repositories/project.repository.js';
+import ProjectUserRepository from '../repositories/projectUser.repository.js';
+import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
 
 function getPassportUserIds(passportId: number) {

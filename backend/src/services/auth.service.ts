@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import PassportRepository from '../models/passport.repository.js';
-import UserRepository from '../models/user.repository.js';
+import PassportRepository from '../repositories/passport.repository.js';
+import UserRepository from '../repositories/user.repository.js';
 
 export class AuthService {
   static async updateProfile(passport: any, data: any) {

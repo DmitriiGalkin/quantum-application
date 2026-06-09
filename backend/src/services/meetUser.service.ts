@@ -1,6 +1,6 @@
-import Meet from '../models/meet.repository.js';
-import MeetUserRepository from '../models/meetUser.repository.js';
-import UserRepository from '../models/user.repository.js';
+import Meet from '../repositories/meet.repository.js';
+import MeetUserRepository from '../repositories/meetUser.repository.js';
+import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
 
 export class MeetUserService {
