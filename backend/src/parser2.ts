@@ -33,12 +33,15 @@ for (const place of places) {
     const response = await axiosInstance.get(`rental-public-space/hall?page=0&sort=asc&sort_column=preference&spot_id=${place.providerId}`);
 
     const items = response.data.data.items as Hall[];
+    const minPrices = Math.min(...items.map((item) => item.price_starts_from))
 
     if (!items.length) continue;
-
-    await PlaceRepository.update(place.id, {
-      phone: items[0].spot.phone,
-    });
+const f = {
+  phone: items[0].spot.phone,
+  priceFrom: minPrices,
+};
+console.log(f,'f')
+    await PlaceRepository.update(place.id, f);
 
     console.log(place.id, 'обновлен');
 

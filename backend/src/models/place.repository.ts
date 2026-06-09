@@ -54,6 +54,7 @@ class PlaceRepository {
       provider?: string | null;
       providerId?: number | null;
       phone?: string | null;
+      priceFrom?: number | null;
     },
   ): Promise<boolean> {
     const fields: string[] = [];
@@ -99,6 +100,11 @@ class PlaceRepository {
       values.push(data.phone);
     }
 
+    if (data.priceFrom !== undefined) {
+      fields.push('priceFrom = ?');
+      values.push(data.priceFrom);
+    }
+
     // ❗ если нечего обновлять
     if (fields.length === 0) {
       return false;
@@ -128,7 +134,7 @@ class PlaceRepository {
 
   // ✅ FIND MOS.RU
   static async findMOSRU(): Promise<PlaceRow[]> {
-    const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place WHERE place.provider = "mos.ru" LIMIT 5');
+    const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place WHERE place.provider = "mos.ru" AND place.phone IS NULL ');
 
     return rows;
   }
