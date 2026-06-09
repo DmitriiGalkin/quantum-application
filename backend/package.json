@@ -46,7 +46,8 @@
     "build": "tsc -p tsconfig.node.json",
     "start": "node src",
     "nodemonstart": "nodemon src/index.ts",
-    "dev": "tsx --watch src/index.ts"
+    "dev": "tsx --watch src/index.ts",
+    "parser": "npx tsx src/parser2.ts"
   },
   "eslintConfig": {
     "extends": [

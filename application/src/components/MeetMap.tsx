@@ -80,7 +80,7 @@ export function MapComponent({ lat, lng, zoom }: Props) {
     const getPlaceIcon = (count: number) =>
       L.divIcon({
         className: 'custom-map-marker',
-        html: `<div class="marker-pin"></div><div class="marker-text">${count}</div>`,
+        html: `<div class="marker-pin${!count ? ' marker-pin-empty' : ''}"></div><div class="marker-text">${count || ''}</div>`,
         iconSize: [30, 42],
       });
 
