@@ -101,8 +101,8 @@ export async function deleteMeetUser(meetUserId: number) {
   });
 }
 
-export async function generateImage(projectId: number) {
-  return apiFetch(`/project/${projectId}/generateImage`, {
+export async function generateImage(ideaId: number) {
+  return apiFetch(`/idea/${ideaId}/generateImage`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

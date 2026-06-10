@@ -36,16 +36,12 @@ for (const place of places) {
     const minPrices = Math.min(...items.map((item) => item.price_starts_from))
 
     if (!items.length) continue;
-const f = {
-  phone: items[0].spot.phone,
-  priceFrom: minPrices,
-};
-console.log(f,'f')
-    await PlaceRepository.update(place.id, f);
 
-    console.log(place.id, 'обновлен');
+    await PlaceRepository.update(place.id, {
+      phone: items[0].spot.phone,
+      priceFrom: minPrices,
+    });
 
-    // 👇 КЛЮЧЕВОЕ — пауза
     await delay(1000 + Math.random() * 2000);
   } catch (e) {
     console.error('Ошибка:', place.id, e.message);

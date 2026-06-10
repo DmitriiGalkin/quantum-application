@@ -29,13 +29,10 @@ export async function generateIdeaImage(project: Idea) {
       ],
       function_call: 'auto',
     };
-    console.log(payload, 'payload');
+
     const imageResponse = await assistant.chat(payload);
 
-    //console.log(JSON.stringify(imageResponse), 'imageResponse');
-
     const detectedImage = detectImage(imageResponse.choices[0]?.message.content ?? '');
-    //console.log(detectedImage, 'detectedImage');
 
     if (detectedImage && detectedImage.uuid) {
       const image = await assistant.getImage(detectedImage.uuid);

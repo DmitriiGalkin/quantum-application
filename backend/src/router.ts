@@ -14,6 +14,7 @@ import idea from './controllers/idea.controller.js';
 import ideaUser from './controllers/ideaUser.controller.js';
 import projectUser from './controllers/projectUser.controller.js';
 import chat from './controllers/chat.controller.js';
+import message from './controllers/message.controller.js';
 import strategies from './strategies.js';
 import { ControllerWithAuth } from './controllers/helper.js';
 
@@ -68,10 +69,8 @@ publicRouter.get('/idea/:id/meta', idea.meta);
 publicRouter.get('/projects', project.findAll);
 publicRouter.get('/project/:id', project.findById);
 publicRouter.get('/project/:id/meta', project.meta);
-publicRouter.get('/chats', chat.findAll);
-publicRouter.get('/chat/:id', chat.findMessages);
 publicRouter.post('/chat', chat.create);
-publicRouter.post('/message', chat.createMessage);
+publicRouter.get('/chat/:id', chat.findMessages);
 publicRouter.get('/meets', meet.findAll);
 publicRouter.get('/meet/:id', meet.findById);
 publicRouter.get('/user/:id', user.findById);
@@ -84,6 +83,8 @@ privateRouter.put('/passport', withAuth(passportController.update));
 
 privateRouter.post('/image', upload.single('image'), withAuth(image.upload));
 
+privateRouter.post('/idea/:id/generateImage', withAuth(idea.generateImage));
+
 privateRouter.post('/ideaUser', withAuth(ideaUser.create));
 privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));
 
@@ -91,7 +92,7 @@ privateRouter.post('/project', withAuth(project.create));
 privateRouter.put('/project/:id', withAuth(project.update));
 privateRouter.delete('/project/:id', withAuth(project.delete));
 
-
+privateRouter.post('/message', withAuth(message.create));
 
 privateRouter.post('/place', withAuth(place.create));
 

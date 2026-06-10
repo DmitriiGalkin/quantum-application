@@ -11,16 +11,6 @@ const create = async (req, res) => {
   }
 };
 
-const createMessage = async (req, res) => {
-  try {
-    const result = await ChatService.createMessage(req.passport!, req.body);
-
-    ok(res, result);
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось отправить сообщение');
-  }
-};
-
 const findMessages = async (req, res) => {
   try {
     const result = await ChatService.findMessages(Number(req.params.id));
@@ -31,19 +21,7 @@ const findMessages = async (req, res) => {
   }
 };
 
-const findAll = async (req, res) => {
-  try {
-    const chats = await ChatService.findAll(req.passport!);
-
-    ok(res, chats);
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось получить список чатов');
-  }
-};
-
 export default {
   create,
-  createMessage,
   findMessages,
-  findAll,
 };

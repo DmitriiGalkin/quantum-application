@@ -27,10 +27,6 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
       ],
     };
 
-    //.filter(f => f.target === meta.target)
-
-    console.log(payload, 'payload');
-
     // 2. Отправка запроса к API
     const resp = await assistant.chat(payload);
 
@@ -46,21 +42,17 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
     const userMessage = !data ? content : null;
 
     if (data) {
-      console.log(data, 'data');
-
       if (!schema(data)) {
         console.error('Ошибка: структура JSON не соответствует ожидаемому формату.');
         return null;
       }
       const tData = transformer(data);
-      const f = {
+      return {
         content: userMessage,
         metadata: JSON.stringify({ target: meta.target, data: tData }),
         meta: data ? { target: meta.target, data: tData } : null,
         target: meta.target,
       };
-      console.log(f, 'f');
-      return f;
     }
 
     // 5. Формирование ответа

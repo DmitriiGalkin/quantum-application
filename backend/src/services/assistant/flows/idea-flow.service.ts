@@ -20,9 +20,6 @@ export class IdeaFlowService {
 
     await IdeaUserRepository.create({ ideaId, userId });
 
-    return {
-      content: `Идея создана: <a href="/idea/${ideaId}">перейти</a>.`,
-      target: 'idea',
-    };
+    return ideaId;
   }
 }

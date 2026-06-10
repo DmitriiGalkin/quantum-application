@@ -1,5 +1,5 @@
 import { buildMeta } from './chat.meta.js';
-import { runChatAssistant } from './chat.runner.js';
+import { getContent } from './chat.runner.js';
 import { Passport } from '../../entities/passport.js';
 import { ChatTarget } from '@shared/types';
 import ChatRepository from '../../repositories/chat.repository.js';
@@ -19,48 +19,6 @@ export class ChatService {
     });
   }
 
-  static async createMessage(passport: Passport, body: any) {
-    const messageText = String(body?.message || '').trim();
-    if (!messageText) throw new Error('Сообщение не может быть пустым');
-
-    const chat = await ChatRepository.findById(body.chatId);
-    if (!chat) throw new Error('Чат не найден');
-
-    const lastMessages = await MessageRepository.findLastByChatId(chat.id, 100);
-
-    const userMessageId = await MessageRepository.create({
-      chatId: chat.id,
-      content: messageText,
-      role: 'user',
-      target: lastMessages.at(-1)?.target,
-    });
-
-    const messages = [
-      ...lastMessages,
-      {
-        id: userMessageId,
-        content: messageText,
-        role: 'user',
-      } as Message,
-    ];
-
-    const meta = buildMeta(messages, passport);
-
-    const { result, meta: updatedMeta } = await runChatAssistant(chat.target, meta, messages);
-
-    const assistantMessage = await MessageService.createAssistantMessage({
-      chatId: chat.id,
-      ...result,
-    });
-
-    await ChatRepository.touch(chat.id);
-
-    return {
-      chatId: chat.id,
-      message: toMessage(assistantMessage),
-      meta: updatedMeta,
-    };
-  }
 
   static async findMessages(chatId: number) {
     const chat = await ChatRepository.findById(chatId);

@@ -1,5 +1,5 @@
-import type { Meta } from '@shared/types';
 import type { Message } from '../entities/message.js';
+import { Meta } from './chat/chat.meta.js';
 
 
 /**

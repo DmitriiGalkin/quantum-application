@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -20,7 +20,7 @@ import { ACTIVE_CHAT_ID_STORAGE_KEY } from '../components/HomeDrawer.tsx';
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
 function ChatPage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
   const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
   const [chatId, setChatId] = useState<number | null>(activeChatId ? Number(activeChatId) : null);
@@ -63,6 +63,7 @@ function ChatPage() {
         {
           onSuccess: ({ chatId }) => {
             localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
+            setSearchParams({});
 
             queryClient.setQueryData(['chat', chatId], addOptimisticMessage(trimmed));
             setMessage('');
@@ -122,6 +123,18 @@ function ChatPage() {
       localStorage.removeItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY);
     }
   }, []);
+
+  useEffect(() => {
+    const hasTargetInUrl = searchParams.has('target');
+
+    if (hasTargetInUrl) {
+      // 👉 очищаем старый чат
+      localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+
+      // 👉 сбрасываем состояние
+      setChatId(null);
+    }
+  }, [searchParams]);
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
@@ -189,7 +202,33 @@ function ChatPage() {
               </Typography>
               <Message role="assistant">
                 <Typography>
-                  Прежде чем мы сформируем идею Вашего ребенка и загрузим ее в проект, рсскажите сперва немного о ребенке: как его зовут, возраст, парочку слов о его увлечениях?
+                  Прежде чем мы сформируем идею Вашего ребенка и загрузим ее в проект, расскажите сперва немного о ребенке: как его зовут, возраст,
+                  парочку слов о его увлечениях?
+                </Typography>
+              </Message>
+            </Stack>
+          )}
+
+          {target === 'project' && (
+            <Stack spacing={2}>
+              <Box
+                component="img"
+                src="/teacher.svg"
+                alt="example"
+                sx={{
+                  width: '100%',
+                  maxWidth: 350,
+                  objectFit: 'contain', // важно!
+                  alignItems: 'center',
+                }}
+              />
+              <Typography>
+                Помогаем привлекать учеников. Даем возможность мастерам и педагогам развивать детские идеи проектов. Помогаем наполнять группы,
+                подбирать оптимальное время и место проведения встреч.
+              </Typography>
+              <Message role="assistant">
+                <Typography>
+                  Прежде чем мы сформируем и создадим Ваш проект на базе детских идей, расскажите сперва немного о себе: ваш профессионалный род деятельности и интересы, которые бы Вы могли разделить вместе с детьми?
                 </Typography>
               </Message>
             </Stack>

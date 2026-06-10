@@ -18,7 +18,6 @@ const items = data.items as {
 
 // https://www.mos.ru/api/mss-facade/v1/rental-public-space/hall?page=0&sort=asc&sort_column=preference&spot_id=276123
 
-console.log(response, data, items, 'items');
 
 items.map(async (item) => {
   const placeId = await PlaceRepository.create({
@@ -29,5 +28,4 @@ items.map(async (item) => {
     longitude: item.longitude,
     latitude: item.latitude,
   });
-  console.log(placeId);
 });

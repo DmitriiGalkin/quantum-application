@@ -30,7 +30,7 @@ function IdeaPage() {
   const generateImageMutation = useMutation({
     mutationFn: generateImage,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['project', id] });
+      queryClient.invalidateQueries({ queryKey: ['idea', id] });
     },
   });
 

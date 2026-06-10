@@ -35,7 +35,7 @@ ${JSON.stringify(filterIdeas)}
 }
 
 export async function projectAssistantAnswer({ messages, meta }: AssistantAnswer) {
-  const ideas = await IdeaModel.findAll();
+  const ideas = await IdeaModel.findAll({});
   return baseAssistantAnswer({
     messages,
     meta: { ...meta, target: 'project' },

@@ -35,11 +35,11 @@ const getIdeaPrompt = (user: UserDto) => `
 
 export interface AssistantAnswer {
   messages: Message[];
-  meta: any;
+  meta?: any;
 }
 
 export async function ideaAssistantAnswer({ messages, meta }: AssistantAnswer) {
-  const x = await baseAssistantAnswer({
+  return await baseAssistantAnswer({
     messages,
     meta: { ...meta, target: 'idea' },
     prompt: getIdeaPrompt(meta.user), // Передаем функцию для промпта
@@ -54,6 +54,4 @@ export async function ideaAssistantAnswer({ messages, meta }: AssistantAnswer) {
       steps: data.steps,
     }),
   });
-  console.log(x, 'x');
-  return x;
 }

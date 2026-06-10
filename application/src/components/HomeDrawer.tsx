@@ -62,9 +62,6 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
             <ListItemButton
               component={Link}
               to="/chat?target=idea"
-              onClick={() => {
-                localStorage.removeItem('active_chat_id');
-              }}
               sx={{
                 mb: 1,
                 borderRadius: 2,
@@ -122,11 +119,9 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
           <List disablePadding>
             <ListItemButton
               component={Link}
-              to="/project/create"
+              to="/chat?target=project"
               onClick={() => setIsMenuOpen(false)}
-              sx={{
-                borderRadius: 2,
-              }}
+              sx={{ borderRadius: 2 }}
             >
               <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
                 <CreateNewFolderIcon />

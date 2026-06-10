@@ -11,65 +11,56 @@ import { IdeaFlowService } from './flows/idea-flow.service.js';
 import { ProjectFlowService } from './flows/project-flow.service.js';
 import { Message } from '../../entities/message.js';
 
-type AssistantFn = (input: { messages: Message[]; meta: Meta }) => Promise<{
-  content: string;
+const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
+
+type AssistantFn = Promise<{
+  content?: string;
   meta?: {
     target: string;
     data: unknown;
   };
+  target?: ChatTarget;
 }>;
 
 // selectAssistant → решает шаг
-export function selectAssistant(target: ChatTarget, meta: Meta): AssistantFn {
+export async function getAnswer(target: ChatTarget, meta: Meta, messages: Message[]): AssistantFn {
   switch (target) {
     case 'idea':
-      if (!meta?.user) return userAssistant;
+      if (!meta?.user) return await userAssistant({ messages });
 
-      if (!meta?.idea) return ideaAssistantAnswer;
+      if (!meta?.idea) return ideaAssistantAnswer({ messages, meta });
 
-      if (!meta?.passport) return authAssistant;
+      if (!meta?.passport) return authAssistant();
 
-      return async () => {
-        const data = await IdeaFlowService.create(meta);
+      const ideaId = await IdeaFlowService.create(meta);
 
-        return {
-          content: `Идея создана`,
-          meta: {
-            target: 'idea',
-            data,
-          },
-        };
+      return {
+        content: `Идея ${FRONTEND_SERVER}/idea/${ideaId} создана`,
       };
 
     case 'project':
-      if (!meta?.teacher) return teacherAssistantAnswer;
+      if (!meta?.teacher) return teacherAssistantAnswer({ messages });
 
-      if (!meta?.project) return projectAssistantAnswer;
+      if (!meta?.project) return projectAssistantAnswer({ messages, meta });
 
-      if (!meta?.passport) return authAssistant;
+      if (!meta?.passport) return authAssistant();
 
-      return async () => {
-        const data = await ProjectFlowService.create(meta);
+      const projectId = await ProjectFlowService.create(meta);
 
         return {
-          content: `Проект создан`,
-          meta: {
-            target: 'project',
-            data,
-          },
+          content: `Проект ${FRONTEND_SERVER}/project/${projectId} создан`,
         };
-      };
 
     case 'meet':
-      if (!meta?.meet) return meetAssistantAnswer;
+      if (!meta?.meet) return meetAssistantAnswer({ messages, meta });
 
-      return async () => ({
+      return{
         content: 'Данные собраны, можно создавать встречу.',
-      });
+      };
 
     default:
-      return async () => ({
+      return {
         content: 'Сценарий не определён',
-      });
+      };
   }
 }
