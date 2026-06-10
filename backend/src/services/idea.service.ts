@@ -5,7 +5,7 @@ import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
-import { generateProjectImage, uploadImage } from '../assistants/imageAssistant.js';
+import { generateIdeaImage, uploadImage } from '../assistants/imageAssistant.js';
 
 export class IdeaService {
   static async findAll(params: IParams) {
@@ -52,16 +52,16 @@ export class IdeaService {
     };
   }
 
-  static async generateProjectImage(projectId: number) {
-    const project = await ProjectRepository.findById(projectId);
-    if (!project) return null;
+  static async generateIdeaImage(projectId: number) {
+    const idea = await IdeaRepository.findById(projectId);
+    if (!idea) return null;
 
-    const imageBinary = await generateProjectImage(project);
+    const imageBinary = await generateIdeaImage(idea);
     const image = await uploadImage(imageBinary);
 
-    await ProjectRepository.update(projectId, { ...project, image });
+    await IdeaRepository.update(projectId, { ...idea, image });
 
-    return project;
+    return idea;
   }
 
   static async meta(id: number) {

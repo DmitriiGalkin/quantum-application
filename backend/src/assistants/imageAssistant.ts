@@ -4,9 +4,9 @@ import S3 from '../s3.js';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuid } from 'uuid';
 import assistant from '../assistant.js';
-import type { ProjectDto } from '@shared/types';
+import type { Idea } from '../entities/idea.js';
 
-function buildProjectImagePrompt(project: ProjectDto) {
+function buildProjectImagePrompt(project: Idea) {
   return [
     'Сгенерируй изображение 256px на 256px',
     'Сделай яркую, дружелюбную, современную иллюстрацию без текста на изображении.',
@@ -16,7 +16,7 @@ function buildProjectImagePrompt(project: ProjectDto) {
   ].join('\n');
 }
 
-export async function generateProjectImage(project: ProjectDto) {
+export async function generateIdeaImage(project: Idea) {
   // --- Блок генерации изображения (пример использования GigaChat) ---
   // Этот блок можно вынести в отдельную функцию или сервис, если он нужен постоянно.
   try {

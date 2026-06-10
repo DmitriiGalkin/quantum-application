@@ -15,7 +15,7 @@ export class UserService {
   }
 
   static async update(passport: Passport, body: UserDto) {
-    await UserRepository.update(body);
+    await UserRepository.update(body.id, body);
   }
 
   static async remove(passport: Passport, userId: number) {
