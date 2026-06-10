@@ -33,10 +33,10 @@ const findById = async (req, res) => {
 
 const generateImage: ControllerWithAuth<{ message: string }> = async (req, res) => {
   try {
-    const project = await IdeaService.generateProjectImage(Number(req.params.id));
+    const idea = await IdeaService.generateIdeaImage(Number(req.params.id));
 
-    if (!project) {
-      fail(res, 'Проект не найден', 404);
+    if (!idea) {
+      fail(res, 'Идея не найдена', 404);
     }
 
     ok(res, { message: 'Изображение проекта обновлено' });
