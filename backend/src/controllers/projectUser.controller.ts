@@ -1,5 +1,5 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
-import { ProjectUserService } from '../services/projectUser.service.js';
+import { ProjectUserService } from '../services/project-user.service.js';
 
 const create: ControllerWithAuth<number> = async (req, res) => {
   try {

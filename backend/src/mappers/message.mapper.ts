@@ -15,13 +15,13 @@ export function mapMessageRow(row: MessageRow): Message {
   };
 }
 
-export const toMessage = (row: MessageRow): MessageDto => ({
+export const toMessage = (row: Message): MessageDto => ({
   id: row.id,
   chatId: row.chatId,
   passportId: row.passportId,
   role: row.role as ChatMessageRole,
   content: row.content,
-  metadata: row.metadata ? JSON.parse(row.metadata) : null,
+  metadata: row.metadata,
   target: row.target as ChatTarget,
   //createdAt: row.createdAt,
 });

@@ -1,5 +1,5 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
-import { MeetUserService } from '../services/meetUser.service.js';
+import { MeetUserService } from '../services/meet-user.service.js';
 
 const create: ControllerWithAuth<{}> = async (req, res) => {
   try {

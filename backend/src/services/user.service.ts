@@ -1,24 +1,38 @@
-import type { UserDto } from '@shared/types';
 import UserRepository from '../repositories/user.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
+
 import type { User } from '../entities/user.js';
 import type { Passport } from '../entities/passport.js';
+import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
 
 export class UserService {
-  static async create(passport: Passport, body: UserDto) {
+  // ✅ CREATE
+  static async create(passport: Passport, body: CreateUserInput): Promise<{ id: number }> {
     const id = await UserRepository.create({
       ...body,
       passportId: passport.id,
-    } as User);
+    });
 
     return { id };
   }
 
-  static async update(passport: Passport, body: UserDto) {
-    await UserRepository.update(body.id, body);
+  // ✅ UPDATE
+  static async update(passport: Passport, userId: number, body: UpdateUserInput): Promise<void> {
+    const user = await UserRepository.findById(userId);
+
+    if (!user) {
+      throw new Error('Участник не найден');
+    }
+
+    if (user.passportId !== passport.id) {
+      throw new Error('Нет прав на изменение');
+    }
+
+    await UserRepository.update(userId, body);
   }
 
-  static async remove(passport: Passport, userId: number) {
+  // ✅ DELETE
+  static async remove(passport: Passport, userId: number): Promise<void> {
     const user = await UserRepository.findById(userId);
 
     if (!user) {
@@ -33,7 +47,8 @@ export class UserService {
     await UserRepository.delete(userId);
   }
 
-  static async findById(id: number) {
+  // ✅ FIND
+  static async findById(id: number): Promise<User | null> {
     return await UserRepository.findById(id);
   }
 }
