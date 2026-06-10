@@ -1,7 +1,6 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import passport from 'passport';
 import multer from 'multer';
-import { RequestHandler } from 'express';
 
 import user from './controllers/user.controller.js';
 import passportController from './controllers/passport.controller.js';

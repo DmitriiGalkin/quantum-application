@@ -1,4 +1,4 @@
-import { MessageDto, ChatMessageRole, ChatTarget } from '@shared/types';
+import { ChatMessageRole, ChatTarget, MessageDto } from '@shared/types';
 import { Message } from '../entities/message.js';
 import { MessageRow } from '../entities/message.db.js';
 

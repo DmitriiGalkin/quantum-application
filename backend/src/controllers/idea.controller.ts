@@ -1,7 +1,6 @@
-import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
+import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { toIdeaDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
-import { ProjectService } from '../services/project.service.js';
 import { IdeaDto, PageMeta } from '@shared/types';
 
 const findAllPublic: Controller<IdeaDto[]> = async (req, res) => {

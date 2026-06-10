@@ -1,5 +1,5 @@
 import { MeetUser, MeetUserWithMeet } from '../entities/meet-user.js';
-import { MeetUserRow, MeetUserWithMeetRow, MeetUserFullRow } from '../entities/meet-user.db.js';
+import { MeetUserFullRow, MeetUserRow, MeetUserWithMeetRow } from '../entities/meet-user.db.js';
 import { MeetUserFull } from '../entities/meet-user.view.js';
 
 export function mapMeetUserRow(row: MeetUserRow): MeetUser {

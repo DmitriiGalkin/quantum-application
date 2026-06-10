@@ -1,4 +1,4 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
+import { ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectUserService } from '../services/project-user.service.js';
 
 const create: ControllerWithAuth<number> = async (req, res) => {

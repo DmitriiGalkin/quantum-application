@@ -1,4 +1,4 @@
-import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
+import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { ChatService } from '../services/chat/chat.service.js';
 import { MessageDto } from '@shared/types';
 

@@ -1,6 +1,6 @@
-import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
+import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import { PlaceDto, ProjectDto } from '@shared/types';
+import { PlaceDto } from '@shared/types';
 
 const findAll: Controller<PlaceDto[]> = async (req, res) => {
   try {

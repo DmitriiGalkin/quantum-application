@@ -1,7 +1,7 @@
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
-import { toPlace, type PlaceRow } from '../mappers/place.mapper.js';
+import { type PlaceRow, toPlace } from '../mappers/place.mapper.js';
 import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
 
 class PlaceRepository {

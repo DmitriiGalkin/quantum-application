@@ -1,4 +1,4 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
+import { ControllerWithAuth, fail, ok } from './helper.js';
 import { MeetUserService } from '../services/meet-user.service.js';
 import { MeetUserFull } from '../entities/meet-user.view.js';
 

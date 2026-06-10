@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import type { UserDto } from '@shared/types'; // Импортируем пул соединений
 import { ApiResponse } from '../types/api.js';
 import { Passport } from '../entities/passport.js'; // Импортируем пул соединений

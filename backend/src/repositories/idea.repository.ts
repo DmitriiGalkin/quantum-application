@@ -2,7 +2,7 @@ import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 import { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
 import { mapIdeaRow, mapIdeaWithLikeRow } from '../mappers/idea.mapper.js';
-import { Idea, IdeaWithLike, CreateIdeaInput, UpdateIdeaInput, FindAllIdeaInput } from '../entities/idea.js';
+import { CreateIdeaInput, FindAllIdeaInput, Idea, IdeaWithLike, UpdateIdeaInput } from '../entities/idea.js';
 
 class IdeaRepository {
   // ✅ CREATE

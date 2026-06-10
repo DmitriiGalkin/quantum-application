@@ -4,7 +4,6 @@ import IdeaRepository from '../repositories/idea.repository.js';
 import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
-import PlaceRepository from '../repositories/place.repository.js';
 import { generateIdeaImage, uploadImage } from '../ai/assistants/image.assistant.js';
 
 export class IdeaService {

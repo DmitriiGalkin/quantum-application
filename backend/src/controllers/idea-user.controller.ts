@@ -1,4 +1,4 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
+import { ControllerWithAuth, fail, ok } from './helper.js';
 import { IdeaUserService } from '../services/idea-user.service.js';
 
 const create: ControllerWithAuth<{}> = async (req, res) => {

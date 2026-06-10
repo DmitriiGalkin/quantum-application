@@ -1,5 +1,5 @@
-import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
-import { IdeaDto, MeetDto } from '@shared/types';
+import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
+import { MeetDto } from '@shared/types';
 import { toMeetDto } from '../mappers/meet.mapper.js';
 import { MeetService } from '../services/meet.service.js';
 

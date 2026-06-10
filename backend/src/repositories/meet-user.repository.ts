@@ -1,9 +1,9 @@
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
-import { MeetUserRow, MeetUserWithMeetRow, MeetUserFullRow } from '../entities/meet-user.db.js';
+import { MeetUserFullRow, MeetUserRow, MeetUserWithMeetRow } from '../entities/meet-user.db.js';
 
-import { mapMeetUserRow, mapMeetUserWithMeetRow, mapMeetUserFullRow } from '../mappers/meet-user.mapper.js';
+import { mapMeetUserFullRow, mapMeetUserRow, mapMeetUserWithMeetRow } from '../mappers/meet-user.mapper.js';
 
 import { MeetUser, MeetUserWithMeet } from '../entities/meet-user.js';
 

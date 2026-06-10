@@ -1,6 +1,6 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { MessageService } from '../services/message.service.js';
-import { MessageDto, PassportDto } from '@shared/types';
+import { MessageDto } from '@shared/types';
 
 
 const create: ControllerWithAuth<{ chatId: number; message: MessageDto }> = async (req, res) => {

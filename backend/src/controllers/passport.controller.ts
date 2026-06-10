@@ -1,4 +1,4 @@
-import { ok, fail, ControllerWithAuth, Controller } from './helper.js';
+import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import { toPassport } from '../mappers/passport.mapper.js';

@@ -1,4 +1,4 @@
-import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
+import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { UserService } from '../services/user.service.js';
 import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
 import { UserDto } from '@shared/types';

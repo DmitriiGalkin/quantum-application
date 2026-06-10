@@ -1,7 +1,5 @@
-import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
+import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectService } from '../services/project.service.js';
-import { IdeaService } from '../services/idea.service.js';
-import { toIdeaDto } from '../mappers/idea.mapper.js';
 import { toProjectDto } from '../mappers/project.mapper.js';
 import { PageMeta, ProjectDto } from '@shared/types';
 
