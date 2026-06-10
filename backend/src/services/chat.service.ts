@@ -1,6 +1,6 @@
 import { normalizeMessage, createAssistantMessage, selectAssistant, getMetaMessages } from './helper.js';
 
-import type { Chat, ChatTarget, Meta } from '@shared/types';
+import type { ChatTarget, Meta } from '@shared/types';
 import ChatRepository from '../repositories/chat.repository.js';
 import MessageRepository from '../repositories/message.repository.js';
 import { Passport } from '../entities/passport.js';

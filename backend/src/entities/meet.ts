@@ -1,6 +1,7 @@
 export interface Meet {
   id: number;
   projectId: number;
+  passportId: number;
   price: number | null;
   duration: number | null;
   startedAt: Date;

@@ -5,18 +5,19 @@ import { projectAssistantAnswer } from '../assistants/projectAssistant.js';
 import { meetAssistantAnswer } from '../assistants/meetAssistant.js';
 
 
-import type { MessageDto, ChatTarget, Meta, UserDto, ProjectDto } from '@shared/types';
+import type { ChatTarget, Meta, ProjectDto } from '@shared/types';
 import IdeaRepository from '../repositories/idea.repository.js';
 import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import MessageRepository from '../repositories/message.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { User } from '../entities/user.js';
+import { Message } from '../entities/message.js';
 
 /**
  * Собирает мета-данные из сообщений
  */
-const getMetaMessages = (messages: MessageDto[]): Meta =>
+const getMetaMessages = (messages: Message[]): Meta =>
   messages.reduce((acc: Meta, message) => {
     const meta = getObjectFromMetadata(message.metadata as any);
     if (!meta?.target) return acc;

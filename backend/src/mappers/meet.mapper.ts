@@ -6,6 +6,7 @@ export function mapMeetRow(row: MeetRow): Meet {
   return {
     id: row.id,
     projectId: row.projectId,
+    passportId: row.passportId,
     price: row.price,
     duration: row.duration,
     startedAt: row.startedAt,

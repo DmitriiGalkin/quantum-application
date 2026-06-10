@@ -36,7 +36,7 @@ class IdeaRepository {
   }
 
   // ✅ FIND ALL
-  static async findAll(params: FindAllIdeaInput): Promise<(Idea | IdeaWithLike)[]> {
+  static async findAll(params?: FindAllIdeaInput): Promise<(Idea | IdeaWithLike)[]> {
     const select: string[] = ['idea.*'];
     const values: (string | number)[] = [];
 
