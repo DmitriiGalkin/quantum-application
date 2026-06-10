@@ -1,8 +1,9 @@
 import { getAnswer } from '../assistant/assistant.factory.js';
-import type { ChatTarget, Meta } from '@shared/types';
+import type { ChatTarget } from '@shared/types';
 import { Message } from '../../entities/message.js';
+import { Meta } from './chat.meta.js';
 
-export async function getContent(target: ChatTarget, initialMeta: Meta, messages: Message[]): Promise<{ content: string, target?: ChatTarget }> {
+export async function getContent(target: ChatTarget, initialMeta: Meta, messages: Message[]): Promise<{ content: string; target?: ChatTarget }> {
   let meta = initialMeta;
 
   for (let i = 0; i < 3; i++) {

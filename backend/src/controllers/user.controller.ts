@@ -1,10 +1,10 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
 import { UserService } from '../services/user.service.js';
-import type { UserDto } from '@shared/types';
+import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
 
 const create: ControllerWithAuth<any> = async (req, res) => {
   try {
-    const result = await UserService.create(req.passport!, req.body as unknown as UserDto);
+    const result = await UserService.create(req.passport!, req.body as unknown as CreateUserInput);
 
     ok(res, { message: 'Участник создан', ...result });
   } catch (err: any) {
@@ -14,7 +14,7 @@ const create: ControllerWithAuth<any> = async (req, res) => {
 
 const update: ControllerWithAuth<any> = async (req, res) => {
   try {
-    await UserService.update(req.passport!, req.body as unknown as UserDto);
+    await UserService.update(req.passport!, (req.body as any).userId as number, req.body as unknown as UpdateUserInput);
 
     ok(res, { message: 'Участник успешно обновлен' });
   } catch (err: any) {

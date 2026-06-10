@@ -1,4 +1,4 @@
-import type { ChatTarget, Meta } from '@shared/types';
+import type { ChatTarget } from '@shared/types';
 
 import { userAssistant } from '../../ai/assistants/user.assistant.js';
 import { ideaAssistantAnswer } from '../../ai/assistants/idea.assistant.js';
@@ -10,6 +10,7 @@ import { authAssistant } from './auth.assistant.js';
 import { IdeaFlowService } from './flows/idea-flow.service.js';
 import { ProjectFlowService } from './flows/project-flow.service.js';
 import { Message } from '../../entities/message.js';
+import { Meta } from '../chat/chat.meta.js';
 
 const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 
@@ -47,14 +48,14 @@ export async function getAnswer(target: ChatTarget, meta: Meta, messages: Messag
 
       const projectId = await ProjectFlowService.create(meta);
 
-        return {
-          content: `Проект ${FRONTEND_SERVER}/project/${projectId} создан`,
-        };
+      return {
+        content: `Проект ${FRONTEND_SERVER}/project/${projectId} создан`,
+      };
 
     case 'meet':
       if (!meta?.meet) return meetAssistantAnswer({ messages, meta });
 
-      return{
+      return {
         content: 'Данные собраны, можно создавать встречу.',
       };
 

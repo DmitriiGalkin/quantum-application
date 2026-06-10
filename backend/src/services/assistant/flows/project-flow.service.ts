@@ -1,6 +1,6 @@
 import ProjectRepository from '../../../repositories/project.repository.js';
-import type { Meta } from '@shared/types';
 import IdeaRepository from '../../../repositories/idea.repository.js';
+import { Meta } from '../../chat/chat.meta.js';
 
 export class ProjectFlowService {
   static async create(meta: Meta) {

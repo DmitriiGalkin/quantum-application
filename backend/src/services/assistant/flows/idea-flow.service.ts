@@ -1,8 +1,8 @@
 import IdeaRepository from '../../../repositories/idea.repository.js';
 import IdeaUserRepository from '../../../repositories/idea-user.repository.js';
 import UserRepository from '../../../repositories/user.repository.js';
+import { Meta } from '../../chat/chat.meta.js';
 
-import type { Meta } from '@shared/types';
 
 export class IdeaFlowService {
   static async create(meta: Meta) {
