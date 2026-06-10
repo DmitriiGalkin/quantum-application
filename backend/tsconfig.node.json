@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./dist",
     "module": "nodenext",
     "moduleResolution": "nodenext",
@@ -8,7 +9,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "allowArbitraryExtensions": true,
+    "allowArbitraryExtensions": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"],
