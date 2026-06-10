@@ -22,8 +22,7 @@ const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 function ChatPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
-  const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
-  const [chatId, setChatId] = useState<number | null>(activeChatId ? Number(activeChatId) : null);
+  const [chatId, setChatId] = useState<number | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -121,6 +120,13 @@ function ChatPage() {
     if (currentMessage) {
       sendMessage(currentMessage);
       localStorage.removeItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    const savedChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+    if (savedChatId) {
+      setChatId(Number(savedChatId));
     }
   }, []);
 
@@ -228,7 +234,8 @@ function ChatPage() {
               </Typography>
               <Message role="assistant">
                 <Typography>
-                  Прежде чем мы сформируем и создадим Ваш проект на базе детских идей, расскажите сперва немного о себе: ваш профессионалный род деятельности и интересы, которые бы Вы могли разделить вместе с детьми?
+                  Прежде чем мы сформируем и создадим Ваш проект на базе детских идей, расскажите сперва немного о себе: ваш профессионалный род
+                  деятельности и интересы, которые бы Вы могли разделить вместе с детьми?
                 </Typography>
               </Message>
             </Stack>
