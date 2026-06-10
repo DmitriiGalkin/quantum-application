@@ -9,36 +9,62 @@ import { meetAssistantAnswer } from '../../ai/assistants/meet.assistant.js';
 import { authAssistant } from './auth.assistant.js';
 import { IdeaFlowService } from './flows/idea-flow.service.js';
 import { ProjectFlowService } from './flows/project-flow.service.js';
+import { Message } from '../../entities/message.js';
 
-export function selectAssistant(target: ChatTarget, meta: Meta): Promise<{ content: string, target: ChatTarget }> {
+type AssistantFn = (input: { messages: Message[]; meta: Meta }) => Promise<{
+  content: string;
+  meta?: {
+    target: string;
+    data: unknown;
+  };
+}>;
+
+// selectAssistant → решает шаг
+export function selectAssistant(target: ChatTarget, meta: Meta): AssistantFn {
   switch (target) {
     case 'idea':
-      console.log('1');
       if (!meta?.user) return userAssistant;
-      console.log('2');
 
       if (!meta?.idea) return ideaAssistantAnswer;
-      console.log('3');
 
       if (!meta?.passport) return authAssistant;
-      console.log('4');
 
+      return async () => {
+        const data = await IdeaFlowService.create(meta);
 
-      return () => IdeaFlowService.create(meta);
+        return {
+          content: `Идея создана`,
+          meta: {
+            target: 'idea',
+            data,
+          },
+        };
+      };
 
     case 'project':
       if (!meta?.teacher) return teacherAssistantAnswer;
+
       if (!meta?.project) return projectAssistantAnswer;
+
       if (!meta?.passport) return authAssistant;
 
-      return () => ProjectFlowService.create(meta);
+      return async () => {
+        const data = await ProjectFlowService.create(meta);
+
+        return {
+          content: `Проект создан`,
+          meta: {
+            target: 'project',
+            data,
+          },
+        };
+      };
 
     case 'meet':
       if (!meta?.meet) return meetAssistantAnswer;
 
       return async () => ({
         content: 'Данные собраны, можно создавать встречу.',
-        target: 'meet',
       });
 
     default:

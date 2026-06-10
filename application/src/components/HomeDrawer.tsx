@@ -20,7 +20,7 @@ import {useQuery} from '@tanstack/react-query';
 import {fetchPassport} from '../requests.ts';
 import {ACCESS_TOKEN_STORAGE_KEY} from "../helper.ts";
 
-const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
+export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 interface HomeDrawerProps {
   isMenuOpen: boolean;

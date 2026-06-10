@@ -15,16 +15,15 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { addMessage, addOptimisticMessage, deleteOptimisticMessage } from '../components/helper.ts';
 import type { ChatTarget } from '@shared/types';
 import Message from '../components/Message.tsx';
+import { ACTIVE_CHAT_ID_STORAGE_KEY } from '../components/HomeDrawer.tsx';
 
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
 function ChatPage() {
   const [searchParams] = useSearchParams();
   const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
-
-  const { id } = useParams<{ id: string }>();
-
-  const [chatId, setChatId] = useState<number | null>(id ? Number(id) : null);
+  const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+  const [chatId, setChatId] = useState<number | null>(activeChatId ? Number(activeChatId) : null);
 
   const queryClient = useQueryClient();
 
@@ -63,6 +62,8 @@ function ChatPage() {
         { target },
         {
           onSuccess: ({ chatId }) => {
+            localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
+
             queryClient.setQueryData(['chat', chatId], addOptimisticMessage(trimmed));
             setMessage('');
 

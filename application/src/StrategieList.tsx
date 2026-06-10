@@ -14,7 +14,7 @@ function StrategieList() {
           key={strategy.title}
           sx={{ minWidth: 120 }}
           onClick={() => {
-            //localStorage.setItem('redirect_after_login', window.location.pathname);
+            localStorage.setItem('redirect_after_login', window.location.pathname);
             localStorage.setItem('message_after_login', strategy.title);
           }}
         >

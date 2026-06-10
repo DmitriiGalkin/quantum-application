@@ -2,28 +2,42 @@ import { selectAssistant } from '../assistant/assistant.factory.js';
 import type { ChatTarget, Meta } from '@shared/types';
 import { Message } from '../../entities/message.js';
 
-export async function runChatAssistant(target: ChatTarget, meta: Meta, messages: Message[]) {
-  const assistant = selectAssistant(target, meta);
+interface AssistantResult {
+  content: string;
+  meta?: {
+    target: string;
+    data: unknown;
+  };
+}
 
-  let result = (await assistant({ messages, meta })) as any;
-  console.log(result, 'result');
+// runChatAssistant → крутит pipeline
+export async function runChatAssistant(target: ChatTarget, initialMeta: Meta, messages: Message[]) {
+  let meta = initialMeta;
+  let result: AssistantResult;
 
-  // 🔥 если ассистент вернул meta → перезапуск
-  if (result?.meta) {
-    const newMeta = {
+  // 🔥 главный цикл
+  for (let i = 0; i < 3; i++) {
+    const assistant = selectAssistant(target, meta);
+
+    result = await assistant({ messages, meta });
+
+    // 👉 если нет meta — конец
+    if (!result.meta) {
+      return { result, meta };
+    }
+
+    // 👉 мержим meta
+    meta = {
       ...meta,
       [result.meta.target]: result.meta.data,
     };
-
-    const updatedAssistant = selectAssistant(target, newMeta);
-
-    result = await updatedAssistant({
-      messages,
-      meta: newMeta,
-    });
-
-    return { result, meta: newMeta };
   }
 
-  return { result, meta };
+  // fallback (защита от бесконечного цикла)
+  return {
+    result: {
+      content: 'Ошибка обработки сценария',
+    },
+    meta,
+  };
 }

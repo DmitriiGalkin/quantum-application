@@ -5,5 +5,6 @@ export async function authAssistant() {
       target: 'auth',
       data: ['google', 'yandex'],
     }),
+    target: 'auth',
   };
 }

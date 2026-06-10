@@ -16,13 +16,14 @@ function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
   return (
     <>
       {messages.map(chatMessage => {
+        console.log(chatMessage, 'chatMessage');
         return (
           <Message role={chatMessage.role}>
             <Stack spacing={2}>
               <Typography>
                 <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
               </Typography>
-              {chatMessage?.meta?.target === 'auth' && <StrategieList />}
+              {chatMessage?.target === 'auth' && <StrategieList />}
             </Stack>
           </Message>
         );
