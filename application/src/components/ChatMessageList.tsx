@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Message from './Message.tsx';
@@ -18,21 +17,14 @@ function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
     <>
       {messages.map(chatMessage => {
         return (
-          <Box
-            key={chatMessage.id}
-            sx={{
-              alignSelf: chatMessage.role === 'user' ? 'flex-end' : 'flex-start',
-            }}
-          >
-            <Message role={chatMessage.role}>
-              <Stack spacing={2}>
-                <Typography>
-                  <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
-                </Typography>
-                {chatMessage?.meta?.target === 'auth' && <StrategieList />}
-              </Stack>
-            </Message>
-          </Box>
+          <Message role={chatMessage.role}>
+            <Stack spacing={2}>
+              <Typography>
+                <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
+              </Typography>
+              {chatMessage?.meta?.target === 'auth' && <StrategieList />}
+            </Stack>
+          </Message>
         );
       })}
 

@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
+import { useEffect, useRef } from 'react';
 
 type ChatComposerProps = {
   message: string;
@@ -13,6 +14,12 @@ type ChatComposerProps = {
 };
 
 function ChatComposer({ message, isSending, onMessageChange, onSendMessage }: ChatComposerProps) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
   return (
     <Box
       component="footer"
@@ -34,6 +41,7 @@ function ChatComposer({ message, isSending, onMessageChange, onSendMessage }: Ch
       <Container maxWidth="md" disableGutters>
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <TextField
+            inputRef={inputRef}
             fullWidth
             size="small"
             placeholder="Введите сообщение..."

@@ -1,9 +1,9 @@
 import { ControllerWithAuth, ok, fail } from './helper.js';
-import { ChatService } from '../services/chat.service.js';
+import { ChatService } from '../services/chat/chat.service.js';
 
-const create: ControllerWithAuth<unknown> = async (req, res) => {
+const create = async (req, res) => {
   try {
-    const chatId = await ChatService.create(req.passport!, req.body);
+    const chatId = await ChatService.create(req.body, req.passport!);
 
     ok(res, { chatId });
   } catch (err: any) {
@@ -11,7 +11,7 @@ const create: ControllerWithAuth<unknown> = async (req, res) => {
   }
 };
 
-const createMessage: ControllerWithAuth<unknown> = async (req, res) => {
+const createMessage = async (req, res) => {
   try {
     const result = await ChatService.createMessage(req.passport!, req.body);
 
@@ -21,7 +21,7 @@ const createMessage: ControllerWithAuth<unknown> = async (req, res) => {
   }
 };
 
-const findMessages: ControllerWithAuth<unknown> = async (req, res) => {
+const findMessages = async (req, res) => {
   try {
     const result = await ChatService.findMessages(Number(req.params.id));
 
@@ -31,7 +31,7 @@ const findMessages: ControllerWithAuth<unknown> = async (req, res) => {
   }
 };
 
-const findAll: ControllerWithAuth<unknown> = async (req, res) => {
+const findAll = async (req, res) => {
   try {
     const chats = await ChatService.findAll(req.passport!);
 

@@ -2,7 +2,7 @@ import { RowDataPacket } from 'mysql2/promise';
 
 export interface ChatRow extends RowDataPacket {
   id: number;
-  passportId: number;
+  passportId: number | null;
   title: string | null;
   target: string | null;
   createdAt: Date;

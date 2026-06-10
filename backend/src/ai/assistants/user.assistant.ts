@@ -1,7 +1,7 @@
-import { baseAssistantAnswer } from './assistant.js';
-import { AssistantAnswer } from '../assistants/ideaAssistant.js';
+import { baseAssistantAnswer } from '../base-assistant.js';
+import { AssistantAnswer } from './idea.assistant.js';
 
-const SYSTEM_PROMPT = `
+export const USER_SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как заботливый педагог.
 
@@ -32,10 +32,10 @@ const SYSTEM_PROMPT = `
 - Этот блок должен быть единственным.
 `;
 
-export async function userAssistantAnswer({ messages }: AssistantAnswer) {
+export async function userAssistant({ messages }: AssistantAnswer) {
   return baseAssistantAnswer({
     messages,
-    prompt: SYSTEM_PROMPT,
+    prompt: USER_SYSTEM_PROMPT,
     schema: (data: any) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'string',
     transformer: (data: any) => ({
       title: data.title,

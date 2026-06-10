@@ -1,5 +1,5 @@
 import assistant from '../assistant.js';
-import { extractJsonFromString } from './helper.js';
+import { extractJsonFromString } from './assistants/helper.js';
 import type { MessageDto } from '@shared/types';
 
 export interface BaseAssistantAnswer {

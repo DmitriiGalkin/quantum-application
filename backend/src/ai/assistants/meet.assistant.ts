@@ -1,5 +1,5 @@
-import { baseAssistantAnswer } from './assistant.js';
-import { AssistantAnswer } from '../assistants/ideaAssistant.js';
+import { baseAssistantAnswer } from '../base-assistant.js';
+import { AssistantAnswer } from './idea.assistant.js';
 
 const getPrompt = (meta: any) => {
   return `

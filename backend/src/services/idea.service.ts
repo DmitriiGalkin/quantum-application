@@ -5,7 +5,7 @@ import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
-import { generateIdeaImage, uploadImage } from '../assistants/imageAssistant.js';
+import { generateIdeaImage, uploadImage } from '../ai/assistants/image.assistant.js';
 
 export class IdeaService {
   static async findAll(params: IParams) {

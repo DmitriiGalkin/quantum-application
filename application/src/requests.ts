@@ -45,11 +45,11 @@ export async function fetchPlaces(): Promise<PlaceDto[]> {
   return apiFetch<PlaceDto[]>('/places');
 }
 
-export async function fetchMessages(chatId: number): Promise<Chat> {
-  return apiFetch<Chat>(`/chat/${chatId}`);
+export async function fetchChat({ chatId, target }: { chatId: number; target: ChatTarget }): Promise<Chat> {
+  return apiFetch<Chat>(`/chat/${chatId}`+'?target='+target);
 }
 
-export async function fetchCreateChat({ target }: { target: ChatTarget }): Promise<number> {
+export async function fetchCreateChat({ target }: { target: ChatTarget }): Promise<{ chatId: number }> {
   return apiFetch<any>('/chat', {
     method: 'POST',
     headers: {
@@ -61,7 +61,7 @@ export async function fetchCreateChat({ target }: { target: ChatTarget }): Promi
   });
 }
 
-export async function fetchSendMessage({ chatId, message }: { chatId: number | null; message: string }): Promise<any> {
+export async function fetchSendMessage({ chatId, message, target }: { chatId: number | null; message: string; target?: ChatTarget }): Promise<any> {
   return apiFetch<any>(`/message`, {
     method: 'POST',
     headers: {
@@ -70,6 +70,7 @@ export async function fetchSendMessage({ chatId, message }: { chatId: number | n
     body: JSON.stringify({
       chatId,
       message,
+      target,
     }),
   });
 }

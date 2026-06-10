@@ -68,6 +68,10 @@ publicRouter.get('/idea/:id/meta', idea.meta);
 publicRouter.get('/projects', project.findAll);
 publicRouter.get('/project/:id', project.findById);
 publicRouter.get('/project/:id/meta', project.meta);
+publicRouter.get('/chats', chat.findAll);
+publicRouter.get('/chat/:id', chat.findMessages);
+publicRouter.post('/chat', chat.create);
+publicRouter.post('/message', chat.createMessage);
 publicRouter.get('/meets', meet.findAll);
 publicRouter.get('/meet/:id', meet.findById);
 publicRouter.get('/user/:id', user.findById);
@@ -87,11 +91,7 @@ privateRouter.post('/project', withAuth(project.create));
 privateRouter.put('/project/:id', withAuth(project.update));
 privateRouter.delete('/project/:id', withAuth(project.delete));
 
-privateRouter.get('/chats', withAuth(chat.findAll));
-privateRouter.get('/chat/:id', withAuth(chat.findMessages));
-privateRouter.post('/chat', withAuth(chat.create));
 
-privateRouter.post('/message', withAuth(chat.createMessage));
 
 privateRouter.post('/place', withAuth(place.create));
 

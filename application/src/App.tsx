@@ -21,6 +21,7 @@ function App() {
       <Route path="/user/:id/projects" element={<UserProjectsPage />} />
       <Route path="/passport/projects" element={<PassportProjectsPage />} />
       <Route path="/ideas" element={<IdeasPage />} />
+      <Route path="/chat" element={<ChatPage />} />
       <Route path="/chat/:id" element={<ChatPage />} />
       <Route path="/idea/:id" element={<IdeaPage />} />
       <Route path="/project/create" element={<CreateProjectPage />} />

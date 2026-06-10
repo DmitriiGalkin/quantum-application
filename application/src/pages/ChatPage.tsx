@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -8,25 +8,25 @@ import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {
-  fetchMessages,
-  fetchSendMessage,
-} from '../requests.ts';
+import { fetchChat, fetchCreateChat, fetchSendMessage } from '../requests.ts';
 import ChatMessageList from '../components/ChatMessageList.tsx';
 import ChatComposer from '../components/ChatComposer.tsx';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  addMessage,
-  addOptimisticMessage,
-  deleteOptimisticMessage,
-} from '../components/helper.ts';
+import { addMessage, addOptimisticMessage, deleteOptimisticMessage } from '../components/helper.ts';
+import type { ChatTarget } from '@shared/types';
+import Message from '../components/Message.tsx';
 
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
-
 function ChatPage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
+
   const { id } = useParams<{ id: string }>();
-  const chatId = Number(id);
+
+  const [chatId, setChatId] = useState<number | null>(id ? Number(id) : null);
+
   const queryClient = useQueryClient();
 
   const [message, setMessage] = useState('');
@@ -36,33 +36,60 @@ function ChatPage() {
     mutationFn: fetchSendMessage,
   });
 
-  const { data: chat, isLoading: isMessagesLoading } = useQuery({
+  const createChatMutation = useMutation({
+    mutationFn: fetchCreateChat,
+    onSuccess: ({ chatId }) => {
+      setChatId(chatId);
+    },
+  });
+
+  const { data: chat, isLoading: isChatLoading } = useQuery({
     queryKey: ['chat', chatId],
-    queryFn: () => fetchMessages(chatId),
+    queryFn: () => fetchChat({ chatId: chatId!, target }),
     enabled: !!chatId,
   });
+
   const messages = chat?.messages || [];
 
-  function sendMessage(text: string) {
-    const message = text.trim();
+  async function sendMessage(text: string) {
+    const trimmed = text.trim();
 
-    if (!message || mutation.isPending) {
+    if (!trimmed || mutation.isPending) return;
+
+    // 👉 если чата нет — создаём
+    if (!chatId) {
+      createChatMutation.mutate(
+        { target },
+        {
+          onSuccess: ({ chatId }) => {
+            setChatId(chatId);
+
+            // отправляем сообщение уже в новый чат
+            mutation.mutate({
+              chatId,
+              message: trimmed,
+              target,
+            });
+
+            navigate(`/chat/${chatId}`);
+          },
+        },
+      );
+
       return;
     }
 
-    queryClient.setQueryData(['chat', chatId], addOptimisticMessage(message));
+    // 👉 если чат есть — обычная отправка
+    queryClient.setQueryData(['chat', chatId], addOptimisticMessage(trimmed));
     setMessage('');
 
     mutation.mutate(
-      { chatId, message },
+      { chatId, message: trimmed, target },
       {
         onSuccess: response => {
           queryClient.setQueryData(['chat', chatId], addMessage(response.message));
         },
-        onError: error => {
-          console.error('Ошибка отправки:', error);
-          alert('Не удалось отправить сообщение. Попробуйте ещё раз.');
-
+        onError: () => {
           queryClient.setQueryData(['chat', chatId], deleteOptimisticMessage);
         },
       },
@@ -78,7 +105,7 @@ function ChatPage() {
 
   const sendMessageHandle = () => sendMessage(message);
 
-  const metadata = {} as any //getObjectFromMetadata(lastMessage?.metadata);
+  const metadata = {} as any; //getObjectFromMetadata(lastMessage?.metadata);
   console.log('metadata', metadata);
 
   // const generateImageMutation = useMutation({
@@ -114,9 +141,7 @@ function ChatPage() {
             <ArrowBackIcon />
           </IconButton>
           <Box>
-            <Typography sx={{ fontWeight: 800, lineHeight: 1.2, color: 'white' }}>
-              Ассистент
-            </Typography>
+            <Typography sx={{ fontWeight: 800, lineHeight: 1.2, color: 'white' }}>Ассистент</Typography>
             <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', color: 'white' }}>
               <span className="pulse-circle"></span>
               <Typography variant="caption" sx={{ opacity: 0.9 }}>
@@ -140,27 +165,42 @@ function ChatPage() {
         <Stack spacing={2} sx={{ flexGrow: 1 }}>
           {/*{target === 'idea' && <ChatWelcome />}*/}
 
-          {isMessagesLoading && (
+          {isChatLoading && (
             <Typography color="text.secondary" sx={{ alignSelf: 'center' }}>
               Загружаем историю...
             </Typography>
           )}
 
-          <ChatMessageList
-            chatId={chatId as number}
-            messages={messages}
-            isSending={mutation.isPending}
-          />
+          {!messages.length && target === 'idea' && (
+            <Stack spacing={2}>
+              <Box
+                component="img"
+                src="/parent.svg"
+                alt="example"
+                sx={{
+                  width: '100%',
+                  maxWidth: 350,
+                  objectFit: 'contain', // важно!
+                  alignItems: 'center',
+                }}
+              />
+              <Typography>
+                Воплощаем идеи детских проектов Даем возможность придумать свой собственный проект. Помогаем подбирать для ребенка интересные проекты,
+                секции, кружки и мастер классы.
+              </Typography>
+              <Message role="assistant">
+                <Typography>
+                  Прежде чем мы сформируем идею Вашего ребенка и загрузим ее в проект, рсскажите сперва немного о ребенке: как его зовут, возраст, парочку слов о его увлечениях?
+                </Typography>
+              </Message>
+            </Stack>
+          )}
 
+          <ChatMessageList chatId={chatId as number} messages={messages} isSending={mutation.isPending} />
         </Stack>
       </Container>
       <Box ref={messagesEndRef} />
-      <ChatComposer
-        message={message}
-        isSending={mutation.isPending}
-        onMessageChange={setMessage}
-        onSendMessage={sendMessageHandle}
-      />
+      <ChatComposer message={message} isSending={mutation.isPending} onMessageChange={setMessage} onSendMessage={sendMessageHandle} />
     </Box>
   );
 }

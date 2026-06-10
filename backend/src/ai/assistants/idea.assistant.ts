@@ -1,5 +1,5 @@
 
-import { baseAssistantAnswer } from './assistant.js';
+import { baseAssistantAnswer } from '../base-assistant.js';
 import type { UserDto, MessageDto } from '@shared/types';
 
 const getIdeaPrompt = (user: UserDto) => `

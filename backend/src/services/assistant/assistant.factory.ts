@@ -1,10 +1,10 @@
 import type { ChatTarget, Meta } from '@shared/types';
 
-import { userAssistantAnswer } from '../../assistants/userAssistant.js';
-import { ideaAssistantAnswer } from '../../assistants/ideaAssistant.js';
-import { teacherAssistantAnswer } from '../../assistants/teacherAssistant.js';
-import { projectAssistantAnswer } from '../../assistants/projectAssistant.js';
-import { meetAssistantAnswer } from '../../assistants/meetAssistant.js';
+import { userAssistant } from '../../ai/assistants/user.assistant.js';
+import { ideaAssistantAnswer } from '../../ai/assistants/idea.assistant.js';
+import { teacherAssistantAnswer } from '../../ai/assistants/teacher.assistant.js';
+import { projectAssistantAnswer } from '../../ai/assistants/project.assistant.js';
+import { meetAssistantAnswer } from '../../ai/assistants/meet.assistant.js';
 
 import { authAssistant } from './auth.assistant.js';
 import { IdeaFlowService } from './flows/idea-flow.service.js';
@@ -13,7 +13,7 @@ import { ProjectFlowService } from './flows/project-flow.service.js';
 export function selectAssistant(target: ChatTarget, meta: Meta) {
   switch (target) {
     case 'idea':
-      if (!meta?.user) return userAssistantAnswer;
+      if (!meta?.user) return userAssistant;
       if (!meta?.idea) return ideaAssistantAnswer;
       if (!meta?.passport) return authAssistant;
 
