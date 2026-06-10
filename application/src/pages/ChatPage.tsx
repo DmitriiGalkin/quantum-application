@@ -49,6 +49,8 @@ function ChatPage() {
     enabled: !!chatId,
   });
 
+  console.log(chat, 'chat');
+
   const messages = chat?.messages || [];
 
   async function sendMessage(text: string) {
@@ -64,14 +66,26 @@ function ChatPage() {
           onSuccess: ({ chatId }) => {
             setChatId(chatId);
 
-            // отправляем сообщение уже в новый чат
-            mutation.mutate({
-              chatId,
-              message: trimmed,
-              target,
-            });
+            queryClient.setQueryData(['chat', chatId], addOptimisticMessage(trimmed));
+            setMessage('');
 
-            navigate(`/chat/${chatId}`);
+            // отправляем сообщение уже в новый чат
+            mutation.mutate(
+              {
+                chatId,
+                message: trimmed,
+                target,
+              },
+              {
+                onSuccess: response => {
+                  queryClient.setQueryData(['chat', chatId], addMessage(response.message));
+                  navigate(`/chat/${chatId}`);
+                },
+                onError: () => {
+                  queryClient.setQueryData(['chat', chatId], deleteOptimisticMessage);
+                },
+              },
+            );
           },
         },
       );
@@ -171,7 +185,7 @@ function ChatPage() {
             </Typography>
           )}
 
-          {!messages.length && target === 'idea' && (
+          {target === 'idea' && (
             <Stack spacing={2}>
               <Box
                 component="img"

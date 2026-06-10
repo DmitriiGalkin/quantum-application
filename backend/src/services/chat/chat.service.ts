@@ -1,7 +1,7 @@
 import { buildMeta } from './chat.meta.js';
 import { runChatAssistant } from './chat.runner.js';
 import { Passport } from '../../entities/passport.js';
-import { ChatTarget, Meta } from '@shared/types';
+import { ChatTarget } from '@shared/types';
 import ChatRepository from '../../repositories/chat.repository.js';
 import { MessageService } from '../message.service.js';
 import MessageRepository from '../../repositories/message.repository.js';
@@ -10,19 +10,10 @@ import { getMetaMessages } from '../helper.js';
 
 export class ChatService {
   static async create(body: { target: ChatTarget }, passport?: Passport) {
-    const chatId = await ChatRepository.create({
+    return await ChatRepository.create({
       target: body.target,
       passportId: passport?.id || null,
     });
-
-    const { result } = await runChatAssistant(body.target, {} as Meta, []);
-
-    await MessageService.createAssistantMessage({
-      chatId,
-      ...result,
-    });
-
-    return chatId;
   }
 
   static async createMessage(passport: Passport, body: any) {
