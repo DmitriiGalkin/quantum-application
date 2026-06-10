@@ -1,37 +1,38 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
+import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
 import { ProjectService } from '../services/project.service.js';
 import { IdeaService } from '../services/idea.service.js';
 import { toIdeaDto } from '../mappers/idea.mapper.js';
 import { toProjectDto } from '../mappers/project.mapper.js';
+import { PageMeta, ProjectDto } from '@shared/types';
 
-const create = async (req, res) => {
+const create: ControllerWithAuth<number> = async (req, res) => {
   try {
     const id = await ProjectService.create(req.passport!, req.body);
-    ok(res, { message: 'Проект создан', id });
+    ok(res, id);
   } catch (err) {
     fail(res, 'Ошибка при создании проекта');
   }
 };
 
-const update = async (req, res) => {
+const update: ControllerWithAuth<void> = async (req, res) => {
   try {
-    await ProjectService.update(req.params.id, req.body);
+    await ProjectService.update(Number(req.params.id), req.body);
     ok(res, { message: 'Проект обновлен' });
   } catch (err) {
     fail(res, 'Не удалось обновить проект');
   }
 };
 
-const remove = async (req, res) => {
+const remove: ControllerWithAuth<void> = async (req, res) => {
   try {
-    await ProjectService.remove(req.passport!, req.params.id);
+    await ProjectService.remove(Number(req.params.id), req.passport!);
     ok(res, { message: 'Проект удален' });
   } catch (err) {
     fail(res, 'Не удалось удалить проект');
   }
 };
 
-const findAll = async (req, res) => {
+const findAll: Controller<ProjectDto[]> = async (req, res) => {
   try {
     const data = await ProjectService.findAll(req.query);
 
@@ -41,7 +42,7 @@ const findAll = async (req, res) => {
   }
 };
 
-const findByUserId = async (req, res) => {
+const findByUserId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
   const ideas = await ProjectService.findAll({
     ...req.query,
     userId: req.params.id,
@@ -50,7 +51,7 @@ const findByUserId = async (req, res) => {
   ok(res, ideas.map(toProjectDto));
 };
 
-const findByPassportId = async (req, res) => {
+const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
   const ideas = await ProjectService.findAll({
     ...req.query,
     passportId: req.passport.id,
@@ -59,7 +60,7 @@ const findByPassportId = async (req, res) => {
   ok(res, ideas.map(toProjectDto));
 };
 
-const findById = async (req, res) => {
+const findById: Controller<ProjectDto> = async (req, res) => {
   try {
     const data = await ProjectService.findById(Number(req.params.id));
     if (!data) return fail(res, 'Проект не найден', 404);
@@ -70,9 +71,9 @@ const findById = async (req, res) => {
   }
 };
 
-const meta = async (req, res) => {
+const meta: Controller<PageMeta> = async (req, res) => {
   try {
-    const meta = await ProjectService.meta(req.params.id);
+    const meta = await ProjectService.meta(Number(req.params.id));
     ok(res, meta);
   } catch (err) {
     fail(res, 'Не удалось получить meta проекта');

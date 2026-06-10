@@ -79,7 +79,7 @@ function IdeaCard({ idea, like, unlike }: IdeaCardProps) {
           <Typography variant="body1">{likesCount}</Typography>
         </Box>
         <Typography sx={{ marginLeft: 'auto', pr: 1 }} variant="body1" color="textDisabled">
-          {idea.user.title}, {idea.user.age} лет
+          {idea.user?.title}, {idea.user?.age} лет
         </Typography>
       </CardActions>
     </Card>

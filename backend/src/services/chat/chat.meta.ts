@@ -17,7 +17,7 @@ export interface Meta {
   auth?: string[];
 }
 
-export function buildMeta(messages: Message[], passport: Passport): Meta {
+export function buildMeta(messages: Message[], passport?: Passport): Meta {
   return {
     ...getMetaMessages(messages),
     //

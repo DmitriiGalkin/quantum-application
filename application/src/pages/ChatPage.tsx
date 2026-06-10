@@ -14,8 +14,8 @@ import ChatComposer from '../components/ChatComposer.tsx';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { addMessage, addOptimisticMessage, deleteOptimisticMessage } from '../components/helper.ts';
 import type { ChatTarget } from '@shared/types';
-import Message from '../components/Message.tsx';
 import { ACTIVE_CHAT_ID_STORAGE_KEY } from '../components/HomeDrawer.tsx';
+import ChatIntroduction from '../components/ChatIntroduction.tsx';
 
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
@@ -134,10 +134,7 @@ function ChatPage() {
     const hasTargetInUrl = searchParams.has('target');
 
     if (hasTargetInUrl) {
-      // 👉 очищаем старый чат
       localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
-
-      // 👉 сбрасываем состояние
       setChatId(null);
     }
   }, [searchParams]);
@@ -181,65 +178,13 @@ function ChatPage() {
         }}
       >
         <Stack spacing={2} sx={{ flexGrow: 1 }}>
-          {/*{target === 'idea' && <ChatWelcome />}*/}
-
           {isChatLoading && (
             <Typography color="text.secondary" sx={{ alignSelf: 'center' }}>
               Загружаем историю...
             </Typography>
           )}
 
-          {target === 'idea' && (
-            <Stack spacing={2}>
-              <Box
-                component="img"
-                src="/parent.svg"
-                alt="example"
-                sx={{
-                  width: '100%',
-                  maxWidth: 350,
-                  objectFit: 'contain', // важно!
-                  alignItems: 'center',
-                }}
-              />
-              <Typography>
-                Воплощаем идеи детских проектов Даем возможность придумать свой собственный проект. Помогаем подбирать для ребенка интересные проекты,
-                секции, кружки и мастер классы.
-              </Typography>
-              <Message role="assistant">
-                <Typography>
-                  Прежде чем мы сформируем идею Вашего ребенка и загрузим ее в проект, расскажите сперва немного о ребенке: как его зовут, возраст,
-                  парочку слов о его увлечениях?
-                </Typography>
-              </Message>
-            </Stack>
-          )}
-
-          {target === 'project' && (
-            <Stack spacing={2}>
-              <Box
-                component="img"
-                src="/teacher.svg"
-                alt="example"
-                sx={{
-                  width: '100%',
-                  maxWidth: 350,
-                  objectFit: 'contain', // важно!
-                  alignItems: 'center',
-                }}
-              />
-              <Typography>
-                Помогаем привлекать учеников. Даем возможность мастерам и педагогам развивать детские идеи проектов. Помогаем наполнять группы,
-                подбирать оптимальное время и место проведения встреч.
-              </Typography>
-              <Message role="assistant">
-                <Typography>
-                  Прежде чем мы сформируем и создадим Ваш проект на базе детских идей, расскажите сперва немного о себе: ваш профессионалный род
-                  деятельности и интересы, которые бы Вы могли разделить вместе с детьми?
-                </Typography>
-              </Message>
-            </Stack>
-          )}
+          <ChatIntroduction target={target}/>
 
           <ChatMessageList chatId={chatId as number} messages={messages} isSending={mutation.isPending} />
         </Stack>

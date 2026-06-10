@@ -5,7 +5,7 @@ export interface ChatRow extends RowDataPacket {
   id: number;
   passportId: number | null;
   title: string | null;
-  target: ChatTarget | null;
+  target: ChatTarget;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;

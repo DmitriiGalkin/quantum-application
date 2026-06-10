@@ -3,6 +3,7 @@ import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import { IParams } from '@shared/types';
+import { Passport } from '../entities/passport.js';
 
 export class ProjectService {
   static async create(passport: any, data: any) {
@@ -18,7 +19,7 @@ export class ProjectService {
     return ProjectRepository.update(id, data);
   }
 
-  static async remove(passport: any, projectId: number) {
+  static async remove(projectId: number, passport: Passport ) {
     const project = await ProjectRepository.findById(projectId);
 
     if (!project) throw new Error('NOT_FOUND');

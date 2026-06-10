@@ -6,8 +6,8 @@ export interface PlaceRow extends RowDataPacket {
   id: number;
   title: string;
   description: string | null;
-  latitude: number | null;
-  longitude: number | null;
+  latitude: number;
+  longitude: number;
   provider: string | null;
   providerId: number | null;
   address: string | null;

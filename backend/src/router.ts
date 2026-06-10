@@ -6,13 +6,13 @@ import { RequestHandler } from 'express';
 import user from './controllers/user.controller.js';
 import passportController from './controllers/passport.controller.js';
 import meet from './controllers/meet.controller.js';
-import meetUser from './controllers/meetUser.controller.js';
+import meetUser from './controllers/meet-user.controller.js';
 import image from './controllers/image.controller.js';
 import place from './controllers/place.controller.js';
 import project from './controllers/project.controller.js';
 import idea from './controllers/idea.controller.js';
-import ideaUser from './controllers/ideaUser.controller.js';
-import projectUser from './controllers/projectUser.controller.js';
+import ideaUser from './controllers/idea-user.controller.js';
+import projectUser from './controllers/project-user.controller.js';
 import chat from './controllers/chat.controller.js';
 import message from './controllers/message.controller.js';
 import strategies from './strategies.js';
@@ -36,7 +36,7 @@ const withAuth =
 
 privateRouter.use(passportController.usePassport);
 
-const registerOAuth = (provider: string) => {
+const registerOAuth = (provider: 'yandex' | 'google') => {
   const strategy = strategies[provider];
 
   if (!strategy) {
@@ -59,9 +59,8 @@ const registerOAuth = (provider: string) => {
   });
 };
 
-['google', 'yandex'].forEach(registerOAuth);
+['google' as const, 'yandex' as const].forEach(registerOAuth);
 
-publicRouter.post('/passport/login', passportController.login);
 publicRouter.post('/passport/googleLogin', passportController.googleLogin);
 publicRouter.get('/ideas', idea.findAllPublic);
 publicRouter.get('/idea/:id', idea.findById);
@@ -69,7 +68,6 @@ publicRouter.get('/idea/:id/meta', idea.meta);
 publicRouter.get('/projects', project.findAll);
 publicRouter.get('/project/:id', project.findById);
 publicRouter.get('/project/:id/meta', project.meta);
-publicRouter.post('/chat', chat.create);
 publicRouter.get('/chat/:id', chat.findMessages);
 publicRouter.get('/meets', meet.findAll);
 publicRouter.get('/meet/:id', meet.findById);
@@ -77,7 +75,9 @@ publicRouter.get('/user/:id', user.findById);
 publicRouter.get('/places', place.findAll);
 
 // Private
-privateRouter.get('/passport/projects', project.findByPassportId);
+publicRouter.post('/passport/login', withAuth(passportController.login));
+
+privateRouter.get('/passport/projects', withAuth(project.findByPassportId));
 privateRouter.get('/passport', withAuth(passportController.all));
 privateRouter.put('/passport', withAuth(passportController.update));
 
@@ -92,6 +92,7 @@ privateRouter.post('/project', withAuth(project.create));
 privateRouter.put('/project/:id', withAuth(project.update));
 privateRouter.delete('/project/:id', withAuth(project.delete));
 
+privateRouter.post('/chat', withAuth(chat.create));
 privateRouter.post('/message', withAuth(message.create));
 
 privateRouter.post('/place', withAuth(place.create));
@@ -107,8 +108,8 @@ privateRouter.post('/meetUser', withAuth(meetUser.create));
 privateRouter.delete('/meetUser/:id', withAuth(meetUser.delete));
 
 privateRouter.post('/user', withAuth(user.create));
-privateRouter.get('/user/:id/ideas', idea.findByUserId);
-privateRouter.get('/user/:id/projects', project.findByUserId);
+privateRouter.get('/user/:id/ideas', withAuth(idea.findByUserId));
+privateRouter.get('/user/:id/projects', withAuth(project.findByUserId));
 privateRouter.put('/user/:id', withAuth(user.update));
 privateRouter.delete('/user/:id', withAuth(user.delete));
 

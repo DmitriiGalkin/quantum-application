@@ -6,7 +6,7 @@ export interface Message {
   passportId: number | null;
   role: ChatMessageRole;
   content: string | null;
-  metadata: Record<string, any> | null; // 👈 уже объект
+  metadata: Record<string, any> | null;
   target: ChatTarget | null;
   createdAt: Date;
 }

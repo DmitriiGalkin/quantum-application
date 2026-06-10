@@ -1,13 +1,13 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import type { ExtendedProject } from '../requests.ts';
 import Stack from '@mui/material/Stack';
 import UserGroup from './UserGroup.tsx';
 import Box from "@mui/material/Box";
+import type { ProjectDto } from '@shared/types';
 
 type ProjectCardProps = {
-  project: ExtendedProject;
+  project: ProjectDto;
 };
 
 function ProjectCard({ project }: ProjectCardProps) {

@@ -1,16 +1,16 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
-import { MeetDto } from '@shared/types';
+import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
+import { IdeaDto, MeetDto } from '@shared/types';
 import { toMeetDto } from '../mappers/meet.mapper.js';
 import { MeetService } from '../services/meet.service.js';
 
-const create: ControllerWithAuth<MeetDto> = async (req, res) => {
+const create: ControllerWithAuth<number> = async (req, res) => {
   try {
     const meetId = await MeetService.create({
       ...req.body,
       passportId: req.passport!.id,
     });
 
-    ok(res, { id: meetId });
+    ok(res, meetId);
   } catch (err) {
     fail(res, 'Не удалось создать встречу');
   }
@@ -34,11 +34,11 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
     const meet = await MeetService.findById(Number(req.params.id));
 
     if (!meet) {
-      fail(res, 'Встреча не существует', 404);
+      return fail(res, 'Встреча не существует', 404);
     }
 
     if (meet.passportId !== req.passport!.id) {
-      fail(res, 'Нет прав на удаление', 403);
+      return fail(res, 'Нет прав на удаление', 403);
     }
 
     await MeetService.remove(Number(req.params.id));
@@ -49,11 +49,10 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
-const findAll = async (req, res) => {
+const findAll: Controller<MeetDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,
-      passportId: req.passport!.id,
     });
 
     ok(res, meets.map(toMeetDto));
@@ -62,7 +61,7 @@ const findAll = async (req, res) => {
   }
 };
 
-const findById = async (req, res) => {
+const findById: Controller<MeetDto> = async (req, res) => {
   try {
     const meet = await MeetService.findById(Number(req.params.id));
 

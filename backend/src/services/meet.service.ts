@@ -17,7 +17,7 @@ export class MeetService {
     return Meet.findById(id);
   }
 
-  static async findAll(y) {
+  static async findAll(data: any) {
     return Meet.findAll();
   }
 }

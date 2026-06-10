@@ -44,7 +44,8 @@ for (const place of places) {
 
     await delay(1000 + Math.random() * 2000);
   } catch (e) {
-    console.error('Ошибка:', place.id, e.message);
+    const message = e instanceof Error ? e.message : String(e);
+    console.error('Ошибка:', place.id, message);
 
     // 👇 если ошибка — тоже пауза
     await delay(3000);

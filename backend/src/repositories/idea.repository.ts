@@ -40,7 +40,7 @@ class IdeaRepository {
     const select: string[] = ['idea.*'];
     const values: (string | number)[] = [];
 
-    const withLike = Boolean(params.currentUserId);
+    const withLike = Boolean(params?.currentUserId);
 
     if (withLike) {
       select.push(`
@@ -52,7 +52,7 @@ class IdeaRepository {
         ) AS isLiked
       `);
 
-      values.push(params.currentUserId!);
+      values.push(params?.currentUserId!);
     }
 
     let sql = `
@@ -61,12 +61,12 @@ class IdeaRepository {
       WHERE 1=1
     `;
 
-    if (params.userId) {
+    if (params?.userId) {
       sql += ' AND idea.userId = ?';
-      values.push(params.userId);
+      values.push(params?.userId);
     }
 
-    sql += params.deleted === 'true' ? ' AND idea.deletedAt IS NOT NULL' : ' AND idea.deletedAt IS NULL';
+    sql += params?.deleted === 'true' ? ' AND idea.deletedAt IS NOT NULL' : ' AND idea.deletedAt IS NULL';
 
     if (withLike) {
       const [rows] = await pool.query<IdeaWithLikeRow[]>(sql, values);

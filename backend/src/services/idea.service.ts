@@ -26,7 +26,7 @@ export class IdeaService {
     const idea = await IdeaRepository.findById(id);
     if (!idea) return null;
 
-    const [passport, user, projects, ideaUsers] = await Promise.all([
+    const [passport, user, projects] = await Promise.all([
       PassportRepository.findById(idea.passportId || 0),
       UserRepository.findById(idea.userId || 0),
       ProjectRepository.findByIdeaId(idea.id),
@@ -37,8 +37,6 @@ export class IdeaService {
 
     const projectPassports = await Promise.all(projects.map(p => PassportRepository.findById(p.passportId)));
 
-    const projectPlaces = await Promise.all(projects.map(p => PlaceRepository.findById(p.placeId)));
-
     return {
       ...idea,
       passport,
@@ -46,7 +44,6 @@ export class IdeaService {
       projects: projects.map((project, idx) => ({
         ...project,
         passport: projectPassports[idx],
-        place: projectPlaces[idx],
         users: usersForProjects[idx],
       })),
     };

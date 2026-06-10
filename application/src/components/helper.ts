@@ -1,4 +1,4 @@
-import type { Chat, ChatMessage, ChatMessageRole, ChatTarget } from '@shared/types';
+import type { Chat, MessageDto, ChatMessageRole, ChatTarget } from '@shared/types';
 
 
 export const getCaption = (target: ChatTarget): string => {
@@ -28,7 +28,7 @@ export const addOptimisticMessage = (content: string, role?: ChatMessageRole) =>
   };
 };
 
-export const addMessage = (message: ChatMessage) => (oldChat: Chat) => {
+export const addMessage = (message: MessageDto) => (oldChat: Chat) => {
   return {
     ...oldChat,
     messages: [...(oldChat.messages as []), message],

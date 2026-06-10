@@ -9,8 +9,12 @@ export async function getContent(target: ChatTarget, initialMeta: Meta, messages
   for (let i = 0; i < 3; i++) {
     const result = await getAnswer(target, meta, messages);
 
-    if (!result.meta) {
+    if (!result.meta && result.content) {
       return { content: result.content, target: result.target };
+    }
+
+    if (!result.meta) {
+      throw new Error('Пустой ответ от ассистентов');
     }
 
     meta = {

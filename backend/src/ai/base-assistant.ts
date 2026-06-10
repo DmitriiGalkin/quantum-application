@@ -43,14 +43,12 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
 
     if (data) {
       if (!schema(data)) {
-        console.error('Ошибка: структура JSON не соответствует ожидаемому формату.');
-        return null;
+        throw new Error('Ошибка: структура JSON не соответствует ожидаемому формату.');
       }
       const tData = transformer(data);
       return {
         content: userMessage,
-        metadata: JSON.stringify({ target: meta.target, data: tData }),
-        meta: data ? { target: meta.target, data: tData } : null,
+        meta: data ? { target: meta.target, data: tData } : undefined,
         target: meta.target,
       };
     }
@@ -63,10 +61,7 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
   } catch (error) {
     console.error('Ошибка в baseAssistantAnswer:', error);
 
-    return {
-      status: 'error',
-      message: 'Упс! Кажется, наш помощник немного устал и не смог ответить прямо сейчас. Пожалуйста, попробуйте задать вопрос позже.',
-    };
+    throw new Error('Упс! Кажется, наш помощник немного устал и не смог ответить прямо сейчас. Пожалуйста, попробуйте задать вопрос позже.');
   }
 }
 

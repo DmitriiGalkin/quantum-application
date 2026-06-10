@@ -2,10 +2,10 @@ import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { User } from '@shared/types';
+import type { UserDto } from '@shared/types';
 
 type UserCardProps = {
-  user: User;
+  user: UserDto;
 };
 
 function UserCard({ user }: UserCardProps) {

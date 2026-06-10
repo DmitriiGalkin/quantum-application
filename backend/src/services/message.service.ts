@@ -1,7 +1,7 @@
 import MessageRepository from '../repositories/message.repository.js';
 import type { ChatTarget } from '@shared/types';
 import ChatRepository from '../repositories/chat.repository.js';
-import { toMessage } from '../mappers/message.mapper.js';
+import { toMessageDto } from '../mappers/message.mapper.js';
 import { Passport } from '../entities/passport.js';
 import { buildMeta } from './chat/chat.meta.js';
 import { Message } from '../entities/message.js';
@@ -61,7 +61,7 @@ export class MessageService {
 
     return {
       chatId: chat.id,
-      message: toMessage(assistantMessage),
+      message: toMessageDto(assistantMessage),
     };
   }
 
@@ -73,6 +73,10 @@ export class MessageService {
       metadata: JSON.stringify(input.metadata),
     });
 
-    return MessageRepository.findById(messageId);
+    const message = await MessageRepository.findById(messageId);
+
+    if (!message) throw new Error('createAssistantMessage: удивительно');
+
+    return message;
   }
 }

@@ -58,8 +58,8 @@ function ProjectPage() {
 
     if (navigator.share) {
       await navigator.share({
-        title: project.title,
-        text: project.description,
+        title: project?.title,
+        text: project?.description,
         url,
       });
     } else {
@@ -212,10 +212,10 @@ function ProjectPage() {
                   Расписание
                 </Typography>
                 <Stack spacing={2}>
-                  {(project?.meets || []).map(meeting => (
+                  {(project?.meets || []).map(meet => (
                     <MeetCard
-                      meet={meeting}
-                      key={meeting.id}
+                      meet={meet}
+                      key={meet.id}
                       isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
                       onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}
                       onDeleteMeetUser={meetUserId => {

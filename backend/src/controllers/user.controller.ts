@@ -1,8 +1,9 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
+import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
 import { UserService } from '../services/user.service.js';
 import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
+import { UserDto } from '@shared/types';
 
-const create: ControllerWithAuth<any> = async (req, res) => {
+const create: ControllerWithAuth<void> = async (req, res) => {
   try {
     const result = await UserService.create(req.passport!, req.body as unknown as CreateUserInput);
 
@@ -12,7 +13,7 @@ const create: ControllerWithAuth<any> = async (req, res) => {
   }
 };
 
-const update: ControllerWithAuth<any> = async (req, res) => {
+const update: ControllerWithAuth<void> = async (req, res) => {
   try {
     await UserService.update(req.passport!, (req.body as any).userId as number, req.body as unknown as UpdateUserInput);
 
@@ -22,7 +23,7 @@ const update: ControllerWithAuth<any> = async (req, res) => {
   }
 };
 
-const remove: ControllerWithAuth<any> = async (req, res) => {
+const remove: ControllerWithAuth<void> = async (req, res) => {
   try {
     await UserService.remove(req.passport!, Number(req.params.id));
 
@@ -32,7 +33,7 @@ const remove: ControllerWithAuth<any> = async (req, res) => {
   }
 };
 
-const findById = async (req, res) => {
+const findById: Controller<UserDto> = async (req, res) => {
   try {
     const user = await UserService.findById(Number(req.params.id));
 

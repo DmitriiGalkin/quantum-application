@@ -1,7 +1,8 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
+import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
+import { PlaceDto, ProjectDto } from '@shared/types';
 
-const findAll = async (req, res) => {
+const findAll: Controller<PlaceDto[]> = async (req, res) => {
   try {
     const places = await PlaceService.findAll();
     ok(res, places);
@@ -10,10 +11,10 @@ const findAll = async (req, res) => {
   }
 };
 
-const create: ControllerWithAuth<{}> = async (req, res) => {
+const create: ControllerWithAuth<number> = async (req, res) => {
   try {
     const id = await PlaceService.create(req.body);
-    ok(res, { message: 'Место успешно создано', id });
+    ok(res, id);
   } catch (err) {
     fail(res, 'Не удалось создать место');
   }

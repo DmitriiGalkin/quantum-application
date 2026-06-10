@@ -1,14 +1,15 @@
-import { ControllerWithAuth, ok, fail } from './helper.js';
+import { ControllerWithAuth, ok, fail, Controller } from './helper.js';
 import { toIdeaDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
 import { ProjectService } from '../services/project.service.js';
+import { IdeaDto, PageMeta } from '@shared/types';
 
-const findAllPublic = async (req, res) => {
+const findAllPublic: Controller<IdeaDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll(req.query);
   ok(res, ideas.map(toIdeaDto));
 };
 
-const findByUserId = async (req, res) => {
+const findByUserId: ControllerWithAuth<IdeaDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll({
     ...req.query,
     userId: req.params.id,
@@ -17,7 +18,7 @@ const findByUserId = async (req, res) => {
   ok(res, ideas.map(toIdeaDto));
 };
 
-const findById = async (req, res) => {
+const findById: Controller<IdeaDto> = async (req, res) => {
   try {
     const idea = await IdeaService.findById(Number(req.params.id));
 
@@ -45,9 +46,9 @@ const generateImage: ControllerWithAuth<{ message: string }> = async (req, res) 
   }
 };
 
-const meta = async (req, res) => {
+const meta: Controller<PageMeta> = async (req, res) => {
   try {
-    const meta = await IdeaService.meta(req.params.id);
+    const meta = await IdeaService.meta(Number(req.params.id));
     ok(res, meta);
   } catch (err) {
     fail(res, 'Не удалось получить meta проекта');

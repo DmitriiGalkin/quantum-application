@@ -1,7 +1,9 @@
 import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
+// @ts-ignore
 import mime from 'mime';
+// @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 

@@ -54,7 +54,7 @@ export interface IParams {
 export interface IdeaDto {
   id: number;
   title: string;
-  description: string | null;
+  description: string;
   image: string | null;
   userCount: number;
   isLiked: boolean;
@@ -65,40 +65,24 @@ export interface IdeaDto {
     age: number;
   } | null;
 
-  projects: {
-    id: number;
-    title: string;
-    description: string | null;
-    passport: {
-      title: string;
-    };
-    place: {
-      address: string;
-      title: string;
-    };
-    users: {
-      id: number;
-      title: string;
-      age: number | null;
-      image: string | null
-    };
-  }[];
+  projects: ProjectDto[];
 }
 
 export interface MeetDto {
   id: number;
+  projectId: number;
   startedAt: string;
   duration?: number;
   price?: number;
 
-  // project: {
-  //   id: number;
-  //   title: string;
-  //   place: {
-  //     id: number;
-  //     title: string;
-  //   } | null;
-  // } | null;
+  project: {
+    id: number;
+    title: string;
+    place: {
+      id: number;
+      title: string;
+    } | null;
+  } | null;
 
   users: {
     id: number;
@@ -122,8 +106,8 @@ export interface PlaceDto {
   title: string;
   description: string | null;
   address: string | null;
-  latitude: number | null;
-  longitude: number | null;
+  latitude: number;
+  longitude: number;
   image: string | null;
 
   meets: MeetDto[];
@@ -134,8 +118,8 @@ export interface ProjectDto {
   passportId: number;
   placeId: number;
   ideaId: number;
-  title: string | null;
-  description: string | null;
+  title: string;
+  description: string;
 
   passport?: {
     title: string;
@@ -146,18 +130,7 @@ export interface ProjectDto {
     title: string;
     description: string;
   };
-  meets?: {
-    id: number;
-    startedAt: string;
-    duration?: number;
-    price?: number;
-    users: {
-      id: number;
-      title: string;
-      age: number | null;
-      image: string | null;
-    }[];
-  }[];
+  meets?: MeetDto[];
   users?: {
     id: number;
     title: string;

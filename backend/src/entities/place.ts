@@ -2,8 +2,8 @@ export interface Place {
   id: number;
   title: string;
   description: string | null;
-  latitude: number | null;
-  longitude: number | null;
+  latitude: number;
+  longitude: number;
   address: string | null;
   provider: string | null;
   providerId: number | null;

@@ -1,9 +1,11 @@
-import { ok, fail } from './helper.js';
+import { ok, fail, ControllerWithAuth, Controller } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import { toPassport } from '../mappers/passport.mapper.js';
+import { PassportDto } from '@shared/types';
+import { Request, Response } from 'express';
 
-const update = async (req, res) => {
+const update: ControllerWithAuth<void> = async (req, res) => {
   try {
     await AuthService.updateProfile(req.passport!, req.body);
     ok(res, { message: 'Профиль успешно обновлен' });
@@ -12,7 +14,7 @@ const update = async (req, res) => {
   }
 };
 
-const googleLogin = async (req, res) => {
+const googleLogin: Controller<void> = async (req, res) => {
   try {
     const result = await AuthService.googleLogin(req.body);
     ok(res, result);
@@ -21,7 +23,7 @@ const googleLogin = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+const login: ControllerWithAuth<{ access_token: string }> = async (req, res) => {
   try {
     const token = await AuthService.login(req.passport!);
     ok(res, { access_token: token });
@@ -30,19 +32,7 @@ const login = async (req, res) => {
   }
 };
 
-const findById = async (req, res) => {
-  try {
-    if (!req.passport) {
-      return fail(res, 'Пользователь не авторизован', 401);
-    }
-
-    ok(res, req.passport);
-  } catch (err) {
-    fail(res, 'Ошибка получения данных профиля');
-  }
-};
-
-const all = async (req, res) => {
+const all: ControllerWithAuth<PassportDto> = async (req, res) => {
   try {
     const data = await AuthService.getFullProfile(req.passport!);
     ok(res, toPassport(data));
@@ -54,7 +44,7 @@ const all = async (req, res) => {
 /**
  * Middleware для проверки токена доступа
  */
-const usePassport = async (req, res, next: Function) => {
+const usePassport = async (req: Request, res: Response, next: Function) => {
   // @ts-ignore
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -67,13 +57,12 @@ const usePassport = async (req, res, next: Function) => {
   try {
     const passport = await PassportRepository.findByAccessToken(token);
 
-
     if (!passport) {
       return res.status(401).json({ error: true, message: 'Токен недействителен или протух' });
     }
 
     //req.users = await User.findByPassportId(req.passport.id || 0);
-
+    // @ts-ignore
     req.passport = passport;
 
     next(); // Передаем управление следующему обработчику
@@ -81,13 +70,12 @@ const usePassport = async (req, res, next: Function) => {
     console.error('Auth middleware error:', err);
     return res.status(401).json({ error: true, message: 'Ошибка авторизации' });
   }
-}
+};
 
 export default {
   update,
   googleLogin,
   login,
-  findById,
   all,
   usePassport,
 };

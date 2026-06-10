@@ -39,8 +39,8 @@ function IdeaPage() {
     isLoading: isProjectLoading,
     isError: isProjectError,
   } = useQuery({
-    queryKey: ['project', id],
-    queryFn: () => fetchIdea(id as string),
+    queryKey: ['idea', id],
+    queryFn: () => fetchIdea(id!),
     enabled: Boolean(id),
   });
 
@@ -51,7 +51,7 @@ function IdeaPage() {
   const handleShare = async () => {
     const url = window.location.href;
 
-    if (navigator.share) {
+    if (navigator.share && idea) {
       await navigator.share({
         title: idea.title,
         text: idea.description,

@@ -91,8 +91,8 @@ export function MapComponent({ lat, lng, zoom }: Props) {
     places.forEach(place => {
       const meetsList = place.meets
         .map(
-          m =>
-            `<li><span>${extractTime(m.startedAt)} - ${addMinutes(extractTime(m.startedAt), 90)}</span> <a href="/project/${m.projectId}">${m.title}</a></li>`,
+          meet =>
+            `<li><span>${extractTime(meet.startedAt)} - ${addMinutes(extractTime(meet.startedAt), 90)}</span> <a href="/project/${meet.projectId}">${meet.project?.title}</a></li>`,
         )
         .join('');
       const marker = L.marker([place.latitude, place.longitude], { icon: getPlaceIcon(place.meets.length) }).bindPopup(`<div class="place-popup">
