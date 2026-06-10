@@ -2,7 +2,7 @@ import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
 import { PlaceDto } from '@shared/types';
 
-const findAll: Controller<PlaceDto[]> = async (req, res) => {
+const findAll: Controller<PlaceDto[]> = async (_req, res) => {
   try {
     const places = await PlaceService.findAll();
     ok(res, places);
