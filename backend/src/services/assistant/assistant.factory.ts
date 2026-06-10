@@ -10,12 +10,19 @@ import { authAssistant } from './auth.assistant.js';
 import { IdeaFlowService } from './flows/idea-flow.service.js';
 import { ProjectFlowService } from './flows/project-flow.service.js';
 
-export function selectAssistant(target: ChatTarget, meta: Meta) {
+export function selectAssistant(target: ChatTarget, meta: Meta): Promise<{ content: string, target: ChatTarget }> {
   switch (target) {
     case 'idea':
+      console.log('1');
       if (!meta?.user) return userAssistant;
+      console.log('2');
+
       if (!meta?.idea) return ideaAssistantAnswer;
+      console.log('3');
+
       if (!meta?.passport) return authAssistant;
+      console.log('4');
+
 
       return () => IdeaFlowService.create(meta);
 

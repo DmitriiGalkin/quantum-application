@@ -33,7 +33,7 @@ export const USER_SYSTEM_PROMPT = `
 `;
 
 export async function userAssistant({ messages }: AssistantAnswer) {
-  return baseAssistantAnswer({
+  const l = await baseAssistantAnswer({
     messages,
     prompt: USER_SYSTEM_PROMPT,
     schema: (data: any) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'string',
@@ -44,4 +44,6 @@ export async function userAssistant({ messages }: AssistantAnswer) {
     }),
     meta: { target: 'user' },
   });
+  console.log(l, 'l');
+  return l;
 }

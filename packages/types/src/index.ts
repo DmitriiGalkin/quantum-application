@@ -1,7 +1,7 @@
 export interface Chat {
   id: number;
   passportId: number;
-  target: string;
+  target: ChatTarget;
   title: string;
   meta?: Meta;
   messages?: MessageDto[];

@@ -1,8 +1,10 @@
+import { ChatTarget } from '@shared/types';
+
 export interface Chat {
   id: number;
   passportId: number;
   title: string | null;
-  target: string | null;
+  target: ChatTarget;
   createdAt: Date;
   updatedAt: Date;
 }

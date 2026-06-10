@@ -7,6 +7,9 @@ import { MessageService } from '../message.service.js';
 import MessageRepository from '../../repositories/message.repository.js';
 import { toMessage } from '../../mappers/message.mapper.js';
 import { getMetaMessages } from '../helper.js';
+import { Message } from '../../entities/message.js';
+
+//Катя, 10 лет, увлекается скрапбукингом и езде на авто
 
 export class ChatService {
   static async create(body: { target: ChatTarget }, passport?: Passport) {
@@ -23,27 +26,27 @@ export class ChatService {
     const chat = await ChatRepository.findById(body.chatId);
     if (!chat) throw new Error('Чат не найден');
 
-    const allMessages = await MessageRepository.findLastByChatId(chat.id, 100);
+    const lastMessages = await MessageRepository.findLastByChatId(chat.id, 100);
 
     const userMessageId = await MessageRepository.create({
       chatId: chat.id,
       content: messageText,
       role: 'user',
-      target: allMessages.at(-1)?.target,
+      target: lastMessages.at(-1)?.target,
     });
 
     const messages = [
-      ...allMessages,
+      ...lastMessages,
       {
         id: userMessageId,
         content: messageText,
         role: 'user',
-      },
+      } as Message,
     ];
 
-    const meta = buildMeta(allMessages, passport);
+    const meta = buildMeta(messages, passport);
 
-    const { result, meta: updatedMeta } = await runChatAssistant(chat.target as ChatTarget, meta, messages);
+    const { result, meta: updatedMeta } = await runChatAssistant(chat.target, meta, messages);
 
     const assistantMessage = await MessageService.createAssistantMessage({
       chatId: chat.id,

@@ -1,10 +1,11 @@
 import assistant from '../assistant.js';
 import { extractJsonFromString } from './assistants/helper.js';
 import type { MessageDto } from '@shared/types';
+import { Message } from '../entities/message.js';
 
 export interface BaseAssistantAnswer {
   prompt: string;
-  messages: MessageDto[];
+  messages: Message[];
   schema: any;
   transformer: any;
   meta: any;
@@ -22,9 +23,11 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
           role: 'system',
           content: prompt, // Вызов функции для получения промпта
         },
-        ...messages.filter(f => f.target === meta.target).map(m => ({ role: m.role, content: m.content })),
+        ...messages.map(m => ({ role: m.role, content: m.content })),
       ],
     };
+
+    //.filter(f => f.target === meta.target)
 
     console.log(payload, 'payload');
 
@@ -50,13 +53,14 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
         return null;
       }
       const tData = transformer(data);
-
-      return {
+      const f = {
         content: userMessage,
         metadata: JSON.stringify({ target: meta.target, data: tData }),
         meta: data ? { target: meta.target, data: tData } : null,
         target: meta.target,
       };
+      console.log(f, 'f');
+      return f;
     }
 
     // 5. Формирование ответа

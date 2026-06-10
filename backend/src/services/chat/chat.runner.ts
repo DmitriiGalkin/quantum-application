@@ -1,10 +1,12 @@
 import { selectAssistant } from '../assistant/assistant.factory.js';
 import type { ChatTarget, Meta } from '@shared/types';
+import { Message } from '../../entities/message.js';
 
-export async function runChatAssistant(target: ChatTarget, meta: Meta, messages: any[]) {
+export async function runChatAssistant(target: ChatTarget, meta: Meta, messages: Message[]) {
   const assistant = selectAssistant(target, meta);
 
-  let result = await assistant({ messages, meta }) as any;
+  let result = (await assistant({ messages, meta })) as any;
+  console.log(result, 'result');
 
   // 🔥 если ассистент вернул meta → перезапуск
   if (result?.meta) {

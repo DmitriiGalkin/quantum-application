@@ -1,6 +1,7 @@
 
 import { baseAssistantAnswer } from '../base-assistant.js';
 import type { UserDto, MessageDto } from '@shared/types';
+import { Message } from '../../entities/message.js';
 
 const getIdeaPrompt = (user: UserDto) => `
 Ты — ассистент образовательного проекта для детей.
@@ -33,12 +34,12 @@ const getIdeaPrompt = (user: UserDto) => `
 `;
 
 export interface AssistantAnswer {
-  messages: MessageDto[];
+  messages: Message[];
   meta: any;
 }
 
 export async function ideaAssistantAnswer({ messages, meta }: AssistantAnswer) {
-  return baseAssistantAnswer({
+  const x = await baseAssistantAnswer({
     messages,
     meta: { ...meta, target: 'idea' },
     prompt: getIdeaPrompt(meta.user), // Передаем функцию для промпта
@@ -53,4 +54,6 @@ export async function ideaAssistantAnswer({ messages, meta }: AssistantAnswer) {
       steps: data.steps,
     }),
   });
+  console.log(x, 'x');
+  return x;
 }

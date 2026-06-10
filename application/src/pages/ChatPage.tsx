@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -19,7 +19,6 @@ import Message from '../components/Message.tsx';
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
 function ChatPage() {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
 
@@ -64,22 +63,14 @@ function ChatPage() {
         { target },
         {
           onSuccess: ({ chatId }) => {
-            setChatId(chatId);
-
             queryClient.setQueryData(['chat', chatId], addOptimisticMessage(trimmed));
             setMessage('');
 
-            // отправляем сообщение уже в новый чат
             mutation.mutate(
-              {
-                chatId,
-                message: trimmed,
-                target,
-              },
+              { chatId, message: trimmed, target },
               {
                 onSuccess: response => {
                   queryClient.setQueryData(['chat', chatId], addMessage(response.message));
-                  navigate(`/chat/${chatId}`);
                 },
                 onError: () => {
                   queryClient.setQueryData(['chat', chatId], deleteOptimisticMessage);
@@ -121,13 +112,6 @@ function ChatPage() {
 
   const metadata = {} as any; //getObjectFromMetadata(lastMessage?.metadata);
   console.log('metadata', metadata);
-
-  // const generateImageMutation = useMutation({
-  //   mutationFn: generateImage,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['chat', chatId] });
-  //   },
-  // });
 
   useEffect(() => {
     const currentMessage = localStorage.getItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY);
