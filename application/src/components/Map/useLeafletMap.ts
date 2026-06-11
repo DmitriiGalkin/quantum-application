@@ -4,7 +4,6 @@ export function useLeafletMap(lat: number, lng: number, zoom: number) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<L.Map | null>(null);
   const leafletRef = useRef<typeof import('leaflet') | null>(null);
-
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -15,7 +14,6 @@ export function useLeafletMap(lat: number, lng: number, zoom: number) {
       const map = L.map(mapRef.current!, {
         center: [lat, lng],
         zoom,
-        scrollWheelZoom: false,
         attributionControl: false,
       });
 

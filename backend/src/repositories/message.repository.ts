@@ -56,6 +56,8 @@ class MessageRepository {
       [chatId, limit],
     );
 
+    console.log(rows,'ROWS');
+
     return rows.reverse().map(mapMessageRow);
   }
 

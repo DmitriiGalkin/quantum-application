@@ -1,8 +1,10 @@
 import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
-import { type PlaceRow, toPlace } from '../mappers/place.mapper.js';
+import { toPlace } from '../mappers/place.mapper.js';
 import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
+import { PlaceRow } from '../entities/place.db.js';
+import { s } from '@a2a-js/sdk/dist/extensions-APfrw8gz.js';
 
 class PlaceRepository {
   // ✅ CREATE
@@ -49,6 +51,14 @@ class PlaceRepository {
   // ✅ FIND BY ID
   static async findById(id: number): Promise<Place | null> {
     const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place WHERE id = ?', [id]);
+
+    if (!rows[0]) return null;
+
+    return toPlace(rows[0]);
+  }
+
+  static async findByTitle(title: string): Promise<Place | null> {
+    const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place WHERE title = ?', [title]);
 
     if (!rows[0]) return null;
 

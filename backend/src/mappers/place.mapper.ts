@@ -1,18 +1,7 @@
 import type { Place } from '../entities/place.js';
 import type { PlaceDto } from '@shared/types';
 import { RowDataPacket } from 'mysql2/promise';
-
-export interface PlaceRow extends RowDataPacket {
-  id: number;
-  title: string;
-  description: string | null;
-  latitude: number;
-  longitude: number;
-  provider: string | null;
-  providerId: number | null;
-  address: string | null;
-  phone: string | null;
-}
+import { PlaceRow } from '../entities/place.db.js';
 
 export function toPlace(row: PlaceRow): Place {
   return {
@@ -25,6 +14,7 @@ export function toPlace(row: PlaceRow): Place {
     provider: row.provider,
     providerId: row.providerId,
     phone: row.phone,
+    priceFrom: row.priceFrom,
   };
 }
 
@@ -37,6 +27,7 @@ export function toPlaceDto(place: Place): PlaceDto {
     latitude: place.latitude,
     longitude: place.longitude,
     image: null, // или логика
+    priceFrom: place.priceFrom,
 
     meets: [], // подтягивается отдельно
   };

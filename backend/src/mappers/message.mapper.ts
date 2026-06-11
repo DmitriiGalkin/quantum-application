@@ -9,7 +9,7 @@ export function mapMessageRow(row: MessageRow): Message {
     passportId: row.passportId,
     role: row.role,
     content: row.content,
-    metadata: row.metadata ? safeParse(row.metadata) : null,
+    metadata: row.metadata, // ? safeParse(row.metadata) : null,
     target: row.target,
     createdAt: row.createdAt,
   };

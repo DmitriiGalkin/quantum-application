@@ -3,30 +3,16 @@ import Typography from '@mui/material/Typography';
 import Message from './Message.tsx';
 import type { MessageDto } from '@shared/types';
 import ReactMarkdown from 'markdown-to-jsx';
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../providers/AuthProvider.tsx';
-import { PlaceMap } from './PlaceMap.tsx';
+import React from 'react';
+
 
 type ChatMessageListProps = {
   chatId: number;
   messages: MessageDto[];
   isSending: boolean;
-  data: any[];
 };
 
-function ChatMessageList({ messages, isSending, data }: ChatMessageListProps) {
-  const { token, authHandler } = useAuth();
-
-  const [authTriggered, setAuthTriggered] = useState(false);
-
-  useEffect(() => {
-    const hasAuthMessage = messages.some(m => m?.target === 'auth');
-
-    if (!token && hasAuthMessage && !authTriggered) {
-      authHandler();
-      setAuthTriggered(true);
-    }
-  }, [messages, authTriggered]);
+function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
 
   return (
     <>
@@ -36,7 +22,6 @@ function ChatMessageList({ messages, isSending, data }: ChatMessageListProps) {
             <Stack spacing={2}>
               <Typography>
                 <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
-                {chatMessage.target === 'place' && Boolean(data.length) && <PlaceMap lat={55.75} lng={37.62} zoom={12} places={data} />}
               </Typography>
             </Stack>
           </Message>

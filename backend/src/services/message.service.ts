@@ -7,6 +7,7 @@ import { buildMeta } from './chat/chat.meta.js';
 import { Message } from '../entities/message.js';
 import { getContent } from './chat/chat.runner.js';
 import UserRepository from '../repositories/user.repository.js';
+import PlaceRepository from '../repositories/place.repository.js';
 
 export interface CreateAssistantMessageInput {
   chatId: number;
@@ -23,33 +24,26 @@ export class MessageService {
     const chat = await ChatRepository.findById(body.chatId);
     if (!chat) throw new Error('Чат не найден');
 
-    const lastMessages = await MessageRepository.findLastByChatId(chat.id, 100);
+    const lastMessages = await MessageRepository.findLastByChatId(chat.id, 1);
 
-    const userMessageId = await MessageRepository.create({
+    const place = chat.target === 'meet' ? await PlaceRepository.findByTitle(messageText) : null;
+
+    await MessageRepository.create({
       chatId: chat.id,
       content: messageText,
       role: 'user',
       target: lastMessages.at(-1)?.target,
+      metadata: place ? { target: 'place', data: place } : undefined,
     });
 
-    const messages = [
-      ...lastMessages,
-      {
-        id: userMessageId,
-        content: messageText,
-        role: 'user',
-      } as Message,
-    ];
-    console.log(chat, 'chat');
-    // программист, увлекаюсь бегом, плаванием, фортепиано, веду занятия с детьми по лего
+    const messages = await MessageRepository.findLastByChatId(chat.id, 100);
 
     const user = chat.userId ? await UserRepository.findById(chat.userId) : null;
     const teacher = passport?.description ? { description: passport.description } : null;
     const meta = buildMeta(messages, passport || null, user, teacher);
-    console.log(meta, 'meta');
+    console.log(meta, 'META');
 
     const { content, target, data } = await getContent(chat, meta, messages);
-    console.log(data, 'data');
 
     const assistantMessage = await MessageService.createAssistantMessage({
       chatId: chat.id,

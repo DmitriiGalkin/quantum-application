@@ -13,19 +13,25 @@ import ChatMessageList from '../components/ChatMessageList.tsx';
 import ChatComposer from '../components/ChatComposer.tsx';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { addMessage, addOptimisticMessage, deleteOptimisticMessage } from '../components/helper.ts';
-import type { ChatTarget, PlaceDto } from '@shared/types';
+import type { ChatTarget } from '@shared/types';
 import { ACTIVE_CHAT_ID_STORAGE_KEY } from '../components/Drawer.tsx';
 import ChatIntroduction from '../components/ChatIntroduction.tsx';
 import { useAuth } from '../providers/AuthProvider.tsx';
+import MapDialog from '../components/MapDialog.tsx';
 
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
 function ChatPage() {
-  const { user } = useAuth();
-  const [data, setData] = useState<any[] | null>(null);
+  const { user, token, authHandler } = useAuth();
+
+  const [authTriggered, setAuthTriggered] = useState(false);
+  const [mapTriggered, setMapTriggered] = useState(false);
+
+  //const [data, setData] = useState<any[] | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
   const [chatId, setChatId] = useState<number | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
 
@@ -93,7 +99,7 @@ function ChatPage() {
       { chatId, message: trimmed, target },
       {
         onSuccess: response => {
-          setData(response.data);
+          //setData(response.data);
           queryClient.setQueryData(['chat', chatId], addMessage(response.message));
         },
         onError: () => {
@@ -137,6 +143,25 @@ function ChatPage() {
       setChatId(null);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    const hasAuthMessage = messages.some(m => m?.target === 'auth');
+
+    if (!token && hasAuthMessage && !authTriggered) {
+      authHandler();
+      setAuthTriggered(true);
+    }
+  }, [messages, authTriggered]);
+
+  useEffect(() => {
+    const hasMapMessage = messages.some(m => m?.target === 'place');
+
+    if (hasMapMessage && !mapTriggered) {
+      setIsAuthModalOpen(true);
+      setMapTriggered(true);
+    }
+  }, [messages, mapTriggered]);
+
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
@@ -182,10 +207,9 @@ function ChatPage() {
               Загружаем историю...
             </Typography>
           )}
-
           <ChatIntroduction target={target} />
-
-          <ChatMessageList chatId={chatId as number} messages={messages} isSending={mutation.isPending} data={data || []} />
+          <ChatMessageList chatId={chatId as number} messages={messages} isSending={mutation.isPending} />
+          <MapDialog isAuthModalOpen={isAuthModalOpen} setIsAuthModalOpen={setIsAuthModalOpen} onClick={(title) => { sendMessage(title); setIsAuthModalOpen(false)}} />
         </Stack>
       </Container>
       <Box ref={messagesEndRef} />

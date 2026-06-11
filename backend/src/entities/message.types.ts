@@ -5,7 +5,10 @@ export type CreateMessageInput = {
   passportId?: number | null;
   role: ChatMessageRole;
   content?: string | null;
-  metadata?: string | null;
+  metadata?: {
+    target: ChatTarget;
+    data: any
+  };
   target?: ChatTarget | null;
 };
 

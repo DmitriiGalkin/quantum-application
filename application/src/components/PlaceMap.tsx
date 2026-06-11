@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import './MeetMap.css';
+import './Map/BaseMap.css';
 import type { PlaceDto } from '@shared/types';
 
 interface Props {
