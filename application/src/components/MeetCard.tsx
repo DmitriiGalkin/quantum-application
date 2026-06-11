@@ -11,7 +11,7 @@ import UserGroup from './UserGroup.tsx';
 type MeetCardProps = {
   meet: MeetDto;
   isMeetUserActionPending: boolean;
-  onCreateMeetUser: (meetId: number) => void;
+  onCreateMeetUser?: (meetId: number) => void;
   onDeleteMeetUser: (meetUserId: number) => void;
 };
 
@@ -85,7 +85,7 @@ function MeetCard({ meet, isMeetUserActionPending, onCreateMeetUser, onDeleteMee
               return;
             }
 
-            onCreateMeetUser(meet.id);
+            onCreateMeetUser?.(meet.id);
           }}
         >
           {isMeetUserActionPending ? 'Отправка...' : isCurrentUserVisited ? 'Выйти' : 'Участвовать'}

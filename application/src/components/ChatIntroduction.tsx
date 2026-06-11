@@ -4,14 +4,14 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Message from '../components/Message.tsx';
-import { usePassport } from '../requests.ts';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 type ChatIntroductionProps = {
   target: ChatTarget;
 };
 
 export default function ChatIntroduction({ target }: ChatIntroductionProps) {
-  const passport = usePassport()
+  const { passport, user } = useAuth()
 
   if (!passport) {
     if (target === 'idea') {
@@ -72,9 +72,7 @@ export default function ChatIntroduction({ target }: ChatIntroductionProps) {
   if (target === 'idea') {
     return (
       <Message role="assistant">
-        <Typography>
-          Какая у тебя новая идея?
-        </Typography>
+        <Typography>{user?.title}, какая у тебя новая идея?</Typography>
       </Message>
     );
   } else if (target === 'project') {

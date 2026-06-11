@@ -6,6 +6,7 @@ import { Passport } from '../entities/passport.js';
 import { buildMeta } from './chat/chat.meta.js';
 import { Message } from '../entities/message.js';
 import { getContent } from './chat/chat.runner.js';
+import UserRepository from '../repositories/user.repository.js';
 
 export interface CreateAssistantMessageInput {
   chatId: number;
@@ -39,22 +40,21 @@ export class MessageService {
         role: 'user',
       } as Message,
     ];
+    console.log(chat, 'chat');
 
-    const meta = buildMeta(messages, passport);
+    const user = chat.userId ? await UserRepository.findById(chat.userId) : null;
 
+    const meta = buildMeta(messages, user, passport);
+    console.log(meta, 'meta');
 
-
-
-
-
-
+    // озеленять город
 
     const { content, target } = await getContent(chat.target, meta, messages);
 
     const assistantMessage = await MessageService.createAssistantMessage({
       chatId: chat.id,
       content,
-      target
+      target,
     });
 
     await ChatRepository.touch(chat.id);

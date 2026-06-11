@@ -143,7 +143,7 @@ export interface PassportDto {
   id: number;
   title: string;
   description: string | null;
-  users?: {
+  users: {
     id: number;
     title: string;
     age: number | null;
@@ -164,4 +164,10 @@ export interface PageMeta {
   ogType: string;
   // Название сайта/бренда (Показывается мелким текстом. Не всегда отображается во всех платформах)
   ogSiteName?: string;
+}
+
+// КОНТРАКТЫ
+export interface CreateChatBody {
+  target: ChatTarget;
+  userId?: number;
 }

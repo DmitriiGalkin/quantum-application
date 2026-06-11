@@ -2,6 +2,7 @@ import { getMetaMessages } from '../helper.js';
 import type { Passport } from '../../entities/passport.js';
 import type { Meet } from '../../entities/meet.js';
 import { Message } from '../../entities/message.js';
+import { User } from '../../entities/user.js';
 
 export interface Meta {
   user?: any;
@@ -17,7 +18,7 @@ export interface Meta {
   auth?: string[];
 }
 
-export function buildMeta(messages: Message[], passport?: Passport): Meta {
+export function buildMeta(messages: Message[], user: User | null, passport?: Passport): Meta {
   return {
     ...getMetaMessages(messages),
     //
@@ -26,5 +27,6 @@ export function buildMeta(messages: Message[], passport?: Passport): Meta {
     // },
 
     passport,
+    user,
   };
 }

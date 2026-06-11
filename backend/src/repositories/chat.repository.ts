@@ -8,9 +8,9 @@ class ChatRepository {
   // ✅ CREATE
   static async create(data: CreateChatInput): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
-      `INSERT INTO chat (passportId, target)
-       VALUES (?, ?)`,
-      [data.passportId, data.target ?? null],
+      `INSERT INTO chat (passportId, userId, target)
+       VALUES (?, ?, ?)`,
+      [data.passportId, data.userId, data.target ?? null],
     );
 
     return result.insertId;

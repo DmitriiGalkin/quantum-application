@@ -1,7 +1,9 @@
-import type { Chat, ChatTarget, IParams, IdeaDto, ProjectDto, PassportDto, PlaceDto } from '@shared/types';
-import { apiFetch, getAccessToken } from './api.ts';
+import {
+  type Chat, type ChatTarget, type IParams, type IdeaDto, type ProjectDto, type PassportDto, type PlaceDto,
+  type CreateChatBody,
+} from '@shared/types';
+import { apiFetch } from './api.ts';
 import type { ProjectFormValues } from './ProjectForm';
-import { useQuery } from '@tanstack/react-query';
 
 export async function fetchProject(id: string): Promise<ProjectDto> {
   return apiFetch<ProjectDto>(`/project/${id}`);
@@ -37,10 +39,6 @@ export async function updateProject(projectId: number, values: ProjectFormValues
   });
 }
 
-// export interface ExtendedMeetMap extends Meet {
-//   title: string;
-// }
-
 export async function fetchPlaces(): Promise<PlaceDto[]> {
   return apiFetch<PlaceDto[]>('/places');
 }
@@ -49,7 +47,7 @@ export async function fetchChat({ chatId, target }: { chatId: number; target: Ch
   return apiFetch<Chat>(`/chat/${chatId}`+'?target='+target);
 }
 
-export async function fetchCreateChat({ target }: { target: ChatTarget }): Promise<{ chatId: number }> {
+export async function fetchCreateChat({ target, userId }: CreateChatBody): Promise<number> {
   return apiFetch<any>('/chat', {
     method: 'POST',
     headers: {
@@ -57,6 +55,7 @@ export async function fetchCreateChat({ target }: { target: ChatTarget }): Promi
     },
     body: JSON.stringify({
       target,
+      userId,
     }),
   });
 }
@@ -85,13 +84,13 @@ export async function createUser(user: any): Promise<{ id: number; message: stri
   });
 }
 
-export async function createMeetUser(meetId: number) {
+export async function createMeetUser({meetId, userId}: { meetId: number, userId: number }) {
   return apiFetch('/meetUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ meetId, userId: 2 }),
+    body: JSON.stringify({ meetId, userId }),
   });
 }
 
@@ -151,17 +150,3 @@ export async function fetchUnlike({ userId, ideaId }: IParams): Promise<IdeaDto[
     method: 'DELETE',
   });
 }
-
-;
-
-export const usePassport = () => {
-  const accessToken = getAccessToken();
-
-  const { data: passport } = useQuery({
-    queryKey: ['passport'],
-    queryFn: fetchPassport,
-    enabled: Boolean(accessToken),
-  });
-
-  return passport;
-};

@@ -3,18 +3,19 @@ import type { UserDto } from '@shared/types'; // Импортируем пул �
 import { ApiResponse } from '../types/api.js';
 import { Passport } from '../entities/passport.js'; // Импортируем пул соединений
 
-export interface RequestWithPassport extends Request {
+export interface RequestWithPassport<TBody = any> extends Request {
   params: Record<string, string>;
   passport: Passport;
   query: Record<string, string>;
   users: UserDto[];
+  body: TBody; // 👈 вот ключ
 }
 
 
 export type TypedResponse<T> = Response<ApiResponse<T>>;
 
 export type Controller<T> = (req: Request, res: Response<ApiResponse<T>>, next: NextFunction) => Promise<void>;
-export type ControllerWithAuth<T> = (req: RequestWithPassport, res: TypedResponse<T>) => Promise<void>;
+export type ControllerWithAuth<TResponse, TBody = any> = (req: RequestWithPassport<TBody>, res: TypedResponse<TResponse>) => Promise<void>;
 
 export const ok = <T>(res: Response, data: T) => {
   return res.json(data);

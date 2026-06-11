@@ -23,9 +23,11 @@ import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from '@mui/material/Tooltip';
 import ShareIcon from '@mui/icons-material/Share';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 function ProjectPage() {
   const navigate = useNavigate();
+  const { user } = useAuth()
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
 
@@ -217,7 +219,7 @@ function ProjectPage() {
                       meet={meet}
                       key={meet.id}
                       isMeetUserActionPending={createMeetUserMutation.isPending || deleteMeetUserMutation.isPending}
-                      onCreateMeetUser={meetId => createMeetUserMutation.mutate(meetId)}
+                      onCreateMeetUser={user ? meetId => createMeetUserMutation.mutate({ meetId, userId: user.id }) : undefined}
                       onDeleteMeetUser={meetUserId => {
                         deleteMeetUserMutation.mutate(meetUserId);
                       }}

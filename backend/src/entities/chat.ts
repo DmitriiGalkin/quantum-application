@@ -3,6 +3,7 @@ import { ChatTarget } from '@shared/types';
 export interface Chat {
   id: number;
   passportId: number | null;
+  userId: number | null;
   title: string | null;
   target: ChatTarget;
   createdAt: Date;
@@ -19,4 +20,5 @@ export interface CreateChatInput {
   passportId: number | null;
   title?: string | null;
   target?: string | null;
+  userId?: number | null;
 }

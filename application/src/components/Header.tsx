@@ -1,48 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import '../App.css';
-import { useMutation } from '@tanstack/react-query';
-import { fetchCreateChat } from '../requests.ts';
-import { saveAccessTokenFromUrl, strategies, useTarget } from '../helper.ts';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import MenuIcon from '@mui/icons-material/Menu';
-import HomeDrawer from '../components/HomeDrawer.tsx';
+import Drawer from './Drawer.tsx';
 import { Link, useNavigate } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import Button from '@mui/material/Button';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CloseIcon from '@mui/icons-material/Close';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
+import KeyIcon from '@mui/icons-material/Key';
 import Container from '@mui/material/Container';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 function Header() {
   const navigate = useNavigate();
+  const { user, passport, authHandler } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const target = useTarget();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const initialAccessToken = saveAccessTokenFromUrl();
-
-  useEffect(() => {
-    if (!accessToken && initialAccessToken) {
-      window.requestAnimationFrame(() => {
-        setAccessToken(initialAccessToken);
-      });
-    }
-  }, [accessToken, initialAccessToken]);
-
-  const mutation = useMutation({
-    mutationFn: fetchCreateChat,
-  });
 
   return (
     <>
@@ -58,7 +33,7 @@ function Header() {
       >
         <Container maxWidth="lg">
           <Toolbar>
-            {accessToken && (
+            {passport && (
               <IconButton
                 size="large"
                 edge="start"
@@ -82,14 +57,9 @@ function Header() {
               </Typography>
             </Link>
 
-            {!accessToken && (
-              <IconButton
-                color="primary"
-                aria-label="Авторизация"
-                sx={{ color: 'white' }}
-                onClick={() => setIsAuthModalOpen(true)} // Показываем модалку
-              >
-                <AccountCircleIcon /> {/* Иконка профиля */}
+            {!user && (
+              <IconButton onClick={authHandler} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
+                <KeyIcon />
               </IconButton>
             )}
 
@@ -103,20 +73,6 @@ function Header() {
                 if (activeChatId) {
                   return navigate(`/chat/${activeChatId}`);
                 }
-
-                mutation.mutate(
-                  { target: target || 'none' },
-                  {
-                    onSuccess: chatId => {
-                      localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
-                      navigate(`/chat/${chatId}`);
-                    },
-                    onError: error => {
-                      console.error('Ошибка отправки:', error);
-                      alert('Не удалось создать чат. Попробуйте ещё раз.');
-                    },
-                  },
-                );
               }}
             >
               <AutoAwesomeIcon />
@@ -125,44 +81,9 @@ function Header() {
         </Container>
       </AppBar>
 
-      <HomeDrawer isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} accessToken={accessToken} setAccessToken={setAccessToken} />
+      <Drawer isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
-      <Dialog open={isAuthModalOpen} fullScreen={false} onClose={() => setIsAuthModalOpen(false)}>
-        <DialogTitle>
-          <Button onClick={() => setIsAuthModalOpen(false)} startIcon={<CloseIcon />}>
-            Закрыть
-          </Button>
-        </DialogTitle>
 
-        <DialogContent dividers>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={2}
-            sx={{
-              alignItems: {
-                xs: 'stretch',
-                sm: 'center',
-              },
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-              Выберите удобный способ авторизации
-            </Typography>
-
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
-              {strategies.map(strategy => (
-                <Button component="a" variant="contained" href={strategy.href} key={strategy.title} sx={{ minWidth: 120 }}>
-                  <Box component="span" sx={{ mr: 1, fontWeight: 900 }}>
-                    {strategy.icon}
-                  </Box>
-                  {strategy.title}
-                </Button>
-              ))}
-            </Stack>
-          </Stack>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

@@ -1,14 +1,14 @@
 import {Link} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
+import MUIDriwer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import KeyIcon from '@mui/icons-material/Key';
+import KeyOffIcon from '@mui/icons-material/KeyOff';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -16,30 +16,20 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddIcon from '@mui/icons-material/Add';
 import '../App.css';
-import {useQuery} from '@tanstack/react-query';
-import {fetchPassport} from '../requests.ts';
-import {ACCESS_TOKEN_STORAGE_KEY} from "../helper.ts";
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
-interface HomeDrawerProps {
+interface DrawerProps {
   isMenuOpen: boolean;
   setIsMenuOpen: (isMenuOpen: boolean) => void;
-  accessToken?: string | null;
-  setAccessToken: (a: null) => void;
 }
 
-function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: HomeDrawerProps) {
-  const { data: passport } = useQuery({
-    queryKey: ['passport'],
-    queryFn: fetchPassport,
-    enabled: Boolean(accessToken),
-  });
-
-  const currentUser = passport?.users?.[0];
+function Drawer({ isMenuOpen, setIsMenuOpen }: DrawerProps) {
+  const { user, logout } = useAuth();
 
   return (
-    <Drawer open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
+    <MUIDriwer open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
       <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Stack spacing={3} sx={{ p: 3 }}>
           <Stack
@@ -49,11 +39,11 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
               alignItems: 'center',
             }}
           >
-            <Avatar src={currentUser?.image || undefined} alt={currentUser?.title || 'Пользователь'} sx={{ width: 56, height: 56 }} />
+            <Avatar src={user?.image || undefined} alt={user?.title || 'Пользователь'} sx={{ width: 56, height: 56 }} />
             <Box>
-              <Typography sx={{ fontWeight: 800 }}>{currentUser?.title || 'Пользователь'}</Typography>
+              <Typography sx={{ fontWeight: 800 }}>{user?.title || 'Пользователь'}</Typography>
               <Typography variant="body2" color="text.secondary">
-                {currentUser?.age ? `${currentUser.age} лет` : 'Возраст не указан'}
+                {user?.age ? `${user.age} лет` : 'Возраст не указан'}
               </Typography>
             </Box>
           </Stack>
@@ -80,7 +70,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
 
             <ListItemButton
               component={Link}
-              to={`/user/${currentUser?.id}/ideas`}
+              to={`/user/${user?.id}/ideas`}
               onClick={() => {
                 setIsMenuOpen(false);
               }}
@@ -94,7 +84,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
 
             <ListItemButton
               component={Link}
-              to={`/user/${currentUser?.id}/projects`}
+              to={`/user/${user?.id}/projects`}
               onClick={() => {
                 setIsMenuOpen(false);
               }}
@@ -117,12 +107,7 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
 
         <Box sx={{ p: 3, mt: 'auto', backgroundColor: 'gray', filter: 'invert(1)' }}>
           <List disablePadding>
-            <ListItemButton
-              component={Link}
-              to="/chat?target=project"
-              onClick={() => setIsMenuOpen(false)}
-              sx={{ borderRadius: 2 }}
-            >
+            <ListItemButton component={Link} to="/chat?target=project" onClick={() => setIsMenuOpen(false)} sx={{ borderRadius: 2 }}>
               <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
                 <CreateNewFolderIcon />
               </ListItemIcon>
@@ -154,23 +139,22 @@ function HomeDrawer({ isMenuOpen, setIsMenuOpen, accessToken, setAccessToken }: 
               component={Link}
               to="/"
               onClick={() => {
-                localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-                localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
-                setAccessToken(null);
+                logout();
+                //localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
                 setIsMenuOpen(false);
               }}
               sx={{ borderRadius: 2 }}
             >
               <ListItemIcon sx={{ minWidth: 40 }}>
-                <KeyIcon />
+                <KeyOffIcon />
               </ListItemIcon>
               <ListItemText primary="Выйти" />
             </ListItemButton>
           </List>
         </Box>
       </Box>
-    </Drawer>
+    </MUIDriwer>
   );
 }
 
-export default HomeDrawer;
+export default Drawer;

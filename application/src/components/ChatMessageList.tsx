@@ -4,7 +4,7 @@ import Message from './Message.tsx';
 import type { MessageDto } from '@shared/types';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
-import StrategieList from '../StrategieList.tsx';
+import StrategieList from './StrategieList.tsx';
 
 type ChatMessageListProps = {
   chatId: number;

@@ -1,9 +1,10 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { strategies } from './helper.ts';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 function StrategieList() {
+  const { strategies } = useAuth()
   return (
     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
       {strategies.map(strategy => (

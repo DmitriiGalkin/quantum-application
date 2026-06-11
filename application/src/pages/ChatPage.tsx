@@ -14,12 +14,14 @@ import ChatComposer from '../components/ChatComposer.tsx';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { addMessage, addOptimisticMessage, deleteOptimisticMessage } from '../components/helper.ts';
 import type { ChatTarget } from '@shared/types';
-import { ACTIVE_CHAT_ID_STORAGE_KEY } from '../components/HomeDrawer.tsx';
+import { ACTIVE_CHAT_ID_STORAGE_KEY } from '../components/Drawer.tsx';
 import ChatIntroduction from '../components/ChatIntroduction.tsx';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
 function ChatPage() {
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
   const [chatId, setChatId] = useState<number | null>(null);
@@ -35,7 +37,7 @@ function ChatPage() {
 
   const createChatMutation = useMutation({
     mutationFn: fetchCreateChat,
-    onSuccess: ({ chatId }) => {
+    onSuccess: (chatId) => {
       setChatId(chatId);
     },
   });
@@ -45,8 +47,6 @@ function ChatPage() {
     queryFn: () => fetchChat({ chatId: chatId!, target }),
     enabled: !!chatId,
   });
-
-  console.log(chat, 'chat');
 
   const messages = chat?.messages || [];
 
@@ -58,9 +58,9 @@ function ChatPage() {
     // 👉 если чата нет — создаём
     if (!chatId) {
       createChatMutation.mutate(
-        { target },
+        { target, userId: user?.id },
         {
-          onSuccess: ({ chatId }) => {
+          onSuccess: (chatId) => {
             localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
             setSearchParams({});
 
@@ -111,12 +111,10 @@ function ChatPage() {
 
   const sendMessageHandle = () => sendMessage(message);
 
-  const metadata = {} as any; //getObjectFromMetadata(lastMessage?.metadata);
-  console.log('metadata', metadata);
 
   useEffect(() => {
     const currentMessage = localStorage.getItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY);
-    console.log('currentMessage', currentMessage);
+
     if (currentMessage) {
       sendMessage(currentMessage);
       localStorage.removeItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY);

@@ -1,8 +1,8 @@
-import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
+import { Controller, ControllerWithAuth, fail, ok, TypedResponse } from './helper.js';
 import { ChatService } from '../services/chat/chat.service.js';
-import { MessageDto } from '@shared/types';
+import { CreateChatBody, MessageDto } from '@shared/types';
 
-const create: ControllerWithAuth<number> = async (req, res) => {
+const create: ControllerWithAuth<number, CreateChatBody> = async (req, res) => {
   try {
     const chatId = await ChatService.create(req.body, req.passport!);
 

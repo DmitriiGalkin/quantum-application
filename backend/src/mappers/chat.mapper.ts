@@ -5,6 +5,7 @@ export function mapChatRow(row: ChatRow): Chat {
   return {
     id: row.id,
     passportId: row.passportId,
+    userId: row.userId,
     title: row.title,
     target: row.target,
     createdAt: row.createdAt,
