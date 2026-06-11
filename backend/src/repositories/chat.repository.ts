@@ -2,7 +2,8 @@ import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 import type { ChatRow, ChatWithLastMessageRow } from '../entities/chat.db.js';
 import { mapChatRow, mapChatWithLastMessage } from '../mappers/chat.mapper.js';
-import type { Chat, ChatWithLastMessage, CreateChatInput } from '../entities/chat.js';
+import { Chat, ChatWithLastMessage, CreateChatInput, UpdateChat } from '../entities/chat.js';
+import { UpdateUserInput } from '../entities/user.types.js';
 
 class ChatRepository {
   // ✅ CREATE
@@ -14,6 +15,20 @@ class ChatRepository {
     );
 
     return result.insertId;
+  }
+
+  // ✅ UPDATE (partial)
+  static async update(id: number, data: UpdateChat): Promise<boolean> {
+    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+
+    if (entries.length === 0) return false;
+
+    const fields = entries.map(([k]) => `${k} = ?`).join(', ');
+    const values = entries.map(([, v]) => v);
+
+    const [result] = await pool.query<ResultSetHeader>(`UPDATE chat SET ${fields} WHERE id = ?`, [...values, id]);
+
+    return result.affectedRows > 0;
   }
 
   // ✅ FIND BY ID

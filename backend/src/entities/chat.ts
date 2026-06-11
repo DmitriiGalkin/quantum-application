@@ -22,3 +22,7 @@ export interface CreateChatInput {
   target?: string | null;
   userId?: number | null;
 }
+
+export type UpdateChat = Partial<{
+  target: ChatTarget;
+}>;

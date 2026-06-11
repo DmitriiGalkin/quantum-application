@@ -1,5 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
-import { AssistantAnswer } from './idea.assistant.js';
+import { Message } from '../../entities/message.js';
+import PlaceRepository from '../../repositories/place.repository.js';
+import { AssistantFn } from '../../services/assistant/assistant.factory.js';
 
 const getPrompt = (meta: any) => {
   return `
@@ -37,16 +39,12 @@ ${JSON.stringify(meta.places)}
 `;
 };
 
-export async function meetAssistant({ messages, meta }: AssistantAnswer) {
-  return baseAssistantAnswer({
-    messages: messages, // Фильтрация сообщений, если нужна только здесь
-    meta,
-    prompt: getPrompt(meta),
-    schema: (data: any) => typeof data.startedAt === 'string' && typeof data.duration === 'string' && typeof data.placeId === 'string',
-    transformer: (data: any) => ({
-      startedAt: data.startedAt,
-      duration: data.duration,
-      placeId: Number(data.placeId),
-    }),
-  });
+export async function placeAssistant(): AssistantFn {
+  const places = await PlaceRepository.findAll();
+
+  return {
+    content: 'Выберите место для встречи',
+    target: 'place',
+    data: places,
+  };
 }

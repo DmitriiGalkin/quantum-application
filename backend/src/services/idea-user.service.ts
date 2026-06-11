@@ -1,5 +1,6 @@
 import UserRepository from '../repositories/user.repository.js';
 import IdeaUserRepository from '../repositories/idea-user.repository.js';
+import { DeleteIdeaUser } from '@shared/types';
 
 export class IdeaUserService {
   static async create(passportId: number, body: any) {
@@ -24,7 +25,7 @@ export class IdeaUserService {
     return IdeaUserRepository.create({ ideaId, userId });
   }
 
-  static async remove(passportId: number, body: any) {
+  static async remove(passportId: number, body: DeleteIdeaUser) {
     const { ideaId, userId } = body;
 
     if (!ideaId || !userId) {
@@ -33,7 +34,7 @@ export class IdeaUserService {
 
     const exists = await IdeaUserRepository.findByIdeaAndUserIds(ideaId, userId);
     if (!exists) {
-      throw new Error('Участие не существует');
+      throw new Error('Участие не существует2');
     }
 
     const allowedUsers = await UserRepository.findByPassportId(passportId);

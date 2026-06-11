@@ -13,7 +13,7 @@ import ChatMessageList from '../components/ChatMessageList.tsx';
 import ChatComposer from '../components/ChatComposer.tsx';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { addMessage, addOptimisticMessage, deleteOptimisticMessage } from '../components/helper.ts';
-import type { ChatTarget } from '@shared/types';
+import type { ChatTarget, PlaceDto } from '@shared/types';
 import { ACTIVE_CHAT_ID_STORAGE_KEY } from '../components/Drawer.tsx';
 import ChatIntroduction from '../components/ChatIntroduction.tsx';
 import { useAuth } from '../providers/AuthProvider.tsx';
@@ -22,6 +22,7 @@ const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
 function ChatPage() {
   const { user } = useAuth();
+  const [data, setData] = useState<any[] | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
   const [chatId, setChatId] = useState<number | null>(null);
@@ -55,7 +56,6 @@ function ChatPage() {
 
     if (!trimmed || mutation.isPending) return;
 
-    // 👉 если чата нет — создаём
     if (!chatId) {
       createChatMutation.mutate(
         { target, userId: user?.id },
@@ -93,6 +93,7 @@ function ChatPage() {
       { chatId, message: trimmed, target },
       {
         onSuccess: response => {
+          setData(response.data);
           queryClient.setQueryData(['chat', chatId], addMessage(response.message));
         },
         onError: () => {
@@ -182,9 +183,9 @@ function ChatPage() {
             </Typography>
           )}
 
-          <ChatIntroduction target={target}/>
+          <ChatIntroduction target={target} />
 
-          <ChatMessageList chatId={chatId as number} messages={messages} isSending={mutation.isPending} />
+          <ChatMessageList chatId={chatId as number} messages={messages} isSending={mutation.isPending} data={data || []} />
         </Stack>
       </Container>
       <Box ref={messagesEndRef} />

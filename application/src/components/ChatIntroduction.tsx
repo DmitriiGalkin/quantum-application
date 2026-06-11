@@ -78,9 +78,7 @@ export default function ChatIntroduction({ target }: ChatIntroductionProps) {
   } else if (target === 'project') {
     return (
       <Message role="assistant">
-        <Typography>
-          Расскажи или я уже сам придумал
-        </Typography>
+        <Typography>{passport?.title}, какую идею проекта Вы хотели бы реализовать вместе с детьми?</Typography>
       </Message>
     );
   }

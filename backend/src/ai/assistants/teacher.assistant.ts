@@ -32,7 +32,7 @@ const SYSTEM_PROMPT = `
 - Этот блок должен быть единственным.
 `;
 
-export async function teacherAssistantAnswer({ messages }: AssistantAnswer) {
+export async function teacherAssistant({ messages }: AssistantAnswer) {
   return baseAssistantAnswer({
     messages,
     prompt: SYSTEM_PROMPT, // Передаем константу напрямую или через функцию

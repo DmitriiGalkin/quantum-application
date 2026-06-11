@@ -1,7 +1,5 @@
 import type { ChatTarget } from '@shared/types';
 
-export const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
-
 const TARGET_STORAGE_KEY = 'target';
 
 export const useTarget = (): ChatTarget | null => {

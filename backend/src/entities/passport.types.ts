@@ -8,4 +8,5 @@ export type CreatePassportInput = {
 
 export type UpdatePassportInput = Partial<{
   title: string | null;
+  description: string | null;
 }>;

@@ -1,9 +1,10 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { IdeaUserService } from '../services/idea-user.service.js';
+import { CreateIdeaUser, DeleteIdeaUser } from '@shared/types';
 
-const create: ControllerWithAuth<{}> = async (req, res) => {
+const create: ControllerWithAuth<void, CreateIdeaUser> = async (req, res) => {
   try {
-    await IdeaUserService.create(req.passport.id!, req.query);
+    await IdeaUserService.create(req.passport.id!, req.body);
 
     ok(res, { message: 'Лайк' });
   } catch (err: any) {
@@ -11,9 +12,9 @@ const create: ControllerWithAuth<{}> = async (req, res) => {
   }
 };
 
-const remove: ControllerWithAuth<{}> = async (req, res) => {
+const remove: ControllerWithAuth<void> = async (req, res) => {
   try {
-    await IdeaUserService.remove(req.passport.id!, req.query);
+    await IdeaUserService.remove(req.passport.id!, req.query as unknown as DeleteIdeaUser);
 
     ok(res, { message: 'Дизлайк' });
   } catch (err: any) {

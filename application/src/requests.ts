@@ -1,6 +1,14 @@
 import {
-  type Chat, type ChatTarget, type IParams, type IdeaDto, type ProjectDto, type PassportDto, type PlaceDto,
+  type Chat,
+  type ChatTarget,
+  type IParams,
+  type IdeaDto,
+  type ProjectDto,
+  type PassportDto,
+  type PlaceDto,
   type CreateChatBody,
+  type CreateIdeaUser,
+  type DeleteIdeaUser, type CreateMessage,
 } from '@shared/types';
 import { apiFetch } from './api.ts';
 import type { ProjectFormValues } from './ProjectForm';
@@ -60,7 +68,7 @@ export async function fetchCreateChat({ target, userId }: CreateChatBody): Promi
   });
 }
 
-export async function fetchSendMessage({ chatId, message, target }: { chatId: number | null; message: string; target?: ChatTarget }): Promise<any> {
+export async function fetchSendMessage({ chatId, message, target }: CreateMessage): Promise<any> {
   return apiFetch<any>(`/message`, {
     method: 'POST',
     headers: {
@@ -135,18 +143,18 @@ export async function fetchUserIdeas({ userId }: IParams): Promise<IdeaDto[]> {
   return apiFetch<IdeaDto[]>(`/user/${userId}/ideas`);
 }
 
-export async function fetchLike({ userId, ideaId }: IParams): Promise<IdeaDto[]> {
-  return apiFetch<IdeaDto[]>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
+export async function fetchLike({ userId, ideaId }: CreateIdeaUser): Promise<void> {
+  return apiFetch<void>('/ideaUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: undefined,
+    body: JSON.stringify({ userId, ideaId }),
   });
 }
 
-export async function fetchUnlike({ userId, ideaId }: IParams): Promise<IdeaDto[]> {
-  return apiFetch<IdeaDto[]>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
+export async function fetchUnlike({ userId, ideaId }: DeleteIdeaUser): Promise<void> {
+  return apiFetch<void>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
     method: 'DELETE',
   });
 }

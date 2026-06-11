@@ -1,37 +1,22 @@
-import { useEffect, useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchPlaces } from '../requests.ts';
+import { useEffect, useRef, useState } from 'react';
 import './MeetMap.css';
+import type { PlaceDto } from '@shared/types';
 
 interface Props {
   lat: number;
   lng: number;
   zoom: number;
+  places: PlaceDto[];
 }
 
-function addMinutes(timeStr: string, minutes: number) {
-  const [hours, mins] = timeStr.split(':').map(Number);
-  let totalMinutes = hours * 60 + mins + minutes;
-  const newHours = Math.floor(totalMinutes / 60) % 24;
-  const newMinutes = totalMinutes % 60;
-  return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
-}
+export function PlaceMap({ lat, lng, zoom, places }: Props) {
+  console.log(places, 'places');
+  const [isMapReady, setIsMapReady] = useState(false);
 
-function extractTime(isoString: string) {
-  const match = isoString.match(/\d\d:\d\d/);
-  return match ? match[0] : '';
-}
-
-export function MapComponent({ lat, lng, zoom }: Props) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<L.Map | null>(null);
   const markersGroupRef = useRef<L.LayerGroup | null>(null); // Группа для маркеров
   const leafletRef = useRef<typeof import('leaflet') | null>(null);
-
-  const { data: places = [] } = useQuery({
-    queryKey: ['places'],
-    queryFn: fetchPlaces,
-  });
 
   // Эффект №1: Создание карты (один раз)
   useEffect(() => {
@@ -58,6 +43,7 @@ export function MapComponent({ lat, lng, zoom }: Props) {
 
       mapInstance.current = map;
       markersGroupRef.current = L.layerGroup().addTo(map);
+      setIsMapReady(true);
     }
 
     if (!mapInstance.current && mapRef.current) {
@@ -73,6 +59,7 @@ export function MapComponent({ lat, lng, zoom }: Props) {
 
   // Эффект №2: Обновление данных и камеры
   useEffect(() => {
+    if (!isMapReady) return;
     if (!mapInstance.current || !markersGroupRef.current || !leafletRef.current) return;
 
     const L = leafletRef.current;
@@ -89,15 +76,9 @@ export function MapComponent({ lat, lng, zoom }: Props) {
 
     // Ставим новые
     places.forEach(place => {
-      const meetsList = place.meets
-        .map(
-          meet =>
-            `<li><span>${extractTime(meet.startedAt)} - ${addMinutes(extractTime(meet.startedAt), 90)}</span> <a href="/project/${meet.projectId}">${meet.project?.title}</a></li>`,
-        )
-        .join('');
-      const marker = L.marker([place.latitude, place.longitude], { icon: getPlaceIcon(place.meets.length) }).bindPopup(`<div class="place-popup">
+      const marker = L.marker([Number(place.latitude), Number(place.longitude)], { icon: getPlaceIcon(place.meets.length) })
+        .bindPopup(`<div class="place-popup">
                   <h4><b>${place.title}</b></h4>
-                  <ul>${meetsList}</ul>
                   <p>Адрес: ${place.address}</p>
               </div>`);
 

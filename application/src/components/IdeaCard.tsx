@@ -9,6 +9,7 @@ import { useState } from "react";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import type { IdeaDto } from '@shared/types';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 type IdeaCardProps = {
   idea: IdeaDto;
@@ -19,12 +20,13 @@ type IdeaCardProps = {
 function IdeaCard({ idea, like, unlike }: IdeaCardProps) {
   const [liked, setLiked] = useState(idea.isLiked);
   const [likesCount, setLikesCount] = useState(idea.userCount);
+  const { user } = useAuth()
 
   const handleLike = () => {
     if (liked) {
-      unlike?.({ ideaId: idea.id, userId: 2 });
+      user && unlike?.({ ideaId: idea.id, userId: user.id });
     } else {
-      like?.({ ideaId: idea.id, userId: 2 });
+      user && like?.({ ideaId: idea.id, userId: user.id });
     }
   }
 

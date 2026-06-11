@@ -37,7 +37,7 @@ export interface AssistantAnswer {
   meta?: any;
 }
 
-export async function ideaAssistantAnswer({ messages, meta }: AssistantAnswer) {
+export async function ideaAssistant({ messages, meta }: AssistantAnswer) {
   return await baseAssistantAnswer({
     messages,
     meta: { ...meta, target: 'idea' },

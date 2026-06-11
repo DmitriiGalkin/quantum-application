@@ -13,7 +13,7 @@ import Box from '@mui/material/Box';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
-//const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
+const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
 
 const STRATEGIES = [
   {
@@ -78,6 +78,18 @@ export const AuthProvider = ({ children }: any) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (!token) return;
+
+    const redirectUrl = localStorage.getItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
+
+    if (redirectUrl) {
+      localStorage.removeItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
+
+      window.location.href = redirectUrl;
+    }
+  }, [token]);
+
   const login = (token: string) => {
     localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
     setToken(token);
@@ -89,7 +101,11 @@ export const AuthProvider = ({ children }: any) => {
     setUser(null);
     setPassport(null);
   };
-  const authHandler = () => setIsAuthModalOpen(true);
+  const authHandler = () => {
+    localStorage.setItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY, window.location.pathname + window.location.search);
+
+    setIsAuthModalOpen(true);
+  };
 
   return (
     <AuthContext.Provider value={{ passport, user, token, login, logout, strategies: STRATEGIES, authHandler }}>
@@ -120,7 +136,16 @@ export const AuthProvider = ({ children }: any) => {
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
                 {STRATEGIES.map(strategy => (
-                  <Button component="a" variant="contained" href={strategy.href} key={strategy.title} sx={{ minWidth: 120 }}>
+                  <Button
+                    component="a"
+                    variant="contained"
+                    href={strategy.href}
+                    key={strategy.title}
+                    sx={{ minWidth: 120 }}
+                    onClick={() => {
+                      localStorage.setItem('message_after_login', strategy.title);
+                    }}
+                  >
                     <Box component="span" sx={{ mr: 1, fontWeight: 900 }}>
                       {strategy.icon}
                     </Box>
@@ -150,9 +175,6 @@ const getTokenFromUrl = () => {
 
   url.searchParams.delete('access_token');
   window.history.replaceState({}, document.title, url.toString());
-
-  // window.location.href = localStorage.getItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY) || '/'; // Если нет записи, вернем на главную;
-  // localStorage.removeItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
 
   return token;
 };

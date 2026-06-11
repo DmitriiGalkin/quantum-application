@@ -21,7 +21,7 @@ export default function Like({ isLiked, ideaId, userId }: ChatBubbleProps) {
   });
 
   const handleLike = () => {
-    if (liked) {
+    if (!liked) {
       mutationLike.mutate({ ideaId, userId });
     } else {
       mutationUnlike.mutate({ ideaId, userId });

@@ -1,5 +1,5 @@
 import MessageRepository from '../repositories/message.repository.js';
-import type { ChatTarget } from '@shared/types';
+import type { ChatTarget, CreateMessage } from '@shared/types';
 import ChatRepository from '../repositories/chat.repository.js';
 import { toMessageDto } from '../mappers/message.mapper.js';
 import { Passport } from '../entities/passport.js';
@@ -16,7 +16,7 @@ export interface CreateAssistantMessageInput {
 }
 
 export class MessageService {
-  static async create(body: { chatId: number; message: string; target: ChatTarget }, passport?: Passport ) {
+  static async create(body: CreateMessage, passport?: Passport) {
     const messageText = String(body?.message || '').trim();
     if (!messageText) throw new Error('Сообщение не может быть пустым');
 
@@ -41,15 +41,15 @@ export class MessageService {
       } as Message,
     ];
     console.log(chat, 'chat');
+    // программист, увлекаюсь бегом, плаванием, фортепиано, веду занятия с детьми по лего
 
     const user = chat.userId ? await UserRepository.findById(chat.userId) : null;
-
-    const meta = buildMeta(messages, user, passport);
+    const teacher = passport?.description ? { description: passport.description } : null;
+    const meta = buildMeta(messages, passport || null, user, teacher);
     console.log(meta, 'meta');
 
-    // озеленять город
-
-    const { content, target } = await getContent(chat.target, meta, messages);
+    const { content, target, data } = await getContent(chat, meta, messages);
+    console.log(data, 'data');
 
     const assistantMessage = await MessageService.createAssistantMessage({
       chatId: chat.id,
@@ -62,6 +62,7 @@ export class MessageService {
     return {
       chatId: chat.id,
       message: toMessageDto(assistantMessage),
+      data,
     };
   }
 

@@ -9,7 +9,7 @@ export interface Chat {
 
 export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
 
-export type ChatTarget = 'user' | 'teacher' | 'idea' | 'project' | 'meet' | 'none' | 'auth';
+export type ChatTarget = 'user' | 'teacher' | 'idea' | 'project' | 'meet' | 'none' | 'auth' | 'place';
 
 export type ChatMessageRole = 'user' | 'assistant' | 'system';
 
@@ -170,4 +170,17 @@ export interface PageMeta {
 export interface CreateChatBody {
   target: ChatTarget;
   userId?: number;
+}
+export interface CreateIdeaUser {
+  ideaId: number;
+  userId: number;
+}
+export interface DeleteIdeaUser {
+  ideaId: number;
+  userId: number;
+}
+export interface CreateMessage {
+  chatId: number;
+  message: string;
+  target?: ChatTarget;
 }

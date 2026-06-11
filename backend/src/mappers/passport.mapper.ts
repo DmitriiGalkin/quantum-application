@@ -9,6 +9,7 @@ export function mapPassportRow(row: PassportRow): Passport {
     provider: row.provider,
     accessToken: row.accessToken,
     title: row.title,
+    description: row.description,
     email: row.email,
   };
 }

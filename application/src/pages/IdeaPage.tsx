@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchIdea,  generateImage } from '../requests.ts';
+import { fetchIdea, generateImage } from '../requests.ts';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -21,8 +21,10 @@ import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import ProjectCard from '../components/ProjectCard.tsx';
 import ShareIcon from '@mui/icons-material/Share';
 import Like from '../components/Like.tsx';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 function IdeaPage() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
@@ -45,7 +47,9 @@ function IdeaPage() {
   });
 
   useEffect(() => {
-    if (idea?.title) { document.title = idea?.title; }
+    if (idea?.title) {
+      document.title = idea?.title;
+    }
   }, [idea?.title]);
 
   const handleShare = async () => {
@@ -61,7 +65,6 @@ function IdeaPage() {
       await navigator.clipboard.writeText(url);
     }
   };
-
 
   if (!id) {
     return (
@@ -111,9 +114,11 @@ function IdeaPage() {
           </Tooltip>
 
           {/* FAVORITE */}
-          <Tooltip title="В избранное">
-            <Like isLiked={idea.isLiked} ideaId={idea.id} userId={2}/>
-          </Tooltip>
+          {user && (
+            <Tooltip title="В избранное">
+              <Like isLiked={idea.isLiked} ideaId={idea.id} userId={user.id} />
+            </Tooltip>
+          )}
 
           <Tooltip title="Редактировать">
             <IconButton color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>

@@ -34,7 +34,7 @@ ${JSON.stringify(filterIdeas)}
 `;
 }
 
-export async function projectAssistantAnswer({ messages, meta }: AssistantAnswer) {
+export async function projectAssistant({ messages, meta }: AssistantAnswer) {
   const ideas = await IdeaModel.findAll({});
   return baseAssistantAnswer({
     messages,

@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import '../App.css';
 import Header from '../components/Header.tsx';
-import { MapComponent } from '../components/MeetMap.tsx';
+import { MapComponent } from '../components/Map/MeetMap.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchIdeas, fetchLike, fetchUnlike } from '../requests.ts';
 import Stack from '@mui/material/Stack';

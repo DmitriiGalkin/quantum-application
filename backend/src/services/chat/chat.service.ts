@@ -38,4 +38,8 @@ export class ChatService {
 
     return ChatRepository.findAllByPassportId(passport.id || 0);
   }
+
+  static async changeTarget(id: number, target: ChatTarget) {
+    return ChatRepository.update(id, { target });
+  }
 }
