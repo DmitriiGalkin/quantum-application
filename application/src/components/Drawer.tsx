@@ -18,7 +18,6 @@ import AddIcon from '@mui/icons-material/Add';
 import '../App.css';
 import { useAuth } from '../providers/AuthProvider.tsx';
 
-export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 interface DrawerProps {
   isMenuOpen: boolean;

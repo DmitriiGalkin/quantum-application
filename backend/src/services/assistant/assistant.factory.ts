@@ -71,6 +71,8 @@ export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantF
 
       await ChatService.changeTarget(chat.id, 'meet');
 
+      console.log(chat.id, 'chat.id');
+
       return {
         content: `Отлично! проект ${FRONTEND_SERVER}/project/${projectId} создан. Осталось выбрать место и время проведения первой встречи, а я помогу с подбором.`,
       };

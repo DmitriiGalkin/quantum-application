@@ -4,9 +4,11 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 import { type ChatMessageRole, type ChatTarget, type CreateMessageDto, type MessageDto } from '@shared/types';
 import { fetchChat, fetchCreateChat, fetchCreateChatMessages } from '../../requests.ts';
 import { useWelcomeContent } from '../../components/Map/useWelcomeContent.tsx';
+import { useSearchParams } from "react-router-dom";
+
+export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 export function useChat(target: ChatTarget) {
-  console.log(target, 'target');
   const { user } = useAuth();
   const welcomeContent = useWelcomeContent(target);
 
@@ -28,6 +30,8 @@ export function useChat(target: ChatTarget) {
     queryFn: () => fetchChat({ chatId: chatId!, target }),
     enabled: !!chatId,
   });
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   async function sendMessage(text: string) {
     const trimmed = text.trim();
@@ -52,10 +56,15 @@ export function useChat(target: ChatTarget) {
     };
 
     if (!chatId) {
+      console.log('Создаю новый чат')
       createChatMutation.mutate(
         { target, userId: user?.id },
         {
           onSuccess: (chatId) => {
+            setChatId(chatId);
+            localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
+            setSearchParams({});
+
             createMessages(chatId);
           },
         },
@@ -69,6 +78,22 @@ export function useChat(target: ChatTarget) {
   useEffect(() => {
     chat?.messages && setMessages(chat.messages);
   }, [chat?.messages]);
+
+  useEffect(() => {
+    const savedChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+    if (savedChatId) {
+      setChatId(Number(savedChatId));
+    }
+  }, []);
+
+  useEffect(() => {
+    const hasTargetInUrl = searchParams.has('target');
+
+    if (hasTargetInUrl) {
+      localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+      setChatId(null);
+    }
+  }, [searchParams]);
 
   return {
     chatId,
