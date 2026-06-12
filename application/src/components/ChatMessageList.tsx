@@ -4,15 +4,16 @@ import Message from './Message.tsx';
 import type { CreateMessageDto } from '@shared/types';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
-
+import MapIcon from '@mui/icons-material/Map';
+import { IconButton } from "@mui/material";
 
 type ChatMessageListProps = {
   messages: CreateMessageDto[];
   isSending: boolean;
+  setIsMapOpen: (open: boolean) => void;
 };
 
-function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
-
+function ChatMessageList({ messages, isSending, setIsMapOpen }: ChatMessageListProps) {
   return (
     <>
       {messages.map(chatMessage => {
@@ -22,6 +23,11 @@ function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
               <Typography>
                 <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
               </Typography>
+              {chatMessage.target === 'place' && chatMessage.role === 'assistant' && (
+                <IconButton onClick={() => setIsMapOpen(true)}>
+                  <MapIcon />
+                </IconButton>
+              )}
             </Stack>
           </Message>
         );

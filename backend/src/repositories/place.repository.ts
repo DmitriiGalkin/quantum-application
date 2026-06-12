@@ -4,7 +4,6 @@ import { ResultSetHeader } from 'mysql2/promise';
 import { toPlace } from '../mappers/place.mapper.js';
 import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
 import { PlaceRow } from '../entities/place.db.js';
-import { s } from '@a2a-js/sdk/dist/extensions-APfrw8gz.js';
 
 class PlaceRepository {
   // ✅ CREATE

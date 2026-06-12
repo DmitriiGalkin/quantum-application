@@ -16,6 +16,7 @@ export type ChatMessageRole = 'user' | 'assistant' | 'system';
 export type CreateMessageDto = {
   role: ChatMessageRole;
   content: string;
+  target?: ChatTarget;
 };
 
 export type MessageDto = {

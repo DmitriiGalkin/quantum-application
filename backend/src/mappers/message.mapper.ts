@@ -23,6 +23,7 @@ export const toMessageDto = (row: Message): MessageDto => ({
   content: row.content || '',
   metadata: row.metadata,
   target: row.target as ChatTarget,
+  data: row.data,
 });
 
 

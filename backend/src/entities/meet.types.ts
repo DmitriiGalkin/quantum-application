@@ -3,7 +3,7 @@ export type CreateMeetInput = {
   projectId: number;
   price: number | null;
   duration: number | null;
-  startedAt: string; // ISO
+  startedAt: Date
 };
 
 export type UpdateMeetInput = Partial<{

@@ -82,7 +82,7 @@ function ChatPage() {
 
           <ChatIntroduction target={target} />
 
-          <ChatMessageList messages={chat.messages} isSending={chat.isSending} />
+          <ChatMessageList messages={chat.messages} isSending={chat.isSending} setIsMapOpen={effects.setIsMapOpen} />
 
           <MapDialog
             isAuthModalOpen={effects.isMapOpen}

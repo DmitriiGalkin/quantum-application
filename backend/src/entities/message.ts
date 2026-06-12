@@ -9,4 +9,5 @@ export interface Message {
   metadata: any;
   target: ChatTarget | null;
   createdAt: Date;
+  data?: any
 }

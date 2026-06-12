@@ -4,7 +4,7 @@ export interface Meet {
   passportId: number;
   price: number | null;
   duration: number | null;
-  startedAt: string;
+  startedAt: Date;
   placeId: number | null;
 }
 
