@@ -1,13 +1,13 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Message from './Message.tsx';
-import type { MessageDto } from '@shared/types';
+import type { CreateMessageDto } from '@shared/types';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
 
 
 type ChatMessageListProps = {
-  messages: MessageDto[];
+  messages: CreateMessageDto[];
   isSending: boolean;
 };
 

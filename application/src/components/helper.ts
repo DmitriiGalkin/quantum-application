@@ -12,15 +12,15 @@ export const getCaption = (target: ChatTarget): string => {
   }
 };
 
-export const addOptimisticMessage = (content: string, role?: ChatMessageRole) => (oldChat: Chat) => {
+export const addOptimisticMessage = (chat: Chat, content: string) => {
   return {
-    ...oldChat,
+    ...chat,
     messages: [
-      ...((oldChat?.messages as []) || []),
+      ...((chat?.messages as []) || []),
       {
         id: Math.random().toString(), // Временный ID
         content,
-        role: role || 'user',
+        role: 'user',
         createdAt: new Date().toISOString(),
         isOptimistic: true,
       },

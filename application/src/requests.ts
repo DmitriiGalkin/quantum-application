@@ -8,7 +8,7 @@ import {
   type PlaceDto,
   type CreateChatBody,
   type CreateIdeaUser,
-  type DeleteIdeaUser, type CreateMessage,
+  type DeleteIdeaUser, type CreateMessage, type CreateChatMessages,
 } from '@shared/types';
 import { apiFetch } from './api.ts';
 import type { ProjectFormValues } from './ProjectForm';
@@ -64,6 +64,18 @@ export async function fetchCreateChat({ target, userId }: CreateChatBody): Promi
     body: JSON.stringify({
       target,
       userId,
+    }),
+  });
+}
+
+export async function fetchCreateChatMessages({ chatId, messages }: CreateChatMessages): Promise<any> {
+  return apiFetch<any>(`/chat/${chatId}/messages`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      messages,
     }),
   });
 }

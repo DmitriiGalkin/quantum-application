@@ -1,6 +1,6 @@
 import { Controller, ControllerWithAuth, fail, ok, TypedResponse } from './helper.js';
 import { ChatService } from '../services/chat/chat.service.js';
-import { CreateChatBody, MessageDto } from '@shared/types';
+import { CreateChatBody, type CreateChatMessages, type CreateMessage, MessageDto } from '@shared/types';
 
 const create: ControllerWithAuth<number, CreateChatBody> = async (req, res) => {
   try {
@@ -9,6 +9,16 @@ const create: ControllerWithAuth<number, CreateChatBody> = async (req, res) => {
     ok(res, chatId);
   } catch (err: any) {
     fail(res, err.message || 'Не удалось создать новый чат');
+  }
+};
+
+const createMessages: ControllerWithAuth<MessageDto[], CreateChatMessages> = async (req, res) => {
+  try {
+    const result = await ChatService.createMessages(Number(req.params.id), req.body, req.passport!);
+
+    ok(res, result);
+  } catch (err: any) {
+    fail(res, err.message || 'Не удалось создать сообщения');
   }
 };
 
@@ -24,5 +34,6 @@ const findMessages: Controller<MessageDto[]> = async (req, res) => {
 
 export default {
   create,
+  createMessages,
   findMessages,
 };

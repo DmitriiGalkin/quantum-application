@@ -9,7 +9,7 @@ import MapDialog from '../../components/MapDialog.tsx';
 import Typography from '@mui/material/Typography';
 import ChatMessageList from '../../components/ChatMessageList.tsx';
 import ChatComposer from "../../components/ChatComposer.tsx";
-import type { ChatTarget } from '@shared/types';
+import type  { ChatTarget } from '@shared/types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';

@@ -13,6 +13,11 @@ export type ChatTarget = 'user' | 'teacher' | 'idea' | 'project' | 'meet' | 'non
 
 export type ChatMessageRole = 'user' | 'assistant' | 'system';
 
+export type CreateMessageDto = {
+  role: ChatMessageRole;
+  content: string;
+};
+
 export type MessageDto = {
   id: number;
   chatId: number;
@@ -26,6 +31,7 @@ export type MessageDto = {
     data: unknown;
   };
   target: ChatTarget;
+  data: any[] | null;
 };
 
 export interface Meta {
@@ -184,4 +190,8 @@ export interface CreateMessage {
   chatId: number;
   message: string;
   target?: ChatTarget;
+}
+export interface CreateChatMessages {
+  chatId: number;
+  messages: CreateMessageDto[];
 }
