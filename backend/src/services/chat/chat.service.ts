@@ -10,7 +10,7 @@ import PlaceRepository from '../../repositories/place.repository.js';
 export class ChatService {
   static async create(body: CreateChatBody, passport?: Passport) {
     return await ChatRepository.create({
-      //target: body.target,
+      target: body.target,
       passportId: passport?.id || null,
       userId: body.userId || null,
     });
@@ -42,11 +42,14 @@ export class ChatService {
           role: 'assistant',
         });
       } else {
-        resi = await MessageService.create({
-          chatId: chatId,
-          message: messageText,
-          target: chat.target,
-        });
+        resi = await MessageService.create(
+          {
+            chatId: chatId,
+            message: messageText,
+            target: chat.target,
+          },
+          passport!
+        );
       }
     }
 

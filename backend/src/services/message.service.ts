@@ -18,6 +18,8 @@ export interface CreateAssistantMessageInput {
 
 export class MessageService {
   static async create(body: CreateMessage, passport?: Passport) {
+    console.log(body, 'BODY')
+
     const messageText = String(body?.message || '').trim();
     if (!messageText) throw new Error('Сообщение не может быть пустым');
 

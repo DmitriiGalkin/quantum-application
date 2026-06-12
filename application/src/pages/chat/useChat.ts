@@ -1,33 +1,24 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/AuthProvider.tsx';
-import {
-  type Chat,
-  type ChatMessageRole,
-  type ChatTarget,
-  type CreateMessage,
-  type CreateMessageDto,
-  type MessageDto,
-} from '@shared/types';
+import { type ChatMessageRole, type ChatTarget, type CreateMessageDto, type MessageDto } from '@shared/types';
 import { fetchChat, fetchCreateChat, fetchCreateChatMessages } from '../../requests.ts';
-import { addMessage, addOptimisticMessage, deleteOptimisticMessage } from '../../components/helper.ts';
 import { useWelcomeContent } from '../../components/Map/useWelcomeContent.tsx';
 
 export function useChat(target: ChatTarget) {
+  console.log(target, 'target');
   const { user } = useAuth();
-  const queryClient = useQueryClient();
   const welcomeContent = useWelcomeContent(target);
 
   const [chatId, setChatId] = useState<number | null>(null);
   const [message, setMessage] = useState('');
 
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<CreateMessageDto[]>([
     {
       role: 'assistant',
       content: welcomeContent,
     },
   ]);
-
 
   const createChatMessages = useMutation({ mutationFn: fetchCreateChatMessages });
   const createChatMutation = useMutation({ mutationFn: fetchCreateChat });
@@ -38,40 +29,20 @@ export function useChat(target: ChatTarget) {
     enabled: !!chatId,
   });
 
-  console.log(messages, 'MESSAGES');
-
-
-
-
-
   async function sendMessage(text: string) {
     const trimmed = text.trim();
     if (!trimmed || createChatMessages.isPending) return;
-    const messagesSend: CreateMessageDto[] = [
-      ...(!chatId ? [{ role: 'assistent' as ChatMessageRole, content: welcomeContent }] : []),
-      { role: 'user' as ChatMessageRole, content: trimmed },
-    ];
-    const messageOpti: CreateMessageDto = { role: 'user' as ChatMessageRole, content: trimmed };
-
-    console.log(messagesSend, 'messagesSend');
+    const userMessage: CreateMessageDto = { role: 'user' as ChatMessageRole, content: trimmed };
 
     setMessage('');
-    setMessages([...messages, messageOpti]);
-
-    console.log('setMessages', [...messages, messageOpti]);
-
+    setMessages([...messages, userMessage]);
 
     const createMessages = (chatId: number) => {
       createChatMessages.mutate(
-        { chatId, messages: messagesSend },
+        { chatId, messages: [...(!chatId ? [{ role: 'assistent' as ChatMessageRole, content: welcomeContent }] : []), userMessage] },
         {
-          onSuccess: (res: {
-            chatId: number,
-            message: MessageDto,
-          }) => {
-            const suc = [...messages, messageOpti, res.message];
-            console.log(suc,'suc')
-            setMessages(suc);
+          onSuccess: (res: { chatId: number; message: MessageDto }) => {
+            setMessages([...messages, userMessage, res.message]);
           },
           onError: () => {
             console.log('2');
@@ -89,7 +60,6 @@ export function useChat(target: ChatTarget) {
           },
         },
       );
-
       return;
     }
 
