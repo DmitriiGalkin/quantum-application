@@ -43,7 +43,6 @@ export class MessageService {
     const user = chat.userId ? await UserRepository.findById(chat.userId) : null;
     const teacher = passport?.description ? { description: passport.description } : null;
     const meta = buildMeta(messages, passport || null, user, teacher);
-    console.log(meta, 'META');
 
     const { content, target, data, meta: assistantMeta } = await getContent(chat, meta, messages);
 

@@ -5,7 +5,7 @@ import { AssistantAnswer } from './idea.assistant.js';
 import type { Idea } from '../../entities/idea.js';
 
 const getSystemPrompt = (ideas: Idea[], teacher: PassportDto) => {
-  const filterIdeas = ideas.map(idea => ({ ideaId: idea.id, title: idea.title }));
+  const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));
 
   return `
 Ты — ассистент образовательного проекта для детей.
@@ -27,9 +27,9 @@ ${JSON.stringify(filterIdeas)}
 - Ответ должен начинаться с заглавной буквы.
       
 Пошаговый процесс (ВСЕГДА СЛЕДУЙ ПОРЯДКУ ДЕЙСТВИЙ)
-1. Проанализируй, что мы знаем об учителе и проектах и подбери ему 3 проекта. Спроси какой ему нравитс больше.
+1. Проанализируй, что мы знаем об учителе и идеях и подбери ему 3 идеи. Спроси какая ему нравится больше.
 3. Если учитель выбрал проект:
-- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с выбранным проектом. Пример: {"ideaId": "56"}.
+- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с выбранной идеей. Пример: {"id": 56}.
 - Все поля должны быть заполнены.
 `;
 }
@@ -40,9 +40,9 @@ export async function projectAssistant({ messages, meta }: AssistantAnswer) {
     messages,
     meta: { ...meta, target: 'project' },
     prompt: getSystemPrompt(ideas, meta.teacher),
-    schema: (data: any) => typeof data.id === 'string',
+    schema: (data: any) => typeof data.id === 'number',
     transformer: (data: any) => ({
-      id: Number(data.id),
+      ideaId: Number(data.id),
     }),
   });
 }

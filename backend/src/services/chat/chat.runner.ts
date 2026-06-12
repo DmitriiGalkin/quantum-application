@@ -10,6 +10,8 @@ export async function getContent(chat: Chat, initialMeta: Meta, messages: Messag
   for (let i = 0; i < 3; i++) {
     const result = await getAnswer({ chat, meta, messages });
 
+    console.log('result', result);
+
     // Просто ответ
     if (!result.meta && result.content) {
       console.log('ВАРИАНТ 1');
@@ -26,15 +28,15 @@ export async function getContent(chat: Chat, initialMeta: Meta, messages: Messag
       console.log('ВАРИАНТ 3');
       throw new Error('Пустой ответ от ассистентов');
     }
-
-    if (result.meta) {
-      console.log('ВАРИАНТ 4');
-    }
     //
-    // meta = {
-    //   ...meta,
-    //   [result.meta.target]: result.meta.data,
-    // };
+    // if (result.meta) {
+    //   console.log('ВАРИАНТ 4');
+    // } Программист, увлекаюсь плаваньем и шахматами
+
+    meta = {
+      ...meta,
+      [result.meta.target]: result.meta.data,
+    };
 
     console.log('meta');
   }

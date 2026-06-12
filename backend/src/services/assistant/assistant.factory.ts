@@ -15,7 +15,6 @@ import { PassportService } from '../passport.service.js';
 import { ChatService } from '../chat/chat.service.js';
 import { Chat } from '../../entities/chat.js';
 import { placeAssistant } from '../../ai/assistants/place.assistant.js';
-import IdeaRepository from '../../repositories/idea.repository.js';
 import ProjectRepository from '../../repositories/project.repository.js';
 import { MeetFlowService } from './flows/meet-flow.service.js';
 
@@ -37,20 +36,19 @@ export type AssistantFn = Promise<{
   target?: ChatTarget;
 }>;
 
-// selectAssistant → решает шаг
 export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantFn {
-  console.log({
-    target: chat.target,
-    meta: {
-      user: !meta?.user ? '❌' : '✅',
-      idea: !meta?.idea ? '❌' : '✅',
-      passport: !meta?.passport ? '❌' : '✅',
-      teacher: !meta?.teacher ? '❌' : '✅',
-      project: !meta?.project ? '❌' : '✅',
-      place: !meta?.place ? '❌' : '✅',
-      meet: !meta?.meet ? '❌' : '✅',
-    },
-  });
+  // console.log({
+  //   target: chat.target,
+  //   meta: {
+  //     user: !meta?.user ? '❌' : '✅',
+  //     idea: !meta?.idea ? '❌' : '✅',
+  //     passport: !meta?.passport ? '❌' : '✅',
+  //     teacher: !meta?.teacher ? '❌' : '✅',
+  //     project: !meta?.project ? '❌' : '✅',
+  //     place: !meta?.place ? '❌' : '✅',
+  //     meet: !meta?.meet ? '❌' : '✅',
+  //   },
+  // });
 
   switch (chat.target) {
     case 'idea':
@@ -76,8 +74,7 @@ export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantF
       await PassportService.updateFromMeta(meta);
       const projectId = await ProjectFlowService.create(meta);
       const project = await ProjectRepository.findById(projectId);
-// Профессия повар, увлекаюсь живописью и игрой на скрипке
-// надо сохранить проект в мету как то
+
       await ChatService.changeTarget(chat.id, 'meet');
 
       console.log(chat.id, 'chat.id');

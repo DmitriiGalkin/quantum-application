@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import type { UserDto } from '@shared/types'; // Импортируем пул соединений
+import type { UserDto } from '@shared/types';
 import { ApiResponse } from '../types/api.js';
-import { Passport } from '../entities/passport.js'; // Импортируем пул соединений
+import { Passport } from '../entities/passport.js';
 
 export interface RequestWithPassport<TBody = any> extends Request {
   params: Record<string, string>;

@@ -73,12 +73,9 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
   const ideaMatch = url.match(/^\/project\/([^/]+)/);
 
   if (ideaMatch) {
-    console.log(ideaMatch, 'ideaMatch');
     const ideaId = ideaMatch[1];
     const response = await fetch(`${API_URL}/idea/${ideaId}/meta`);
     const meta = await response.json();
-
-    console.log(meta, 'meta');
 
     return {
       title: meta.title,
