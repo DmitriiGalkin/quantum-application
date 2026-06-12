@@ -1,7 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
 import { UserAssistant } from '../../entities/user.assistant.js';
 import { Message } from '../../entities/message.js';
-import { UserDraft } from '../../services/chat/chat.meta.js';
+import { DraftUser } from '../../services/chat/chat.meta.js';
 
 export const USER_SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -39,11 +39,11 @@ export async function userAssistant(messages: Message[]) {
     messages,
     prompt: USER_SYSTEM_PROMPT,
     schema: (data: UserAssistant) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'string',
-    transformer: (data: UserAssistant): UserDraft => ({
+    transformer: (data: UserAssistant): DraftUser => ({
       title: data.title,
       description: data.description,
       age: data.age,
     }),
-    target: 'user',
+    target: 'draftUser',
   });
 }

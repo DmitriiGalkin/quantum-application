@@ -3,9 +3,9 @@ import { baseAssistantAnswer } from '../base-assistant.js';
 import type { Idea } from '../../entities/idea.js';
 import { ProjectAssistant } from '../../entities/project.assistant.js';
 import { Message } from '../../entities/message.js';
-import { ProjectDraft, TeacherDraft } from '../../services/chat/chat.meta.js';
+import { DraftProject, DraftTeacher } from '../../services/chat/chat.meta.js';
 
-const getSystemPrompt = (ideas: Idea[], teacher: TeacherDraft) => {
+const getSystemPrompt = (ideas: Idea[], teacher: DraftTeacher) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));
 
   return `
@@ -37,7 +37,7 @@ ${JSON.stringify(filterIdeas)}
 
 interface ProjectAssistantQuestion {
   messages: Message[];
-  teacher: TeacherDraft;
+  teacher: DraftTeacher;
 }
 
 export async function projectAssistant({ messages, teacher }: ProjectAssistantQuestion) {
@@ -47,7 +47,7 @@ export async function projectAssistant({ messages, teacher }: ProjectAssistantQu
     target: 'project',
     prompt: getSystemPrompt(ideas, teacher),
     schema: (data: ProjectAssistant) => typeof data.id === 'number',
-    transformer: (data: ProjectAssistant): ProjectDraft => ({
+    transformer: (data: ProjectAssistant): DraftProject => ({
       ideaId: data.id,
     }),
   });

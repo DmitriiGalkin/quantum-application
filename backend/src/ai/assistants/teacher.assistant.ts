@@ -1,7 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
 import { TeacherAssistant } from '../../entities/teacher.assistant.js';
 import { Message } from '../../entities/message.js';
-import { TeacherDraft } from '../../services/chat/chat.meta.js';
+import { DraftTeacher } from '../../services/chat/chat.meta.js';
 
 const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -39,7 +39,7 @@ export async function teacherAssistant(messages: Message[]) {
     messages,
     prompt: SYSTEM_PROMPT,
     schema: (data: TeacherAssistant) => typeof data.profession === 'string' && typeof data.interests === 'string',
-    transformer: (data: TeacherAssistant): TeacherDraft => ({
+    transformer: (data: TeacherAssistant): DraftTeacher => ({
       description: `Профессия: ${data.profession}, Интересы: ${data.interests}`,
     }),
     target: 'teacher',

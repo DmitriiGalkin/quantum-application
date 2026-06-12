@@ -1,10 +1,9 @@
-import { baseAssistantAnswer } from '../base-assistant.js';
-import type { UserDto } from '@shared/types';
-import { Message } from '../../entities/message.js';
+import {baseAssistantAnswer} from '../base-assistant.js';
+import {Message} from '../../entities/message.js';
 import {IdeaAssistant} from "../../entities/idea.assistant.js";
-import {Context, IdeaDraft, UserDraft} from "../../services/chat/chat.meta.js";
+import {DraftIdea, DraftUser} from '../../services/chat/chat.meta.js';
 
-const getIdeaPrompt = (user: UserDraft) => `
+const getIdeaPrompt = (user: DraftUser) => `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как заботливый педагог.
 
@@ -36,7 +35,7 @@ const getIdeaPrompt = (user: UserDraft) => `
 
 interface IdeaAssistantQuestion {
   messages: Message[];
-  user: UserDraft;
+  user: DraftUser;
 }
 
 export async function ideaAssistant({ messages, user }: IdeaAssistantQuestion) {
@@ -49,7 +48,7 @@ export async function ideaAssistant({ messages, user }: IdeaAssistantQuestion) {
       typeof data.description === 'string' &&
       Array.isArray(data.steps) &&
       data.steps.every((step: unknown) => typeof step === 'string'),
-    transformer: (data: IdeaAssistant): IdeaDraft => ({
+    transformer: (data: IdeaAssistant): DraftIdea => ({
       title: data.title,
       description: data.description,
       steps: data.steps,

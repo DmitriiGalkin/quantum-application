@@ -9,7 +9,7 @@ export interface Chat {
 
 export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
 
-export type ChatTarget = 'user' | 'teacher' | 'idea' | 'project' | 'meet' | 'none' | 'auth' | 'place';
+export type ChatTarget = 'user' | 'draftUser' | 'teacher' | 'draftTeacher' | 'idea' | 'draftIdea' | 'project' | 'meet' | 'none' | 'auth' | 'place';
 
 export type ChatMessageRole = 'user' | 'assistant' | 'system';
 

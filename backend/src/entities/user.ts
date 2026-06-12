@@ -2,8 +2,8 @@ export interface User {
   id: number;
   passportId: number;
   title: string;
-  description: string | null;
-  age: number | null;
+  description: string;
+  age: number;
   image: string | null;
 }
 

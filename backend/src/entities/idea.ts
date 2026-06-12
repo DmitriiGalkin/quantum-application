@@ -2,7 +2,7 @@ export interface Idea {
   id: number;
   userId: number;
   passportId: number | null;
-  title: string | null;
+  title: string;
   description: string | null;
   image: string | null;
   userCount: number;

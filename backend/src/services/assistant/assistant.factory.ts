@@ -17,6 +17,7 @@ import { Chat } from '../../entities/chat.js';
 import { placeAssistant } from '../../ai/assistants/place.assistant.js';
 import ProjectRepository from '../../repositories/project.repository.js';
 import { MeetFlowService } from './flows/meet-flow.service.js';
+import PassportRepository from '../../repositories/passport.repository.js';
 
 const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 
@@ -52,8 +53,8 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Assista
 
   switch (chat.target) {
     case 'idea':
-      if (!context?.user) return await userAssistant(messages);
-      if (!context?.idea) return ideaAssistant({ messages, user: context.user });
+      if (!context?.user || !context?.draftUser) return await userAssistant(messages);
+      if (!context?.draftIdea) return ideaAssistant({ messages, user: context.user ? context.user : context.draftUser });
       if (!context?.passport) return authAssistant();
 
       const ideaId = await IdeaFlowService.create(context);
@@ -63,11 +64,11 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Assista
       };
 
     case 'project':
-      if (!context?.teacher) return teacherAssistant(messages);
-      if (!context?.project) return projectAssistant({ messages, teacher: context.teacher });
+      if (!context?.teacher || !context?.draftTeacher) return teacherAssistant(messages);
+      if (!context?.draftProject) return projectAssistant({ messages, teacher: context.teacher });
       if (!context?.passport) return authAssistant();
 
-      await PassportService.updateFromMeta(context);
+
       const projectId = await ProjectFlowService.create(context);
       const project = await ProjectRepository.findById(projectId);
       await ChatService.changeTarget(chat.id, 'meet');
