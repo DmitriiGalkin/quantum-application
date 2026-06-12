@@ -37,7 +37,7 @@ export function useChatEffects({
   }, [messages]);
 
   useEffect(() => {
-    const hasMap = messages[messages.length - 1].target === 'place';
+    const hasMap = false;//messages[messages.length - 1].target === 'place';
 
     if (hasMap && !mapTriggered) {
       setIsMapOpen(true);

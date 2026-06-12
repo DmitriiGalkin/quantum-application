@@ -33,27 +33,34 @@ export type AssistantFn = Promise<{
     target: string;
     data: unknown;
   };
+  context: Context;
   data?: any[];
-  target?: ChatTarget;
+  target: ChatTarget;
 }>;
 
 export async function getAnswer({ chat, context, messages }: GetAnswer): AssistantFn {
-  // console.log({
-  //   target: chat.target,
-  //   meta: {
-  //     user: !context?.user ? '❌' : '✅',
-  //     idea: !context?.idea ? '❌' : '✅',
-  //     passport: !context?.passport ? '❌' : '✅',
-  //     teacher: !context?.teacher ? '❌' : '✅',
-  //     project: !context?.project ? '❌' : '✅',
-  //     place: !context?.place ? '❌' : '✅',
-  //     meet: !context?.meet ? '❌' : '✅',
-  //   },
-  // });
+  console.log({
+    target: chat.target,
+    meta: {
+      user: !context?.user ? '❌' : '✅',
+      draftUser: !context?.draftUser ? '❌' : '✅',
+      draftIdea: !context?.draftIdea ? '❌' : '✅',
+      passport: !context?.passport ? '❌' : '✅',
+      teacher: !context?.teacher ? '❌' : '✅',
+      draftTeacher: !context?.draftTeacher ? '❌' : '✅',
+      project: !context?.project ? '❌' : '✅',
+      draftProject: !context?.draftProject ? '❌' : '✅',
+      place: !context?.place ? '❌' : '✅',
+      meet: !context?.meet ? '❌' : '✅',
+    },
+  });
+
+  // Ваня, 10 лет, увлекается лыжами и рисованием
+  // рисуем зимние виды спорта
 
   switch (chat.target) {
     case 'idea':
-      if (!context?.user || !context?.draftUser) return await userAssistant(messages);
+      if (!context?.user && !context?.draftUser) return await userAssistant(messages);
       if (!context?.draftIdea) return ideaAssistant({ messages, user: context.user ? context.user : context.draftUser });
       if (!context?.passport) return authAssistant();
 
@@ -64,10 +71,9 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Assista
       };
 
     case 'project':
-      if (!context?.teacher || !context?.draftTeacher) return teacherAssistant(messages);
+      if (!context?.teacher && !context?.draftTeacher) return teacherAssistant(messages);
       if (!context?.draftProject) return projectAssistant({ messages, teacher: context.teacher });
       if (!context?.passport) return authAssistant();
-
 
       const projectId = await ProjectFlowService.create(context);
       const project = await ProjectRepository.findById(projectId);

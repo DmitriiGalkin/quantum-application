@@ -8,6 +8,19 @@ import { getContent } from './chat/chat.runner.js';
 import UserRepository from '../repositories/user.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import { getMetaMessages } from './helper.js';
+import { Message } from '../entities/message.js';
+
+export function updateMeta(meta: Context, target: ChatTarget, metadata: any) {
+  switch (target) {
+    case 'draftUser':
+      return { ...meta, draftUser: metadata };
+    case 'draftIdea':
+      return { ...meta, draftIdea: metadata };
+
+    default:
+      return meta;
+  }
+}
 
 export interface CreateAssistantMessageInput {
   chatId: number;
@@ -18,7 +31,6 @@ export interface CreateAssistantMessageInput {
 
 export class MessageService {
   static async create(body: CreateMessage, passport?: Passport) {
-
     const messageText = String(body?.message || '').trim();
     if (!messageText) throw new Error('Сообщение не может быть пустым');
 
@@ -40,13 +52,24 @@ export class MessageService {
     const messages = await MessageRepository.findLastByChatId(chat.id, 100);
 
     const context: Context = {
-      ...getMetaMessages(messages),
+      draftUser: null,
+      draftTeacher: null,
+      draftIdea: null,
+      project: null,
+      draftProject: null,
+      place: null,
+      meet: null,
       passport: passport ? passport : null,
       teacher: passport?.description ? { description: passport.description } : null,
       user: chat.userId ? await UserRepository.findById(chat.userId) : null,
     };
 
-    const { content, target, data, meta: assistantMeta } = await getContent(chat, context, messages);
+    await ChatRepository.update(chat.id, { metadata: context });
+
+    const { content, target, data, meta: assistantMeta, context: newContext } = await getContent(chat, context, messages);
+    console.log({ content, target, data, assistantMeta, newContext }, 'результат ассистента');
+
+    await ChatRepository.update(chat.id, { metadata: newContext });
 
     const assistantMessage = await MessageService.createAssistantMessage({
       chatId: chat.id,

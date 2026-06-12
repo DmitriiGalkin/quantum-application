@@ -38,7 +38,7 @@ export async function userAssistant(messages: Message[]) {
   return await baseAssistantAnswer({
     messages,
     prompt: USER_SYSTEM_PROMPT,
-    schema: (data: UserAssistant) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'string',
+    schema: (data: UserAssistant) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'number',
     transformer: (data: UserAssistant): DraftUser => ({
       title: data.title,
       description: data.description,

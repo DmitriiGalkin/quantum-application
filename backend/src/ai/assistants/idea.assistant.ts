@@ -41,7 +41,7 @@ interface IdeaAssistantQuestion {
 export async function ideaAssistant({ messages, user }: IdeaAssistantQuestion) {
   return await baseAssistantAnswer({
     messages,
-    target: 'idea',
+    target: 'draftIdea',
     prompt: getIdeaPrompt(user),
     schema: (data: IdeaAssistant) =>
       typeof data.title === 'string' &&

@@ -83,6 +83,8 @@ export const AuthProvider = ({ children }: any) => {
 
     const redirectUrl = localStorage.getItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
 
+    console.log('redirectUrl', redirectUrl);
+
     if (redirectUrl) {
       localStorage.removeItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
 

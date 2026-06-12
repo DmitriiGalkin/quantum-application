@@ -4,15 +4,19 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 import { type ChatMessageRole, type ChatTarget, type CreateMessageDto, type MessageDto } from '@shared/types';
 import { fetchChat, fetchCreateChat, fetchCreateChatMessages } from '../../requests.ts';
 import { useWelcomeContent } from '../../components/Map/useWelcomeContent.tsx';
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from 'react-router-dom';
 
 export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 export function useChat(target: ChatTarget) {
   const { user } = useAuth();
   const welcomeContent = useWelcomeContent(target);
+  const params = useParams();
 
-  const [chatId, setChatId] = useState<number | null>(null);
+  const [chatId, setChatId] = useState<number | null>(() => {
+    console.log(params.id, 'params.id');
+    return params.id ? Number(params.id) : null;
+  });
   const [message, setMessage] = useState('');
 
   const [messages, setMessages] = useState<CreateMessageDto[]>([

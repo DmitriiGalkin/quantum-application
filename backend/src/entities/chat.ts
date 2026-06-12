@@ -1,4 +1,5 @@
 import { ChatTarget } from '@shared/types';
+import { Context } from '../services/chat/chat.meta.js';
 
 export interface Chat {
   id: number;
@@ -25,4 +26,5 @@ export interface CreateChatInput {
 
 export type UpdateChat = Partial<{
   target: ChatTarget;
+  metadata: Context;
 }>;
