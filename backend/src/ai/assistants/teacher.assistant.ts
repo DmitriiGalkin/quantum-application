@@ -5,7 +5,7 @@ const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как коллега.
 
-Задача узнать от пользователя информацию о его увлечениях, основной профессии, опыте работы с детьми.
+Задача узнать от пользователя информацию о его увлечениях и основной профессии.
 Нужно, чтобы пользователь сказал конкретную основную профессию, опыт работы с детьми и конкретные увлечения.
 
 Правила форматирования ответа
@@ -27,19 +27,19 @@ const SYSTEM_PROMPT = `
 - БЕЗ использования JSON формата.
 - Не используй фраз: "Подтверждаю информацию"
 4. Если информация ПОДТВЕРЖДЕНА пользователем (Например: "Верно"):
-- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключем profession, interests, experience. Пример: { "profession": "Программист", "interests": "шахматы, роликовые коньки, велосипед, плаванье, программирование", "experience": "2" }.
+- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключем profession, interests. Пример: { "profession": "Программист", "interests": "шахматы, роликовые коньки, велосипед, плаванье, программирование" }.
 - Все поля должны быть заполнены.
 - Этот блок должен быть единственным.
 `;
 
-export async function teacherAssistant({ messages }: AssistantAnswer) {
+export async function teacherAssistant({ messages, meta }: AssistantAnswer) {
   return baseAssistantAnswer({
     messages,
-    prompt: SYSTEM_PROMPT, // Передаем константу напрямую или через функцию
-    schema: (data: any) => typeof data.profession === 'string' && typeof data.interests === 'string' && typeof data.experience === 'string',
+    prompt: SYSTEM_PROMPT,
+    schema: (data: any) => typeof data.profession === 'string' && typeof data.interests === 'string',
     transformer: (data: any) => ({
-      description: `Профессия: ${data.profession}, Интересы: ${data.interests}, Опыт работы с детьми: ${data.experience}`,
+      description: `Профессия: ${data.profession}, Интересы: ${data.interests}`,
     }),
-    meta: { target: 'teacher' }, // Мета-данные можно передать здесь
+    meta: { ...meta, target: 'teacher' },
   });
 }

@@ -12,27 +12,31 @@ export async function getContent(chat: Chat, initialMeta: Meta, messages: Messag
 
     // Просто ответ
     if (!result.meta && result.content) {
-      console.log('!result.meta && result.content');
-      return { content: result.content, target: result.target, data: result.data };
+      console.log('ВАРИАНТ 1');
+      return { content: result.content, target: result.target, meta: result.meta, data: result.data };
     }
 
     // И ответ есть, и мета заполняется
     if (result.meta && result.content) {
+      console.log('ВАРИАНТ 2');
       return { content: result.content, target: result.target, meta: result.meta, data: result.data };
     }
 
     if (!result.meta) {
-      console.log('!result.meta');
+      console.log('ВАРИАНТ 3');
       throw new Error('Пустой ответ от ассистентов');
     }
 
-    meta = {
-      ...meta,
-      [result.meta.target]: result.meta.data,
-    };
+    if (result.meta) {
+      console.log('ВАРИАНТ 4');
+    }
+    //
+    // meta = {
+    //   ...meta,
+    //   [result.meta.target]: result.meta.data,
+    // };
 
     console.log('meta');
-
   }
 
   return { content: 'Ошибка обработки сценария' };

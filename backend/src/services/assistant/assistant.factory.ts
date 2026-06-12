@@ -65,14 +65,18 @@ export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantF
       };
 
     case 'project':
-      if (!meta?.teacher) return teacherAssistant({ messages });
+      if (!meta?.teacher) {
+        const f = await teacherAssistant({ messages });
+        console.log(f,'f')
+        return f
+      };
       if (!meta?.project) return projectAssistant({ messages, meta });
       if (!meta?.passport) return authAssistant();
 
       await PassportService.updateFromMeta(meta);
       const projectId = await ProjectFlowService.create(meta);
       const project = await ProjectRepository.findById(projectId);
-
+// Профессия повар, увлекаюсь живописью и игрой на скрипке
 // надо сохранить проект в мету как то
       await ChatService.changeTarget(chat.id, 'meet');
 

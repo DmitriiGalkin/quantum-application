@@ -4,7 +4,7 @@ import { Meta } from '../../chat/chat.meta.js';
 
 export class ProjectFlowService {
   static async create(meta: Meta) {
-    const idea = await IdeaRepository.findById(meta.project!.id);
+    const idea = await IdeaRepository.findById(meta.project!.ideaId);
 
     return await ProjectRepository.create({
       ...meta.project!,

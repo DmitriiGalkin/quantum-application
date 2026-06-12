@@ -42,6 +42,7 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
 
     if (data) {
       if (!schema(data)) {
+        console.log(data, 'data')
         throw new Error('Ошибка: структура JSON не соответствует ожидаемому формату.');
       }
       const tData = transformer(data);
