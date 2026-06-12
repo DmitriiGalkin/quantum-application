@@ -1,20 +1,20 @@
 import IdeaRepository from '../../../repositories/idea.repository.js';
 import IdeaUserRepository from '../../../repositories/idea-user.repository.js';
 import UserRepository from '../../../repositories/user.repository.js';
-import { Meta } from '../../chat/chat.meta.js';
+import { Context } from '../../chat/chat.meta.js';
 
 
 export class IdeaFlowService {
-  static async create(meta: Meta) {
+  static async create(context: Context) {
     const userId = await UserRepository.create({
-      ...meta.user!,
-      passportId: meta.passport!.id,
+      ...context.user!,
+      passportId: context.passport!.id,
     });
 
     const ideaId = await IdeaRepository.create({
-      ...meta.idea!,
+      ...context.idea!,
       userId,
-      passportId: meta.passport!.id,
+      passportId: context.passport!.id,
       image: '',
     });
 

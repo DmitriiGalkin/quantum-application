@@ -3,11 +3,11 @@ import type { ChatTarget, CreateMessage } from '@shared/types';
 import ChatRepository from '../repositories/chat.repository.js';
 import { toMessageDto } from '../mappers/message.mapper.js';
 import { Passport } from '../entities/passport.js';
-import { buildMeta } from './chat/chat.meta.js';
-import { Message } from '../entities/message.js';
+import { Context } from './chat/chat.meta.js';
 import { getContent } from './chat/chat.runner.js';
 import UserRepository from '../repositories/user.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
+import { getMetaMessages } from './helper.js';
 
 export interface CreateAssistantMessageInput {
   chatId: number;
@@ -18,7 +18,6 @@ export interface CreateAssistantMessageInput {
 
 export class MessageService {
   static async create(body: CreateMessage, passport?: Passport) {
-    console.log(body, 'BODY')
 
     const messageText = String(body?.message || '').trim();
     if (!messageText) throw new Error('Сообщение не может быть пустым');
@@ -40,11 +39,14 @@ export class MessageService {
 
     const messages = await MessageRepository.findLastByChatId(chat.id, 100);
 
-    const user = chat.userId ? await UserRepository.findById(chat.userId) : null;
-    const teacher = passport?.description ? { description: passport.description } : null;
-    const meta = buildMeta(messages, passport || null, user, teacher);
+    const context: Context = {
+      ...getMetaMessages(messages),
+      passport: passport ? passport : null,
+      teacher: passport?.description ? { description: passport.description } : null,
+      user: chat.userId ? await UserRepository.findById(chat.userId) : null,
+    };
 
-    const { content, target, data, meta: assistantMeta } = await getContent(chat, meta, messages);
+    const { content, target, data, meta: assistantMeta } = await getContent(chat, context, messages);
 
     const assistantMessage = await MessageService.createAssistantMessage({
       chatId: chat.id,

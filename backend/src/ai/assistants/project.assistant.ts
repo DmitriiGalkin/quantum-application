@@ -1,11 +1,11 @@
 import IdeaModel from '../../repositories/idea.repository.js';
 import { baseAssistantAnswer } from '../base-assistant.js';
-import type { PassportDto } from '@shared/types';
-import { AssistantAnswer } from './idea.assistant.js';
 import type { Idea } from '../../entities/idea.js';
 import { ProjectAssistant } from '../../entities/project.assistant.js';
+import { Message } from '../../entities/message.js';
+import { Teacher } from '../../services/chat/chat.meta.js';
 
-const getSystemPrompt = (ideas: Idea[], teacher: PassportDto) => {
+const getSystemPrompt = (ideas: Idea[], teacher: Teacher) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));
 
   return `
@@ -33,14 +33,19 @@ ${JSON.stringify(filterIdeas)}
 - Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с выбранной идеей. Пример: {"id": 56}.
 - Все поля должны быть заполнены.
 `;
+};
+
+interface ProjectAssistantQuestion {
+  messages: Message[];
+  teacher: Teacher;
 }
 
-export async function projectAssistant({ messages, meta }: AssistantAnswer) {
+export async function projectAssistant({ messages, teacher }: ProjectAssistantQuestion) {
   const ideas = await IdeaModel.findAll({});
   return baseAssistantAnswer({
     messages,
     target: 'project',
-    prompt: getSystemPrompt(ideas, meta.teacher),
+    prompt: getSystemPrompt(ideas, teacher),
     schema: (data: ProjectAssistant) => typeof data.id === 'number',
     transformer: (data: ProjectAssistant) => ({
       ideaId: data.id,

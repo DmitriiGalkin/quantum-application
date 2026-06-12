@@ -4,33 +4,20 @@ import type { Meet } from '../../entities/meet.js';
 import { Message } from '../../entities/message.js';
 import { User } from '../../entities/user.js';
 import { Place } from '../../entities/place.js';
+import { UserDto } from '@shared/types';
 
-export interface Meta {
-  user?: any;
+export interface Teacher {
+  description: string;
+}
+
+export interface Context {
+  user: UserDto | null;
+  passport: Passport | null;
+  teacher: Teacher | null;
   idea?: any;
-  teacher: {
-    description: string;
-  } | null;
   project?: any;
   projects?: any[];
-  passport: Passport | null;
   place: Place | null;
   meet?: Meet;
   auth?: string[];
-}
-
-export function buildMeta(
-  messages: Message[],
-  passport: Passport | null,
-  user: User | null,
-  teacher: {
-    description: string;
-  } | null,
-): Meta {
-  return {
-    ...getMetaMessages(messages),
-    passport,
-    teacher,
-    user,
-  };
 }

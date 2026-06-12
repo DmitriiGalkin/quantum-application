@@ -1,6 +1,6 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
-import { AssistantAnswer } from './idea.assistant.js';
 import { TeacherAssistant } from '../../entities/teacher.assistant.js';
+import { Message } from '../../entities/message.js';
 
 const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -33,7 +33,7 @@ const SYSTEM_PROMPT = `
 - Этот блок должен быть единственным.
 `;
 
-export async function teacherAssistant({ messages, meta }: AssistantAnswer) {
+export async function teacherAssistant(messages: Message[]) {
   return baseAssistantAnswer({
     messages,
     prompt: SYSTEM_PROMPT,

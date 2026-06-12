@@ -1,12 +1,12 @@
-import { Meta } from '../../chat/chat.meta.js';
+import { Context } from '../../chat/chat.meta.js';
 import MeetRepository from '../../../repositories/meet.repository.js';
 
 export class MeetFlowService {
-  static async create(meta: Meta) {
+  static async create(context: Context) {
     return await MeetRepository.create({
-      ...meta.meet!,
-      projectId: meta.project!.id,
-      passportId: meta.passport!.id,
+      ...context.meet!,
+      projectId: context.project!.id,
+      passportId: context.passport!.id,
     });
   }
 }

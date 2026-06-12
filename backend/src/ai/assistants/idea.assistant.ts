@@ -2,6 +2,7 @@ import { baseAssistantAnswer } from '../base-assistant.js';
 import type { UserDto } from '@shared/types';
 import { Message } from '../../entities/message.js';
 import {IdeaAssistant} from "../../entities/idea.assistant.js";
+import {Context} from "../../services/chat/chat.meta.js";
 
 const getIdeaPrompt = (user: UserDto) => `
 Ты — ассистент образовательного проекта для детей.
@@ -33,16 +34,16 @@ const getIdeaPrompt = (user: UserDto) => `
 - Этот блок должен быть единственным.
 `;
 
-export interface AssistantAnswer {
+interface IdeaAssistantQuestion {
   messages: Message[];
-  meta?: any;
+  user: UserDto;
 }
 
-export async function ideaAssistant({ messages, meta }: AssistantAnswer) {
+export async function ideaAssistant({ messages, user }: IdeaAssistantQuestion) {
   return await baseAssistantAnswer({
     messages,
     target: 'idea',
-    prompt: getIdeaPrompt(meta.user),
+    prompt: getIdeaPrompt(user),
     schema: (data: IdeaAssistant) =>
       typeof data.title === 'string' &&
       typeof data.description === 'string' &&

@@ -1,20 +1,14 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
-import { AssistantAnswer } from './idea.assistant.js';
 import { MeetAssistant } from '../../entities/meet.assistant.js';
+import { Message } from '../../entities/message.js';
 
-const getPrompt = (meta: any) => {
+const getPrompt = () => {
   return `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как коллега.
 
 Задача помочь учителю создать встречу по проекту.
 Нужно, чтобы пользователь выбрал конкретную дату, время, продолжительность и место встречи.
-
-Проект:
-${JSON.stringify(meta.project)}
-
-Места:
-${JSON.stringify(meta.places)}
 
 Правила форматирования ответа:
 - Никогда не повторяй слова пользователя.
@@ -38,11 +32,11 @@ ${JSON.stringify(meta.places)}
 `;
 };
 
-export async function meetAssistant({ messages, meta }: AssistantAnswer) {
+export async function meetAssistant(messages: Message[]) {
   return baseAssistantAnswer({
-    messages: messages,
+    messages,
     target: 'meet',
-    prompt: getPrompt(meta),
+    prompt: getPrompt(),
     schema: (data: MeetAssistant) => typeof data.startedAt === 'string' && typeof data.duration === 'number',
     transformer: (data: MeetAssistant) => ({
       startedAt: data.startedAt,

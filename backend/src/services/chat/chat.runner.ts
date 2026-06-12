@@ -1,14 +1,14 @@
 import { AssistantFn, getAnswer } from '../assistant/assistant.factory.js';
 import type { ChatTarget } from '@shared/types';
 import { Message } from '../../entities/message.js';
-import { Meta } from './chat.meta.js';
+import { Context } from './chat.meta.js';
 import { Chat } from '../../entities/chat.js';
 
-export async function getContent(chat: Chat, initialMeta: Meta, messages: Message[]): Promise<AssistantFn> {
-  let meta = initialMeta;
+export async function getContent(chat: Chat, initialContext: Context, messages: Message[]): Promise<AssistantFn> {
+  let context = initialContext;
 
   for (let i = 0; i < 3; i++) {
-    const result = await getAnswer({ chat, meta, messages });
+    const result = await getAnswer({ chat, context, messages });
 
     console.log('result', result);
 
@@ -33,8 +33,8 @@ export async function getContent(chat: Chat, initialMeta: Meta, messages: Messag
     //   console.log('ВАРИАНТ 4');
     // } Программист, увлекаюсь плаваньем и шахматами
 
-    meta = {
-      ...meta,
+    context = {
+      ...context,
       [result.meta.target]: result.meta.data,
     };
 

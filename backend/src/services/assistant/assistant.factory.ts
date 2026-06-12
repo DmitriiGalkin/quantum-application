@@ -10,7 +10,7 @@ import { authAssistant } from './auth.assistant.js';
 import { IdeaFlowService } from './flows/idea-flow.service.js';
 import { ProjectFlowService } from './flows/project-flow.service.js';
 import { Message } from '../../entities/message.js';
-import { Meta } from '../chat/chat.meta.js';
+import { Context } from '../chat/chat.meta.js';
 import { PassportService } from '../passport.service.js';
 import { ChatService } from '../chat/chat.service.js';
 import { Chat } from '../../entities/chat.js';
@@ -22,7 +22,7 @@ const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 
 export interface GetAnswer {
   chat: Chat;
-  meta: Meta;
+  context: Context;
   messages: Message[];
 }
 
@@ -36,48 +36,41 @@ export type AssistantFn = Promise<{
   target?: ChatTarget;
 }>;
 
-export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantFn {
+export async function getAnswer({ chat, context, messages }: GetAnswer): AssistantFn {
   // console.log({
   //   target: chat.target,
   //   meta: {
-  //     user: !meta?.user ? '❌' : '✅',
-  //     idea: !meta?.idea ? '❌' : '✅',
-  //     passport: !meta?.passport ? '❌' : '✅',
-  //     teacher: !meta?.teacher ? '❌' : '✅',
-  //     project: !meta?.project ? '❌' : '✅',
-  //     place: !meta?.place ? '❌' : '✅',
-  //     meet: !meta?.meet ? '❌' : '✅',
+  //     user: !context?.user ? '❌' : '✅',
+  //     idea: !context?.idea ? '❌' : '✅',
+  //     passport: !context?.passport ? '❌' : '✅',
+  //     teacher: !context?.teacher ? '❌' : '✅',
+  //     project: !context?.project ? '❌' : '✅',
+  //     place: !context?.place ? '❌' : '✅',
+  //     meet: !context?.meet ? '❌' : '✅',
   //   },
   // });
 
   switch (chat.target) {
     case 'idea':
-      if (!meta?.user) return await userAssistant({ messages });
-      if (!meta?.idea) return ideaAssistant({ messages, meta });
-      if (!meta?.passport) return authAssistant();
+      if (!context?.user) return await userAssistant(messages);
+      if (!context?.idea) return ideaAssistant({ messages, user: context.user });
+      if (!context?.passport) return authAssistant();
 
-      const ideaId = await IdeaFlowService.create(meta);
+      const ideaId = await IdeaFlowService.create(context);
 
       return {
         content: `Идея ${FRONTEND_SERVER}/idea/${ideaId} создана`,
       };
 
     case 'project':
-      if (!meta?.teacher) {
-        const f = await teacherAssistant({ messages });
-        console.log(f,'f')
-        return f
-      };
-      if (!meta?.project) return projectAssistant({ messages, meta });
-      if (!meta?.passport) return authAssistant();
+      if (!context?.teacher) return teacherAssistant(messages);
+      if (!context?.project) return projectAssistant({ messages, teacher: context.teacher });
+      if (!context?.passport) return authAssistant();
 
-      await PassportService.updateFromMeta(meta);
-      const projectId = await ProjectFlowService.create(meta);
+      await PassportService.updateFromMeta(context);
+      const projectId = await ProjectFlowService.create(context);
       const project = await ProjectRepository.findById(projectId);
-
       await ChatService.changeTarget(chat.id, 'meet');
-
-      console.log(chat.id, 'chat.id');
 
       return {
         content: `Отлично! проект ${FRONTEND_SERVER}/project/${projectId} создан. Осталось выбрать место и время проведения первой встречи, а я помогу с подбором.`,
@@ -88,17 +81,13 @@ export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantF
       };
 
     case 'meet':
-      if (!meta?.place) return placeAssistant();
-      if (!meta?.meet) {
-        const f = await meetAssistant({ messages, meta })
-        //console.log(f, 'meetAssistant RESULT');
-        return f
-      };
+      if (!context?.place) return placeAssistant();
+      if (!context?.meet) return meetAssistant(messages);
 
-      const meetId = await MeetFlowService.create(meta);
+      const meetId = await MeetFlowService.create(context);
 
       return {
-        content: `Отлично! встерча ${FRONTEND_SERVER}/project/${meta.project.id}#meet-${meetId} создана. Осталось скреситить пальци крестиком и дождаться пока встерча наполнится детьми.`,
+        content: `Отлично! встерча ${FRONTEND_SERVER}/project/${context.project.id}#meet-${meetId} создана. Осталось скреситить пальци крестиком и дождаться пока встерча наполнится детьми.`,
       };
 
     default:
