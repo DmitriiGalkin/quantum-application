@@ -68,8 +68,8 @@ export async function fetchCreateChat({ target, userId }: CreateChatBody): Promi
   });
 }
 
-export async function fetchCreateChatMessages({ chatId, messages }: CreateChatMessages): Promise<any> {
-  return api<any>(`/chat/${chatId}/messages`, {
+export async function fetchCreateChatMessages({ chatId, messages }: CreateChatMessages) {
+  return api(`/chat/${chatId}/messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

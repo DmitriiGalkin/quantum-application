@@ -3,6 +3,7 @@ import { baseAssistantAnswer } from '../base-assistant.js';
 import type { PassportDto } from '@shared/types';
 import { AssistantAnswer } from './idea.assistant.js';
 import type { Idea } from '../../entities/idea.js';
+import { ProjectAssistant } from '../../entities/project.assistant.js';
 
 const getSystemPrompt = (ideas: Idea[], teacher: PassportDto) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));
@@ -38,11 +39,11 @@ export async function projectAssistant({ messages, meta }: AssistantAnswer) {
   const ideas = await IdeaModel.findAll({});
   return baseAssistantAnswer({
     messages,
-    meta: { ...meta, target: 'project' },
+    target: 'project',
     prompt: getSystemPrompt(ideas, meta.teacher),
-    schema: (data: any) => typeof data.id === 'number',
-    transformer: (data: any) => ({
-      ideaId: Number(data.id),
+    schema: (data: ProjectAssistant) => typeof data.id === 'number',
+    transformer: (data: ProjectAssistant) => ({
+      ideaId: data.id,
     }),
   });
 }

@@ -1,6 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
 import type { UserDto } from '@shared/types';
 import { Message } from '../../entities/message.js';
+import {IdeaAssistant} from "../../entities/idea.assistant.js";
 
 const getIdeaPrompt = (user: UserDto) => `
 Ты — ассистент образовательного проекта для детей.
@@ -40,14 +41,14 @@ export interface AssistantAnswer {
 export async function ideaAssistant({ messages, meta }: AssistantAnswer) {
   return await baseAssistantAnswer({
     messages,
-    meta: { ...meta, target: 'idea' },
-    prompt: getIdeaPrompt(meta.user), // Передаем функцию для промпта
-    schema: (data: any) =>
+    target: 'idea',
+    prompt: getIdeaPrompt(meta.user),
+    schema: (data: IdeaAssistant) =>
       typeof data.title === 'string' &&
       typeof data.description === 'string' &&
       Array.isArray(data.steps) &&
-      data.steps.every((step: any) => typeof step === 'string'),
-    transformer: (data: any) => ({
+      data.steps.every((step: unknown) => typeof step === 'string'),
+    transformer: (data: IdeaAssistant) => ({
       title: data.title,
       description: data.description,
       steps: data.steps,

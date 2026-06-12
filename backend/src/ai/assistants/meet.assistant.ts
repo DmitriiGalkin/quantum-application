@@ -1,5 +1,6 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
 import { AssistantAnswer } from './idea.assistant.js';
+import { MeetAssistant } from '../../entities/meet.assistant.js';
 
 const getPrompt = (meta: any) => {
   return `
@@ -31,7 +32,7 @@ ${JSON.stringify(meta.places)}
 - БЕЗ использования JSON формата.
 - Не используй фраз: "Подтверждаю информацию"
 4. Если информация ПОДТВЕРЖДЕНА пользователем (Например: "Верно"):
-- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами startedAt, duration. Пример: { "startedAt": "2026-11-17 15:00:00", "duration": "60" }.
+- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами startedAt, duration. Пример: { "startedAt": "2026-11-17 15:00:00", "duration": 60 }.
 - Все поля должны быть заполнены.
 - Этот блок должен быть единственным.
 `;
@@ -39,11 +40,11 @@ ${JSON.stringify(meta.places)}
 
 export async function meetAssistant({ messages, meta }: AssistantAnswer) {
   return baseAssistantAnswer({
-    messages: messages, // Фильтрация сообщений, если нужна только здесь
-    meta: { ...meta, target: 'meet' },
+    messages: messages,
+    target: 'meet',
     prompt: getPrompt(meta),
-    schema: (data: any) => typeof data.startedAt === 'string' && typeof data.duration === 'string',
-    transformer: (data: any) => ({
+    schema: (data: MeetAssistant) => typeof data.startedAt === 'string' && typeof data.duration === 'number',
+    transformer: (data: MeetAssistant) => ({
       startedAt: data.startedAt,
       duration: data.duration,
     }),

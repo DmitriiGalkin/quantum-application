@@ -1,5 +1,6 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
 import { AssistantAnswer } from './idea.assistant.js';
+import { UserAssistant } from '../../entities/user.assistant.js';
 
 export const USER_SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -27,7 +28,7 @@ export const USER_SYSTEM_PROMPT = `
 - БЕЗ использования JSON формата.
 - Не используй фраз: "Подтверждаю информацию"
 4. Если информация ПОДТВЕРЖДЕНА пользователем (Например: "Верно"):
-- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами title, description, age. Пример: { "title": "Иван", "description": "Увлекается рисованием, игрой на скрипке и иногда играет в лего", "age": "12" }.
+- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами title, description, age. Пример: { "title": "Иван", "description": "Увлекается рисованием, игрой на скрипке и иногда играет в лего", "age": 12 }.
 - Все поля должны быть заполнены.
 - Этот блок должен быть единственным.
 `;
@@ -36,12 +37,12 @@ export async function userAssistant({ messages }: AssistantAnswer) {
   return await baseAssistantAnswer({
     messages,
     prompt: USER_SYSTEM_PROMPT,
-    schema: (data: any) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'string',
-    transformer: (data: any) => ({
+    schema: (data: UserAssistant) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'string',
+    transformer: (data: UserAssistant) => ({
       title: data.title,
       description: data.description,
-      age: Number(data.age), // Преобразуем возраст в число здесь
+      age: data.age,
     }),
-    meta: { target: 'user' },
+    target: 'user',
   });
 }
