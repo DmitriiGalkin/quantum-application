@@ -81,6 +81,10 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Assista
       };
 
     case 'meet':
+      if (!context?.project)
+        return {
+          content: 'Амнезия: не знаю для какого проекта создаем встречу',
+        };
       if (!context?.place) return placeAssistant();
       if (!context?.meet) return meetAssistant(messages);
 

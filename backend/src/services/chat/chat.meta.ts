@@ -1,23 +1,34 @@
-import { getMetaMessages } from '../helper.js';
 import type { Passport } from '../../entities/passport.js';
-import type { Meet } from '../../entities/meet.js';
-import { Message } from '../../entities/message.js';
-import { User } from '../../entities/user.js';
 import { Place } from '../../entities/place.js';
-import { UserDto } from '@shared/types';
+import { Project } from '../../entities/project.js';
 
-export interface Teacher {
+export interface TeacherDraft {
   description: string;
 }
+export type UserDraft = {
+  title: string;
+  description: string;
+  age: number;
+};
+export type IdeaDraft = {
+  title: string;
+  description: string;
+  steps: string[];
+};
+export type ProjectDraft = {
+  ideaId: number;
+}
+export type MeetDraft = {
+  startedAt: string;
+  duration: number;
+};
 
 export interface Context {
-  user: UserDto | null;
+  user: UserDraft | null;
   passport: Passport | null;
-  teacher: Teacher | null;
-  idea?: any;
-  project?: any;
-  projects?: any[];
+  teacher: TeacherDraft | null;
+  idea: IdeaDraft | null;
+  project: ProjectDraft | Project | null;
   place: Place | null;
-  meet?: Meet;
-  auth?: string[];
+  meet: MeetDraft | null;
 }

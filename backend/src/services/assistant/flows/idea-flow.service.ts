@@ -15,7 +15,6 @@ export class IdeaFlowService {
       ...context.idea!,
       userId,
       passportId: context.passport!.id,
-      image: '',
     });
 
     await IdeaUserRepository.create({ ideaId, userId });

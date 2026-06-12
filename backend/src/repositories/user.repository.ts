@@ -9,9 +9,9 @@ class UserRepository {
   // ✅ CREATE
   static async create(data: CreateUserInput): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
-      `INSERT INTO user (title, passportId, description, age)
+      `INSERT INTO user (passportId, title, description, age)
        VALUES (?, ?, ?, ?)`,
-      [data.title, data.passportId, data.description ?? null, data.age ?? null],
+      [data.passportId, data.title, data.description ?? null, data.age ?? null],
     );
 
     return result.insertId;

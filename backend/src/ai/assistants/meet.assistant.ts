@@ -1,6 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
 import { MeetAssistant } from '../../entities/meet.assistant.js';
 import { Message } from '../../entities/message.js';
+import { MeetDraft } from '../../services/chat/chat.meta.js';
 
 const getPrompt = () => {
   return `
@@ -38,7 +39,7 @@ export async function meetAssistant(messages: Message[]) {
     target: 'meet',
     prompt: getPrompt(),
     schema: (data: MeetAssistant) => typeof data.startedAt === 'string' && typeof data.duration === 'number',
-    transformer: (data: MeetAssistant) => ({
+    transformer: (data: MeetAssistant): MeetDraft => ({
       startedAt: data.startedAt,
       duration: data.duration,
     }),
