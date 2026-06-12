@@ -15,6 +15,9 @@ import { PassportService } from '../passport.service.js';
 import { ChatService } from '../chat/chat.service.js';
 import { Chat } from '../../entities/chat.js';
 import { placeAssistant } from '../../ai/assistants/place.assistant.js';
+import IdeaRepository from '../../repositories/idea.repository.js';
+import ProjectRepository from '../../repositories/project.repository.js';
+import { MeetFlowService } from './flows/meet-flow.service.js';
 
 const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 
@@ -68,21 +71,33 @@ export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantF
 
       await PassportService.updateFromMeta(meta);
       const projectId = await ProjectFlowService.create(meta);
+      const project = await ProjectRepository.findById(projectId);
 
+// надо сохранить проект в мету как то
       await ChatService.changeTarget(chat.id, 'meet');
 
       console.log(chat.id, 'chat.id');
 
       return {
         content: `Отлично! проект ${FRONTEND_SERVER}/project/${projectId} создан. Осталось выбрать место и время проведения первой встречи, а я помогу с подбором.`,
+        meta: {
+          target: 'project',
+          data: project,
+        },
       };
 
     case 'meet':
       if (!meta?.place) return placeAssistant();
-      if (!meta?.meet) return meetAssistant({ messages, meta });
+      if (!meta?.meet) {
+        const f = await meetAssistant({ messages, meta })
+        //console.log(f, 'meetAssistant RESULT');
+        return f
+      };
+
+      const meetId = await MeetFlowService.create(meta);
 
       return {
-        content: 'Данные собраны, можно создавать встречу.',
+        content: `Отлично! встерча ${FRONTEND_SERVER}/project/${meta.project.id}#meet-${meetId} создана. Осталось скреситить пальци крестиком и дождаться пока встерча наполнится детьми.`,
       };
 
     default:

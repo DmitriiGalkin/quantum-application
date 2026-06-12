@@ -31,7 +31,7 @@ ${JSON.stringify(meta.places)}
 - БЕЗ использования JSON формата.
 - Не используй фраз: "Подтверждаю информацию"
 4. Если информация ПОДТВЕРЖДЕНА пользователем (Например: "Верно"):
-- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами startedAt, duration, placeId. Пример: { "startedAt": "2026-11-17 15:00:00", "duration": "60", "placeId": "85" }.
+- Выдай ТОЛЬКО ВАЛИДНЫЙ объект JSON с ключами startedAt, duration. Пример: { "startedAt": "2026-11-17 15:00:00", "duration": "60" }.
 - Все поля должны быть заполнены.
 - Этот блок должен быть единственным.
 `;
@@ -40,13 +40,12 @@ ${JSON.stringify(meta.places)}
 export async function meetAssistant({ messages, meta }: AssistantAnswer) {
   return baseAssistantAnswer({
     messages: messages, // Фильтрация сообщений, если нужна только здесь
-    meta,
+    meta: { ...meta, target: 'meet' },
     prompt: getPrompt(meta),
-    schema: (data: any) => typeof data.startedAt === 'string' && typeof data.duration === 'string' && typeof data.placeId === 'string',
+    schema: (data: any) => typeof data.startedAt === 'string' && typeof data.duration === 'string',
     transformer: (data: any) => ({
       startedAt: data.startedAt,
       duration: data.duration,
-      placeId: Number(data.placeId),
     }),
   });
 }

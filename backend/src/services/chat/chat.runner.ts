@@ -10,11 +10,19 @@ export async function getContent(chat: Chat, initialMeta: Meta, messages: Messag
   for (let i = 0; i < 3; i++) {
     const result = await getAnswer({ chat, meta, messages });
 
+    // Просто ответ
     if (!result.meta && result.content) {
+      console.log('!result.meta && result.content');
       return { content: result.content, target: result.target, data: result.data };
     }
 
+    // И ответ есть, и мета заполняется
+    if (result.meta && result.content) {
+      return { content: result.content, target: result.target, meta: result.meta, data: result.data };
+    }
+
     if (!result.meta) {
+      console.log('!result.meta');
       throw new Error('Пустой ответ от ассистентов');
     }
 
@@ -22,6 +30,9 @@ export async function getContent(chat: Chat, initialMeta: Meta, messages: Messag
       ...meta,
       [result.meta.target]: result.meta.data,
     };
+
+    console.log('meta');
+
   }
 
   return { content: 'Ошибка обработки сценария' };

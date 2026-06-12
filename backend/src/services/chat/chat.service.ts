@@ -53,8 +53,6 @@ export class ChatService {
       }
     }
 
-    console.log(resi, 'RES')
-
     return resi;
   }
 

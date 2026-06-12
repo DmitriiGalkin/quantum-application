@@ -24,9 +24,14 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from '@mui/material/Tooltip';
 import ShareIcon from '@mui/icons-material/Share';
 import { useAuth } from '../providers/AuthProvider.tsx';
+import { useLocation } from 'react-router-dom';
+
+
 
 function ProjectPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { user } = useAuth()
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
@@ -72,6 +77,13 @@ function ProjectPage() {
   useEffect(() => {
     document.title = project?.title || 'Проект';
   }, [project?.title]);
+
+  useEffect(() => {
+    if (!location.hash) return;
+
+    const el = document.querySelector(location.hash);
+    el?.scrollIntoView({ behavior: 'smooth' });
+  }, [location, project]);
 
   if (!id) {
     return (

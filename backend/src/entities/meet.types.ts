@@ -1,4 +1,5 @@
 export type CreateMeetInput = {
+  passportId: number;
   projectId: number;
   price: number | null;
   duration: number | null;

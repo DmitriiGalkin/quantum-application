@@ -9,9 +9,9 @@ class MeetRepository {
   // ✅ CREATE
   static async create(data: CreateMeetInput): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
-      `INSERT INTO meet (projectId, price, duration, startedAt)
-       VALUES (?, ?, ?, ?)`,
-      [data.projectId, data.price, data.duration, data.startedAt],
+      `INSERT INTO meet (passportId, projectId, price, duration, startedAt)
+       VALUES (?, ?, ?, ?, ?)`,
+      [data.passportId, data.projectId, data.price, data.duration, data.startedAt],
     );
 
     return result.insertId;

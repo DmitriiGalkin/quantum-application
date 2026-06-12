@@ -44,6 +44,7 @@ function MeetCard({ meet, isMeetUserActionPending, onCreateMeetUser, onDeleteMee
 
   return (
     <Paper
+      id={meet.id ? `meet-${meet.id}` : undefined}
       component="article"
       elevation={0}
       sx={{
