@@ -67,7 +67,6 @@ export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantF
       if (!meta?.passport) return authAssistant();
 
       await PassportService.updateFromMeta(meta);
-
       const projectId = await ProjectFlowService.create(meta);
 
       await ChatService.changeTarget(chat.id, 'meet');

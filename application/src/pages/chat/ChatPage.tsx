@@ -67,7 +67,16 @@ function ChatPage() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Container>
+      <Container
+        maxWidth="md"
+        sx={{
+          py: 3,
+          pb: 8,
+          minHeight: 'calc(100vh - 64px)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <Stack spacing={2}>
           {chat.isLoading && <Typography>Загрузка...</Typography>}
 

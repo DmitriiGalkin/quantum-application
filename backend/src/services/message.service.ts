@@ -12,7 +12,7 @@ import PlaceRepository from '../repositories/place.repository.js';
 export interface CreateAssistantMessageInput {
   chatId: number;
   content?: string;
-  metadata?: string | null;
+  metadata?: any;
   target?: ChatTarget;
 }
 
@@ -43,12 +43,13 @@ export class MessageService {
     const meta = buildMeta(messages, passport || null, user, teacher);
     console.log(meta, 'META');
 
-    const { content, target, data } = await getContent(chat, meta, messages);
+    const { content, target, data, meta: assistantMeta } = await getContent(chat, meta, messages);
 
     const assistantMessage = await MessageService.createAssistantMessage({
       chatId: chat.id,
       content,
       target,
+      metadata: assistantMeta,
     });
 
     await ChatRepository.touch(chat.id);
@@ -65,7 +66,6 @@ export class MessageService {
       ...input,
       passportId: null,
       role: 'assistant',
-      metadata: JSON.stringify(input.metadata),
     });
 
     const message = await MessageRepository.findById(messageId);

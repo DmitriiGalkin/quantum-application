@@ -1,10 +1,10 @@
-import { getAnswer } from '../assistant/assistant.factory.js';
+import { AssistantFn, getAnswer } from '../assistant/assistant.factory.js';
 import type { ChatTarget } from '@shared/types';
 import { Message } from '../../entities/message.js';
 import { Meta } from './chat.meta.js';
 import { Chat } from '../../entities/chat.js';
 
-export async function getContent(chat: Chat, initialMeta: Meta, messages: Message[]): Promise<{ content: string; target?: ChatTarget; data?: any[] }> {
+export async function getContent(chat: Chat, initialMeta: Meta, messages: Message[]): Promise<AssistantFn> {
   let meta = initialMeta;
 
   for (let i = 0; i < 3; i++) {
