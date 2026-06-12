@@ -7,7 +7,6 @@ import React from 'react';
 
 
 type ChatMessageListProps = {
-  chatId: number;
   messages: MessageDto[];
   isSending: boolean;
 };

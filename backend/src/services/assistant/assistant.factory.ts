@@ -36,6 +36,19 @@ export type AssistantFn = Promise<{
 
 // selectAssistant → решает шаг
 export async function getAnswer({ chat, meta, messages }: GetAnswer): AssistantFn {
+  console.log({
+    target: chat.target,
+    meta: {
+      user: !meta?.user ? '❌' : '✅',
+      idea: !meta?.idea ? '❌' : '✅',
+      passport: !meta?.passport ? '❌' : '✅',
+      teacher: !meta?.teacher ? '❌' : '✅',
+      project: !meta?.project ? '❌' : '✅',
+      place: !meta?.place ? '❌' : '✅',
+      meet: !meta?.meet ? '❌' : '✅',
+    },
+  });
+
   switch (chat.target) {
     case 'idea':
       if (!meta?.user) return await userAssistant({ messages });

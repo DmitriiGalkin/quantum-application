@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import IdeasPage from './pages/IdeasPage.tsx';
 import HomePage from './pages/HomePage.tsx';
-import ChatPage from './pages/ChatPage.tsx';
+import ChatPage from './pages/chat/ChatPage.tsx';
 import CreateProjectPage from './pages/CreateProjectPage.tsx';
 import IdeaPage from './pages/IdeaPage.tsx';
 import ProjectPage from './pages/ProjectPage.tsx';
