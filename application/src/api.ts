@@ -2,7 +2,7 @@ import { ACCESS_TOKEN_STORAGE_KEY } from './providers/AuthProvider.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
 
-const apiFetch = async function <T>(path: string, options: RequestInit = {}): Promise<T> {
+const api = async function <T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
   const response = await fetch(`${API_URL}${path}`, {
@@ -25,4 +25,4 @@ const apiFetch = async function <T>(path: string, options: RequestInit = {}): Pr
   return response.json();
 };
 
-export { apiFetch };
+export { api };

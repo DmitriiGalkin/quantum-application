@@ -6,3 +6,10 @@ export interface Project {
   placeId: number | null;
   passportId: number;
 }
+
+export interface FindAllProjectInput{
+  userId?: string | number;
+  passportId?: string | number;
+  deleted?: 'true' | 'false';
+  currentUserId?: number;
+}

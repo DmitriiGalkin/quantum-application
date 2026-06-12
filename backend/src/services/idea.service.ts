@@ -1,5 +1,5 @@
 import UserRepository from '../repositories/user.repository.js';
-import type { IParams, PageMeta } from '@shared/types';
+import type { PageMeta } from '@shared/types';
 import IdeaRepository from '../repositories/idea.repository.js';
 import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
@@ -7,7 +7,7 @@ import ProjectRepository from '../repositories/project.repository.js';
 import { generateIdeaImage, uploadImage } from '../ai/assistants/image.assistant.js';
 
 export class IdeaService {
-  static async findAll(params: IParams) {
+  static async findAll(params: { userId: number }) {
     const ideas = await IdeaRepository.findAll(params);
 
     const [users, ideaUsers] = await Promise.all([

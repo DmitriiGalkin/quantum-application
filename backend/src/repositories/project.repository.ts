@@ -2,9 +2,8 @@ import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 import { ProjectRow } from '../entities/project.db.js';
 import { mapProjectRow } from '../mappers/project.mapper.js';
-import { Project } from '../entities/project.js';
+import { FindAllProjectInput, Project } from '../entities/project.js';
 import { CreateProjectInput, UpdateProjectInput } from '../entities/project.types.js';
-import type { IParams } from '@shared/types';
 
 class ProjectRepository {
   // ✅ CREATE
@@ -38,7 +37,7 @@ class ProjectRepository {
   }
 
   // ✅ FIND ALL
-  static async findAll(params: IParams = {}): Promise<Project[]> {
+  static async findAll(params: FindAllProjectInput = {}): Promise<Project[]> {
     let sql = `SELECT project.* FROM project WHERE 1=1`;
     const values: (string | number)[] = [];
 

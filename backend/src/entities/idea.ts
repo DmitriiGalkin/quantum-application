@@ -31,3 +31,4 @@ export interface FindAllIdeaInput {
   deleted?: 'true' | 'false';
   currentUserId?: number;
 }
+

@@ -27,7 +27,7 @@ export function useChat(target: ChatTarget) {
 
   const { data: chat, isLoading } = useQuery({
     queryKey: ['chat', chatId],
-    queryFn: () => fetchChat({ chatId: chatId!, target }),
+    queryFn: () => fetchChat(chatId!),
     enabled: !!chatId,
   });
 

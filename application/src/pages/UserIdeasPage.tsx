@@ -21,7 +21,7 @@ function IdeasPage() {
     isError: isIdeasError,
   } = useQuery({
     queryKey: ['ideas', userId],
-    queryFn: () => fetchUserIdeas({ userId }),
+    queryFn: () => fetchUserIdeas(userId!),
   });
 
   return (

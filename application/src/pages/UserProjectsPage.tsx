@@ -21,7 +21,7 @@ function UserProjectsPage() {
     isError: isProjectsError,
   } = useQuery({
     queryKey: ['projects', userId],
-    queryFn: () => fetchUserProjects({ userId }),
+    queryFn: () => fetchUserProjects(userId!),
   });
 
   return (

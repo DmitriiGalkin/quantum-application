@@ -50,13 +50,13 @@ export interface Meta {
 }
 
 /* Типы для методов */
-export interface IParams {
-  userId?: string | number;
-  passportId?: string | number;
-  deleted?: 'true' | 'false';
-  currentUserId?: number;
-  ideaId?: string | number;
-}
+// export interface IParams {
+//   userId?: string | number;
+//   passportId?: string | number;
+//   deleted?: 'true' | 'false';
+//   currentUserId?: number;
+//   ideaId?: string | number;
+// }
 
 export interface IdeaDto {
   id: number;
@@ -175,6 +175,10 @@ export interface PageMeta {
 }
 
 // КОНТРАКТЫ
+export interface CreateChat {
+  chatId: number;
+  target: ChatTarget;
+}
 export interface CreateChatBody {
   target: ChatTarget;
   userId?: number;
@@ -185,6 +189,10 @@ export interface CreateIdeaUser {
 }
 export interface DeleteIdeaUser {
   ideaId: number;
+  userId: number;
+}
+export interface CreateMeetUser {
+  meetId: number;
   userId: number;
 }
 export interface CreateMessage {

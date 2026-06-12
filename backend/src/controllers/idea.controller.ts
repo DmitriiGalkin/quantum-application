@@ -4,14 +4,13 @@ import { IdeaService } from '../services/idea.service.js';
 import { IdeaDto, PageMeta } from '@shared/types';
 
 const findAllPublic: Controller<IdeaDto[]> = async (req, res) => {
-  const ideas = await IdeaService.findAll(req.query);
+  const ideas = await IdeaService.findAll(req.query as any);
   ok(res, ideas.map(toIdeaDto));
 };
 
 const findByUserId: ControllerWithAuth<IdeaDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll({
-    ...req.query,
-    userId: req.params.id,
+    userId: Number(req.params.id),
   });
 
   ok(res, ideas.map(toIdeaDto));

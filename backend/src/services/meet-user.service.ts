@@ -2,9 +2,10 @@ import Meet from '../repositories/meet.repository.js';
 import MeetUserRepository from '../repositories/meet-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
+import { CreateMeetUser } from '@shared/types';
 
 export class MeetUserService {
-  static async create(passport: Passport, body: any) {
+  static async create(passport: Passport, body: CreateMeetUser) {
     const { meetId, userId } = body;
 
     if (!meetId || !userId) {

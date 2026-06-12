@@ -1,28 +1,28 @@
 import {
   type Chat,
-  type ChatTarget,
-  type IParams,
+  type CreateChatBody,
+  type CreateChatMessages,
+  type CreateIdeaUser,
+  type CreateMeetUser,
+  type DeleteIdeaUser,
   type IdeaDto,
-  type ProjectDto,
   type PassportDto,
   type PlaceDto,
-  type CreateChatBody,
-  type CreateIdeaUser,
-  type DeleteIdeaUser, type CreateMessage, type CreateChatMessages,
+  type ProjectDto,
 } from '@shared/types';
-import { apiFetch } from './api.ts';
+import { api } from './api.ts';
 import type { ProjectFormValues } from './ProjectForm';
 
 export async function fetchProject(id: string): Promise<ProjectDto> {
-  return apiFetch<ProjectDto>(`/project/${id}`);
+  return api<ProjectDto>(`/project/${id}`);
 }
 
 export async function fetchIdea(id: string): Promise<IdeaDto> {
-  return apiFetch<IdeaDto>(`/idea/${id}`);
+  return api<IdeaDto>(`/idea/${id}`);
 }
 
 export async function createProject(values: ProjectFormValues): Promise<number> {
-  return apiFetch<number>('/project', {
+  return api<number>('/project', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export async function createProject(values: ProjectFormValues): Promise<number> 
 }
 
 export async function updateProject(projectId: number, values: ProjectFormValues) {
-  return apiFetch(`/project/${projectId}`, {
+  return api(`/project/${projectId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -48,15 +48,15 @@ export async function updateProject(projectId: number, values: ProjectFormValues
 }
 
 export async function fetchPlaces(): Promise<PlaceDto[]> {
-  return apiFetch<PlaceDto[]>('/places');
+  return api<PlaceDto[]>('/places');
 }
 
-export async function fetchChat({ chatId, target }: { chatId: number; target: ChatTarget }): Promise<Chat> {
-  return apiFetch<Chat>(`/chat/${chatId}`+'?target='+target);
+export async function fetchChat(chatId: number): Promise<Chat> {
+  return api<Chat>(`/chat/${chatId}`);
 }
 
 export async function fetchCreateChat({ target, userId }: CreateChatBody): Promise<number> {
-  return apiFetch<any>('/chat', {
+  return api<any>('/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export async function fetchCreateChat({ target, userId }: CreateChatBody): Promi
 }
 
 export async function fetchCreateChatMessages({ chatId, messages }: CreateChatMessages): Promise<any> {
-  return apiFetch<any>(`/chat/${chatId}/messages`, {
+  return api<any>(`/chat/${chatId}/messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -80,48 +80,24 @@ export async function fetchCreateChatMessages({ chatId, messages }: CreateChatMe
   });
 }
 
-export async function fetchSendMessage({ chatId, message, target }: CreateMessage): Promise<any> {
-  return apiFetch<any>(`/message`, {
+export async function createMeetUser(params: CreateMeetUser) {
+  return api('/meetUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      chatId,
-      message,
-      target,
-    }),
-  });
-}
-
-export async function createUser(user: any): Promise<{ id: number; message: string }> {
-  return apiFetch<{ id: number; message: string }>('/user', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  });
-}
-
-export async function createMeetUser({meetId, userId}: { meetId: number, userId: number }) {
-  return apiFetch('/meetUser', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ meetId, userId }),
+    body: JSON.stringify(params),
   });
 }
 
 export async function deleteMeetUser(meetUserId: number) {
-  return apiFetch(`/meetUser/${meetUserId}`, {
+  return api(`/meetUser/${meetUserId}`, {
     method: 'DELETE',
   });
 }
 
 export async function generateImage(ideaId: number) {
-  return apiFetch(`/idea/${ideaId}/generateImage`, {
+  return api(`/idea/${ideaId}/generateImage`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -132,31 +108,31 @@ export async function generateImage(ideaId: number) {
 
 
 export async function fetchPassport(): Promise<PassportDto> {
-  return apiFetch<PassportDto>('/passport');
+  return api<PassportDto>('/passport');
 }
 
 export async function fetchProjects(): Promise<ProjectDto[]> {
-  return apiFetch<ProjectDto[]>('/projects');
+  return api<ProjectDto[]>('/projects');
 }
 
-export async function fetchUserProjects({ userId }: IParams): Promise<ProjectDto[]> {
-  return apiFetch<ProjectDto[]>(`/user/${userId}/projects`);
+export async function fetchUserProjects(userId: number): Promise<ProjectDto[]> {
+  return api<ProjectDto[]>(`/user/${userId}/projects`);
 }
 
 export async function fetchPassportProjects(): Promise<ProjectDto[]> {
-  return apiFetch<ProjectDto[]>(`/passport/projects`);
+  return api<ProjectDto[]>(`/passport/projects`);
 }
 
 export async function fetchIdeas(): Promise<IdeaDto[]> {
-  return apiFetch<IdeaDto[]>('/ideas?currentUserId=2');
+  return api<IdeaDto[]>('/ideas');
 }
 
-export async function fetchUserIdeas({ userId }: IParams): Promise<IdeaDto[]> {
-  return apiFetch<IdeaDto[]>(`/user/${userId}/ideas`);
+export async function fetchUserIdeas(userId: number): Promise<IdeaDto[]> {
+  return api<IdeaDto[]>(`/user/${userId}/ideas`);
 }
 
 export async function fetchLike({ userId, ideaId }: CreateIdeaUser): Promise<void> {
-  return apiFetch<void>('/ideaUser', {
+  return api<void>('/ideaUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -166,7 +142,7 @@ export async function fetchLike({ userId, ideaId }: CreateIdeaUser): Promise<voi
 }
 
 export async function fetchUnlike({ userId, ideaId }: DeleteIdeaUser): Promise<void> {
-  return apiFetch<void>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
+  return api<void>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
     method: 'DELETE',
   });
 }
