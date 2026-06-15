@@ -10,6 +10,7 @@ export function mapChatRow(row: ChatRow): Chat {
     target: row.target,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
+    metadata: row.metadata
   };
 }
 

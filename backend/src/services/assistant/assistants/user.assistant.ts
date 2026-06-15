@@ -1,7 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
-import { UserAssistant } from '../../entities/user.assistant.js';
-import { Message } from '../../entities/message.js';
-import { DraftUser } from '../../services/chat/chat.meta.js';
+import { UserAssistant } from '../../../entities/user.assistant.js';
+import { Message } from '../../../entities/message.js';
+import { Context } from '../../chat/chat.meta.js';
 
 export const USER_SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -34,16 +34,18 @@ export const USER_SYSTEM_PROMPT = `
 - Этот блок должен быть единственным.
 `;
 
-export async function userAssistant(messages: Message[]) {
+export async function userAssistant(messages: Message[], context: Context) {
   return await baseAssistantAnswer({
     messages,
     prompt: USER_SYSTEM_PROMPT,
     schema: (data: UserAssistant) => typeof data.title === 'string' && typeof data.description === 'string' && typeof data.age === 'number',
-    transformer: (data: UserAssistant): DraftUser => ({
-      title: data.title,
-      description: data.description,
-      age: data.age,
+    transformer: (data: UserAssistant): Context => ({
+      ...context,
+      draftUser: {
+        title: data.title,
+        description: data.description,
+        age: data.age,
+      },
     }),
-    target: 'draftUser',
   });
 }

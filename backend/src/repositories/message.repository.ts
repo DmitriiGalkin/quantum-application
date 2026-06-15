@@ -10,15 +10,13 @@ class MessageRepository {
   static async create(data: CreateMessageInput): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
       `INSERT INTO message
-         (chatId, passportId, role, content, metadata, target)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+         (chatId, passportId, role, content)
+       VALUES (?, ?, ?, ?)`,
       [
         data.chatId,
         data.passportId ?? null,
         data.role,
         data.content ?? null,
-        data.metadata ? JSON.stringify(data.metadata) : null,
-        data.target ?? null,
       ],
     );
 

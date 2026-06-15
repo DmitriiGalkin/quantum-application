@@ -9,6 +9,7 @@ export interface Chat {
   target: ChatTarget;
   createdAt: Date;
   updatedAt: Date;
+  metadata: Context;
 }
 
 export interface ChatWithLastMessage extends Chat {

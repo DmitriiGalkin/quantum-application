@@ -7,6 +7,11 @@ export interface Chat {
   messages?: MessageDto[];
 }
 
+export interface ChatMessagesResult {
+  message: MessageDto;
+  ui?: string;
+}
+
 export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
 
 export type ChatTarget = 'user' | 'draftUser' | 'teacher' | 'draftTeacher' | 'idea' | 'draftIdea' | 'project' | 'meet' | 'none' | 'auth' | 'place';
@@ -203,4 +208,5 @@ export interface CreateMessage {
 export interface CreateChatMessages {
   chatId: number;
   messages: CreateMessageDto[];
+  ui: string;
 }

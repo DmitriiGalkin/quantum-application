@@ -4,8 +4,8 @@ export interface UserRow extends RowDataPacket {
   id: number;
   passportId: number;
   title: string;
-  description: string | null;
-  age: number | null;
+  description: string;
+  age: number;
   image: string | null;
   deletedAt: Date | null;
 }
@@ -13,3 +13,6 @@ export interface UserRow extends RowDataPacket {
 export interface UserWithMeetRow extends UserRow {
   meetUserId: number;
 }
+
+
+// Ваня, 10 лет, увлекается рисованием и игрой на скрипке

@@ -1,7 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
-import { TeacherAssistant } from '../../entities/teacher.assistant.js';
-import { Message } from '../../entities/message.js';
-import { DraftTeacher } from '../../services/chat/chat.meta.js';
+import { TeacherAssistant } from '../../../entities/teacher.assistant.js';
+import { Message } from '../../../entities/message.js';
+import { Context } from '../../chat/chat.meta.js';
 
 const SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.
@@ -34,14 +34,16 @@ const SYSTEM_PROMPT = `
 - Этот блок должен быть единственным.
 `;
 
-export async function teacherAssistant(messages: Message[]) {
+export async function teacherAssistant(messages: Message[], context: Context) {
   return baseAssistantAnswer({
     messages,
     prompt: SYSTEM_PROMPT,
     schema: (data: TeacherAssistant) => typeof data.profession === 'string' && typeof data.interests === 'string',
-    transformer: (data: TeacherAssistant): DraftTeacher => ({
-      description: `Профессия: ${data.profession}, Интересы: ${data.interests}`,
+    transformer: (data: TeacherAssistant): Context => ({
+      ...context,
+      draftTeacher: {
+        description: `Профессия: ${data.profession}, Интересы: ${data.interests}`,
+      },
     }),
-    target: 'teacher',
   });
 }

@@ -1,7 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/AuthProvider.tsx';
-import { type ChatMessageRole, type ChatTarget, type CreateMessageDto, type MessageDto } from '@shared/types';
+import {
+  type ChatMessageRole,
+  type ChatMessagesResult,
+  type ChatTarget,
+  type CreateMessageDto,
+} from '@shared/types';
 import { fetchChat, fetchCreateChat, fetchCreateChatMessages } from '../../requests.ts';
 import { useWelcomeContent } from '../../components/Map/useWelcomeContent.tsx';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -17,6 +22,10 @@ export function useChat(target: ChatTarget) {
     console.log(params.id, 'params.id');
     return params.id ? Number(params.id) : null;
   });
+
+  const [ui, setUi] = useState<string>();
+
+
   const [message, setMessage] = useState('');
 
   const [messages, setMessages] = useState<CreateMessageDto[]>([
@@ -49,8 +58,9 @@ export function useChat(target: ChatTarget) {
       createChatMessages.mutate(
         { chatId, messages: [...(!chatId ? [{ role: 'assistent' as ChatMessageRole, content: welcomeContent }] : []), userMessage] },
         {
-          onSuccess: (res: { chatId: number; message: MessageDto }) => {
+          onSuccess: (res: ChatMessagesResult) => {
             setMessages([...messages, userMessage, res.message]);
+            setUi(res.ui);
           },
           onError: () => {
             console.log('2');
@@ -106,6 +116,7 @@ export function useChat(target: ChatTarget) {
     setMessage,
     sendMessage,
     messages,
+    ui,
     isLoading,
     isSending: createChatMessages.isPending,
   };

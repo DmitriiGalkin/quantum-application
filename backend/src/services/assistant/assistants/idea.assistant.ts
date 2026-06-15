@@ -1,7 +1,7 @@
-import {baseAssistantAnswer} from '../base-assistant.js';
-import {Message} from '../../entities/message.js';
-import {IdeaAssistant} from "../../entities/idea.assistant.js";
-import {DraftIdea, DraftUser} from '../../services/chat/chat.meta.js';
+import { baseAssistantAnswer } from '../base-assistant.js';
+import { Message } from '../../../entities/message.js';
+import { IdeaAssistant } from '../../../entities/idea.assistant.js';
+import { Context, DraftUser } from '../../chat/chat.meta.js';
 
 const getIdeaPrompt = (user: DraftUser) => `
 Ты — ассистент образовательного проекта для детей.
@@ -33,25 +33,25 @@ const getIdeaPrompt = (user: DraftUser) => `
 - Этот блок должен быть единственным.
 `;
 
-interface IdeaAssistantQuestion {
-  messages: Message[];
-  user: DraftUser;
-}
+export async function ideaAssistant(messages: Message[], context: Context) {
+  const user = context.user ? context.user : context.draftUser;
+  if (!user) throw new Error(`Нарушен сценарий 'ideaAssistant': user не обнаружен`);
 
-export async function ideaAssistant({ messages, user }: IdeaAssistantQuestion) {
   return await baseAssistantAnswer({
     messages,
-    target: 'draftIdea',
     prompt: getIdeaPrompt(user),
     schema: (data: IdeaAssistant) =>
       typeof data.title === 'string' &&
       typeof data.description === 'string' &&
       Array.isArray(data.steps) &&
       data.steps.every((step: unknown) => typeof step === 'string'),
-    transformer: (data: IdeaAssistant): DraftIdea => ({
-      title: data.title,
-      description: data.description,
-      steps: data.steps,
+    transformer: (data: IdeaAssistant): Context => ({
+      ...context,
+      draftIdea: {
+        title: data.title,
+        description: data.description,
+        steps: data.steps,
+      },
     }),
   });
 }

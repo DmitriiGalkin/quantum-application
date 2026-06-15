@@ -4,11 +4,13 @@ import type { CreateMessageDto } from '@shared/types';
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
 export function useChatEffects({
+  ui,
   messages,
   sendMessage,
   token,
   authHandler,
 }: {
+  ui?: string;
   messages: CreateMessageDto[];
   sendMessage: (text: string) => Promise<void>;
   token: string | null;
@@ -37,7 +39,7 @@ export function useChatEffects({
   }, [messages]);
 
   useEffect(() => {
-    const hasMap = false;//messages[messages.length - 1].target === 'place';
+    const hasMap = ui === 'map';
 
     if (hasMap && !mapTriggered) {
       setIsMapOpen(true);

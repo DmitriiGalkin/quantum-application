@@ -1,21 +1,21 @@
-import assistant from '../assistant.js';
+import assistant from '../../assistant.js';
 import { extractJsonFromString } from './assistants/helper.js';
-import { Message } from '../entities/message.js';
-import { ChatTarget } from '@shared/types';
+import { Message } from '../../entities/message.js';
+import { Answer } from './assistant.factory.js';
 
-export interface BaseAssistantAnswer {
+export interface GetBaseAssistantAnswer {
   prompt: string;
   messages: Message[];
   schema: (data: any) => boolean;
   transformer: (data: any) => any;
-  target: ChatTarget;
 }
 
 /**
  * Базовая функция для взаимодействия с ассистентом.
  */
-export async function baseAssistantAnswer({ prompt, messages, schema, transformer, target }: BaseAssistantAnswer) {
+export async function baseAssistantAnswer({ prompt, messages, schema, transformer }: GetBaseAssistantAnswer): Promise<Answer> {
   try {
+    console.log('baseAssistantAnswer', prompt);
     const payload = {
       messages: [
         {
@@ -43,16 +43,11 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
         throw new Error('Ошибка: структура JSON не соответствует ожидаемому формату.');
       }
       return {
-        content,
-        meta: data ? { target, data: transformer(data) } : undefined,
-        target,
+        context: transformer(data),
       };
     }
 
-    return {
-      content,
-      target,
-    };
+    return { content };
   } catch (error) {
     console.error('Ошибка в baseAssistantAnswer:', error);
 

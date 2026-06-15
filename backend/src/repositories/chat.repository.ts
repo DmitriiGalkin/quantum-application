@@ -27,7 +27,7 @@ class ChatRepository {
     const values = entries.map(([k, v]) => (k === 'metadata' && v !== null ? JSON.stringify(v) : v));
 
     const [result] = await pool.query<ResultSetHeader>(`UPDATE chat SET ${fields} WHERE id = ?`, [...values, id]);
-
+    console.log(result, 'result');
     return result.affectedRows > 0;
   }
 

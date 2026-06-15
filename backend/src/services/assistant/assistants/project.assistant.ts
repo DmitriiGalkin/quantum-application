@@ -1,9 +1,9 @@
-import IdeaModel from '../../repositories/idea.repository.js';
+import IdeaModel from '../../../repositories/idea.repository.js';
 import { baseAssistantAnswer } from '../base-assistant.js';
-import type { Idea } from '../../entities/idea.js';
-import { ProjectAssistant } from '../../entities/project.assistant.js';
-import { Message } from '../../entities/message.js';
-import { DraftProject, DraftTeacher } from '../../services/chat/chat.meta.js';
+import type { Idea } from '../../../entities/idea.js';
+import { ProjectAssistant } from '../../../entities/project.assistant.js';
+import { Message } from '../../../entities/message.js';
+import { Context, DraftTeacher } from '../../chat/chat.meta.js';
 
 const getSystemPrompt = (ideas: Idea[], teacher: DraftTeacher) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));
@@ -35,20 +35,20 @@ ${JSON.stringify(filterIdeas)}
 `;
 };
 
-interface ProjectAssistantQuestion {
-  messages: Message[];
-  teacher: DraftTeacher;
-}
+export async function projectAssistant(messages: Message[], context: Context) {
+  const teacher = context.teacher ? context.teacher : context.draftTeacher;
+  if (!teacher) throw new Error(`Нарушен сценарий 'projectAssistant': teacher не обнаружен`);
 
-export async function projectAssistant({ messages, teacher }: ProjectAssistantQuestion) {
   const ideas = await IdeaModel.findAll({});
   return baseAssistantAnswer({
     messages,
-    target: 'project',
     prompt: getSystemPrompt(ideas, teacher),
     schema: (data: ProjectAssistant) => typeof data.id === 'number',
-    transformer: (data: ProjectAssistant): DraftProject => ({
-      ideaId: data.id,
+    transformer: (data: ProjectAssistant): Context => ({
+      ...context,
+      draftProject: {
+        ideaId: data.id,
+      },
     }),
   });
 }

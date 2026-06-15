@@ -1,5 +1,5 @@
 import { Passport } from '../../entities/passport.js';
-import { ChatTarget, CreateChatBody, CreateMessageDto } from '@shared/types';
+import { Chat, ChatMessagesResult, ChatTarget, CreateChatBody, CreateMessageDto, MessageDto } from '@shared/types';
 import ChatRepository from '../../repositories/chat.repository.js';
 import MessageRepository from '../../repositories/message.repository.js';
 import { toMessageDto } from '../../mappers/message.mapper.js';
@@ -16,28 +16,21 @@ export class ChatService {
     });
   }
 
-  static async createMessages(chatId: number, body: { messages: CreateMessageDto[] }, passport?: Passport) {
+  static async createMessages(chatId: number, body: { messages: CreateMessageDto[] }, passport?: Passport): Promise<ChatMessagesResult> {
     const chat = await ChatRepository.findById(chatId);
     if (!chat) throw new Error('Чат не найден');
 
-    //const messages = await MessageService.findByChatId(chat.id);
-
-    let resi
-
+    let resi;
     for (const message of body.messages) {
       const messageText = String(message?.content || '').trim();
       if (!messageText) continue;
 
-      const place =
-        chat.target === 'place'
-          ? await PlaceRepository.findByTitle(messageText)
-          : null;
+      const place = chat.target === 'place' ? await PlaceRepository.findByTitle(messageText) : null;
 
       if (message.role === 'assistant') {
         await MessageRepository.create({
           chatId: chat.id,
           content: messageText,
-          target: chat.target,
           passportId: null,
           role: 'assistant',
         });
@@ -46,12 +39,13 @@ export class ChatService {
           {
             chatId: chatId,
             message: messageText,
-            target: chat.target,
           },
-          passport!
+          passport!,
         );
       }
     }
+
+    if (!resi) throw new Error('createMessages: отсутствует ответ ассистента на сообщение пользователя');
 
     return resi;
   }

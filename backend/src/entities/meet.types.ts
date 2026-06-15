@@ -3,7 +3,7 @@ export type CreateMeetInput = {
   projectId: number;
   price: number | null;
   duration: number | null;
-  startedAt: Date
+  startedAt: string
 };
 
 export type UpdateMeetInput = Partial<{

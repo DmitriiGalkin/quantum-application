@@ -27,6 +27,7 @@ function ChatPage() {
   const chat = useChat(target);
 
   const effects = useChatEffects({
+    ui: chat.ui,
     messages: chat.messages,
     sendMessage: chat.sendMessage,
     token,
