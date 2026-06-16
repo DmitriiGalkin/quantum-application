@@ -20,13 +20,12 @@ export default function ChatBubble({ role, children, onClick, isLastMessage }: C
         p: 2,
         alignSelf: isUserMessage ? 'flex-end' : 'flex-start',
         maxWidth: '80%',
-        borderRadius: isUserMessage
-          ? `16px 16px ${onClick ? '16px' : '0'} 16px`
-          : '16px 16px 16px 0',
+        borderRadius: isUserMessage ? `16px 16px ${onClick ? '16px' : '0'} 16px` : '16px 16px 16px 0',
         border: isUserMessage ? 0 : 1,
         borderColor: 'divider',
         bgcolor: isUserMessage ? userBgColor : 'white',
         color: isUserMessage ? 'white' : 'text.primary',
+        textShadow: isUserMessage ? '0 1px 3px rgba(0, 0, 0, 0.8)' : undefined,
       }}
       onClick={onClick}
     >

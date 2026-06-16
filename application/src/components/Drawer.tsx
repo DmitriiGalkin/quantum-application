@@ -28,7 +28,13 @@ function Drawer({ isMenuOpen, setIsMenuOpen }: DrawerProps) {
   const { user, logout } = useAuth();
 
   return (
-    <MUIDriwer open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
+    <MUIDriwer
+      open={isMenuOpen}
+      onClose={() => setIsMenuOpen(false)}
+      sx={{
+        zIndex: theme => theme.zIndex.appBar - 1,
+      }}
+    >
       <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Stack spacing={3} sx={{ p: 3 }}>
           <Stack

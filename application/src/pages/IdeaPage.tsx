@@ -20,7 +20,7 @@ import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import ProjectCard from '../components/ProjectCard.tsx';
 import Like from '../components/Like.tsx';
 import { useAuth } from '../providers/AuthProvider.tsx';
-import { Menu, MenuItem } from '@mui/material';
+import {CardActions, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function IdeaPage() {
@@ -97,7 +97,7 @@ function IdeaPage() {
         elevation={0}
         sx={{
           backgroundColor: 'rgba(255, 255, 255, 0.5)',
-          boxShadow: 'none',
+          boxShadow: 1,
           border: 'none',
         }}
       >
@@ -112,12 +112,6 @@ function IdeaPage() {
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
 
-          {/* FAVORITE */}
-          {user && (
-            <Tooltip title="В избранное">
-              <Like isLiked={idea.isLiked} ideaId={idea.id} userId={user.id} />
-            </Tooltip>
-          )}
           <>
             <IconButton size="large" sx={{ backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: '50%' }} onClick={e => setAnchorEl(e.currentTarget)}>
               <MoreVertIcon sx={{ color: 'white' }} />
@@ -160,7 +154,7 @@ function IdeaPage() {
             <Box
               sx={{
                 position: 'absolute',
-                bottom: 8,
+                bottom: 28,
                 right: 8,
                 backgroundColor: 'rgba(255, 255, 255, 0.8)',
                 '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
@@ -188,32 +182,40 @@ function IdeaPage() {
               </IconButton>
             </Box>
           </Box>
+          <Box sx={{ position: 'relative', top: '-20px', borderRadius: 6, backgroundColor: 'white' }}>
+            <CardContent sx={{ px: { xs: 2.5, sm: 4 } }}>
+              <Stack spacing={3}>
+                <Box>
+                  <Typography
+                    component="h1"
+                    variant="h3"
+                    sx={{
+                      fontSize: { xs: '1.75rem', sm: '2.5rem' }, // Адаптивный размер шрифта
+                    }}
+                  >
+                    {idea.title}
+                  </Typography>
 
-          <CardContent sx={{ p: { xs: 2.5, sm: 4 } }}>
-            <Stack spacing={3}>
-              <Box>
-                <Typography
-                  component="h1"
-                  variant="h3"
-                  sx={{
-                    fontSize: { xs: '1.75rem', sm: '2.5rem' }, // Адаптивный размер шрифта
-                  }}
-                >
-                  {idea.title}
-                </Typography>
-
-                <Typography
-                  color="text.secondary"
-                  sx={{
-                    mt: { xs: 1.5, sm: 2 }, // Адаптивный отступ сверху
-                    fontSize: { xs: '0.9rem', sm: '1rem' }, // Адаптивный размер шрифта
-                  }}
-                >
-                  {idea.description}
-                </Typography>
-              </Box>
-            </Stack>
-          </CardContent>
+                  <Typography
+                    color="text.secondary"
+                    sx={{
+                      mt: { xs: 1.5, sm: 2 }, // Адаптивный отступ сверху
+                      fontSize: { xs: '0.9rem', sm: '1rem' }, // Адаптивный размер шрифта
+                    }}
+                  >
+                    {idea.description}
+                  </Typography>
+                </Box>
+              </Stack>
+            </CardContent>
+            <CardActions sx={{ px: { xs: 2.5, sm: 4 }, py: 0 }} disableSpacing>
+              {user && (
+                <Tooltip title="В избранное">
+                  <Like isLiked={idea.isLiked} ideaId={idea.id} userId={user.id} />
+                </Tooltip>
+              )}
+            </CardActions>
+          </Box>
         </Card>
       </Container>
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>

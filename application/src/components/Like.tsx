@@ -35,7 +35,6 @@ export default function Like({ isLiked, ideaId, userId }: ChatBubbleProps) {
         setLiked(!liked);
         handleLike();
       }}
-      sx={{ color: 'white' }}
     >
       {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
     </IconButton>

@@ -113,7 +113,14 @@ export const AuthProvider = ({ children }: any) => {
     <AuthContext.Provider value={{ passport, user, token, login, logout, strategies: STRATEGIES, authHandler }}>
       <>
         {children}
-        <Dialog open={isAuthModalOpen} fullScreen={false} onClose={() => setIsAuthModalOpen(false)}>
+        <Dialog
+          sx={{
+            zIndex: theme => theme.zIndex.appBar - 1,
+          }}
+          open={isAuthModalOpen}
+          fullScreen={false}
+          onClose={() => setIsAuthModalOpen(false)}
+        >
           <DialogTitle>
             <Button onClick={() => setIsAuthModalOpen(false)} startIcon={<CloseIcon />}>
               Закрыть
