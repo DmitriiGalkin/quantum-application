@@ -1,5 +1,5 @@
 import MessageRepository from '../repositories/message.repository.js';
-import { ChatMessagesResult, ContextDto, CreateMessage, Role } from '@shared/types';
+import type { ChatMessagesResult, ContextDto, CreateMessage } from '@shared/types';
 import ChatRepository from '../repositories/chat.repository.js';
 import { toMessageDto } from '../mappers/message.mapper.js';
 import { Passport } from '../entities/passport.js';
@@ -17,7 +17,7 @@ export class MessageService {
     await MessageRepository.create({
       chatId: chat.id,
       content: messageText,
-      role: Role.USER,
+      role: 'user',
     });
 
     const messages = await MessageRepository.findLastByChatId(chat.id, 100);
