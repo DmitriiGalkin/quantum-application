@@ -51,7 +51,7 @@ export class ChatService {
       const messageText = String(message?.content || '').trim();
       if (!messageText) continue;
       if (message.context) {
-        await ChatRepository.update(chat.id, { context: { ...chat.context, ...(message.context as Context) } });
+        await ChatRepository.update(chat.id, { context: { ...chat.context, ...(message.context as unknown as Context) } });
       };
 
       if (message.role === Role.ASSISTANT) {
