@@ -8,7 +8,7 @@ export class ProjectFlowService {
     if (!context?.teacher && context.passport && context.draftTeacher)
       await PassportRepository.update(context.passport.id, { description: context.draftTeacher.description });
 
-    const idea = await IdeaRepository.findById(context.draftProject!.ideaId);
+    const idea = await IdeaRepository.findById(context.idea!.id);
 
     if (!idea) throw new Error('Странно: не нашлась идея');
 

@@ -1,33 +1,36 @@
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { useChat } from './useChat.ts';
 import { useChatEffects } from './useChatEffects.ts';
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MapDialog from '../../components/MapDialog.tsx';
 import Typography from '@mui/material/Typography';
 import ChatMessageList from '../../components/ChatMessageList.tsx';
-import ChatComposer from "../../components/ChatComposer.tsx";
-import type  { ChatTarget } from '@shared/types';
+import ChatComposer from '../../components/ChatComposer.tsx';
+import { Target, Ui } from '@shared/types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import { Link, useSearchParams } from 'react-router-dom';
 import ChatIntroduction from '../../components/ChatIntroduction.tsx';
-
+import IdeaCard from '../../components/IdeaCard.tsx';
+import ProjectCard from '../../components/ProjectCard.tsx';
+import MeetCard from '../../components/MeetCard.tsx';
 
 function ChatPage() {
   const { token, authHandler } = useAuth();
 
   const [searchParams] = useSearchParams();
-  const target = (searchParams.get('target') ?? 'idea') as ChatTarget;
+  const target = (searchParams.get('target') ?? Target.IDEA) as Target;
+  const projectId = (searchParams.get('projectId') ?? '0') as string;
 
-  const chat = useChat(target);
+  const chat = useChat(target, Number(projectId));
 
   const effects = useChatEffects({
-    ui: chat.ui,
+    ui: chat.context?.ui,
     messages: chat.messages,
     sendMessage: chat.sendMessage,
     token,
@@ -39,7 +42,6 @@ function ChatPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chat.messages]);
-
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
@@ -83,16 +85,27 @@ function ChatPage() {
 
           <ChatIntroduction target={target} />
 
-          <ChatMessageList messages={chat.messages} isSending={chat.isSending} setIsMapOpen={effects.setIsMapOpen} />
+          <ChatMessageList messages={chat.messages} isSending={chat.isSending} />
 
           <MapDialog
             isAuthModalOpen={effects.isMapOpen}
             setIsAuthModalOpen={effects.setIsMapOpen}
-            onClick={title => {
-              chat.sendMessage(title);
+            onClick={place => {
+              chat.sendMessage(place.title, { place });
               effects.setIsMapOpen(false);
             }}
           />
+
+          {chat?.context?.ui === Ui.IDEAS && (
+            <>
+              {chat.context.ideas?.map((idea: any) => (
+                <IdeaCard idea={idea} actionType="draft" onSelect={() => chat.sendMessage(idea.title, { idea })} />
+              ))}
+            </>
+          )}
+          {chat?.context?.ui === Ui.PROJECT && chat?.context?.project && <ProjectCard project={chat.context.project} />}
+          {chat?.context?.ui === Ui.MEET && chat?.context?.meet && <MeetCard meet={chat.context.meet} />}
+          {chat?.context?.ui === Ui.IDEA && chat?.context?.idea && <IdeaCard idea={chat.context.idea} />}
         </Stack>
       </Container>
 

@@ -1,16 +1,15 @@
 import { RowDataPacket } from 'mysql2/promise';
-import { ChatTarget } from '@shared/types';
+import { Target } from '@shared/types';
 import { Context } from '../services/chat/chat.meta.js';
 
 export interface ChatRow extends RowDataPacket {
   id: number;
   passportId: number | null;
-  title: string | null;
-  target: ChatTarget;
+  target: Target;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
-  metadata: Context;
+  context: Context;
 }
 
 export interface ChatWithLastMessageRow extends ChatRow {

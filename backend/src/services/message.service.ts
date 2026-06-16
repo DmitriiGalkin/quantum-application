@@ -1,19 +1,10 @@
 import MessageRepository from '../repositories/message.repository.js';
-import { ChatMessagesResult, ChatTarget, CreateMessage } from '@shared/types';
+import { ChatMessagesResult, ContextDto, CreateMessage, Role } from '@shared/types';
 import ChatRepository from '../repositories/chat.repository.js';
 import { toMessageDto } from '../mappers/message.mapper.js';
 import { Passport } from '../entities/passport.js';
 import { Context } from './chat/chat.meta.js';
-import { getContent } from './chat/chat.runner.js';
-import UserRepository from '../repositories/user.repository.js';
-import PlaceRepository from '../repositories/place.repository.js';
-
-export interface CreateAssistantMessageInput {
-  chatId: number;
-  content?: string;
-  metadata?: any;
-  target?: ChatTarget;
-}
+import { getAnswerRunner } from './chat/chat.runner.js';
 
 export class MessageService {
   static async create(body: CreateMessage, passport?: Passport): Promise<ChatMessagesResult> {
@@ -26,56 +17,37 @@ export class MessageService {
     await MessageRepository.create({
       chatId: chat.id,
       content: messageText,
-      role: 'user',
+      role: Role.USER,
     });
 
     const messages = await MessageRepository.findLastByChatId(chat.id, 100);
 
-    const context: Context = chat.metadata || {
-      draftUser: null,
-      draftTeacher: null,
-      idea: null,
-      draftIdea: null,
-      project: null,
-      draftProject: null,
-      place: null,
-      meet: null,
-      draftMeet: null,
-      passport: passport ? passport : null,
-      teacher: passport?.description ? { description: passport.description } : null,
-      user: chat.userId ? await UserRepository.findById(chat.userId) : null,
-      ui: ''
-    };
+    const context: Context = chat.context;
 
-    const { content, context: newContext } = await getContent(chat, context, messages);
+    const { content, context: newContext } = await getAnswerRunner(chat, context, messages);
 
-    await ChatRepository.update(chat.id, { metadata: newContext });
+    await ChatRepository.update(chat.id, { context: newContext });
+    if (JSON.stringify(context) !== JSON.stringify(newContext)) {
+      await MessageRepository.markChatAsRead(chat.id);
+    }
 
-    const assistantMessage = await MessageService.createAssistantMessage({
+    const messageId = await MessageRepository.create({
       chatId: chat.id,
       content,
-    });
-
-    await ChatRepository.touch(chat.id);
-    console.log(newContext, 'newContext');
-
-    return {
-      message: toMessageDto(assistantMessage),
-      ui: context.ui,
-    };
-  }
-
-  static async createAssistantMessage(input: CreateAssistantMessageInput) {
-    const messageId = await MessageRepository.create({
-      ...input,
       passportId: null,
-      role: 'assistant',
+      role: Role.ASSISTANT,
     });
 
     const message = await MessageRepository.findById(messageId);
 
     if (!message) throw new Error('createAssistantMessage: удивительно');
 
-    return message;
+    await ChatRepository.touch(chat.id);
+    console.log(newContext, 'newContext');
+
+    return {
+      message: toMessageDto(message),
+      context: newContext as unknown as ContextDto,
+    };
   }
 }

@@ -2,6 +2,7 @@ import assistant from '../../assistant.js';
 import { extractJsonFromString } from './assistants/helper.js';
 import { Message } from '../../entities/message.js';
 import { Answer } from './assistant.factory.js';
+import { Role } from '@shared/types';
 
 export interface GetBaseAssistantAnswer {
   prompt: string;
@@ -15,16 +16,16 @@ export interface GetBaseAssistantAnswer {
  */
 export async function baseAssistantAnswer({ prompt, messages, schema, transformer }: GetBaseAssistantAnswer): Promise<Answer> {
   try {
-    console.log('baseAssistantAnswer', prompt);
     const payload = {
       messages: [
         {
-          role: 'system',
+          role: Role.SYSTEM,
           content: prompt, // Вызов функции для получения промпта
         },
         ...messages.map(m => ({ role: m.role, content: m.content })),
       ],
     };
+    console.log('payload', payload);
 
     const resp = await assistant.chat(payload);
 

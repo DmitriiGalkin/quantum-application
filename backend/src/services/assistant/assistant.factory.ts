@@ -1,7 +1,7 @@
 import { userAssistant } from './assistants/user.assistant.js';
 import { ideaAssistant } from './assistants/idea.assistant.js';
 import { teacherAssistant } from './assistants/teacher.assistant.js';
-import { projectAssistant } from './assistants/project.assistant.js';
+import { selectIdeaAssistant } from './assistants/selectIdeaAssistant.js';
 import { meetAssistant } from './assistants/meet.assistant.js';
 import { IdeaFlowService } from './flows/idea-flow.service.js';
 import { ProjectFlowService } from './flows/project-flow.service.js';
@@ -14,6 +14,7 @@ import { MeetFlowService } from './flows/meet-flow.service.js';
 import IdeaRepository from '../../repositories/idea.repository.js';
 import MeetRepository from '../../repositories/meet.repository.js';
 import PlaceRepository from '../../repositories/place.repository.js';
+import { Target, Ui } from '@shared/types';
 
 const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 
@@ -38,33 +39,39 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
       if (!context?.passport)
         return {
           content: 'Для продолжения, пожалуйста авторизуйтесь:',
-          context: { ...context, ui: 'auth' },
+          context: { ...context, ui: Ui.AUTH },
         };
 
       const ideaId = await IdeaFlowService.create(context);
       const idea = await IdeaRepository.findById(ideaId);
 
+      if (!idea) throw new Error('Factory, idea: идея не создалась');
+
+
       return {
         content: `Идея ${FRONTEND_SERVER}/idea/${ideaId} создана`,
-        context: { ...context, idea },
+        context: { ...context, idea, ui: Ui.IDEA },
       };
 
     case 'project':
       if (!context?.teacher && !context?.draftTeacher) return teacherAssistant(messages, context);
-      if (!context?.draftProject) return projectAssistant(messages, context);
+      if (!context?.idea) return selectIdeaAssistant(messages, context);
       if (!context?.passport)
         return {
           content: 'Для продолжения, пожалуйста авторизуйтесь:',
-          context: { ...context, ui: 'auth' },
+          context: { ...context, ui: Ui.AUTH },
         };
 
       const projectId = await ProjectFlowService.create(context);
       const project = await ProjectRepository.findById(projectId);
-      await ChatService.changeTarget(chat.id, 'meet');
+
+      if(!project) throw new Error('Factory, project: проект не создался');
+
+      await ChatService.changeTarget(chat.id, Target.MEET);
 
       return {
-        content: `Отлично! проект ${FRONTEND_SERVER}/project/${projectId} создан. Осталось выбрать место и время проведения первой встречи, а я помогу с подбором.`,
-        context: { ...context, project },
+        content: `Отлично! Проект создан. Осталось выбрать место и время проведения первой встречи, а я помогу с подбором. `,
+        context: { ...context, project, ui: Ui.PROJECT },
       };
 
     case 'meet':
@@ -80,7 +87,7 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
 
         return {
           content: 'Выберите место для встречи',
-          context: { ...context, ui: 'map' },
+          context: { ...context, ui: Ui.MAP },
         };
       }
 
@@ -89,9 +96,12 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
       const meetId = await MeetFlowService.create(context);
       const meet = await MeetRepository.findById(meetId);
 
+      if (!meet) throw new Error('Factory, meet: встреча не создался');
+
+
       return {
         content: `Отлично! встерча ${FRONTEND_SERVER}/project/${context.project.id}#meet-${meetId} создана. Осталось скреситить пальци крестиком и дождаться пока встерча наполнится детьми.`,
-        context: { ...context, meet },
+        context: { ...context, meet, ui: Ui.MEET },
       };
 
     default:

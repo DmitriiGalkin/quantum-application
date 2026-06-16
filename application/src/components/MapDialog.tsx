@@ -3,11 +3,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CloseIcon from '@mui/icons-material/Close';
 import Dialog from '@mui/material/Dialog';
 import { PlaceMap } from './Map/PlaceMap.tsx';
+import type { PlaceDto } from '@shared/types';
 
 type MeetCardProps = {
   isAuthModalOpen: boolean;
   setIsAuthModalOpen: (isAuthModalOpen: boolean) => void;
-  onClick: (title: string) => void;
+  onClick: (place: PlaceDto) => void;
 };
 
 function MapDialog({ isAuthModalOpen, setIsAuthModalOpen, onClick }: MeetCardProps) {

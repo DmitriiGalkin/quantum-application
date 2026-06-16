@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -11,7 +11,6 @@ import Container from '@mui/material/Container'; // Импортируем Conta
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import EditIcon from '@mui/icons-material/Edit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchIdea, generateImage } from '../requests.ts';
 import AppBar from '@mui/material/AppBar';
@@ -19,15 +18,17 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import ProjectCard from '../components/ProjectCard.tsx';
-import ShareIcon from '@mui/icons-material/Share';
 import Like from '../components/Like.tsx';
 import { useAuth } from '../providers/AuthProvider.tsx';
+import { Menu, MenuItem } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function IdeaPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const generateImageMutation = useMutation({
     mutationFn: generateImage,
@@ -91,27 +92,25 @@ function IdeaPage() {
     // Оборачиваем весь контент в Container для контроля ширины
     <Box sx={{ minHeight: '100vh' }}>
       <AppBar
-        position="sticky"
+        position="absolute"
         color="inherit"
         elevation={0}
         sx={{
-          borderBottom: 1,
-          borderColor: 'divider',
-          backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          boxShadow: 'none',
+          border: 'none',
         }}
       >
         <Toolbar>
-          <IconButton size="large" edge="start" aria-label="open drawer" sx={{ mr: 2, color: 'white' }} onClick={() => navigate(-1)}>
+          <IconButton
+            size="large"
+            aria-label="open drawer"
+            sx={{ backgroundColor: 'rgba(255,255,255,0.8)', borderRadius: '50%' }}
+            onClick={() => navigate(-1)}
+          >
             <ArrowBackIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
-
-          {/* SHARE */}
-          <Tooltip title="Поделиться">
-            <IconButton onClick={handleShare} sx={{ color: 'white' }}>
-              <ShareIcon />
-            </IconButton>
-          </Tooltip>
 
           {/* FAVORITE */}
           {user && (
@@ -119,22 +118,27 @@ function IdeaPage() {
               <Like isLiked={idea.isLiked} ideaId={idea.id} userId={user.id} />
             </Tooltip>
           )}
-
-          <Tooltip title="Редактировать">
-            <IconButton color="inherit" sx={{ color: 'white' }} onClick={() => navigate(`/project/${id}/edit`)}>
-              <EditIcon />
+          <>
+            <IconButton size="large" sx={{ backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: '50%' }} onClick={e => setAnchorEl(e.currentTarget)}>
+              <MoreVertIcon sx={{ color: 'white' }} />
             </IconButton>
-          </Tooltip>
+
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
+              <MenuItem onClick={() => navigate(`/project/${id}/edit`)}>Редактировать</MenuItem>
+              <MenuItem onClick={() => console.log('delete')}>Удалить</MenuItem>
+              <MenuItem onClick={() => handleShare()}>Поделиться</MenuItem>
+            </Menu>
+          </>
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
+      <Container maxWidth="lg" disableGutters>
         <Card
           elevation={0}
           sx={{
             border: 1,
             borderColor: 'divider',
-            borderRadius: 4,
+            borderRadius: '0 0 4px 4px',
           }}
         >
           <Box sx={{ position: 'relative', width: '100%' }}>
@@ -156,13 +160,13 @@ function IdeaPage() {
             <Box
               sx={{
                 position: 'absolute',
-                top: 8,
+                bottom: 8,
                 right: 8,
                 backgroundColor: 'rgba(255, 255, 255, 0.8)',
                 '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
                 boxShadow: 3,
-                borderRadius: '50%', // Делаем круглым
-                padding: '6px', // Добавляем отступ для иконки
+                borderRadius: '24px', // Делаем круглым
+                padding: '1px', // Добавляем отступ для иконки
                 display: 'flex',
                 alignItems: 'center',
                 flexDirection: 'row',
@@ -211,27 +215,34 @@ function IdeaPage() {
             </Stack>
           </CardContent>
         </Card>
-        <Typography component="h6" variant="h6" sx={{ pt: 2, mb: { xs: 2, md: 3 }, fontWeight: 900, color: 'white' }}>
-          Проекты по идее
-        </Typography>
-
-        {Boolean(idea.projects) && (
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: {
-                xs: '1fr',
-                sm: 'repeat(2, minmax(0, 1fr))',
-                md: 'repeat(3, minmax(0, 1fr))',
-              },
-              gap: 2,
-            }}
-          >
-            {' '}
-            {(idea.projects || []).map(project => (
-              <ProjectCard project={project} key={project.id} />
-            ))}
-          </Box>
+      </Container>
+      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
+        {Boolean(idea.projects.length) ? (
+          <Stack>
+            <Typography component="h6" variant="h6" sx={{ pt: 2, mb: { xs: 2, md: 3 }, fontWeight: 900, color: 'white' }}>
+              Проекты по идее
+            </Typography>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, minmax(0, 1fr))',
+                  md: 'repeat(3, minmax(0, 1fr))',
+                },
+                gap: 2,
+              }}
+            >
+              {(idea.projects || []).map(project => (
+                <ProjectCard project={project} key={project.id} />
+              ))}
+            </Box>
+          </Stack>
+        ) : (
+          <Alert>
+            Проектов по идее еще нет, но мы активно ищем учителей для его реализации. Чтобы активнее найти найтие учителя, поделитьсь ею с друзьями, -
+            возможно им тоже будет это интересно и у вас соберется совместная группа единомышленников!
+          </Alert>
         )}
       </Container>
     </Box>

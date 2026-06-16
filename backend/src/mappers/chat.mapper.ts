@@ -6,11 +6,8 @@ export function mapChatRow(row: ChatRow): Chat {
     id: row.id,
     passportId: row.passportId,
     userId: row.userId,
-    title: row.title,
     target: row.target,
-    createdAt: row.createdAt,
-    updatedAt: row.updatedAt,
-    metadata: row.metadata
+    context: row.context,
   };
 }
 

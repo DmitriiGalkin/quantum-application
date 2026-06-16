@@ -1,13 +1,10 @@
-import { ChatMessageRole, ChatTarget } from '@shared/types';
+import { Role } from '@shared/types';
 
 export interface Message {
   id: number;
   chatId: number;
   passportId: number | null;
-  role: ChatMessageRole;
+  role: Role;
   content: string | null;
-  metadata: any;
-  target: ChatTarget | null;
-  createdAt: Date;
   data?: any
 }

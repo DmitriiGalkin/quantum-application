@@ -1,67 +1,55 @@
-export interface Chat {
-  id: number;
-  passportId: number;
-  target: ChatTarget;
-  title: string;
-  meta?: Meta;
-  messages?: MessageDto[];
+
+export enum Target {
+  IDEA = 'idea',
+  PROJECT = 'project',
+  MEET = 'meet',
 }
 
-export interface ChatMessagesResult {
-  message: MessageDto;
+export interface ContextDto {
   ui?: string;
+  place?: PlaceDto;
+  meet?: MeetDto;
+  ideas?: IdeaDto[];
+  project?: ProjectDto;
+  idea?: IdeaDto;
 }
 
-export type ChatMetaType = 'user' | 'idea' | 'project' | 'auth';
-
-export type ChatTarget = 'user' | 'draftUser' | 'teacher' | 'draftTeacher' | 'idea' | 'draftIdea' | 'project' | 'meet' | 'none' | 'auth' | 'place';
-
-export type ChatMessageRole = 'user' | 'assistant' | 'system';
-
-export type CreateMessageDto = {
-  role: ChatMessageRole;
-  content: string;
-  target?: ChatTarget;
-};
+export enum Role {
+  USER = 'user',
+  ASSISTANT = 'assistant',
+  SYSTEM = 'system',
+}
 
 export type MessageDto = {
   id: number;
   chatId: number;
   passportId: number | null;
-  role: ChatMessageRole;
+  role: Role;
   content: string;
-  metadata: unknown;
-  createdAt?: string;
-  meta?: {
-    target: ChatMetaType;
-    data: unknown;
-  };
-  target: ChatTarget;
   data: any[] | null;
 };
 
-export interface Meta {
-  user?: any;
-  idea?: any;
-  teacher?: {
-    description: string;
-  };
-  project?: any;
-  projects?: any[];
-  passport?: PassportDto;
-  places?: any[];
-  meet?: MeetDto;
-  auth?: string[];
+export interface ChatDto {
+  id: number;
+  passportId: number;
+  target: Target;
+  context?: ContextDto;
+  messages?: MessageDto[];
 }
 
-/* Типы для методов */
-// export interface IParams {
-//   userId?: string | number;
-//   passportId?: string | number;
-//   deleted?: 'true' | 'false';
-//   currentUserId?: number;
-//   ideaId?: string | number;
-// }
+export interface ChatMessagesResult {
+  message: MessageDto;
+  context?: ContextDto;
+}
+
+export enum Ui {
+  AUTH = 'auth',
+  MAP = 'map',
+  IDEA = 'idea',
+  PROJECT = 'project',
+  MEET = 'meet',
+  IDEAS = 'ideas',
+}
 
 export interface IdeaDto {
   id: number;
@@ -182,11 +170,12 @@ export interface PageMeta {
 // КОНТРАКТЫ
 export interface CreateChat {
   chatId: number;
-  target: ChatTarget;
+  target: Target;
 }
 export interface CreateChatBody {
-  target: ChatTarget;
+  target: Target;
   userId?: number;
+  projectId?: number;
 }
 export interface CreateIdeaUser {
   ideaId: number;
@@ -203,10 +192,22 @@ export interface CreateMeetUser {
 export interface CreateMessage {
   chatId: number;
   message: string;
-  target?: ChatTarget;
+  target?: Target;
 }
+
+
+export type CreateMessageDto = {
+  role: Role;
+  content: string;
+  context?: ContextDto;
+};
 export interface CreateChatMessages {
   chatId: number;
   messages: CreateMessageDto[];
-  ui: string;
+  ui?: string;
 }
+
+export type DraftProject = {
+  id: number;
+  title: string;
+};

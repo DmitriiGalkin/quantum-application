@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -19,20 +19,19 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import UserGroup from '../components/UserGroup.tsx';
-import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
+import Grid from '@mui/material/Grid';
+import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import ShareIcon from '@mui/icons-material/Share';
 import { useAuth } from '../providers/AuthProvider.tsx';
 import { useLocation } from 'react-router-dom';
-
-
+import { Button } from '@mui/material';
 
 function ProjectPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { user } = useAuth()
+  const { user } = useAuth();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
 
@@ -237,7 +236,10 @@ function ProjectPage() {
                       }}
                     />
                   ))}
-                </Stack>{' '}
+                </Stack>
+                <Button component={Link} to={`/chat?target=meet&projectId=${project.id}`} variant="contained">
+                  Добавить встречу
+                </Button>
               </Box>
             )}
           </Grid>

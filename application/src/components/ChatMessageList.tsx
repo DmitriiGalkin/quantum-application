@@ -1,19 +1,16 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Message from './Message.tsx';
-import type { CreateMessageDto } from '@shared/types';
+import { type CreateMessageDto, Role } from '@shared/types';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
-import MapIcon from '@mui/icons-material/Map';
-import { IconButton } from "@mui/material";
 
 type ChatMessageListProps = {
   messages: CreateMessageDto[];
   isSending: boolean;
-  setIsMapOpen: (open: boolean) => void;
 };
 
-function ChatMessageList({ messages, isSending, setIsMapOpen }: ChatMessageListProps) {
+function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
   return (
     <>
       {messages.map(chatMessage => {
@@ -23,18 +20,13 @@ function ChatMessageList({ messages, isSending, setIsMapOpen }: ChatMessageListP
               <Typography>
                 <ReactMarkdown>{chatMessage.content}</ReactMarkdown>
               </Typography>
-              {chatMessage.target === 'place' && chatMessage.role === 'assistant' && (
-                <IconButton onClick={() => setIsMapOpen(true)}>
-                  <MapIcon />
-                </IconButton>
-              )}
             </Stack>
           </Message>
         );
       })}
 
       {isSending && (
-        <Message role={'assistant'}>
+        <Message role={Role.ASSISTANT}>
           <div className="typing-dots">
             <span></span>
             <span></span>

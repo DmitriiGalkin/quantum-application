@@ -3,21 +3,18 @@ import { ResultSetHeader } from 'mysql2/promise';
 import { MessageRow } from '../entities/message.db.js';
 import { mapMessageRow } from '../mappers/message.mapper.js';
 import { Message } from '../entities/message.js';
-import { CreateMessageInput, UpdateMessageInput } from '../entities/message.types.js';
+import { CreateMessageInput } from '../entities/message.types.js';
 
 class MessageRepository {
   // ✅ CREATE
   static async create(data: CreateMessageInput): Promise<number> {
+    console.log(data, 'create data');
+
     const [result] = await pool.query<ResultSetHeader>(
       `INSERT INTO message
          (chatId, passportId, role, content)
        VALUES (?, ?, ?, ?)`,
-      [
-        data.chatId,
-        data.passportId ?? null,
-        data.role,
-        data.content ?? null,
-      ],
+      [data.chatId, data.passportId ?? null, data.role, data.content ?? null],
     );
 
     return result.insertId;
@@ -43,12 +40,13 @@ class MessageRepository {
     return rows.map(mapMessageRow);
   }
 
-  // ✅ LAST MESSAGES
+  // ✅ LAST NOT READ MESSAGES
   static async findLastByChatId(chatId: number, limit: number): Promise<Message[]> {
     const [rows] = await pool.query<MessageRow[]>(
       `SELECT *
        FROM message
        WHERE chatId = ?
+       AND COALESCE(isRead, FALSE) = FALSE
        ORDER BY createdAt DESC, id DESC
        LIMIT ?`,
       [chatId, limit],
@@ -57,23 +55,16 @@ class MessageRepository {
     return rows.reverse().map(mapMessageRow);
   }
 
-  // ✅ UPDATE
-  static async update(id: number, data: UpdateMessageInput): Promise<boolean> {
-    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
-
-    if (entries.length === 0) return false;
-
-    const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-    const values = entries.map(([k, v]) => (k === 'metadata' && v !== null ? JSON.stringify(v) : v));
-
+  static async markChatAsRead(chatId: number): Promise<number> {
     const [result] = await pool.query<ResultSetHeader>(
       `UPDATE message
-       SET ${fields}
-       WHERE id = ?`,
-      [...values, id],
+     SET isRead = TRUE
+     WHERE chatId = ?
+       AND isRead = FALSE`,
+      [chatId],
     );
 
-    return result.affectedRows > 0;
+    return result.affectedRows;
   }
 }
 

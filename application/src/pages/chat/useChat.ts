@@ -1,36 +1,29 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/AuthProvider.tsx';
-import {
-  type ChatMessageRole,
-  type ChatMessagesResult,
-  type ChatTarget,
-  type CreateMessageDto,
-} from '@shared/types';
+import { type ContextDto, type CreateMessageDto, Role, Target } from '@shared/types';
 import { fetchChat, fetchCreateChat, fetchCreateChatMessages } from '../../requests.ts';
 import { useWelcomeContent } from '../../components/Map/useWelcomeContent.tsx';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
-export function useChat(target: ChatTarget) {
+export function useChat(target: Target, projectId?: number) {
   const { user } = useAuth();
   const welcomeContent = useWelcomeContent(target);
   const params = useParams();
 
   const [chatId, setChatId] = useState<number | null>(() => {
-    console.log(params.id, 'params.id');
     return params.id ? Number(params.id) : null;
   });
 
-  const [ui, setUi] = useState<string>();
-
+  const [context, setContext] = useState<ContextDto>();
 
   const [message, setMessage] = useState('');
 
   const [messages, setMessages] = useState<CreateMessageDto[]>([
     {
-      role: 'assistant',
+      role: Role.ASSISTANT,
       content: welcomeContent,
     },
   ]);
@@ -46,21 +39,21 @@ export function useChat(target: ChatTarget) {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  async function sendMessage(text: string) {
+  async function sendMessage(text: string, context?: ContextDto) {
     const trimmed = text.trim();
     if (!trimmed || createChatMessages.isPending) return;
-    const userMessage: CreateMessageDto = { role: 'user' as ChatMessageRole, content: trimmed };
+    const userMessage: CreateMessageDto = { role: Role.USER, content: trimmed, context };
 
     setMessage('');
     setMessages([...messages, userMessage]);
 
-    const createMessages = (chatId: number) => {
+    const createMessages = (chatId: number, withWelcome?: boolean) => {
       createChatMessages.mutate(
-        { chatId, messages: [...(!chatId ? [{ role: 'assistent' as ChatMessageRole, content: welcomeContent }] : []), userMessage] },
+        { chatId, messages: [...(withWelcome ? [{ role: Role.ASSISTANT, content: welcomeContent }] : []), userMessage] },
         {
-          onSuccess: (res: ChatMessagesResult) => {
+          onSuccess: res => {
             setMessages([...messages, userMessage, res.message]);
-            setUi(res.ui);
+            setContext(res.context);
           },
           onError: () => {
             console.log('2');
@@ -70,16 +63,16 @@ export function useChat(target: ChatTarget) {
     };
 
     if (!chatId) {
-      console.log('Создаю новый чат')
+      console.log('Создаю новый чат');
       createChatMutation.mutate(
-        { target, userId: user?.id },
+        { target, userId: user?.id, projectId },
         {
-          onSuccess: (chatId) => {
+          onSuccess: chatId => {
             setChatId(chatId);
             localStorage.setItem(ACTIVE_CHAT_ID_STORAGE_KEY, String(chatId));
             setSearchParams({});
 
-            createMessages(chatId);
+            createMessages(chatId, true);
           },
         },
       );
@@ -91,7 +84,8 @@ export function useChat(target: ChatTarget) {
 
   useEffect(() => {
     chat?.messages && setMessages(chat.messages);
-  }, [chat?.messages]);
+    chat?.context && setContext(chat?.context);
+  }, [chat]);
 
   useEffect(() => {
     const savedChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
@@ -116,7 +110,7 @@ export function useChat(target: ChatTarget) {
     setMessage,
     sendMessage,
     messages,
-    ui,
+    context,
     isLoading,
     isSending: createChatMessages.isPending,
   };

@@ -4,6 +4,7 @@ import { Project } from '../../entities/project.js';
 import { User } from '../../entities/user.js';
 import { Idea } from '../../entities/idea.js';
 import { Meet } from '../../entities/meet.js';
+import { DraftProject, IdeaDto, Ui } from '@shared/types';
 
 export interface Teacher {
   description: string;
@@ -21,9 +22,7 @@ export type DraftIdea = {
   description: string;
   steps: string[];
 };
-export type DraftProject = {
-  ideaId: number;
-}
+
 export type DraftMeet = {
   startedAt: string;
   duration: number | null;
@@ -31,17 +30,18 @@ export type DraftMeet = {
 };
 
 export interface Context {
-  user: User | null;
-  draftUser: DraftUser | null;
-  passport: Passport | null;
-  teacher: Teacher | null;
-  draftTeacher: DraftTeacher | null;
-  idea: Idea | null;
-  draftIdea: DraftIdea | null;
-  project: Project | null;
-  draftProject: DraftProject | null;
-  place: Place | null;
-  meet: Meet | null;
-  draftMeet: DraftMeet | null;
-  ui: string;
+  user?: User;
+  draftUser?: DraftUser;
+  passport?: Passport;
+  teacher?: Teacher;
+  draftTeacher?: DraftTeacher;
+  ideas?: Idea[];
+  idea?: Idea | IdeaDto;
+  draftIdea?: DraftIdea;
+  project?: Project;
+  draftProject?: DraftProject;
+  place?: Place;
+  meet?: Meet;
+  draftMeet?: DraftMeet;
+  ui?: Ui;
 }

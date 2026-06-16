@@ -3,7 +3,7 @@ import { Message } from '../../entities/message.js';
 import { Context } from './chat.meta.js';
 import { Chat } from '../../entities/chat.js';
 
-export async function getContent(chat: Chat, initialContext: Context, messages: Message[]): Promise<Answer> {
+export async function getAnswerRunner(chat: Chat, initialContext: Context, messages: Message[]): Promise<Answer> {
   let context = initialContext;
 
   for (let i = 0; i < 3; i++) {
@@ -18,6 +18,7 @@ export async function getContent(chat: Chat, initialContext: Context, messages: 
     }
 
     if (!result.context) {
+      console.log(result, 'result');
       throw new Error('Пустой ответ от ассистентов');
     }
 

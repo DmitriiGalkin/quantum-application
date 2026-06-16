@@ -1,15 +1,12 @@
-import { ChatTarget } from '@shared/types';
+import { Target } from '@shared/types';
 import { Context } from '../services/chat/chat.meta.js';
 
 export interface Chat {
   id: number;
   passportId: number | null;
   userId: number | null;
-  title: string | null;
-  target: ChatTarget;
-  createdAt: Date;
-  updatedAt: Date;
-  metadata: Context;
+  target: Target;
+  context: Context;
 }
 
 export interface ChatWithLastMessage extends Chat {
@@ -21,11 +18,12 @@ export interface ChatWithLastMessage extends Chat {
 export interface CreateChatInput {
   passportId: number | null;
   title?: string | null;
-  target?: string | null;
+  target?: Target;
   userId?: number | null;
+  context?: Context;
 }
 
 export type UpdateChat = Partial<{
-  target: ChatTarget;
-  metadata: Context;
+  target: Target;
+  context: Context;
 }>;

@@ -1,19 +1,18 @@
-
-import type { ChatTarget } from '@shared/types';
+import { Target } from '@shared/types';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAuth } from '../providers/AuthProvider.tsx';
 
 type ChatIntroductionProps = {
-  target: ChatTarget;
+  target: Target;
 };
 
 export default function ChatIntroduction({ target }: ChatIntroductionProps) {
   const { passport } = useAuth()
 
   if (!passport) {
-    if (target === 'idea') {
+    if (target === Target.IDEA) {
       return (
         <Stack spacing={2}>
           <Box
@@ -33,7 +32,7 @@ export default function ChatIntroduction({ target }: ChatIntroductionProps) {
           </Typography>
         </Stack>
       );
-    } else if (target === 'project') {
+    } else if (target === Target.PROJECT) {
       return (
         <Stack spacing={2}>
           <Box

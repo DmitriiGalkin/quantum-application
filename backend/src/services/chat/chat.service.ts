@@ -1,18 +1,44 @@
 import { Passport } from '../../entities/passport.js';
-import { Chat, ChatMessagesResult, ChatTarget, CreateChatBody, CreateMessageDto, MessageDto } from '@shared/types';
+import {
+  ChatMessagesResult,
+  CreateChatBody,
+  CreateMessageDto,
+  Role, Target,
+} from '@shared/types';
 import ChatRepository from '../../repositories/chat.repository.js';
 import MessageRepository from '../../repositories/message.repository.js';
 import { toMessageDto } from '../../mappers/message.mapper.js';
-import { getMetaMessages } from '../helper.js';
 import { MessageService } from '../message.service.js';
-import PlaceRepository from '../../repositories/place.repository.js';
+import ProjectRepository from '../../repositories/project.repository.js';
+import UserRepository from '../../repositories/user.repository.js';
+import { Context } from './chat.meta.js';
 
 export class ChatService {
   static async create(body: CreateChatBody, passport?: Passport) {
+    let context: Context = {
+      passport,
+      teacher: passport?.description ? { description: passport.description } : undefined,
+    };
+
+    if (body.userId) {
+      const user = await UserRepository.findById(body.userId);
+      if (!user) throw new Error('ChatService: идентификатор пользователя передан, а самого пользователя в базе нет');
+
+      context.user = user;
+    }
+
+    if (body.projectId) {
+      const project = await ProjectRepository.findById(body.projectId);
+      if (!project) throw new Error('ChatService: идентификатор проекта передан, а самого проекта в базе нет');
+
+      context.project = project;
+    }
+
     return await ChatRepository.create({
       target: body.target,
       passportId: passport?.id || null,
       userId: body.userId || null,
+      context,
     });
   }
 
@@ -24,15 +50,16 @@ export class ChatService {
     for (const message of body.messages) {
       const messageText = String(message?.content || '').trim();
       if (!messageText) continue;
+      if (message.context) {
+        await ChatRepository.update(chat.id, { context: { ...chat.context, ...(message.context as Context) } });
+      };
 
-      const place = chat.target === 'place' ? await PlaceRepository.findByTitle(messageText) : null;
-
-      if (message.role === 'assistant') {
+      if (message.role === Role.ASSISTANT) {
         await MessageRepository.create({
           chatId: chat.id,
           content: messageText,
           passportId: null,
-          role: 'assistant',
+          role: Role.ASSISTANT,
         });
       } else {
         resi = await MessageService.create(
@@ -58,24 +85,14 @@ export class ChatService {
     }
 
     const messages = await MessageRepository.findByChatId(chat.id);
-    const meta = getMetaMessages(messages);
 
     return {
       ...chat,
       messages: messages.map(toMessageDto),
-      meta,
     };
   }
 
-  static async findAll(passport: Passport) {
-    if (!passport) {
-      throw new Error('Требуется авторизация');
-    }
-
-    return ChatRepository.findAllByPassportId(passport.id || 0);
-  }
-
-  static async changeTarget(id: number, target: ChatTarget) {
+  static async changeTarget(id: number, target: Target) {
     return ChatRepository.update(id, { target });
   }
 }

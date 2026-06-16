@@ -9,7 +9,7 @@ export interface PlaceMapProps {
   lat: number;
   lng: number;
   zoom: number;
-  onClick: (title: string) => void;
+  onClick: (place: PlaceDto) => void;
 }
 
 export function PlaceMap({ lat, lng, zoom, onClick }: PlaceMapProps) {
@@ -52,7 +52,7 @@ export function PlaceMap({ lat, lng, zoom, onClick }: PlaceMapProps) {
               <h4>{place.title}</h4>
               <p>Адрес: {place.address}</p>
               <p>от: {place.priceFrom} руб/час</p>
-              <button onClick={() => onClick(place.title)}>Выбрать</button>
+              <button onClick={() => onClick(place)}>Выбрать</button>
             </div>,
           );
 

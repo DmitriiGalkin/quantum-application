@@ -1,5 +1,5 @@
 import {
-  type Chat,
+  type ChatDto, type ChatMessagesResult,
   type CreateChatBody,
   type CreateChatMessages,
   type CreateIdeaUser,
@@ -51,11 +51,11 @@ export async function fetchPlaces(): Promise<PlaceDto[]> {
   return api<PlaceDto[]>('/places');
 }
 
-export async function fetchChat(chatId: number): Promise<Chat> {
-  return api<Chat>(`/chat/${chatId}`);
+export async function fetchChat(chatId: number): Promise<ChatDto> {
+  return api<ChatDto>(`/chat/${chatId}`);
 }
 
-export async function fetchCreateChat({ target, userId }: CreateChatBody): Promise<number> {
+export async function fetchCreateChat({ target, userId, projectId }: CreateChatBody): Promise<number> {
   return api<any>('/chat', {
     method: 'POST',
     headers: {
@@ -64,11 +64,12 @@ export async function fetchCreateChat({ target, userId }: CreateChatBody): Promi
     body: JSON.stringify({
       target,
       userId,
+      projectId,
     }),
   });
 }
 
-export async function fetchCreateChatMessages({ chatId, messages }: CreateChatMessages) {
+export async function fetchCreateChatMessages({ chatId, messages }: CreateChatMessages): Promise<ChatMessagesResult> {
   return api(`/chat/${chatId}/messages`, {
     method: 'POST',
     headers: {
