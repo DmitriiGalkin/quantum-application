@@ -1,14 +1,14 @@
-import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 import { ProjectRow } from '../entities/project.db.js';
 import { mapProjectRow } from '../mappers/project.mapper.js';
 import { FindAllProjectInput, Project } from '../entities/project.js';
 import { CreateProjectInput, UpdateProjectInput } from '../entities/project.types.js';
+import { db } from '../dbNext.js';
 
 class ProjectRepository {
   // ✅ CREATE
   static async create(data: CreateProjectInput): Promise<number> {
-    const [result] = await pool.query<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `INSERT INTO project (title, description, ideaId, passportId)
        VALUES (?, ?, ?, ?)`,
       [data.title, data.description ?? null, data.ideaId, data.passportId],
@@ -26,14 +26,14 @@ class ProjectRepository {
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
     const values = entries.map(([, v]) => v);
 
-    const [result] = await pool.query<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await db.execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
 
     return result.affectedRows > 0;
   }
 
   // ✅ DELETE (soft)
   static async delete(id: number): Promise<void> {
-    await pool.query(`UPDATE project SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
+    await db.execute(`UPDATE project SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
   }
 
   // ✅ FIND ALL
@@ -59,14 +59,14 @@ class ProjectRepository {
 
     sql += params.deleted === 'true' ? ' AND project.deletedAt IS NOT NULL' : ' AND project.deletedAt IS NULL';
 
-    const [rows] = await pool.query<ProjectRow[]>(sql, values);
+    const rows = await db.query<ProjectRow>(sql, values);
 
     return rows.map(mapProjectRow);
   }
 
   // ✅ FIND BY ID
   static async findById(id: number): Promise<Project | null> {
-    const [rows] = await pool.query<ProjectRow[]>(
+    const rows = await db.query<ProjectRow>(
       `SELECT *
        FROM project
        WHERE id = ?
@@ -79,7 +79,7 @@ class ProjectRepository {
 
   // ✅ FIND BY IDEA
   static async findByIdeaId(ideaId: number): Promise<Project[]> {
-    const [rows] = await pool.query<ProjectRow[]>(
+    const rows = await db.query<ProjectRow>(
       `SELECT *
        FROM project
        WHERE ideaId = ?

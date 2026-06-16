@@ -1,14 +1,13 @@
-import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
-import type { ChatRow, ChatWithLastMessageRow } from '../entities/chat.db.js';
-import { mapChatRow, mapChatWithLastMessage } from '../mappers/chat.mapper.js';
-import { Chat, ChatWithLastMessage, CreateChatInput, UpdateChat } from '../entities/chat.js';
-import { UpdateUserInput } from '../entities/user.types.js';
+import type { ChatRow } from '../entities/chat.db.js';
+import { mapChatRow } from '../mappers/chat.mapper.js';
+import { Chat, CreateChatInput, UpdateChat } from '../entities/chat.js';
+import { db } from '../dbNext.js';
 
 class ChatRepository {
   // ✅ CREATE
   static async create(data: CreateChatInput): Promise<number> {
-    const [result] = await pool.query<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `INSERT INTO chat (passportId, userId, target, context)
        VALUES (?, ?, ?, ?)`,
       [data.passportId, data.userId, data.target ?? null, JSON.stringify(data.context)],
@@ -26,14 +25,14 @@ class ChatRepository {
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
     const values = entries.map(([k, v]) => (k === 'context' && v !== null ? JSON.stringify(v) : v));
 
-    const [result] = await pool.query<ResultSetHeader>(`UPDATE chat SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await db.execute<ResultSetHeader>(`UPDATE chat SET ${fields} WHERE id = ?`, [...values, id]);
     //console.log(result, 'result');
     return result.affectedRows > 0;
   }
 
   // ✅ FIND BY ID
   static async findById(id: number): Promise<Chat | null> {
-    const [rows] = await pool.query<ChatRow[]>(
+    const rows = await db.query<ChatRow>(
       `SELECT *
        FROM chat
        WHERE id = ?
@@ -49,7 +48,7 @@ class ChatRepository {
 
   // ✅ ACTIVE CHAT
   static async findActiveByPassportId(passportId: number): Promise<Chat | null> {
-    const [rows] = await pool.query<ChatRow[]>(
+    const rows = await db.query<ChatRow>(
       `SELECT *
        FROM chat
        WHERE passportId = ?
@@ -64,7 +63,7 @@ class ChatRepository {
 
   // ✅ FIND BY ID + PASSPORT
   static async findByIdAndPassportId(id: number, passportId: number): Promise<Chat | null> {
-    const [rows] = await pool.query<ChatRow[]>(
+    const rows = await db.query<ChatRow>(
       `SELECT *
        FROM chat
        WHERE id = ?
@@ -79,7 +78,7 @@ class ChatRepository {
 
   // ✅ TOUCH
   static async touch(id: number): Promise<void> {
-    await pool.query(
+    await db.execute(
       `UPDATE chat
        SET updatedAt = CURRENT_TIMESTAMP()
        WHERE id = ?`,

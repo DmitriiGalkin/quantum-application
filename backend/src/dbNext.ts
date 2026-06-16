@@ -1,4 +1,4 @@
-import mysql, { Pool, PoolConnection } from 'mysql2/promise';
+import mysql, { Pool, PoolConnection, QueryResult, ResultSetHeader } from 'mysql2/promise';
 
 const RETRY_ERRORS = [
     'PROTOCOL_CONNECTION_LOST',
@@ -57,11 +57,11 @@ export class DatabaseService {
   }
 
   // ✅ INSERT / UPDATE / DELETE
-  async execute(sql: string, params?: any) {
+  async execute<T extends QueryResult = ResultSetHeader>(sql: string, params?: any): Promise<T> {
     return this.retry(async () => {
       const start = Date.now();
 
-      const [result] = await this.pool.execute(sql, params);
+      const [result] = await this.pool.execute<T>(sql, params);
 
       this.logQuery(sql, params, Date.now() - start);
 

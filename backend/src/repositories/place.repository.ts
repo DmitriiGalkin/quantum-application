@@ -1,14 +1,14 @@
-import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
 import { toPlace } from '../mappers/place.mapper.js';
 import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
 import { PlaceRow } from '../entities/place.db.js';
+import { db } from '../dbNext.js';
 
 class PlaceRepository {
   // ✅ CREATE
   static async create(data: CreatePlaceInput): Promise<number> {
-    const [result] = await pool.query<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `INSERT INTO place
        (title, description, latitude, longitude, address, provider, providerId)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -35,21 +35,21 @@ class PlaceRepository {
     const fields = entries.map(([key]) => `${key} = ?`).join(', ');
     const values = entries.map(([, value]) => value);
 
-    const [result] = await pool.query<ResultSetHeader>(`UPDATE place SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await db.execute<ResultSetHeader>(`UPDATE place SET ${fields} WHERE id = ?`, [...values, id]);
 
     return result.affectedRows > 0;
   }
 
   // ✅ FIND ALL
   static async findAll(): Promise<Place[]> {
-    const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place');
+    const rows = await db.query<PlaceRow>('SELECT * FROM place');
 
     return rows.map(toPlace);
   }
 
   // ✅ FIND BY ID
   static async findById(id: number): Promise<Place | null> {
-    const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place WHERE id = ?', [id]);
+    const rows = await db.query<PlaceRow>('SELECT * FROM place WHERE id = ?', [id]);
 
     if (!rows[0]) return null;
 
@@ -57,7 +57,7 @@ class PlaceRepository {
   }
 
   static async findByTitle(title: string): Promise<Place | null> {
-    const [rows] = await pool.query<PlaceRow[]>('SELECT * FROM place WHERE title = ?', [title]);
+    const rows = await db.query<PlaceRow>('SELECT * FROM place WHERE title = ?', [title]);
 
     if (!rows[0]) return null;
 
@@ -66,7 +66,7 @@ class PlaceRepository {
 
   // ✅ FIND MOS.RU
   static async findMOSRU(): Promise<Place[]> {
-    const [rows] = await pool.query<PlaceRow[]>(
+    const rows = await db.query<PlaceRow>(
       `SELECT * 
        FROM place 
        WHERE provider = ? 

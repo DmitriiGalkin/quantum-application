@@ -1,4 +1,3 @@
-import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
 import { MeetUserFullRow, MeetUserRow, MeetUserWithMeetRow } from '../entities/meet-user.db.js';
@@ -8,11 +7,12 @@ import { mapMeetUserFullRow, mapMeetUserRow, mapMeetUserWithMeetRow } from '../m
 import { MeetUser, MeetUserWithMeet } from '../entities/meet-user.js';
 
 import { MeetUserFull } from '../entities/meet-user.view.js';
+import { db } from '../dbNext.js';
 
 class MeetUserRepository {
   // ✅ CREATE
   static async create(data: { userId: number; meetId: number }): Promise<number> {
-    const [result] = await pool.query<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `INSERT INTO meetUser (userId, meetId)
        VALUES (?, ?)`,
       [data.userId, data.meetId],
@@ -23,21 +23,21 @@ class MeetUserRepository {
 
   // ✅ DELETE
   static async delete(id: number): Promise<boolean> {
-    const [result] = await pool.query<ResultSetHeader>(`DELETE FROM meetUser WHERE id = ?`, [id]);
+    const result = await db.execute<ResultSetHeader>(`DELETE FROM meetUser WHERE id = ?`, [id]);
 
     return result.affectedRows > 0;
   }
 
   // ✅ FIND BY ID
   static async findById(id: number): Promise<MeetUser | null> {
-    const [rows] = await pool.query<MeetUserRow[]>(`SELECT * FROM meetUser WHERE id = ?`, [id]);
+    const rows = await db.query<MeetUserRow>(`SELECT * FROM meetUser WHERE id = ?`, [id]);
 
     return rows[0] ? mapMeetUserRow(rows[0]) : null;
   }
 
   // ✅ FIND BY USER
   static async findByUserId(userId: number): Promise<MeetUserWithMeet[]> {
-    const [rows] = await pool.query<MeetUserWithMeetRow[]>(
+    const rows = await db.query<MeetUserWithMeetRow>(
       `SELECT meetUser.*, meet.startedAt
        FROM meetUser
               LEFT JOIN meet ON meet.id = meetUser.meetId
@@ -51,21 +51,21 @@ class MeetUserRepository {
 
   // ✅ FIND BY USER + MEET
   static async findByUserAndMeetIds(userId: number, meetId: number): Promise<MeetUser | null> {
-    const [rows] = await pool.query<MeetUserRow[]>(`SELECT * FROM meetUser WHERE userId = ? AND meetId = ?`, [userId, meetId]);
+    const rows = await db.query<MeetUserRow>(`SELECT * FROM meetUser WHERE userId = ? AND meetId = ?`, [userId, meetId]);
 
     return rows[0] ? mapMeetUserRow(rows[0]) : null;
   }
 
   // ✅ FIND BY MEET
   static async findByMeet(meetId: number): Promise<MeetUser[]> {
-    const [rows] = await pool.query<MeetUserRow[]>(`SELECT * FROM meetUser WHERE meetId = ?`, [meetId]);
+    const rows = await db.query<MeetUserRow>(`SELECT * FROM meetUser WHERE meetId = ?`, [meetId]);
 
     return rows.map(mapMeetUserRow);
   }
 
   // 🔥 COMPLEX VIEW
   static async findAll(userId: number): Promise<MeetUserFull[]> {
-    const [rows] = await pool.query<MeetUserFullRow[]>(
+    const rows = await db.query<MeetUserFullRow>(
       `SELECT v.*,
               m.id        AS meetIdJoin,
               m.startedAt AS meetStartedAt,

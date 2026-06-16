@@ -1,16 +1,14 @@
-import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 import { MessageRow } from '../entities/message.db.js';
 import { mapMessageRow } from '../mappers/message.mapper.js';
 import { Message } from '../entities/message.js';
 import { CreateMessageInput } from '../entities/message.types.js';
+import { db } from '../dbNext.js';
 
 class MessageRepository {
   // ✅ CREATE
   static async create(data: CreateMessageInput): Promise<number> {
-    console.log(data, 'create data');
-
-    const [result] = await pool.query<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `INSERT INTO message
          (chatId, passportId, role, content)
        VALUES (?, ?, ?, ?)`,
@@ -22,14 +20,14 @@ class MessageRepository {
 
   // ✅ FIND BY ID
   static async findById(id: number): Promise<Message | null> {
-    const [rows] = await pool.query<MessageRow[]>(`SELECT * FROM message WHERE id = ?`, [id]);
+    const rows = await db.query<MessageRow>(`SELECT * FROM message WHERE id = ?`, [id]);
 
     return rows[0] ? mapMessageRow(rows[0]) : null;
   }
 
   // ✅ FIND BY CHAT
   static async findByChatId(chatId: number): Promise<Message[]> {
-    const [rows] = await pool.query<MessageRow[]>(
+    const rows = await db.query<MessageRow>(
       `SELECT *
        FROM message
        WHERE chatId = ?
@@ -42,7 +40,7 @@ class MessageRepository {
 
   // ✅ LAST NOT READ MESSAGES
   static async findLastByChatId(chatId: number, limit: number): Promise<Message[]> {
-    const [rows] = await pool.query<MessageRow[]>(
+    const rows = await db.query<MessageRow>(
       `SELECT *
        FROM message
        WHERE chatId = ?
@@ -56,7 +54,7 @@ class MessageRepository {
   }
 
   static async markChatAsRead(chatId: number): Promise<number> {
-    const [result] = await pool.query<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `UPDATE message
      SET isRead = TRUE
      WHERE chatId = ?

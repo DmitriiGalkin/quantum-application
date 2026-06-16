@@ -1,14 +1,14 @@
-import pool from '../db.js';
 import { ResultSetHeader } from 'mysql2/promise';
 import { MeetRow, MeetWithProjectTitleRow } from '../entities/meet.db.js';
 import { mapMeetRow, mapMeetWithProjectTitle } from '../mappers/meet.mapper.js';
 import { Meet, MeetWithProjectTitle } from '../entities/meet.js';
 import { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
+import { db } from '../dbNext.js';
 
 class MeetRepository {
   // ✅ CREATE
   static async create(data: CreateMeetInput): Promise<number> {
-    const [result] = await pool.query<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `INSERT INTO meet (passportId, projectId, price, duration, startedAt)
        VALUES (?, ?, ?, ?, ?)`,
       [data.passportId, data.projectId, data.price, data.duration, data.startedAt],
@@ -26,23 +26,23 @@ class MeetRepository {
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
     const values = entries.map(([, v]) => v);
 
-    const [result] = await pool.query<ResultSetHeader>(`UPDATE meet SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await db.execute<ResultSetHeader>(`UPDATE meet SET ${fields} WHERE id = ?`, [...values, id]);
 
     return result.affectedRows > 0;
   }
 
   // ✅ DELETE (soft)
   static async delete(id: number): Promise<void> {
-    await pool.query(`UPDATE meet SET deletedAt = NOW() WHERE id = ?`, [id]);
+    await db.execute(`UPDATE meet SET deletedAt = NOW() WHERE id = ?`, [id]);
   }
 
   static async deleteByProjectId(projectId: number): Promise<void> {
-    await pool.query(`UPDATE meet SET deletedAt = NOW() WHERE projectId = ?`, [projectId]);
+    await db.execute(`UPDATE meet SET deletedAt = NOW() WHERE projectId = ?`, [projectId]);
   }
 
   // ✅ FIND ALL
   static async findAll(): Promise<Meet[]> {
-    const [rows] = await pool.query<MeetRow[]>(
+    const rows = await db.query<MeetRow>(
       `SELECT *
        FROM meet
        WHERE startedAt >= CURDATE()
@@ -55,14 +55,14 @@ class MeetRepository {
 
   // ✅ FIND BY ID
   static async findById(id: number): Promise<Meet | null> {
-    const [rows] = await pool.query<MeetRow[]>(`SELECT * FROM meet WHERE id = ?`, [id]);
+    const rows = await db.query<MeetRow>(`SELECT * FROM meet WHERE id = ?`, [id]);
 
     return rows[0] ? mapMeetRow(rows[0]) : null;
   }
 
   // ✅ FIND BY PLACE ID (JOIN)
   static async findByPlaceId(id: number): Promise<MeetWithProjectTitle[]> {
-    const [rows] = await pool.query<MeetWithProjectTitleRow[]>(
+    const rows = await db.query<MeetWithProjectTitleRow>(
       `SELECT meet.*, project.title
        FROM meet
        LEFT JOIN project ON project.id = meet.projectId
@@ -75,7 +75,7 @@ class MeetRepository {
 
   // ✅ FIND BY PROJECT ID
   static async findByProjectId(projectId: number): Promise<Meet[]> {
-    const [rows] = await pool.query<MeetRow[]>(
+    const rows = await db.query<MeetRow>(
       `SELECT *
        FROM meet
        WHERE projectId = ?
@@ -90,7 +90,7 @@ class MeetRepository {
 
   // ✅ RECOMMENDATION
   static async findRecommendationByProjectId(projectId: number): Promise<Meet | null> {
-    const [rows] = await pool.query<MeetRow[]>(
+    const rows = await db.query<MeetRow>(
       `SELECT *
        FROM meet
        WHERE projectId = ?
@@ -106,7 +106,7 @@ class MeetRepository {
 
   // ✅ FIND BY USER ID
   static async findByUserId(userId: number): Promise<Meet[]> {
-    const [rows] = await pool.query<MeetRow[]>(
+    const rows = await db.query<MeetRow>(
       `SELECT DISTINCT m.*
        FROM meet m
        JOIN projectUser p ON p.projectId = m.projectId
@@ -124,7 +124,7 @@ class MeetRepository {
   static async check(timer: { dayOfWeek: number; projectId: number }): Promise<typeof timer | null> {
     const dayOfWeekForMySQL = timer.dayOfWeek === 0 ? 1 : timer.dayOfWeek + 1;
 
-    const [rows] = await pool.query<MeetRow[]>(
+    const rows = await db.query<MeetRow>(
       `SELECT *
        FROM meet
        WHERE projectId = ?

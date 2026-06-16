@@ -1,4 +1,4 @@
-import pool from '../db.js';
+import { db } from '../dbNext.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
 import { PassportRow } from '../entities/passport.db.js';
@@ -10,7 +10,7 @@ import { CreatePassportInput, UpdatePassportInput } from '../entities/passport.t
 class PassportRepository {
   // ✅ CREATE
   static async create(data: CreatePassportInput): Promise<number> {
-    const [result] = await pool.query<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `INSERT INTO passport
          (providerId, provider, accessToken, title, email)
        VALUES (?, ?, ?, ?, ?)`,
@@ -29,35 +29,35 @@ class PassportRepository {
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
     const values = entries.map(([, v]) => v);
 
-    const [result] = await pool.query<ResultSetHeader>(`UPDATE passport SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await db.execute<ResultSetHeader>(`UPDATE passport SET ${fields} WHERE id = ?`, [...values, id]);
 
     return result.affectedRows > 0;
   }
 
   // ✅ UPDATE TOKEN (оставляем отдельно — это нормально)
   static async updateTokenById(token: string, id: number): Promise<boolean> {
-    const [result] = await pool.query<ResultSetHeader>(`UPDATE passport SET accessToken = ? WHERE id = ?`, [token, id]);
+    const result = await db.execute<ResultSetHeader>(`UPDATE passport SET accessToken = ? WHERE id = ?`, [token, id]);
 
     return result.affectedRows > 0;
   }
 
   // ✅ FIND BY ID
   static async findById(id: number): Promise<Passport | null> {
-    const [rows] = await pool.query<PassportRow[]>(`SELECT * FROM passport WHERE id = ?`, [id]);
+    const rows = await db.query<PassportRow>(`SELECT * FROM passport WHERE id = ?`, [id]);
 
     return rows[0] ? mapPassportRow(rows[0]) : null;
   }
 
   // ✅ FIND BY EMAIL
   static async findByEmail(email: string): Promise<Passport | null> {
-    const [rows] = await pool.query<PassportRow[]>(`SELECT * FROM passport WHERE email = ?`, [email]);
+    const rows = await db.query<PassportRow>(`SELECT * FROM passport WHERE email = ?`, [email]);
 
     return rows[0] ? mapPassportRow(rows[0]) : null;
   }
 
   // ✅ FIND BY TOKEN
   static async findByAccessToken(accessToken: string): Promise<Passport | null> {
-    const [rows] = await pool.query<PassportRow[]>(`SELECT * FROM passport WHERE accessToken = ?`, [accessToken]);
+    const rows = await db.query<PassportRow>(`SELECT * FROM passport WHERE accessToken = ?`, [accessToken]);
 
     return rows[0] ? mapPassportRow(rows[0]) : null;
   }
