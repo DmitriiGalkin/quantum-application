@@ -1,9 +1,5 @@
 
-export enum Target {
-  IDEA = 'idea',
-  PROJECT = 'project',
-  MEET = 'meet',
-}
+export type Target = 'idea' | 'project' | 'meet';
 
 export interface ContextDto {
   ui?: string;
@@ -14,11 +10,7 @@ export interface ContextDto {
   idea?: IdeaDto;
 }
 
-export enum Role {
-  USER = 'user',
-  ASSISTANT = 'assistant',
-  SYSTEM = 'system',
-}
+export type Role = 'user' | 'assistant' | 'system';
 
 export type MessageDto = {
   id: number;
@@ -42,14 +34,7 @@ export interface ChatMessagesResult {
   context?: ContextDto;
 }
 
-export enum Ui {
-  AUTH = 'auth',
-  MAP = 'map',
-  IDEA = 'idea',
-  PROJECT = 'project',
-  MEET = 'meet',
-  IDEAS = 'ideas',
-}
+export type Ui = 'auth' | 'map' | 'idea' | 'project' | 'meet' | 'ideas';
 
 export interface IdeaDto {
   id: number;

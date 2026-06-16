@@ -39,7 +39,7 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
       if (!context?.passport)
         return {
           content: 'Для продолжения, пожалуйста авторизуйтесь:',
-          context: { ...context, ui: Ui.AUTH },
+          context: { ...context, ui: 'auth' },
         };
 
       const ideaId = await IdeaFlowService.create(context);
@@ -50,7 +50,7 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
 
       return {
         content: `Идея ${FRONTEND_SERVER}/idea/${ideaId} создана`,
-        context: { ...context, idea, ui: Ui.IDEA },
+        context: { ...context, idea, ui: 'idea' },
       };
 
     case 'project':
@@ -59,7 +59,7 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
       if (!context?.passport)
         return {
           content: 'Для продолжения, пожалуйста авторизуйтесь:',
-          context: { ...context, ui: Ui.AUTH },
+          context: { ...context, ui: 'auth' },
         };
 
       const projectId = await ProjectFlowService.create(context);
@@ -67,11 +67,11 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
 
       if(!project) throw new Error('Factory, project: проект не создался');
 
-      await ChatService.changeTarget(chat.id, Target.MEET);
+      await ChatService.changeTarget(chat.id, 'meet');
 
       return {
         content: `Отлично! Проект создан. Осталось выбрать место и время проведения первой встречи, а я помогу с подбором. `,
-        context: { ...context, project, ui: Ui.PROJECT },
+        context: { ...context, project, ui: 'project' },
       };
 
     case 'meet':
@@ -87,7 +87,7 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
 
         return {
           content: 'Выберите место для встречи',
-          context: { ...context, ui: Ui.MAP },
+          context: { ...context, ui: 'map' },
         };
       }
 
@@ -101,7 +101,7 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
 
       return {
         content: `Отлично! встерча ${FRONTEND_SERVER}/project/${context.project.id}#meet-${meetId} создана. Осталось скреситить пальци крестиком и дождаться пока встерча наполнится детьми.`,
-        context: { ...context, meet, ui: Ui.MEET },
+        context: { ...context, meet, ui: 'meet' },
       };
 
     default:

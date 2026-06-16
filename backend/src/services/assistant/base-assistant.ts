@@ -19,7 +19,7 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
     const payload = {
       messages: [
         {
-          role: Role.SYSTEM,
+          role: 'system',
           content: prompt, // Вызов функции для получения промпта
         },
         ...messages.map(m => ({ role: m.role, content: m.content })),

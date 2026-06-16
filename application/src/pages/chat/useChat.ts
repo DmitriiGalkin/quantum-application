@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/AuthProvider.tsx';
-import { type ContextDto, type CreateMessageDto, Role, Target } from '@shared/types';
+import { type ContextDto, type CreateMessageDto, type Target } from '@shared/types';
 import { fetchChat, fetchCreateChat, fetchCreateChatMessages } from '../../requests.ts';
 import { useWelcomeContent } from '../../components/Map/useWelcomeContent.tsx';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -23,7 +23,7 @@ export function useChat(target: Target, projectId?: number) {
 
   const [messages, setMessages] = useState<CreateMessageDto[]>([
     {
-      role: Role.ASSISTANT,
+      role: 'assistant',
       content: welcomeContent,
     },
   ]);
@@ -42,14 +42,14 @@ export function useChat(target: Target, projectId?: number) {
   async function sendMessage(text: string, context?: ContextDto) {
     const trimmed = text.trim();
     if (!trimmed || createChatMessages.isPending) return;
-    const userMessage: CreateMessageDto = { role: Role.USER, content: trimmed, context };
+    const userMessage: CreateMessageDto = { role: 'user', content: trimmed, context };
 
     setMessage('');
     setMessages([...messages, userMessage]);
 
     const createMessages = (chatId: number, withWelcome?: boolean) => {
       createChatMessages.mutate(
-        { chatId, messages: [...(withWelcome ? [{ role: Role.ASSISTANT, content: welcomeContent }] : []), userMessage] },
+        { chatId, messages: [...(withWelcome ? [{ role: 'assistant' as const, content: welcomeContent }] : []), userMessage] },
         {
           onSuccess: res => {
             setMessages([...messages, userMessage, res.message]);

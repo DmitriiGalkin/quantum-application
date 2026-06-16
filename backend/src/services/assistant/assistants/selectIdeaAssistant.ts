@@ -1,11 +1,9 @@
 import IdeaModel from '../../../repositories/idea.repository.js';
-import { baseAssistantAnswer } from '../base-assistant.js';
 import type { Idea } from '../../../entities/idea.js';
 import { ProjectAssistant } from '../../../entities/project.assistant.js';
 import { Message } from '../../../entities/message.js';
 import { Context, DraftTeacher } from '../../chat/chat.meta.js';
 import { baseAssistantAnswer2 } from '../base-assistant2.js';
-import { Ui } from '@shared/types';
 
 const getSystemPrompt = (ideas: Idea[], teacher: DraftTeacher) => {
   const filterIdeas = ideas.map(idea => ({ id: idea.id, title: idea.title }));
@@ -53,7 +51,7 @@ export async function selectIdeaAssistant(messages: Message[], context: Context)
     transformer: (data: ProjectAssistant[]): Context => ({
       ...context,
       ideas: (data.map(projectAssistant => ideas.find(idea => idea.id === projectAssistant.id) || null).filter(Boolean)) as Idea[],
-      ui: Ui.IDEAS,
+      ui: 'ideas',
     }),
   });
 }

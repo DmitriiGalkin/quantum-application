@@ -1,5 +1,5 @@
 import { Passport } from '../../entities/passport.js';
-import {
+import type {
   ChatMessagesResult,
   CreateChatBody,
   CreateMessageDto,
@@ -54,12 +54,12 @@ export class ChatService {
         await ChatRepository.update(chat.id, { context: { ...chat.context, ...(message.context as unknown as Context) } });
       };
 
-      if (message.role === Role.ASSISTANT) {
+      if (message.role === 'assistant') {
         await MessageRepository.create({
           chatId: chat.id,
           content: messageText,
           passportId: null,
-          role: Role.ASSISTANT,
+          role: 'assistant',
         });
       } else {
         resi = await MessageService.create(

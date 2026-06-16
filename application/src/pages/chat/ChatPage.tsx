@@ -9,7 +9,7 @@ import MapDialog from '../../components/MapDialog.tsx';
 import Typography from '@mui/material/Typography';
 import ChatMessageList from '../../components/ChatMessageList.tsx';
 import ChatComposer from '../../components/ChatComposer.tsx';
-import { Target, Ui } from '@shared/types';
+import type { Target } from '@shared/types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -24,7 +24,7 @@ function ChatPage() {
   const { token, authHandler } = useAuth();
 
   const [searchParams] = useSearchParams();
-  const target = (searchParams.get('target') ?? Target.IDEA) as Target;
+  const target = (searchParams.get('target') ?? 'idea') as Target;
   const projectId = (searchParams.get('projectId') ?? '0') as string;
 
   const chat = useChat(target, Number(projectId));
@@ -96,16 +96,16 @@ function ChatPage() {
             }}
           />
 
-          {chat?.context?.ui === Ui.IDEAS && (
+          {chat?.context?.ui === 'ideas' && (
             <>
               {chat.context.ideas?.map((idea: any) => (
                 <IdeaCard idea={idea} actionType="draft" onSelect={() => chat.sendMessage(idea.title, { idea })} />
               ))}
             </>
           )}
-          {chat?.context?.ui === Ui.PROJECT && chat?.context?.project && <ProjectCard project={chat.context.project} />}
-          {chat?.context?.ui === Ui.MEET && chat?.context?.meet && <MeetCard meet={chat.context.meet} />}
-          {chat?.context?.ui === Ui.IDEA && chat?.context?.idea && <IdeaCard idea={chat.context.idea} />}
+          {chat?.context?.ui === 'project' && chat?.context?.project && <ProjectCard project={chat.context.project} />}
+          {chat?.context?.ui === 'meet' && chat?.context?.meet && <MeetCard meet={chat.context.meet} />}
+          {chat?.context?.ui === 'idea' && chat?.context?.idea && <IdeaCard idea={chat.context.idea} />}
         </Stack>
       </Container>
 

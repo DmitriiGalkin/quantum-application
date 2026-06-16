@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Message from './Message.tsx';
-import { type CreateMessageDto, Role } from '@shared/types';
+import { type CreateMessageDto } from '@shared/types';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
 
@@ -26,7 +26,7 @@ function ChatMessageList({ messages, isSending }: ChatMessageListProps) {
       })}
 
       {isSending && (
-        <Message role={Role.ASSISTANT}>
+        <Message role={'assistant'}>
           <div className="typing-dots">
             <span></span>
             <span></span>

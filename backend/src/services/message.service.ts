@@ -35,7 +35,7 @@ export class MessageService {
       chatId: chat.id,
       content,
       passportId: null,
-      role: Role.ASSISTANT,
+      role: 'assistant',
     });
 
     const message = await MessageRepository.findById(messageId);
