@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App'
 import {StaticRouter} from "react-router-dom";
 import type { PageMeta } from '@shared/types';
+import { AuthProvider } from './providers/AuthProvider.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
 const FRONTEND_SERVER = import.meta.env.FRONTEND_SERVER ?? 'http://localhost:4000';
@@ -107,7 +108,9 @@ export async function render(url: string) {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <StaticRouter location={url}>
-          <App />
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </StaticRouter>
       </QueryClientProvider>
     </React.StrictMode>,
