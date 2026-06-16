@@ -31,7 +31,7 @@ export class MessageService {
 
     const messages = await MessageRepository.findLastByChatId(chat.id, 100);
 
-    const context = chat.metadata || {
+    const context: Context = chat.metadata || {
       draftUser: null,
       draftTeacher: null,
       idea: null,
@@ -44,6 +44,7 @@ export class MessageService {
       passport: passport ? passport : null,
       teacher: passport?.description ? { description: passport.description } : null,
       user: chat.userId ? await UserRepository.findById(chat.userId) : null,
+      ui: ''
     };
 
     const { content, context: newContext } = await getContent(chat, context, messages);
