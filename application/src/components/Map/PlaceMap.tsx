@@ -40,7 +40,7 @@ export function PlaceMap({ lat, lng, zoom, onClick }: PlaceMapProps) {
 
       markersRef.current.clearLayers();
 
-      places.forEach((place: PlaceDto) => {
+      places.forEach((place) => {
         const marker = L.marker([Number(place.latitude), Number(place.longitude)], { icon: getPlaceIcon(place.meets.length) });
 
         marker.on('popupopen', e => {

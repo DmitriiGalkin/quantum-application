@@ -5,21 +5,22 @@ import {
   type CreateChatMessages,
   type CreateIdeaUser,
   type CreateMeetUser,
-  type DeleteIdeaUser, type DeleteMeetUser,
-  type IdeaDto,
-  type PassportDto,
-  type PlaceDto,
+  type DeleteIdeaUser,
+  type DeleteMeetUser,
+  type IdeaFullDto,
+  type PassportFullDto,
+  type PlaceFullDto,
   type ProjectDto,
   type ProjectFullDto,
 } from '@shared/types';
 import { api } from './api.ts';
 
-export async function fetchProject(id: string): Promise<ProjectDto> {
-  return api<ProjectDto>(`/project/${id}`);
+export async function fetchProject(id: string) {
+  return api<ProjectFullDto>(`/project/${id}`);
 }
 
-export async function fetchIdea(id: string): Promise<IdeaDto> {
-  return api<IdeaDto>(`/idea/${id}`);
+export async function fetchIdea(id: string) {
+  return api<IdeaFullDto>(`/idea/${id}`);
 }
 
 export async function createProject(ideaId: number): Promise<number> {
@@ -34,8 +35,8 @@ export async function createProject(ideaId: number): Promise<number> {
   });
 }
 
-export async function fetchPlaces(): Promise<PlaceDto[]> {
-  return api<PlaceDto[]>('/places');
+export async function fetchPlaces() {
+  return api<PlaceFullDto[]>('/places');
 }
 
 export async function fetchChat(chatId: number): Promise<ChatDto> {
@@ -95,8 +96,8 @@ export async function generateImage(ideaId: number) {
   });
 }
 
-export async function fetchPassport(): Promise<PassportDto> {
-  return api<PassportDto>('/passport');
+export async function fetchPassport() {
+  return api<PassportFullDto>('/passport');
 }
 
 export async function fetchProjects(): Promise<ProjectDto[]> {
@@ -107,16 +108,16 @@ export async function fetchUserProjects(userId: number) {
   return api<ProjectFullDto[]>(`/user/${userId}/projects`);
 }
 
-export async function fetchPassportProjects(): Promise<ProjectDto[]> {
-  return api<ProjectDto[]>(`/passport/projects`);
+export async function fetchPassportProjects() {
+  return api<ProjectFullDto[]>(`/passport/projects`);
 }
 
-export async function fetchIdeas(): Promise<IdeaDto[]> {
-  return api<IdeaDto[]>('/ideas');
+export async function fetchIdeas() {
+  return api<IdeaFullDto[]>('/ideas');
 }
 
-export async function fetchUserIdeas(userId: number): Promise<IdeaDto[]> {
-  return api<IdeaDto[]>(`/user/${userId}/ideas`);
+export async function fetchUserIdeas(userId: number) {
+  return api<IdeaFullDto[]>(`/user/${userId}/ideas`);
 }
 
 export async function fetchLike({ userId, ideaId }: CreateIdeaUser): Promise<void> {

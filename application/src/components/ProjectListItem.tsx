@@ -2,11 +2,11 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CommentIcon from '@mui/icons-material/Comment';
 
-import type { ProjectDto } from '@shared/types';
+import type { ProjectFullDto } from '@shared/types';
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
 type ProjectListItemProps = {
-  project: ProjectDto;
+  project: ProjectFullDto;
   withoutPassport?: boolean;
 };
 

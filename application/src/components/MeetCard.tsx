@@ -4,19 +4,19 @@ import Stack from '@mui/material/Stack';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import type { MeetDto } from '@shared/types';
+import type { MeetFullDto } from '@shared/types';
 import InfoItem from './InfoItem.tsx';
 import UserGroup from './UserGroup.tsx';
 
 type MeetCardProps = {
-  meet: MeetDto;
+  meet: MeetFullDto;
   isMeetUserActionPending?: boolean;
   onCreateMeetUser?: (meetId: number) => void;
   onDeleteMeetUser?: (meetUserId: number) => void;
 };
 
 
-function MeetCard({ meet, isMeetUserActionPending, onCreateMeetUser, onDeleteMeetUser }: MeetCardProps) {
+function MeetCard({ meet, isMeetUserActionPending }: MeetCardProps) {
   const startedAt = new Date(meet.startedAt);
   const currentMeetUser = meet.users?.find(user => user.id === 2);
   const isCurrentUserVisited = Boolean(currentMeetUser);
@@ -80,13 +80,13 @@ function MeetCard({ meet, isMeetUserActionPending, onCreateMeetUser, onDeleteMee
           disabled={isMeetUserActionPending}
           onClick={() => {
             console.log('onClick', currentMeetUser);
-            if (currentMeetUser?.meetUserId) {
-              onDeleteMeetUser?.(currentMeetUser.meetUserId);
-
-              return;
-            }
-
-            onCreateMeetUser?.(meet.id);
+          //   if (currentMeetUser?.meetUserId) {
+          //     onDeleteMeetUser?.(currentMeetUser.meetUserId);
+          //
+          //     return;
+          //   }
+          //
+          //   onCreateMeetUser?.(meet.id);
           }}
         >
           {isMeetUserActionPending ? 'Отправка...' : isCurrentUserVisited ? 'Выйти' : 'Участвовать'}

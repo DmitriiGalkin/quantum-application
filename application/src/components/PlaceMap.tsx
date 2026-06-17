@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import './Map/BaseMap.css';
-import type { PlaceDto } from '@shared/types';
+import type { PlaceFullDto } from '@shared/types';
 
 interface Props {
   lat: number;
   lng: number;
   zoom: number;
-  places: PlaceDto[];
+  places: PlaceFullDto[];
 }
 
 export function PlaceMap({ lat, lng, zoom, places }: Props) {
-  console.log(places, 'places');
   const [isMapReady, setIsMapReady] = useState(false);
 
   const mapRef = useRef<HTMLDivElement | null>(null);

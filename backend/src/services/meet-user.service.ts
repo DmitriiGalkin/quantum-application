@@ -1,9 +1,7 @@
 import Meet from '../repositories/meet.repository.js';
 import MeetUserRepository from '../repositories/meet-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
-import type { Passport } from '../entities/passport.js';
-import { CreateMeetUser, DeleteIdeaUser, DeleteMeetUser } from '@shared/types';
-import IdeaUserRepository from '../repositories/idea-user.repository.js';
+import { CreateMeetUser, DeleteMeetUser } from '@shared/types';
 
 export class MeetUserService {
   static async create(passportId: number, body: CreateMeetUser) {

@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { BaseMap, type MapContext } from './BaseMap.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaces } from '../../requests.ts';
-import type { PlaceDto } from '@shared/types';
 import { addMinutes, extractTime } from '../../utils/time.ts';
 
 interface Props {
@@ -39,13 +38,13 @@ export function MeetMap({ lat, lng, zoom }: Props) {
 
       markersRef.current.clearLayers();
 
-      meets.forEach((place: PlaceDto) => {
+      meets.forEach((place) => {
         const meetsList = place.meets
           .map(
             meet =>
               `<li>
               <span>${extractTime(meet.startedAt)} - ${addMinutes(extractTime(meet.startedAt), 90)}</span>
-              <a href="/project/${meet.projectId}">${meet.project?.title}</a>
+              <a href="/project/${meet.projectId}">Уточнить надо</a>
             </li>`,
           )
           .join('');

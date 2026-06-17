@@ -4,10 +4,10 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import UserGroup from './UserGroup.tsx';
 import Box from '@mui/material/Box';
-import type { ProjectDto } from '@shared/types';
+import type { ProjectFullDto } from '@shared/types';
 
 type ProjectCardProps = {
-  project: ProjectDto;
+  project: ProjectFullDto;
   withoutPassport?: boolean;
 };
 

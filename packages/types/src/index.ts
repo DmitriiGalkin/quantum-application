@@ -23,7 +23,7 @@ export interface IdeaDto {
 
 export interface IdeaFullDto extends IdeaDto {
   user: UserDto | null;
-  projects: ProjectDto[];
+  projects: ProjectFullDto[];
 }
 
 export interface MeetDto {
@@ -66,6 +66,7 @@ export interface PassportDto {
   id: number;
   title: string;
   description: string | null;
+  image?: string | null;
 }
 
 export interface PassportFullDto extends PassportDto {
@@ -110,10 +111,10 @@ export interface UserDto {
 export interface ContextDto {
   ui?: Ui;
   place?: PlaceDto;
-  meet?: MeetDto;
-  ideas?: IdeaDto[];
-  project?: ProjectDto;
-  idea?: IdeaDto;
+  meet?: MeetFullDto;
+  ideas?: IdeaFullDto[];
+  project?: ProjectFullDto;
+  idea?: IdeaFullDto;
 }
 
 // Контракты

@@ -1,7 +1,7 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { MeetUserService } from '../services/meet-user.service.js';
 import { MeetUserFull } from '../entities/meet-user.view.js';
-import { CreateMeetUser, DeleteIdeaUser, DeleteMeetUser } from '@shared/types';
+import { CreateMeetUser, DeleteMeetUser } from '@shared/types';
 
 const create: ControllerWithAuth<void, CreateMeetUser> = async (req, res) => {
   try {
