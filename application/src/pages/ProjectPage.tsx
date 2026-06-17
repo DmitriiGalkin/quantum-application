@@ -65,7 +65,7 @@ function ProjectPage() {
     if (navigator.share) {
       await navigator.share({
         title: project?.title,
-        text: project?.description,
+        text: project?.description ?? '',
         url,
       });
     } else {

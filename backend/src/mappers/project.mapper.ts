@@ -27,8 +27,11 @@ export const toProjectDto = (project: ProjectFullEntity): ProjectDto => ({
     title: project.passport.title,
     image: project.passport.image,
   },
-  place: project.place ? {
-    title: project.place.title,
-    address: project.place.address,
-  } : null,
+  place: project.place
+    ? {
+        title: project.place.title,
+        address: project.place.address,
+        description: project.place.description,
+      }
+    : null,
 });

@@ -110,7 +110,7 @@ export interface ProjectDto {
   place: {
     title: string;
     address: string | null;
-    //description: string | null;
+    description: string | null;
   } | null;
   meets?: MeetDto[];
   users?: {

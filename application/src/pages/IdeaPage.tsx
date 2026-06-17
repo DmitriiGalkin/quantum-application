@@ -28,7 +28,7 @@ function IdeaPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const generateImageMutation = useMutation({
     mutationFn: generateImage,
