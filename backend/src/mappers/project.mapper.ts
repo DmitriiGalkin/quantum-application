@@ -1,6 +1,6 @@
-import {ProjectDto} from '@shared/types';
-import {Project, ProjectFullEntity} from '../entities/project.js';
-import {ProjectRow} from '../entities/project.db.js';
+import type { ProjectFullDto } from '@shared/types';
+import type { Project, ProjectFullEntity } from '../entities/project.js';
+import type { ProjectRow } from '../entities/project.db.js';
 
 export function mapProjectRow(row: ProjectRow): Project {
   return {
@@ -11,7 +11,7 @@ export function mapProjectRow(row: ProjectRow): Project {
   };
 }
 
-export const toProjectDto = (project: ProjectFullEntity): ProjectDto => ({
+export const toProjectDto = (project: ProjectFullEntity): ProjectFullDto => ({
   id: project.id,
   idea: project.idea ? {
     id: project.idea.id,

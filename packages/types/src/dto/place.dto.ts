@@ -1,3 +1,5 @@
+import { MeetDto } from './meet.dto';
+
 export interface PlaceDto {
   id: number;
   title: string;
@@ -7,6 +9,8 @@ export interface PlaceDto {
   longitude: number;
   image: string | null;
   priceFrom: number | null;
+}
 
+export interface PlaceFullDto extends PlaceDto {
   meets: MeetDto[];
 }

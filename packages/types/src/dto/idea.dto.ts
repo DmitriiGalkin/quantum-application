@@ -1,4 +1,5 @@
 import { ProjectDto } from '../index';
+import { UserDto } from './user.dto';
 
 export interface IdeaDto {
   id: number;
@@ -7,12 +8,9 @@ export interface IdeaDto {
   image: string | null;
   userCount: number;
   isLiked?: boolean;
+}
 
-  user: {
-    id: number;
-    title: string;
-    age: number;
-  } | null;
-
+export interface IdeaFullDto extends IdeaDto {
+  user: UserDto | null;
   projects: ProjectDto[];
 }

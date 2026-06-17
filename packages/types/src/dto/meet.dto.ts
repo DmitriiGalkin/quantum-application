@@ -1,24 +1,15 @@
+import { ProjectDto } from './project.dto';
+import { UserDto } from './user.dto';
+
 export interface MeetDto {
   id: number;
   projectId: number;
   startedAt: string;
   duration: number | null;
   price: number | null;
+}
 
-  project: {
-    id: number;
-    title: string;
-    place: {
-      id: number;
-      title: string;
-    } | null;
-  } | null;
-
-  users: {
-    id: number;
-    meetUserId?: number;
-    title: string;
-    age: number | null;
-    image: string | null;
-  }[];
+export interface MeetFullDto extends MeetDto {
+  project: ProjectDto | null;
+  users: UserDto[];
 }

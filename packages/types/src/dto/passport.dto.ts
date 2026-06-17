@@ -1,11 +1,11 @@
+import { UserDto } from './user.dto';
+
 export interface PassportDto {
   id: number;
   title: string;
   description: string | null;
-  users: {
-    id: number;
-    title: string;
-    age: number | null;
-    image: string | null;
-  }[];
+}
+
+export interface PassportFullDto extends PassportDto{
+  users: UserDto[];
 }

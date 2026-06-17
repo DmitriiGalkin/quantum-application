@@ -1,10 +1,111 @@
-import { PlaceDto } from './dto/place.dto';
-import { MeetDto } from './dto/meet.dto';
-import { IdeaDto } from './dto/idea.dto';
-import { ProjectDto } from './dto/project.dto';
-import { MessageDto } from './dto/message.dto';
-import { Role, Target, Ui } from './types/enums';
+export type Target = 'idea' | 'project' | 'meet';
 
+export type Ui = 'auth' | 'map' | 'idea' | 'project' | 'meet' | 'ideas';
+
+export type Role = 'user' | 'assistant' | 'system';
+
+export interface ChatDto {
+  id: number;
+  passportId: number;
+  target: Target;
+  context?: ContextDto;
+  messages?: MessageDto[];
+}
+
+export interface IdeaDto {
+  id: number;
+  title: string;
+  description: string | null;
+  image: string | null;
+  userCount: number;
+  isLiked?: boolean;
+}
+
+export interface IdeaFullDto extends IdeaDto {
+  user: UserDto | null;
+  projects: ProjectDto[];
+}
+
+export interface MeetDto {
+  id: number;
+  projectId: number;
+  startedAt: string;
+  duration: number | null;
+  price: number | null;
+}
+
+export interface MeetFullDto extends MeetDto {
+  project: ProjectDto | null;
+  users: UserDto[];
+}
+
+export type MessageDto = {
+  id: number;
+  chatId: number;
+  passportId: number | null;
+  role: Role;
+  content: string;
+};
+
+export interface PageMeta {
+  title: string;
+  description: string;
+  // Заголовок страницы при шаринге (до 60 символов)
+  ogTitle: string;
+  // Краткое описание под заголовком (1–2 строки текста)
+  ogDescription: string;
+  // Картинка превью (рекомендации: JPG / PNG, 1200×630 px, абсолютный URL)
+  ogImage: string;
+  // Тип контента
+  ogType: string;
+  // Название сайта/бренда (Показывается мелким текстом. Не всегда отображается во всех платформах)
+  ogSiteName?: string;
+}
+
+export interface PassportDto {
+  id: number;
+  title: string;
+  description: string | null;
+}
+
+export interface PassportFullDto extends PassportDto {
+  users: UserDto[];
+}
+
+export interface PlaceDto {
+  id: number;
+  title: string;
+  description: string | null;
+  address: string | null;
+  latitude: number;
+  longitude: number;
+  image: string | null;
+  priceFrom: number | null;
+}
+
+export interface PlaceFullDto extends PlaceDto {
+  meets: MeetDto[];
+}
+
+export interface ProjectDto {
+  id: number;
+}
+
+export interface ProjectFullDto extends ProjectDto {
+  idea: IdeaDto;
+  passport: PassportDto | null;
+  place: PlaceDto | null;
+  meets?: MeetDto[];
+  users?: UserDto[];
+}
+
+export interface UserDto {
+  id: number;
+  title: string | null;
+  description?: string | null;
+  age: number | null;
+  image: string | null;
+}
 
 export interface ContextDto {
   ui?: Ui;
@@ -15,22 +116,32 @@ export interface ContextDto {
   idea?: IdeaDto;
 }
 
-export interface ChatMessagesResult {
-  message: MessageDto;
-  context?: ContextDto;
-}
+// Контракты
 
-// КОНТРАКТЫ
-export interface CreateChat {
-  chatId: number;
-  target: Target;
-}
 export interface CreateChatBody {
   target: Target;
   userId?: number;
   projectId?: number;
   ideaId?: number;
 }
+
+export type CreateMessageDto = {
+  role: Role;
+  content: string;
+  context?: ContextDto;
+};
+
+export interface CreateChatMessages {
+  chatId: number;
+  messages: CreateMessageDto[];
+  ui?: string;
+}
+
+export interface ChatMessagesResult {
+  message: MessageDto;
+  context?: ContextDto;
+}
+
 export interface CreateIdeaUser {
   ideaId: number;
   userId: number;
@@ -39,33 +150,14 @@ export interface DeleteIdeaUser {
   ideaId: number;
   userId: number;
 }
+
 export interface CreateMeetUser {
   meetId: number;
   userId: number;
 }
+
 export interface CreateMessage {
   chatId: number;
   message: string;
   target?: Target;
 }
-
-export type CreateMessageDto = {
-  role: Role;
-  content: string;
-  context?: ContextDto;
-};
-export interface CreateChatMessages {
-  chatId: number;
-  messages: CreateMessageDto[];
-  ui?: string;
-}
-
-export type DraftProject = {
-  id: number;
-  title: string;
-};
-
-export * from './dto/idea.dto';
-export * from './dto/project.dto';
-export * from './dto/chat.dto';
-export * from './types/enums';

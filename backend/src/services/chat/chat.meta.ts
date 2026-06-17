@@ -4,7 +4,7 @@ import { Project } from '../../entities/project.js';
 import { User } from '../../entities/user.js';
 import { Idea } from '../../entities/idea.js';
 import { Meet } from '../../entities/meet.js';
-import { DraftProject, IdeaDto, Ui } from '@shared/types';
+import { IdeaDto, Ui } from '@shared/types';
 
 export interface Teacher {
   description: string;
@@ -39,7 +39,7 @@ export interface Context {
   idea?: Idea | IdeaDto;
   draftIdea?: DraftIdea;
   project?: Project;
-  draftProject?: DraftProject;
+  //draftProject?: DraftProject;
   place?: Place;
   meet?: Meet;
   draftMeet?: DraftMeet;

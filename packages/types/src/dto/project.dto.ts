@@ -1,37 +1,17 @@
+import { IdeaDto } from './idea.dto';
+import { MeetDto } from './meet.dto';
+import { UserDto } from './user.dto';
+import { PlaceDto } from './place.dto';
+import { PassportDto } from './passport.dto';
+
 export interface ProjectDto {
   id: number;
 }
 
 export interface ProjectFullDto extends ProjectDto {
-  idea: {
-    id: number;
-    projectId: number;
-    title: string;
-    description: string | null;
-    image: string | null;
-  };
-  passport: {
-    title: string;
-    image: string | null;
-  } | null;
-  place: {
-    title: string;
-    address: string | null;
-    description: string | null;
-  } | null;
-  meets?: {
-    id: number;
-    projectId: number;
-    startedAt: string;
-    duration: number | null;
-    price: number | null;
-    project: null;
-    users: null;
-  }[];
-  users?: {
-    id: number;
-    title: string;
-    age: number | null;
-    image: string | null;
-  }[];
+  idea: IdeaDto;
+  passport: PassportDto | null;
+  place: PlaceDto | null;
+  meets?: MeetDto[];
+  users?: UserDto[];
 }
