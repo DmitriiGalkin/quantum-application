@@ -80,7 +80,6 @@ export interface PlaceDto {
   address: string | null;
   latitude: number;
   longitude: number;
-  image: string | null;
   priceFrom: number | null;
 }
 

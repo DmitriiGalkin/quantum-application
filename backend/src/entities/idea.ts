@@ -2,6 +2,8 @@ import { Passport } from './passport.js';
 import { User } from './user.js';
 import { Project } from './project.js';
 import { Place } from './place.js';
+import { Meet } from './meet.js';
+import { MeetFullDto } from '@shared/types';
 
 export interface Idea {
   id: number;
@@ -41,11 +43,13 @@ interface ProjectFullEntity extends Project {
   passport: Passport | null;
   place: Place | null;
   users: User[];
+  idea: Idea;
+  meets: MeetFullDto[];
 }
 
 export interface IdeaFullEntity extends Idea {
   isLiked?: boolean;
-  user: User | null;
+  user: User;
   projects?: ProjectFullEntity[];
 }
 

@@ -13,11 +13,8 @@ export class ProjectFlowService {
     if (!idea) throw new Error('Странно: не нашлась идея');
 
     return await ProjectRepository.create({
-      ...context.draftProject!,
       passportId: context.passport!.id,
       ideaId: idea.id,
-      title: idea.title,
-      description: idea.description,
     });
   }
 }

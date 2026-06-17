@@ -122,7 +122,6 @@ function consoleGetAnswer(chat: Chat, context: Context) {
       teacher: !context?.teacher ? '❌' : '✅',
       draftTeacher: !context?.draftTeacher ? '❌' : '✅',
       project: !context?.project ? '❌' : '✅',
-      draftProject: !context?.draftProject ? '❌' : '✅',
       place: !context?.place ? '❌' : '✅',
       draftMeet: !context?.draftMeet ? '❌' : '✅',
     },

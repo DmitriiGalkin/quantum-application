@@ -120,12 +120,12 @@ export class ProjectService {
     if (!project) throw new Error('NOT_FOUND');
 
     return {
-      title: `${project.title} | Quantum`,
-      description: project.description,
+      title: `Quantum`,
+      description: `Quantum`,
       ogSiteName: 'Quantum | Проекты',
       ogType: 'article',
-      ogTitle: project.title,
-      ogDescription: project.description,
+      ogTitle: `Quantum`,
+      ogDescription: `Quantum`,
     };
   }
 }
