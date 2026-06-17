@@ -100,8 +100,6 @@ export interface PlaceDto {
 
 export interface ProjectDto {
   id: number;
-  title: string;
-  description: string | null;
 
   idea: {
     id: number;

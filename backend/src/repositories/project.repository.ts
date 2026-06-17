@@ -2,34 +2,34 @@ import { ResultSetHeader } from 'mysql2/promise';
 import { ProjectRow } from '../entities/project.db.js';
 import { mapProjectRow } from '../mappers/project.mapper.js';
 import { FindAllProjectInput, Project } from '../entities/project.js';
-import { CreateProjectInput, UpdateProjectInput } from '../entities/project.types.js';
+import { CreateProjectInput } from '../entities/project.types.js';
 import { db } from '../dbNext.js';
 
 class ProjectRepository {
   // ✅ CREATE
   static async create(data: CreateProjectInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
-      `INSERT INTO project (title, description, ideaId, passportId)
-       VALUES (?, ?, ?, ?)`,
-      [data.title, data.description ?? null, data.ideaId, data.passportId],
+      `INSERT INTO project (ideaId, passportId)
+       VALUES (?, ?)`,
+      [ data.ideaId, data.passportId],
     );
 
     return result.insertId;
   }
 
   // ✅ UPDATE
-  static async update(id: number, data: UpdateProjectInput): Promise<boolean> {
-    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
-
-    if (entries.length === 0) return false;
-
-    const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-    const values = entries.map(([, v]) => v);
-
-    const result = await db.execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
-
-    return result.affectedRows > 0;
-  }
+  // static async update(id: number, data: UpdateProjectInput): Promise<boolean> {
+  //   const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+  //
+  //   if (entries.length === 0) return false;
+  //
+  //   const fields = entries.map(([k]) => `${k} = ?`).join(', ');
+  //   const values = entries.map(([, v]) => v);
+  //
+  //   const result = await db.execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
+  //
+  //   return result.affectedRows > 0;
+  // }
 
   // ✅ DELETE (soft)
   static async delete(id: number): Promise<void> {

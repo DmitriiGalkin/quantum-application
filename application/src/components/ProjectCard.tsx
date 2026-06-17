@@ -24,78 +24,64 @@ function ProjectCard({ project, withoutPassport }: ProjectCardProps) {
         borderColor: 'divider',
         overflow: 'hidden',
         cursor: project.id ? 'pointer' : 'default', // Убираем курсор, если ссылки нет
-        backgroundColor: 'transparent',
-        border: '2px solid rgba(255,255,255,0.5)',
+
         //backdropFilter: 'blur(10px)', // опционально (glass effect)
       }}
       onClick={() => project.id && (window.location.href = `/project/${project.id}`)}
     >
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom noWrap>
-          {project.title}
-        </Typography>
-        <Typography
-          color="text.secondary"
-          gutterBottom
-          sx={{
-            display: '-webkit-box',
-            overflow: 'hidden',
-            WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 3,
-          }}
-        >
-          {project.description}
-        </Typography>
-
-        {project.meets && (
-          <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', py: 1 }}>
-            {project.meets.map(meet => (
-              <Box
-                key={meet.id}
-                sx={{
-                  minWidth: 140,
-                  p: 2,
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  borderRadius: 2,
-                  textAlign: 'center',
-                }}
-              >
-                <Typography>{new Date(meet.startedAt).toLocaleDateString('ru-RU')}</Typography>
-
-                <Typography variant="caption" color="text.secondary">
-                  {new Date(meet.startedAt).toLocaleTimeString('ru-RU', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Typography>
-
-                <Typography variant="caption">{meet.price ? `${meet.price} ₽` : 'Free'}</Typography>
-              </Box>
-            ))}
-          </Box>
-        )}
-
         <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* Аватарки учеников */}
-          <UserGroup users={project.users || []} />
+          <Stack direction="column" sx={{ justifyContent: 'space-between' }}>
+            {/* Аватарки учеников */}
+            <UserGroup users={project.users || []} />
 
-          {/* Информация о кураторе */}
-          {!withoutPassport && (
-            <Box sx={{ textAlign: 'right' }}>
-              <Typography variant="body2" color="text.primary">
-                Куратор:
+            {/* Информация о кураторе */}
+            {!withoutPassport && (
+              <Box sx={{ textAlign: 'right' }}>
+                <Typography variant="body2" color="text.primary">
+                  Куратор:
+                </Typography>
+                <Typography variant="body1">{project?.passport?.title}</Typography>
+              </Box>
+            )}
+
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                {project?.place?.title}
               </Typography>
-              <Typography variant="body1">{project?.passport?.title}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {project?.place?.address}
+              </Typography>
+            </Box>
+          </Stack>
+          {project.meets && (
+            <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', py: 1 }}>
+              {project.meets.map(meet => (
+                <Box
+                  key={meet.id}
+                  sx={{
+                    minWidth: 140,
+                    p: 2,
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    borderRadius: 2,
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography>{new Date(meet.startedAt).toLocaleDateString('ru-RU')}</Typography>
+
+                  <Typography variant="caption" color="text.secondary">
+                    {new Date(meet.startedAt).toLocaleTimeString('ru-RU', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </Typography>
+
+                  <Typography variant="caption">{meet.price ? `${meet.price} ₽` : 'Free'}</Typography>
+                </Box>
+              ))}
             </Box>
           )}
         </Stack>
-
-        <Typography variant="body2" color="text.secondary">
-          {project?.place?.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {project?.place?.address}
-        </Typography>
       </CardContent>
     </Card>
   );

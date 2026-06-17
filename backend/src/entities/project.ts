@@ -6,8 +6,6 @@ import { Idea } from './idea.js';
 
 export interface Project {
   id: number;
-  title: string;
-  description: string | null;
   ideaId: number;
   placeId: number | null;
   passportId: number;

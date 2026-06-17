@@ -45,9 +45,15 @@ function PassportProjectsPage() {
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
 
         {!isProjectsLoading && !isProjectsError && Boolean(groupes.length) && (
-          <Box>
+          <Stack spacing={2}>
             {groupes.map(({ idea, projects }) => (
-              <Stack key={idea.id}>
+              <Stack
+                key={idea.id}
+                sx={{
+                  backgroundColor: 'transparent',
+                  border: '2px solid rgba(255,255,255,0.5)',
+                }}
+              >
                 <Typography>{idea.title}</Typography>
                 <Typography>{idea.description}</Typography>
                 <Box
@@ -65,7 +71,7 @@ function PassportProjectsPage() {
                 </Box>
               </Stack>
             ))}
-          </Box>
+          </Stack>
         )}
 
         {!isProjectsLoading && !isProjectsError && !projects.length && <CreateProjectBlock />}

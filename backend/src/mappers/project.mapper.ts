@@ -5,8 +5,6 @@ import { ProjectRow } from '../entities/project.db.js';
 export function mapProjectRow(row: ProjectRow): Project {
   return {
     id: row.id,
-    title: row.title,
-    description: row.description,
     ideaId: row.ideaId,
     placeId: row.placeId,
     passportId: row.passportId,
@@ -15,8 +13,6 @@ export function mapProjectRow(row: ProjectRow): Project {
 
 export const toProjectDto = (project: ProjectFullEntity): ProjectDto => ({
   id: project.id,
-  title: project.title,
-  description: project.description,
   idea: project.idea ? {
     id: project.idea.id,
     title: project.idea.title,
