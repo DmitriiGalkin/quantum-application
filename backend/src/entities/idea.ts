@@ -1,3 +1,8 @@
+import { Passport } from './passport.js';
+import { User } from './user.js';
+import { Project } from './project.js';
+import { Place } from './place.js';
+
 export interface Idea {
   id: number;
   userId: number;
@@ -30,5 +35,16 @@ export interface FindAllIdeaInput {
   passportId?: string | number;
   deleted?: 'true' | 'false';
   currentUserId?: number;
+}
+
+interface ProjectFullEntity extends Project {
+  passport: Passport | null;
+  place: Place | null;
+  users: User[];
+}
+
+export interface IdeaFullEntity extends IdeaWithLike {
+  user: User | null;
+  projects?: ProjectFullEntity[];
 }
 

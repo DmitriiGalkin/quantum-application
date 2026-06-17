@@ -8,8 +8,8 @@ const create: ControllerWithAuth<void, CreateMeetUser> = async (req, res) => {
     await MeetUserService.create(req.passport!, req.body);
 
     ok(res, { message: 'Участие создано' });
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось создать участие');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось создать участие');
   }
 };
 
@@ -18,8 +18,8 @@ const remove: ControllerWithAuth<{}> = async (req, res) => {
     await MeetUserService.remove(req.passport!, Number(req.params.id));
 
     ok(res, { message: 'Участник удален из встречи' });
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось удалить участие');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось удалить участие');
   }
 };
 

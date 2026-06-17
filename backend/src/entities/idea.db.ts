@@ -8,6 +8,7 @@ export interface IdeaRow extends RowDataPacket {
   description: string | null;
   image: string | null;
   deletedAt: Date | null;
+  userCount: number;
 }
 
 export interface IdeaWithLikeRow extends IdeaRow {

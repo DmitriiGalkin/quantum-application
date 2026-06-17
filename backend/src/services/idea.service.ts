@@ -5,32 +5,24 @@ import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import { generateIdeaImage, uploadImage } from './assistant/assistants/image.assistant.js';
+import { IdeaFullEntity } from '../entities/idea.js';
 
 export class IdeaService {
-  static async findAll(params: { userId: number }) {
+  static async findAll(params: { userId?: number }): Promise<IdeaFullEntity[]> {
     const ideas = await IdeaRepository.findAll(params);
 
-    const [users, ideaUsers] = await Promise.all([
-      Promise.all(ideas.map(i => UserRepository.findById(i.userId))),
-      Promise.all(ideas.map(i => IdeaUserRepository.findByIdeaId(i.id))),
-    ]);
+    const [users] = await Promise.all([Promise.all(ideas.map(i => UserRepository.findById(i.userId)))]);
 
     return ideas.map((idea, i) => ({
       ...idea,
       user: users[i],
-      ideaUsers: ideaUsers[i],
     }));
   }
-  static async findById(id: number) {
+  static async findById(id: number): Promise<IdeaFullEntity | null> {
     const idea = await IdeaRepository.findById(id);
     if (!idea) return null;
 
-    const [passport, user, projects] = await Promise.all([
-      PassportRepository.findById(idea.passportId || 0),
-      UserRepository.findById(idea.userId || 0),
-      ProjectRepository.findByIdeaId(idea.id),
-      IdeaUserRepository.findByIdeaId(idea.id),
-    ]);
+    const [user, projects] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectRepository.findByIdeaId(idea.id)]);
 
     const usersForProjects = await Promise.all(projects.map(p => UserRepository.findByProjectId(p.id)));
 
@@ -38,7 +30,6 @@ export class IdeaService {
 
     return {
       ...idea,
-      passport,
       user,
       projects: projects.map((project, idx) => ({
         ...project,

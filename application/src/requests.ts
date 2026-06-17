@@ -56,7 +56,7 @@ export async function fetchChat(chatId: number): Promise<ChatDto> {
 }
 
 export async function fetchCreateChat({ target, userId, projectId }: CreateChatBody): Promise<number> {
-  return api<any>('/chat', {
+  return api<number>('/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

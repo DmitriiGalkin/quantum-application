@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassport } from '../requests.ts';
 import type { PassportDto } from '@shared/types';
@@ -47,7 +47,11 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>(null!);
 
-export const AuthProvider = ({ children }: any) => {
+type Props = {
+  children: ReactNode;
+};
+
+export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);

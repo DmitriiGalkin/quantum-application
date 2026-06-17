@@ -18,5 +18,4 @@ export const toMessageDto = (row: Message): MessageDto => ({
   passportId: row.passportId,
   role: row.role,
   content: row.content || '',
-  data: row.data,
 });

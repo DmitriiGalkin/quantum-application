@@ -13,7 +13,6 @@ import idea from './controllers/idea.controller.js';
 import ideaUser from './controllers/idea-user.controller.js';
 import projectUser from './controllers/project-user.controller.js';
 import chat from './controllers/chat.controller.js';
-import message from './controllers/message.controller.js';
 import strategies from './strategies.js';
 import { ControllerWithAuth } from './controllers/helper.js';
 
@@ -93,7 +92,6 @@ privateRouter.delete('/project/:id', withAuth(project.delete));
 
 privateRouter.post('/chat', withAuth(chat.create));
 privateRouter.post('/chat/:id/messages', withAuth(chat.createMessages));
-privateRouter.post('/message', withAuth(message.create));
 
 privateRouter.post('/place', withAuth(place.create));
 

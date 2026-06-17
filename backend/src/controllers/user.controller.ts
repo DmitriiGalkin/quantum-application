@@ -8,8 +8,8 @@ const create: ControllerWithAuth<void> = async (req, res) => {
     const result = await UserService.create(req.passport!, req.body as unknown as CreateUserInput);
 
     ok(res, { message: 'Участник создан', ...result });
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось создать участника');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось создать участника');
   }
 };
 
@@ -18,8 +18,8 @@ const update: ControllerWithAuth<void> = async (req, res) => {
     await UserService.update(req.passport!, (req.body as any).userId as number, req.body as unknown as UpdateUserInput);
 
     ok(res, { message: 'Участник успешно обновлен' });
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось обновить участника');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось обновить участника');
   }
 };
 
@@ -28,8 +28,8 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
     await UserService.remove(req.passport!, Number(req.params.id));
 
     ok(res, { message: 'Участник и его участия в проектах удалены' });
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось удалить участника');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось удалить участника');
   }
 };
 
@@ -42,8 +42,8 @@ const findById: Controller<UserDto> = async (req, res) => {
     }
 
     ok(res, user);
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось получить данные участника');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось получить данные участника');
   }
 };
 

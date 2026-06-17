@@ -98,7 +98,7 @@ function ChatPage() {
 
           {chat?.context?.ui === 'ideas' && (
             <>
-              {chat.context.ideas?.map((idea: any) => (
+              {chat.context.ideas?.map((idea) => (
                 <IdeaCard idea={idea} actionType="draft" onSelect={() => chat.sendMessage(idea.title, { idea })} />
               ))}
             </>

@@ -6,8 +6,8 @@ const create: ControllerWithAuth<number> = async (req, res) => {
     const result = await ProjectUserService.create(req.passport!, req.body);
 
     ok(res, result);
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось создать участие в проекте');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось создать участие в проекте');
   }
 };
 
@@ -16,8 +16,8 @@ const remove: ControllerWithAuth<{}> = async (req, res) => {
     await ProjectUserService.remove(req.passport!, Number(req.params.id));
 
     ok(res, { message: 'Удаление участия в проекте прошло успешно' });
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось удалить участие в проекте');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось удалить участие в проекте');
   }
 };
 

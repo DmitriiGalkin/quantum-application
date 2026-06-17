@@ -18,7 +18,6 @@ export type MessageDto = {
   passportId: number | null;
   role: Role;
   content: string;
-  data: any[] | null;
 };
 
 export interface ChatDto {
@@ -39,7 +38,7 @@ export type Ui = 'auth' | 'map' | 'idea' | 'project' | 'meet' | 'ideas';
 export interface IdeaDto {
   id: number;
   title: string;
-  description: string;
+  description: string | null;
   image: string | null;
   userCount: number;
   isLiked: boolean;
@@ -101,21 +100,18 @@ export interface PlaceDto {
 
 export interface ProjectDto {
   id: number;
-  passportId: number;
-  placeId: number;
-  ideaId: number;
   title: string;
-  description: string;
+  description: string | null;
 
-  passport?: {
+  passport: {
     title: string;
-    image: string;
+    image?: string;
   } | null;
-  place?: {
-    address: string;
+  place: {
     title: string;
-    description: string;
-  };
+    address: string | null;
+    description: string | null;
+  } | null;
   meets?: MeetDto[];
   users?: {
     id: number;

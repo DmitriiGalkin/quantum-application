@@ -82,13 +82,13 @@ async function server() {
         .replace('<!--app-og-site-name-->', escapeHtml(meta.ogSiteName));
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(appHtml);
-    } catch (e: any) {
+    } catch (e) {
       if (!isProd && vite) {
         vite.ssrFixStacktrace(e);
       }
 
       console.error(e);
-      res.status(500).end(e?.message || 'Internal Server Error');
+      res.status(500).end(e instanceof Error ? e.message : 'Internal Server Error');
     }
   });
 

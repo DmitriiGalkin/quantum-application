@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { CreateMessageDto } from '@shared/types';
+import type { CreateMessageDto, Ui } from '@shared/types';
 
 const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
@@ -10,7 +10,7 @@ export function useChatEffects({
   token,
   authHandler,
 }: {
-  ui?: string;
+  ui?: Ui;
   messages: CreateMessageDto[];
   sendMessage: (text: string) => Promise<void>;
   token: string | null;
@@ -30,7 +30,7 @@ export function useChatEffects({
   }, []);
 
   useEffect(() => {
-    const hasAuth = messages.some((m: any) => m?.target === 'auth');
+    const hasAuth = ui === 'auth';
 
     if (!token && hasAuth && !authTriggered) {
       authHandler();

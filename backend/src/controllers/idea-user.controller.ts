@@ -7,8 +7,8 @@ const create: ControllerWithAuth<void, CreateIdeaUser> = async (req, res) => {
     await IdeaUserService.create(req.passport.id!, req.body);
 
     ok(res, { message: 'Лайк' });
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось создать участие');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось создать участие');
   }
 };
 
@@ -17,8 +17,8 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
     await IdeaUserService.remove(req.passport.id!, req.query as unknown as DeleteIdeaUser);
 
     ok(res, { message: 'Дизлайк' });
-  } catch (err: any) {
-    fail(res, err.message || 'Не удалось удалить участие');
+  } catch (err) {
+    fail(res, err instanceof Error ? err.message : 'Не удалось удалить участие');
   }
 };
 

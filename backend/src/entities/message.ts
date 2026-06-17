@@ -6,5 +6,4 @@ export interface Message {
   passportId: number | null;
   role: Role;
   content: string | null;
-  data?: any
 }
