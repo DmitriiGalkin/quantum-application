@@ -2,7 +2,6 @@ import assistant from '../../assistant.js';
 import { extractJsonFromString } from './assistants/helper.js';
 import { Message } from '../../entities/message.js';
 import { Answer } from './assistant.factory.js';
-import { Role } from '@shared/types';
 
 export interface GetBaseAssistantAnswer {
   prompt: string;

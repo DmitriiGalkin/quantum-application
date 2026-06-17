@@ -1,6 +1,6 @@
-import { ProjectDto } from '@shared/types';
-import { Project, ProjectFullEntity } from '../entities/project.js';
-import { ProjectRow } from '../entities/project.db.js';
+import {ProjectDto} from '@shared/types';
+import {Project, ProjectFullEntity} from '../entities/project.js';
+import {ProjectRow} from '../entities/project.db.js';
 
 export function mapProjectRow(row: ProjectRow): Project {
   return {

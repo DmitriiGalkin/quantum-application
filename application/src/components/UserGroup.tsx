@@ -1,8 +1,8 @@
-import Stack from "@mui/material/Stack";
+import Stack from '@mui/material/Stack';
 import type { UserDto } from '@shared/types';
-import AvatarGroup from "@mui/material/AvatarGroup";
-import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
+import AvatarGroup from '@mui/material/AvatarGroup';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 
 
 type UserGroupProps = {

@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import '../App.css';
@@ -32,20 +31,8 @@ function PassportProjectsPage() {
   const groupes = groupProjectsByIdea(projects);
 
   return (
-    <Page>
+    <Page isLoading={isProjectsLoading}>
       <Box component="section">
-        {isProjectsLoading && (
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              alignItems: 'center',
-            }}
-          >
-            <CircularProgress size={24} />
-            <Typography>Загрузка проектов...</Typography>
-          </Stack>
-        )}
 
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
 

@@ -3,7 +3,7 @@ import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import { Passport } from '../entities/passport.js';
-import { FindAllProjectInput, Project, ProjectFullEntity } from '../entities/project.js';
+import { FindAllProjectInput, ProjectFullEntity } from '../entities/project.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
 

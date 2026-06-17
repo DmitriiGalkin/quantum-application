@@ -14,7 +14,6 @@ import { MeetFlowService } from './flows/meet-flow.service.js';
 import IdeaRepository from '../../repositories/idea.repository.js';
 import MeetRepository from '../../repositories/meet.repository.js';
 import PlaceRepository from '../../repositories/place.repository.js';
-import { Target, Ui } from '@shared/types';
 
 const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 

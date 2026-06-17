@@ -4,11 +4,13 @@ import Header from '../components/Header.tsx';
 import Stack from '@mui/material/Stack';
 import Footer from './Footer.tsx';
 import Menu from '../components/Menu.tsx';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface Props {
   children: React.ReactNode;
+  isLoading?: boolean;
 }
-function Page({ children }: Props) {
+function Page({ children, isLoading }: Props) {
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Header />
@@ -23,14 +25,30 @@ function Page({ children }: Props) {
               display: { xs: 'none', md: 'block' },
               position: 'sticky',
               top: 100,
-              height: 'fit-content', // 🔥 важно для sticky
+              height: 'fit-content',
             }}
           >
             <Menu />
           </Box>
 
           {/* Content */}
-          <Box sx={{ flexGrow: 1, minWidth: 0, pt: 2 }}>{children}</Box>
+
+          <Box sx={{ flexGrow: 1, minWidth: 0, pt: 2 }}>
+            {isLoading ? (
+              <Box
+                sx={{
+                  height: '100vh',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <CircularProgress sx={{ color: 'white' }} />
+              </Box>
+            ) : (
+              <Box sx={{ flexGrow: 1, minWidth: 0, pt: 2 }}>{children}</Box>
+            )}
+          </Box>
         </Stack>
       </Box>
 

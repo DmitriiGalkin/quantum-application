@@ -20,7 +20,7 @@ import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import ProjectCard from '../components/ProjectCard.tsx';
 import Like from '../components/Like.tsx';
 import { useAuth } from '../providers/AuthProvider.tsx';
-import {CardActions, Menu, MenuItem } from '@mui/material';
+import { CardActions, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function IdeaPage() {

@@ -1,4 +1,3 @@
-type WithIdea<T, I> = T & { idea: I };
 
 export function groupProjectsByIdea<T extends { idea: { id: number } }>(projects: T[]): { idea: T['idea']; projects: T[] }[] {
   const map = new Map<number, { idea: T['idea']; projects: T[] }>();

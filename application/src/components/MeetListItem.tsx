@@ -1,5 +1,5 @@
-import type { MeetDto, ProjectDto } from '@shared/types';
-import { Avatar, AvatarGroup, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
+import type { MeetDto } from '@shared/types';
+import { Avatar, AvatarGroup, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 
 type MeetListItemProps = {
   meet: MeetDto;

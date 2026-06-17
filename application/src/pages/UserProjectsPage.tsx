@@ -1,20 +1,16 @@
 import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../requests.ts';
 import Page from '../components/Page.tsx';
-import { groupProjectsByIdea } from '../utils/helper.ts';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { CardActions, CardContent, Divider } from '@mui/material';
+import { CardContent, Divider } from '@mui/material';
 import List from '@mui/material/List';
-import ProjectListItem from '../components/ProjectListItem.tsx';
-import Button from '@mui/material/Button';
 import MeetListItem from '../components/MeetListItem.tsx';
 
 function UserProjectsPage() {
@@ -31,20 +27,8 @@ function UserProjectsPage() {
   });
 
   return (
-    <Page>
+    <Page isLoading={isProjectsLoading}>
       <Box component="section">
-        {isProjectsLoading && (
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              alignItems: 'center',
-            }}
-          >
-            <CircularProgress size={24} />
-            <Typography>Загрузка проектов...</Typography>
-          </Stack>
-        )}
 
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
 
@@ -59,7 +43,7 @@ function UserProjectsPage() {
                       width: 300,
                       height: 120,
                       objectFit: 'cover',
-                      flexShrink: 0, // 🔥 важно!
+                      flexShrink: 0,
                     }}
                     image={idea.image || `/bg.jpeg`}
                     alt={idea.title || 'Идея'}

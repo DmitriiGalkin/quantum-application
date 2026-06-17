@@ -3,7 +3,6 @@ import './App.css';
 import IdeasPage from './pages/IdeasPage.tsx';
 import HomePage from './pages/HomePage.tsx';
 import ChatPage from './pages/chat/ChatPage.tsx';
-import CreateProjectPage from './pages/CreateProjectPage.tsx';
 import IdeaPage from './pages/IdeaPage.tsx';
 import ProjectPage from './pages/ProjectPage.tsx';
 import EditProjectPage from './pages/EditProjectPage.tsx';
@@ -24,7 +23,6 @@ function App() {
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/chat/:id" element={<ChatPage />} />
       <Route path="/idea/:id" element={<IdeaPage />} />
-      <Route path="/project/create" element={<CreateProjectPage />} />
       <Route path="/project/:id" element={<ProjectPage />} />
       <Route path="/project/:id/edit" element={<EditProjectPage />} />
       <Route path="/project/:id/edit/place" element={<PlaceSelectPage />} />

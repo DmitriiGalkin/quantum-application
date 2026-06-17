@@ -1,5 +1,6 @@
 import {
-  type ChatDto, type ChatMessagesResult,
+  type ChatDto,
+  type ChatMessagesResult,
   type CreateChatBody,
   type CreateChatMessages,
   type CreateIdeaUser,
@@ -11,7 +12,6 @@ import {
   type ProjectDto,
 } from '@shared/types';
 import { api } from './api.ts';
-import type { ProjectFormValues } from './ProjectForm';
 
 export async function fetchProject(id: string): Promise<ProjectDto> {
   return api<ProjectDto>(`/project/${id}`);
@@ -21,28 +21,14 @@ export async function fetchIdea(id: string): Promise<IdeaDto> {
   return api<IdeaDto>(`/idea/${id}`);
 }
 
-export async function createProject(values: ProjectFormValues): Promise<number> {
+export async function createProject(ideaId: number): Promise<number> {
   return api<number>('/project', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      title: values.title,
-      description: values.description,
-    }),
-  });
-}
-
-export async function updateProject(projectId: number, values: ProjectFormValues) {
-  return api(`/project/${projectId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title: values.title,
-      description: values.description,
+      ideaId,
     }),
   });
 }

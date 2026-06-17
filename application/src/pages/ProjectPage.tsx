@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -24,7 +24,6 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import ShareIcon from '@mui/icons-material/Share';
 import { useAuth } from '../providers/AuthProvider.tsx';
-import { useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
 
 function ProjectPage() {
@@ -64,8 +63,8 @@ function ProjectPage() {
 
     if (navigator.share) {
       await navigator.share({
-        title: project?.title,
-        text: project?.description ?? '',
+        title: project?.idea.title,
+        text: project?.idea.description ?? '',
         url,
       });
     } else {
@@ -74,8 +73,8 @@ function ProjectPage() {
   };
 
   useEffect(() => {
-    document.title = project?.title || 'Проект';
-  }, [project?.title]);
+    document.title = project?.idea.title || 'Проект';
+  }, [project?.idea.title]);
 
   useEffect(() => {
     if (!location.hash) return;
@@ -156,7 +155,7 @@ function ProjectPage() {
               <CardMedia
                 component="img"
                 image={`/bg.jpeg`}
-                alt={project.title || 'Проект'}
+                alt={project.idea.title || 'Проект'}
                 sx={{
                   objectFit: 'cover',
                   height: {
@@ -170,7 +169,7 @@ function ProjectPage() {
                 <Stack spacing={3}>
                   <Box>
                     <Typography component="h4" variant="h4">
-                      {project.title}
+                      {project.idea.title}
                     </Typography>
 
                     <Typography
@@ -184,7 +183,7 @@ function ProjectPage() {
                         lineHeight: 1.7,
                       }}
                     >
-                      {project.description}
+                      {project.idea.description}
                     </Typography>
                   </Box>
 

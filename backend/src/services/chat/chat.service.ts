@@ -1,10 +1,5 @@
 import { Passport } from '../../entities/passport.js';
-import type {
-  ChatMessagesResult,
-  CreateChatBody,
-  CreateMessageDto,
-  Role, Target,
-} from '@shared/types';
+import type { ChatMessagesResult, CreateChatBody, CreateMessageDto, Target } from '@shared/types';
 import ChatRepository from '../../repositories/chat.repository.js';
 import MessageRepository from '../../repositories/message.repository.js';
 import { toMessageDto } from '../../mappers/message.mapper.js';

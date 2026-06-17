@@ -3,7 +3,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import UserGroup from './UserGroup.tsx';
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box';
 import type { ProjectDto } from '@shared/types';
 
 type ProjectCardProps = {

@@ -56,8 +56,8 @@ export interface MeetDto {
   id: number;
   projectId: number;
   startedAt: string;
-  duration?: number;
-  price?: number;
+  duration: number | null;
+  price: number | null;
 
   project: {
     id: number;
@@ -103,6 +103,7 @@ export interface ProjectDto {
 
   idea: {
     id: number;
+    projectId: number;
     title: string;
     description: string | null;
     image: string | null;
@@ -118,9 +119,12 @@ export interface ProjectDto {
   } | null;
   meets?: {
     id: number;
+    projectId: number;
     startedAt: string;
     duration: number | null;
     price: number | null;
+    project: null;
+    users: null;
   }[];
   users?: {
     id: number;

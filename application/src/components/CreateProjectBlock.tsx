@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Stack, Paper } from '@mui/material';
+import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
 export default function CreateProjectBlock() {
   return (

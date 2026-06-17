@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import CommentIcon from '@mui/icons-material/Comment';
 
 import type { ProjectDto } from '@shared/types';
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText, Rating } from '@mui/material';
+import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
 type ProjectListItemProps = {
   project: ProjectDto;

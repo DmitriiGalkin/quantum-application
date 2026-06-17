@@ -1,8 +1,5 @@
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserIdeas } from '../requests.ts';
@@ -24,20 +21,8 @@ function IdeasPage() {
   });
 
   return (
-    <Page>
+    <Page isLoading={isIdeasLoading}>
       <Box component="section">
-        {isIdeasLoading && (
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              alignItems: 'center',
-            }}
-          >
-            <CircularProgress size={24} />
-            <Typography>Загрузка идей...</Typography>
-          </Stack>
-        )}
 
         {isIdeasError && <Alert severity="error">Не удалось загрузить идеи.</Alert>}
 
