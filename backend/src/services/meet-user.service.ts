@@ -2,10 +2,11 @@ import Meet from '../repositories/meet.repository.js';
 import MeetUserRepository from '../repositories/meet-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
-import { CreateMeetUser } from '@shared/types';
+import { CreateMeetUser, DeleteIdeaUser, DeleteMeetUser } from '@shared/types';
+import IdeaUserRepository from '../repositories/idea-user.repository.js';
 
 export class MeetUserService {
-  static async create(passport: Passport, body: CreateMeetUser) {
+  static async create(passportId: number, body: CreateMeetUser) {
     const { meetId, userId } = body;
 
     if (!meetId || !userId) {
@@ -22,7 +23,7 @@ export class MeetUserService {
       throw new Error('Участие уже существует');
     }
 
-    const allowedUsers = await UserRepository.findByPassportId(passport.id || 0);
+    const allowedUsers = await UserRepository.findByPassportId(passportId);
 
     if (!allowedUsers.map(u => u.id).includes(userId)) {
       throw new Error('Нельзя добавлять чужого участника');
@@ -31,20 +32,26 @@ export class MeetUserService {
     return MeetUserRepository.create({ meetId, userId });
   }
 
-  static async remove(passport: Passport, id: number) {
-    const meetUser = await MeetUserRepository.findById(id);
+  static async remove(passportId: number, body: DeleteMeetUser) {
+    const { meetId, userId } = body;
 
-    if (!meetUser) {
-      throw new Error('Участие не существует');
+    if (!meetId || !userId) {
+      throw new Error('meetId и userId обязательны');
     }
 
-    const allowedUsers = await UserRepository.findByPassportId(passport.id || 0);
+    const exists = await MeetUserRepository.findByUserAndMeetIds(userId, meetId);
+    if (!exists) {
+      throw new Error('Участие на встрече не существует2');
+    }
 
-    if (!allowedUsers.map(u => u.id).includes(meetUser.userId)) {
+    const allowedUsers = await UserRepository.findByPassportId(passportId);
+    const allowedUserIds = allowedUsers.map(u => u.id);
+
+    if (!allowedUserIds.includes(Number(userId))) {
       throw new Error('Нет прав на удаление');
     }
 
-    await MeetUserRepository.delete(id);
+    await MeetUserRepository.delete({ meetId, userId });
   }
 
   static async findAll(userId: number) {

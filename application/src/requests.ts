@@ -5,11 +5,12 @@ import {
   type CreateChatMessages,
   type CreateIdeaUser,
   type CreateMeetUser,
-  type DeleteIdeaUser,
+  type DeleteIdeaUser, type DeleteMeetUser,
   type IdeaDto,
   type PassportDto,
   type PlaceDto,
   type ProjectDto,
+  type ProjectFullDto,
 } from '@shared/types';
 import { api } from './api.ts';
 
@@ -94,7 +95,6 @@ export async function generateImage(ideaId: number) {
   });
 }
 
-
 export async function fetchPassport(): Promise<PassportDto> {
   return api<PassportDto>('/passport');
 }
@@ -103,8 +103,8 @@ export async function fetchProjects(): Promise<ProjectDto[]> {
   return api<ProjectDto[]>('/projects');
 }
 
-export async function fetchUserProjects(userId: number): Promise<ProjectDto[]> {
-  return api<ProjectDto[]>(`/user/${userId}/projects`);
+export async function fetchUserProjects(userId: number) {
+  return api<ProjectFullDto[]>(`/user/${userId}/projects`);
 }
 
 export async function fetchPassportProjects(): Promise<ProjectDto[]> {
@@ -131,6 +131,22 @@ export async function fetchLike({ userId, ideaId }: CreateIdeaUser): Promise<voi
 
 export async function fetchUnlike({ userId, ideaId }: DeleteIdeaUser): Promise<void> {
   return api<void>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function fetchCreateMeetUser({ userId, meetId }: CreateMeetUser): Promise<void> {
+  return api<void>('/meetUser', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId, meetId }),
+  });
+}
+
+export async function fetchDeleteMeetUser({ userId, meetId }: DeleteMeetUser): Promise<void> {
+  return api<void>(`/meetUser?userId=${userId}&meetId=${meetId}`, {
     method: 'DELETE',
   });
 }

@@ -21,6 +21,7 @@ function UserProjectsPage() {
     data: projects = [],
     isLoading: isProjectsLoading,
     isError: isProjectsError,
+    refetch,
   } = useQuery({
     queryKey: ['projects', userId],
     queryFn: () => fetchUserProjects(userId!),
@@ -29,7 +30,6 @@ function UserProjectsPage() {
   return (
     <Page isLoading={isProjectsLoading}>
       <Box component="section">
-
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
 
         {!isProjectsLoading && !isProjectsError && Boolean(projects.length) && (
@@ -58,7 +58,7 @@ function UserProjectsPage() {
                     {meets?.map((meet, index) => (
                       <>
                         {index !== 0 && <Divider />}
-                        <MeetListItem meet={meet} />
+                        <MeetListItem meet={meet} refetch={refetch} />
                       </>
                     ))}
                   </List>

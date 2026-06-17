@@ -103,7 +103,7 @@ privateRouter.put('/meet/:id', withAuth(meet.update));
 privateRouter.delete('/meet/:id', withAuth(meet.delete));
 
 privateRouter.post('/meetUser', withAuth(meetUser.create));
-privateRouter.delete('/meetUser/:id', withAuth(meetUser.delete));
+privateRouter.delete('/meetUser', withAuth(meetUser.delete));
 
 privateRouter.post('/user', withAuth(user.create));
 privateRouter.get('/user/:id/ideas', withAuth(idea.findByUserId));

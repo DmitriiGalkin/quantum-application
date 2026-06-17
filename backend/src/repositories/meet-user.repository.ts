@@ -8,6 +8,7 @@ import { MeetUser, MeetUserWithMeet } from '../entities/meet-user.js';
 
 import { MeetUserFull } from '../entities/meet-user.view.js';
 import { db } from '../dbNext.js';
+import { DeleteMeetUser } from '@shared/types';
 
 class MeetUserRepository {
   // ✅ CREATE
@@ -22,8 +23,8 @@ class MeetUserRepository {
   }
 
   // ✅ DELETE
-  static async delete(id: number): Promise<boolean> {
-    const result = await db.execute<ResultSetHeader>(`DELETE FROM meetUser WHERE id = ?`, [id]);
+  static async delete({meetId, userId}: DeleteMeetUser): Promise<boolean> {
+    const result = await db.execute<ResultSetHeader>(`DELETE FROM meetUser WHERE meetId = ? AND userId = ?`, [meetId, userId]);
 
     return result.affectedRows > 0;
   }
@@ -52,7 +53,6 @@ class MeetUserRepository {
   // ✅ FIND BY USER + MEET
   static async findByUserAndMeetIds(userId: number, meetId: number): Promise<MeetUser | null> {
     const rows = await db.query<MeetUserRow>(`SELECT * FROM meetUser WHERE userId = ? AND meetId = ?`, [userId, meetId]);
-
     return rows[0] ? mapMeetUserRow(rows[0]) : null;
   }
 

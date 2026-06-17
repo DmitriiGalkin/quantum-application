@@ -95,13 +95,13 @@ export interface ProjectFullDto extends ProjectDto {
   idea: IdeaDto;
   passport: PassportDto | null;
   place: PlaceDto | null;
-  meets?: MeetDto[];
+  meets: MeetFullDto[];
   users?: UserDto[];
 }
 
 export interface UserDto {
   id: number;
-  title: string | null;
+  title: string;
   description?: string | null;
   age: number | null;
   image: string | null;
@@ -155,6 +155,11 @@ export interface CreateMeetUser {
   meetId: number;
   userId: number;
 }
+export interface DeleteMeetUser {
+  meetId: number;
+  userId: number;
+}
+
 
 export interface CreateMessage {
   chatId: number;

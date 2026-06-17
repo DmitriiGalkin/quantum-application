@@ -1,11 +1,11 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { MeetUserService } from '../services/meet-user.service.js';
 import { MeetUserFull } from '../entities/meet-user.view.js';
-import { CreateMeetUser } from '@shared/types';
+import { CreateMeetUser, DeleteIdeaUser, DeleteMeetUser } from '@shared/types';
 
 const create: ControllerWithAuth<void, CreateMeetUser> = async (req, res) => {
   try {
-    await MeetUserService.create(req.passport!, req.body);
+    await MeetUserService.create(req.passport.id!, req.body);
 
     ok(res, { message: 'Участие создано' });
   } catch (err) {
@@ -15,7 +15,7 @@ const create: ControllerWithAuth<void, CreateMeetUser> = async (req, res) => {
 
 const remove: ControllerWithAuth<{}> = async (req, res) => {
   try {
-    await MeetUserService.remove(req.passport!, Number(req.params.id));
+    await MeetUserService.remove(req.passport.id!, req.query as unknown as DeleteMeetUser);
 
     ok(res, { message: 'Участник удален из встречи' });
   } catch (err) {
