@@ -63,7 +63,7 @@ class MeetRepository {
   // ✅ FIND BY PLACE ID (JOIN)
   static async findByPlaceId(id: number): Promise<MeetWithProjectTitle[]> {
     const rows = await db.query<MeetWithProjectTitleRow>(
-      `SELECT meet.*, project.title
+      `SELECT meet.*
        FROM meet
        LEFT JOIN project ON project.id = meet.projectId
        WHERE meet.placeId = ?`,

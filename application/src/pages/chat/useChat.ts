@@ -3,14 +3,15 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { type ContextDto, type CreateMessageDto, type Target } from '@shared/types';
 import { fetchChat, fetchCreateChat, fetchCreateChatMessages } from '../../requests.ts';
-import { useWelcomeContent } from '../../components/Map/useWelcomeContent.tsx';
+import { useWelcomeContent } from './useWelcomeContent.tsx';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
-export function useChat(target: Target, projectId?: number) {
+export function useChat(target: Target, projectId?: number, ideaId?: number) {
   const { user } = useAuth();
-  const welcomeContent = useWelcomeContent(target);
+  const welcomeContent = useWelcomeContent(target, ideaId);
+  console.log(welcomeContent, 'welcomeContent');
   const params = useParams();
 
   const [chatId, setChatId] = useState<number | null>(() => {
@@ -21,12 +22,7 @@ export function useChat(target: Target, projectId?: number) {
 
   const [message, setMessage] = useState('');
 
-  const [messages, setMessages] = useState<CreateMessageDto[]>([
-    {
-      role: 'assistant',
-      content: welcomeContent,
-    },
-  ]);
+  const [messages, setMessages] = useState<CreateMessageDto[]>([]);
 
   const createChatMessages = useMutation({ mutationFn: fetchCreateChatMessages });
   const createChatMutation = useMutation({ mutationFn: fetchCreateChat });
@@ -65,7 +61,7 @@ export function useChat(target: Target, projectId?: number) {
     if (!chatId) {
       console.log('Создаю новый чат');
       createChatMutation.mutate(
-        { target, userId: user?.id, projectId },
+        { target, userId: user?.id, projectId, ideaId },
         {
           onSuccess: chatId => {
             setChatId(chatId);
@@ -93,6 +89,17 @@ export function useChat(target: Target, projectId?: number) {
       setChatId(Number(savedChatId));
     }
   }, []);
+
+  useEffect(() => {
+    if (welcomeContent) {
+      setMessages([
+        {
+          role: 'assistant',
+          content: welcomeContent,
+        },
+      ]);
+    }
+  }, [welcomeContent]);
 
   useEffect(() => {
     const hasTargetInUrl = searchParams.has('target');

@@ -4,11 +4,18 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import ProjectCard from '../components/ProjectCard.tsx';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../requests.ts';
 import Page from '../components/Page.tsx';
+import { groupProjectsByIdea } from '../utils/helper.ts';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import { CardActions, CardContent, Divider } from '@mui/material';
+import List from '@mui/material/List';
+import ProjectListItem from '../components/ProjectListItem.tsx';
+import Button from '@mui/material/Button';
+import MeetListItem from '../components/MeetListItem.tsx';
 
 function UserProjectsPage() {
   const { id } = useParams();
@@ -41,22 +48,40 @@ function UserProjectsPage() {
 
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
 
-        {!isProjectsLoading && !isProjectsError && (
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: {
-                xs: '1fr',
-                sm: 'repeat(2, minmax(0, 1fr))',
-                md: 'repeat(3, minmax(0, 1fr))',
-              },
-              gap: 3,
-            }}
-          >
-            {projects.map(project => (
-              <ProjectCard project={project} key={project.id} />
+        {!isProjectsLoading && !isProjectsError && Boolean(projects.length) && (
+          <Stack spacing={2}>
+            {projects.map(({ idea, meets }) => (
+              <Card sx={{ display: 'flex' }}>
+                <Box sx={{ width: 300 }}>
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      width: 300,
+                      height: 120,
+                      objectFit: 'cover',
+                      flexShrink: 0, // 🔥 важно!
+                    }}
+                    image={idea.image || `/bg.jpeg`}
+                    alt={idea.title || 'Идея'}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="h5">{idea.title}</Typography>
+                    <Typography>{idea.description}</Typography>
+                  </CardContent>
+                </Box>
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <List>
+                    {meets?.map((meet, index) => (
+                      <>
+                        {index !== 0 && <Divider />}
+                        <MeetListItem meet={meet} />
+                      </>
+                    ))}
+                  </List>
+                </CardContent>
+              </Card>
             ))}
-          </Box>
+          </Stack>
         )}
       </Box>
     </Page>

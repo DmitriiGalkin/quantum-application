@@ -97,9 +97,9 @@ export class DatabaseService {
 
   // 📊 логирование запросов
   private logQuery(sql: string, params: any, duration: number) {
-    console.log('🟢 SQL:', sql);
-    if (params) console.log('📦 params:', params);
-    console.log('⏱ duration:', duration, 'ms');
+    //console.log('🟢 SQL:', sql);
+    //if (params) console.log('📦 params:', params);
+    //console.log('⏱ duration:', duration, 'ms');
   }
 
   // ❌ логирование ошибок

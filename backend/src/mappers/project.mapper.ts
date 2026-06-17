@@ -41,5 +41,6 @@ export const toProjectDto = (project: ProjectFullEntity): ProjectDto => ({
     startedAt: u.startedAt,
     duration: u.duration,
     price: u.price,
+    users: u.users,
   })),
 });

@@ -26,8 +26,9 @@ function ChatPage() {
   const [searchParams] = useSearchParams();
   const target = (searchParams.get('target') ?? 'idea') as Target;
   const projectId = (searchParams.get('projectId') ?? '0') as string;
+  const ideaId = (searchParams.get('ideaId') ?? '0') as string;
 
-  const chat = useChat(target, Number(projectId));
+  const chat = useChat(target, Number(projectId), Number(ideaId));
 
   const effects = useChatEffects({
     ui: chat.context?.ui,

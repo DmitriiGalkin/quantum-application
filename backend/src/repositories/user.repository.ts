@@ -71,6 +71,7 @@ class UserRepository {
 
   // ✅ FIND BY MEET
   static async findByMeetId(meetId: number): Promise<UserWithMeet[]> {
+    console.log(meetId, 'meetId');
     const rows = await db.query<UserWithMeetRow>(
       `SELECT DISTINCT user.*, meetUser.id as meetUserId
        FROM user
@@ -79,6 +80,8 @@ class UserRepository {
          AND user.deletedAt IS NULL`,
       [meetId],
     );
+
+    console.log(rows, 'rows');
 
     return rows.map(mapUserWithMeetRow);
   }

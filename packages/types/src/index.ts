@@ -166,6 +166,7 @@ export interface CreateChatBody {
   target: Target;
   userId?: number;
   projectId?: number;
+  ideaId?: number;
 }
 export interface CreateIdeaUser {
   ideaId: number;

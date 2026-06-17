@@ -10,15 +10,29 @@ interface Props {
 }
 function Page({ children }: Props) {
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Header />
 
-      <Stack direction="row" spacing={2}>
-        <Box sx={{ width: '20%', position: 'sticky', top: '100px', display: { xs: 'none', md: 'block' } }}>
-          <Menu />
-        </Box>
-        <Stack sx={{ width: '80%' }}>{children}</Stack>
-      </Stack>
+      <Box sx={{ flex: 1, width: '100%', mx: 'auto', pr: 3 }}>
+        <Stack direction="row" spacing={3}>
+          {/* Sidebar */}
+          <Box
+            sx={{
+              width: { md: 280 },
+              flexShrink: 0,
+              display: { xs: 'none', md: 'block' },
+              position: 'sticky',
+              top: 100,
+              height: 'fit-content', // 🔥 важно для sticky
+            }}
+          >
+            <Menu />
+          </Box>
+
+          {/* Content */}
+          <Box sx={{ flexGrow: 1, minWidth: 0, pt: 2 }}>{children}</Box>
+        </Stack>
+      </Box>
 
       <Footer />
     </Box>

@@ -12,6 +12,7 @@ import { MessageService } from '../message.service.js';
 import ProjectRepository from '../../repositories/project.repository.js';
 import UserRepository from '../../repositories/user.repository.js';
 import { Context } from './chat.meta.js';
+import IdeaRepository from '../../repositories/idea.repository.js';
 
 export class ChatService {
   static async create(body: CreateChatBody, passport?: Passport) {
@@ -32,6 +33,13 @@ export class ChatService {
       if (!project) throw new Error('ChatService: идентификатор проекта передан, а самого проекта в базе нет');
 
       context.project = project;
+    }
+
+    if (body.ideaId) {
+      const idea = await IdeaRepository.findById(body.ideaId);
+      if (!idea) throw new Error('ChatService: идентификатор идеи передан, а самой идеи в базе нет');
+
+      context.idea = idea;
     }
 
     return await ChatRepository.create({

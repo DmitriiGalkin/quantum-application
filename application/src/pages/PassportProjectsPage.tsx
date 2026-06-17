@@ -4,13 +4,18 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import ProjectCard from '../components/ProjectCard.tsx';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassportProjects } from '../requests.ts';
 import CreateProjectBlock from '../components/CreateProjectBlock.tsx';
 import Page from '../components/Page.tsx';
 import { groupProjectsByIdea } from '../utils/helper.ts';
+import ProjectListItem from '../components/ProjectListItem.tsx';
+import List from '@mui/material/List';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import { CardActions, CardContent, Divider } from '@mui/material';
+import Button from '@mui/material/Button';
 
 function PassportProjectsPage() {
   const { id } = useParams();
@@ -47,29 +52,38 @@ function PassportProjectsPage() {
         {!isProjectsLoading && !isProjectsError && Boolean(groupes.length) && (
           <Stack spacing={2}>
             {groupes.map(({ idea, projects }) => (
-              <Stack
-                key={idea.id}
-                sx={{
-                  backgroundColor: 'transparent',
-                  border: '2px solid rgba(255,255,255,0.5)',
-                }}
-              >
-                <Typography>{idea.title}</Typography>
-                <Typography>{idea.description}</Typography>
-                <Box
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: {
-                      xs: '1fr',
-                    },
-                    gap: 3,
-                  }}
-                >
-                  {projects.map(project => (
-                    <ProjectCard project={project} key={project.id} withoutPassport />
-                  ))}
+              <Card>
+                <Box sx={{ display: 'flex' }}>
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      width: 300,
+                      height: 120,
+                      objectFit: 'cover',
+                      flexShrink: 0, // 🔥 важно!
+                    }}
+                    image={idea.image || `/bg.jpeg`}
+                    alt={idea.title || 'Идея'}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="h3">{idea.title}</Typography>
+                    <Typography>{idea.description}</Typography>
+                  </CardContent>
                 </Box>
-              </Stack>
+                <CardContent>
+                  <List>
+                    {projects.map((project, index) => (
+                      <>
+                        {index !== 0 && <Divider />}
+                        <ProjectListItem project={project} withoutPassport />
+                      </>
+                    ))}
+                  </List>
+                </CardContent>
+                <CardActions>
+                  <Button href={`/chat?target=project&ideaId=${idea.id}`}>Создать новый проект по идее</Button>
+                </CardActions>
+              </Card>
             ))}
           </Stack>
         )}
