@@ -1,6 +1,8 @@
 import { User } from './user.js';
 import { Passport } from './passport.js';
 import { Place } from './place.js';
+import { Meet } from './meet.js';
+import { Idea } from './idea.js';
 
 export interface Project {
   id: number;
@@ -22,4 +24,6 @@ export interface ProjectFullEntity extends Project {
   users: User[];
   passport: Passport;
   place: Place | null;
+  meets: Meet[];
+  idea: Idea | null;
 }

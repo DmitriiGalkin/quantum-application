@@ -103,6 +103,12 @@ export interface ProjectDto {
   title: string;
   description: string | null;
 
+  idea: {
+    id: number;
+    title: string;
+    description: string | null;
+    image: string | null;
+  };
   passport: {
     title: string;
     image: string | null;
@@ -112,7 +118,12 @@ export interface ProjectDto {
     address: string | null;
     description: string | null;
   } | null;
-  meets?: MeetDto[];
+  meets?: {
+    id: number;
+    startedAt: string;
+    duration: number | null;
+    price: number | null;
+  }[];
   users?: {
     id: number;
     title: string;

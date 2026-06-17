@@ -9,7 +9,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from './Drawer.tsx';
 import { Link, useNavigate } from 'react-router-dom';
 import KeyIcon from '@mui/icons-material/Key';
-import Container from '@mui/material/Container';
 import { useAuth } from '../providers/AuthProvider.tsx';
 
 const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
@@ -31,59 +30,55 @@ function Header() {
           backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
         }}
       >
-        <Container maxWidth="lg">
-          <Toolbar>
-            {passport && (
-              <IconButton
-                size="large"
-                edge="start"
-                aria-label="open drawer"
-                sx={{ mr: 2, color: 'white' }}
-                onClick={() => setIsMenuOpen(currentValue => !currentValue)}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
-
-            <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  color: 'white',
-                }}
-              >
-                Quantum
-              </Typography>
-            </Link>
-
-            {!user && (
-              <IconButton onClick={authHandler} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
-                <KeyIcon />
-              </IconButton>
-            )}
-
+        <Toolbar>
+          {passport && (
             <IconButton
-              color="primary"
-              aria-label="Идеи от АИ"
-              sx={{ color: 'white' }}
-              onClick={() => {
-                const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+              size="large"
+              edge="start"
+              aria-label="open drawer"
+              sx={{ mr: 2, color: 'white', display: { xs: 'block', md: 'none' } }}
+              onClick={() => setIsMenuOpen(currentValue => !currentValue)}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
 
-                if (activeChatId) {
-                  return navigate(`/chat/${activeChatId}`);
-                }
+          <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                color: 'white',
               }}
             >
-              <AutoAwesomeIcon />
+              Quantum
+            </Typography>
+          </Link>
+
+          {!user && (
+            <IconButton onClick={authHandler} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
+              <KeyIcon />
             </IconButton>
-          </Toolbar>
-        </Container>
+          )}
+
+          <IconButton
+            color="primary"
+            aria-label="Идеи от АИ"
+            sx={{ color: 'white' }}
+            onClick={() => {
+              const activeChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+
+              if (activeChatId) {
+                return navigate(`/chat/${activeChatId}`);
+              }
+            }}
+          >
+            <AutoAwesomeIcon />
+          </IconButton>
+        </Toolbar>
       </AppBar>
 
       <Drawer isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-
-
     </>
   );
 }

@@ -26,7 +26,7 @@ const findById: Controller<IdeaDto> = async (req, res) => {
 
     ok(res, toIdeaDto(idea));
   } catch (err) {
-    fail(res, 'Не удалось получить идею');
+    fail(res, err instanceof Error ? err.message : 'Не удалось получить идею');
   }
 };
 

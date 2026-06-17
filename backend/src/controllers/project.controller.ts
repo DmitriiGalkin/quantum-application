@@ -50,12 +50,13 @@ const findByUserId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
 };
 
 const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
-  const ideas = await ProjectService.findAll({
+  const projects = await ProjectService.findAll({
     ...req.query,
     passportId: req.passport.id,
   });
 
-  ok(res, ideas.map(toProjectDto));
+
+  ok(res, projects.map(toProjectDto));
 };
 
 const findById: Controller<ProjectDto> = async (req, res) => {

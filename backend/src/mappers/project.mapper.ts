@@ -17,6 +17,12 @@ export const toProjectDto = (project: ProjectFullEntity): ProjectDto => ({
   id: project.id,
   title: project.title,
   description: project.description,
+  idea: project.idea ? {
+    id: project.idea.id,
+    title: project.idea.title,
+    description: project.idea.description,
+    image: project.idea.image,
+  } : null,
   users: project.users.map((u: any) => ({
     id: u.id,
     title: u.title,
@@ -34,4 +40,10 @@ export const toProjectDto = (project: ProjectFullEntity): ProjectDto => ({
         description: project.place.description,
       }
     : null,
+  meets: project.meets.map(u => ({
+    id: u.id,
+    startedAt: u.startedAt,
+    duration: u.duration,
+    price: u.price,
+  })),
 });

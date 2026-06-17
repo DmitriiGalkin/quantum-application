@@ -8,9 +8,10 @@ import type { ProjectDto } from '@shared/types';
 
 type ProjectCardProps = {
   project: ProjectDto;
+  withoutPassport?: boolean;
 };
 
-function ProjectCard({ project }: ProjectCardProps) {
+function ProjectCard({ project, withoutPassport }: ProjectCardProps) {
   return (
     <Card
       component="article"
@@ -20,10 +21,12 @@ function ProjectCard({ project }: ProjectCardProps) {
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 4,
-        border: 1,
         borderColor: 'divider',
         overflow: 'hidden',
         cursor: project.id ? 'pointer' : 'default', // Убираем курсор, если ссылки нет
+        backgroundColor: 'transparent',
+        border: '2px solid rgba(255,255,255,0.5)',
+        //backdropFilter: 'blur(10px)', // опционально (glass effect)
       }}
       onClick={() => project.id && (window.location.href = `/project/${project.id}`)}
     >
@@ -44,21 +47,54 @@ function ProjectCard({ project }: ProjectCardProps) {
           {project.description}
         </Typography>
 
+        {project.meets && (
+          <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', py: 1 }}>
+            {project.meets.map(meet => (
+              <Box
+                key={meet.id}
+                sx={{
+                  minWidth: 140,
+                  p: 2,
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: 2,
+                  textAlign: 'center',
+                }}
+              >
+                <Typography>{new Date(meet.startedAt).toLocaleDateString('ru-RU')}</Typography>
+
+                <Typography variant="caption" color="text.secondary">
+                  {new Date(meet.startedAt).toLocaleTimeString('ru-RU', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Typography>
+
+                <Typography variant="caption">{meet.price ? `${meet.price} ₽` : 'Free'}</Typography>
+              </Box>
+            ))}
+          </Box>
+        )}
+
         <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Аватарки учеников */}
           <UserGroup users={project.users || []} />
 
           {/* Информация о кураторе */}
-          <Box sx={{ textAlign: 'right' }}>
-            <Typography variant="body2" color="text.primary">
-              Куратор:
-            </Typography>
-            <Typography variant="body1">{project?.passport?.title}</Typography>
-          </Box>
+          {!withoutPassport && (
+            <Box sx={{ textAlign: 'right' }}>
+              <Typography variant="body2" color="text.primary">
+                Куратор:
+              </Typography>
+              <Typography variant="body1">{project?.passport?.title}</Typography>
+            </Box>
+          )}
         </Stack>
 
         <Typography variant="body2" color="text.secondary">
           {project?.place?.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {project?.place?.address}
         </Typography>
       </CardContent>
     </Card>
@@ -66,3 +102,5 @@ function ProjectCard({ project }: ProjectCardProps) {
 }
 
 export default ProjectCard;
+
+//Если хочешь — могу сделать тебе как в Airbnb / календарь бронирований (очень крутой UI для встреч).

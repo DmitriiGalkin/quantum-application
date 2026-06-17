@@ -78,20 +78,12 @@ class IdeaRepository {
   }
 
   // ✅ FIND BY ID
-  static async findById(id: number): Promise<IdeaWithLike | null> {
-    const rows = await db.query<IdeaWithLikeRow>(
-      `SELECT *, EXISTS (
-          SELECT 1
-          FROM ideaUser iu
-          WHERE iu.ideaId = idea.id
-            AND iu.userId = ?
-        ) AS isLiked FROM idea WHERE id = ?`,
-      [id],
-    );
+  static async findById(id: number): Promise<Idea | null> {
+    const rows = await db.query<IdeaRow>(`SELECT * FROM idea WHERE id = ?`, [id]);
 
     if (!rows[0]) return null;
 
-    return mapIdeaWithLikeRow(rows[0]);
+    return mapIdeaRow(rows[0]);
   }
 }
 
