@@ -11,6 +11,7 @@ export function mapPassportRow(row: PassportRow): Passport {
     title: row.title,
     description: row.description,
     email: row.email,
+    image: row.image,
   };
 }
 

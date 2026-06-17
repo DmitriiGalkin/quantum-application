@@ -5,7 +5,7 @@ export interface PassportRow extends RowDataPacket {
   providerId: string;
   provider: string;
   accessToken: string;
-  title: string | null;
+  title: string;
   email: string;
   image: string | null;
   createdAt?: string | null;

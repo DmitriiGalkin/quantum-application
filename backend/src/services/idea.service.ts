@@ -1,11 +1,11 @@
 import UserRepository from '../repositories/user.repository.js';
 import type { PageMeta } from '@shared/types';
 import IdeaRepository from '../repositories/idea.repository.js';
-import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import { generateIdeaImage, uploadImage } from './assistant/assistants/image.assistant.js';
 import { IdeaFullEntity } from '../entities/idea.js';
+import PlaceRepository from '../repositories/place.repository.js';
 
 export class IdeaService {
   static async findAll(params: { userId?: number }): Promise<IdeaFullEntity[]> {
@@ -18,6 +18,7 @@ export class IdeaService {
       user: users[i],
     }));
   }
+
   static async findById(id: number): Promise<IdeaFullEntity | null> {
     const idea = await IdeaRepository.findById(id);
     if (!idea) return null;
@@ -28,12 +29,15 @@ export class IdeaService {
 
     const projectPassports = await Promise.all(projects.map(p => PassportRepository.findById(p.passportId)));
 
+    const projectPlaces = await Promise.all(projects.map(p => p.placeId ? PlaceRepository.findById(p.placeId) : null));
+
     return {
       ...idea,
       user,
       projects: projects.map((project, idx) => ({
         ...project,
         passport: projectPassports[idx],
+        place: projectPlaces[idx],
         users: usersForProjects[idx],
       })),
     };

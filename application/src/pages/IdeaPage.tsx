@@ -59,7 +59,7 @@ function IdeaPage() {
     if (navigator.share && idea) {
       await navigator.share({
         title: idea.title,
-        text: idea.description,
+        text: idea.description ?? '',
         url,
       });
     } else {

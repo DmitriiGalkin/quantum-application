@@ -6,7 +6,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import IconButton from '@mui/material/IconButton';
 
 type ChatBubbleProps = {
-  isLiked: boolean;
+  isLiked?: boolean;
   ideaId: number;
   userId: number;
 };

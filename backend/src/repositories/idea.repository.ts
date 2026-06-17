@@ -78,7 +78,7 @@ class IdeaRepository {
   }
 
   // ✅ FIND BY ID
-  static async findById(id: number): Promise<IdeaWithLikeRow | null> {
+  static async findById(id: number): Promise<IdeaWithLike | null> {
     const rows = await db.query<IdeaWithLikeRow>(
       `SELECT *, EXISTS (
           SELECT 1
@@ -91,7 +91,7 @@ class IdeaRepository {
 
     if (!rows[0]) return null;
 
-    return mapIdeaRow(rows[0]);
+    return mapIdeaWithLikeRow(rows[0]);
   }
 }
 

@@ -7,7 +7,6 @@ export interface IdeaRow extends RowDataPacket {
   title: string;
   description: string | null;
   image: string | null;
-  deletedAt: Date | null;
   userCount: number;
 }
 

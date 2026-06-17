@@ -2,7 +2,7 @@
 export type Target = 'idea' | 'project' | 'meet';
 
 export interface ContextDto {
-  ui?: string;
+  ui?: Ui;
   place?: PlaceDto;
   meet?: MeetDto;
   ideas?: IdeaDto[];
@@ -41,7 +41,7 @@ export interface IdeaDto {
   description: string | null;
   image: string | null;
   userCount: number;
-  isLiked: boolean;
+  isLiked?: boolean;
 
   user: {
     id: number;
@@ -105,12 +105,12 @@ export interface ProjectDto {
 
   passport: {
     title: string;
-    image?: string;
+    image: string | null;
   } | null;
   place: {
     title: string;
     address: string | null;
-    description: string | null;
+    //description: string | null;
   } | null;
   meets?: MeetDto[];
   users?: {

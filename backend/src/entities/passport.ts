@@ -5,5 +5,6 @@ export interface Passport {
   description: string;
   accessToken: string;
   title: string;
+  image: string | null;
   email: string;
 }

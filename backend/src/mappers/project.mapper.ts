@@ -1,5 +1,5 @@
 import { ProjectDto } from '@shared/types';
-import { Project } from '../entities/project.js';
+import { Project, ProjectFullEntity } from '../entities/project.js';
 import { ProjectRow } from '../entities/project.db.js';
 
 export function mapProjectRow(row: ProjectRow): Project {
@@ -13,7 +13,7 @@ export function mapProjectRow(row: ProjectRow): Project {
   };
 }
 
-export const toProjectDto = (project: any): ProjectDto => ({
+export const toProjectDto = (project: ProjectFullEntity): ProjectDto => ({
   id: project.id,
   title: project.title,
   description: project.description,
@@ -27,7 +27,8 @@ export const toProjectDto = (project: any): ProjectDto => ({
     title: project.passport.title,
     image: project.passport.image,
   },
-  passportId: project.passportId,
-  placeId: project.placeId,
-  ideaId: project.ideaId,
+  place: project.place ? {
+    title: project.place.title,
+    address: project.place.address,
+  } : null,
 });

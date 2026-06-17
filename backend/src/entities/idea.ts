@@ -43,7 +43,8 @@ interface ProjectFullEntity extends Project {
   users: User[];
 }
 
-export interface IdeaFullEntity extends IdeaWithLike {
+export interface IdeaFullEntity extends Idea {
+  isLiked?: boolean;
   user: User | null;
   projects?: ProjectFullEntity[];
 }
