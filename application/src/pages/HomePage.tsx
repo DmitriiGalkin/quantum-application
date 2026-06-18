@@ -18,7 +18,7 @@ import type { Sort, View } from '@shared/types';
 import { useFilters } from './useFilters.ts';
 
 function HomePage() {
-  const { filters, setView, setSort, setWhen, setLocation } = useFilters();
+  const { filters, setView, setSort, setWhen, setLocation, isHydrated } = useFilters();
 
   const {
     data: ideas = [],
@@ -55,6 +55,8 @@ function HomePage() {
       });
     });
   }, []);
+
+  if (!isHydrated) return null;
 
   return (
     <Page isLoading={isIdeasLoading} isError={isIdeasError}>
