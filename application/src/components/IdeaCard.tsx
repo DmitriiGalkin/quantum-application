@@ -10,7 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import type { IdeaDto, IdeaExtendedDto } from '@shared/types';
 import { useAuth } from '../providers/AuthProvider.tsx';
-import { Button } from '@mui/material';
+import { Button, CardActionArea } from '@mui/material';
 
 type IdeaCardProps = {
   idea: IdeaExtendedDto;
@@ -47,65 +47,65 @@ function IdeaCard({ idea, like, unlike, actionType = 'view', onSelect }: IdeaCar
         overflow: 'hidden',
         cursor: idea.id ? 'pointer' : 'default', // Убираем курсор, если ссылки нет
       }}
-      href={`/idea/${idea.id}`}
     >
-      <CardMedia component="img" height="90" image={idea.image || `/bg.jpeg`} alt={idea.title || 'Идея'} sx={{ objectFit: 'cover' }} />
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom noWrap>
-          {idea.title}
-        </Typography>
-        <Typography
-          color="text.secondary"
-          sx={{
-            display: '-webkit-box',
-            overflow: 'hidden',
-            WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 3,
-          }}
-          gutterBottom
-        >
-          {idea.description}
-        </Typography>
-      </CardContent>
-
-      {actionType === 'draft' ? (
-        <CardActions onClick={e => e.stopPropagation()}>
-          <Button size="small">Подробнее</Button>
-          <Button
-            size="small"
-            onMouseDown={e => e.stopPropagation()}
-            onClick={e => {
-              e.stopPropagation();
-              e.preventDefault();
-              onSelect?.(idea);
+      <CardActionArea href={`/idea/${idea.id}`}>
+        <CardMedia component="img" height="90" image={idea.image || `/bg.jpeg`} alt={idea.title || 'Идея'} sx={{ objectFit: 'cover' }} />
+        <CardContent sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom noWrap>
+            {idea.title}
+          </Typography>
+          <Typography
+            color="text.secondary"
+            sx={{
+              display: '-webkit-box',
+              overflow: 'hidden',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 3,
             }}
+            gutterBottom
           >
-            Выбрать
-          </Button>
-        </CardActions>
-      ) : (
-        <CardActions disableSpacing>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
-            <IconButton
+            {idea.description}
+          </Typography>
+        </CardContent>
+        {actionType === 'draft' ? (
+          <CardActions onClick={e => e.stopPropagation()}>
+            <Button size="small">Подробнее</Button>
+            <Button
+              size="small"
+              onMouseDown={e => e.stopPropagation()}
               onClick={e => {
                 e.stopPropagation();
                 e.preventDefault();
-                setLiked(!liked);
-                setLikesCount(prev => (liked ? prev - 1 : prev + 1));
-                handleLike();
+                onSelect?.(idea);
               }}
-              color={liked ? 'error' : 'default'}
-              sx={{ transition: 'all 0.2s ease-in-out' }}
             >
-              {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-            </IconButton>
-            <Typography variant="body1">{likesCount}</Typography>
-          </Box>
-          <Typography sx={{ marginLeft: 'auto', pr: 1 }} variant="body1" color="textDisabled">
-            {idea.user?.title}, {idea.user?.age} лет
-          </Typography>
-        </CardActions>
-      )}
+              Выбрать
+            </Button>
+          </CardActions>
+        ) : (
+          <CardActions disableSpacing>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+              <IconButton
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setLiked(!liked);
+                  setLikesCount(prev => (liked ? prev - 1 : prev + 1));
+                  handleLike();
+                }}
+                color={liked ? 'error' : 'default'}
+                sx={{ transition: 'all 0.2s ease-in-out' }}
+              >
+                {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              </IconButton>
+              <Typography variant="body1">{likesCount}</Typography>
+            </Box>
+            <Typography sx={{ marginLeft: 'auto', pr: 1 }} variant="body1" color="textDisabled">
+              {idea.user?.title}, {idea.user?.age} лет
+            </Typography>
+          </CardActions>
+        )}
+      </CardActionArea>
     </Card>
   );
 }

@@ -4,6 +4,12 @@ export type Ui = 'auth' | 'map' | 'idea' | 'project' | 'meet' | 'ideas';
 
 export type Role = 'user' | 'assistant' | 'system';
 
+export type Sort = 'nearby' | 'popular' | 'new';
+
+export type When = 'today' | 'tomorrow' | undefined;
+
+export type View = 'module' | 'map';
+
 export interface ChatDto {
   id: number;
   passportId: number;
@@ -173,4 +179,12 @@ export interface CreateMessage {
   chatId: number;
   message: string;
   target?: Target;
+}
+
+export interface GetIdeasQuery {
+  userId?: number;
+  sort?: Sort;
+  when?: 'today' | 'tomorrow';
+  latitude?: number;
+  longitude?: number;
 }

@@ -1,10 +1,10 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { toIdeaExtendedDto, toIdeaFullDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
-import { IdeaDto, IdeaExtendedDto, PageMeta } from '@shared/types';
+import { GetIdeasQuery, IdeaDto, IdeaExtendedDto, PageMeta } from '@shared/types';
 
 const findAllPublic: Controller<IdeaExtendedDto[]> = async (req, res) => {
-  const ideas = await IdeaService.findAll(req.query);
+  const ideas = await IdeaService.findAll(req.query as GetIdeasQuery);
   ok(res, ideas.map(toIdeaExtendedDto));
 };
 

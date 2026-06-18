@@ -55,6 +55,30 @@ class IdeaRepository {
       values.push(params?.currentUserId!);
     }
 
+    if (params?.sort === 'nearby' && params.latitude && params.longitude) {
+      select.push(`
+    (
+      SELECT MIN(
+        6371 * ACOS(
+          COS(RADIANS(?)) *
+          COS(RADIANS(pl.latitude)) *
+          COS(RADIANS(pl.longitude) - RADIANS(?)) +
+          SIN(RADIANS(?)) *
+          SIN(RADIANS(pl.latitude))
+        )
+      )
+      FROM project p2
+      JOIN meet m2 ON m2.projectId = p2.id
+      JOIN place pl ON pl.id = m2.placeId
+      WHERE p2.ideaId = idea.id
+        AND pl.latitude IS NOT NULL
+        AND pl.longitude IS NOT NULL
+    ) AS distance
+  `);
+
+      values.push(params.latitude, params.longitude, params.latitude);
+    }
+
     let sql = `
       SELECT ${select.join(', ')}
       FROM idea
@@ -66,12 +90,57 @@ class IdeaRepository {
       values.push(params?.userId);
     }
 
+    // =========================
+    if (params?.when) {
+      switch (params.when) {
+        case 'today':
+          sql += `
+          AND EXISTS (
+            SELECT 1
+            FROM project p
+            JOIN meet m ON m.projectId = p.id
+            WHERE p.ideaId = idea.id
+              AND m.startedAt >= CURDATE()
+              AND m.startedAt < CURDATE() + INTERVAL 1 DAY
+          )
+        `;
+          break;
+
+        case 'tomorrow':
+          sql += `
+          AND EXISTS (
+            SELECT 1
+            FROM project p
+            JOIN meet m ON m.projectId = p.id
+            WHERE p.ideaId = idea.id
+              AND m.startedAt >= CURDATE() + INTERVAL 1 DAY
+              AND m.startedAt < CURDATE() + INTERVAL 2 DAY
+          )
+        `;
+          break;
+      }
+    }
+
     sql += params?.deleted === 'true' ? ' AND idea.deletedAt IS NOT NULL' : ' AND idea.deletedAt IS NULL';
+
+    switch (params?.sort) {
+      case 'nearby':
+        sql += ' ORDER BY distance IS NULL, distance ASC';
+        break;
+      case 'new':
+        sql += ' ORDER BY idea.createdAt DESC';
+        break;
+      case 'popular':
+        sql += ' ORDER BY idea.userCount DESC';
+        break;
+    }
 
     if (withLike) {
       const rows = await db.query<IdeaWithLikeRow>(sql, values);
       return rows.map(mapIdeaWithLikeRow);
     }
+
+    console.log(sql, 'sql');
 
     const rows = await db.query<IdeaRow>(sql, values);
     return rows.map(mapIdeaRow);

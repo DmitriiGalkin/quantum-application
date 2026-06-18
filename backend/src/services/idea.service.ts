@@ -1,5 +1,5 @@
 import UserRepository from '../repositories/user.repository.js';
-import type { PageMeta } from '@shared/types';
+import { GetIdeasQuery, PageMeta } from '@shared/types';
 import IdeaRepository from '../repositories/idea.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
@@ -10,7 +10,13 @@ import MeetRepository from "../repositories/meet.repository.js";
 import {User} from "../entities/user.js";
 
 export class IdeaService {
-  static async findAll(params: { userId?: number }): Promise<IdeaExtendedEntity[]> {
+  static async findAll(params: GetIdeasQuery): Promise<IdeaExtendedEntity[]> {
+    if (params.sort === 'nearby') {
+      if (!params.latitude || !params.longitude) {
+        throw new Error('Missing coordinates for nearby sort');
+      }
+    }
+
     const ideas = await IdeaRepository.findAll(params);
 
     const users = await Promise.all(ideas.map(i => UserRepository.findById(i.userId) as Promise<User>));

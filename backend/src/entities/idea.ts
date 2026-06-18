@@ -3,7 +3,7 @@ import { User } from './user.js';
 import { Project } from './project.js';
 import { Place } from './place.js';
 import { Meet } from './meet.js';
-import { MeetFullDto } from '@shared/types';
+import { MeetFullDto, Sort } from '@shared/types';
 
 export interface Idea {
   id: number;
@@ -13,6 +13,7 @@ export interface Idea {
   description: string | null;
   image: string | null;
   userCount: number;
+  today: boolean;
 }
 
 export interface IdeaWithLike extends Idea {
@@ -37,6 +38,10 @@ export interface FindAllIdeaInput {
   passportId?: string | number;
   deleted?: 'true' | 'false';
   currentUserId?: number;
+  when?: 'today' | 'tomorrow';
+  sort?: Sort;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface IdeaExtendedEntity extends Idea {

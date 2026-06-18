@@ -6,7 +6,7 @@ import {
   type CreateIdeaUser,
   type CreateMeetUser,
   type DeleteIdeaUser,
-  type DeleteMeetUser,
+  type DeleteMeetUser, type GetIdeasQuery,
   type IdeaExtendedDto,
   type IdeaFullDto,
   type PassportExtendedDto,
@@ -113,8 +113,8 @@ export async function fetchPassportProjects() {
   return api<ProjectFullDto[]>(`/passport/projects`);
 }
 
-export async function fetchIdeas() {
-  return api<IdeaExtendedDto[]>('/ideas');
+export async function fetchIdeas({ when, sort, latitude, longitude }: GetIdeasQuery) {
+  return api<IdeaExtendedDto[]>(`/ideas?sort=${sort}&latitude=${latitude}&longitude=${longitude}&when=${when}`);
 }
 
 export async function fetchUserIdeas(userId: number) {

@@ -12,21 +12,21 @@ import MapIcon from '@mui/icons-material/Map';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import React from 'react';
+import { useEffect } from 'react';
 import { MenuItem, TextField } from '@mui/material';
+import type { Sort, View } from '@shared/types';
+import { useFilters } from './useFilters.ts';
 
 function HomePage() {
-  const [view, setView] = React.useState('module');
-  const [sort, setSort] = React.useState('nearby');
-  const [when, setWhen] = React.useState('noMatter');
+  const { filters, setView, setSort, setWhen, setLocation } = useFilters();
 
   const {
     data: ideas = [],
     isLoading: isIdeasLoading,
     isError: isIdeasError,
   } = useQuery({
-    queryKey: ['ideasHome'],
-    queryFn: () => fetchIdeas(),
+    queryKey: ['ideasHome', filters],
+    queryFn: () => fetchIdeas(filters),
   });
 
   const mutationLike = useMutation({
@@ -47,11 +47,20 @@ function HomePage() {
     { value: 'tomorrow', label: 'Завтра' },
   ];
 
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async position => {
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, []);
+
   return (
     <Page isLoading={isIdeasLoading} isError={isIdeasError}>
       <Stack spacing={2}>
         <Stack direction="row" sx={{ justifyContent: 'space-between' }} spacing={1}>
-          <TextField select size="small" value={sort} onChange={e => setSort(e.target.value)}>
+          <TextField select size="small" value={filters.sort} onChange={e => setSort(e.target.value as Sort)}>
             {sortOptions.map(opt => (
               <MenuItem key={opt.value} value={opt.value}>
                 {opt.label}
@@ -60,7 +69,7 @@ function HomePage() {
           </TextField>
 
           <Stack direction="row" spacing={1}>
-            <ToggleButtonGroup value={when} exclusive onChange={(_, val) => setWhen(val)} size="small">
+            <ToggleButtonGroup value={filters.when} exclusive onChange={(_, val) => setWhen(val)} size="small">
               {whenOptions.map(opt => (
                 <ToggleButton key={opt.value} value={opt.value}>
                   {opt.label}
@@ -68,10 +77,10 @@ function HomePage() {
               ))}
             </ToggleButtonGroup>
             <ToggleButtonGroup
-              value={view}
+              value={filters.view}
               exclusive
               onChange={(_, nextView: string) => {
-                setView(nextView);
+                setView(nextView as View);
               }}
               size="small"
             >
@@ -85,7 +94,7 @@ function HomePage() {
           </Stack>
         </Stack>
 
-        {view === 'map' && (
+        {filters.view === 'map' && (
           <Paper
             component="section"
             elevation={1}
@@ -102,7 +111,7 @@ function HomePage() {
           </Paper>
         )}
 
-        {view === 'module' && (
+        {filters.view === 'module' && (
           <Box
             sx={{
               display: 'grid',
