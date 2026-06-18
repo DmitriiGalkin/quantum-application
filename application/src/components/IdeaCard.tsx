@@ -8,12 +8,12 @@ import CardActions from '@mui/material/CardActions';
 import { useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import type { IdeaDto, IdeaFullDto } from '@shared/types';
+import type { IdeaDto, IdeaExtendedDto, IdeaFullDto } from '@shared/types';
 import { useAuth } from '../providers/AuthProvider.tsx';
 import { Button } from '@mui/material';
 
 type IdeaCardProps = {
-  idea: IdeaFullDto;
+  idea: IdeaExtendedDto;
   like?: ({ ideaId, userId }: { ideaId: number; userId: number }) => void;
   unlike?: ({ ideaId, userId }: { ideaId: number; userId: number }) => void;
   actionType?: 'view' | 'draft';
