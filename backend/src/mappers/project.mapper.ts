@@ -52,4 +52,5 @@ export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => 
     users: u.users,
     project: u.project,
   })),
+  feeds: project.feeds,
 });

@@ -4,7 +4,7 @@ import IdeaRepository from '../repositories/idea.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import { generateIdeaImage, uploadImage } from './assistant/assistants/image.assistant.js';
-import {Idea, IdeaExtendedEntity, IdeaFullEntity} from '../entities/idea.js';
+import { FindAllIdeaInput, Idea, IdeaExtendedEntity, IdeaFullEntity } from '../entities/idea.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from "../repositories/meet.repository.js";
 import {User} from "../entities/user.js";
@@ -27,11 +27,11 @@ export class IdeaService {
     }));
   }
 
-  static async findById(id: number): Promise<IdeaFullEntity | null> {
+  static async findById(id: number, params: GetIdeasQuery): Promise<IdeaFullEntity | null> {
     const idea = await IdeaRepository.findById(id);
     if (!idea) return null;
 
-    const [user, projects] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectRepository.findByIdeaId(idea.id)]);
+    const [user, projects] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectRepository.findByIdeaId(idea.id, params)]);
 
     if (!user) throw new Error('IdeaService findById: не найден пользователь идеи');
 

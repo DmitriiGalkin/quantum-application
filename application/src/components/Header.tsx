@@ -5,7 +5,7 @@ import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Drawer from './Drawer.tsx';
 import { Link, useNavigate } from 'react-router-dom';
 import KeyIcon from '@mui/icons-material/Key';
@@ -31,18 +31,6 @@ function Header() {
         }}
       >
         <Toolbar>
-          {passport && (
-            <IconButton
-              size="large"
-              edge="start"
-              aria-label="open drawer"
-              sx={{ mr: 2, color: 'white', display: { xs: 'block', md: 'none' } }}
-              onClick={() => setIsMenuOpen(currentValue => !currentValue)}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-
           <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
             <Typography
               variant="h6"
@@ -55,7 +43,7 @@ function Header() {
             </Typography>
           </Link>
 
-          {!user && (
+          {!passport && (
             <IconButton onClick={authHandler} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
               <KeyIcon />
             </IconButton>
@@ -75,6 +63,11 @@ function Header() {
           >
             <AutoAwesomeIcon />
           </IconButton>
+          {passport && (
+            <IconButton aria-label="open drawer" sx={{ color: 'white' }} onClick={() => setIsMenuOpen(currentValue => !currentValue)}>
+              <AccountCircleIcon />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
 

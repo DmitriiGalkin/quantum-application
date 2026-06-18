@@ -6,5 +6,6 @@ export function mapProjectUserRow(row: ProjectUserRow): ProjectUser {
     id: row.id,
     projectId: row.projectId,
     userId: row.userId,
+    createdAt: row.createdAt,
   };
 }

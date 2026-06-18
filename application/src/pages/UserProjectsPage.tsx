@@ -12,6 +12,7 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardContent, Divider } from '@mui/material';
 import List from '@mui/material/List';
 import MeetListItem from '../components/MeetListItem.tsx';
+import ProjectCard from '../components/ProjectCard.tsx';
 
 function UserProjectsPage() {
   const { id } = useParams();
@@ -33,39 +34,51 @@ function UserProjectsPage() {
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
 
         {!isProjectsLoading && !isProjectsError && Boolean(projects.length) && (
-          <Stack spacing={2}>
-            {projects.map(({ idea, meets }) => (
-              <Card sx={{ display: 'flex' }}>
-                <Box sx={{ width: 300 }}>
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      width: 300,
-                      height: 120,
-                      objectFit: 'cover',
-                      flexShrink: 0,
-                    }}
-                    image={idea.image || `/bg.jpeg`}
-                    alt={idea.title || 'Идея'}
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h5">{idea.title}</Typography>
-                    <Typography>{idea.description}</Typography>
-                  </CardContent>
-                </Box>
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <List>
-                    {meets?.map((meet, index) => (
-                      <>
-                        {index !== 0 && <Divider />}
-                        <MeetListItem meet={meet} refetch={refetch} />
-                      </>
-                    ))}
-                  </List>
-                </CardContent>
-              </Card>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, minmax(0, 1fr))',
+                md: 'repeat(3, minmax(0, 1fr))',
+                lg: 'repeat(4, minmax(0, 1fr))',
+              },
+              gap: 2,
+            }}
+          >
+            {projects.map(project => (
+              <ProjectCard project={project} />
+              // <Card sx={{ display: 'flex' }}>
+              //   <Box sx={{ width: 300 }}>
+              //     <CardMedia
+              //       component="img"
+              //       sx={{
+              //         width: 300,
+              //         height: 120,
+              //         objectFit: 'cover',
+              //         flexShrink: 0,
+              //       }}
+              //       image={idea.image || `/bg.jpeg`}
+              //       alt={idea.title || 'Идея'}
+              //     />
+              //     <CardContent sx={{ flexGrow: 1 }}>
+              //       <Typography variant="h5">{idea.title}</Typography>
+              //       <Typography>{idea.description}</Typography>
+              //     </CardContent>
+              //   </Box>
+              //   <CardContent sx={{ flexGrow: 1 }}>
+              //     <List>
+              //       {meets?.map((meet, index) => (
+              //         <>
+              //           {index !== 0 && <Divider />}
+              //           <MeetListItem meet={meet} refetch={refetch} />
+              //         </>
+              //       ))}
+              //     </List>
+              //   </CardContent>
+              // </Card>
             ))}
-          </Stack>
+          </Box>
         )}
       </Box>
     </Page>

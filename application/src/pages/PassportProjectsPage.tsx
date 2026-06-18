@@ -9,7 +9,7 @@ import { fetchPassportProjects } from '../requests.ts';
 import CreateProjectBlock from '../components/CreateProjectBlock.tsx';
 import Page from '../components/Page.tsx';
 import { groupProjectsByIdea } from '../utils/helper.ts';
-import ProjectListItem from '../components/ProjectListItem.tsx';
+import IdeaProjectCard from '../components/IdeaProjectCard.tsx';
 import List from '@mui/material/List';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -33,13 +33,12 @@ function PassportProjectsPage() {
   return (
     <Page isLoading={isProjectsLoading}>
       <Box component="section">
-
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
 
         {!isProjectsLoading && !isProjectsError && Boolean(groupes.length) && (
           <Stack spacing={2}>
             {groupes.map(({ idea, projects }) => (
-              <Card>
+              <Card sx={{ borderRadius: 4 }}>
                 <Box sx={{ display: 'flex' }}>
                   <CardMedia
                     component="img"
@@ -62,7 +61,7 @@ function PassportProjectsPage() {
                     {projects.map((project, index) => (
                       <>
                         {index !== 0 && <Divider />}
-                        <ProjectListItem project={project} withoutPassport />
+                        <IdeaProjectCard project={project} withoutPassport />
                       </>
                     ))}
                   </List>

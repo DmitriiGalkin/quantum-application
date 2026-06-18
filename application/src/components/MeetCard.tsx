@@ -1,98 +1,75 @@
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import EventIcon from '@mui/icons-material/Event';
-import PaymentsIcon from '@mui/icons-material/Payments';
-import ScheduleIcon from '@mui/icons-material/Schedule';
 import type { MeetExtendedDto } from '@shared/types';
-import InfoItem from './InfoItem.tsx';
-import UserGroup from './UserGroup.tsx';
+import { Avatar, Button, Card, CardActions, CardHeader, CardContent } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
+import { fetchCreateMeetUser, fetchDeleteMeetUser } from '../requests.ts';
+import { useAuth } from '../providers/AuthProvider.tsx';
+import { useEffect, useState } from 'react';
+import AvatarGroupUsers from './AvatarGroupUsers.tsx';
+import Typography from '@mui/material/Typography';
 
-type MeetCardProps = {
+type MeetListItemProps = {
   meet: MeetExtendedDto;
-  isMeetUserActionPending?: boolean;
-  onCreateMeetUser?: (meetId: number) => void;
-  onDeleteMeetUser?: (meetUserId: number) => void;
+  refetch?: () => void;
 };
 
+function MeetCard({ meet, refetch }: MeetListItemProps) {
+  const { user, login } = useAuth();
+  const [liked, setLiked] = useState(false);
 
-function MeetCard({ meet, isMeetUserActionPending }: MeetCardProps) {
-  const startedAt = new Date(meet.startedAt);
-  const currentMeetUser = meet.users?.find(user => user.id === 2);
-  const isCurrentUserVisited = Boolean(currentMeetUser);
+  const mutationLike = useMutation({
+    mutationFn: fetchCreateMeetUser,
+    onSuccess: () => {
+      setLiked(true);
+      refetch?.();
+    },
+  });
 
-  const infoItems = [
-    {
-      icon: EventIcon,
-      value: startedAt.toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-      }),
+  const mutationUnlike = useMutation({
+    mutationFn: fetchDeleteMeetUser,
+    onSuccess: () => {
+      setLiked(false);
+      refetch?.();
     },
-    {
-      icon: ScheduleIcon,
-      value: startedAt.toLocaleTimeString('ru-RU', {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-    },
-    {
-      icon: PaymentsIcon,
-      value: meet.price ? `${meet.price} ₽` : 'Бесплатно',
-    },
-  ];
+  });
+
+  const handleLike = () => {
+    if (user)
+      if (!liked) {
+        user && mutationLike.mutate({ userId: user.id, meetId: meet.id });
+      } else {
+        user && mutationUnlike.mutate({ userId: user.id, meetId: meet.id });
+      }
+    else login();
+  };
+
+  useEffect(() => {
+    if (user && meet.users.map(user => user.id).includes(user.id)) {
+      setLiked(true);
+    }
+  }, [user]);
+
+  const subheader =
+    new Date(meet.startedAt).toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+    }) +
+    ', ' +
+    new Date(meet.startedAt).toLocaleTimeString('ru-RU', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
 
   return (
-    <Paper
-      id={meet.id ? `meet-${meet.id}` : undefined}
-      component="article"
-      elevation={0}
-      sx={{
-        p: 2,
-        borderRadius: 3,
-        border: 1,
-        borderColor: 'divider',
-      }}
-    >
-      <Stack
-        direction={{ xs: 'column', md: 'row' }}
-        spacing={2}
-        sx={{
-          justifyContent: 'space-between',
-          alignItems: { xs: 'stretch', md: 'center' },
-        }}
-      >
-        <UserGroup users={meet.users || []} />
-
-        <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
-          {infoItems.map((item, index) => (
-            <InfoItem
-              key={index} // В реальном проекте лучше использовать уникальный ID из данных
-              icon={item.icon}
-              value={item.value}
-            />
-          ))}
-        </Stack>
-
-        <Button
-          variant="contained"
-          size="large"
-          disabled={isMeetUserActionPending}
-          onClick={() => {
-            console.log('onClick', currentMeetUser);
-          //   if (currentMeetUser?.meetUserId) {
-          //     onDeleteMeetUser?.(currentMeetUser.meetUserId);
-          //
-          //     return;
-          //   }
-          //
-          //   onCreateMeetUser?.(meet.id);
-          }}
-        >
-          {isMeetUserActionPending ? 'Отправка...' : isCurrentUserVisited ? 'Выйти' : 'Участвовать'}
-        </Button>
-      </Stack>
-    </Paper>
+    <Card>
+      <CardHeader avatar={<Avatar>R</Avatar>} title="Дмитрий Галкин" subheader={subheader} />
+      <CardContent>
+        <AvatarGroupUsers users={meet.users} />
+        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{meet.price ? `${meet.price} ₽` : 'Бесплатно'}</Typography>
+      </CardContent>
+      <CardActions>
+        <Button onClick={() => handleLike()}>{liked ? 'Отменить участие' : 'Участвовать'}</Button>
+      </CardActions>
+    </Card>
   );
 }
 

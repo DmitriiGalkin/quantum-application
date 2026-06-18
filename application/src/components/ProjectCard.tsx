@@ -2,9 +2,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import UserGroup from './UserGroup.tsx';
+import AvatarGroupUsers from './AvatarGroupUsers.tsx';
 import Box from '@mui/material/Box';
 import type { ProjectFullDto } from '@shared/types';
+import { Avatar, CardHeader } from '@mui/material';
+import CardMedia from '@mui/material/CardMedia';
 
 type ProjectCardProps = {
   project: ProjectFullDto;
@@ -29,21 +31,25 @@ function ProjectCard({ project, withoutPassport }: ProjectCardProps) {
       }}
       onClick={() => project.id && (window.location.href = `/project/${project.id}`)}
     >
+      <CardHeader avatar={<Avatar>R</Avatar>} title="Дмитрий Галкин" subheader="22" />
+      <CardMedia
+        component="img"
+        height="360"
+        image={project.idea.image || `/bg.jpeg`}
+        alt={project.idea.title || 'Проект'}
+        sx={{
+          objectFit: 'cover',
+          height: {
+            xs: 220,
+            sm: 360,
+          },
+        }}
+      />
       <CardContent sx={{ flexGrow: 1 }}>
         <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <Stack direction="column" sx={{ justifyContent: 'space-between' }}>
             {/* Аватарки учеников */}
-            <UserGroup users={project.users || []} />
-
-            {/* Информация о кураторе */}
-            {!withoutPassport && (
-              <Box sx={{ textAlign: 'right' }}>
-                <Typography variant="body2" color="text.primary">
-                  Куратор:
-                </Typography>
-                <Typography variant="body1">{project?.passport?.title}</Typography>
-              </Box>
-            )}
+            <AvatarGroupUsers users={project.users || []} />
 
             <Box>
               <Typography variant="body2" color="text.secondary">

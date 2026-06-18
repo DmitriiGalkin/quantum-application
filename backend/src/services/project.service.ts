@@ -7,6 +7,10 @@ import { FindAllProjectInput, ProjectFullEntity } from '../entities/project.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
 import { Idea } from '../entities/idea.js';
+import { FeedService } from './feed.service.js';
+import { ProjectUserService } from './project-user.service.js';
+import ProjectUserRepository from '../repositories/project-user.repository.js';
+import { ProjectUser } from '../entities/project-user.js';
 
 export class ProjectService {
   static async create(passport: any, data: any) {
@@ -62,26 +66,44 @@ export class ProjectService {
     }));
   }
 
-  static async findById(projectId: number) {
+  static async findById(projectId: number): Promise<ProjectFullEntity> {
     const project = await ProjectRepository.findById(projectId);
-    if (!project) return null;
+    if (!project) throw new Error('NOT_FOUND');
 
-    const [passport, users, meets] = await Promise.all([
-      PassportRepository.findById(project.passportId as number),
+    const [passport, users, meets, place, idea, joins] = await Promise.all([
+      PassportRepository.findById(project.passportId as number) as Promise<Passport>,
       UserRepository.findByProjectId(projectId),
       MeetRepository.findByProjectId(projectId),
+      project.placeId ? PlaceRepository.findById(project.placeId) : null,
+      IdeaRepository.findById(project.ideaId) as Promise<Idea>,
+      ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
     ]);
 
     const usersForMeets = await Promise.all(meets.map(m => UserRepository.findByMeetId(m.id)));
+
+    const meetExtendeds = meets.map((m, i) => ({
+      ...m,
+      project,
+      users: usersForMeets[i],
+    }));
+
+    const feeds = FeedService.merge({
+      meets: meetExtendeds,
+      comments: [],
+      joins: joins.map((u, i) => ({
+        ...u,
+        user: users[i],
+      })),
+    });
 
     return {
       ...project,
       passport,
       users,
-      meets: meets.map((m, i) => ({
-        ...m,
-        users: usersForMeets[i],
-      })),
+      meets: meetExtendeds,
+      place,
+      idea,
+      feeds,
     };
   }
 

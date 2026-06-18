@@ -1,5 +1,5 @@
-import type { MeetDto } from '@shared/types';
-import { Meet, MeetWithProjectTitle } from '../entities/meet.js';
+import type { MeetDto, MeetExtendedDto } from '@shared/types';
+import { Meet, MeetExtendedEntity, MeetWithProjectTitle } from '../entities/meet.js';
 import { MeetRow, MeetWithProjectTitleRow } from '../entities/meet.db.js';
 
 export function mapMeetRow(row: MeetRow): Meet {
@@ -32,5 +32,12 @@ export const toMeetDto = (meet: any): MeetDto => {
         }
       : null,
     meetUsers: meet.meetUsers ?? [],
+  };
+};
+
+export const toMeetExtendedDto = (meet: MeetExtendedEntity): MeetExtendedDto => {
+  return {
+    ...meet,
+    users: meet.users,
   };
 };

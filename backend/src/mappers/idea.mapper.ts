@@ -58,6 +58,7 @@ export const toIdeaFullDto = (idea: IdeaFullEntity): IdeaFullDto => {
 
     projects:
       idea.projects?.map(project => ({
+        ...project,
         idea: project.idea,
         meets: project.meets,
         passport: project.passport,

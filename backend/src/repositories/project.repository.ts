@@ -4,6 +4,7 @@ import { mapProjectRow } from '../mappers/project.mapper.js';
 import { FindAllProjectInput, Project } from '../entities/project.js';
 import { CreateProjectInput } from '../entities/project.types.js';
 import { db } from '../dbNext.js';
+import { FindAllIdeaInput } from '../entities/idea.js';
 
 class ProjectRepository {
   // ✅ CREATE
@@ -11,7 +12,7 @@ class ProjectRepository {
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO project (ideaId, passportId)
        VALUES (?, ?)`,
-      [ data.ideaId, data.passportId],
+      [data.ideaId, data.passportId],
     );
 
     return result.insertId;
@@ -78,14 +79,95 @@ class ProjectRepository {
   }
 
   // ✅ FIND BY IDEA
-  static async findByIdeaId(ideaId: number): Promise<Project[]> {
-    const rows = await db.query<ProjectRow>(
-      `SELECT *
-       FROM project
-       WHERE ideaId = ?
-         AND deletedAt IS NULL`,
-      [ideaId],
-    );
+  static async findByIdeaId(
+    ideaId: number,
+    params?: FindAllIdeaInput
+  ): Promise<Project[]> {
+    const values: (string | number)[] = [];
+
+    const lat = Number(params?.latitude);
+    const lng = Number(params?.longitude);
+
+    const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
+
+    const select: string[] = ['project.*'];
+
+    // =========================
+    // 📍 DISTANCE (через project.placeId)
+    if (params?.sort === 'nearby' && hasCoords) {
+      select.push(`
+      (
+        6371 * ACOS(
+          COS(RADIANS(?)) *
+          COS(RADIANS(pl.latitude)) *
+          COS(RADIANS(pl.longitude) - RADIANS(?)) +
+          SIN(RADIANS(?)) *
+          SIN(RADIANS(pl.latitude))
+        )
+      ) AS distance
+    `);
+
+      values.push(
+        params.latitude!,
+        params.longitude!,
+        params.latitude!
+      );
+    }
+
+    let sql = `
+      SELECT ${select.join(', ')}
+      FROM project
+             LEFT JOIN place pl ON pl.id = project.placeId
+      WHERE project.ideaId = ?
+        AND project.deletedAt IS NULL
+    `;
+
+    // =========================
+    // 📅 FILTER: when (оставляем через meet)
+    if (params?.when) {
+      switch (params.when) {
+        case 'today':
+          sql += `
+          AND EXISTS (
+            SELECT 1
+            FROM meet m
+            WHERE m.projectId = project.id
+              AND m.startedAt >= CURDATE()
+              AND m.startedAt < CURDATE() + INTERVAL 1 DAY
+          )
+        `;
+          break;
+
+        case 'tomorrow':
+          sql += `
+          AND EXISTS (
+            SELECT 1
+            FROM meet m
+            WHERE m.projectId = project.id
+              AND m.startedAt >= CURDATE() + INTERVAL 1 DAY
+              AND m.startedAt < CURDATE() + INTERVAL 2 DAY
+          )
+        `;
+          break;
+      }
+    }
+
+    // =========================
+    // 📍 FILTER + SORT: nearby
+    if (params?.sort === 'nearby' && hasCoords) {
+      sql += `
+      AND pl.latitude IS NOT NULL
+      AND pl.longitude IS NOT NULL
+    `;
+
+      sql += ` ORDER BY distance ASC`;
+    } else if (params?.sort === 'new') {
+      sql += ` ORDER BY project.createdAt DESC`;
+    }
+
+    values.push(ideaId);
+
+    const rows = await db.query<ProjectRow>(sql, values);
 
     return rows.map(mapProjectRow);
   }

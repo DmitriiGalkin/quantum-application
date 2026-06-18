@@ -140,8 +140,6 @@ class IdeaRepository {
       return rows.map(mapIdeaWithLikeRow);
     }
 
-    console.log(sql, 'sql');
-
     const rows = await db.query<IdeaRow>(sql, values);
     return rows.map(mapIdeaRow);
   }

@@ -20,8 +20,8 @@ export async function fetchProject(id: string) {
   return api<ProjectFullDto>(`/project/${id}`);
 }
 
-export async function fetchIdea(id: string) {
-  return api<IdeaFullDto>(`/idea/${id}`);
+export async function fetchIdea(id: string, { when, sort, latitude, longitude }: GetIdeasQuery) {
+  return api<IdeaFullDto>(`/idea/${id}?sort=${sort}&latitude=${latitude}&longitude=${longitude}&when=${when}`);
 }
 
 export async function createProject(ideaId: number): Promise<number> {

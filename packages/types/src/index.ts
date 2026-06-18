@@ -110,7 +110,8 @@ export interface ProjectFullDto extends ProjectDto {
   passport: PassportDto | null;
   place: PlaceDto | null;
   meets: MeetFullDto[];
-  users?: UserDto[];
+  users: UserDto[];
+  feeds?: FeedItem[];
 }
 
 export interface UserDto {
@@ -187,4 +188,38 @@ export interface GetIdeasQuery {
   when?: 'today' | 'tomorrow';
   latitude?: number;
   longitude?: number;
+}
+
+// FEED system
+export type FeedItem =
+  | FeedMeet
+  | FeedComment
+  | FeedJoin
+  | FeedLike;
+
+interface BaseFeed {
+  //id: string;
+  createdAt: string;
+  user?: UserDto;
+}
+
+export interface FeedMeet extends BaseFeed {
+  type: 'meet';
+  meet: MeetExtendedDto;
+}
+
+export interface FeedComment extends BaseFeed {
+  type: 'comment';
+  comment: {
+    id: number;
+    text: string;
+  };
+}
+
+export interface FeedJoin extends BaseFeed {
+  type: 'join';
+}
+
+export interface FeedLike extends BaseFeed {
+  type: 'like';
 }

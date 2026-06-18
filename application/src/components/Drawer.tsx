@@ -17,6 +17,7 @@ function Drawer({ isMenuOpen, setIsMenuOpen }: DrawerProps) {
       sx={{
         zIndex: theme => theme.zIndex.appBar + 1,
       }}
+      anchor="right"
     >
       <Menu setIsMenuOpen={setIsMenuOpen} />
     </MUIDriwer>

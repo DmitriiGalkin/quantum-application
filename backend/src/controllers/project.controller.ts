@@ -1,7 +1,7 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectService } from '../services/project.service.js';
 import { toProjectFullDto } from '../mappers/project.mapper.js';
-import { PageMeta, ProjectDto } from '@shared/types';
+import { PageMeta, ProjectDto, type ProjectFullDto } from '@shared/types';
 
 const create: ControllerWithAuth<number> = async (req, res) => {
   try {
@@ -50,12 +50,12 @@ const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
   ok(res, projects.map(toProjectFullDto));
 };
 
-const findById: Controller<ProjectDto> = async (req, res) => {
+const findById: Controller<ProjectFullDto> = async (req, res) => {
   try {
     const data = await ProjectService.findById(Number(req.params.id));
     if (!data) return fail(res, 'Проект не найден', 404);
 
-    ok(res, data);
+    ok(res, toProjectFullDto(data));
   } catch (err) {
     fail(res, 'Не удалось получить проект');
   }

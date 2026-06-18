@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -65,12 +65,17 @@ function Menu({ setIsMenuOpen }: MenuProps) {
           </ListItemButton>
 
           <ListItemButton
-            component={Link}
+            component={NavLink}
             to={`/user/${user?.id}/ideas`}
             onClick={() => {
               setIsMenuOpen?.(false);
             }}
-            sx={{ borderRadius: 2 }}
+            sx={{
+              borderRadius: 2,
+              '&.active': {
+                bgcolor: 'action.selected',
+              },
+            }}
           >
             <ListItemIcon sx={{ minWidth: 40 }}>
               <LightbulbIcon />
@@ -79,12 +84,17 @@ function Menu({ setIsMenuOpen }: MenuProps) {
           </ListItemButton>
 
           <ListItemButton
-            component={Link}
+            component={NavLink}
             to={`/user/${user?.id}/projects`}
             onClick={() => {
               setIsMenuOpen?.(false);
             }}
-            sx={{ borderRadius: 2 }}
+            sx={{
+              borderRadius: 2,
+              '&.active': {
+                bgcolor: 'action.selected',
+              },
+            }}
           >
             <ListItemIcon sx={{ minWidth: 40 }}>
               <AssignmentIcon />
@@ -103,14 +113,34 @@ function Menu({ setIsMenuOpen }: MenuProps) {
 
       <Box sx={{ p: 3, mt: 'auto', backgroundColor: 'gray', filter: 'invert(1)' }}>
         <List disablePadding>
-          <ListItemButton component={Link} to="/chat?target=project" onClick={() => setIsMenuOpen?.(false)} sx={{ borderRadius: 2 }}>
+          <ListItemButton
+            sx={{
+              borderRadius: 2,
+              '&.active': {
+                bgcolor: 'action.selected',
+              },
+            }}
+            component={NavLink}
+            to="/chat?target=project"
+            onClick={() => setIsMenuOpen?.(false)}
+          >
             <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
               <CreateNewFolderIcon />
             </ListItemIcon>
             <ListItemText primary="Новый проект" />
           </ListItemButton>
 
-          <ListItemButton component={Link} to="/passport/projects" onClick={() => setIsMenuOpen?.(false)} sx={{ borderRadius: 2 }}>
+          <ListItemButton
+            component={NavLink}
+            to="/passport/projects"
+            onClick={() => setIsMenuOpen?.(false)}
+            sx={{
+              borderRadius: 2,
+              '&.active': {
+                bgcolor: 'action.selected',
+              },
+            }}
+          >
             <ListItemIcon sx={{ minWidth: 40 }}>
               <FolderIcon />
             </ListItemIcon>

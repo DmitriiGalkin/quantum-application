@@ -42,15 +42,15 @@ function IdeaCard({ idea, like, unlike, actionType = 'view', onSelect }: IdeaCar
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 4,
-        border: 1,
+        border: 0,
         borderColor: 'divider',
         overflow: 'hidden',
         cursor: idea.id ? 'pointer' : 'default', // Убираем курсор, если ссылки нет
       }}
     >
       <CardActionArea href={`/idea/${idea.id}`}>
-        <CardMedia component="img" height="90" image={idea.image || `/bg.jpeg`} alt={idea.title || 'Идея'} sx={{ objectFit: 'cover' }} />
-        <CardContent sx={{ flexGrow: 1 }}>
+        <CardMedia component="img" height="120" image={idea.image || `/bg.jpeg`} alt={idea.title || 'Идея'} sx={{ objectFit: 'cover' }} />
+        <CardContent sx={{ flexGrow: 1, pb: 0 }}>
           <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom noWrap>
             {idea.title}
           </Typography>

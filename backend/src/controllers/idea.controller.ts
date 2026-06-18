@@ -18,7 +18,7 @@ const findByUserId: ControllerWithAuth<IdeaExtendedDto[]> = async (req, res) => 
 
 const findById: Controller<IdeaDto> = async (req, res) => {
   try {
-    const idea = await IdeaService.findById(Number(req.params.id));
+    const idea = await IdeaService.findById(Number(req.params.id), req.query as GetIdeasQuery);
 
     if (!idea) {
       return fail(res, 'Идея не найдена', 404);
