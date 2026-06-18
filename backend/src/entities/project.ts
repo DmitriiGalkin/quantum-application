@@ -31,6 +31,6 @@ export interface ProjectFullEntity extends Project {
   users: User[];
   passport: Passport;
   place: Place | null;
-  meets: MeetExtendedEntity[];
+  meets: MeetFullEntity[];
   idea: Idea;
 }

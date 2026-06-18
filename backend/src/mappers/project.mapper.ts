@@ -45,9 +45,11 @@ export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => 
     : null,
   meets: project.meets.map(u => ({
     id: u.id,
+    projectId: u.projectId,
     startedAt: u.startedAt,
     duration: u.duration,
     price: u.price,
     users: u.users,
+    project: u.project,
   })),
 });

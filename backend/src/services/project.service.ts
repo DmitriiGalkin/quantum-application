@@ -56,6 +56,7 @@ export class ProjectService {
       place: placeArr[i],
       meets: meetArr[i].map((f, j) => ({
         ...f,
+        project,
         users: userMeetArr[i][j],
       })),
     }));
