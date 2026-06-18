@@ -37,54 +37,52 @@ function HomePage() {
     mutationFn: fetchUnlike,
   });
 
-  const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
-    setView(nextView);
-  };
-  
-  console.log(view, 'view');
   const sortOptions = [
     { value: 'nearby', label: 'Поблизости' },
     { value: 'popular', label: 'Популярные' },
     { value: 'new', label: 'Новые' },
   ];
   const whenOptions = [
-    { value: 'noMatter', label: 'Неважно' },
     { value: 'today', label: 'Сегодня' },
     { value: 'tomorrow', label: 'Завтра' },
-    { value: '3days', label: 'До 3 дней' },
-    { value: '7days', label: 'До 7 дней' },
   ];
 
   return (
     <Page isLoading={isIdeasLoading} isError={isIdeasError}>
       <Stack spacing={2}>
-        <Stack direction="row" sx={{ justifyContent: 'space-between' }} spacing={2}>
-          <Stack direction="row" spacing={2}>
-            <TextField select size="small" value={sort} onChange={e => setSort(e.target.value)}>
-              {sortOptions.map(opt => (
-                <MenuItem key={opt.value} value={opt.value}>
-                  {opt.label}
-                </MenuItem>
-              ))}
-            </TextField>
+        <Stack direction="row" sx={{ justifyContent: 'space-between' }} spacing={1}>
+          <TextField select size="small" value={sort} onChange={e => setSort(e.target.value)}>
+            {sortOptions.map(opt => (
+              <MenuItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </MenuItem>
+            ))}
+          </TextField>
 
-            <ToggleButtonGroup value={when} exclusive onChange={(e, val) => setWhen(val)} size="small">
+          <Stack direction="row" spacing={1}>
+            <ToggleButtonGroup value={when} exclusive onChange={(_, val) => setWhen(val)} size="small">
               {whenOptions.map(opt => (
                 <ToggleButton key={opt.value} value={opt.value}>
                   {opt.label}
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>
+            <ToggleButtonGroup
+              value={view}
+              exclusive
+              onChange={(_, nextView: string) => {
+                setView(nextView);
+              }}
+              size="small"
+            >
+              <ToggleButton value="module" aria-label="module">
+                <ViewModuleIcon />
+              </ToggleButton>
+              <ToggleButton value="map" aria-label="map">
+                <MapIcon />
+              </ToggleButton>
+            </ToggleButtonGroup>
           </Stack>
-
-          <ToggleButtonGroup value={view} exclusive onChange={handleChange} size="small">
-            <ToggleButton value="module" aria-label="module">
-              <ViewModuleIcon />
-            </ToggleButton>
-            <ToggleButton value="map" aria-label="map">
-              <MapIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
         </Stack>
 
         {view === 'map' && (

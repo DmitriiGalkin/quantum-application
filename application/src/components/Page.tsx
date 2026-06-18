@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Footer from './Footer.tsx';
 import Menu from '../components/Menu.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert } from "@mui/material";
+import { Alert } from '@mui/material';
 
 interface Props {
   children: React.ReactNode;
@@ -35,6 +35,7 @@ function Page({ children, isLoading, isError }: Props) {
               flexShrink: 0,
               display: { xs: 'none', md: 'block' },
               height: '100%', // ⬅️ ключевое
+              backgroundColor: 'background.paper',
             }}
           >
             <Menu />
@@ -59,12 +60,17 @@ function Page({ children, isLoading, isError }: Props) {
                 flexGrow: 1,
                 minWidth: 0,
                 pt: 2,
-                px: 2,
                 height: '100%',
                 overflow: 'auto', // ⬅️ СКРОЛЛ ТОЛЬКО ЗДЕСЬ
               }}
             >
-              {children}
+              <Box
+                sx={{
+                  px: 2,
+                }}
+              >
+                {children}
+              </Box>
               <Footer />
             </Box>
           )}

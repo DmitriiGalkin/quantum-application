@@ -15,7 +15,7 @@ function Drawer({ isMenuOpen, setIsMenuOpen }: DrawerProps) {
       open={isMenuOpen}
       onClose={() => setIsMenuOpen(false)}
       sx={{
-        zIndex: theme => theme.zIndex.appBar - 1,
+        zIndex: theme => theme.zIndex.appBar + 1,
       }}
     >
       <Menu setIsMenuOpen={setIsMenuOpen} />
