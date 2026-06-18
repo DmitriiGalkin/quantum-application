@@ -5,13 +5,21 @@ import { MeetMap } from '../components/Map/MeetMap.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchIdeas, fetchLike, fetchUnlike } from '../requests.ts';
 import Stack from '@mui/material/Stack';
-import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
-import Alert from '@mui/material/Alert';
 import IdeaCard from '../components/IdeaCard.tsx';
 import Page from '../components/Page.tsx';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import MapIcon from '@mui/icons-material/Map';
+
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import React from 'react';
+import { MenuItem, TextField } from '@mui/material';
 
 function HomePage() {
+  const [view, setView] = React.useState('module');
+  const [sort, setSort] = React.useState('nearby');
+  const [when, setWhen] = React.useState('noMatter');
+
   const {
     data: ideas = [],
     isLoading: isIdeasLoading,
@@ -29,40 +37,74 @@ function HomePage() {
     mutationFn: fetchUnlike,
   });
 
-  return (
-    <Page>
-      <Paper
-        component="section"
-        elevation={1}
-        sx={{
-          mb: 4,
-          borderRadius: 4,
-          border: 1,
-          borderColor: 'divider',
-          overflow: 'hidden',
-        }}
-        aria-labelledby="auth-section-title"
-      >
-        <MeetMap lat={55.75} lng={37.62} zoom={12} />
-      </Paper>
+  const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+    setView(nextView);
+  };
+  
+  console.log(view, 'view');
+  const sortOptions = [
+    { value: 'nearby', label: 'Поблизости' },
+    { value: 'popular', label: 'Популярные' },
+    { value: 'new', label: 'Новые' },
+  ];
+  const whenOptions = [
+    { value: 'noMatter', label: 'Неважно' },
+    { value: 'today', label: 'Сегодня' },
+    { value: 'tomorrow', label: 'Завтра' },
+    { value: '3days', label: 'До 3 дней' },
+    { value: '7days', label: 'До 7 дней' },
+  ];
 
-      <Box component="section">
-        {isIdeasLoading && (
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              alignItems: 'center',
-            }}
-          >
-            <CircularProgress size={24} />
-            <Typography>Загрузка идей...</Typography>
+  return (
+    <Page isLoading={isIdeasLoading} isError={isIdeasError}>
+      <Stack spacing={2}>
+        <Stack direction="row" sx={{ justifyContent: 'space-between' }} spacing={2}>
+          <Stack direction="row" spacing={2}>
+            <TextField select size="small" value={sort} onChange={e => setSort(e.target.value)}>
+              {sortOptions.map(opt => (
+                <MenuItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <ToggleButtonGroup value={when} exclusive onChange={(e, val) => setWhen(val)} size="small">
+              {whenOptions.map(opt => (
+                <ToggleButton key={opt.value} value={opt.value}>
+                  {opt.label}
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
           </Stack>
+
+          <ToggleButtonGroup value={view} exclusive onChange={handleChange} size="small">
+            <ToggleButton value="module" aria-label="module">
+              <ViewModuleIcon />
+            </ToggleButton>
+            <ToggleButton value="map" aria-label="map">
+              <MapIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
+
+        {view === 'map' && (
+          <Paper
+            component="section"
+            elevation={1}
+            sx={{
+              mb: 4,
+              borderRadius: 4,
+              border: 1,
+              borderColor: 'divider',
+              overflow: 'hidden',
+            }}
+            aria-labelledby="auth-section-title"
+          >
+            <MeetMap lat={55.75} lng={37.62} zoom={12} />
+          </Paper>
         )}
 
-        {isIdeasError && <Alert severity="error">Не удалось загрузить идеи.</Alert>}
-
-        {!isIdeasLoading && !isIdeasError && (
+        {view === 'module' && (
           <Box
             sx={{
               display: 'grid',
@@ -72,7 +114,7 @@ function HomePage() {
                 md: 'repeat(3, minmax(0, 1fr))',
                 lg: 'repeat(4, minmax(0, 1fr))',
               },
-              gap: 2,
+              gap: 1,
             }}
           >
             {ideas.map(idea => (
@@ -80,7 +122,7 @@ function HomePage() {
             ))}
           </Box>
         )}
-      </Box>
+      </Stack>
     </Page>
   );
 }

@@ -5,27 +5,36 @@ import Stack from '@mui/material/Stack';
 import Footer from './Footer.tsx';
 import Menu from '../components/Menu.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Alert } from "@mui/material";
 
 interface Props {
   children: React.ReactNode;
   isLoading?: boolean;
+  isError?: boolean;
 }
-function Page({ children, isLoading }: Props) {
+function Page({ children, isLoading, isError }: Props) {
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <Box
+      sx={{
+        height: '100vh', // ⬅️ важно: не minHeight
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden', // ⬅️ запрещаем общий скролл
+      }}
+    >
       <Header />
 
-      <Box sx={{ flex: 1, width: '100%', mx: 'auto', pr: 3 }}>
-        <Stack direction="row" spacing={3}>
+      {isError && <Alert severity="error">Не удалось загрузить.</Alert>}
+
+      <Box sx={{ flex: 1, width: '100%', overflow: 'hidden' }}>
+        <Stack direction="row" sx={{ height: '100%' }}>
           {/* Sidebar */}
           <Box
             sx={{
               width: { md: 280 },
               flexShrink: 0,
               display: { xs: 'none', md: 'block' },
-              position: 'sticky',
-              top: 100,
-              height: 'fit-content',
+              height: '100%', // ⬅️ ключевое
             }}
           >
             <Menu />
@@ -33,26 +42,34 @@ function Page({ children, isLoading }: Props) {
 
           {/* Content */}
 
-          <Box sx={{ flexGrow: 1, minWidth: 0, pt: 2 }}>
-            {isLoading ? (
-              <Box
-                sx={{
-                  height: '100vh',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <CircularProgress sx={{ color: 'white' }} />
-              </Box>
-            ) : (
-              <Box sx={{ flexGrow: 1, minWidth: 0, pt: 2 }}>{children}</Box>
-            )}
-          </Box>
+          {isLoading ? (
+            <Box
+              sx={{
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <CircularProgress sx={{ color: 'white' }} />
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                flexGrow: 1,
+                minWidth: 0,
+                pt: 2,
+                px: 2,
+                height: '100%',
+                overflow: 'auto', // ⬅️ СКРОЛЛ ТОЛЬКО ЗДЕСЬ
+              }}
+            >
+              {children}
+              <Footer />
+            </Box>
+          )}
         </Stack>
       </Box>
-
-      <Footer />
     </Box>
   );
 }
