@@ -18,6 +18,10 @@ export interface FindAllProjectInput {
   currentUserId?: number;
 }
 
+interface MeetExtendedEntity extends Meet {
+  users: User[];
+}
+
 interface MeetFullEntity extends Meet {
   project: Project;
   users: User[]
@@ -27,6 +31,6 @@ export interface ProjectFullEntity extends Project {
   users: User[];
   passport: Passport;
   place: Place | null;
-  meets: MeetFullEntity[];
+  meets: MeetExtendedEntity[];
   idea: Idea;
 }

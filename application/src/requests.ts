@@ -7,8 +7,9 @@ import {
   type CreateMeetUser,
   type DeleteIdeaUser,
   type DeleteMeetUser,
+  type IdeaExtendedDto,
   type IdeaFullDto,
-  type PassportFullDto,
+  type PassportExtendedDto,
   type PlaceFullDto,
   type ProjectDto,
   type ProjectFullDto,
@@ -97,7 +98,7 @@ export async function generateImage(ideaId: number) {
 }
 
 export async function fetchPassport() {
-  return api<PassportFullDto>('/passport');
+  return api<PassportExtendedDto>('/passport');
 }
 
 export async function fetchProjects(): Promise<ProjectDto[]> {
@@ -113,11 +114,11 @@ export async function fetchPassportProjects() {
 }
 
 export async function fetchIdeas() {
-  return api<IdeaFullDto[]>('/ideas');
+  return api<IdeaExtendedDto[]>('/ideas');
 }
 
 export async function fetchUserIdeas(userId: number) {
-  return api<IdeaFullDto[]>(`/user/${userId}/ideas`);
+  return api<IdeaExtendedDto[]>(`/user/${userId}/ideas`);
 }
 
 export async function fetchLike({ userId, ideaId }: CreateIdeaUser): Promise<void> {

@@ -18,17 +18,16 @@ export function toPlace(row: PlaceRow): Place {
   };
 }
 
-export function toPlaceDto(place: Place): PlaceDto {
-  return {
-    id: place.id,
-    title: place.title,
-    description: place.description,
-    address: place.address,
-    latitude: place.latitude,
-    longitude: place.longitude,
-    image: null, // или логика
-    priceFrom: place.priceFrom,
-
-    meets: [], // подтягивается отдельно
-  };
-}
+// export function toPlaceDto(place: Place): PlaceDto {
+//   return {
+//     id: place.id,
+//     title: place.title,
+//     description: place.description,
+//     address: place.address,
+//     latitude: place.latitude,
+//     longitude: place.longitude,
+//     priceFrom: place.priceFrom,
+//
+//     meets: [], // подтягивается отдельно
+//   };
+// }

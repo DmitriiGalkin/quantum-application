@@ -87,7 +87,6 @@ privateRouter.post('/ideaUser', withAuth(ideaUser.create));
 privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));
 
 privateRouter.post('/project', withAuth(project.create));
-privateRouter.put('/project/:id', withAuth(project.update));
 privateRouter.delete('/project/:id', withAuth(project.delete));
 
 privateRouter.post('/chat', withAuth(chat.create));

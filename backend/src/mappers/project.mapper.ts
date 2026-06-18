@@ -11,7 +11,7 @@ export function mapProjectRow(row: ProjectRow): Project {
   };
 }
 
-export const toProjectDto = (project: ProjectFullEntity): ProjectFullDto => ({
+export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => ({
   id: project.id,
   idea: {
     id: project.idea.id,
@@ -45,11 +45,9 @@ export const toProjectDto = (project: ProjectFullEntity): ProjectFullDto => ({
     : null,
   meets: project.meets.map(u => ({
     id: u.id,
-    projectId: u.projectId,
     startedAt: u.startedAt,
     duration: u.duration,
     price: u.price,
-    project: u.project,
     users: u.users,
   })),
 });

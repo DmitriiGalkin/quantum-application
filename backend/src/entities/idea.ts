@@ -39,17 +39,20 @@ export interface FindAllIdeaInput {
   currentUserId?: number;
 }
 
-interface ProjectFullEntity extends Project {
-  passport: Passport | null;
-  place: Place | null;
-  users: User[];
-  idea: Idea;
-  meets: MeetFullDto[];
+export interface IdeaExtendedEntity extends Idea {
+  isLiked?: boolean;
+  user: User;
 }
 
 export interface IdeaFullEntity extends Idea {
   isLiked?: boolean;
   user: User;
-  projects?: ProjectFullEntity[];
+  projects: {
+    passport: Passport | null;
+    place: Place | null;
+    users: User[];
+    idea: Idea;
+    meets: Meet[];
+  }[];
 }
 

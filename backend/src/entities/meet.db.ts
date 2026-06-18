@@ -6,8 +6,8 @@ export interface MeetRow extends RowDataPacket {
   passportId: number;
   price: number | null;
   duration: number | null;
-  startedAt: Date;
-  deletedAt: Date | null;
+  startedAt: string;
+  deletedAt: string | null;
   placeId: number | null;
 }
 

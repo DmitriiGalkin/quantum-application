@@ -1,3 +1,5 @@
+import { User } from './user.js';
+
 export interface Passport {
   id: number;
   providerId: string;
@@ -7,4 +9,8 @@ export interface Passport {
   title: string;
   image: string | null;
   email: string;
+}
+
+export interface PassportExtendedEntity extends Passport {
+  users: User[];
 }

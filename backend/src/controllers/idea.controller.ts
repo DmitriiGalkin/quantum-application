@@ -1,19 +1,19 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
-import { toIdeaDto } from '../mappers/idea.mapper.js';
+import { toIdeaExtendedDto, toIdeaFullDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
-import { IdeaDto, PageMeta } from '@shared/types';
+import { IdeaDto, IdeaExtendedDto, PageMeta } from '@shared/types';
 
-const findAllPublic: Controller<IdeaDto[]> = async (req, res) => {
+const findAllPublic: Controller<IdeaExtendedDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll(req.query);
-  ok(res, ideas.map(toIdeaDto));
+  ok(res, ideas.map(toIdeaExtendedDto));
 };
 
-const findByUserId: ControllerWithAuth<IdeaDto[]> = async (req, res) => {
+const findByUserId: ControllerWithAuth<IdeaExtendedDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll({
     userId: Number(req.params.id),
   });
 
-  ok(res, ideas.map(toIdeaDto));
+  ok(res, ideas.map(toIdeaExtendedDto));
 };
 
 const findById: Controller<IdeaDto> = async (req, res) => {
@@ -24,7 +24,7 @@ const findById: Controller<IdeaDto> = async (req, res) => {
       return fail(res, 'Идея не найдена', 404);
     }
 
-    ok(res, toIdeaDto(idea));
+    ok(res, toIdeaFullDto(idea));
   } catch (err) {
     fail(res, err instanceof Error ? err.message : 'Не удалось получить идею');
   }

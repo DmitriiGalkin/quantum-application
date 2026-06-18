@@ -21,9 +21,13 @@ export interface IdeaDto {
   isLiked?: boolean;
 }
 
+export interface IdeaExtendedDto extends IdeaDto {
+  user: UserDto | null;
+};
+
 export interface IdeaFullDto extends IdeaDto {
   user: UserDto | null;
-  projects: ProjectFullDto[];
+  projects: Omit<ProjectDto, 'id'>[];
 }
 
 export interface MeetDto {
@@ -32,6 +36,10 @@ export interface MeetDto {
   startedAt: string;
   duration: number | null;
   price: number | null;
+}
+
+export interface MeetExtendedDto extends MeetDto {
+  users: UserDto[];
 }
 
 export interface MeetFullDto extends MeetDto {
@@ -69,7 +77,7 @@ export interface PassportDto {
   image?: string | null;
 }
 
-export interface PassportFullDto extends PassportDto {
+export interface PassportExtendedDto extends PassportDto {
   users: UserDto[];
 }
 

@@ -1,6 +1,7 @@
-import { PassportDto } from '@shared/types';
-import { Passport } from '../entities/passport.js';
+import { PassportDto, PassportExtendedDto } from '@shared/types';
+import { Passport, PassportExtendedEntity } from '../entities/passport.js';
 import { PassportRow } from '../entities/passport.db.js';
+import { IdeaExtendedEntity } from '../entities/idea.js';
 
 export function mapPassportRow(row: PassportRow): Passport {
   return {
@@ -15,7 +16,7 @@ export function mapPassportRow(row: PassportRow): Passport {
   };
 }
 
-export const toPassport = (row: any): PassportDto => ({
+export const toPassportDto = (row: PassportExtendedEntity): PassportExtendedDto => ({
   id: row.id,
   title: row.title ?? null,
   description: row.description ?? null,

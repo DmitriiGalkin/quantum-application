@@ -1,5 +1,5 @@
-import { IdeaFullDto } from '@shared/types';
-import { Idea, IdeaFullEntity, IdeaWithLike } from '../entities/idea.js';
+import { IdeaExtendedDto, IdeaFullDto } from '@shared/types';
+import { Idea, IdeaExtendedEntity, IdeaFullEntity, IdeaWithLike } from '../entities/idea.js';
 import { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
 
 export function mapIdeaRow(row: IdeaRow): Idea {
@@ -21,7 +21,25 @@ export function mapIdeaWithLikeRow(row: IdeaWithLikeRow): IdeaWithLike {
   };
 }
 
-export const toIdeaDto = (idea: IdeaFullEntity): IdeaFullDto => {
+export const toIdeaExtendedDto = (idea: IdeaExtendedEntity): IdeaExtendedDto => {
+  return {
+    id: idea.id,
+    title: idea.title,
+    description: idea.description,
+    image: idea.image,
+    userCount: idea.userCount,
+    isLiked: idea.isLiked,
+
+    user: {
+      id: idea.user.id,
+      title: idea.user.title,
+      age: idea.user.age,
+      image: idea.user.image,
+    },
+  };
+};
+
+export const toIdeaFullDto = (idea: IdeaFullEntity): IdeaFullDto => {
   return {
     id: idea.id,
     title: idea.title,
@@ -39,7 +57,6 @@ export const toIdeaDto = (idea: IdeaFullEntity): IdeaFullDto => {
 
     projects:
       idea.projects?.map(project => ({
-        id: project.id,
         idea: project.idea,
         meets: project.meets,
         passport: project.passport,

@@ -4,12 +4,12 @@ import Stack from '@mui/material/Stack';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import type { MeetFullDto } from '@shared/types';
+import type { MeetExtendedDto } from '@shared/types';
 import InfoItem from './InfoItem.tsx';
 import UserGroup from './UserGroup.tsx';
 
 type MeetCardProps = {
-  meet: MeetFullDto;
+  meet: MeetExtendedDto;
   isMeetUserActionPending?: boolean;
   onCreateMeetUser?: (meetId: number) => void;
   onDeleteMeetUser?: (meetUserId: number) => void;

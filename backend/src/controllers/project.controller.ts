@@ -1,6 +1,6 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectService } from '../services/project.service.js';
-import { toProjectDto } from '../mappers/project.mapper.js';
+import { toProjectFullDto } from '../mappers/project.mapper.js';
 import { PageMeta, ProjectDto } from '@shared/types';
 
 const create: ControllerWithAuth<number> = async (req, res) => {
@@ -9,15 +9,6 @@ const create: ControllerWithAuth<number> = async (req, res) => {
     ok(res, id);
   } catch (err) {
     fail(res, 'Ошибка при создании проекта');
-  }
-};
-
-const update: ControllerWithAuth<void> = async (req, res) => {
-  try {
-    await ProjectService.update(Number(req.params.id), req.body);
-    ok(res, { message: 'Проект обновлен' });
-  } catch (err) {
-    fail(res, 'Не удалось обновить проект');
   }
 };
 
@@ -46,7 +37,7 @@ const findByUserId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
     userId: req.params.id,
   });
 
-  ok(res, ideas.map(toProjectDto));
+  ok(res, ideas.map(toProjectFullDto));
 };
 
 const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
@@ -56,7 +47,7 @@ const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
   });
 
 
-  ok(res, projects.map(toProjectDto));
+  ok(res, projects.map(toProjectFullDto));
 };
 
 const findById: Controller<ProjectDto> = async (req, res) => {
@@ -81,7 +72,6 @@ const meta: Controller<PageMeta> = async (req, res) => {
 
 export default {
   create,
-  update,
   delete: remove,
   findAll,
   findByUserId,

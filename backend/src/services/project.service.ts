@@ -6,6 +6,7 @@ import { Passport } from '../entities/passport.js';
 import { FindAllProjectInput, ProjectFullEntity } from '../entities/project.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
+import { Idea } from '../entities/idea.js';
 
 export class ProjectService {
   static async create(passport: any, data: any) {
@@ -15,10 +16,6 @@ export class ProjectService {
       ...data,
       passportId: passport.id,
     });
-  }
-
-  static async update(id: number, data: any) {
-    return ProjectRepository.update(id, data);
   }
 
   static async remove(projectId: number, passport: Passport) {
@@ -39,56 +36,28 @@ export class ProjectService {
   static async findAll(params: FindAllProjectInput): Promise<ProjectFullEntity[]> {
     const projects = await ProjectRepository.findAll(params);
 
-    const [ideaArr, usersArr, meetsArr, passportsArr, placeArr, meetArr] = await Promise.all([
-      Promise.all(projects.map(p => IdeaRepository.findById(p.ideaId))),
+    const [ideas, usersArr, meetsArr, passportsArr, placeArr, meetArr] = await Promise.all([
+      Promise.all(projects.map(p => IdeaRepository.findById(p.ideaId) as Promise<Idea>)),
       Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
       Promise.all(projects.map(p => MeetRepository.findRecommendationByProjectId(p.id))),
       Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),
       Promise.all(projects.map(p => (p.placeId ? PlaceRepository.findById(p.placeId) : null))),
       Promise.all(projects.map(p => MeetRepository.findByProjectId(p.id))),
     ]);
-
-    console.log(meetArr, 'meetArr');
-
 
     const userMeetArr = await Promise.all(meetArr.map(meets => Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)))));
 
-    console.log(userMeetArr, 'userMeetArr');
-
     return projects.map((project, i) => ({
       ...project,
-      idea: ideaArr[i],
+      idea: ideas[i],
       users: usersArr[i],
       recommendMeet: meetsArr[i],
       passport: passportsArr[i],
       place: placeArr[i],
-      meets: meetArr[i].map((f,j) => ({
+      meets: meetArr[i].map((f, j) => ({
         ...f,
         users: userMeetArr[i][j],
       })),
-    }));
-  }
-
-  static async findAllOld(params: FindAllProjectInput): Promise<ProjectFullEntity[]> {
-    const projects = await ProjectRepository.findAll(params);
-
-    const [ideaArr, usersArr, meetsArr, passportsArr, placeArr, meetArr] = await Promise.all([
-      Promise.all(projects.map(p => IdeaRepository.findById(p.ideaId))),
-      Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
-      Promise.all(projects.map(p => MeetRepository.findRecommendationByProjectId(p.id))),
-      Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),
-      Promise.all(projects.map(p => (p.placeId ? PlaceRepository.findById(p.placeId) : null))),
-      Promise.all(projects.map(p => MeetRepository.findByProjectId(p.id))),
-    ]);
-
-    return projects.map((project, i) => ({
-      ...project,
-      idea: ideaArr[i],
-      users: usersArr[i],
-      recommendMeet: meetsArr[i],
-      passport: passportsArr[i],
-      place: placeArr[i],
-      meets: meetArr[i],
     }));
   }
 
