@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -49,13 +48,40 @@ function IdeaPage() {
     }
   }, [idea?.title]);
 
+  if (!id) {
+    return (
+      <Page>
+        <Box sx={{ py: 6, textAlign: 'center' }}>
+          <Typography variant="h6">Проект не найден</Typography>
+
+          <Typography variant="body2" color="text.secondary">
+            Некорректная ссылка
+          </Typography>
+        </Box>
+      </Page>
+    );
+  }
+
+  if (isProjectError) {
+    return (
+      <Page>
+        <Box sx={{ py: 6, textAlign: 'center' }}>
+          <Typography variant="h6">Не удалось загрузить идею</Typography>
+
+          <Typography variant="body2" color="text.secondary">
+            Попробуйте обновить страницу
+          </Typography>
+
+          <Button sx={{ mt: 2 }} variant="contained">
+            Обновить
+          </Button>
+        </Box>
+      </Page>
+    );
+  }
+
   return (
     <Page isLoading={isProjectLoading} isError={isProjectError}>
-      {(!id || isProjectError) && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          Не указан id проекта.
-        </Alert>
-      )}
       {idea && (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -161,10 +187,30 @@ function IdeaPage() {
                 </Stack>
               )}
 
-              <Alert variant="outlined">
-                Проектов по идее еще нет, но мы активно ищем учителей для его реализации. Чтобы активнее найти найтие учителя, поделитьсь ею с
-                друзьями, - возможно им тоже будет это интересно и у вас соберется совместная группа единомышленников!
-              </Alert>
+              {f.filters.when === undefined && !idea.projects.length && (
+                <Box
+                  sx={{
+                    p: 3,
+                    borderRadius: 3,
+                    backgroundColor: 'rgba(255,255,255,0.9)',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    Пока нет проектов
+                  </Typography>
+
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    Мы ищем учителей для реализации этой идеи
+                  </Typography>
+
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    Поделитесь идеей с друзьями — возможно, вместе вы запустите проект 🚀
+                  </Typography>
+
+                  <Button variant="contained">Поделиться</Button>
+                </Box>
+              )}
             </Stack>
           </Grid>
         </Grid>
