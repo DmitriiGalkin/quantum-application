@@ -2,7 +2,7 @@ import { db } from '../dbNext.js';
 import { ResultSetHeader } from 'mysql2/promise';
 
 import { PassportRow } from '../entities/passport.db.js';
-import { mapPassportRow } from '../mappers/passport.mapper.js';
+import { toPassport } from '../mappers/passport.mapper.js';
 
 import { Passport } from '../entities/passport.js';
 import { CreatePassportInput, UpdatePassportInput } from '../entities/passport.types.js';
@@ -45,21 +45,21 @@ class PassportRepository {
   static async findById(id: number): Promise<Passport | null> {
     const rows = await db.query<PassportRow>(`SELECT * FROM passport WHERE id = ?`, [id]);
 
-    return rows[0] ? mapPassportRow(rows[0]) : null;
+    return rows[0] ? toPassport(rows[0]) : null;
   }
 
   // ✅ FIND BY EMAIL
   static async findByEmail(email: string): Promise<Passport | null> {
     const rows = await db.query<PassportRow>(`SELECT * FROM passport WHERE email = ?`, [email]);
 
-    return rows[0] ? mapPassportRow(rows[0]) : null;
+    return rows[0] ? toPassport(rows[0]) : null;
   }
 
   // ✅ FIND BY TOKEN
   static async findByAccessToken(accessToken: string): Promise<Passport | null> {
     const rows = await db.query<PassportRow>(`SELECT * FROM passport WHERE accessToken = ?`, [accessToken]);
 
-    return rows[0] ? mapPassportRow(rows[0]) : null;
+    return rows[0] ? toPassport(rows[0]) : null;
   }
 }
 

@@ -3,7 +3,7 @@ import { Passport, PassportExtendedEntity } from '../entities/passport.js';
 import { PassportRow } from '../entities/passport.db.js';
 import { IdeaExtendedEntity } from '../entities/idea.js';
 
-export function mapPassportRow(row: PassportRow): Passport {
+export function toPassport(row: PassportRow): Passport {
   return {
     id: row.id,
     providerId: row.providerId,

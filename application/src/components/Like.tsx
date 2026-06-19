@@ -4,14 +4,16 @@ import { fetchLike, fetchUnlike } from '../requests.ts';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 type ChatBubbleProps = {
   isLiked?: boolean;
   ideaId: number;
-  userId: number;
 };
 
-export default function Like({ isLiked, ideaId, userId }: ChatBubbleProps) {
+export default function Like({ isLiked, ideaId }: ChatBubbleProps) {
+  const { user, authHandler } = useAuth();
   const [liked, setLiked] = useState(isLiked);
   const mutationLike = useMutation({
     mutationFn: fetchLike,
@@ -21,22 +23,29 @@ export default function Like({ isLiked, ideaId, userId }: ChatBubbleProps) {
   });
 
   const handleLike = () => {
-    if (!liked) {
-      mutationLike.mutate({ ideaId, userId });
+    if (user) {
+      if (!liked) {
+        setLiked(true);
+        mutationLike.mutate({ ideaId, userId: user.id });
+      } else {
+        setLiked(false);
+        mutationUnlike.mutate({ ideaId, userId: user.i });
+      }
     } else {
-      mutationUnlike.mutate({ ideaId, userId });
+      authHandler();
     }
   };
 
   return (
-    <IconButton
-      onClick={e => {
-        e.stopPropagation();
-        setLiked(!liked);
-        handleLike();
-      }}
-    >
-      {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-    </IconButton>
+    <Tooltip title="В избранное">
+      <IconButton
+        onClick={e => {
+          e.stopPropagation();
+          handleLike();
+        }}
+      >
+        {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+      </IconButton>
+    </Tooltip>
   );
 }

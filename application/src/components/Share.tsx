@@ -11,7 +11,7 @@ export default function Share({ title, description }: ShareProps) {
   const handleShare = async () => {
     const url = window.location.href;
 
-    if (navigator.share && idea) {
+    if (navigator.share) {
       await navigator.share({
         title,
         text: description ?? '',

@@ -126,9 +126,7 @@ export const AuthProvider = ({ children }: Props) => {
           onClose={() => setIsAuthModalOpen(false)}
         >
           <DialogTitle>
-            <Button onClick={() => setIsAuthModalOpen(false)} startIcon={<CloseIcon />}>
-              Закрыть
-            </Button>
+            Вход
           </DialogTitle>
 
           <DialogContent dividers>

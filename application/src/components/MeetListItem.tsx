@@ -39,7 +39,7 @@ function MeetListItem({ meet, refetch }: MeetListItemProps) {
       } else {
         user && mutationUnlike.mutate({ userId: user.id, meetId: meet.id });
       }
-    else login();
+    else authHandler();
   };
 
   useEffect(() => {
