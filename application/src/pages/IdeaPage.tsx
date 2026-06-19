@@ -53,16 +53,14 @@ function IdeaPage() {
     }
   }, [idea?.title]);
 
-  if (!id || !idea) {
-    return (
-      <Container maxWidth="sm" sx={{ py: 8 }}>
-        <Alert severity="error">Не указан id проекта.</Alert>
-      </Container>
-    );
-  }
-
   return (
     <Page isLoading={isProjectLoading} isError={isProjectError}>
+      {(!id || isProjectError) && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          Не указан id проекта.
+        </Alert>
+      )}
+      {idea && (
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 3 }}>
           <Card sx={{ mb: 3, borderRadius: 3 }}>
@@ -156,7 +154,8 @@ function IdeaPage() {
 
         <Grid size={{ xs: 12, md: 9 }}>
           <Stack spacing={1}>
-            <Filter {...f} />
+            {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
+            {!(f.filters.when === undefined && !idea.projects.length) && <Filter {...f} />}
 
             {filters.view === 'map' && <div>Карта</div>}
 
@@ -175,6 +174,7 @@ function IdeaPage() {
           </Stack>
         </Grid>
       </Grid>
+        )}
     </Page>
   );
 }

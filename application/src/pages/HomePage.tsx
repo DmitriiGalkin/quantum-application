@@ -9,6 +9,7 @@ import IdeaCard from '../components/IdeaCard.tsx';
 import Page from '../components/Page.tsx';
 import { useFilters } from './useFilters.ts';
 import Filter from './Filter.tsx';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function HomePage() {
   const filters = useFilters();
@@ -32,9 +33,22 @@ function HomePage() {
 
 
   return (
-    <Page isLoading={isIdeasLoading} isError={isIdeasError}>
+    <Page isError={isIdeasError}>
       <Stack spacing={2}>
-        <Filter {...filters} />
+        {!(filters.filters.when === undefined && !ideas.length) && <Filter {...filters} />}
+
+        {isIdeasLoading && (
+          <Box
+            sx={{
+              height: '400px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <CircularProgress sx={{ color: 'white' }} />
+          </Box>
+        )}
 
         {filters.filters.view === 'map' && (
           <Paper
