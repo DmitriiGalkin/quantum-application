@@ -25,7 +25,7 @@ export default function Footer() {
           </Grid>
 
           {/* Column 2 */}
-          <Grid size={{ xs: 12, sm: 2 }}>
+          <Grid size={{ xs: 3, sm: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
               Платформа
             </Typography>
@@ -38,7 +38,7 @@ export default function Footer() {
           </Grid>
 
           {/* Column 3 */}
-          <Grid size={{ xs: 12, sm: 2 }}>
+          <Grid size={{ xs: 3, sm: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
               Компания
             </Typography>
@@ -51,7 +51,7 @@ export default function Footer() {
           </Grid>
 
           {/* Column 4 */}
-          <Grid size={{ xs: 12, sm: 4 }}>
+          <Grid size={{ xs: 6, sm: 4 }}>
             <Typography variant="subtitle1" gutterBottom>
               Контакты
             </Typography>
