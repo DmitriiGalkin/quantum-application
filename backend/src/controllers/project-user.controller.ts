@@ -1,7 +1,8 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectUserService } from '../services/project-user.service.js';
+import type { CreateProjectUser, DeleteMeetUser, DeleteProjectUser } from '@shared/types';
 
-const create: ControllerWithAuth<number> = async (req, res) => {
+const create: ControllerWithAuth<number, CreateProjectUser> = async (req, res) => {
   try {
     const result = await ProjectUserService.create(req.passport!, req.body);
 
@@ -13,7 +14,7 @@ const create: ControllerWithAuth<number> = async (req, res) => {
 
 const remove: ControllerWithAuth<{}> = async (req, res) => {
   try {
-    await ProjectUserService.remove(req.passport!, Number(req.params.id));
+    await ProjectUserService.remove(req.passport.id!, req.query as unknown as DeleteProjectUser);
 
     ok(res, { message: 'Удаление участия в проекте прошло успешно' });
   } catch (err) {

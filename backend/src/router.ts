@@ -95,7 +95,7 @@ privateRouter.post('/chat/:id/messages', withAuth(chat.createMessages));
 privateRouter.post('/place', withAuth(place.create));
 
 privateRouter.post('/projectUser', withAuth(projectUser.create));
-privateRouter.delete('/projectUser/:id', withAuth(projectUser.delete));
+privateRouter.delete('/projectUser', withAuth(projectUser.delete));
 
 privateRouter.post('/meet', withAuth(meet.create));
 privateRouter.put('/meet/:id', withAuth(meet.update));

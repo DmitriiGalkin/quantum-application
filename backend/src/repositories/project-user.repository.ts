@@ -6,11 +6,12 @@ import { mapProjectUserRow } from '../mappers/project-user.mapper.js';
 import { ProjectUser } from '../entities/project-user.js';
 import { CreateProjectUserInput } from '../entities/project-user.types.js';
 import { db } from '../dbNext.js';
+import type { DeleteMeetUser, DeleteProjectUser } from '@shared/types';
 
 class ProjectUserRepository {
   // ✅ CREATE
   static async create(data: CreateProjectUserInput): Promise<number> {
-    const result= await db.execute<ResultSetHeader>(
+    const result = await db.execute<ResultSetHeader>(
       `INSERT INTO projectUser (projectId, userId)
        VALUES (?, ?)`,
       [data.projectId, data.userId],
@@ -20,8 +21,8 @@ class ProjectUserRepository {
   }
 
   // ✅ DELETE BY ID
-  static async delete(id: number): Promise<boolean> {
-    const result= await db.execute<ResultSetHeader>(`DELETE FROM projectUser WHERE id = ?`, [id]);
+  static async delete({ projectId, userId }: DeleteProjectUser): Promise<boolean> {
+    const result = await db.execute<ResultSetHeader>(`DELETE FROM projectUser WHERE projectId = ? AND userId = ?`, [projectId, userId]);
 
     return result.affectedRows > 0;
   }

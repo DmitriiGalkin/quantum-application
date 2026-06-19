@@ -166,6 +166,15 @@ export interface DeleteIdeaUser {
   userId: number;
 }
 
+export interface CreateProjectUser {
+  projectId: number;
+  userId: number;
+}
+export interface DeleteProjectUser {
+  projectId: number;
+  userId: number;
+}
+
 export interface CreateMeetUser {
   meetId: number;
   userId: number;

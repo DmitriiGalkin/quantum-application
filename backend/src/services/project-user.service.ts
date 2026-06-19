@@ -2,6 +2,8 @@ import ProjectRepository from '../repositories/project.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
+import type { DeleteMeetUser, DeleteProjectUser } from '@shared/types';
+import MeetUserRepository from '../repositories/meet-user.repository.js';
 
 function getPassportUserIds(passportId: number) {
   // если у тебя раньше был req.users — лучше заменить на нормальный сервис/запрос
@@ -47,29 +49,26 @@ export class ProjectUserService {
   /**
    * Удаление пользователя из проекта
    */
-  static async remove(passport: Passport, participationId: number) {
-    const projectUser = await ProjectUserRepository.findById(participationId);
+  static async remove(passportId: number, body: DeleteProjectUser) {
+    const { projectId, userId } = body;
 
-    if (!projectUser) {
-      throw new Error('Участие не существует');
+    if (!projectId || !userId) {
+      throw new Error('projectId и userId обязательны');
     }
 
-    const project = await ProjectRepository.findById(projectUser.projectId);
-
-    if (!project) {
-      throw new Error('Связанный проект не найден');
+    const exists = await ProjectUserRepository.findByUserAndProjectIds(userId, projectId);
+    if (!exists) {
+      throw new Error('Участие в проекте не существует');
     }
 
-    const allowedIds = await getPassportUserIds(passport.id);
+    const allowedUsers = await UserRepository.findByPassportId(passportId);
+    const allowedUserIds = allowedUsers.map(u => u.id);
 
-    const isOwnChild = allowedIds.includes(projectUser.userId);
-    const isProjectOwner = project.passportId === passport.id;
-
-    if (!isOwnChild && !isProjectOwner) {
+    if (!allowedUserIds.includes(Number(userId))) {
       throw new Error('Нет прав на удаление');
     }
 
-    await ProjectUserRepository.delete(projectUser.id);
+    await ProjectUserRepository.delete({ projectId, userId });
 
     return true;
   }

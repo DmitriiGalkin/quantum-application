@@ -6,17 +6,52 @@ import { useNavigate } from 'react-router-dom';
 import AvatarGroupUsers from './AvatarGroupUsers.tsx';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PlaceIcon from '@mui/icons-material/Place';
+import { useAuth } from '../providers/AuthProvider.tsx';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import {
+  fetchCreateProjectUser,
+  fetchDeleteProjectUser,
+} from '../requests.ts';
 
 type IdeaProjectCardProps = {
   project: ProjectFullDto;
-  withoutPassport?: boolean;
+  refetch?: any;
 };
 
-function IdeaProjectCard({ project, withoutPassport }: IdeaProjectCardProps) {
+function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
   const navigate = useNavigate();
 
+  const { user, login } = useAuth();
+  const [liked, setLiked] = useState(false);
 
+  const likedFront = project.users.map(user => user.id).includes(user?.id);
 
+  const mutationLike = useMutation({
+    mutationFn: fetchCreateProjectUser,
+    onSuccess: () => {
+      setLiked(true);
+      refetch?.();
+    },
+  });
+
+  const mutationUnlike = useMutation({
+    mutationFn: fetchDeleteProjectUser,
+    onSuccess: () => {
+      setLiked(false);
+      refetch?.();
+    },
+  });
+
+  const handleLike = () => {
+    if (user)
+      if (!likedFront) {
+        user && mutationLike.mutate({ userId: user.id, projectId: project.id });
+      } else {
+        user && mutationUnlike.mutate({ userId: user.id, projectId: project.id });
+      }
+    else login();
+  };
 
   return (
     <Card sx={{ borderRadius: 3 }}>
@@ -136,8 +171,8 @@ function IdeaProjectCard({ project, withoutPassport }: IdeaProjectCardProps) {
               <Button variant="text" size="small">
                 Подробнее
               </Button>
-              <Button variant="contained" size="small">
-                Вступить
+              <Button variant="contained" size="small" onClick={() => handleLike()}>
+                {likedFront ? 'Выйти' : 'Вступить'}
               </Button>
             </Stack>
           </Box>

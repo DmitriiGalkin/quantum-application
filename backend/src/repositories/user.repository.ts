@@ -58,11 +58,12 @@ class UserRepository {
 
   // ✅ FIND BY PROJECT
   static async findByProjectId(projectId: number): Promise<User[]> {
-    const rows = await db.query<UserRow>(
-      `SELECT DISTINCT user.*
+    const rows = await db.query(
+      `SELECT user.*
        FROM user
-       LEFT JOIN projectUser ON user.id = projectUser.userId
-       WHERE projectUser.projectId = ?`,
+              LEFT JOIN projectUser ON user.id = projectUser.userId
+       WHERE projectUser.projectId = ?
+       ORDER BY projectUser.createdAt DESC`,
       [projectId],
     );
 

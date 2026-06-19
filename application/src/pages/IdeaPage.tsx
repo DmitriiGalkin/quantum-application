@@ -36,6 +36,7 @@ function IdeaPage() {
     data: idea,
     isLoading: isProjectLoading,
     isError: isProjectError,
+    refetch,
   } = useQuery({
     queryKey: ['idea', id, JSON.stringify(filters)],
     queryFn: () => fetchIdea(id!, filters),
@@ -182,7 +183,7 @@ function IdeaPage() {
               {filters.view === 'module' && (
                 <Stack spacing={1}>
                   {(idea.projects || []).map((project, index) => (
-                    <IdeaProjectCard key={index} project={project} />
+                    <IdeaProjectCard key={index} project={project} refetch={refetch} />
                   ))}
                 </Stack>
               )}
