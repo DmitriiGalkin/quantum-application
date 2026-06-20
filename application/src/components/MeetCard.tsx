@@ -6,6 +6,8 @@ import { useAuth } from '../providers/AuthProvider.tsx';
 import { useEffect, useState } from 'react';
 import AvatarGroupUsers from './AvatarGroupUsers.tsx';
 import Typography from '@mui/material/Typography';
+import ProjectMeetCard from './ProjectMeetCard.tsx';
+import Box from '@mui/material/Box';
 
 type MeetListItemProps = {
   meet: MeetExtendedDto;
@@ -13,7 +15,7 @@ type MeetListItemProps = {
 };
 
 function MeetCard({ meet, refetch }: MeetListItemProps) {
-  const { user, login } = useAuth();
+  const { user, authHandler } = useAuth();
   const [liked, setLiked] = useState(false);
 
   const mutationLike = useMutation({
@@ -39,7 +41,7 @@ function MeetCard({ meet, refetch }: MeetListItemProps) {
       } else {
         user && mutationUnlike.mutate({ userId: user.id, meetId: meet.id });
       }
-    else login();
+    else authHandler();
   };
 
   useEffect(() => {
@@ -62,10 +64,9 @@ function MeetCard({ meet, refetch }: MeetListItemProps) {
   return (
     <Card>
       <CardHeader avatar={<Avatar>R</Avatar>} title="Дмитрий Галкин" subheader={subheader} />
-      <CardContent>
-        <AvatarGroupUsers users={meet.users} />
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{meet.price ? `${meet.price} ₽` : 'Бесплатно'}</Typography>
-      </CardContent>
+      <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)', borderRadius: 2 }}>
+        <ProjectMeetCard meet={meet} />
+      </Box>
       <CardActions>
         <Button onClick={() => handleLike()}>{liked ? 'Отменить участие' : 'Участвовать'}</Button>
       </CardActions>

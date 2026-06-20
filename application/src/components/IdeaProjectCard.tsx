@@ -7,6 +7,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import { useAuth } from '../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateProjectUser, fetchDeleteProjectUser } from '../requests.ts';
+import ProjectMeetCard from './ProjectMeetCard.tsx';
 
 type IdeaProjectCardProps = {
   project: ProjectFullDto;
@@ -14,7 +15,7 @@ type IdeaProjectCardProps = {
 };
 
 function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
-  const { user, login } = useAuth();
+  const { user, authHandler } = useAuth();
 
   const likedFront = project.users.map(user => user.id).includes(user?.id);
 
@@ -39,7 +40,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
       } else {
         user && mutationUnlike.mutate({ userId: user.id, projectId: project.id });
       }
-    else login();
+    else authHandler();
   };
 
   return (
@@ -74,53 +75,18 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
       </Stack>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
-
-
-        <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
-          <Typography variant="caption" color="text.secondary">
-            Ближайшая встреча
-          </Typography>
-
-          {project.meets?.[0] ? (
-            <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-              <Box
-                sx={{
-                  width: 44,
-                  height: 56,
-                  borderRadius: 2,
-                  backgroundColor: 'rgba(255,182,40,0.2)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography variant="caption">
-                  {new Date(project.meets[0].startedAt).toLocaleDateString('ru-RU', { month: 'short' }).replace('.', '').toUpperCase()}
-                </Typography>
-
-                <Typography variant="h6">{new Date(project.meets[0].startedAt).getDate()}</Typography>
-              </Box>
-
-              <Box>
-                <Typography variant="body2">
-                  {new Date(project.meets[0].startedAt).toLocaleTimeString('ru-RU', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Typography>
-
-                <Typography variant="caption" color="text.secondary">
-                  {project.place?.address}
-                </Typography>
-              </Box>
-            </Stack>
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              Станьте первым участником и помогите запустить проект 🚀
+        {project.meets?.[0] ? (
+          <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
+            <Typography variant="caption" color="text.secondary">
+              Ближайшая встреча
             </Typography>
-          )}
-        </Box>
+            <ProjectMeetCard meet={project.meets[0]} />
+          </Box>
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            Станьте первым участником и помогите запустить проект 🚀
+          </Typography>
+        )}
       </Box>
 
       <Box sx={{ px: 2, mt: 2 }}>
@@ -153,7 +119,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
           {likedFront ? 'Выйти' : 'Вступить'}
         </Button>
 
-        <Button variant="text" size="small">
+        <Button variant="text" size="small" href={`/project/${project.id}`}>
           Подробнее
         </Button>
       </Box>
