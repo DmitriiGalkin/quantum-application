@@ -114,7 +114,18 @@ export async function fetchPassportProjects() {
 }
 
 export async function fetchIdeas({ when, sort, latitude, longitude }: GetIdeasQuery) {
-  return api<IdeaExtendedDto[]>(`/ideas?sort=${sort}&latitude=${latitude}&longitude=${longitude}&when=${when}`);
+  const params = new URLSearchParams();
+
+  if (sort) params.append('sort', sort);
+  if (when) params.append('when', when);
+
+  // 👉 только если НЕ nearby
+  if (sort === 'nearby') {
+    if (latitude) params.append('latitude', String(latitude));
+    if (longitude) params.append('longitude', String(longitude));
+  }
+
+  return api<IdeaExtendedDto[]>(`/ideas?${params.toString()}`);
 }
 
 export async function fetchUserIdeas(userId: number) {

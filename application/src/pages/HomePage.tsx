@@ -10,17 +10,25 @@ import Page from '../components/Page.tsx';
 import { useFilters } from './useFilters.ts';
 import Filter from './Filter.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useLocation } from './useLocation.ts';
 
 function HomePage() {
-  const filters = useFilters();
+  const { filters, setView, setSort, setWhen } = useFilters();
+  const location = useLocation(filters.sort === 'nearby');
 
   const {
     data: ideas = [],
-    isLoading: isIdeasLoading,
-    isError: isIdeasError,
+    isLoading,
+    isError,
   } = useQuery({
-    queryKey: ['ideasHome', filters],
-    queryFn: () => fetchIdeas(filters.filters),
+    queryKey: ['ideas', filters, location],
+    queryFn: () =>
+      fetchIdeas({
+        ...filters,
+        latitude: location.status === 'success' ? location.lat : undefined,
+        longitude: location.status === 'success' ? location.lng : undefined,
+      }),
+    enabled: filters.sort !== 'nearby' || location.status === 'success',
   });
 
   const mutationLike = useMutation({
@@ -31,13 +39,12 @@ function HomePage() {
     mutationFn: fetchUnlike,
   });
 
-
   return (
-    <Page isError={isIdeasError}>
+    <Page isError={isError}>
       <Stack spacing={2}>
-        {!(filters.filters.when === undefined && !ideas.length) && <Filter {...filters} />}
+        <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
 
-        {isIdeasLoading && (
+        {(isLoading || (filters.sort === 'nearby' && location.status === 'loading')) && (
           <Box
             sx={{
               height: '400px',
@@ -50,7 +57,11 @@ function HomePage() {
           </Box>
         )}
 
-        {filters.filters.view === 'map' && (
+        {filters.sort === 'nearby' && location.status === 'error' && (
+          <Typography color="text.secondary">Не удалось определить местоположение</Typography>
+        )}
+
+        {filters.view === 'map' && (
           <Paper
             component="section"
             elevation={1}
@@ -67,7 +78,7 @@ function HomePage() {
           </Paper>
         )}
 
-        {filters.filters.view === 'module' && (
+        {filters.view === 'module' && (
           <Box
             sx={{
               display: 'grid',

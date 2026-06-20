@@ -1,13 +1,12 @@
 import Stack from '@mui/material/Stack';
-import { MenuItem, TextField, Typography } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import type { Sort, View } from '@shared/types';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import MapIcon from '@mui/icons-material/Map';
-import { useEffect } from 'react';
 
-function Filter({ filters, setView, setSort, setWhen, setLocation, isHydrated }: any) {
+function Filter({ filters, setView, setSort, setWhen }: any) {
   const sortOptions = [
     { value: 'nearby', label: 'Поблизости' },
     { value: 'popular', label: 'Популярные' },
@@ -17,17 +16,6 @@ function Filter({ filters, setView, setSort, setWhen, setLocation, isHydrated }:
     { value: 'today', label: 'Сегодня' },
     { value: 'tomorrow', label: 'Завтра' },
   ];
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(async position => {
-      setLocation({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      });
-    });
-  }, []);
-
-  if (!isHydrated) return null;
 
   return (
     <Stack direction="row" sx={{ justifyContent: 'space-between' }} spacing={1}>
