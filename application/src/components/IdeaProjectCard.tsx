@@ -1,18 +1,12 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Avatar, Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
+import { Avatar, Button, Card, CardHeader, Stack } from '@mui/material';
 import type { ProjectFullDto } from '@shared/types';
-import { useNavigate } from 'react-router-dom';
 import AvatarGroupUsers from './AvatarGroupUsers.tsx';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PlaceIcon from '@mui/icons-material/Place';
 import { useAuth } from '../providers/AuthProvider.tsx';
-import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import {
-  fetchCreateProjectUser,
-  fetchDeleteProjectUser,
-} from '../requests.ts';
+import { fetchCreateProjectUser, fetchDeleteProjectUser } from '../requests.ts';
 
 type IdeaProjectCardProps = {
   project: ProjectFullDto;
@@ -20,17 +14,13 @@ type IdeaProjectCardProps = {
 };
 
 function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
-  const navigate = useNavigate();
-
   const { user, login } = useAuth();
-  const [liked, setLiked] = useState(false);
 
   const likedFront = project.users.map(user => user.id).includes(user?.id);
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateProjectUser,
     onSuccess: () => {
-      setLiked(true);
       refetch?.();
     },
   });
@@ -38,7 +28,6 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
   const mutationUnlike = useMutation({
     mutationFn: fetchDeleteProjectUser,
     onSuccess: () => {
-      setLiked(false);
       refetch?.();
     },
   });
@@ -60,126 +49,114 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
         title={project.passport.title}
         subheader="Профессор всех наук и просто боксер"
       />
-      <CardContent sx={{ pt: 0 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
-          {!project.meets?.length && (
-            <Box
-              sx={{
-                p: 1.5,
-                borderRadius: 2,
-                border: '1px solid rgba(0,0,0,0.06)',
-              }}
-            >
-              <Typography variant="body2" color="text.secondary">
-                Встреч пока нет
-              </Typography>
+      <Stack direction="row" spacing={1} sx={{ px: 2, pb: 1, alignItems: 'center' }}>
+        <PlaceIcon sx={{ fontSize: 16, opacity: 0.6 }} />
 
-              <Typography variant="caption" color="text.secondary">
-                Станьте первым участником и помогите запустить проект 🚀
-              </Typography>
-            </Box>
-          )}
+        <Typography variant="body2" color="text.secondary">
+          {project.place?.address}
+        </Typography>
 
-          {project.meets?.slice(0, 2).map((meet, index) => {
-            const isNext = index === 0;
-            const from = new Date(meet.startedAt).toLocaleTimeString('ru-RU', {
-              hour: '2-digit',
-              minute: '2-digit',
-            });
-            const to = new Date(new Date(meet.startedAt).getTime() + meet.duration * 60 * 1000).toLocaleTimeString('ru-RU', {
-              hour: '2-digit',
-              minute: '2-digit',
-            });
+        {/*{project.distance != null && (*/}
+        {/*  <Box*/}
+        {/*    sx={{*/}
+        {/*      px: 1,*/}
+        {/*      py: 0.2,*/}
+        {/*      borderRadius: 10,*/}
+        {/*      backgroundColor: 'rgba(255,182,40,0.15)',*/}
+        {/*      fontSize: 12,*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    {project.distance < 1*/}
+        {/*      ? `${Math.round(project.distance * 1000)} м`*/}
+        {/*      : `${project.distance.toFixed(1)} км`}*/}
+        {/*  </Box>*/}
+        {/*)}*/}
+      </Stack>
 
-            return (
-              <Stack
-                direction="row"
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
+
+
+        <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
+          <Typography variant="caption" color="text.secondary">
+            Ближайшая встреча
+          </Typography>
+
+          {project.meets?.[0] ? (
+            <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+              <Box
                 sx={{
-                  p: 1.5,
+                  width: 44,
+                  height: 56,
                   borderRadius: 2,
-                  border: '1px solid rgba(0,0,0,0.06)',
-                  backgroundColor: isNext ? 'rgba(255,182,40,0.15)' : 'transparent',
+                  backgroundColor: 'rgba(255,182,40,0.2)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                {/* DATE BLOCK */}
-                <Box
-                  sx={{
-                    width: 44,
-                    height: 56,
-                    borderRadius: 2,
-                    backgroundColor: 'rgba(255,182,40,0.2)',
-                    color: '#111',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    mr: 1.5,
-                  }}
-                >
-                  <Typography variant="caption">
-                    {new Date(meet.startedAt)
-                      .toLocaleDateString('ru-RU', {
-                        month: 'short',
-                      })
-                      .toUpperCase()
-                      .replace('.', '')}
-                  </Typography>
-                  <Typography variant="h6" fontWeight="bold">
-                    {new Date(meet.startedAt).toLocaleDateString('ru-RU', {
-                      day: 'numeric',
-                    })}
-                  </Typography>
-                </Box>
+                <Typography variant="caption">
+                  {new Date(project.meets[0].startedAt).toLocaleDateString('ru-RU', { month: 'short' }).replace('.', '').toUpperCase()}
+                </Typography>
 
-                {/* CONTENT */}
-                <Box>
-                  <Typography variant="h6">Ближайшая встреча</Typography>
+                <Typography variant="h6">{new Date(project.meets[0].startedAt).getDate()}</Typography>
+              </Box>
 
-                  <Stack direction="row" alignItems="center" spacing={0.5}>
-                    <AccessTimeIcon sx={{ fontSize: 14, opacity: 0.6 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      {from} – {to}
-                    </Typography>
-                  </Stack>
+              <Box>
+                <Typography variant="body2">
+                  {new Date(project.meets[0].startedAt).toLocaleTimeString('ru-RU', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Typography>
 
-                  <Stack direction="row" alignItems="center" spacing={0.5}>
-                    <PlaceIcon sx={{ fontSize: 14, opacity: 0.6 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      {project?.place?.address}
-                    </Typography>
-                  </Stack>
-                </Box>
-              </Stack>
-            );
-          })}
-        </Box>
-
-        <Stack sx={{ mt: 2 }}>
-          <Typography variant="caption" color="text.secondary">
-            Участники
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <AvatarGroupUsers users={project.users || []} />
-
-            <Stack direction="row" spacing={1}>
-              <Button variant="text" size="small">
-                Подробнее
-              </Button>
-              <Button variant="contained" size="small" onClick={() => handleLike()}>
-                {likedFront ? 'Выйти' : 'Вступить'}
-              </Button>
+                <Typography variant="caption" color="text.secondary">
+                  {project.place?.address}
+                </Typography>
+              </Box>
             </Stack>
-          </Box>
-        </Stack>
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              Станьте первым участником и помогите запустить проект 🚀
+            </Typography>
+          )}
+        </Box>
+      </Box>
 
-        {/* CTA */}
-      </CardContent>
+      <Box sx={{ px: 2, mt: 2 }}>
+        <Typography variant="caption" color="text.secondary">
+          Участники
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mt: 1,
+          }}
+        >
+          <AvatarGroupUsers users={project.users || []} />
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          px: 2,
+          py: 2,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Button variant="contained" size="small" onClick={handleLike}>
+          {likedFront ? 'Выйти' : 'Вступить'}
+        </Button>
+
+        <Button variant="text" size="small">
+          Подробнее
+        </Button>
+      </Box>
     </Card>
   );
 }

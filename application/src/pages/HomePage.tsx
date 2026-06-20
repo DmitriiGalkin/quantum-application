@@ -11,6 +11,7 @@ import { useFilters } from './useFilters.ts';
 import Filter from './Filter.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation } from './useLocation.ts';
+import Typography from '@mui/material/Typography';
 
 function HomePage() {
   const { filters, setView, setSort, setWhen } = useFilters();

@@ -19,8 +19,7 @@ import Filter from './Filter.tsx';
 import Share from '../components/Share.tsx';
 
 function IdeaPage() {
-  const f = useFilters();
-  const { filters } = f;
+  const { filters, setView, setSort, setWhen } = useFilters();
 
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
@@ -34,11 +33,11 @@ function IdeaPage() {
 
   const {
     data: idea,
-    isLoading: isProjectLoading,
+    isLoading,
     isError: isProjectError,
     refetch,
   } = useQuery({
-    queryKey: ['idea', id, JSON.stringify(filters)],
+    queryKey: ['idea', id, filters],
     queryFn: () => fetchIdea(id!, filters),
     enabled: Boolean(id),
   });
@@ -82,7 +81,7 @@ function IdeaPage() {
   }
 
   return (
-    <Page isLoading={isProjectLoading} isError={isProjectError}>
+    <Page isLoading={isLoading} isError={isProjectError}>
       {idea && (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -176,7 +175,9 @@ function IdeaPage() {
           <Grid size={{ xs: 12, md: 9 }}>
             <Stack spacing={1}>
               {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
-              {!(f.filters.when === undefined && !idea.projects.length) && <Filter {...f} />}
+              {!(filters.when === undefined && !idea.projects.length) && (
+                <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
+              )}
 
               {filters.view === 'map' && <div>Карта</div>}
 
@@ -188,7 +189,7 @@ function IdeaPage() {
                 </Stack>
               )}
 
-              {f.filters.when === undefined && !idea.projects.length && (
+              {filters.when === undefined && !idea.projects.length && (
                 <Box
                   sx={{
                     p: 3,
