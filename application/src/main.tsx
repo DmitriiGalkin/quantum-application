@@ -9,22 +9,20 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const queryClient = new QueryClient();
 const theme = createTheme({
   palette: {
-    palette: {
-      mode: 'light',
-      primary: {
-        main: '#FFB628', // твой оранжевый
-      },
-      secondary: {
-        main: '#6B21A8', //'#00a7e1'//'#1E3A8A', // тёмно-синий для контраста
-      },
-      background: {
-        default: '#FFB628',
-        paper: '#ffffff',
-      },
-      text: {
-        primary: '#1F2937',
-        secondary: '#374151',
-      },
+    mode: 'light',
+    primary: {
+      main: '#FFB628', // твой оранжевый
+    },
+    secondary: {
+      main: '#6B21A8', //'#00a7e1'//'#1E3A8A', // тёмно-синий для контраста
+    },
+    background: {
+      default: '#FFB628',
+      paper: '#ffffff',
+    },
+    text: {
+      primary: '#1F2937',
+      secondary: '#374151',
     },
   },
 });

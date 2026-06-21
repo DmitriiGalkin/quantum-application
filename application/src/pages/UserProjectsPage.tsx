@@ -4,8 +4,8 @@ import Box from '@mui/material/Box';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../requests.ts';
-import Page from '../components/Page.tsx';
-import ProjectCard from '../components/ProjectCard.tsx';
+import Page from '../shared/ui/Page.tsx';
+import ProjectCard from '../features/projects/ui/ProjectCard.tsx';
 
 function UserProjectsPage() {
   const { id } = useParams();
@@ -41,35 +41,6 @@ function UserProjectsPage() {
           >
             {projects.map(project => (
               <ProjectCard project={project} />
-              // <Card sx={{ display: 'flex' }}>
-              //   <Box sx={{ width: 300 }}>
-              //     <CardMedia
-              //       component="img"
-              //       sx={{
-              //         width: 300,
-              //         height: 120,
-              //         objectFit: 'cover',
-              //         flexShrink: 0,
-              //       }}
-              //       image={idea.image || `/bg.jpeg`}
-              //       alt={idea.title || 'Идея'}
-              //     />
-              //     <CardContent sx={{ flexGrow: 1 }}>
-              //       <Typography variant="h5">{idea.title}</Typography>
-              //       <Typography>{idea.description}</Typography>
-              //     </CardContent>
-              //   </Box>
-              //   <CardContent sx={{ flexGrow: 1 }}>
-              //     <List>
-              //       {meets?.map((meet, index) => (
-              //         <>
-              //           {index !== 0 && <Divider />}
-              //           <MeetListItem meet={meet} refetch={refetch} />
-              //         </>
-              //       ))}
-              //     </List>
-              //   </CardContent>
-              // </Card>
             ))}
           </Box>
         )}

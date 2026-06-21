@@ -48,9 +48,7 @@ export class ProjectService {
       Promise.all(projects.map(p => (p.placeId ? PlaceRepository.findById(p.placeId) : null))),
       Promise.all(projects.map(p => MeetRepository.findByProjectId(p.id))),
     ]);
-
     const userMeetArr = await Promise.all(meetArr.map(meets => Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)))));
-
     return projects.map((project, i) => ({
       ...project,
       idea: ideas[i],

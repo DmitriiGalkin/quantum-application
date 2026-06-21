@@ -31,7 +31,7 @@ const findAll: Controller<ProjectDto[]> = async (req, res) => {
   }
 };
 
-const findByUserId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
+const findByUserId: ControllerWithAuth<ProjectFullDto[]> = async (req, res) => {
   const ideas = await ProjectService.findAll({
     ...req.query,
     userId: req.params.id,

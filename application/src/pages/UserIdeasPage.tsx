@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserIdeas } from '../requests.ts';
-import IdeaCard from '../components/cards/IdeaCard.tsx';
+import IdeaCard from '../features/ideas/ui/IdeaCard.tsx';
 import { useParams } from 'react-router-dom';
-import Page from '../components/Page.tsx';
+import Page from '../shared/ui/Page.tsx';
 
 function IdeasPage() {
   const { id } = useParams();

@@ -33,7 +33,7 @@ export interface IdeaExtendedDto extends IdeaDto {
 
 export interface IdeaFullDto extends IdeaDto {
   user: UserDto | null;
-  projects: Omit<ProjectDto, 'id'>[];
+  projects: ProjectExtendedDto[];
 }
 
 export interface MeetDto {
@@ -105,9 +105,16 @@ export interface ProjectDto {
   id: number;
 }
 
+export interface ProjectExtendedDto extends ProjectDto {
+  passport: PassportDto;
+  place: PlaceDto;
+  meets: MeetFullDto[];
+  users: UserDto[];
+}
+
 export interface ProjectFullDto extends ProjectDto {
   idea: IdeaDto;
-  passport: PassportDto | null;
+  passport: PassportDto;
   place: PlaceDto | null;
   meets: MeetFullDto[];
   users: UserDto[];
@@ -129,6 +136,7 @@ export interface ContextDto {
   ideas?: IdeaFullDto[];
   project?: ProjectFullDto;
   idea?: IdeaFullDto;
+  passport?: PassportDto;
 }
 
 // Контракты
@@ -207,7 +215,7 @@ export type FeedItem =
   | FeedLike;
 
 interface BaseFeed {
-  //id: string;
+  id: string;
   createdAt: string;
   user?: UserDto;
 }

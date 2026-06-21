@@ -6,14 +6,14 @@ import Typography from '@mui/material/Typography';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassportProjects } from '../requests.ts';
-import CreateProjectBlock from '../components/CreateProjectBlock.tsx';
-import Page from '../components/Page.tsx';
+import CreateProjectBlock from '../shared/ui/CreateProjectBlock.tsx';
+import Page from '../shared/ui/Page.tsx';
 import { groupProjectsByIdea } from '../utils/helper.ts';
-import IdeaProjectCard from '../components/cards/IdeaProjectCard.tsx';
+import IdeaProjectCard from '../features/ideas/ui/IdeaProjectCard.tsx';
 import List from '@mui/material/List';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { CardActions, CardContent, Divider } from '@mui/material';
+import { CardActions, CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
 
 function PassportProjectsPage() {
@@ -58,11 +58,8 @@ function PassportProjectsPage() {
                 </Box>
                 <CardContent>
                   <List>
-                    {projects.map((project, index) => (
-                      <>
-                        {index !== 0 && <Divider />}
-                        <IdeaProjectCard project={project} withoutPassport />
-                      </>
+                    {projects.map((project) => (
+                      <IdeaProjectCard key={project.id} project={project} withoutPassport />
                     ))}
                   </List>
                 </CardContent>
