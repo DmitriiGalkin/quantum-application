@@ -1,57 +1,19 @@
-import type { MeetExtendedDto, PassportDto } from '@shared/types';
-import { Button, Card } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import { fetchCreateMeetUser, fetchDeleteMeetUser } from '../../../requests.ts';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import type { MeetExtendedDto } from '@shared/types';
 import Box from '@mui/material/Box';
-import MeetCardHeader from './MeetCardHeader.tsx';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PeopleIcon from '@mui/icons-material/People';
 
 type Props = {
   meet: MeetExtendedDto;
-  refetch?: () => void;
-  passport?: PassportDto;
-  withoutAction?: boolean;
   isNextMeet?: boolean;
 };
 
-function Meet({ meet, refetch, passport, withoutAction, isNextMeet }: Props) {
-  const { user, authHandler } = useAuth();
-
-  const liked = user && meet.users?.some(u => u.id === user.id);
-
-  const mutationLike = useMutation({
-    mutationFn: fetchCreateMeetUser,
-    onSuccess: () => {
-      refetch?.();
-    },
-  });
-
-  const mutationUnlike = useMutation({
-    mutationFn: fetchDeleteMeetUser,
-    onSuccess: () => {
-      refetch?.();
-    },
-  });
-
-  const handleLike = () => {
-    if (user) mutationLike.mutate({ userId: user.id, meetId: meet.id });
-    else authHandler();
-  };
-
-  const handleUnlike = () => {
-    if (user) mutationUnlike.mutate({ userId: user.id, meetId: meet.id });
-    else authHandler();
-  };
-
+function Meet({ meet, isNextMeet }: Props) {
   return (
     <Box>
-      {passport && <MeetCardHeader passport={passport} handleUnlike={liked && handleUnlike} />}
       <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
         {isNextMeet && (
           <Typography variant="caption" color="text.secondary">
@@ -59,9 +21,7 @@ function Meet({ meet, refetch, passport, withoutAction, isNextMeet }: Props) {
           </Typography>
         )}
         <Stack spacing={1} sx={{ mt: 1 }}>
-          {/* MAIN ROW */}
           <Stack direction="row" spacing={1}>
-            {/* DATE BLOCK */}
             <Box
               sx={{
                 width: 44,
@@ -82,7 +42,6 @@ function Meet({ meet, refetch, passport, withoutAction, isNextMeet }: Props) {
               <Typography variant="h6">{new Date(meet.startedAt).getDate()}</Typography>
             </Box>
 
-            {/* INFO */}
             <Box sx={{ minWidth: 0, flexGrow: 1 }}>
               <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
                 <div>

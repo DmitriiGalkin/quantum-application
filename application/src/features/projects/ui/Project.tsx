@@ -11,7 +11,7 @@ import ProjectCardHeader from './ProjectCardHeader.tsx';
 import type { ProjectFullDto } from '@shared/types';
 
 
-export default function Project({ project, refetch }: { project: ProjectFullDto; refetch: () => void }) {
+export default function Project({ project, refetch }: { project: ProjectFullDto; refetch?: () => void }) {
   const { user, authHandler } = useAuth();
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
   const mutationUnlike = useMutation({
     mutationFn: fetchDeleteProjectUser,
     onSuccess: () => {
-      refetch();
+      refetch?.();
     },
   });
 

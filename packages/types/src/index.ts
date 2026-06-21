@@ -108,14 +108,14 @@ export interface ProjectDto {
 export interface ProjectExtendedDto extends ProjectDto {
   passport: PassportDto;
   place: PlaceDto;
-  meets: MeetFullDto[];
+  meets: MeetDto[];
   users: UserDto[];
 }
 
 export interface ProjectFullDto extends ProjectDto {
   idea: IdeaDto;
   passport: PassportDto;
-  place: PlaceDto | null;
+  place: PlaceDto;
   meets: MeetFullDto[];
   users: UserDto[];
   feeds?: FeedItem[];
@@ -215,7 +215,7 @@ export type FeedItem =
   | FeedLike;
 
 interface BaseFeed {
-  id: string;
+  id: number;
   createdAt: string;
   user?: UserDto;
 }

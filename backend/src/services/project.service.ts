@@ -10,6 +10,7 @@ import { Idea } from '../entities/idea.js';
 import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import { ProjectUser } from '../entities/project-user.js';
+import { Place } from '../entities/place.js';
 
 export class ProjectService {
   static async create(passport: any, data: any) {
@@ -44,7 +45,7 @@ export class ProjectService {
       Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
       Promise.all(projects.map(p => MeetRepository.findRecommendationByProjectId(p.id))),
       Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),
-      Promise.all(projects.map(p => (p.placeId ? PlaceRepository.findById(p.placeId) : null))),
+      Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<Place>)),
       Promise.all(projects.map(p => MeetRepository.findByProjectId(p.id))),
     ]);
     const userMeetArr = await Promise.all(meetArr.map(meets => Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)))));
@@ -71,7 +72,7 @@ export class ProjectService {
       PassportRepository.findById(project.passportId as number) as Promise<Passport>,
       UserRepository.findByProjectId(projectId),
       MeetRepository.findByProjectId(projectId),
-      project.placeId ? PlaceRepository.findById(project.placeId) : null,
+      PlaceRepository.findById(project.placeId) as Promise<Place>,
       IdeaRepository.findById(project.ideaId) as Promise<Idea>,
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
     ]);

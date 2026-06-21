@@ -2,9 +2,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button, Card, CardActionArea, Stack } from '@mui/material';
 import { type ProjectExtendedDto } from '@shared/types';
-import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
 import PlaceIcon from '@mui/icons-material/Place';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
 import MeetForPassport from '../../meets/ui/MeetForPassport.tsx';
 import CardContent from '@mui/material/CardContent';
 
@@ -13,8 +11,7 @@ type IdeaProjectCardProps = {
   refetch?: any;
 };
 
-function IdeaProjectCardForPassport({ project, refetch }: IdeaProjectCardProps) {
-  const { user, authHandler } = useAuth();
+function IdeaProjectCardForPassport({ project }: IdeaProjectCardProps) {
 
   const nextMeet = project.meets?.[0];
 
@@ -33,7 +30,11 @@ function IdeaProjectCardForPassport({ project, refetch }: IdeaProjectCardProps) 
         <CardContent>
           <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
             <PlaceIcon sx={{ fontSize: 16, opacity: 0.6 }} />
-            <Typography component="div" variant="subtitle2" sx={{ fontWeight: 500 }}>
+            <Typography component="div" variant="subtitle2" sx={{ fontWeight: 500,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+             }}>
               {projectTitle}
             </Typography>
           </Stack>

@@ -52,8 +52,9 @@ export interface IdeaFullEntity extends Idea {
   isLiked?: boolean;
   user: User;
   projects: {
-    passport: Passport | null;
-    place: Place | null;
+    id: number
+    passport: Passport;
+    place: Place;
     users: User[];
     idea: Idea;
     meets: Meet[];

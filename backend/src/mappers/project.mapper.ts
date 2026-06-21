@@ -32,17 +32,15 @@ export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => 
     description: project.passport.description,
     image: project.passport.image,
   },
-  place: project.place
-    ? {
-        id: project.place.id,
-        title: project.place.title,
-        address: project.place.address,
-        description: project.place.description,
-        latitude: project.place.latitude,
-        longitude: project.place.longitude,
-        priceFrom: project.place.priceFrom,
-      }
-    : null,
+  place: {
+    id: project.place.id,
+    title: project.place.title,
+    address: project.place.address,
+    description: project.place.description,
+    latitude: project.place.latitude,
+    longitude: project.place.longitude,
+    priceFrom: project.place.priceFrom,
+  },
   meets: project.meets.map(u => ({
     id: u.id,
     projectId: u.projectId,

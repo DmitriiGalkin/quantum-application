@@ -8,7 +8,7 @@ import { FeedItem } from '@shared/types';
 export interface Project {
   id: number;
   ideaId: number;
-  placeId: number | null;
+  placeId: number;
   passportId: number;
 }
 
@@ -28,7 +28,7 @@ interface MeetFullEntity extends Meet {
 export interface ProjectFullEntity extends Project {
   users: User[];
   passport: Passport;
-  place: Place | null;
+  place: Place;
   meets: MeetFullEntity[];
   idea: Idea;
   feeds?: FeedItem[];
