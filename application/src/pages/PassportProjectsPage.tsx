@@ -68,8 +68,8 @@ function PassportProjectsPage() {
                   <CardContent>
                     <Stack sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <Box>
-                        <Typography variant="h6">{idea.title}</Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{idea.title}</Typography>
+                        <Typography variant="body2" color="text.secondary" gutterBottom>
                           {idea.description}
                         </Typography>
                       </Box>
@@ -94,19 +94,23 @@ function PassportProjectsPage() {
                 </Box>
 
                 {/* PROJECTS */}
-                <Box sx={{ pb: 2, px: 2 }}>
-                  <Stack spacing={2.5}>
-                    {projects.map((project, i) => (
-                      <Box
-                        key={project.id}
-                        sx={{
-                          transform: i === 0 ? 'scale(1.03)' : 'none',
-                        }}
-                      >
-                        <IdeaProjectCardForPassport project={project} />
-                      </Box>
+                <Box sx={{ p: 2 }}>
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(2, minmax(0, 1fr))',
+                        md: 'repeat(3, minmax(0, 1fr))',
+                        lg: 'repeat(4, minmax(0, 1fr))',
+                      },
+                      gap: 1,
+                    }}
+                  >
+                    {projects.map(project => (
+                      <IdeaProjectCardForPassport key={project.id} project={project} />
                     ))}
-                  </Stack>
+                  </Box>
                 </Box>
               </Card>
             ))}

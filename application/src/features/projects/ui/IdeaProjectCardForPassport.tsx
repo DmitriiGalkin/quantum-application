@@ -31,9 +31,9 @@ function IdeaProjectCardForPassport({ project, refetch }: IdeaProjectCardProps) 
       {/* LOCATION */}
       <CardActionArea href={`/project/${project.id}`} sx={{ borderRadius: 0 }}>
         <CardContent>
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
             <PlaceIcon sx={{ fontSize: 16, opacity: 0.6 }} />
-            <Typography component="div" variant="subtitle2">
+            <Typography component="div" variant="subtitle2" sx={{ fontWeight: 500 }}>
               {projectTitle}
             </Typography>
           </Stack>

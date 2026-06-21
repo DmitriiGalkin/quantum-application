@@ -16,12 +16,14 @@ export default function AIIdeaBanner({ onClick }: Props) {
         mb: 2,
       }}
     >
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{ alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}
+      >
         {/* TEXT */}
         <Box>
-          <Typography variant="h6">
-            Найдите идею для проекта за пару минут
-          </Typography>
+          <Typography variant="h6">Найдите идею для проекта за пару минут</Typography>
 
           <Typography variant="body2" sx={{ mt: 0.5, opacity: 0.8 }}>
             ИИ подберёт идею под ваши интересы и формат обучения — быстро, точно и без лишнего поиска.
@@ -34,11 +36,11 @@ export default function AIIdeaBanner({ onClick }: Props) {
           startIcon={<AutoAwesomeIcon />}
           onClick={onClick}
           sx={{
-            backgroundColor: '#111',
+            backgroundColor: 'secondary.main',
             color: '#fff',
             whiteSpace: 'nowrap',
             '&:hover': {
-              backgroundColor: '#000',
+              backgroundColor: '#3B1992',
             },
           }}
         >

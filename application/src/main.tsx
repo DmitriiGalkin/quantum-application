@@ -14,7 +14,7 @@ const theme = createTheme({
       main: '#FFB628', // твой оранжевый
     },
     secondary: {
-      main: '#6B21A8', //'#00a7e1'//'#1E3A8A', // тёмно-синий для контраста
+      main: '#7139FF', //'#00a7e1'//'#1E3A8A', // тёмно-синий для контраста // 6B21A8 //
     },
     background: {
       default: '#FFB628',
