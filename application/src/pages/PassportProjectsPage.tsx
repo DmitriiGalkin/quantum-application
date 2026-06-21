@@ -65,54 +65,49 @@ function PassportProjectsPage() {
                     }}
                   />
 
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6">{idea.title}</Typography>
+                  <CardContent>
+                    <Stack sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <Box>
+                        <Typography variant="h6">{idea.title}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {idea.description}
+                        </Typography>
+                      </Box>
 
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        display: '-webkit-box',
-                        overflow: 'hidden',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                      }}
-                    >
-                      {idea.description}
-                    </Typography>
+                      <Stack direction="row" spacing={1} sx={{ alignItems: 'flex-end' }}>
+                        {projects.length === 0 ? (
+                          <Button variant="contained" size="small">
+                            Создать проект
+                          </Button>
+                        ) : (
+                          <Button variant="outlined" size="small">
+                            + Проект
+                          </Button>
+                        )}
 
-                    <Typography variant="caption" color="text.secondary">
-                      {projects.length} проектов
-                    </Typography>
+                        <Button size="small" href={`/idea/${idea.id}`}>
+                          Подробнее
+                        </Button>
+                      </Stack>
+                    </Stack>
                   </CardContent>
                 </Box>
 
                 {/* PROJECTS */}
-                <Box sx={{ px: 2, pb: 1 }}>
-                  <Stack spacing={1}>
-                    {projects.map(project => (
-                      <IdeaProjectCardForPassport key={project.id} project={project} />
+                <Box sx={{ pb: 2, px: 2 }}>
+                  <Stack spacing={2.5}>
+                    {projects.map((project, i) => (
+                      <Box
+                        key={project.id}
+                        sx={{
+                          transform: i === 0 ? 'scale(1.03)' : 'none',
+                        }}
+                      >
+                        <IdeaProjectCardForPassport project={project} />
+                      </Box>
                     ))}
                   </Stack>
                 </Box>
-
-                {/* CTA */}
-                <CardActions
-                  sx={{
-                    px: 2,
-                    pb: 2,
-                    pt: 1,
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Button size="small" href={`/idea/${idea.id}`}>
-                    Подробнее об идее
-                  </Button>
-
-                  <Button variant="contained" size="small" href={`/chat?target=project&ideaId=${idea.id}`}>
-                    + Проект
-                  </Button>
-                </CardActions>
               </Card>
             ))}
           </Stack>

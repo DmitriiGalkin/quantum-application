@@ -8,16 +8,19 @@ import MeetCardHeader from './MeetCardHeader.tsx';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
+import IconButton from '@mui/material/IconButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PeopleIcon from '@mui/icons-material/People';
 
 type Props = {
   meet: MeetExtendedDto;
   refetch?: () => void;
   passport?: PassportDto;
   withoutAction?: boolean;
-  withoutUsers?: boolean;
+  isNextMeet?: boolean;
 };
 
-function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
+function Meet({ meet, refetch, passport, withoutAction, isNextMeet }: Props) {
   const { user, authHandler } = useAuth();
 
   const liked = user && meet.users?.some(u => u.id === user.id);
@@ -47,12 +50,14 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
   };
 
   return (
-    <Card>
+    <Box>
       {passport && <MeetCardHeader passport={passport} handleUnlike={liked && handleUnlike} />}
       <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
-        <Typography variant="caption" color="text.secondary">
-          Ближайшая встреча
-        </Typography>
+        {isNextMeet && (
+          <Typography variant="caption" color="text.secondary">
+            Ближайшая встреча
+          </Typography>
+        )}
         <Stack spacing={1} sx={{ mt: 1 }}>
           {/* MAIN ROW */}
           <Stack direction="row" spacing={1}>
@@ -78,34 +83,35 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
             </Box>
 
             {/* INFO */}
-            <Box sx={{ minWidth: 0 }}>
-              <Typography variant="body2">
-                {new Date(meet.startedAt).toLocaleTimeString('ru-RU', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Typography>
-
-              <Typography variant="caption" color="text.secondary" noWrap>
-                ул. Северодвинская 11
-              </Typography>
-              <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{meet.price ? `${meet.price} ₽` : 'Бесплатно'}</Typography>
+            <Box sx={{ minWidth: 0, flexGrow: 1 }}>
+              <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+                <div>
+                  <Typography variant="body2">
+                    {new Date(meet.startedAt).toLocaleTimeString('ru-RU', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" noWrap>
+                    ул. Северодвинская 11
+                  </Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>{meet.price ? `${meet.price} ₽` : 'Бесплатно'}</Typography>
+                </div>
+                <Stack sx={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                  <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center', color: 'text.secondary' }}>
+                    <PeopleIcon sx={{ fontSize: 16, opacity: 0.7 }} />
+                    <Typography variant="caption">{meet.users?.length || 0} идут</Typography>
+                  </Stack>
+                    <IconButton size="small">
+                      <MoreVertIcon />
+                    </IconButton>
+                </Stack>
+              </Stack>
             </Box>
           </Stack>
-
-          {/* PARTICIPANTS */}
-          {!withoutUsers && (
-            <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-              <AvatarGroupUsers users={meet.users || []} />
-              <Typography variant="caption" color="text.secondary">
-                {meet.users?.length || 0} идут
-              </Typography>
-            </Stack>
-          )}
         </Stack>
-        <div>Управление встречей</div>
       </Box>
-    </Card>
+    </Box>
   );
 }
 
