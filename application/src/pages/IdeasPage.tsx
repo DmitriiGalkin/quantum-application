@@ -1,16 +1,16 @@
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import '../App.css';
-import {MeetMap} from '../features/map/MeetMap.tsx';
-import {useQuery} from '@tanstack/react-query';
-import {fetchIdeas} from '../requests.ts';
+import { MeetMap } from '../features/map/MeetMap.tsx';
+import { useQuery } from '@tanstack/react-query';
+import { fetchIdeas } from '../requests.ts';
 import Stack from '@mui/material/Stack';
 import IdeaCard from '../features/ideas/ui/IdeaCard.tsx';
 import Page from '../shared/ui/Page.tsx';
-import {useFilters} from '../features/ideas/model/useFilters.ts';
+import { useFilters } from '../features/ideas/model/useFilters.ts';
 import Filter from '../features/ideas/ui/Filter.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
-import {useLocation} from '../shared/lib/useLocation.ts';
+import { useLocation } from '../shared/lib/useLocation.ts';
 import Typography from '@mui/material/Typography';
 
 function IdeasPage() {

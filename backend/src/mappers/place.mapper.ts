@@ -1,5 +1,4 @@
 import type { Place } from '../entities/place.js';
-import type { PlaceDto } from '@shared/types';
 
 import { PlaceRow } from '../entities/place.db.js';
 

@@ -14,9 +14,10 @@ type Props = {
   refetch?: () => void;
   passport?: PassportDto;
   withoutAction?: boolean;
+  withoutUsers?: boolean;
 };
 
-function Meet({ meet, refetch, passport, withoutAction }: Props) {
+function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
   const { user, authHandler } = useAuth();
 
   const liked = user && meet.users?.some(u => u.id === user.id);
@@ -93,12 +94,14 @@ function Meet({ meet, refetch, passport, withoutAction }: Props) {
           </Stack>
 
           {/* PARTICIPANTS */}
-          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-            <AvatarGroupUsers users={meet.users || []} />
-            <Typography variant="caption" color="text.secondary">
-              {meet.users?.length || 0} идут
-            </Typography>
-          </Stack>
+          {!withoutUsers && (
+            <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+              <AvatarGroupUsers users={meet.users || []} />
+              <Typography variant="caption" color="text.secondary">
+                {meet.users?.length || 0} идут
+              </Typography>
+            </Stack>
+          )}
         </Stack>
         {!liked && !withoutAction && (
           <Button onClick={() => handleLike()} variant="contained">

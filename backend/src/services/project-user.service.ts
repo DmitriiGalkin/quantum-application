@@ -2,8 +2,7 @@ import ProjectRepository from '../repositories/project.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
-import type { DeleteMeetUser, DeleteProjectUser } from '@shared/types';
-import MeetUserRepository from '../repositories/meet-user.repository.js';
+import type { DeleteProjectUser } from '@shared/types';
 
 function getPassportUserIds(passportId: number) {
   // если у тебя раньше был req.users — лучше заменить на нормальный сервис/запрос

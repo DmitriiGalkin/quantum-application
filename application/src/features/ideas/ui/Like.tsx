@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import Typography from '@mui/material/Typography';
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
 
 type ChatBubbleProps = {
   isLiked?: boolean;

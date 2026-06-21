@@ -1,9 +1,8 @@
 import { Passport } from './passport.js';
 import { User } from './user.js';
-import { Project } from './project.js';
 import { Place } from './place.js';
 import { Meet } from './meet.js';
-import { MeetFullDto, Sort } from '@shared/types';
+import { Sort } from '@shared/types';
 
 export interface Idea {
   id: number;

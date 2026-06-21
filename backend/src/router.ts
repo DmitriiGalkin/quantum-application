@@ -62,6 +62,7 @@ const registerOAuth = (provider: 'yandex' | 'google') => {
 publicRouter.post('/passport/googleLogin', passportController.googleLogin);
 publicRouter.get('/ideas', idea.findAllPublic);
 publicRouter.get('/idea/:id', idea.findById);
+publicRouter.get('/idea/:id/projects', idea.findById);
 publicRouter.get('/idea/:id/meta', idea.meta);
 publicRouter.get('/projects', project.findAll);
 publicRouter.get('/project/:id', project.findById);

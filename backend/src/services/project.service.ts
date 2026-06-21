@@ -8,7 +8,6 @@ import PlaceRepository from '../repositories/place.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
 import { Idea } from '../entities/idea.js';
 import { FeedService } from './feed.service.js';
-import { ProjectUserService } from './project-user.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import { ProjectUser } from '../entities/project-user.js';
 

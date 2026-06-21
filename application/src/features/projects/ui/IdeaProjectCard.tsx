@@ -73,31 +73,27 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
       </Stack>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
-        {project.meets?.[0] ? (
-          <Meet meet={project.meets[0]} withoutAction />
-        ) : (
-          <Typography variant="body2" color="text.secondary">
-            Станьте первым участником и помогите запустить проект 🚀
+        {project.meets?.[0] && <Meet meet={project.meets[0]} withoutAction={!liked} refetch={refetch} withoutUsers />}
+      </Box>
+
+      {Boolean(project.users.length) && (
+        <Box sx={{ px: 2, mt: 2 }}>
+          <Typography variant="caption" color="text.secondary">
+            Участники
           </Typography>
-        )}
-      </Box>
 
-      <Box sx={{ px: 2, mt: 2 }}>
-        <Typography variant="caption" color="text.secondary">
-          Участники
-        </Typography>
-
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mt: 1,
-          }}
-        >
-          <AvatarGroupUsers users={project.users || []} />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mt: 1,
+            }}
+          >
+            <AvatarGroupUsers users={project.users || []} />
+          </Box>
         </Box>
-      </Box>
+      )}
 
       <Box
         sx={{
@@ -109,9 +105,16 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
         }}
       >
         {!liked && (
-          <Button variant="contained" size="small" onClick={handleLike}>
-            Вступить
-          </Button>
+          <Stack spacing={2} direction="row" sx={{ alignItems: 'center' }}>
+            <Button variant="contained" size="small" onClick={handleLike}>
+              Вступить
+            </Button>
+            {!project.users.length && (
+              <Typography variant="body2" color="text.secondary">
+                Станьте первым участником и помогите запустить проект 🚀
+              </Typography>
+            )}
+          </Stack>
         )}
         <Button variant="text" size="small" href={`/project/${project.id}`}>
           Подробнее

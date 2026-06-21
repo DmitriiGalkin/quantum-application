@@ -1,10 +1,9 @@
-import { IdeaExtendedEntity } from '../entities/idea.js';
-import { Meet, MeetExtendedEntity } from '../entities/meet.js';
+import { MeetExtendedEntity } from '../entities/meet.js';
 import { User } from '../entities/user.js';
 
 import { ProjectUser } from '../entities/project-user.js';
 import { FeedItem } from '@shared/types';
-import { toMeetDto, toMeetExtendedDto } from '../mappers/meet.mapper.js';
+import { toMeetExtendedDto } from '../mappers/meet.mapper.js';
 
 interface Join extends ProjectUser {
   user: User

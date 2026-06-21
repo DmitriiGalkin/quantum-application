@@ -44,18 +44,24 @@ class ProjectRepository {
 
     if (params.userId) {
       sql += `
-        AND EXISTS (
-          SELECT 1 FROM projectUser pu
-          WHERE pu.projectId = project.id
-            AND pu.userId = ?
-        )
-      `;
+      AND EXISTS (
+        SELECT 1 FROM projectUser pu
+        WHERE pu.projectId = project.id
+          AND pu.userId = ?
+      )
+    `;
       values.push(params.userId);
     }
 
     if (params.passportId) {
       sql += ' AND project.passportId = ?';
       values.push(params.passportId);
+    }
+
+    // ✅ добавляем фильтр по ideaId
+    if (params.ideaId) {
+      sql += ' AND project.ideaId = ?';
+      values.push(params.ideaId);
     }
 
     sql += params.deleted === 'true' ? ' AND project.deletedAt IS NOT NULL' : ' AND project.deletedAt IS NULL';
@@ -79,10 +85,7 @@ class ProjectRepository {
   }
 
   // ✅ FIND BY IDEA
-  static async findByIdeaId(
-    ideaId: number,
-    params?: FindAllIdeaInput
-  ): Promise<Project[]> {
+  static async findByIdeaId(ideaId: number, params?: FindAllIdeaInput): Promise<Project[]> {
     const values: (string | number)[] = [];
 
     const lat = Number(params?.latitude);
@@ -107,11 +110,7 @@ class ProjectRepository {
       ) AS distance
     `);
 
-      values.push(
-        params.latitude!,
-        params.longitude!,
-        params.latitude!
-      );
+      values.push(params.latitude!, params.longitude!, params.latitude!);
     }
 
     let sql = `

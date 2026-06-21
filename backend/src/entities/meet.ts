@@ -1,5 +1,4 @@
 import { User } from './user.js';
-import { ProjectFullEntity } from './project.js';
 
 export interface Meet {
   id: number;

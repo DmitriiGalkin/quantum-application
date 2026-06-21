@@ -6,7 +6,7 @@ import { mapProjectUserRow } from '../mappers/project-user.mapper.js';
 import { ProjectUser } from '../entities/project-user.js';
 import { CreateProjectUserInput } from '../entities/project-user.types.js';
 import { db } from '../dbNext.js';
-import type { DeleteMeetUser, DeleteProjectUser } from '@shared/types';
+import type { DeleteProjectUser } from '@shared/types';
 
 class ProjectUserRepository {
   // ✅ CREATE

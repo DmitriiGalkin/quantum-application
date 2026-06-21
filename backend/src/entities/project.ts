@@ -14,6 +14,7 @@ export interface Project {
 
 export interface FindAllProjectInput {
   userId?: string | number;
+  ideaId?: number;
   passportId?: string | number;
   deleted?: 'true' | 'false';
   currentUserId?: number;
