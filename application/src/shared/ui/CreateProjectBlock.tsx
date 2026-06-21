@@ -26,7 +26,7 @@ export default function CreateProjectBlock() {
 
         <Box>
           <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-            Создайте свой проект
+            Primary CTA: Создайте свой проект
           </Typography>
 
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>

@@ -15,6 +15,8 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActions, CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
+import IdeaProjectCardForPassport from '../features/projects/ui/IdeaProjectCardForPassport.tsx';
+import AIIdeaBanner from '../features/ideas/ui/AIIdeaBanner.tsx';
 
 function PassportProjectsPage() {
   const { id } = useParams();
@@ -34,51 +36,90 @@ function PassportProjectsPage() {
     <Page isLoading={isProjectsLoading}>
       <Box component="section">
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
+        <AIIdeaBanner />
+        {!projects.length && <CreateProjectBlock />}
 
-        {!isProjectsLoading && !isProjectsError && Boolean(groupes.length) && (
+        {Boolean(groupes.length) && (
           <Stack spacing={2}>
             {groupes.map(({ idea, projects }) => (
-              <Card sx={{ borderRadius: 4 }}>
+              <Card
+                key={idea.id}
+                sx={{
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                  mb: 2,
+                  border: projects.length === 1 ? '1px solid rgba(255,182,40,0.3)' : undefined,
+                }}
+              >
+                {/* IDEA HEADER */}
                 <Box sx={{ display: 'flex' }}>
                   <CardMedia
                     component="img"
+                    image={idea.image || `/bg.jpeg`}
+                    alt={idea.title}
                     sx={{
-                      width: 300,
+                      width: 120,
                       height: 120,
                       objectFit: 'cover',
-                      flexShrink: 0, // 🔥 важно!
+                      flexShrink: 0,
                     }}
-                    image={idea.image || `/bg.jpeg`}
-                    alt={idea.title || 'Идея'}
                   />
+
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h3">{idea.title}</Typography>
-                    <Typography>{idea.description}</Typography>
+                    <Typography variant="h6">{idea.title}</Typography>
+
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        display: '-webkit-box',
+                        overflow: 'hidden',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                      }}
+                    >
+                      {idea.description}
+                    </Typography>
+
+                    <Typography variant="caption" color="text.secondary">
+                      {projects.length} проектов
+                    </Typography>
                   </CardContent>
                 </Box>
-                <CardContent>
-                  <List>
-                    {projects.map((project) => (
-                      <IdeaProjectCard key={project.id} project={project} withoutPassport />
+
+                {/* PROJECTS */}
+                <Box sx={{ px: 2, pb: 1 }}>
+                  <Stack spacing={1}>
+                    {projects.map(project => (
+                      <IdeaProjectCardForPassport key={project.id} project={project} />
                     ))}
-                  </List>
-                </CardContent>
-                <CardActions>
-                  <Button href={`/chat?target=project&ideaId=${idea.id}`}>Создать новый проект по идее</Button>
+                  </Stack>
+                </Box>
+
+                {/* CTA */}
+                <CardActions
+                  sx={{
+                    px: 2,
+                    pb: 2,
+                    pt: 1,
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Button size="small" href={`/idea/${idea.id}`}>
+                    Подробнее об идее
+                  </Button>
+
+                  <Button variant="contained" size="small" href={`/chat?target=project&ideaId=${idea.id}`}>
+                    + Проект
+                  </Button>
                 </CardActions>
               </Card>
             ))}
           </Stack>
         )}
-
-        {!isProjectsLoading && !isProjectsError && !projects.length && <CreateProjectBlock />}
       </Box>
     </Page>
   );
 }
 
 export default PassportProjectsPage;
-//
-//
-// sm: 'repeat(2, minmax(0, 1fr))',
-//   md: 'repeat(3, minmax(0, 1fr))',
