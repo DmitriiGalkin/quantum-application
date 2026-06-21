@@ -1,12 +1,10 @@
 import type { MeetExtendedDto } from '@shared/types';
-import { Avatar, Button, Card, CardActions, CardHeader, CardContent } from '@mui/material';
+import { Avatar, Button, Card, CardActions, CardHeader } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateMeetUser, fetchDeleteMeetUser } from '../requests.ts';
-import { useAuth } from '../providers/AuthProvider.tsx';
+import { fetchCreateMeetUser, fetchDeleteMeetUser } from '../../requests.ts';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 import { useEffect, useState } from 'react';
-import AvatarGroupUsers from './AvatarGroupUsers.tsx';
-import Typography from '@mui/material/Typography';
-import ProjectMeetCard from './ProjectMeetCard.tsx';
+import ProjectMeetCard from '../ProjectMeetCard.tsx';
 import Box from '@mui/material/Box';
 
 type MeetListItemProps = {

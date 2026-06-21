@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchIdeas } from '../requests.ts';
-import IdeaCard from '../components/IdeaCard.tsx';
+import IdeaCard from '../components/cards/IdeaCard.tsx';
 import Page from '../components/Page.tsx';
 
 function IdeasPage() {

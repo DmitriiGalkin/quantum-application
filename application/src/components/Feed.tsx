@@ -1,6 +1,6 @@
-import { Avatar, Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
-import type { FeedItem, MeetDto, UserDto } from '@shared/types';
-import MeetCard from './MeetCard';
+import { Avatar, Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
+import type { FeedItem, UserDto } from '@shared/types';
+import MeetCard from './cards/MeetCard.tsx';
 
 export function Feed({ items }: { items: FeedItem[] }) {
   return (

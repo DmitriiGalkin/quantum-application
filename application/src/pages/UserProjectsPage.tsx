@@ -1,17 +1,10 @@
 import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../requests.ts';
 import Page from '../components/Page.tsx';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import { CardContent, Divider } from '@mui/material';
-import List from '@mui/material/List';
-import MeetListItem from '../components/MeetListItem.tsx';
 import ProjectCard from '../components/ProjectCard.tsx';
 
 function UserProjectsPage() {

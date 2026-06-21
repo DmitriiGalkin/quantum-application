@@ -13,7 +13,7 @@ import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import Like from '../components/Like.tsx';
 import { Button, CardActions, Grid } from '@mui/material';
 import Page from '../components/Page.tsx';
-import IdeaProjectCard from '../components/IdeaProjectCard.tsx';
+import IdeaProjectCard from '../components/cards/IdeaProjectCard.tsx';
 import { useFilters } from './useFilters.ts';
 import Filter from './Filter.tsx';
 import Share from '../components/Share.tsx';

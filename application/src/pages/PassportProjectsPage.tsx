@@ -9,7 +9,7 @@ import { fetchPassportProjects } from '../requests.ts';
 import CreateProjectBlock from '../components/CreateProjectBlock.tsx';
 import Page from '../components/Page.tsx';
 import { groupProjectsByIdea } from '../utils/helper.ts';
-import IdeaProjectCard from '../components/IdeaProjectCard.tsx';
+import IdeaProjectCard from '../components/cards/IdeaProjectCard.tsx';
 import List from '@mui/material/List';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';

@@ -1,5 +1,5 @@
 import type { MeetExtendedDto } from '@shared/types';
-import { Avatar, Button, Card, CardActions, CardHeader, CardContent } from '@mui/material';
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateMeetUser, fetchDeleteMeetUser } from '../requests.ts';
 import { useAuth } from '../providers/AuthProvider.tsx';

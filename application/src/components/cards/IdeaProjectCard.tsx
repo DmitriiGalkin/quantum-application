@@ -2,12 +2,12 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Avatar, Button, Card, CardHeader, Stack } from '@mui/material';
 import type { ProjectFullDto } from '@shared/types';
-import AvatarGroupUsers from './AvatarGroupUsers.tsx';
+import AvatarGroupUsers from '../AvatarGroupUsers.tsx';
 import PlaceIcon from '@mui/icons-material/Place';
-import { useAuth } from '../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateProjectUser, fetchDeleteProjectUser } from '../requests.ts';
-import ProjectMeetCard from './ProjectMeetCard.tsx';
+import { fetchCreateProjectUser, fetchDeleteProjectUser } from '../../requests.ts';
+import ProjectMeetCard from '../ProjectMeetCard.tsx';
 
 type IdeaProjectCardProps = {
   project: ProjectFullDto;

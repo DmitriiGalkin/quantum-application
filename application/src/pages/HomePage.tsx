@@ -5,7 +5,7 @@ import { MeetMap } from '../components/Map/MeetMap.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchIdeas, fetchLike, fetchUnlike } from '../requests.ts';
 import Stack from '@mui/material/Stack';
-import IdeaCard from '../components/IdeaCard.tsx';
+import IdeaCard from '../components/cards/IdeaCard.tsx';
 import Page from '../components/Page.tsx';
 import { useFilters } from './useFilters.ts';
 import Filter from './Filter.tsx';

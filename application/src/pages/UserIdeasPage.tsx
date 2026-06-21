@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import '../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserIdeas } from '../requests.ts';
-import IdeaCard from '../components/IdeaCard.tsx';
+import IdeaCard from '../components/cards/IdeaCard.tsx';
 import { useParams } from 'react-router-dom';
 import Page from '../components/Page.tsx';
 

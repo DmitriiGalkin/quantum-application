@@ -1,7 +1,20 @@
-import { CardHeader, CardActions, Grid, Typography, Card, CardContent, Avatar, Button, Stack } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { Feed } from '../components/Feed.tsx';
-import { useQuery } from '@tanstack/react-query';
-import { fetchProject } from '../requests.ts';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { fetchCreateProjectUser, fetchDeleteProjectUser, fetchProject } from '../requests.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import Page from '../components/Page.tsx';
 import CardMedia from '@mui/material/CardMedia';
@@ -9,17 +22,45 @@ import ProjectMeetCard from '../components/ProjectMeetCard.tsx';
 import Box from '@mui/material/Box';
 import { useAuth } from '../providers/AuthProvider.tsx';
 import LinkIcon from '@mui/icons-material/Link';
-import IconButton from '@mui/material/IconButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState } from 'react';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MailOutlineIcon from '@mui/icons-material/Mail';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
+  const { user, authHandler } = useAuth();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const { data: project } = useQuery({
+  const open = Boolean(anchorEl);
+
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const { data: project, refetch } = useQuery({
     queryKey: ['project', id],
     queryFn: () => fetchProject(id as string),
     enabled: Boolean(id),
+  });
+
+  const mutationLike = useMutation({
+    mutationFn: fetchCreateProjectUser,
+    onSuccess: () => {
+      refetch?.();
+    },
+  });
+
+  const mutationUnlike = useMutation({
+    mutationFn: fetchDeleteProjectUser,
+    onSuccess: () => {
+      refetch?.();
+    },
   });
 
   if (!project) return null;
@@ -31,6 +72,17 @@ export default function ProjectPage() {
 
   const nextMeet = sortedMeets.find(m => new Date(m.startedAt) > now);
 
+  const handleLike = () => {
+    if (user)
+        mutationLike.mutate({ userId: user.id, projectId: project.id });
+    else authHandler();
+  };
+
+  const handleUnlike = () => {
+    if (user) mutationUnlike.mutate({ userId: user.id, projectId: project.id });
+    else authHandler();
+  };
+
   return (
     <Page>
       <Grid container spacing={2}>
@@ -41,6 +93,41 @@ export default function ProjectPage() {
                 <Avatar alt={project?.passport?.title} src={project?.passport?.image || ''}>
                   R
                 </Avatar>
+              }
+              action={
+                <>
+                  <IconButton onClick={handleOpen}>
+                    <MoreVertIcon />
+                  </IconButton>
+
+                  <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        console.log('send message');
+                      }}
+                      disabled
+                    >
+                      <ListItemIcon>
+                        <MailOutlineIcon fontSize="small" />
+                      </ListItemIcon>
+                      Написать письмо
+                    </MenuItem>
+                    {isMember && (
+                      <MenuItem
+                        onClick={() => {
+                          handleClose();
+                          handleUnlike();
+                        }}
+                      >
+                        <ListItemIcon>
+                          <LogoutIcon fontSize="small" />
+                        </ListItemIcon>
+                        Выйти из проекта
+                      </MenuItem>
+                    )}
+                  </Menu>
+                </>
               }
               title={project?.passport?.title}
               subheader="Программист трудоголик"
@@ -98,12 +185,11 @@ export default function ProjectPage() {
               {!isMember && (
                 <>
                   <Typography variant="h6">Вступите в проект</Typography>
-
                   <Typography variant="body2" color="text.secondary">
                     Чтобы участвовать во встречах
                   </Typography>
 
-                  <Button fullWidth variant="contained" sx={{ mt: 2 }}>
+                  <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={handleLike}>
                     Вступить
                   </Button>
                 </>
@@ -127,7 +213,6 @@ export default function ProjectPage() {
               {isMember && !nextMeet && (
                 <>
                   <Typography variant="h6">Пока нет встреч</Typography>
-
                   <Typography variant="body2" color="text.secondary">
                     Вы получите уведомление
                   </Typography>
@@ -142,9 +227,7 @@ export default function ProjectPage() {
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
-          <Stack spacing={2}>
-            <Feed items={project.feeds} />
-          </Stack>
+          <Feed items={project.feeds || []} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 3 }}>

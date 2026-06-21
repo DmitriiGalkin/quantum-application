@@ -16,9 +16,9 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import { Link, useSearchParams } from 'react-router-dom';
 import ChatIntroduction from '../../components/ChatIntroduction.tsx';
-import IdeaCard from '../../components/IdeaCard.tsx';
+import IdeaCard from '../../components/cards/IdeaCard.tsx';
 import ProjectCard from '../../components/ProjectCard.tsx';
-import MeetCard from '../../components/MeetCard.tsx';
+import MeetCard from '../../components/cards/MeetCard.tsx';
 
 function ChatPage() {
   const { token, authHandler } = useAuth();
