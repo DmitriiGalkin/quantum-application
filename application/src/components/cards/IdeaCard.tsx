@@ -9,7 +9,7 @@ import { useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import type { IdeaDto, IdeaExtendedDto } from '@shared/types';
-import { useAuth } from '../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 import { Button, CardActionArea } from '@mui/material';
 
 type IdeaCardProps = {
