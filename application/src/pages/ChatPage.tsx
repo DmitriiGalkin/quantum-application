@@ -17,8 +17,8 @@ import Toolbar from '@mui/material/Toolbar';
 import { Link, useSearchParams } from 'react-router-dom';
 import ChatIntroduction from '../features/chat/ui/ChatIntroduction.tsx';
 import IdeaCard from '../features/ideas/ui/IdeaCard.tsx';
-import ProjectCard from '../features/projects/ui/ProjectCard.tsx';
-import MeetCard from '../features/projects/ui/MeetCard.tsx';
+import Project from '../features/projects/ui/Project.tsx';
+import Meet from '../features/meets/ui/Meet.tsx';
 
 function ChatPage() {
   const { token, authHandler } = useAuth();
@@ -104,9 +104,9 @@ function ChatPage() {
               ))}
             </>
           )}
-          {chat?.context?.ui === 'project' && chat?.context?.project && <ProjectCard project={chat.context.project} />}
+          {chat?.context?.ui === 'project' && chat?.context?.project && <Project project={chat.context.project} />}
           {chat?.context?.ui === 'meet' && chat?.context?.meet && chat?.context?.passport && (
-            <MeetCard meet={chat.context.meet} passport={chat.context.passport}/>
+            <Meet meet={chat.context.meet} passport={chat.context.passport} />
           )}
           {chat?.context?.ui === 'idea' && chat?.context?.idea && <IdeaCard idea={chat.context.idea} />}
         </Stack>

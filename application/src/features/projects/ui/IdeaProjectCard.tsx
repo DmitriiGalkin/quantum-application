@@ -7,8 +7,8 @@ import PlaceIcon from '@mui/icons-material/Place';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateProjectUser, fetchDeleteProjectUser } from '../../../requests.ts';
-import ProjectMeetCard from '../../projects/ui/ProjectMeetCard.tsx';
-import ProjectCardHeader from '../../projects/ui/ProjectCardHeader.tsx';
+import ProjectCardHeader from './ProjectCardHeader.tsx';
+import Meet from '../../meets/ui/Meet.tsx';
 
 type IdeaProjectCardProps = {
   project: ProjectExtendedDto; // частичное должно быть
@@ -18,7 +18,7 @@ type IdeaProjectCardProps = {
 function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
   const { user, authHandler } = useAuth();
 
-  const liked = user && project.users.map(user => user.id).includes(user.id);
+  const liked = user && project.users?.map(user => user.id).includes(user.id);
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateProjectUser,
@@ -74,12 +74,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
         {project.meets?.[0] ? (
-          <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
-            <Typography variant="caption" color="text.secondary">
-              Ближайшая встреча
-            </Typography>
-            <ProjectMeetCard meet={project.meets[0]} />
-          </Box>
+          <Meet meet={project.meets[0]} withoutAction />
         ) : (
           <Typography variant="body2" color="text.secondary">
             Станьте первым участником и помогите запустить проект 🚀

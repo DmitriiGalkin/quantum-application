@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import type { FeedItem, PassportDto, UserDto } from '@shared/types';
-import MeetCard from '../../projects/ui/MeetCard.tsx';
+import Meet from '../../meets/ui/Meet.tsx';
 
 export function Feed({ items, passport, refetch }: { items: FeedItem[]; passport: PassportDto; refetch: () => void }) {
   return (
@@ -15,7 +15,7 @@ export function Feed({ items, passport, refetch }: { items: FeedItem[]; passport
 function FeedItemView({ item, passport, refetch }: { item: FeedItem; passport: PassportDto; refetch: () => void }) {
   switch (item.type) {
     case 'meet':
-      return <MeetCard meet={item.meet} passport={passport} refetch={refetch} />;
+      return <Meet meet={item.meet} passport={passport} refetch={refetch} />;
 
     case 'comment':
       return <CommentCard comment={item.comment} user={item.user as UserDto} />;
