@@ -13,7 +13,7 @@ function AvatarGroupUsers({ users }: UserGroupProps) {
   const etc = users.length - 5;
 
   return (
-    <Stack direction="row" spacing={2} sx={{ alignItems: 'center', pt: 1 }}>
+    <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
       <AvatarGroup max={5}>
         {users.map(user => (
           <Avatar src={user.image || ''} alt="Участник" key={user.id} sx={{ width: 32, height: 32 }} />

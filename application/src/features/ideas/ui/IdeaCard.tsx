@@ -4,9 +4,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import type { IdeaDto, IdeaExtendedDto } from '@shared/types';
-import { Button, CardActionArea } from '@mui/material';
+import { Button, CardActionArea, Link } from '@mui/material';
 import Like from './Like.tsx';
 import { useNavigate } from 'react-router-dom';
+import { Author } from '../../../shared/ui/Author.tsx';
 
 type IdeaCardProps = {
   idea: IdeaExtendedDto;
@@ -33,17 +34,17 @@ function IdeaCard({ idea, actionType = 'view', onSelect }: IdeaCardProps) {
         <CardMedia component="img" height="120" image={idea.image || `/bg.jpeg`} sx={{ objectFit: 'cover' }} />
 
         <CardContent sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" sx={{ fontWeight: 800 }} gutterBottom noWrap>
+          <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom noWrap>
             {idea.title}
           </Typography>
 
           <Typography
-            color="text.secondary"
             sx={{
               display: '-webkit-box',
               overflow: 'hidden',
               WebkitBoxOrient: 'vertical',
               WebkitLineClamp: 3,
+              color: 'text.secondary',
             }}
           >
             {idea.description}
@@ -51,7 +52,7 @@ function IdeaCard({ idea, actionType = 'view', onSelect }: IdeaCardProps) {
         </CardContent>
       </CardActionArea>
 
-      <CardActions>
+      <CardActions sx={{ justifyContent: 'space-between', pr: 2 }}>
         {actionType === 'draft' ? (
           <Button size="small" onClick={() => onSelect?.(idea)}>
             Выбрать
@@ -59,10 +60,7 @@ function IdeaCard({ idea, actionType = 'view', onSelect }: IdeaCardProps) {
         ) : (
           <>
             <Like ideaId={idea.id} isLiked={idea.isLiked} />
-
-            <Typography sx={{ marginLeft: 'auto' }} variant="caption" color="text.secondary">
-              {idea.user?.title}, {idea.user?.age}
-            </Typography>
+            <Author user={idea.user}/>
           </>
         )}
       </CardActions>

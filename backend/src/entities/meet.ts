@@ -7,7 +7,7 @@ export interface Meet {
   price: number | null;
   duration: number | null;
   startedAt: string;
-  placeId: number | null;
+  placeId: number;
 }
 
 export interface MeetWithProjectTitle extends Meet {

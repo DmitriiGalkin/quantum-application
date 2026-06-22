@@ -7,7 +7,7 @@ function NotFound() {
       <Typography variant="h2" sx={{ fontWeight: 900 }} color="error">
         404
       </Typography>
-      <Typography color="text.secondary">Страница не найдена.</Typography>
+      <Typography sx={{ color: 'text.secondary' }}>Страница не найдена.</Typography>
     </Container>
   );
 }

@@ -65,16 +65,12 @@ function EditProjectPage() {
           <>
             {project.place.title && <Typography sx={{ fontWeight: 900, mb: 1 }}>{project.place.title}</Typography>}
 
-            {project.place.address && (
-              <Typography color="text.secondary" sx={{ mb: 1.5 }}>
-                {project.place.address}
-              </Typography>
-            )}
+            {project.place.address && <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{project.place.address}</Typography>}
 
             {project.place.description && <Typography>{project.place.description}</Typography>}
           </>
         ) : (
-          <Typography color="text.secondary">Место пока не выбрано.</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>Место пока не выбрано.</Typography>
         )}
         <Card
           elevation={0}
@@ -127,7 +123,7 @@ function EditProjectPage() {
                       <Typography sx={{ fontWeight: 800 }}>{user.title ?? 'Без имени'}</Typography>
 
                       {user.age !== null && user.age !== undefined && (
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                           {user.age} лет
                         </Typography>
                       )}
@@ -135,7 +131,7 @@ function EditProjectPage() {
                   ))}
                 </Box>
               ) : (
-                <Typography color="text.secondary">Пока нет участников.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>Пока нет участников.</Typography>
               )}
             </Stack>
           </CardContent>

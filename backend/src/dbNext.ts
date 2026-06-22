@@ -113,17 +113,3 @@ export class DatabaseService {
 }
 
 export const db = new DatabaseService();
-
-// const users = await db.query<{ id: number; name: string }>('SELECT * FROM users WHERE id = :id', { id: 1 });
-// await db.execute('INSERT INTO users (name) VALUES (:name)', { name: 'Alex' });
-// await db.transaction(async conn => {
-//   await conn.execute('INSERT INTO users (name) VALUES (?)', ['Alex']);
-//
-//   await conn.execute('INSERT INTO logs (action) VALUES (?)', ['create user']);
-// });
-// if (duration > 200) {
-//   console.warn('🐢 SLOW QUERY:', sql);
-// }
-// async health() {
-//     await this.query('SELECT 1');
-// }

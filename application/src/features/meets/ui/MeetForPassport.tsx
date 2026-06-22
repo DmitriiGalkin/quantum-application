@@ -16,7 +16,7 @@ function Meet({ meet, isNextMeet }: Props) {
     <Box>
       <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
         {isNextMeet && (
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
             Ближайшая встреча
           </Typography>
         )}
@@ -51,7 +51,7 @@ function Meet({ meet, isNextMeet }: Props) {
                       minute: '2-digit',
                     })}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" noWrap>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }} noWrap>
                     ул. Северодвинская 11
                   </Typography>
                   <Typography sx={{ color: 'text.secondary' }}>{meet.price ? `${meet.price} ₽` : 'Бесплатно'}</Typography>
@@ -61,9 +61,9 @@ function Meet({ meet, isNextMeet }: Props) {
                     <PeopleIcon sx={{ fontSize: 16, opacity: 0.7 }} />
                     <Typography variant="caption">{meet.users?.length || 0} идут</Typography>
                   </Stack>
-                    <IconButton size="small">
-                      <MoreVertIcon />
-                    </IconButton>
+                  <IconButton size="small">
+                    <MoreVertIcon />
+                  </IconButton>
                 </Stack>
               </Stack>
             </Box>

@@ -38,7 +38,7 @@ function Menu({ setIsMenuOpen }: MenuProps) {
           <Avatar src={user?.image || undefined} alt={user?.title || 'Пользователь'} sx={{ width: 56, height: 56 }} />
           <Box>
             <Typography sx={{ fontWeight: 800 }}>{user?.title || 'Пользователь'}</Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               {user?.age ? `${user.age} лет` : 'Возраст не указан'}
             </Typography>
           </Box>

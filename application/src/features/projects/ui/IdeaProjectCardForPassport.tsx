@@ -30,11 +30,11 @@ function IdeaProjectCardForPassport({ project }: IdeaProjectCardProps) {
         <CardContent>
           <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
             <PlaceIcon sx={{ fontSize: 16, opacity: 0.6 }} />
-            <Typography component="div" variant="subtitle2" sx={{ fontWeight: 500,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
-             }}>
+            <Typography
+              component="div"
+              variant="subtitle2"
+              sx={{ fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+            >
               {projectTitle}
             </Typography>
           </Stack>
@@ -43,11 +43,11 @@ function IdeaProjectCardForPassport({ project }: IdeaProjectCardProps) {
 
       {/* MEET */}
       {nextMeet ? (
-          <MeetForPassport meet={nextMeet} isNextMeet />
+        <MeetForPassport meet={nextMeet} isNextMeet />
       ) : (
         <Stack spacing={2} sx={{ px: 2, pb: 2, mt: 1 }}>
           <Box sx={{ mt: 1 }}>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Встреч пока нет
             </Typography>
           </Box>

@@ -11,6 +11,7 @@ import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import Like from './Like.tsx';
 import { Button, CardActions } from '@mui/material';
 import Share from '../../../shared/ui/Share.tsx';
+import { Author } from '../../../shared/ui/Author.tsx';
 
 function Idea({ idea }: { idea: any}) {
   const queryClient = useQueryClient();
@@ -55,7 +56,7 @@ function Idea({ idea }: { idea: any}) {
           }}
         >
           {generateImageMutation.isPending && (
-            <Typography className="blink" color="text.secondary" sx={{ paddingLeft: 1 }}>
+            <Typography className="blink" sx={{ color: 'text.secondary',  paddingLeft: 1 }}>
               Генерирую...
             </Typography>
           )}
@@ -72,34 +73,31 @@ function Idea({ idea }: { idea: any}) {
       </Box>
       <CardContent>
         <Stack spacing={1}>
-          <Typography
-            component="h1"
-            variant="h3"
-            sx={{
-              fontSize: { xs: '1.75rem', sm: '2.5rem' },
-            }}
-          >
+          <Typography component="h1" variant="h6">
             {idea.title}
           </Typography>
 
           <Typography
-            color="text.secondary"
             sx={{
               mt: { xs: 1.5, sm: 2 },
               fontSize: { xs: '0.9rem', sm: '1rem' },
+              color: 'text.secondary',
             }}
           >
             {idea.description}
           </Typography>
 
-          <Typography gutterBottom align="right" sx={{ marginLeft: 'auto', pr: 1 }} variant="body1" color="textDisabled">
-            {idea.user?.title}, {idea.user?.age} лет
-          </Typography>
+          <Author user={idea.user} />
         </Stack>
       </CardContent>
       <CardActions sx={{ p: 2 }}>
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained">Создать проект</Button>
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-end' }}>
+          <Stack>
+            <Typography variant="caption" gutterBottom sx={{ color: 'text.secondary' }}>
+              Для преподавателей
+            </Typography>{' '}
+            <Button variant="outlined">Создать свой проект</Button>
+          </Stack>
           <Stack direction="row">
             <Like isLiked={idea.isLiked} ideaId={idea.id} />
             <Share title={idea.title} description={idea.description || ''} />

@@ -28,7 +28,7 @@ export interface IdeaDto {
 }
 
 export interface IdeaExtendedDto extends IdeaDto {
-  user: UserDto | null;
+  user: UserDto;
 };
 
 export interface IdeaFullDto extends IdeaDto {
@@ -46,6 +46,7 @@ export interface MeetDto {
 
 export interface MeetExtendedDto extends MeetDto {
   users: UserDto[];
+  place: PlaceDto;
 }
 
 export interface MeetFullDto extends MeetDto {

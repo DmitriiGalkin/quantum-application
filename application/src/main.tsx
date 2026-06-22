@@ -4,28 +4,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App.tsx';
 import 'normalize.css';
 import { AuthProvider } from './providers/AuthProvider.tsx';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './theme/theme';
 
 const queryClient = new QueryClient();
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#FFB628', // твой оранжевый
-    },
-    secondary: {
-      main: '#7139FF', //'#00a7e1'//'#1E3A8A', // тёмно-синий для контраста // 6B21A8 //
-    },
-    background: {
-      default: '#FFB628',
-      paper: '#ffffff',
-    },
-    text: {
-      primary: '#1F2937',
-      secondary: '#374151',
-    },
-  },
-});
 
 hydrateRoot(
   document.getElementById('root') as HTMLElement,

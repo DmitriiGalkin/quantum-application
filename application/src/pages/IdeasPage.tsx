@@ -52,7 +52,7 @@ function IdeasPage() {
         )}
 
         {filters.sort === 'nearby' && location.status === 'error' && (
-          <Typography color="text.secondary">Не удалось определить местоположение</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>Не удалось определить местоположение</Typography>
         )}
 
         {filters.view === 'map' && (

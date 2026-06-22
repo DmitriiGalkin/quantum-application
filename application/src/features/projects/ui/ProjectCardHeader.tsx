@@ -1,23 +1,30 @@
-import type { PassportDto } from '@shared/types';
-import { Avatar, CardHeader, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
+import type { PassportDto, PlaceDto } from '@shared/types';
+import { Avatar, CardHeader, IconButton, ListItemIcon, Menu, MenuItem, Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MailOutlineIcon from '@mui/icons-material/Mail';
+import PlaceIcon from '@mui/icons-material/Place';
+import Typography from '@mui/material/Typography';
 
 type Props = {
   passport: PassportDto;
+  place: PlaceDto;
   handleUnlike?: any;
 };
 
-function ProjectCardHeader({ passport, handleUnlike }: Props) {
+function ProjectCardHeader({ passport, place, handleUnlike }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     setAnchorEl(null);
   };
   const open = Boolean(anchorEl);
@@ -37,8 +44,8 @@ function ProjectCardHeader({ passport, handleUnlike }: Props) {
 
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
             <MenuItem
-              onClick={() => {
-                handleClose();
+              onClick={(e) => {
+                handleClose(e);
                 console.log('send message');
               }}
               disabled
@@ -50,8 +57,8 @@ function ProjectCardHeader({ passport, handleUnlike }: Props) {
             </MenuItem>
             {handleUnlike && (
               <MenuItem
-                onClick={() => {
-                  handleClose();
+                onClick={(e) => {
+                  handleClose(e);
                   handleUnlike();
                 }}
               >
@@ -65,7 +72,18 @@ function ProjectCardHeader({ passport, handleUnlike }: Props) {
         </>
       }
       title={passport.title}
-      subheader="Программист трудоголик"
+      subheader={
+        <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+          <PlaceIcon sx={{ fontSize: 12, opacity: 0.6 }} />
+          <Typography
+            component="div"
+            variant="subtitle2"
+            sx={{ fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+          >
+            {place.address}
+          </Typography>
+        </Stack>
+      }
     />
   );
 }

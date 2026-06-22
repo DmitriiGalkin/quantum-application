@@ -40,7 +40,7 @@ function IdeaPage() {
         <Box sx={{ py: 6, textAlign: 'center' }}>
           <Typography variant="h6">Проект не найден</Typography>
 
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Некорректная ссылка
           </Typography>
         </Box>
@@ -54,11 +54,11 @@ function IdeaPage() {
         <Box sx={{ py: 6, textAlign: 'center' }}>
           <Typography variant="h6">Не удалось загрузить идею</Typography>
 
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Попробуйте обновить страницу
           </Typography>
 
-          <Button sx={{ mt: 2 }} variant="contained">
+          <Button sx={{ mt: 2 }} variant="contained" onClick={() => window.location.reload()}>
             Обновить
           </Button>
         </Box>
@@ -71,11 +71,11 @@ function IdeaPage() {
       {idea && (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 3 }}>
-            <Idea idea={idea}/>
+            <Idea idea={idea} />
           </Grid>
 
           <Grid size={{ xs: 12, md: 9 }}>
-            <Stack spacing={1}>
+            <Stack spacing={2}>
               {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
               {!(filters.when === undefined && !idea.projects.length) && (
                 <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
@@ -104,11 +104,11 @@ function IdeaPage() {
                     Пока нет проектов
                   </Typography>
 
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                     Мы ищем учителей для реализации этой идеи
                   </Typography>
 
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                     Поделитесь идеей с друзьями — возможно, вместе вы запустите проект 🚀
                   </Typography>
 

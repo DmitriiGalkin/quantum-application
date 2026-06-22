@@ -9,7 +9,7 @@ export default function Footer() {
         py: 6,
         borderTop: '1px solid',
         borderColor: 'divider',
-        backgroundColor: 'background.default',
+        backgroundColor: 'background.paper',
       }}
     >
       <Container maxWidth="lg">
@@ -19,7 +19,7 @@ export default function Footer() {
             <Typography variant="h6" gutterBottom>
               Quantum
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Современная платформа развития детских идей через проектную деятельность.
             </Typography>
           </Grid>
@@ -55,7 +55,7 @@ export default function Footer() {
             <Typography variant="subtitle1" gutterBottom>
               Контакты
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               4757037@gmail.ru
             </Typography>
           </Grid>
@@ -74,16 +74,16 @@ export default function Footer() {
             gap: 2,
           }}
         >
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             © {new Date().getFullYear()} Quantum. All rights reserved.
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Link href="#" underline="hover">
-              Privacy
+              <Typography>Privacy</Typography>
             </Link>
             <Link href="#" underline="hover">
-              Terms
+              <Typography>Terms</Typography>
             </Link>
           </Box>
         </Box>

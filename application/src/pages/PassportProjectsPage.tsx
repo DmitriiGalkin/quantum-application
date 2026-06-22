@@ -66,8 +66,10 @@ function PassportProjectsPage() {
                   <CardContent>
                     <Stack sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <Box>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{idea.title}</Typography>
-                        <Typography variant="body2" color="text.secondary" gutterBottom>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                          {idea.title}
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }} gutterBottom>
                           {idea.description}
                         </Typography>
                       </Box>

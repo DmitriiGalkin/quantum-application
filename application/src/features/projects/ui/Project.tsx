@@ -10,7 +10,6 @@ import LinkIcon from '@mui/icons-material/Link';
 import ProjectCardHeader from './ProjectCardHeader.tsx';
 import type { ProjectFullDto } from '@shared/types';
 
-
 export default function Project({ project, refetch }: { project: ProjectFullDto; refetch?: () => void }) {
   const { user, authHandler } = useAuth();
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
 
   return (
     <Card sx={{ borderRadius: 3 }}>
-      <ProjectCardHeader passport={project.passport} handleUnlike={handleUnlike} />
+      <ProjectCardHeader passport={project.passport} place={project.place} handleUnlike={handleUnlike} />
 
       <CardMedia
         component="img"
@@ -66,67 +65,56 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
         }}
       />
       <CardContent>
-        <Typography
-          variant="h4"
-          gutterBottom
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            '&:hover .idea-link-icon': {
-              opacity: 1,
-            },
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography component="h1" variant="h6" gutterBottom>
             {project.idea.title}
+          </Typography>
+          <IconButton
+            size="small"
+            onClick={e => {
+              e.stopPropagation(); // важно: чтобы не триггерить Card click
+              navigate(`/idea/${project.idea.id}`);
+            }}
+            sx={{
+              opacity: 0.5,
+              '&:hover': {
+                opacity: 1,
+              },
+            }}
+          >
+            <LinkIcon fontSize="small" />
+          </IconButton>
+        </Box>
 
-            <IconButton
-              size="small"
-              onClick={e => {
-                e.stopPropagation(); // важно: чтобы не триггерить Card click
-                navigate(`/idea/${project.idea.id}`);
-              }}
-              sx={{
-                opacity: 0.5,
-                '&:hover': {
-                  opacity: 1,
-                },
-              }}
-            >
-              <LinkIcon fontSize="small" />
-            </IconButton>
-          </Box>
-        </Typography>
-        <Typography color="text.secondary">{project.idea.description}</Typography>
+        <Typography sx={{ color: 'text.secondary' }}>{project.idea.description}</Typography>
       </CardContent>
-        {!isMember && (
-          <>
-            <Typography variant="h6">Вступите в проект</Typography>
-            <Typography variant="body2" color="text.secondary">
-              Чтобы участвовать во встречах
-            </Typography>
+      {!isMember && (
+        <>
+          <Typography variant="h6">Вступите в проект</Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Чтобы участвовать во встречах
+          </Typography>
 
-            <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={handleLike}>
-              Вступить
-            </Button>
-          </>
-        )}
+          <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={handleLike}>
+            Вступить
+          </Button>
+        </>
+      )}
 
-        {isMember && nextMeet && <Meet meet={nextMeet} />}
+      {isMember && nextMeet && <Meet meet={nextMeet} />}
 
-        {isMember && !nextMeet && (
-          <>
-            <Typography variant="h6">Пока нет встреч</Typography>
-            <Typography variant="body2" color="text.secondary">
-              Вы получите уведомление
-            </Typography>
+      {isMember && !nextMeet && (
+        <Box sx={{ p: 2 }}>
+          <Typography variant="h6">Пока нет встреч</Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Вы получите уведомление
+          </Typography>
 
-            <Button fullWidth variant="outlined" sx={{ mt: 2 }}>
-              Подписаться
-            </Button>
-          </>
-        )}
+          <Button fullWidth variant="outlined" sx={{ mt: 2 }}>
+            Подписаться
+          </Button>
+        </Box>
+      )}
     </Card>
   );
 }

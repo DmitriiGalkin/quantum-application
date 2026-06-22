@@ -1,14 +1,14 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Button, Card, Stack } from '@mui/material';
+import { Button, Card, CardActionArea, Stack } from '@mui/material';
 import { type ProjectExtendedDto } from '@shared/types';
 import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
-import PlaceIcon from '@mui/icons-material/Place';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateProjectUser, fetchDeleteProjectUser } from '../../../requests.ts';
 import ProjectCardHeader from './ProjectCardHeader.tsx';
 import Meet from '../../meets/ui/Meet.tsx';
+import { useNavigate } from 'react-router-dom';
 
 type IdeaProjectCardProps = {
   project: ProjectExtendedDto; // частичное должно быть
@@ -17,6 +17,7 @@ type IdeaProjectCardProps = {
 
 function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
   const { user, authHandler } = useAuth();
+  const navigate = useNavigate();
 
   const liked = user && project.users?.map(user => user.id).includes(user.id);
 
@@ -46,80 +47,35 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
 
   return (
     <Card sx={{ borderRadius: 3 }}>
-      <ProjectCardHeader passport={project.passport} handleUnlike={liked && handleUnlike} />
+      <CardActionArea onClick={() => navigate(`/project/${project.id}`)}>
+        <ProjectCardHeader passport={project.passport} place={project.place} handleUnlike={liked && handleUnlike} />
 
-      <Stack direction="row" spacing={1} sx={{ px: 2, pb: 1, alignItems: 'center' }}>
-        <PlaceIcon sx={{ fontSize: 16, opacity: 0.6 }} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
+          {project.meets?.[0] && <Meet meet={project.meets[0]} withoutAction={!liked} refetch={refetch} withoutUsers />}
+        </Box>
 
-        <Typography variant="body2" color="text.secondary">
-          {project.place?.address}
-        </Typography>
-
-        {/*{project.distance != null && (*/}
-        {/*  <Box*/}
-        {/*    sx={{*/}
-        {/*      px: 1,*/}
-        {/*      py: 0.2,*/}
-        {/*      borderRadius: 10,*/}
-        {/*      backgroundColor: 'rgba(255,182,40,0.15)',*/}
-        {/*      fontSize: 12,*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    {project.distance < 1*/}
-        {/*      ? `${Math.round(project.distance * 1000)} м`*/}
-        {/*      : `${project.distance.toFixed(1)} км`}*/}
-        {/*  </Box>*/}
-        {/*)}*/}
-      </Stack>
-
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
-        {project.meets?.[0] && <Meet meet={project.meets[0]} withoutAction={!liked} refetch={refetch} withoutUsers />}
-      </Box>
-
-      {Boolean(project.users.length) && (
-        <Box sx={{ px: 2, mt: 2 }}>
-          <Typography variant="caption" color="text.secondary">
-            Участники
-          </Typography>
-
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mt: 1,
-            }}
-          >
+        {Boolean(project.users.length) && (
+          <Box sx={{ p: 2 }}>
+            <Typography component="div" variant="caption" sx={{ color: 'text.secondary', mb: 0.5 }}>
+              Участники проекта
+            </Typography>
             <AvatarGroupUsers users={project.users || []} />
           </Box>
-        </Box>
-      )}
-
-      <Box
-        sx={{
-          px: 2,
-          py: 2,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        {!liked && (
-          <Stack spacing={2} direction="row" sx={{ alignItems: 'center' }}>
-            <Button variant="contained" size="small" onClick={handleLike}>
-              Вступить
-            </Button>
-            {!project.users.length && (
-              <Typography variant="body2" color="text.secondary">
-                Станьте первым участником и помогите запустить проект 🚀
-              </Typography>
-            )}
-          </Stack>
         )}
-        <Button variant="text" size="small" href={`/project/${project.id}`}>
-          Подробнее
-        </Button>
-      </Box>
+      </CardActionArea>
+
+      {!liked && (
+        <Stack spacing={2} direction="row" sx={{ alignItems: 'center', px: 2, pb: 2 }}>
+          <Button variant="contained" size="small" onClick={handleLike}>
+            Присоединиться к проекту
+          </Button>
+          {!project.users.length && (
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Станьте первым участником и помогите запустить проект 🚀
+            </Typography>
+          )}
+        </Stack>
+      )}
     </Card>
   );
 }

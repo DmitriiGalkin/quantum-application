@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import Page from '../shared/ui/Page.tsx';
 import Project from '../features/projects/ui/Project.tsx';
 
-
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
 
@@ -22,7 +21,7 @@ export default function ProjectPage() {
     <Page>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 3 }}>
-          <Project project={project} refetch={refetch}/>
+          <Project project={project} refetch={refetch} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
@@ -35,8 +34,10 @@ export default function ProjectPage() {
               <Typography variant="h6">Участники</Typography>
 
               <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                {project.users.map(p => (
-                  <Avatar key={p.id}>{p.title[0]}</Avatar>
+                {project.users.map(project => (
+                  <Avatar key={project.id} src={project.image ? project.image : undefined}>
+                    {project.title[0]}
+                  </Avatar>
                 ))}
               </Stack>
 

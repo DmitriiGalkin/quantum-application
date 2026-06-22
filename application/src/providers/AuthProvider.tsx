@@ -124,9 +124,7 @@ export const AuthProvider = ({ children }: Props) => {
           fullScreen={false}
           onClose={() => setIsAuthModalOpen(false)}
         >
-          <DialogTitle>
-            Вход
-          </DialogTitle>
+          <DialogTitle>Вход</DialogTitle>
 
           <DialogContent dividers>
             <Stack
@@ -140,7 +138,7 @@ export const AuthProvider = ({ children }: Props) => {
                 justifyContent: 'space-between',
               }}
             >
-              <Typography color="text.secondary" sx={{ mt: 0.5 }}>
+              <Typography sx={{ color: 'text.secondary', mt: 0.5 }}>
                 Выберите удобный способ авторизации
               </Typography>
 

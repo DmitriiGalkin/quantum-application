@@ -1,5 +1,5 @@
 import type { MeetExtendedDto, PassportDto } from '@shared/types';
-import { Button, Card } from '@mui/material';
+import { Button, Card, Chip } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateMeetUser, fetchDeleteMeetUser } from '../../../requests.ts';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
@@ -21,6 +21,8 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
   const { user, authHandler } = useAuth();
 
   const liked = user && meet.users?.some(u => u.id === user.id);
+  const start = new Date(meet.startedAt);
+  const end = meet.duration ? new Date(start.getTime() + meet.duration * 60 * 1000) : null;
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateMeetUser,
@@ -50,7 +52,7 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
     <Card>
       {passport && <MeetCardHeader passport={passport} handleUnlike={liked && handleUnlike} />}
       <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
           Ближайшая встреча
         </Typography>
         <Stack spacing={1} sx={{ mt: 1 }}>
@@ -80,16 +82,29 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
             {/* INFO */}
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="body2">
-                {new Date(meet.startedAt).toLocaleTimeString('ru-RU', {
+                {start.toLocaleTimeString('ru-RU', {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}
+                {end &&
+                  ' — ' +
+                    end.toLocaleTimeString('ru-RU', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
               </Typography>
 
-              <Typography variant="caption" color="text.secondary" noWrap>
-                ул. Северодвинская 11
+              <Typography component="p" sx={{ color: 'text.secondary' }} noWrap gutterBottom>
+                {meet.place.address}
               </Typography>
-              <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{meet.price ? `${meet.price} ₽` : 'Бесплатно'}</Typography>
+
+              <Box>
+                {meet.price ? (
+                    <Chip size="small" label={`${meet.price} ₽`} variant="outlined" />
+                ) : (
+                  <Chip size="small" label="Бесплатно" color="success" variant="outlined" />
+                )}
+              </Box>
             </Box>
           </Stack>
 
@@ -97,7 +112,7 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
           {!withoutUsers && (
             <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
               <AvatarGroupUsers users={meet.users || []} />
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 {meet.users?.length || 0} идут
               </Typography>
             </Stack>
