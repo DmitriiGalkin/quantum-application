@@ -14,7 +14,7 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
 import IdeaProjectCardForPassport from '../features/projects/ui/IdeaProjectCardForPassport.tsx';
-import AIIdeaBanner from '../features/ideas/ui/AIIdeaBanner.tsx';
+import AISelectIdeaBanner from '../features/ideas/ui/AISelectIdeaBanner.tsx';
 
 function PassportProjectsPage() {
   const { id } = useParams();
@@ -34,7 +34,7 @@ function PassportProjectsPage() {
     <Page isLoading={isProjectsLoading}>
       <Box component="section">
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
-        <AIIdeaBanner />
+        <AISelectIdeaBanner />
         {!projects.length && <CreateProjectBlock />}
 
         {Boolean(groupes.length) && (

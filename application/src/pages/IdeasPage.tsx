@@ -12,6 +12,7 @@ import Filter from '../features/ideas/ui/Filter.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation } from '../shared/lib/useLocation.ts';
 import Typography from '@mui/material/Typography';
+import AIIdeaBanner from '../features/ideas/ui/AIIdeaBanner.tsx';
 
 function IdeasPage() {
   const { filters, setView, setSort, setWhen } = useFilters();
@@ -36,8 +37,9 @@ function IdeasPage() {
   return (
     <Page isError={isError}>
       <Stack spacing={2}>
-        <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
+        <AIIdeaBanner/>
 
+        <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
         {(isLoading || (filters.sort === 'nearby' && location.status === 'loading')) && (
           <Box
             sx={{
@@ -50,11 +52,9 @@ function IdeasPage() {
             <CircularProgress sx={{ color: 'white' }} />
           </Box>
         )}
-
         {filters.sort === 'nearby' && location.status === 'error' && (
           <Typography sx={{ color: 'text.secondary' }}>Не удалось определить местоположение</Typography>
         )}
-
         {filters.view === 'map' && (
           <Paper
             component="section"
@@ -71,7 +71,6 @@ function IdeasPage() {
             <MeetMap lat={55.75} lng={37.62} zoom={12} />
           </Paper>
         )}
-
         {filters.view === 'module' && (
           <Box
             sx={{

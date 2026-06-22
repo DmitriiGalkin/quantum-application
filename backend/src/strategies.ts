@@ -26,13 +26,12 @@ async function findOrCreate(accessToken: string, refreshToken: string, profile: 
     }
 
     const newUserData = {
-      id: 1,
-      accessToken,
-      title: profile.displayName,
-      image,
-      email,
       provider: profile.provider,
       providerId: profile.id,
+      accessToken,
+      title: profile.displayName,
+      email,
+      image,
     };
 
     const createdUserId = await Passport.create(newUserData);

@@ -12,9 +12,9 @@ class PassportRepository {
   static async create(data: CreatePassportInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO passport
-         (providerId, provider, accessToken, title, email)
-       VALUES (?, ?, ?, ?, ?)`,
-      [data.providerId, data.provider, data.accessToken, data.title ?? null, data.email],
+         (providerId, provider, accessToken, title, email, image)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [data.providerId, data.provider, data.accessToken, data.title, data.email, data.image],
     );
 
     return result.insertId;

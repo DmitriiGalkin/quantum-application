@@ -7,8 +7,7 @@ export const useWelcomeContent = (target: Target, ideaId?: number) => {
   if (!passport) {
     if (target === 'idea') {
       return (
-        'Прежде чем мы сформируем идею Вашего ребенка и загрузим ее в проект, расскажите сперва немного о ребенке: как его зовут, возраст,\n' +
-        '              парочку слов о его увлечениях?'
+        'Как зовут ребенка, сколько ему лет и чем увлекается?'
       );
     } else if (target === 'project') {
       return (

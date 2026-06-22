@@ -7,8 +7,8 @@ import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatEffects.ts';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
@@ -20,11 +20,11 @@ const STRATEGIES = [
     href: `${API_URL}/login/google`,
     icon: 'G',
   },
-  {
-    title: 'Yandex',
-    href: `${API_URL}/login/yandex`,
-    icon: 'Я',
-  },
+  // {
+  //   title: 'Yandex',
+  //   href: `${API_URL}/login/yandex`,
+  //   icon: 'Я',
+  // },
 ];
 
 type User = {
@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }: Props) => {
           fullScreen={false}
           onClose={() => setIsAuthModalOpen(false)}
         >
-          <DialogTitle>Вход</DialogTitle>
+          <DialogTitle>Авторизуйтесь одним нажатием</DialogTitle>
 
           <DialogContent dividers>
             <Stack
@@ -138,10 +138,6 @@ export const AuthProvider = ({ children }: Props) => {
                 justifyContent: 'space-between',
               }}
             >
-              <Typography sx={{ color: 'text.secondary', mt: 0.5 }}>
-                Выберите удобный способ авторизации
-              </Typography>
-
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
                 {STRATEGIES.map(strategy => (
                   <Button
@@ -151,7 +147,7 @@ export const AuthProvider = ({ children }: Props) => {
                     key={strategy.title}
                     sx={{ minWidth: 120 }}
                     onClick={() => {
-                      localStorage.setItem('message_after_login', strategy.title);
+                      localStorage.setItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY, strategy.title);
                     }}
                   >
                     <Box component="span" sx={{ mr: 1, fontWeight: 900 }}>

@@ -6,13 +6,13 @@ import { CreateMessageInput } from '../entities/message.types.js';
 import { db } from '../dbNext.js';
 
 class MessageRepository {
-  // ✅ CREATE
+
   static async create(data: CreateMessageInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO message
-         (chatId, passportId, role, content)
-       VALUES (?, ?, ?, ?)`,
-      [data.chatId, data.passportId ?? null, data.role, data.content ?? null],
+         (chatId, role, content)
+       VALUES (?, ?, ?)`,
+      [data.chatId, data.role, data.content],
     );
 
     return result.insertId;

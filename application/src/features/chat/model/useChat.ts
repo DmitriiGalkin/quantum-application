@@ -11,7 +11,7 @@ export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 export function useChat(target: Target, projectId?: number, ideaId?: number) {
   const { user } = useAuth();
   const welcomeContent = useWelcomeContent(target, ideaId);
-  console.log(welcomeContent, 'welcomeContent');
+
   const params = useParams();
 
   const [chatId, setChatId] = useState<number | null>(() => {
@@ -24,6 +24,8 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
 
   const [messages, setMessages] = useState<CreateMessageDto[]>([]);
 
+  console.log(messages, 'messages');
+
   const createChatMessages = useMutation({ mutationFn: fetchCreateChatMessages });
   const createChatMutation = useMutation({ mutationFn: fetchCreateChat });
 
@@ -32,6 +34,8 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
     queryFn: () => fetchChat(chatId!),
     enabled: !!chatId,
   });
+
+  console.log(chat, 'chat');
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -79,7 +83,8 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
   }
 
   useEffect(() => {
-    chat?.messages && setMessages(chat.messages);
+    console.log(chat, 'chat useEffect');
+    if (chat?.messages) setMessages(chat.messages);
     chat?.context && setContext(chat?.context);
   }, [chat]);
 
@@ -91,7 +96,9 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
   }, []);
 
   useEffect(() => {
-    if (welcomeContent) {
+    if (welcomeContent && messages.length === 0) {
+      console.log('1 useEffect');
+
       setMessages([
         {
           role: 'assistant',
@@ -99,7 +106,7 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
         },
       ]);
     }
-  }, [welcomeContent]);
+  }, []);
 
   useEffect(() => {
     const hasTargetInUrl = searchParams.has('target');

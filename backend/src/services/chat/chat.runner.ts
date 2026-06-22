@@ -1,7 +1,12 @@
-import { Answer, getAnswer } from '../assistant/assistant.factory.js';
+import { getAnswer } from '../assistant/assistant.factory.js';
 import { Message } from '../../entities/message.js';
 import { Context } from './chat.meta.js';
 import { Chat } from '../../entities/chat.js';
+
+export type Answer = Promise<{
+  content: string;
+  context?: Context;
+}>;
 
 export async function getAnswerRunner(chat: Chat, initialContext: Context, messages: Message[]): Promise<Answer> {
   let context = initialContext;

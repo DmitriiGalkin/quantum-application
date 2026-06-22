@@ -14,6 +14,7 @@ import { MeetFlowService } from './flows/meet-flow.service.js';
 import IdeaRepository from '../../repositories/idea.repository.js';
 import MeetRepository from '../../repositories/meet.repository.js';
 import PlaceRepository from '../../repositories/place.repository.js';
+import { AssistantAnswer } from './base-assistant.js';
 
 const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 
@@ -23,12 +24,9 @@ export interface GetAnswer {
   messages: Message[];
 }
 
-export type Answer = Promise<{
-  content?: string;
-  context?: Context;
-}>;
 
-export async function getAnswer({ chat, context, messages }: GetAnswer): Promise<Answer> {
+
+export async function getAnswer({ chat, context, messages }: GetAnswer): Promise<AssistantAnswer> {
   consoleGetAnswer(chat, context);
 
   switch (chat.target) {
@@ -37,7 +35,7 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
       if (!context?.draftIdea) return ideaAssistant(messages, context);
       if (!context?.passport)
         return {
-          content: 'Для продолжения, пожалуйста авторизуйтесь:',
+          content: 'Идея практически создана, пожалуйста авторизуйтесь',
           context: { ...context, ui: 'auth' },
         };
 
@@ -45,7 +43,6 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
       const idea = await IdeaRepository.findById(ideaId);
 
       if (!idea) throw new Error('Factory, idea: идея не создалась');
-
 
       return {
         content: `Идея ${FRONTEND_SERVER}/idea/${ideaId} создана`,
@@ -64,7 +61,7 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
       const projectId = await ProjectFlowService.create(context);
       const project = await ProjectRepository.findById(projectId);
 
-      if(!project) throw new Error('Factory, project: проект не создался');
+      if (!project) throw new Error('Factory, project: проект не создался');
 
       await ChatService.changeTarget(chat.id, 'meet');
 
@@ -96,7 +93,6 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
       const meet = await MeetRepository.findById(meetId);
 
       if (!meet) throw new Error('Factory, meet: встреча не создался');
-
 
       return {
         content: `Отлично! встерча ${FRONTEND_SERVER}/project/${context.project.id}#meet-${meetId} создана. Осталось скреситить пальци крестиком и дождаться пока встерча наполнится детьми.`,

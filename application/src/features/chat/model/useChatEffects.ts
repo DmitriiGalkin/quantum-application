@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { CreateMessageDto, Ui } from '@shared/types';
 
-const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
+export const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 
 export function useChatEffects({
   ui,

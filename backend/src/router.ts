@@ -51,15 +51,13 @@ const registerOAuth = (provider: 'yandex' | 'google') => {
       if (err || !user) {
         return res.redirect('/login');
       }
-
-      return res.redirect(`${process.env.FRONTEND_SERVER}/?access_token=${user.username}`);
+       return res.redirect(`${process.env.FRONTEND_SERVER}/?access_token=${user.username}`);
     })(req, res, next);
   });
 };
 
 ['google' as const, 'yandex' as const].forEach(registerOAuth);
 
-publicRouter.post('/passport/googleLogin', passportController.googleLogin);
 publicRouter.get('/ideas', idea.findAllPublic);
 publicRouter.get('/idea/:id', idea.findById);
 publicRouter.get('/idea/:id/projects', idea.findById);

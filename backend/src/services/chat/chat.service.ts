@@ -61,7 +61,6 @@ export class ChatService {
         await MessageRepository.create({
           chatId: chat.id,
           content: messageText,
-          passportId: null,
           role: 'assistant',
         });
       } else {

@@ -1,4 +1,4 @@
-import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
+import { ControllerWithAuth, fail, ok } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import { toPassportDto } from '../mappers/passport.mapper.js';
@@ -11,15 +11,6 @@ const update: ControllerWithAuth<void> = async (req, res) => {
     ok(res, { message: 'Профиль успешно обновлен' });
   } catch (err) {
     fail(res, 'Ошибка при обновлении профиля');
-  }
-};
-
-const googleLogin: Controller<void> = async (req, res) => {
-  try {
-    const result = await AuthService.googleLogin(req.body);
-    ok(res, result);
-  } catch (err) {
-    fail(res, 'Ошибка при входе через Google');
   }
 };
 
@@ -74,7 +65,6 @@ const usePassport = async (req: Request, res: Response, next: Function) => {
 
 export default {
   update,
-  googleLogin,
   login,
   all,
   usePassport,

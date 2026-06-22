@@ -4,6 +4,7 @@ export type CreatePassportInput = {
   accessToken: string;
   title?: string | null;
   email: string;
+  image: string | null;
 };
 
 export type UpdatePassportInput = Partial<{

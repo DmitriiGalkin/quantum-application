@@ -34,7 +34,6 @@ export class MessageService {
     const messageId = await MessageRepository.create({
       chatId: chat.id,
       content,
-      passportId: null,
       role: 'assistant',
     });
 
