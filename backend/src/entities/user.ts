@@ -3,7 +3,7 @@ export interface User {
   passportId: number;
   title: string;
   description: string;
-  age: number;
+  age: number | null;
   image: string | null;
 }
 

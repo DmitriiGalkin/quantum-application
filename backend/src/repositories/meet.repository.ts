@@ -1,6 +1,6 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import { MeetRow, MeetWithProjectTitleRow } from '../entities/meet.db.js';
-import { mapMeetRow, mapMeetWithProjectTitle } from '../mappers/meet.mapper.js';
+import { toMeet, mapMeetWithProjectTitle } from '../mappers/meet.mapper.js';
 import { Meet, MeetWithProjectTitle } from '../entities/meet.js';
 import { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
 import { db } from '../dbNext.js';
@@ -50,14 +50,14 @@ class MeetRepository {
        ORDER BY startedAt`,
     );
 
-    return rows.map(mapMeetRow);
+    return rows.map(toMeet);
   }
 
   // ✅ FIND BY ID
   static async findById(id: number): Promise<Meet | null> {
     const rows = await db.query<MeetRow>(`SELECT * FROM meet WHERE id = ?`, [id]);
 
-    return rows[0] ? mapMeetRow(rows[0]) : null;
+    return rows[0] ? toMeet(rows[0]) : null;
   }
 
   // ✅ FIND BY PLACE ID (JOIN)
@@ -84,7 +84,7 @@ class MeetRepository {
       [projectId],
     );
     ////AND startedAt >= CURDATE()
-    return rows.map(mapMeetRow);
+    return rows.map(toMeet);
   }
 
   // ✅ RECOMMENDATION
@@ -100,7 +100,7 @@ class MeetRepository {
       [projectId],
     );
 
-    return rows[0] ? mapMeetRow(rows[0]) : null;
+    return rows[0] ? toMeet(rows[0]) : null;
   }
 
   // ✅ FIND BY USER ID
@@ -116,7 +116,7 @@ class MeetRepository {
       [userId],
     );
 
-    return rows.map(mapMeetRow);
+    return rows.map(toMeet);
   }
 
   // ✅ CHECK

@@ -2,7 +2,7 @@ import type { MeetDto, MeetExtendedDto } from '@shared/types';
 import { Meet, MeetExtendedEntity, MeetWithProjectTitle } from '../entities/meet.js';
 import { MeetRow, MeetWithProjectTitleRow } from '../entities/meet.db.js';
 
-export function mapMeetRow(row: MeetRow): Meet {
+export function toMeet(row: MeetRow): Meet {
   return {
     id: row.id,
     projectId: row.projectId,
@@ -16,7 +16,7 @@ export function mapMeetRow(row: MeetRow): Meet {
 
 export function mapMeetWithProjectTitle(row: MeetWithProjectTitleRow): MeetWithProjectTitle {
   return {
-    ...mapMeetRow(row),
+    ...toMeet(row),
     title: row.title,
   };
 }

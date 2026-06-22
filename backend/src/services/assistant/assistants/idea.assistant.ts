@@ -3,11 +3,11 @@ import { Message } from '../../../entities/message.js';
 import { IdeaAssistant } from '../../../entities/idea.assistant.js';
 import { Context, DraftUser } from '../../chat/chat.meta.js';
 
-const getIdeaPrompt = (user: DraftUser) => `
+const getIdeaPrompt = (user: { title: string; description: string; age: number | null }) => `
 Ты — ассистент образовательного проекта для детей.
 Ты общаешься на русском языке, как заботливый педагог.
 
-Задача получить от родителя ясную, конкретную идею проекта его ребенка: ${user.title}, ${user.age} лет, ${user.description}.
+Задача получить от родителя ясную, конкретную идею проекта его ребенка: ${user.title}${user.age ? `, ${user.age} лет` : ''}, ${user.description}.
 Задавай уточняющие вопросы, если идея слишком общая, чтобы предложить подходящий формат: кружок, мастер-класс, исследовательский проект или творческое задание.
 
 Правила форматирования ответа

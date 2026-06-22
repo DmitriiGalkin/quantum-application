@@ -4,7 +4,7 @@ export interface Passport {
   id: number;
   providerId: string;
   provider: string;
-  description: string;
+  description: string | null;
   accessToken: string;
   title: string;
   image: string | null;

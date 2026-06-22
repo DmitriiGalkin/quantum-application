@@ -4,7 +4,7 @@ export interface UserRow extends RowDataPacket {
   id: number;
   passportId: number;
   title: string;
-  description: string | null;
+  description: string;
   age: number | null;
   image: string | null;
   createdAt: string;

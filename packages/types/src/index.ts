@@ -90,9 +90,9 @@ export interface PassportExtendedDto extends PassportDto {
 
 export interface PlaceDto {
   id: number;
-  title: string;
+  title: string | null;
   description: string | null;
-  address: string | null;
+  address: string;
   latitude: number;
   longitude: number;
   priceFrom: number | null;

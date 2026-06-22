@@ -1,10 +1,10 @@
 export interface Place {
   id: number;
-  title: string;
+  title: string | null;
   description: string | null;
   latitude: number;
   longitude: number;
-  address: string | null;
+  address: string;
   provider: string | null;
   providerId: number | null;
   phone: string | null;
