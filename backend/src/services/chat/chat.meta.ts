@@ -2,9 +2,9 @@ import type { Passport } from '../../entities/passport.js';
 import { Place } from '../../entities/place.js';
 import { Project } from '../../entities/project.js';
 import { User } from '../../entities/user.js';
-import { Idea } from '../../entities/idea.js';
+import { Idea, IdeaExtendedEntity } from '../../entities/idea.js';
 import { Meet } from '../../entities/meet.js';
-import { IdeaDto, Ui } from '@shared/types';
+import { IdeaDto, IdeaExtendedDto, Ui } from '@shared/types';
 
 export interface Teacher {
   description: string;
@@ -36,7 +36,7 @@ export interface Context {
   teacher?: Teacher;
   draftTeacher?: DraftTeacher;
   ideas?: Idea[];
-  idea?: Idea | IdeaDto;
+  idea?: IdeaExtendedEntity | IdeaExtendedDto;
   draftIdea?: DraftIdea;
   project?: Project;
   //draftProject?: DraftProject;

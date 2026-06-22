@@ -4,7 +4,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import type { IdeaDto, IdeaExtendedDto } from '@shared/types';
-import { Button, CardActionArea, Link } from '@mui/material';
+import { Button, CardActionArea } from '@mui/material';
 import Like from './Like.tsx';
 import { useNavigate } from 'react-router-dom';
 import { Author } from '../../../shared/ui/Author.tsx';

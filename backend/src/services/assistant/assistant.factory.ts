@@ -15,6 +15,9 @@ import IdeaRepository from '../../repositories/idea.repository.js';
 import MeetRepository from '../../repositories/meet.repository.js';
 import PlaceRepository from '../../repositories/place.repository.js';
 import { AssistantAnswer } from './base-assistant.js';
+import UserRepository from '../../repositories/user.repository.js';
+import { Idea } from '../../entities/idea.js';
+import { User } from '../../entities/user.js';
 
 const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 
@@ -40,13 +43,16 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
         };
 
       const ideaId = await IdeaFlowService.create(context);
-      const idea = await IdeaRepository.findById(ideaId);
+      const idea = await IdeaRepository.findById(ideaId) as Idea;
+
+      const user = context.user ? context.user : ((await UserRepository.findById(idea.userId)) as unknown as User);
 
       if (!idea) throw new Error('Factory, idea: идея не создалась');
 
+      console.log('context', context);
       return {
         content: `Идея ${FRONTEND_SERVER}/idea/${ideaId} создана`,
-        context: { ...context, idea, ui: 'idea' },
+        context: { ...context, idea: {...idea, user }, ui: 'idea' },
       };
 
     case 'project':

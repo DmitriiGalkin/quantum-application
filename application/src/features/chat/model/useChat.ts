@@ -18,13 +18,13 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
     return params.id ? Number(params.id) : null;
   });
 
-  const [context, setContext] = useState<ContextDto>();
+  // контекст от ответов
+  const [answerContext, setAnswerContext] = useState<ContextDto>();
 
   const [message, setMessage] = useState('');
 
-  const [messages, setMessages] = useState<CreateMessageDto[]>([]);
+  const [answerMessages, setAnswerMessages] = useState<CreateMessageDto[]>([]);
 
-  console.log(messages, 'messages');
 
   const createChatMessages = useMutation({ mutationFn: fetchCreateChatMessages });
   const createChatMutation = useMutation({ mutationFn: fetchCreateChat });
@@ -35,6 +35,19 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
     enabled: !!chatId,
   });
 
+  const context = {...chat?.context, ...answerContext}
+  const messages = [
+    ...(chat?.messages || [
+      {
+        role: 'assistant',
+        content: welcomeContent,
+      },
+    ]),
+    ...answerMessages,
+  ];
+
+
+  console.log(messages, 'messages');
   console.log(chat, 'chat');
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,15 +58,15 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
     const userMessage: CreateMessageDto = { role: 'user', content: trimmed, context };
 
     setMessage('');
-    setMessages([...messages, userMessage]);
+    setAnswerMessages([...answerMessages, userMessage]);
 
     const createMessages = (chatId: number, withWelcome?: boolean) => {
       createChatMessages.mutate(
         { chatId, messages: [...(withWelcome ? [{ role: 'assistant' as const, content: welcomeContent }] : []), userMessage] },
         {
           onSuccess: res => {
-            setMessages([...messages, userMessage, res.message]);
-            setContext(res.context);
+            setAnswerMessages([...answerMessages, userMessage, res.message]);
+            setAnswerContext(res.context);
           },
           onError: () => {
             console.log('2');
@@ -83,28 +96,9 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
   }
 
   useEffect(() => {
-    console.log(chat, 'chat useEffect');
-    if (chat?.messages) setMessages(chat.messages);
-    chat?.context && setContext(chat?.context);
-  }, [chat]);
-
-  useEffect(() => {
     const savedChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
     if (savedChatId) {
       setChatId(Number(savedChatId));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (welcomeContent && messages.length === 0) {
-      console.log('1 useEffect');
-
-      setMessages([
-        {
-          role: 'assistant',
-          content: welcomeContent,
-        },
-      ]);
     }
   }, []);
 

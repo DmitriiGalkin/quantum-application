@@ -22,7 +22,7 @@ export class MessageService {
 
     const messages = await MessageRepository.findLastByChatId(chat.id, 100);
 
-    const context: Context = chat.context;
+    const context: Context = { ...chat.context, passport };
 
     const { content, context: newContext } = await getAnswerRunner(chat, context, messages);
 
