@@ -5,5 +5,6 @@ export interface ProjectRow extends RowDataPacket {
   ideaId: number;
   placeId: number;
   passportId: number;
-  deletedAt: Date | null;
+  createdAt: string;
+  deletedAt: string;
 }

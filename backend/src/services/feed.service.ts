@@ -3,7 +3,6 @@ import { User } from '../entities/user.js';
 
 import { ProjectUser } from '../entities/project-user.js';
 import { FeedItem } from '@shared/types';
-import { toMeetExtendedDto } from '../mappers/meet.mapper.js';
 
 interface Join extends ProjectUser {
   user: User
@@ -18,11 +17,11 @@ interface MergeFeed {
 export class FeedService {
   static merge({ meets, comments, joins }: MergeFeed): FeedItem[] {
     const feed = [
-      ...meets.map(m => ({
-        id: m.id,
+      ...meets.map(meet => ({
+        id: meet.id,
         type: 'meet' as const,
-        createdAt: m.startedAt,
-        meet: toMeetExtendedDto(m),
+        createdAt: meet.startedAt,
+        meet: meet,
       })),
       ...comments.map(c => ({
         id: c.id as number,

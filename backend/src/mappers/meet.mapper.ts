@@ -34,10 +34,3 @@ export const toMeetDto = (meet: any): MeetDto => {
     meetUsers: meet.meetUsers ?? [],
   };
 };
-
-export const toMeetExtendedDto = (meet: MeetExtendedEntity): MeetExtendedDto => {
-  return {
-    ...meet,
-    users: meet.users,
-  };
-};

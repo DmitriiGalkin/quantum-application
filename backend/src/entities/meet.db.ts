@@ -8,7 +8,7 @@ export interface MeetRow extends RowDataPacket {
   duration: number | null;
   startedAt: string;
   deletedAt: string | null;
-  placeId: number | null;
+  placeId: number;
 }
 
 export interface MeetWithProjectTitleRow extends MeetRow {
