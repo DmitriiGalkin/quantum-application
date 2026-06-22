@@ -22,7 +22,8 @@ export interface FindAllProjectInput {
 
 interface MeetFullEntity extends Meet {
   project: Project;
-  users: User[]
+  place: Place;
+  users: User[];
 }
 
 export interface ProjectFullEntity extends Project {

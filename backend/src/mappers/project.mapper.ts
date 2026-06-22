@@ -48,6 +48,7 @@ export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => 
     duration: u.duration,
     price: u.price,
     users: u.users,
+    place: u.place,
     project: u.project,
   })),
   feeds: project.feeds,

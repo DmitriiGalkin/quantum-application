@@ -56,7 +56,9 @@ function CommentCard({
 function JoinCard({ user }: { user: UserDto }) {
   return (
     <Divider variant="middle" sx={{ color: 'background.paper', borderColor: 'primary.main', display: 'flex', alignItems: 'center' }}>
-      {user?.title} присоединился к проекту
+      <Typography variant="body2">
+        {user?.title} присоединился к проекту
+      </Typography>
     </Divider>
   );
 }

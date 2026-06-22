@@ -27,7 +27,9 @@ function Header() {
         sx={{
           borderBottom: 1,
           borderColor: 'divider',
-          backgroundImage: 'linear-gradient(to bottom, #FFB628, #FF8F28)',
+          backgroundColor: 'rgba(255,255,255, 0.1)', // ← вот это важно
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
         }}
       >
         <Toolbar>

@@ -38,7 +38,9 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
     },
   });
 
-  const handleLike = () => {
+  const handleLike = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (user) mutationLike.mutate({ userId: user.id, meetId: meet.id });
     else authHandler();
   };
@@ -98,13 +100,15 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
                 {meet.place.address}
               </Typography>
 
-              <Box>
+              <Stack direction="row" spacing={1}>
                 {meet.price ? (
-                    <Chip size="small" label={`${meet.price} ₽`} variant="outlined" />
+                  <Chip size="small" label={`${meet.price} ₽`} variant="outlined" />
                 ) : (
                   <Chip size="small" label="Бесплатно" color="success" variant="outlined" />
                 )}
-              </Box>
+
+                {liked && <Chip size="small" label="Вы идёте" color="success" />}
+              </Stack>
             </Box>
           </Stack>
 
@@ -119,7 +123,7 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
           )}
         </Stack>
         {!liked && !withoutAction && (
-          <Button onClick={() => handleLike()} variant="contained">
+          <Button onClick={handleLike} variant="contained">
             Участвовать
           </Button>
         )}

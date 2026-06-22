@@ -16,7 +16,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddIcon from '@mui/icons-material/Add';
 import '../../App.css';
 import { useAuth } from '../../providers/AuthProvider.tsx';
-
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 interface MenuProps {
   setIsMenuOpen?: (isMenuOpen: boolean) => void;
@@ -51,17 +51,17 @@ function Menu({ setIsMenuOpen }: MenuProps) {
             sx={{
               mb: 1,
               borderRadius: 2,
-              bgcolor: 'primary.main',
-              color: 'primary.contrastText',
+              bgcolor: 'secondary.main',
+              color: '#fff',
               '&:hover': {
-                bgcolor: 'primary.dark',
+                backgroundColor: '#3B1992',
               },
             }}
           >
             <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
-              <AddIcon />
+              <AutoAwesomeIcon />
             </ListItemIcon>
-            <ListItemText primary="Новая идея" />
+            <ListItemText primary="Создать идею" />
           </ListItemButton>
 
           <ListItemButton

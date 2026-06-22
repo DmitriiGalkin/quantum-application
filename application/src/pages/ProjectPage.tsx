@@ -29,7 +29,7 @@ export default function ProjectPage() {
         </Grid>
 
         <Grid size={{ xs: 12, md: 3 }}>
-          <Card sx={{ borderRadius: 3 }}>
+          {Boolean(project.users.length) ? (          <Card sx={{ borderRadius: 3 }}>
             <CardContent>
               <Typography variant="h6">Участники</Typography>
 
@@ -45,7 +45,8 @@ export default function ProjectPage() {
                 {project.users.length} участников
               </Typography>
             </CardContent>
-          </Card>
+          </Card>) : (<div>Хей куратор, нажми кнопку поделиться своим проектом в соц сети</div>)}
+
         </Grid>
       </Grid>
     </Page>
