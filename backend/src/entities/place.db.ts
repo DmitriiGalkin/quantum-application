@@ -2,12 +2,14 @@ import { RowDataPacket } from 'mysql2/promise';
 
 export interface PlaceRow extends RowDataPacket {
   id: number;
-  title: string;
+  title: string | null;
   description: string | null;
+  address: string;
   latitude: number;
   longitude: number;
+  image: string | null;
   provider: string | null;
   providerId: number | null;
-  address: string | null;
   phone: string | null;
+  priceFrom: number | null;
 }
