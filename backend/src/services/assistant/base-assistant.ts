@@ -1,7 +1,6 @@
 import assistant from '../../assistant.js';
 import { extractJsonFromString } from './assistants/helper.js';
 import { Message } from '../../entities/message.js';
-import { Answer } from './assistant.factory.js';
 import { Context } from '../chat/chat.meta.js';
 
 export interface GetBaseAssistantAnswer {

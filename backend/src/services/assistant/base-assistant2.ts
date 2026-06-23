@@ -1,7 +1,7 @@
 import assistant from '../../assistant.js';
 import { extractJsonFromString2 } from './assistants/helper.js';
 import { Message } from '../../entities/message.js';
-import { Answer } from './assistant.factory.js';
+import { Context } from '../chat/chat.meta.js';
 
 export interface GetBaseAssistantAnswer {
   prompt: string;
@@ -10,10 +10,16 @@ export interface GetBaseAssistantAnswer {
   transformer: (data: any) => any;
 }
 
+export type AssistantAnswer = Promise<{
+  content?: string;
+  context?: Context;
+}>;
+
+
 /**
  * Базовая функция для взаимодействия с ассистентом.
  */
-export async function baseAssistantAnswer2({ prompt, messages, schema, transformer }: GetBaseAssistantAnswer): Promise<Answer> {
+export async function baseAssistantAnswer2({ prompt, messages, schema, transformer }: GetBaseAssistantAnswer): Promise<AssistantAnswer> {
   try {
     const payload = {
       messages: [
@@ -67,7 +73,6 @@ export async function baseAssistantAnswer2({ prompt, messages, schema, transform
     return {
       content: restText,
     };
-
   } catch (error) {
     console.error('Ошибка в baseAssistantAnswer:', error);
 

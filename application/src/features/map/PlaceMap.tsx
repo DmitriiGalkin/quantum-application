@@ -65,6 +65,9 @@ export function PlaceMap({ lat, lng, zoom, onClick }: PlaceMapProps) {
       });
     }, [places, isReady]);
   }
+  if (!places.length) return <div>Загрузка мест...</div>;
 
   return <BaseMap lat={lat} lng={lng} zoom={zoom} useLayer={usePlaceLayer} />;
 }
+
+{/*<PlaceMap lat={55.75} lng={37.62} zoom={12} onClick={handlePlaceSelect} />*/}

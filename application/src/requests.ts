@@ -3,8 +3,9 @@ import {
   type ChatMessagesResult,
   type CreateChatBody,
   type CreateChatMessages,
-  type CreateIdeaUser,
+  type CreateIdeaUser, type CreateMeet,
   type CreateMeetUser,
+  type CreateProject,
   type CreateProjectUser,
   type DeleteIdeaUser,
   type DeleteMeetUser,
@@ -151,6 +152,27 @@ export async function fetchUnlike({ userId, ideaId }: DeleteIdeaUser): Promise<v
   });
 }
 
+export async function fetchCreateProject(params: CreateProject): Promise<number> {
+  return api<number>('/project', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+export async function fetchCreateMeet(params: CreateMeet): Promise<number> {
+  return api<number>('/meet', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+;
 
 export async function fetchCreateProjectUser({ userId, projectId }: CreateProjectUser): Promise<void> {
   return api<void>('/projectUser', {

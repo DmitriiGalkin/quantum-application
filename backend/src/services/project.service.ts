@@ -11,9 +11,10 @@ import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import { ProjectUser } from '../entities/project-user.js';
 import { Place } from '../entities/place.js';
+import { CreateProject } from '@shared/types';
 
 export class ProjectService {
-  static async create(passport: any, data: any) {
+  static async create(passport: Passport, data: CreateProject) {
     if (!passport) throw new Error('UNAUTHORIZED');
 
     return ProjectRepository.create({
@@ -48,7 +49,9 @@ export class ProjectService {
       Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<Place>)),
       Promise.all(projects.map(p => MeetRepository.findByProjectId(p.id))),
     ]);
-    const placeMeetArr = await Promise.all(meetArr.map(meets => Promise.all(meets.map(meet => PlaceRepository.findById(meet.placeId)))));
+    const placeMeetArr = await Promise.all(
+      meetArr.map(meets => Promise.all(meets.map(meet => PlaceRepository.findById(meet.placeId) as Promise<Place>))),
+    );
     const userMeetArr = await Promise.all(meetArr.map(meets => Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)))));
 
     return projects.map((project, i) => ({

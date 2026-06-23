@@ -20,10 +20,10 @@ export function mapUserWithMeetRow(row: UserWithMeetRow): UserWithMeet {
   };
 }
 
-export const toUser = (row: User): UserDto => ({
-  id: row.id,
-  title: row.title,
-  description: row.description,
-  age: row.age,
-  image: row.image,
-});
+// export const toUser = (row: User): UserDto => ({
+//   id: row.id,
+//   title: row.title,
+//   description: row.description,
+//   age: row.age,
+//   image: row.image,
+// });

@@ -58,6 +58,20 @@ export async function getAnswer({ chat, context, messages }: GetAnswer): Promise
     case 'project':
       if (!context?.teacher && !context?.draftTeacher) return teacherAssistant(messages, context);
       if (!context?.idea) return selectIdeaAssistant(messages, context);
+      if (!context?.place) {
+        const content = messages[messages.length - 1].content;
+        const place = content ? await PlaceRepository.findByTitle(content) : null;
+        if (place) {
+          return {
+            context: { ...context, place },
+          };
+        }
+
+        return {
+          content: 'Выберите место для встречи',
+          context: { ...context, ui: 'map' },
+        };
+      }
       if (!context?.passport)
         return {
           content: 'Для продолжения, пожалуйста авторизуйтесь:',

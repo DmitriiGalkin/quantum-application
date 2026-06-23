@@ -6,12 +6,12 @@ import { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
 import { db } from '../dbNext.js';
 
 class MeetRepository {
-  // ✅ CREATE
+
   static async create(data: CreateMeetInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
-      `INSERT INTO meet (passportId, projectId, price, duration, startedAt)
-       VALUES (?, ?, ?, ?, ?)`,
-      [data.passportId, data.projectId, data.price, data.duration, data.startedAt],
+      `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [data.passportId, data.projectId, data.price, data.duration, data.startedAt, data.placeId],
     );
 
     return result.insertId;

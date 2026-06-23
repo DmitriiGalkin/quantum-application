@@ -1,14 +1,11 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
-import { MeetDto } from '@shared/types';
+import { CreateMeet, MeetDto } from '@shared/types';
 import { toMeetDto } from '../mappers/meet.mapper.js';
 import { MeetService } from '../services/meet.service.js';
 
-const create: ControllerWithAuth<number> = async (req, res) => {
+const create: ControllerWithAuth<number, CreateMeet> = async (req, res) => {
   try {
-    const meetId = await MeetService.create({
-      ...req.body,
-      passportId: req.passport!.id,
-    });
+    const meetId = await MeetService.create(req.passport!, req.body);
 
     ok(res, meetId);
   } catch (err) {

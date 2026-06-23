@@ -32,9 +32,14 @@ export class ChatService {
 
     if (body.ideaId) {
       const idea = await IdeaRepository.findById(body.ideaId);
+
       if (!idea) throw new Error('ChatService: идентификатор идеи передан, а самой идеи в базе нет');
 
-      context.idea = idea;
+      const user = await UserRepository.findById(idea.userId);
+
+      if (!user) throw new Error('ChatService: идентификатор пользователя найден, а самого пользователя в базе нет');
+
+      context.idea = { ...idea, user };
     }
 
     return await ChatRepository.create({

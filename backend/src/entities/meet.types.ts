@@ -1,9 +1,10 @@
 export type CreateMeetInput = {
   passportId: number;
   projectId: number;
+  placeId: number;
   price: number | null;
   duration: number | null;
-  startedAt: string
+  startedAt: string;
 };
 
 export type UpdateMeetInput = Partial<{

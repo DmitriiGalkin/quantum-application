@@ -5,16 +5,63 @@ import CardMedia from '@mui/material/CardMedia';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { generateImage } from '../../../requests.ts';
+import { fetchCreateProject, generateImage } from '../../../requests.ts';
 import IconButton from '@mui/material/IconButton';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import Like from './Like.tsx';
 import { Button, CardActions } from '@mui/material';
 import Share from '../../../shared/ui/Share.tsx';
 import { Author } from '../../../shared/ui/Author.tsx';
+import { useAuth } from '../../../providers/AuthProvider.tsx';
+import { useNavigate } from 'react-router-dom';
+import type { PlaceDto } from '@shared/types';
+import { useState } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+
+const mockPlaces: PlaceDto[] = [
+  {
+    id: 1,
+    title: 'Онлайн',
+    description: 'Проведение занятий через Zoom / Google Meet',
+    address: 'Онлайн',
+    latitude: 0,
+    longitude: 0,
+    priceFrom: 0,
+  },
+  {
+    id: 2,
+    title: 'Школа №123',
+    description: 'Класс с оборудованием для занятий',
+    address: 'г. Москва, ул. Ленина, 10',
+    latitude: 55.75,
+    longitude: 37.61,
+    priceFrom: 500,
+  },
+  {
+    id: 3,
+    title: 'Коворкинг для детей',
+    description: 'Пространство для проектной работы',
+    address: 'г. Москва, ул. Тверская, 5',
+    latitude: 55.76,
+    longitude: 37.62,
+    priceFrom: 800,
+  },
+];
 
 function Idea({ idea }: { idea: any}) {
   const queryClient = useQueryClient();
+  const { passport, authHandler } = useAuth();
+  const navigate = useNavigate();
+  const [isPlaceModalOpen, setPlaceModalOpen] = useState(false);
+
+  const createProject = useMutation({
+    mutationFn: fetchCreateProject,
+  });
 
   const generateImageMutation = useMutation({
     mutationFn: generateImage,
@@ -22,6 +69,28 @@ function Idea({ idea }: { idea: any}) {
       queryClient.invalidateQueries({ queryKey: ['idea', idea.id] });
     },
   });
+
+  const handleCreateProject = () => {
+    if (!passport) {
+      authHandler();
+      return;
+    }
+
+    setPlaceModalOpen(true);
+  };
+
+  const handlePlaceSelect = (place: PlaceDto) => {
+    setPlaceModalOpen(false);
+
+    createProject.mutate(
+      { ideaId: idea.id, placeId: place.id },
+      {
+        onSuccess: projectId => {
+          navigate('/project/' + projectId);
+        },
+      },
+    );
+  };
 
   return (
     <Card sx={{ mb: 3, borderRadius: 3 }}>
@@ -56,7 +125,7 @@ function Idea({ idea }: { idea: any}) {
           }}
         >
           {generateImageMutation.isPending && (
-            <Typography className="blink" sx={{ color: 'text.secondary',  paddingLeft: 1 }}>
+            <Typography className="blink" sx={{ color: 'text.secondary', paddingLeft: 1 }}>
               Генерирую...
             </Typography>
           )}
@@ -96,7 +165,9 @@ function Idea({ idea }: { idea: any}) {
             <Typography variant="caption" gutterBottom sx={{ color: 'text.secondary' }}>
               Для преподавателей
             </Typography>{' '}
-            <Button variant="outlined">Создать свой проект</Button>
+            <Button variant="outlined" onClick={handleCreateProject}>
+              Создать свой проект
+            </Button>
           </Stack>
           <Stack direction="row">
             <Like isLiked={idea.isLiked} ideaId={idea.id} />
@@ -104,6 +175,21 @@ function Idea({ idea }: { idea: any}) {
           </Stack>
         </Stack>
       </CardActions>
+      <Dialog open={isPlaceModalOpen} onClose={() => setPlaceModalOpen(false)}>
+        <DialogTitle>Выберите место</DialogTitle>
+        <DialogContent>
+          <List>
+            {mockPlaces.map(place => (
+              <ListItemButton key={place.id} onClick={() => handlePlaceSelect(place)}>
+                <ListItemText
+                  primary={place.title || 'Без названия'}
+                  secondary={`${place.address}${place.priceFrom ? ` • от ${place.priceFrom} ₽` : ''}`}
+                />
+              </ListItemButton>
+            ))}
+          </List>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

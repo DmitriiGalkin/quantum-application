@@ -1,8 +1,17 @@
 import Meet from '../repositories/meet.repository.js';
+import { Passport } from '../entities/passport.js';
+import { CreateMeet, CreateProject } from '@shared/types';
+import ProjectRepository from '../repositories/project.repository.js';
+import MeetRepository from '../repositories/meet.repository.js';
 
 export class MeetService {
-  static async create(data: any) {
-    return Meet.create(data);
+  static async create(passport: Passport, data: CreateMeet) {
+    if (!passport) throw new Error('UNAUTHORIZED');
+
+    return MeetRepository.create({
+      ...data,
+      passportId: passport.id,
+    });
   }
 
   static async update(data: any) {

@@ -1,9 +1,9 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectService } from '../services/project.service.js';
 import { toProjectFullDto } from '../mappers/project.mapper.js';
-import { PageMeta, ProjectDto, type ProjectFullDto } from '@shared/types';
+import { CreateProject, PageMeta, ProjectDto, type ProjectFullDto } from '@shared/types';
 
-const create: ControllerWithAuth<number> = async (req, res) => {
+const create: ControllerWithAuth<number, CreateProject> = async (req, res) => {
   try {
     const id = await ProjectService.create(req.passport!, req.body);
     ok(res, id);
