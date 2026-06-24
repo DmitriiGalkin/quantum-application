@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatEffects.ts';
+import { useLocation } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
@@ -52,6 +53,7 @@ type Props = {
 };
 
 export const AuthProvider = ({ children }: Props) => {
+  const location = useLocation();
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
@@ -78,7 +80,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     setRedirect(window.location.pathname + window.location.search);
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if (data) {

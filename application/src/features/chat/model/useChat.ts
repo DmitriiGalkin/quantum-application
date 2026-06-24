@@ -15,7 +15,14 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
   const params = useParams();
 
   const [chatId, setChatId] = useState<number | null>(() => {
-    return params.id ? Number(params.id) : null;
+    if (params.id) return Number(params.id);
+
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
+      return saved ? Number(saved) : null;
+    }
+
+    return null;
   });
 
   // контекст от ответов
@@ -96,16 +103,12 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
   }
 
   useEffect(() => {
-    const savedChatId = localStorage.getItem(ACTIVE_CHAT_ID_STORAGE_KEY);
-    if (savedChatId) {
-      setChatId(Number(savedChatId));
-    }
-  }, []);
-
-  useEffect(() => {
     const hasTargetInUrl = searchParams.has('target');
 
-    if (hasTargetInUrl) {
+    // 👉 игнорируем OAuth возврат
+    const hasAccessToken = searchParams.has('access_token');
+
+    if (hasTargetInUrl && !hasAccessToken) {
       localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
       setChatId(null);
     }
