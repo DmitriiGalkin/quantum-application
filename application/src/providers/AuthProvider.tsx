@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [passport, setPassport] = useState<PassportDto | null>(null);
+  const [redirect, setRedirect] = useState('');
 
   const { data, refetch } = useQuery({
     queryKey: ['passport'],
@@ -73,6 +74,10 @@ export const AuthProvider = ({ children }: Props) => {
       setToken(finalToken);
       localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, finalToken);
     }
+  }, []);
+
+  useEffect(() => {
+    setRedirect(window.location.pathname + window.location.search);
   }, []);
 
   useEffect(() => {
@@ -129,9 +134,7 @@ export const AuthProvider = ({ children }: Props) => {
                   <Button
                     component="a"
                     variant="contained"
-                    href={`${strategy.href}?redirect=${encodeURIComponent(
-                      window.location.pathname + window.location.search
-                    )}`}
+                    href={`${strategy.href}?redirect=${encodeURIComponent(redirect)}`}
                     key={strategy.title}
                     sx={{ minWidth: 120 }}
                     onClick={() => {
