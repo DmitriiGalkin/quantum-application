@@ -22,6 +22,8 @@ import DialogContent from '@mui/material/DialogContent';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
+import {useRunPostAuthAction} from "../../../shared/lib/useRunPostAuthAction.ts";
 
 const mockPlaces: PlaceDto[] = [
   {
@@ -53,14 +55,20 @@ const mockPlaces: PlaceDto[] = [
   },
 ];
 
-const CREATE_PROJECT_ACTION = 'create-project';
 const CREATE_PROJECT_TYPE = 'create-project-type';
 
-function Idea({ idea }: { idea: any}) {
+function Idea({ idea }: { idea: any }) {
   const queryClient = useQueryClient();
   const { passport, authHandler } = useAuth();
   const navigate = useNavigate();
+  const { setAction } = usePostAuthAction();
   const [isPlaceModalOpen, setPlaceModalOpen] = useState(false);
+
+    useRunPostAuthAction(passport, action => {
+      if (action.type === CREATE_PROJECT_TYPE && action.payload.ideaId === idea.id) {
+          setPlaceModalOpen(true);
+      }
+    });
 
   const createProject = useMutation({
     mutationFn: fetchCreateProject,
@@ -75,13 +83,10 @@ function Idea({ idea }: { idea: any}) {
 
   const handleCreateProject = () => {
     if (!passport) {
-      sessionStorage.setItem(
-        NEXT_STORAGE_KEY,
-        JSON.stringify({
-          type: CREATE_PROJECT_TYPE,
-          payload: { ideaId: idea.id },
-        }),
-      );
+      setAction({
+        type: CREATE_PROJECT_TYPE,
+        payload: { ideaId: idea.id },
+      });
 
       return authHandler();
     }

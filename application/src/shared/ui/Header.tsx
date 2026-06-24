@@ -45,12 +45,6 @@ function Header() {
             </Typography>
           </Link>
 
-          {!passport && (
-            <IconButton onClick={()=>authHandler()} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
-              <KeyIcon />
-            </IconButton>
-          )}
-
           <IconButton
             color="primary"
             aria-label="Идеи от АИ"
@@ -65,9 +59,13 @@ function Header() {
           >
             <AutoAwesomeIcon />
           </IconButton>
-          {passport && (
+          {passport ? (
             <IconButton aria-label="open drawer" sx={{ color: 'white' }} onClick={() => setIsMenuOpen(currentValue => !currentValue)}>
               <AccountCircleIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={() => authHandler()} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
+              <KeyIcon />
             </IconButton>
           )}
         </Toolbar>

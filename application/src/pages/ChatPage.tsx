@@ -92,7 +92,7 @@ function ChatPage() {
             isAuthModalOpen={effects.isMapOpen}
             setIsAuthModalOpen={effects.setIsMapOpen}
             onClick={place => {
-              chat.sendMessage(place.title, { place });
+              chat.sendMessage(place.address, { place });
               effects.setIsMapOpen(false);
             }}
           />

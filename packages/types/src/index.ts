@@ -32,7 +32,7 @@ export interface IdeaExtendedDto extends IdeaDto {
 };
 
 export interface IdeaFullDto extends IdeaDto {
-  user: UserDto | null;
+  user: UserDto;
   projects: ProjectExtendedDto[];
 }
 
@@ -52,6 +52,7 @@ export interface MeetExtendedDto extends MeetDto {
 export interface MeetFullDto extends MeetDto {
   project: ProjectDto | null;
   users: UserDto[];
+  place: PlaceDto;
 }
 
 export type MessageDto = {
@@ -109,7 +110,7 @@ export interface ProjectDto {
 export interface ProjectExtendedDto extends ProjectDto {
   passport: PassportDto;
   place: PlaceDto;
-  meets: MeetDto[];
+  meets: MeetExtendedDto[];
   users: UserDto[];
 }
 
