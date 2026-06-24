@@ -20,7 +20,7 @@ export default function Footer() {
               Quantum
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Современная платформа развития детских идей через проектную деятельность.
+              "Найти и создать детский проект за 10 минут"
             </Typography>
           </Grid>
 

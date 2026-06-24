@@ -1,7 +1,7 @@
 import { Passport } from './passport.js';
 import { User } from './user.js';
 import { Place } from './place.js';
-import { Meet } from './meet.js';
+import { Meet, MeetExtendedEntity } from './meet.js';
 import { Sort } from '@shared/types';
 
 export interface Idea {
@@ -57,7 +57,7 @@ export interface IdeaFullEntity extends Idea {
     place: Place;
     users: User[];
     idea: Idea;
-    meets: Meet[];
+    meets: MeetExtendedEntity[];
   }[];
 }
 
