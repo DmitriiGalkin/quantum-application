@@ -162,11 +162,8 @@ function Menu({ setIsMenuOpen }: MenuProps) {
           </ListItemButton>
 
           <ListItemButton
-            component={Link}
-            to="/"
             onClick={() => {
               logout();
-              //localStorage.removeItem(ACTIVE_CHAT_ID_STORAGE_KEY);
               setIsMenuOpen?.(false);
             }}
             sx={{ borderRadius: 2 }}

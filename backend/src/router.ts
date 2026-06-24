@@ -44,16 +44,24 @@ const registerOAuth = (provider: 'yandex' | 'google') => {
 
   passport.use(provider, strategy);
 
-  publicRouter.get(`/login/${provider}`, passport.authenticate(provider));
+  publicRouter.get(`/login/${provider}`, (req, res, next) => {
+    const redirect = req.query.redirect as string;
+
+    passport.authenticate(provider, {
+      state: redirect || '/',
+    })(req, res, next);
+  });
 
   publicRouter.get(`/oauth2/redirect/${provider}`, (req, res, next) => {
     passport.authenticate(provider, (err: any, user: any) => {
-      console.log(user, 'user');
       if (err || !user) {
         return res.redirect('/login');
       }
 
-      return res.redirect(`${process.env.FRONTEND_SERVER}/?access_token=${user.accessToken}`);
+      const redirect = (req.query.state as string) || '/';
+      const separator = redirect.includes('?') ? '&' : '?';
+
+      return res.redirect(`${process.env.FRONTEND_SERVER}${redirect}${separator}access_token=${user.accessToken}`);
     })(req, res, next);
   });
 };

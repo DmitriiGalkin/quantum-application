@@ -84,7 +84,6 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
       { title },
       {
         onSuccess: userId => {
-          console.log('userId', userId);
           mutationLike.mutate(
             { userId, projectId: project.id },
             {

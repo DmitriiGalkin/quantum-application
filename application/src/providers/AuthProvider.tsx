@@ -12,7 +12,6 @@ import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatE
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
-const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
 export const NEXT_STORAGE_KEY = 'next';
 
 const STRATEGIES = [
@@ -83,20 +82,6 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (!token) return;
-
-    const redirectUrl = localStorage.getItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
-
-    console.log('redirectUrl', redirectUrl);
-
-    if (redirectUrl) {
-      localStorage.removeItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY);
-
-      window.location.href = redirectUrl;
-    }
-  }, [token]);
-
   const login = (token: string) => {
     localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
     setToken(token);
@@ -110,8 +95,6 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   const authHandler = () => {
-    localStorage.setItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY, window.location.pathname + window.location.search);
-
     setIsAuthModalOpen(true);
   };
 
@@ -146,7 +129,9 @@ export const AuthProvider = ({ children }: Props) => {
                   <Button
                     component="a"
                     variant="contained"
-                    href={strategy.href}
+                    href={`${strategy.href}?redirect=${encodeURIComponent(
+                      window.location.pathname + window.location.search
+                    )}`}
                     key={strategy.title}
                     sx={{ minWidth: 120 }}
                     onClick={() => {
