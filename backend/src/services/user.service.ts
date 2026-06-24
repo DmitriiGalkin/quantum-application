@@ -7,13 +7,13 @@ import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js
 
 export class UserService {
   // ✅ CREATE
-  static async create(passport: Passport, body: CreateUserInput): Promise<{ id: number }> {
+  static async create(passport: Passport, body: CreateUserInput): Promise<number> {
     const id = await UserRepository.create({
       ...body,
       passportId: passport.id,
     });
 
-    return { id };
+    return id;
   }
 
   // ✅ UPDATE

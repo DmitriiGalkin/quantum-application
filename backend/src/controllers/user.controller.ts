@@ -3,11 +3,11 @@ import { UserService } from '../services/user.service.js';
 import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
 import { UserDto } from '@shared/types';
 
-const create: ControllerWithAuth<void> = async (req, res) => {
+const create: ControllerWithAuth<number> = async (req, res) => {
   try {
-    const result = await UserService.create(req.passport!, req.body as unknown as CreateUserInput);
+    const userId = await UserService.create(req.passport!, req.body as unknown as CreateUserInput);
 
-    ok(res, { message: 'Участник создан', ...result });
+    ok(res, userId);
   } catch (err) {
     fail(res, err instanceof Error ? err.message : 'Не удалось создать участника');
   }

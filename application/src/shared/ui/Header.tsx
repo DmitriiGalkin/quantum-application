@@ -46,7 +46,7 @@ function Header() {
           </Link>
 
           {!passport && (
-            <IconButton onClick={authHandler} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
+            <IconButton onClick={()=>authHandler()} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
               <KeyIcon />
             </IconButton>
           )}

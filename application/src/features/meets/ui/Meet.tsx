@@ -124,7 +124,7 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
         </Stack>
         {!liked && !withoutAction && (
           <Button onClick={handleLike} variant="contained">
-            Участвовать
+            Участвовать во встрече
           </Button>
         )}
       </Box>

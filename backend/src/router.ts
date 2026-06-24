@@ -48,10 +48,12 @@ const registerOAuth = (provider: 'yandex' | 'google') => {
 
   publicRouter.get(`/oauth2/redirect/${provider}`, (req, res, next) => {
     passport.authenticate(provider, (err: any, user: any) => {
+      console.log(user, 'user');
       if (err || !user) {
         return res.redirect('/login');
       }
-       return res.redirect(`${process.env.FRONTEND_SERVER}/?access_token=${user.username}`);
+
+      return res.redirect(`${process.env.FRONTEND_SERVER}/?access_token=${user.accessToken}`);
     })(req, res, next);
   });
 };

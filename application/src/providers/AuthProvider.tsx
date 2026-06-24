@@ -13,6 +13,7 @@ import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatE
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
 const REDIRECT_AFTER_LOGIN_STORAGE_KEY = 'redirect_after_login';
+export const NEXT_STORAGE_KEY = 'next';
 
 const STRATEGIES = [
   {
@@ -41,7 +42,8 @@ type AuthContextType = {
   login: (token: string) => void;
   logout: () => void;
   strategies: typeof STRATEGIES;
-  authHandler: () => void;
+  authHandler: (next2?: string) => void;
+  refetch: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>(null!);
@@ -56,7 +58,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<User | null>(null);
   const [passport, setPassport] = useState<PassportDto | null>(null);
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['passport'],
     queryFn: fetchPassport,
     enabled: Boolean(token),
@@ -106,6 +108,7 @@ export const AuthProvider = ({ children }: Props) => {
     setUser(null);
     setPassport(null);
   };
+
   const authHandler = () => {
     localStorage.setItem(REDIRECT_AFTER_LOGIN_STORAGE_KEY, window.location.pathname + window.location.search);
 
@@ -113,7 +116,7 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ passport, user, token, login, logout, strategies: STRATEGIES, authHandler }}>
+    <AuthContext.Provider value={{ passport, user, token, login, logout, strategies: STRATEGIES, authHandler, refetch }}>
       <>
         {children}
         <Dialog

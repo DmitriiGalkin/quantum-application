@@ -12,10 +12,10 @@ import Like from './Like.tsx';
 import { Button, CardActions } from '@mui/material';
 import Share from '../../../shared/ui/Share.tsx';
 import { Author } from '../../../shared/ui/Author.tsx';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import { NEXT_STORAGE_KEY, useAuth } from '../../../providers/AuthProvider.tsx';
 import { useNavigate } from 'react-router-dom';
 import type { PlaceDto } from '@shared/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -53,6 +53,9 @@ const mockPlaces: PlaceDto[] = [
   },
 ];
 
+const CREATE_PROJECT_ACTION = 'create-project';
+const CREATE_PROJECT_TYPE = 'create-project-type';
+
 function Idea({ idea }: { idea: any}) {
   const queryClient = useQueryClient();
   const { passport, authHandler } = useAuth();
@@ -72,8 +75,15 @@ function Idea({ idea }: { idea: any}) {
 
   const handleCreateProject = () => {
     if (!passport) {
-      authHandler();
-      return;
+      sessionStorage.setItem(
+        NEXT_STORAGE_KEY,
+        JSON.stringify({
+          type: CREATE_PROJECT_TYPE,
+          payload: { ideaId: idea.id },
+        }),
+      );
+
+      return authHandler();
     }
 
     setPlaceModalOpen(true);
@@ -91,6 +101,21 @@ function Idea({ idea }: { idea: any}) {
       },
     );
   };
+
+  useEffect(() => {
+    const raw = sessionStorage.getItem(NEXT_STORAGE_KEY);
+    if (!passport || !raw) return;
+
+    const action = JSON.parse(raw);
+
+    if (action.type === CREATE_PROJECT_TYPE) {
+      if (action.payload.ideaId === idea.id) {
+        setPlaceModalOpen(true);
+      }
+    }
+
+    sessionStorage.removeItem(NEXT_STORAGE_KEY);
+  }, [passport]);
 
   return (
     <Card sx={{ mb: 3, borderRadius: 3 }}>

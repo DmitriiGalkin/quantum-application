@@ -22,7 +22,7 @@ async function findOrCreate(accessToken: string, refreshToken: string, profile: 
     if (existingUser) {
       await Passport.updateTokenById(accessToken, existingUser.id);
       // Возвращаем объект, который будет сериализован в сессию
-      return done(null, { username: accessToken });
+      return done(null, { accessToken });
     }
 
     const newUserData = {

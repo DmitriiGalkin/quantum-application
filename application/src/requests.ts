@@ -152,6 +152,16 @@ export async function fetchUnlike({ userId, ideaId }: DeleteIdeaUser): Promise<v
   });
 }
 
+export async function fetchCreateUser(params: { title: string }): Promise<number> {
+  return api<number>('/user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ...params, description: 'none' }),
+  });
+}
+
 export async function fetchCreateProject(params: CreateProject): Promise<number> {
   return api<number>('/project', {
     method: 'POST',
