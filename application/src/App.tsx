@@ -19,6 +19,11 @@ import TeacherMeetsPage from './areas/teacher/TeacherMeetsPage.tsx';
 import TeacherIdeasPage from './areas/teacher/TeacherIdeasPage.tsx';
 import UserMeetsPage from './areas/user/UserMeetsPage.tsx';
 import PassportProjectCreatePage from "./areas/teacher/PassportProjectCreatePage.tsx";
+import PlaceTeachersPage from "./areas/place/PlaceTeachersPage.tsx";
+import PlaceProjectsPage from "./areas/place/PlaceProjectsPage.tsx";
+import PlaceMeetsPage from "./areas/place/PlaceMeetsPage.tsx";
+import PlaceDashboardPage from "./areas/place/PlaceDashboardPage.tsx";
+import TeacherDashboardPage from "./areas/teacher/TeacherDashboardPage.tsx";
 
 function App() {
   return (
@@ -26,12 +31,9 @@ function App() {
       {/* Общедоступная часть */}
       <Route element={<AppLayout />}>
         <Route index element={<IdeasPage />} />
-
         <Route path="chat" element={<ChatPage />} />
         <Route path="chat/:id" element={<ChatPage />} />
-
         <Route path="idea/:id" element={<IdeaPage />} />
-
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="project/:id/edit" element={<EditProjectPage />} />
       </Route>
@@ -39,32 +41,26 @@ function App() {
       {/* Ученик */}
       <Route path="user/:id" element={<AppLayout />}>
         <Route index element={<UserIdeasPage />} />
-
         <Route path="ideas" element={<UserIdeasPage />} />
         <Route path="projects" element={<UserProjectsPage />} />
-
         <Route path="meets" element={<UserMeetsPage />} />
       </Route>
 
       {/* Учитель */}
       <Route path="teacher" element={<AppLayout />}>
-        <Route index element={<div>Дашборд учителя</div>} />
-
+        <Route index element={<TeacherDashboardPage/>} />
         <Route path="projects" element={<PassportProjectsPage />} />
         <Route path="projects/create" element={<PassportProjectCreatePage />} />
         <Route path="meets" element={<TeacherMeetsPage />} />
-
         <Route path="ideas" element={<TeacherIdeasPage />} />
       </Route>
 
       {/* Центр */}
       <Route path="place" element={<AppLayout />}>
-        <Route index element={<div>Дашборд центра</div>} />
-
-        {/* MVP */}
-        <Route path="teachers" element={<div>Учителя</div>} />
-        <Route path="projects" element={<div>Проекты центра</div>} />
-        <Route path="meets" element={<div>Расписание</div>} />
+        <Route index element={<PlaceDashboardPage/>} />
+        <Route path="teachers" element={<PlaceTeachersPage/>} />
+        <Route path="projects" element={<PlaceProjectsPage/>} />
+        <Route path="meets" element={<PlaceMeetsPage/>} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
