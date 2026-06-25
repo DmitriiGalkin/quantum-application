@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 
 export const AUTH_401_EVENT = 'auth:401';
 
-const api = async function (path: string, options: RequestInit = {}) {
+const api = async function <T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
   const response = await fetch(`${API_URL}${path}`, {

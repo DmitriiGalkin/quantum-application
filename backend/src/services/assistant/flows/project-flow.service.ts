@@ -14,6 +14,9 @@ export class ProjectFlowService {
 
     return await ProjectRepository.create({
       passportId: context.passport!.id,
+      title: idea.title,
+      description: idea.description || '',
+      image: idea.image || '',
       placeId: context.place!.id,
       ideaId: idea.id,
     });

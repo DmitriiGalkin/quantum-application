@@ -13,6 +13,7 @@ export interface Idea {
   image: string | null;
   userCount: number;
   today: boolean;
+  createdAt: string;
 }
 
 export interface IdeaWithLike extends Idea {
@@ -53,10 +54,16 @@ export interface IdeaFullEntity extends Idea {
   user: User;
   projects: {
     id: number
+    title: string;
+    description: string | null;
+    image: string | null;
+    ideaId: number | null;
+    // placeId: number;
+    // passportId: number;
     passport: Passport;
     place: Place;
     users: User[];
-    idea: Idea;
+    idea: Idea | null;
     meets: MeetExtendedEntity[];
   }[];
 }

@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatEffects.ts';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { AUTH_401_EVENT } from '../api.ts';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
@@ -59,7 +59,6 @@ type Props = {
 };
 
 export const AuthProvider = ({ children }: Props) => {
-  const navigate = useNavigate();
   const location = useLocation();
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);

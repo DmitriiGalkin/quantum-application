@@ -46,7 +46,19 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
-const findAll: ControllerWithAuth<MeetDto[]> = async (req, res) => {
+const findAll: Controller<MeetDto[]> = async (req, res) => {
+  try {
+    const meets = await MeetService.findAll({
+      ...req.query,
+    });
+
+    ok(res, meets.map(toMeetDto));
+  } catch (err) {
+    fail(res, 'Ошибка при получении списка встреч');
+  }
+};
+
+const findPassportAll: ControllerWithAuth<MeetDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,
@@ -78,5 +90,6 @@ export default {
   update,
   delete: remove,
   findAll,
+  findPassportAll,
   findById,
 };

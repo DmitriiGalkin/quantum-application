@@ -11,7 +11,7 @@ import {
   type DeleteIdeaUser,
   type DeleteMeetUser,
   type DeleteProjectUser,
-  type GetIdeasQuery, type IdeaDto,
+  type GetIdeasQuery,
   type IdeaExtendedDto,
   type IdeaFullDto,
   type PassportExtendedDto,
@@ -220,5 +220,5 @@ export async function fetchTeacherMeets() {
   return api<any[]>(`/teacher/meets`);
 }
 export async function fetchTeacherIdeas() {
-  return api<IdeaDto[]>(`/teacher/ideas`);
+  return api<IdeaExtendedDto[]>(`/teacher/ideas`);
 }

@@ -25,6 +25,7 @@ export interface IdeaDto {
   image: string | null;
   userCount: number;
   isLiked?: boolean;
+  createdAt: string;
 }
 
 export interface IdeaExtendedDto extends IdeaDto {

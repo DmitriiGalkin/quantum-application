@@ -42,7 +42,7 @@ export class ProjectService {
     const projects = await ProjectRepository.findAll(params);
 
     const [ideas, usersArr, meetsArr, passportsArr, placeArr, meetArr] = await Promise.all([
-      Promise.all(projects.map(p => IdeaRepository.findById(p.ideaId) as Promise<Idea>)),
+      Promise.all(projects.map(p => (p.ideaId ? (IdeaRepository.findById(p.ideaId) as Promise<Idea>) : null))),
       Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
       Promise.all(projects.map(p => MeetRepository.findRecommendationByProjectId(p.id))),
       Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),

@@ -88,7 +88,7 @@ publicRouter.get('/places', place.findAll);
 publicRouter.post('/passport/login', withAuth(passportController.login));
 
 privateRouter.get('/passport/projects', withAuth(project.findByPassportId));
-privateRouter.get('/teacher/meets', withAuth(meet.findAll));
+privateRouter.get('/teacher/meets', withAuth(meet.findPassportAll));
 privateRouter.get('/teacher/users', withAuth(teacherUser.findByTeacher));
 privateRouter.get('/teacher/ideas', withAuth(teacherIdeaController.findByTeacher));
 privateRouter.get('/passport', withAuth(passportController.all));
