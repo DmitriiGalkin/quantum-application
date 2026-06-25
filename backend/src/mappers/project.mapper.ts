@@ -27,6 +27,7 @@ export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => 
         description: project.idea.description,
         image: project.idea.image,
         userCount: project.idea.userCount,
+         createdAt: project.idea.createdAt,
       }
     : null,
   users: project.users.map((u: any) => ({

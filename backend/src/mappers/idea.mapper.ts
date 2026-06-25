@@ -31,6 +31,7 @@ export const toIdeaExtendedDto = (idea: IdeaExtendedEntity): IdeaExtendedDto => 
     image: idea.image,
     userCount: idea.userCount,
     isLiked: idea.isLiked,
+    createdAt: idea.createdAt,
 
     user: {
       id: idea.user.id,
@@ -49,6 +50,7 @@ export const toIdeaFullDto = (idea: IdeaFullEntity): IdeaFullDto => {
     image: idea.image,
     userCount: idea.userCount,
     isLiked: idea.isLiked,
+    createdAt: idea.createdAt,
 
     user: {
       id: idea.user.id,
