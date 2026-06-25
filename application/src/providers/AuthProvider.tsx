@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');
 
+  console.log('token', token);
   const { data, refetch } = useQuery({
     queryKey: ['passport'],
     queryFn: fetchPassport,
