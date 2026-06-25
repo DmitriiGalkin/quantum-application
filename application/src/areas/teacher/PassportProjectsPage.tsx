@@ -3,18 +3,18 @@ import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import '../App.css';
+import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
-import { fetchPassportProjects } from '../requests.ts';
-import CreateProjectBlock from '../shared/ui/CreateProjectBlock.tsx';
-import Page from '../shared/ui/Page.tsx';
-import { groupProjectsByIdea } from '../utils/helper.ts';
+import { fetchPassportProjects } from '../../requests.ts';
+import CreateProjectBlock from '../../shared/ui/CreateProjectBlock.tsx';
+import Page from '../../shared/ui/Page.tsx';
+import { groupProjectsByIdea } from '../../utils/helper.ts';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
-import IdeaProjectCardForPassport from '../features/projects/ui/IdeaProjectCardForPassport.tsx';
-import AISelectIdeaBanner from '../features/ideas/ui/AISelectIdeaBanner.tsx';
+import TeacherIdeaProjectCard from './idea/TeacherIdeaProjectCard.tsx';
+import AISelectIdeaBanner from '../../features/idea/ui/AISelectIdeaBanner.tsx';
 
 function PassportProjectsPage() {
   const { id } = useParams();
@@ -108,7 +108,7 @@ function PassportProjectsPage() {
                     }}
                   >
                     {projects.map(project => (
-                      <IdeaProjectCardForPassport key={project.id} project={project} />
+                      <TeacherIdeaProjectCard key={project.id} project={project} />
                     ))}
                   </Box>
                 </Box>

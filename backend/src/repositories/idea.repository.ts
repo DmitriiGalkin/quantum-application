@@ -152,6 +152,20 @@ class IdeaRepository {
 
     return mapIdeaRow(rows[0]);
   }
+
+  static async findByTeacherId(passportId: number): Promise<Idea[]> {
+    const rows = await db.query(
+      `
+    SELECT *
+    FROM idea
+    WHERE passportId = ?
+    ORDER BY createdAt DESC
+    `,
+      [passportId],
+    );
+
+    return rows.map(mapIdeaRow);
+  }
 }
 
 export default IdeaRepository;

@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import MapDialog from '../features/map/ui/MapDialog.tsx';
+import MapDialog from '../features/place/ui/MapDialog.tsx';
 import Typography from '@mui/material/Typography';
 import ChatMessageList from '../features/chat/ui/ChatMessageList.tsx';
 import ChatComposer from '../features/chat/ui/ChatComposer.tsx';
@@ -16,8 +16,8 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import { Link, useSearchParams } from 'react-router-dom';
 import ChatIntroduction from '../features/chat/ui/ChatIntroduction.tsx';
-import IdeaCard from '../features/ideas/ui/IdeaCard.tsx';
-import Project from '../features/projects/ui/Project.tsx';
+import IdeaCard from '../features/idea/ui/IdeaCard.tsx';
+import Project from '../features/project/ui/Project.tsx';
 import Meet from '../features/meets/ui/Meet.tsx';
 
 function ChatPage() {
@@ -61,7 +61,7 @@ function ChatPage() {
             <ArrowBackIcon />
           </IconButton>
           <Box>
-            <Typography sx={{ fontWeight: 800, lineHeight: 1.2, color: 'white' }}>Ассистент</Typography>
+            <Typography sx={{ lineHeight: 1.2, color: 'white' }}>Quantum AI</Typography>
             <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', color: 'white' }}>
               <span className="pulse-circle"></span>
               <Typography variant="caption" sx={{ opacity: 0.9 }}>

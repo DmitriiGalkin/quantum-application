@@ -9,7 +9,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatEffects.ts';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AUTH_401_EVENT } from '../api.ts';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
@@ -35,6 +36,8 @@ type User = {
   image: string | null;
 };
 
+export type ActiveRole = 'user' | 'teacher' | 'place';
+
 type AuthContextType = {
   passport: PassportDto | null;
   user: User | null;
@@ -44,6 +47,9 @@ type AuthContextType = {
   strategies: typeof STRATEGIES;
   authHandler: (next2?: string) => void;
   refetch: () => void;
+  activeRole: ActiveRole | null;
+  switchRole: (role: ActiveRole) => void;
+  availableRoles: ActiveRole[];
 };
 
 const AuthContext = createContext<AuthContextType>(null!);
@@ -53,14 +59,16 @@ type Props = {
 };
 
 export const AuthProvider = ({ children }: Props) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [activeRole, setActiveRole] = useState<ActiveRole | null>(null);
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');
+  const availableRoles = ['user', 'teacher', 'place'] as ActiveRole[];
 
-  console.log('token', token);
   const { data, refetch } = useQuery({
     queryKey: ['passport'],
     queryFn: fetchPassport,
@@ -90,6 +98,18 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    const handler = () => {
+      logout();
+    };
+
+    window.addEventListener(AUTH_401_EVENT, handler);
+
+    return () => {
+      window.removeEventListener(AUTH_401_EVENT, handler);
+    };
+  }, []);
+
   const login = (token: string) => {
     localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
     setToken(token);
@@ -106,8 +126,28 @@ export const AuthProvider = ({ children }: Props) => {
     setIsAuthModalOpen(true);
   };
 
+  const switchRole = (role: ActiveRole) => {
+    setActiveRole(role);
+
+    // switch (role) {
+    //   case 'user':
+    //     navigate(`/user/${user?.id}`);
+    //     break;
+    //
+    //   case 'teacher':
+    //     navigate('/teacher');
+    //     break;
+    //
+    //   case 'place':
+    //     navigate('/place');
+    //     break;
+    // }
+  };
+
   return (
-    <AuthContext.Provider value={{ passport, user, token, login, logout, strategies: STRATEGIES, authHandler, refetch }}>
+    <AuthContext.Provider
+      value={{ passport, user, token, login, logout, strategies: STRATEGIES, authHandler, refetch, activeRole, switchRole, availableRoles }}
+    >
       <>
         {children}
         <Dialog

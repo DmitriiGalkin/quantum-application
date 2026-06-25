@@ -6,6 +6,9 @@ import user from './controllers/user.controller.js';
 import passportController from './controllers/passport.controller.js';
 import meet from './controllers/meet.controller.js';
 import meetUser from './controllers/meet-user.controller.js';
+import teacherUser from './controllers/teacher-user.controller.js';
+import teacherIdeaController from './controllers/teacher-idea.controller.js';
+
 import image from './controllers/image.controller.js';
 import place from './controllers/place.controller.js';
 import project from './controllers/project.controller.js';
@@ -85,6 +88,9 @@ publicRouter.get('/places', place.findAll);
 publicRouter.post('/passport/login', withAuth(passportController.login));
 
 privateRouter.get('/passport/projects', withAuth(project.findByPassportId));
+privateRouter.get('/teacher/meets', withAuth(meet.findAll));
+privateRouter.get('/teacher/users', withAuth(teacherUser.findByTeacher));
+privateRouter.get('/teacher/ideas', withAuth(teacherIdeaController.findByTeacher));
 privateRouter.get('/passport', withAuth(passportController.all));
 privateRouter.put('/passport', withAuth(passportController.update));
 

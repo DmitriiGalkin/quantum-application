@@ -6,7 +6,6 @@ import { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
 import { db } from '../dbNext.js';
 
 class MeetRepository {
-
   static async create(data: CreateMeetInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId)
@@ -41,14 +40,38 @@ class MeetRepository {
   }
 
   // ✅ FIND ALL
-  static async findAll(): Promise<Meet[]> {
-    const rows = await db.query<MeetRow>(
-      `SELECT *
-       FROM meet
-       WHERE startedAt >= CURDATE()
-         AND deletedAt IS NULL
-       ORDER BY startedAt`,
-    );
+  static async findAll(data: { passportId?: number }): Promise<Meet[]> {
+    const params: unknown[] = [];
+
+    let sql = `
+    SELECT meet.*
+    FROM meet
+  `;
+
+    if (data.passportId) {
+      sql += `
+      INNER JOIN project ON project.id = meet.projectId
+    `;
+    }
+
+    sql += `
+    WHERE meet.startedAt >= CURDATE()
+      AND meet.deletedAt IS NULL
+  `;
+
+    if (data.passportId) {
+      sql += `
+      AND meet.passportId = ?
+    `;
+
+      params.push(data.passportId);
+    }
+
+    sql += `
+    ORDER BY meet.startedAt
+  `;
+
+    const rows = await db.query(sql, params);
 
     return rows.map(toMeet);
   }

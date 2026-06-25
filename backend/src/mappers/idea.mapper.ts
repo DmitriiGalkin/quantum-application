@@ -12,6 +12,7 @@ export function mapIdeaRow(row: IdeaRow): Idea {
     image: row.image,
     userCount: row.userCount,
     today: row.today,
+    createdAt: row.createdAt,
   };
 }
 

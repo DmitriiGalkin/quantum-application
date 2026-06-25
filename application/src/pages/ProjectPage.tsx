@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchCreateMeet, fetchProject } from '../requests.ts';
 import { useParams } from 'react-router-dom';
 import Page from '../shared/ui/Page.tsx';
-import Project from '../features/projects/ui/Project.tsx';
+import Project from '../features/project/ui/Project.tsx';
 import { CreateMeetForm } from '../features/meets/ui/CreateMeetForm.tsx';
 
 export default function ProjectPage() {

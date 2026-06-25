@@ -54,8 +54,8 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
       <CardMedia
         component="img"
         height="360"
-        image={project.idea.image || `/bg.jpeg`}
-        alt={project.idea.title || 'Проект'}
+        image={project.image || `/bg.jpeg`}
+        alt={project.title || 'Проект'}
         sx={{
           objectFit: 'cover',
           height: {
@@ -67,13 +67,13 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
       <CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography component="h1" variant="h6" gutterBottom>
-            {project.idea.title}
+            {project.title}
           </Typography>
           <IconButton
             size="small"
             onClick={e => {
               e.stopPropagation(); // важно: чтобы не триггерить Card click
-              navigate(`/idea/${project.idea.id}`);
+              navigate(`/idea/${project.ideaId}`);
             }}
             sx={{
               opacity: 0.5,
@@ -86,7 +86,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
           </IconButton>
         </Box>
 
-        <Typography sx={{ color: 'text.secondary' }}>{project.idea.description}</Typography>
+        <Typography sx={{ color: 'text.secondary' }}>{project.description}</Typography>
       </CardContent>
       {!isMember && (
         <>

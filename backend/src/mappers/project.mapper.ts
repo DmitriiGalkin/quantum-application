@@ -13,13 +13,19 @@ export function mapProjectRow(row: ProjectRow): Project {
 
 export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => ({
   id: project.id,
-  idea: {
-    id: project.idea.id,
-    title: project.idea.title,
-    description: project.idea.description,
-    image: project.idea.image,
-    userCount: project.idea.userCount,
-  },
+  title: project.title,
+  description: project.description,
+  image: project.image,
+  ideaId: project.ideaId,
+  idea: project.idea
+    ? {
+        id: project.idea.id,
+        title: project.idea.title,
+        description: project.idea.description,
+        image: project.idea.image,
+        userCount: project.idea.userCount,
+      }
+    : null,
   users: project.users.map((u: any) => ({
     id: u.id,
     title: u.title,

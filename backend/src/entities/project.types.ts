@@ -1,5 +1,8 @@
 export type CreateProjectInput = {
   placeId: number;
-  ideaId: number;
+  title: string;
+  description: string;
+  image: string;
+  ideaId?: number;
   passportId: number;
 };

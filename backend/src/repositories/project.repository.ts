@@ -10,9 +10,9 @@ class ProjectRepository {
   // ✅ CREATE
   static async create(data: CreateProjectInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
-      `INSERT INTO project (ideaId, passportId, placeId)
-       VALUES (?, ?, ?)`,
-      [data.ideaId, data.passportId, data.placeId],
+      `INSERT INTO project (ideaId, passportId, placeId, title, description, image)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [data.ideaId || null, data.passportId, data.placeId, data.title, data.description, data.image],
     );
 
     return result.insertId;

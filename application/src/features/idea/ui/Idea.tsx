@@ -12,10 +12,10 @@ import Like from './Like.tsx';
 import { Button, CardActions } from '@mui/material';
 import Share from '../../../shared/ui/Share.tsx';
 import { Author } from '../../../shared/ui/Author.tsx';
-import { NEXT_STORAGE_KEY, useAuth } from '../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useNavigate } from 'react-router-dom';
 import type { PlaceDto } from '@shared/types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -23,7 +23,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
-import {useRunPostAuthAction} from "../../../shared/lib/useRunPostAuthAction.ts";
+import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
 
 const mockPlaces: PlaceDto[] = [
   {
@@ -59,16 +59,16 @@ const CREATE_PROJECT_TYPE = 'create-project-type';
 
 function Idea({ idea }: { idea: any }) {
   const queryClient = useQueryClient();
-  const { passport, authHandler } = useAuth();
+  const { passport, authHandler, activeRole } = useAuth();
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const [isPlaceModalOpen, setPlaceModalOpen] = useState(false);
 
-    useRunPostAuthAction(passport, action => {
-      if (action.type === CREATE_PROJECT_TYPE && action.payload.ideaId === idea.id) {
-          setPlaceModalOpen(true);
-      }
-    });
+  useRunPostAuthAction(passport, action => {
+    if (action.type === CREATE_PROJECT_TYPE && action.payload.ideaId === idea.id) {
+      setPlaceModalOpen(true);
+    }
+  });
 
   const createProject = useMutation({
     mutationFn: fetchCreateProject,
@@ -98,7 +98,7 @@ function Idea({ idea }: { idea: any }) {
     setPlaceModalOpen(false);
 
     createProject.mutate(
-      { ideaId: idea.id, placeId: place.id },
+      { ideaId: idea.id, placeId: place.id, title: idea.title, description: idea.description, image: idea.image },
       {
         onSuccess: projectId => {
           navigate('/project/' + projectId);
@@ -106,21 +106,6 @@ function Idea({ idea }: { idea: any }) {
       },
     );
   };
-
-  useEffect(() => {
-    const raw = sessionStorage.getItem(NEXT_STORAGE_KEY);
-    if (!passport || !raw) return;
-
-    const action = JSON.parse(raw);
-
-    if (action.type === CREATE_PROJECT_TYPE) {
-      if (action.payload.ideaId === idea.id) {
-        setPlaceModalOpen(true);
-      }
-    }
-
-    sessionStorage.removeItem(NEXT_STORAGE_KEY);
-  }, [passport]);
 
   return (
     <Card sx={{ mb: 3, borderRadius: 3 }}>
@@ -189,37 +174,45 @@ function Idea({ idea }: { idea: any }) {
           <Author user={idea.user} />
         </Stack>
       </CardContent>
-      <CardActions sx={{ p: 2 }}>
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-end' }}>
-          <Stack>
-            <Typography variant="caption" gutterBottom sx={{ color: 'text.secondary' }}>
-              Для преподавателей
-            </Typography>{' '}
-            <Button variant="outlined" onClick={handleCreateProject}>
-              Создать свой проект
-            </Button>
-          </Stack>
+
+      {activeRole === 'teacher' && (
+        <>
+          <CardActions sx={{ p: 2 }}>
+            <Stack>
+              <Typography variant="caption" gutterBottom sx={{ color: 'text.secondary' }}>
+                Для преподавателей
+              </Typography>{' '}
+              <Button variant="outlined" onClick={handleCreateProject}>
+                Создать свой проект
+              </Button>
+            </Stack>
+          </CardActions>
+          <Dialog open={isPlaceModalOpen} onClose={() => setPlaceModalOpen(false)}>
+            <DialogTitle>Выберите место</DialogTitle>
+            <DialogContent>
+              <List>
+                {mockPlaces.map(place => (
+                  <ListItemButton key={place.id} onClick={() => handlePlaceSelect(place)}>
+                    <ListItemText
+                      primary={place.title || 'Без названия'}
+                      secondary={`${place.address}${place.priceFrom ? ` • от ${place.priceFrom} ₽` : ''}`}
+                    />
+                  </ListItemButton>
+                ))}
+              </List>
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
+
+      {activeRole === 'user' && (
+        <CardActions sx={{ p: 2 }}>
           <Stack direction="row">
             <Like isLiked={idea.isLiked} ideaId={idea.id} />
             <Share title={idea.title} description={idea.description || ''} />
           </Stack>
-        </Stack>
-      </CardActions>
-      <Dialog open={isPlaceModalOpen} onClose={() => setPlaceModalOpen(false)}>
-        <DialogTitle>Выберите место</DialogTitle>
-        <DialogContent>
-          <List>
-            {mockPlaces.map(place => (
-              <ListItemButton key={place.id} onClick={() => handlePlaceSelect(place)}>
-                <ListItemText
-                  primary={place.title || 'Без названия'}
-                  secondary={`${place.address}${place.priceFrom ? ` • от ${place.priceFrom} ₽` : ''}`}
-                />
-              </ListItemButton>
-            ))}
-          </List>
-        </DialogContent>
-      </Dialog>
+        </CardActions>
+      )}
     </Card>
   );
 }

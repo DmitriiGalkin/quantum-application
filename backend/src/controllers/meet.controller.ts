@@ -46,10 +46,11 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
-const findAll: Controller<MeetDto[]> = async (req, res) => {
+const findAll: ControllerWithAuth<MeetDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,
+      passportId: req.passport!.id,
     });
 
     ok(res, meets.map(toMeetDto));

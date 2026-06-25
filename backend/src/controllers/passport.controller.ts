@@ -26,6 +26,7 @@ const login: ControllerWithAuth<{ access_token: string }> = async (req, res) => 
 const all: ControllerWithAuth<PassportDto> = async (req, res) => {
   try {
     const data = await AuthService.getFullProfile(req.passport!);
+
     ok(res, toPassportDto(data));
   } catch (err) {
     fail(res, 'Ошибка получения полной информации');

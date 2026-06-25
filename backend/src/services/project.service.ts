@@ -79,7 +79,7 @@ export class ProjectService {
       UserRepository.findByProjectId(projectId),
       MeetRepository.findByProjectId(projectId),
       PlaceRepository.findById(project.placeId) as Promise<Place>,
-      IdeaRepository.findById(project.ideaId) as Promise<Idea>,
+      project.ideaId ? IdeaRepository.findById(project.ideaId) as Promise<Idea> : null,
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
     ]);
 

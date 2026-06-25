@@ -13,7 +13,7 @@ import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { CreateUserForm } from '../../users/ui/CreateUserForm.tsx';
+import { CreateUserForm } from '../../user/ui/CreateUserForm.tsx';
 import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
 

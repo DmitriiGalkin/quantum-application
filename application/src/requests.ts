@@ -3,14 +3,15 @@ import {
   type ChatMessagesResult,
   type CreateChatBody,
   type CreateChatMessages,
-  type CreateIdeaUser, type CreateMeet,
+  type CreateIdeaUser,
+  type CreateMeet,
   type CreateMeetUser,
   type CreateProject,
   type CreateProjectUser,
   type DeleteIdeaUser,
   type DeleteMeetUser,
   type DeleteProjectUser,
-  type GetIdeasQuery,
+  type GetIdeasQuery, type IdeaDto,
   type IdeaExtendedDto,
   type IdeaFullDto,
   type PassportExtendedDto,
@@ -182,8 +183,6 @@ export async function fetchCreateMeet(params: CreateMeet): Promise<number> {
   });
 }
 
-;
-
 export async function fetchCreateProjectUser({ userId, projectId }: CreateProjectUser): Promise<void> {
   return api<void>('/projectUser', {
     method: 'POST',
@@ -200,7 +199,6 @@ export async function fetchDeleteProjectUser({ userId, projectId }: DeleteProjec
   });
 }
 
-
 export async function fetchCreateMeetUser({ userId, meetId }: CreateMeetUser): Promise<void> {
   return api<void>('/meetUser', {
     method: 'POST',
@@ -215,4 +213,12 @@ export async function fetchDeleteMeetUser({ userId, meetId }: DeleteMeetUser): P
   return api<void>(`/meetUser?userId=${userId}&meetId=${meetId}`, {
     method: 'DELETE',
   });
+}
+
+// ================
+export async function fetchTeacherMeets() {
+  return api<any[]>(`/teacher/meets`);
+}
+export async function fetchTeacherIdeas() {
+  return api<IdeaDto[]>(`/teacher/ideas`);
 }

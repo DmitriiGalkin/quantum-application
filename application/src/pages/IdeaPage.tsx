@@ -7,10 +7,10 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchIdea } from '../requests.ts';
 import { Button, Grid } from '@mui/material';
 import Page from '../shared/ui/Page.tsx';
-import IdeaProjectCard from '../features/projects/ui/IdeaProjectCard.tsx';
-import { useFilters } from '../features/ideas/model/useFilters.ts';
-import Filter from '../features/ideas/ui/Filter.tsx';
-import Idea from '../features/ideas/ui/Idea.tsx';
+import IdeaProjectCard from '../features/project/ui/IdeaProjectCard.tsx';
+import { useFilters } from '../features/idea/model/useFilters.ts';
+import Filter from '../features/idea/ui/Filter.tsx';
+import Idea from '../features/idea/ui/Idea.tsx';
 
 function IdeaPage() {
   const { filters, setView, setSort, setWhen } = useFilters();

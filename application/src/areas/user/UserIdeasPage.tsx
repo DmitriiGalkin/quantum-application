@@ -1,11 +1,11 @@
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import '../App.css';
+import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
-import { fetchUserIdeas } from '../requests.ts';
-import IdeaCard from '../features/ideas/ui/IdeaCard.tsx';
+import { fetchUserIdeas } from '../../requests.ts';
+import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
 import { useParams } from 'react-router-dom';
-import Page from '../shared/ui/Page.tsx';
+import Page from '../../shared/ui/Page.tsx';
 
 function IdeasPage() {
   const { id } = useParams();

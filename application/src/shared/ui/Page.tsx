@@ -2,7 +2,6 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Alert } from '@mui/material';
 import Footer from './Footer.tsx';
-import Header from './Header.tsx';
 
 interface Props {
   children: React.ReactNode;
@@ -13,16 +12,7 @@ interface Props {
 
 function Page({ children, isLoading, isError }: Props) {
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-      }}
-    >
-      <Header />
-
+    <>
       {isError && <Alert severity="error">Не удалось загрузить.</Alert>}
 
       {/* CONTENT */}
@@ -64,7 +54,7 @@ function Page({ children, isLoading, isError }: Props) {
           </Box>
         )}
       </Box>
-    </Box>
+    </>
   );
 }
 

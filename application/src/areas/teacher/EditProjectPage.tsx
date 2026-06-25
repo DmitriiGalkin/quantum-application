@@ -12,7 +12,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useQuery } from '@tanstack/react-query';
-import { fetchProject } from '../requests.ts';
+import { fetchProject } from '../../requests.ts';
 
 function EditProjectPage() {
   const navigate = useNavigate();

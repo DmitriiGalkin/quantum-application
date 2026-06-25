@@ -3,15 +3,15 @@ import Box from '@mui/material/Box';
 import { Button, Card, CardActionArea, Stack } from '@mui/material';
 import { type ProjectExtendedDto } from '@shared/types';
 import PlaceIcon from '@mui/icons-material/Place';
-import MeetForPassport from '../../meets/ui/MeetForPassport.tsx';
+import MeetForPassport from './TeacherIdeaProjectMeetCard.tsx';
 import CardContent from '@mui/material/CardContent';
 
-type IdeaProjectCardProps = {
+type Props = {
   project: ProjectExtendedDto; // частичное должно быть
   refetch?: any;
 };
 
-function IdeaProjectCardForPassport({ project }: IdeaProjectCardProps) {
+function TeacherIdeaProjectCard({ project }: Props) {
 
   const nextMeet = project.meets?.[0];
 
@@ -60,4 +60,4 @@ function IdeaProjectCardForPassport({ project }: IdeaProjectCardProps) {
   );
 }
 
-export default IdeaProjectCardForPassport;
+export default TeacherIdeaProjectCard;

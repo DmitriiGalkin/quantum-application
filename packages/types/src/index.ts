@@ -105,6 +105,10 @@ export interface PlaceFullDto extends PlaceDto {
 
 export interface ProjectDto {
   id: number;
+  title: string;
+  description: string | null;
+  image: string | null;
+  ideaId: number | null;
 }
 
 export interface ProjectExtendedDto extends ProjectDto {
@@ -115,7 +119,7 @@ export interface ProjectExtendedDto extends ProjectDto {
 }
 
 export interface ProjectFullDto extends ProjectDto {
-  idea: IdeaDto;
+  idea: IdeaDto | null;
   passport: PassportDto;
   place: PlaceDto;
   meets: MeetFullDto[];
@@ -177,7 +181,10 @@ export interface DeleteIdeaUser {
 }
 
 export interface CreateProject {
-  ideaId: number;
+  title: string;
+  description: string;
+  image: string;
+  ideaId?: number;
   placeId: number;
 }
 

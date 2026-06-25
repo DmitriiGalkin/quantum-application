@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import '../App.css';
+import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
-import { fetchUserProjects } from '../requests.ts';
-import Page from '../shared/ui/Page.tsx';
-import Project from '../features/projects/ui/Project.tsx';
+import { fetchUserProjects } from '../../requests.ts';
+import Page from '../../shared/ui/Page.tsx';
+import Project from '../../features/project/ui/Project.tsx';
 
 function UserProjectsPage() {
   const { id } = useParams();
