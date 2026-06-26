@@ -24,6 +24,9 @@ import PlaceProjectsPage from "./areas/place/PlaceProjectsPage.tsx";
 import PlaceMeetsPage from "./areas/place/PlaceMeetsPage.tsx";
 import PlaceDashboardPage from "./areas/place/PlaceDashboardPage.tsx";
 import TeacherDashboardPage from "./areas/teacher/TeacherDashboardPage.tsx";
+import CreateMeetPage from './pages/CreateMeetPage.tsx';
+import EditMeetPage from './pages/EditMeetPage.tsx';
+import CreatePlacePage from './areas/place/CreatePlacePage.tsx';
 
 function App() {
   return (
@@ -36,6 +39,9 @@ function App() {
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="project/:id/edit" element={<EditProjectPage />} />
+        <Route path="project/:id/edit" element={<EditProjectPage />} />
+        <Route path="project/:id/meets/create" element={<CreateMeetPage />} />
+        <Route path="project/:id/meets/:meetId/edit" element={<EditMeetPage />} />
       </Route>
 
       {/* Ученик */}
@@ -48,7 +54,7 @@ function App() {
 
       {/* Учитель */}
       <Route path="teacher" element={<AppLayout />}>
-        <Route index element={<TeacherDashboardPage/>} />
+        <Route index element={<TeacherDashboardPage />} />
         <Route path="projects" element={<PassportProjectsPage />} />
         <Route path="projects/create" element={<PassportProjectCreatePage />} />
         <Route path="meets" element={<TeacherMeetsPage />} />
@@ -57,10 +63,11 @@ function App() {
 
       {/* Центр */}
       <Route path="place" element={<AppLayout />}>
-        <Route index element={<PlaceDashboardPage/>} />
-        <Route path="teachers" element={<PlaceTeachersPage/>} />
-        <Route path="projects" element={<PlaceProjectsPage/>} />
-        <Route path="meets" element={<PlaceMeetsPage/>} />
+        <Route index element={<PlaceDashboardPage />} />
+        <Route path="create" element={<CreatePlacePage />} />
+        <Route path="teachers" element={<PlaceTeachersPage />} />
+        <Route path="projects" element={<PlaceProjectsPage />} />
+        <Route path="meets" element={<PlaceMeetsPage />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

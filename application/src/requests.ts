@@ -6,6 +6,7 @@ import {
   type CreateIdeaUser,
   type CreateMeet,
   type CreateMeetUser,
+  type CreatePlace,
   type CreateProject,
   type CreateProjectUser,
   type DeleteIdeaUser,
@@ -14,10 +15,12 @@ import {
   type GetIdeasQuery,
   type IdeaExtendedDto,
   type IdeaFullDto,
+  type MeetDto,
   type PassportExtendedDto,
   type PlaceFullDto,
   type ProjectDto,
   type ProjectFullDto,
+  type UpdateMeet,
 } from '@shared/types';
 import { api } from './api.ts';
 
@@ -221,4 +224,61 @@ export async function fetchTeacherMeets() {
 }
 export async function fetchTeacherIdeas() {
   return api<IdeaExtendedDto[]>(`/teacher/ideas`);
+}
+
+export async function fetchMeet(id: number) {
+  return api<MeetDto>('/meet/' + id);
+}
+
+export async function fetchUpdateMeet(id: number, params: UpdateMeet): Promise<void> {
+  console.log(params, 'params');
+  return api<void>('/meet/' + id, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+export async function fetchCreatePlace(params: CreatePlace): Promise<void> {
+  return api<void>('/place', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+// -==========
+export async function fetchAddTeacher(params: { passportId: number }): Promise<void> {
+  return api<void>(`/place/teachers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      passportId: params.passportId,
+    }),
+  });
+}
+
+export type Teacher = {
+  id: number;
+  title: string;
+  image?: string;
+  projectCount?: number;
+};
+
+export async function fetchPlaceTeachers() {
+  return api<Teacher[]>(`/place/teachers`, {
+    method: 'GET',
+  });
+}
+
+export async function fetchRemoveTeacher(params: { passportId: number }): Promise<void> {
+  return api<void>(`/place/teachers/${params.passportId}`, {
+    method: 'DELETE',
+  });
 }

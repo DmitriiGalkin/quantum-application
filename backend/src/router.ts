@@ -18,6 +18,7 @@ import projectUser from './controllers/project-user.controller.js';
 import chat from './controllers/chat.controller.js';
 import strategies from './strategies.js';
 import { ControllerWithAuth } from './controllers/helper.js';
+import placeTeacherController from "./controllers/placeTeacher.controller.js";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -108,6 +109,12 @@ privateRouter.post('/chat', withAuth(chat.create));
 privateRouter.post('/chat/:id/messages', withAuth(chat.createMessages));
 
 privateRouter.post('/place', withAuth(place.create));
+privateRouter.post('/place', withAuth(place.create));
+
+privateRouter.post('/place', withAuth(place.create));
+privateRouter.get('/place/teachers', withAuth(placeTeacherController.findAll));
+privateRouter.post('/place/teachers', withAuth(placeTeacherController.addTeacher));
+privateRouter.delete('/place/teachers/:passportId', withAuth(placeTeacherController.remove));
 
 privateRouter.post('/projectUser', withAuth(projectUser.create));
 privateRouter.delete('/projectUser', withAuth(projectUser.delete));

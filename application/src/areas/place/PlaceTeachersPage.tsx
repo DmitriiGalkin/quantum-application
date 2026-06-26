@@ -1,55 +1,63 @@
-import { Avatar, Button, Card, CardContent, Stack, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Box, Button, Card, CardContent, Stack, TextField, Typography } from '@mui/material';
+import { fetchAddTeacher, fetchPlaceTeachers, fetchRemoveTeacher } from '../../requests.ts';
 
-type Teacher = {
-  id: number;
-  title: string;
-  image?: string;
-  projectCount?: number;
-};
 
 export default function PlaceTeachersPage() {
-  // TODO заменить на useQuery
-  const teachers: Teacher[] = [
-    {
-      id: 1,
-      title: 'Анна Иванова',
-      projectCount: 4,
+  const { id } = useParams();
+  const placeId = Number(id);
+
+  const [passportId, setPassportId] = useState('');
+
+  const teachersQuery = useQuery({
+    queryKey: ['place-teachers', placeId],
+    queryFn: () => fetchPlaceTeachers(),
+  });
+
+  const addTeacher = useMutation({
+    mutationFn: () => fetchAddTeacher({passportId:Number(passportId)}),
+    onSuccess: () => {
+      teachersQuery.refetch();
+      setPassportId('');
     },
-    {
-      id: 2,
-      title: 'Дмитрий Петров',
-      projectCount: 2,
-    },
-  ];
+  });
+
+  const removeTeacher = useMutation({
+    mutationFn: (passportId: number) => fetchRemoveTeacher({passportId}),
+    onSuccess: () => teachersQuery.refetch(),
+  });
 
   return (
-    <Stack spacing={3}>
-      <Typography variant="h4">Учителя центра</Typography>
+    <Box>
+      <Stack spacing={3}>
+        <Typography variant="h4">Учителя центра</Typography>
 
-      <Button variant="contained" component={Link} to="/place/invite-teacher">
-        Пригласить учителя
-      </Button>
+        <Stack direction="row" spacing={2}>
+          <TextField label="Passport ID" value={passportId} onChange={e => setPassportId(e.target.value)} />
 
-      {teachers.length === 0 && <Typography color="text.secondary">Учителей пока нет</Typography>}
+          <Button variant="contained" onClick={() => addTeacher.mutate()}>
+            Добавить
+          </Button>
+        </Stack>
 
-      {teachers.map(teacher => (
-        <Card key={teacher.id}>
-          <CardContent>
-            <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-              <Avatar src={teacher.image} alt={teacher.title} sx={{ width: 56, height: 56 }} />
+        <Stack spacing={2}>
+          {teachersQuery.data?.map((t: any) => (
+            <Card key={t.id}>
+              <CardContent>
+                <Stack direction="row" sx={{ justifyContent: 'space-between'}}>
+                  <Typography>{t.title}</Typography>
 
-              <Stack spacing={0.5}>
-                <Typography>{teacher.title}</Typography>
-
-                <Typography variant="body2" color="text.secondary">
-                  Проектов: {teacher.projectCount ?? 0}
-                </Typography>
-              </Stack>
-            </Stack>
-          </CardContent>
-        </Card>
-      ))}
-    </Stack>
+                  <Button color="error" onClick={() => removeTeacher.mutate(t.id)}>
+                    Удалить
+                  </Button>
+                </Stack>
+              </CardContent>
+            </Card>
+          ))}
+        </Stack>
+      </Stack>
+    </Box>
   );
 }

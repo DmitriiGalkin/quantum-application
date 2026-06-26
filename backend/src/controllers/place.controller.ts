@@ -1,6 +1,6 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import { PlaceDto } from '@shared/types';
+import { CreatePlace, PlaceDto } from '@shared/types';
 
 const findAll: Controller<PlaceDto[]> = async (_req, res) => {
   try {
@@ -11,11 +11,12 @@ const findAll: Controller<PlaceDto[]> = async (_req, res) => {
   }
 };
 
-const create: ControllerWithAuth<number> = async (req, res) => {
+const create: ControllerWithAuth<number, CreatePlace> = async (req, res) => {
   try {
-    const id = await PlaceService.create(req.body);
+    const id = await PlaceService.create(req.passport.id!, req.body);
     ok(res, id);
   } catch (err) {
+    console.log(err);
     fail(res, 'Не удалось создать место');
   }
 };

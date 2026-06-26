@@ -1,5 +1,5 @@
 import type { MeetExtendedDto, PassportDto } from '@shared/types';
-import { Button, Card, Chip } from '@mui/material';
+import { Button, Card, Chip, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateMeetUser, fetchDeleteMeetUser } from '../../../requests.ts';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
@@ -8,6 +8,11 @@ import MeetCardHeader from './MeetCardHeader.tsx';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MailOutlineIcon from '@mui/icons-material/Mail';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   meet: MeetExtendedDto;
@@ -19,6 +24,8 @@ type Props = {
 
 function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
   const { user, authHandler } = useAuth();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
 
   const liked = user && meet.users?.some(u => u.id === user.id);
   const start = new Date(meet.startedAt);
@@ -50,8 +57,48 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
     else authHandler();
   };
 
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+
   return (
     <Card>
+      <IconButton onClick={handleOpen}>
+        <MoreVertIcon />
+      </IconButton>
+
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        <MenuItem
+          onClick={e => {
+            handleClose(e);
+            navigate(`/project/${meet.projectId}/meets/${meet.id}/edit`);
+          }}
+        >
+          <ListItemIcon>
+            <MailOutlineIcon fontSize="small" />
+          </ListItemIcon>
+          Редактировать
+        </MenuItem>
+          <MenuItem
+            onClick={e => {
+              handleClose(e);
+              console.log('удалить')
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            Удалить встречу
+          </MenuItem>
+      </Menu>
       {passport && <MeetCardHeader passport={passport} handleUnlike={liked && handleUnlike} />}
       <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>

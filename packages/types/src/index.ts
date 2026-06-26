@@ -30,7 +30,7 @@ export interface IdeaDto {
 
 export interface IdeaExtendedDto extends IdeaDto {
   user: UserDto;
-};
+}
 
 export interface IdeaFullDto extends IdeaDto {
   user: UserDto;
@@ -215,7 +215,6 @@ export interface DeleteMeetUser {
   userId: number;
 }
 
-
 export interface CreateMessage {
   chatId: number;
   message: string;
@@ -231,11 +230,7 @@ export interface GetIdeasQuery {
 }
 
 // FEED system
-export type FeedItem =
-  | FeedMeet
-  | FeedComment
-  | FeedJoin
-  | FeedLike;
+export type FeedItem = FeedMeet | FeedComment | FeedJoin | FeedLike;
 
 interface BaseFeed {
   id: number;
@@ -262,4 +257,18 @@ export interface FeedJoin extends BaseFeed {
 
 export interface FeedLike extends BaseFeed {
   type: 'like';
+}
+
+export interface UpdateMeet {
+  price: number | null;
+  duration: number | null;
+  startedAt: string;
+  projectId: number;
+}
+
+export interface CreatePlace {
+  title: string;
+  description?: string;
+  image?: string;
+  address: string;
 }
