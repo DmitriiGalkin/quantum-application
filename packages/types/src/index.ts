@@ -272,3 +272,9 @@ export interface CreatePlace {
   image?: string;
   address: string;
 }
+export type TeacherDto = {
+  id: number;
+  title: string;
+  image?: string;
+  projectCount?: number;
+};

@@ -33,7 +33,7 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
   const [answerMessages, setAnswerMessages] = useState<CreateMessageDto[]>([]);
 
 
-  const createChatMessages = useMutation({ mutationFn: fetchCreateChatMessages });
+  const createChatMessages = useMutation({ mutationFn: ({ chatId, messages }: { chatId: number, messages: CreateMessageDto[]}) => fetchCreateChatMessages(chatId as number, messages) });
   const createChatMutation = useMutation({ mutationFn: fetchCreateChat });
 
   const { data: chat, isLoading } = useQuery({

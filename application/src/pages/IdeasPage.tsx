@@ -27,8 +27,13 @@ function IdeasPage() {
     queryFn: () =>
       fetchIdeas({
         ...filters,
-        latitude: location.status === 'success' ? location.lat : undefined,
-        longitude: location.status === 'success' ? location.lng : undefined,
+        ...(filters.sort === 'nearby' &&
+        location.status === 'success'
+          ? {
+            latitude: location.lat,
+            longitude: location.lng,
+          }
+          : {}),
       }),
     enabled: filters.sort !== 'nearby' || location.status === 'success',
   });

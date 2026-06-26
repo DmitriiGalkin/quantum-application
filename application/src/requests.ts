@@ -2,7 +2,7 @@ import {
   type ChatDto,
   type ChatMessagesResult,
   type CreateChatBody,
-  type CreateChatMessages,
+  type CreateMessageDto,
   type CreateIdeaUser,
   type CreateMeet,
   type CreateMeetUser,
@@ -20,265 +20,41 @@ import {
   type PlaceFullDto,
   type ProjectDto,
   type ProjectFullDto,
+  type TeacherDto,
   type UpdateMeet,
 } from '@shared/types';
-import { api } from './api.ts';
+import { del, get, post, put, toQuery } from './api.ts';
 
-export async function fetchProject(id: string) {
-  return api<ProjectFullDto>(`/project/${id}`);
-}
-
-export async function fetchIdea(id: string, { when, sort, latitude, longitude }: GetIdeasQuery) {
-  return api<IdeaFullDto>(`/idea/${id}?sort=${sort}&latitude=${latitude}&longitude=${longitude}&when=${when}`);
-}
-
-export async function createProject(ideaId: number): Promise<number> {
-  return api<number>('/project', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      ideaId,
-    }),
-  });
-}
-
-export async function fetchPlaces() {
-  return api<PlaceFullDto[]>('/places');
-}
-
-export async function fetchChat(chatId: number): Promise<ChatDto> {
-  return api<ChatDto>(`/chat/${chatId}`);
-}
-
-export async function fetchCreateChat({ target, userId, projectId, ideaId }: CreateChatBody): Promise<number> {
-  return api<number>('/chat', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      target,
-      userId,
-      projectId,
-      ideaId,
-    }),
-  });
-}
-
-export async function fetchCreateChatMessages({ chatId, messages }: CreateChatMessages): Promise<ChatMessagesResult> {
-  return api(`/chat/${chatId}/messages`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      messages,
-    }),
-  });
-}
-
-export async function createMeetUser(params: CreateMeetUser) {
-  return api('/meetUser', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
-}
-
-export async function deleteMeetUser(meetUserId: number) {
-  return api(`/meetUser/${meetUserId}`, {
-    method: 'DELETE',
-  });
-}
-
-export async function generateImage(ideaId: number) {
-  return api(`/idea/${ideaId}/generateImage`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: undefined,
-  });
-}
-
-export async function fetchPassport() {
-  return api<PassportExtendedDto>('/passport');
-}
-
-export async function fetchProjects(): Promise<ProjectDto[]> {
-  return api<ProjectDto[]>('/projects');
-}
-
-export async function fetchUserProjects(userId: number) {
-  return api<ProjectFullDto[]>(`/user/${userId}/projects`);
-}
-
-export async function fetchPassportProjects() {
-  return api<ProjectFullDto[]>(`/passport/projects`);
-}
-
-export async function fetchIdeas({ when, sort, latitude, longitude }: GetIdeasQuery) {
-  const params = new URLSearchParams();
-
-  if (sort) params.append('sort', sort);
-  if (when) params.append('when', when);
-
-  // 👉 только если НЕ nearby
-  if (sort === 'nearby') {
-    if (latitude) params.append('latitude', String(latitude));
-    if (longitude) params.append('longitude', String(longitude));
-  }
-
-  return api<IdeaExtendedDto[]>(`/ideas?${params.toString()}`);
-}
-
-export async function fetchUserIdeas(userId: number) {
-  return api<IdeaExtendedDto[]>(`/user/${userId}/ideas`);
-}
-
-export async function fetchLike({ userId, ideaId }: CreateIdeaUser): Promise<void> {
-  return api<void>('/ideaUser', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userId, ideaId }),
-  });
-}
-
-export async function fetchUnlike({ userId, ideaId }: DeleteIdeaUser): Promise<void> {
-  return api<void>(`/ideaUser?userId=${userId}&ideaId=${ideaId}`, {
-    method: 'DELETE',
-  });
-}
-
-export async function fetchCreateUser(params: { title: string }): Promise<number> {
-  return api<number>('/user', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ ...params, description: 'none' }),
-  });
-}
-
-export async function fetchCreateProject(params: CreateProject): Promise<number> {
-  return api<number>('/project', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
-}
-
-export async function fetchCreateMeet(params: CreateMeet): Promise<number> {
-  return api<number>('/meet', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
-}
-
-export async function fetchCreateProjectUser({ userId, projectId }: CreateProjectUser): Promise<void> {
-  return api<void>('/projectUser', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userId, projectId }),
-  });
-}
-
-export async function fetchDeleteProjectUser({ userId, projectId }: DeleteProjectUser): Promise<void> {
-  return api<void>(`/projectUser?userId=${userId}&projectId=${projectId}`, {
-    method: 'DELETE',
-  });
-}
-
-export async function fetchCreateMeetUser({ userId, meetId }: CreateMeetUser): Promise<void> {
-  return api<void>('/meetUser', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userId, meetId }),
-  });
-}
-
-export async function fetchDeleteMeetUser({ userId, meetId }: DeleteMeetUser): Promise<void> {
-  return api<void>(`/meetUser?userId=${userId}&meetId=${meetId}`, {
-    method: 'DELETE',
-  });
-}
-
-// ================
-export async function fetchTeacherMeets() {
-  return api<any[]>(`/teacher/meets`);
-}
-export async function fetchTeacherIdeas() {
-  return api<IdeaExtendedDto[]>(`/teacher/ideas`);
-}
-
-export async function fetchMeet(id: number) {
-  return api<MeetDto>('/meet/' + id);
-}
-
-export async function fetchUpdateMeet(id: number, params: UpdateMeet): Promise<void> {
-  console.log(params, 'params');
-  return api<void>('/meet/' + id, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
-}
-
-export async function fetchCreatePlace(params: CreatePlace): Promise<void> {
-  return api<void>('/place', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
-}
-
-// -==========
-export async function fetchAddTeacher(params: { passportId: number }): Promise<void> {
-  return api<void>(`/place/teachers`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      passportId: params.passportId,
-    }),
-  });
-}
-
-export type Teacher = {
-  id: number;
-  title: string;
-  image?: string;
-  projectCount?: number;
-};
-
-export async function fetchPlaceTeachers() {
-  return api<Teacher[]>(`/place/teachers`, {
-    method: 'GET',
-  });
-}
-
-export async function fetchRemoveTeacher(params: { passportId: number }): Promise<void> {
-  return api<void>(`/place/teachers/${params.passportId}`, {
-    method: 'DELETE',
-  });
-}
+export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaFullDto>(`/idea/${id}?${toQuery(params)}`);
+export const fetchCreateChatMessages = (chatId: number, messages: CreateMessageDto[]) => post<ChatMessagesResult>(`/chat/${chatId}/messages`, messages);
+export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas?${toQuery(params)}`);
+export const fetchCreateProject = (params: CreateProject) => post<number>('/project', params);
+export const fetchProject = (id: string) => get<ProjectFullDto>(`/project/${id}`);
+export const createProject = (ideaId: number) => post<number>('/project', { ideaId });
+export const fetchPlaces = () => get<PlaceFullDto[]>('/places');
+export const fetchChat = (chatId: number) => get<ChatDto>(`/chat/${chatId}`);
+export const fetchCreateChat = (params: CreateChatBody) => post<number>('/chat', params);
+export const createMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', params);
+export const deleteMeetUser = (meetUserId: number) => del<void>(`/meetUser/${meetUserId}`);
+export const generateImage = (ideaId: number) => post<void>(`/idea/${ideaId}/generateImage`, {});
+export const fetchPassport = () => get<PassportExtendedDto>('/passport');
+export const fetchUserIdeas = (userId: number) => get<IdeaExtendedDto[]>(`/user/${userId}/ideas`);
+export const fetchCreateUser = (params: { title: string; description?: string }) => post<number>('/user', params);
+export const fetchProjects = () => get<ProjectDto[]>('/projects');
+export const fetchUserProjects = (userId: number) => get<ProjectFullDto[]>(`/user/${userId}/projects`);
+export const fetchPassportProjects = () => get<ProjectFullDto[]>('/passport/projects');
+export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
+export const fetchLike = (params: CreateIdeaUser) => post<void> ('/ideaUser', params);
+export const fetchUnlike = (params: DeleteIdeaUser) => del<void>(`/ideaUser?userId=${params.userId}&ideaId=${params.ideaId}`);
+export const fetchCreateMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', params);
+export const fetchDeleteMeetUser = ({ userId, meetId }: DeleteMeetUser) => del<void>(`/meetUser?userId=${userId}&meetId=${meetId}`);
+export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
+export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);
+export const fetchCreateProjectUser = (params: CreateProjectUser) => post<void>('/projectUser', params);
+export const fetchDeleteProjectUser = (params: DeleteProjectUser) => del<void>(`/projectUser?userId=${params.userId}&projectId=${params.projectId}`);
+export const fetchTeacherMeets = () => get<MeetDto[]>('/teacher/meets');
+export const fetchTeacherIdeas = () => get<IdeaExtendedDto[]>('/teacher/ideas');
+export const fetchCreatePlace = (params: CreatePlace) => post<void>('/place', params);
+export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { passportId });
+export const fetchPlaceTeachers = () => get<TeacherDto[]>('/place/teachers');
+export const fetchRemoveTeacher = (passportId: number) => del<void>(`/place/teachers/${passportId}`);

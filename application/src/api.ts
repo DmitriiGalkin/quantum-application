@@ -1,4 +1,5 @@
 import { ACCESS_TOKEN_STORAGE_KEY } from './providers/AuthProvider.tsx';
+import type { GetIdeasQuery, IdeaFullDto, ProjectFullDto } from '@shared/types';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 
@@ -27,4 +28,38 @@ const api = async function <T>(path: string, options: RequestInit = {}): Promise
   return response.json();
 };
 
-export { api };
+function json(method: 'POST' | 'PUT' | 'PATCH') {
+  return async function <T>(url: string, body: any): Promise<T> {
+    return api<T>(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+  };
+}
+
+const get = <T>(url: string) => api<T>(url);
+const post = json('POST');
+const put = json('PUT');
+const patch = json('PATCH');
+async function del<T>(url: string): Promise<T> {
+  return api<T>(url, {
+    method: 'DELETE',
+  });
+}
+
+function toQuery(params: Record<string, any>) {
+  const search = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      search.append(key, String(value));
+    }
+  });
+
+  return search.toString();
+}
+
+export { get, post, put, patch, del, toQuery };

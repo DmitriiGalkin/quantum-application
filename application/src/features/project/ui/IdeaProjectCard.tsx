@@ -81,7 +81,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
     setUserModalOpen(false);
 
     createUser.mutate(
-      { title },
+      { title, description: 'none' },
       {
         onSuccess: userId => {
           mutationLike.mutate(
