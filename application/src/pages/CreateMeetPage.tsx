@@ -14,5 +14,5 @@ export default function CreateMeetPage() {
     onSuccess: () => navigate(`/project/${projectId}`),
   });
 
-  return <MeetForm projectId={projectId} loading={createMeet.isPending} onSubmit={createMeet.mutate} />;
+  return <MeetForm projectId={projectId} loading={createMeet.isPending} onSubmit={data => createMeet.mutate(data)} />;
 }

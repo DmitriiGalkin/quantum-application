@@ -13,10 +13,14 @@ import { Place } from '../entities/place.js';
 export class MeetService {
   static async create(passport: Passport, data: CreateMeet) {
     if (!passport) throw new Error('UNAUTHORIZED');
+    const project = await ProjectRepository.findById(data.projectId);
+
+    if (!project) throw new Error('MeetService project не существуйет');
 
     return MeetRepository.create({
       ...data,
       passportId: passport.id,
+      placeId: project.placeId,
     });
   }
 

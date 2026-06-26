@@ -1,5 +1,4 @@
 import { ACCESS_TOKEN_STORAGE_KEY } from './providers/AuthProvider.tsx';
-import type { GetIdeasQuery, IdeaFullDto, ProjectFullDto } from '@shared/types';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 

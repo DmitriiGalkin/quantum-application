@@ -194,7 +194,6 @@ export interface CreateMeet {
   price: number | null;
   duration: number | null;
   startedAt: string;
-  placeId: number;
 }
 
 export interface CreateProjectUser {

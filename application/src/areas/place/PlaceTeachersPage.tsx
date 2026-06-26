@@ -17,7 +17,7 @@ export default function PlaceTeachersPage() {
   });
 
   const addTeacher = useMutation({
-    mutationFn: () => fetchAddTeacher({passportId:Number(passportId)}),
+    mutationFn: () => fetchAddTeacher(Number(passportId)),
     onSuccess: () => {
       teachersQuery.refetch();
       setPassportId('');
@@ -25,7 +25,7 @@ export default function PlaceTeachersPage() {
   });
 
   const removeTeacher = useMutation({
-    mutationFn: (passportId: number) => fetchRemoveTeacher({passportId}),
+    mutationFn: (passportId: number) => fetchRemoveTeacher(passportId),
     onSuccess: () => teachersQuery.refetch(),
   });
 
