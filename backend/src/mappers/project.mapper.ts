@@ -27,7 +27,7 @@ export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => 
         description: project.idea.description,
         image: project.idea.image,
         userCount: project.idea.userCount,
-         createdAt: project.idea.createdAt,
+        createdAt: project.idea.createdAt,
       }
     : null,
   users: project.users.map((u: any) => ({
@@ -60,6 +60,7 @@ export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => 
     users: u.users,
     place: u.place,
     project: u.project,
+    isPaid: u.isPaid,
   })),
   feeds: project.feeds,
 });

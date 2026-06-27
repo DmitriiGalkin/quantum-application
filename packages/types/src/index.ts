@@ -48,6 +48,7 @@ export interface MeetDto {
 export interface MeetExtendedDto extends MeetDto {
   users: UserDto[];
   place: PlaceDto;
+  isPaid?: boolean;
 }
 
 export interface MeetFullDto extends MeetDto {
@@ -126,6 +127,7 @@ export interface ProjectFullDto extends ProjectDto {
   meets: MeetFullDto[];
   users: UserDto[];
   feeds?: FeedItem[];
+  isPaid?: boolean;
 }
 
 export interface UserDto {
@@ -277,3 +279,12 @@ export type TeacherDto = {
   image?: string;
   projectCount?: number;
 };
+
+export type CreatePayment = {
+  targetType: 'idea' | 'meet' | 'project';
+  targetId: number;
+};
+export interface CreatePaymentResult {
+  paymentId: number;
+  paymentUrl: string;
+}

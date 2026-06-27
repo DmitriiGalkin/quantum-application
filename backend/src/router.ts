@@ -19,6 +19,7 @@ import chat from './controllers/chat.controller.js';
 import strategies from './strategies.js';
 import { ControllerWithAuth } from './controllers/helper.js';
 import placeTeacherController from "./controllers/placeTeacher.controller.js";
+import paymentController from "./controllers/payment.controller.js";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -131,6 +132,11 @@ privateRouter.get('/user/:id/ideas', withAuth(idea.findByUserId));
 privateRouter.get('/user/:id/projects', withAuth(project.findByUserId));
 privateRouter.put('/user/:id', withAuth(user.update));
 privateRouter.delete('/user/:id', withAuth(user.delete));
+
+
+privateRouter.post('/payments', withAuth(paymentController.create));
+privateRouter.post('/payments/webhook', paymentController.webhook);
+privateRouter.get('/payments/:id', withAuth(paymentController.getById));
 
 router.use(publicRouter);
 router.use(privateRouter);

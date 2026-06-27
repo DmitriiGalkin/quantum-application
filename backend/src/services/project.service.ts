@@ -12,6 +12,7 @@ import ProjectUserRepository from '../repositories/project-user.repository.js';
 import { ProjectUser } from '../entities/project-user.js';
 import { Place } from '../entities/place.js';
 import { CreateProject } from '@shared/types';
+import PaymentRepository from '../repositories/payment.repository.js';
 
 export class ProjectService {
   static async create(passport: Passport, data: CreateProject) {
@@ -79,18 +80,29 @@ export class ProjectService {
       UserRepository.findByProjectId(projectId),
       MeetRepository.findByProjectId(projectId),
       PlaceRepository.findById(project.placeId) as Promise<Place>,
-      project.ideaId ? IdeaRepository.findById(project.ideaId) as Promise<Idea> : null,
+      project.ideaId ? (IdeaRepository.findById(project.ideaId) as Promise<Idea>) : null,
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
+
     ]);
+
+
+
 
     const placesForMeets = await Promise.all(meets.map(m => PlaceRepository.findById(m.id) as Promise<Place>));
     const usersForMeets = await Promise.all(meets.map(m => UserRepository.findByMeetId(m.id)));
+
+    const mIds = meets.map(m => m.id);
+    console.log(mIds, 'mIds');
+
+    const paymentIds = await PaymentRepository.findPaidMeetIdsByUser(45, mIds);
+    console.log(paymentIds,'paymentIds')
 
     const meetExtendeds = meets.map((m, i) => ({
       ...m,
       project,
       place: placesForMeets[i],
       users: usersForMeets[i],
+      isPaid: paymentIds.includes(m.id),
     }));
 
     const feeds = FeedService.merge({

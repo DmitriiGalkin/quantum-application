@@ -20,7 +20,9 @@ import {
   type PlaceFullDto,
   type ProjectFullDto,
   type TeacherDto,
-  type UpdateMeet, type MeetExtendedDto,
+  type UpdateMeet,
+  type MeetExtendedDto,
+  type CreatePayment, type CreatePaymentResult,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 
@@ -59,3 +61,6 @@ export const fetchRemoveTeacher = (passportId: number) => del<void>(`/place/teac
 
 export const fetchPassport = () => get<PassportExtendedDto>('/passport');
 export const fetchCreateUser = (params: { title: string; description?: string }) => post<number>('/user', params);
+
+export const fetchCreatePayment = (params: CreatePayment) => post<CreatePaymentResult>('/payments', params);
+

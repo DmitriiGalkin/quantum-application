@@ -27,6 +27,7 @@ interface MeetFullEntity extends Meet {
   project: Project;
   place: Place;
   users: User[];
+  isPaid: boolean;
 }
 
 export interface ProjectFullEntity extends Project {

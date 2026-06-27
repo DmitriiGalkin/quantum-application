@@ -1,7 +1,7 @@
 import type { MeetExtendedDto, PassportDto } from '@shared/types';
 import { Button, Card, Chip, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateMeetUser, fetchDeleteMeetUser } from '../../../requests.ts';
+import { fetchCreateMeetUser, fetchCreatePayment, fetchDeleteMeetUser } from '../../../requests.ts';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import Box from '@mui/material/Box';
 import MeetCardHeader from './MeetCardHeader.tsx';
@@ -45,11 +45,75 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
     },
   });
 
-  const handleLike = (e: React.MouseEvent<HTMLElement>) => {
+  const createPayment = useMutation({
+    mutationFn: fetchCreatePayment,
+    onSuccess: payment => {
+      console.log('payment', payment);
+      window.location.href = payment.paymentUrl;
+      return;
+    },
+  });
+
+  const handleJoin = async (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    if (user) mutationLike.mutate({ userId: user.id, meetId: meet.id });
-    else authHandler();
+
+    if (!user) {
+      authHandler();
+      return;
+    }
+
+    mutationLike.mutate({
+      meetId: meet.id,
+      userId: user.id,
+    });
+  };
+
+  const handleKassa = async (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    // Эмуляция webhook от ЮKassa
+    await fetch('http://localhost:4000/payments/webhook', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'notification',
+        event: 'payment.succeeded',
+        object: {
+          id: '1234567890',
+          status: 'succeeded',
+          paid: true,
+          amount: {
+            value: '100.00',
+            currency: 'RUB',
+          },
+          metadata: {
+            meetId: meet.id,
+            userId: user?.id,
+          },
+        },
+      }),
+    });
+
+    // или после успешной эмуляции
+    // mutationLike.mutate({ userId: user!.id, meetId: meet.id });
+  };
+
+  const handlePay = async (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (meet.price && meet.price > 0) {
+      return createPayment.mutate({
+        targetType: 'meet',
+        targetId: meet.id,
+      });
+    } else {
+      console.log('Ты как сюда попал')
+    }
   };
 
   const handleUnlike = () => {
@@ -69,6 +133,8 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
   };
   const open = Boolean(anchorEl);
 
+  const paid = meet.isPaid
+
   return (
     <Card>
       <IconButton onClick={handleOpen}>
@@ -87,17 +153,17 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
           </ListItemIcon>
           Редактировать
         </MenuItem>
-          <MenuItem
-            onClick={e => {
-              handleClose(e);
-              console.log('удалить')
-            }}
-          >
-            <ListItemIcon>
-              <LogoutIcon fontSize="small" />
-            </ListItemIcon>
-            Удалить встречу
-          </MenuItem>
+        <MenuItem
+          onClick={e => {
+            handleClose(e);
+            console.log('удалить');
+          }}
+        >
+          <ListItemIcon>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          Удалить встречу
+        </MenuItem>
       </Menu>
       {passport && <MeetCardHeader passport={passport} handleUnlike={liked && handleUnlike} />}
       <Box sx={{ px: 2, py: 1, backgroundColor: 'rgba(255,182,40,0.15)' }}>
@@ -155,6 +221,7 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
                 )}
 
                 {liked && <Chip size="small" label="Вы идёте" color="success" />}
+                {paid && <Chip size="small" label="Оплачено" color="success" />}
               </Stack>
             </Box>
           </Stack>
@@ -170,9 +237,19 @@ function Meet({ meet, refetch, passport, withoutAction, withoutUsers }: Props) {
           )}
         </Stack>
         {!liked && !withoutAction && (
-          <Button onClick={handleLike} variant="contained">
+          <Button onClick={handleJoin} variant="contained">
             Участвовать во встрече
           </Button>
+        )}
+        {liked && !withoutAction && meet.price && (
+          <>
+            <Button onClick={handlePay} variant="contained">
+              Оплатить онлайн
+            </Button>
+            {!paid && <Button onClick={handleKassa} variant="contained">
+              Касса
+            </Button>}
+          </>
         )}
       </Box>
     </Card>
