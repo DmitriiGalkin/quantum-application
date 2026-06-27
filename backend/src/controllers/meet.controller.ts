@@ -1,5 +1,5 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
-import { CreateMeet, MeetDto } from '@shared/types';
+import { CreateMeet, MeetDto, MeetExtendedDto } from '@shared/types';
 import { toMeetDto } from '../mappers/meet.mapper.js';
 import { MeetService } from '../services/meet.service.js';
 
@@ -58,7 +58,7 @@ const findAll: Controller<MeetDto[]> = async (req, res) => {
   }
 };
 
-const findPassportAll: ControllerWithAuth<MeetDto[]> = async (req, res) => {
+const findPassportAll: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,

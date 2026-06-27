@@ -20,7 +20,7 @@ import {
   type PlaceFullDto,
   type ProjectFullDto,
   type TeacherDto,
-  type UpdateMeet,
+  type UpdateMeet, type MeetExtendedDto,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 
@@ -49,7 +49,7 @@ export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', param
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);
 export const fetchCreateMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', params);
 export const fetchDeleteMeetUser = ({ userId, meetId }: DeleteMeetUser) => del<void>(`/meetUser?userId=${userId}&meetId=${meetId}`);
-export const fetchTeacherMeets = () => get<MeetDto[]>('/teacher/meets');
+export const fetchTeacherMeets = () => get<MeetExtendedDto[]>('/teacher/meets');
 
 export const fetchPlaces = () => get<PlaceFullDto[]>('/places');
 export const fetchCreatePlace = (params: CreatePlace) => post<void>('/place', params);
