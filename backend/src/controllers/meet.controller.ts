@@ -1,6 +1,5 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
-import type { CreateMeet, GetMeetsQuery, MeetDto, MeetExtendedDto } from '@shared/types';
-import { toMeetDto } from '../mappers/meet.mapper.js';
+import type { CreateMeet, MeetExtendedDto } from '@shared/types';
 import { MeetService } from '../services/meet.service.js';
 
 const create: ControllerWithAuth<number, CreateMeet> = async (req, res) => {
@@ -33,8 +32,8 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
     if (!meet) {
       return fail(res, 'Встреча не существует', 404);
     }
-    console.log(meet.passportId, req.passport!.id);
-    if (meet.passportId !== req.passport!.id) {
+
+    if (meet.passport.id !== req.passport!.id) {
       return fail(res, 'Нет прав на удаление', 403);
     }
 
@@ -43,18 +42,6 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
     ok(res, { message: 'Встреча удалена' });
   } catch (err) {
     fail(res, 'Не удалось удалить встречу');
-  }
-};
-
-const findAll: Controller<MeetExtendedDto[]> = async (req, res) => {
-  try {
-    const meets = await MeetService.findAll({
-      ...req.query,
-    } as GetMeetsQuery);
-
-    ok(res, meets.map(toMeetDto));
-  } catch (err) {
-    fail(res, 'Ошибка при получении списка встреч');
   }
 };
 
@@ -71,7 +58,7 @@ const findPassportAll: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) 
   }
 };
 
-const findById: Controller<MeetDto> = async (req, res) => {
+const findById: Controller<MeetExtendedDto> = async (req, res) => {
   try {
     const meet = await MeetService.findById(Number(req.params.id));
 
@@ -79,7 +66,7 @@ const findById: Controller<MeetDto> = async (req, res) => {
       fail(res, 'Встреча не найдена', 404);
     }
 
-    ok(res, toMeetDto(meet));
+    ok(res, meet);
   } catch (err) {
     fail(res, 'Ошибка при получении встречи');
   }
@@ -89,7 +76,6 @@ export default {
   create,
   update,
   delete: remove,
-  findAll,
   findPassportAll,
   findById,
 };

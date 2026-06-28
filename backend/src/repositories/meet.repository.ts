@@ -76,6 +76,13 @@ class MeetRepository {
       params.push(data.passportId);
     }
 
+    if (data.projectId) {
+      sql += `
+      AND meet.projectId = ?
+    `;
+      params.push(data.projectId);
+    }
+
     if (data.userId) {
       sql += `
       AND meetUser.userId = ?

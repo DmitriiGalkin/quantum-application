@@ -13,6 +13,7 @@ import { ProjectUser } from '../entities/project-user.js';
 import { Place } from '../entities/place.js';
 import { CreateProject, type ProjectFullDto } from '@shared/types';
 import PaymentRepository from '../repositories/payment.repository.js';
+import { MeetService } from './meet.service.js';
 
 export class ProjectService {
   static async create(passport: Passport, data: CreateProject) {
@@ -42,37 +43,21 @@ export class ProjectService {
   static async findAll(params: FindAllProjectInput): Promise<ProjectFullDto[]> {
     const projects = await ProjectRepository.findAll(params);
 
-    const [ideas, usersArr, meetsArr, passportsArr, placeArr, meetArr] = await Promise.all([
+    const [ideas, usersArr, passportsArr, placeArr, meetsArr] = await Promise.all([
       Promise.all(projects.map(p => (p.ideaId ? (IdeaRepository.findById(p.ideaId) as Promise<Idea>) : null))),
       Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
-      Promise.all(projects.map(p => MeetRepository.findRecommendationByProjectId(p.id))),
       Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),
       Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<Place>)),
-      Promise.all(projects.map(p => MeetRepository.findByProjectId(p.id))),
+      Promise.all(projects.map(p => MeetService.findAll({ projectId: p.id}))),
     ]);
-    const placeMeetArr = await Promise.all(
-      meetArr.map(meets => Promise.all(meets.map(meet => PlaceRepository.findById(meet.placeId) as Promise<Place>))),
-    );
-    const userMeetArr = await Promise.all(meetArr.map(meets => Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)))));
-    const passportMeetArr = await Promise.all(
-      meetArr.map(meets => Promise.all(meets.map(meet => PassportRepository.findById(meet.passportId) as Promise<Passport>))),
-    );
 
     return projects.map((project, i) => ({
       ...project,
       idea: ideas[i],
       users: usersArr[i],
-      recommendMeet: meetsArr[i],
       passport: passportsArr[i],
       place: placeArr[i],
-      meets: meetArr[i].map((f, j) => ({
-        ...f,
-        project,
-        place: placeMeetArr[i][j],
-        users: userMeetArr[i][j],
-        passport: passportMeetArr[i][j],
-        isPaid: false,
-      })),
+      meets: meetsArr[i],
     }));
   }
 

@@ -236,6 +236,7 @@ export interface GetMeetsQuery {
   userId?: number;
   passportId?: number;
   placeId?: number;
+  projectId?: number;
 }
 
 // FEED system

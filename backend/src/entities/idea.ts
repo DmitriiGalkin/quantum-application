@@ -2,7 +2,7 @@ import { Passport } from './passport.js';
 import { User } from './user.js';
 import { Place } from './place.js';
 import { Meet, MeetExtendedEntity } from './meet.js';
-import { Sort } from '@shared/types';
+import { type ProjectFullDto, Sort } from '@shared/types';
 
 export interface Idea {
   id: number;
@@ -52,19 +52,6 @@ export interface IdeaExtendedEntity extends Idea {
 export interface IdeaFullEntity extends Idea {
   isLiked?: boolean;
   user: User;
-  projects: {
-    id: number
-    title: string;
-    description: string | null;
-    image: string | null;
-    ideaId: number | null;
-    // placeId: number;
-    // passportId: number;
-    passport: Passport;
-    place: Place;
-    users: User[];
-    idea: Idea | null;
-    meets: MeetExtendedEntity[];
-  }[];
+  projects: ProjectFullDto[];
 }
 

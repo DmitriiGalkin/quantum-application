@@ -1,15 +1,12 @@
-import Meet from '../repositories/meet.repository.js';
 import { Passport } from '../entities/passport.js';
-import type { CreateMeet, CreateProject, GetMeetsQuery, MeetExtendedDto } from '@shared/types';
+import type { CreateMeet, GetMeetsQuery, MeetExtendedDto } from '@shared/types';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
-import { ProjectService } from './project.service.js';
-import IdeaRepository from '../repositories/idea.repository.js';
-import { User } from '../entities/user.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import { Place } from '../entities/place.js';
 import PassportRepository from '../repositories/passport.repository.js';
+import ProjectUserRepository from '../repositories/project-user.repository.js';
 
 export class MeetService {
   static async create(passport: Passport, data: CreateMeet) {
@@ -26,32 +23,40 @@ export class MeetService {
   }
 
   static async update(data: any) {
-    return Meet.update(data.id, data);
+    return MeetRepository.update(data.id, data);
   }
 
   static async remove(id: number) {
-    return Meet.delete(id);
+    return MeetRepository.delete(id);
   }
 
-  static async findById(id: number) {
-    return Meet.findById(id);
+  static async findById(id: number): Promise<MeetExtendedDto | null> {
+    const meet = await MeetRepository.findById(id);
+    if (!meet) return null;
+
+    const [place, users, passport, projectUsers] = await Promise.all([
+      PlaceRepository.findById(meet.placeId) as Promise<Place>,
+      UserRepository.findByMeetId(meet.id),
+      PassportRepository.findById(meet.passportId) as Promise<Passport>,
+      ProjectUserRepository.findByProjectId(meet.projectId),
+    ]);
+
+    return { ...meet, place, users, passport, capacity: projectUsers.length };
   }
 
   static async findAll(data: GetMeetsQuery): Promise<MeetExtendedDto[]> {
-    const meets = await Meet.findAll(data);
-
+    const meets = await MeetRepository.findAll(data);
     const places = await Promise.all(meets.map(i => PlaceRepository.findById(i.placeId) as Promise<Place>));
     const users = await Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)));
-    const passports = await Promise.all(meets.map(meet => PassportRepository.findById(meet.id)));
-    const passports = await Promise.all(meets.map(meet => PassportRepository.findById(meet.id)));
-
+    const passports = await Promise.all(meets.map(meet => PassportRepository.findById(meet.passportId) as Promise<Passport>));
+    const projectUsers = await Promise.all(meets.map(meet => ProjectUserRepository.findByProjectId(meet.projectId)));
 
     return meets.map((meet, i) => ({
       ...meet,
       place: places[i],
       users: users[i],
       passport: passports[i],
-      capacity
+      capacity: projectUsers[i].length,
     }));
   }
 }
