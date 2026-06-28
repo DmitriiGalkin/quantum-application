@@ -8,7 +8,7 @@ interface Props {
   meet: MeetExtendedDto;
 }
 
-export default function MeetingCardBody({ meet }: Props) {
+export default function MeetCardBody({ meet }: Props) {
   const name = meet.passport?.title ?? 'Unknown';
   const duration = meet.duration != null ? `${meet.duration} min` : '—';
 
@@ -46,7 +46,7 @@ export default function MeetingCardBody({ meet }: Props) {
           <ScheduleOutlinedIcon fontSize="small" />
 
           <Typography variant="body2">
-            {meet.users?.length ?? 0}/30 participants
+            {meet.users?.length ?? 0}/{meet.capacity} участников проекта
           </Typography>
         </Stack>
 

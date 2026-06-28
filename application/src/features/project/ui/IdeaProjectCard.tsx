@@ -15,7 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { CreateUserForm } from '../../user/ui/CreateUserForm.tsx';
 import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
-import MeetingCardContainer from '../../meets/ui/MeetingCard/MeetingCardContainer.tsx';
+import MeetCard from '../../meets/ui/MeetCard/MeetCard.tsx';
 
 type IdeaProjectCardProps = {
   project: ProjectExtendedDto; // частичное должно быть
@@ -104,7 +104,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
         <ProjectCardHeader passport={project.passport} place={project.place} handleUnlike={liked && handleUnlike} />
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
-          {project.meets?.[0] && <MeetingCardContainer meet={project.meets?.[0]} />}
+          {project.meets?.[0] && <MeetCard meet={project.meets?.[0]} />}
         </Box>
 
         {Boolean(project.users.length) && (

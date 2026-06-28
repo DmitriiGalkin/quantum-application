@@ -1,6 +1,6 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import { ProjectRow } from '../entities/project.db.js';
-import { mapProjectRow } from '../mappers/project.mapper.js';
+import { toProject } from '../mappers/project.mapper.js';
 import { FindAllProjectInput, Project } from '../entities/project.js';
 import { CreateProjectInput } from '../entities/project.types.js';
 import { db } from '../dbNext.js';
@@ -68,7 +68,7 @@ class ProjectRepository {
 
     const rows = await db.query<ProjectRow>(sql, values);
 
-    return rows.map(mapProjectRow);
+    return rows.map(toProject);
   }
 
   // ✅ FIND BY ID
@@ -81,7 +81,7 @@ class ProjectRepository {
       [id],
     );
 
-    return rows[0] ? mapProjectRow(rows[0]) : null;
+    return rows[0] ? toProject(rows[0]) : null;
   }
 
   // ✅ FIND BY IDEA
@@ -168,7 +168,7 @@ class ProjectRepository {
 
     const rows = await db.query<ProjectRow>(sql, values);
 
-    return rows.map(mapProjectRow);
+    return rows.map(toProject);
   }
 }
 

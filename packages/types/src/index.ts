@@ -52,15 +52,11 @@ export interface MeetDto {
 export interface MeetExtendedDto extends MeetDto {
   users: UserDto[];
   place: PlaceDto;
-  isPaid?: boolean;
   passport: PassportDto;
-}
 
-export interface MeetFullDto extends MeetDto {
-  project: ProjectDto | null;
-  users: UserDto[];
-  place: PlaceDto;
-  passport: PassportDto;
+  isPaid?: boolean;
+  // Общее количество участников проекта
+  capacity: number;
 }
 
 export type MessageDto = {
@@ -130,7 +126,7 @@ export interface ProjectFullDto extends ProjectDto {
   idea: IdeaDto | null;
   passport: PassportDto;
   place: PlaceDto;
-  meets: MeetFullDto[];
+  meets: MeetExtendedDto[];
   users: UserDto[];
   feeds?: FeedItem[];
   isPaid?: boolean;
@@ -147,7 +143,7 @@ export interface UserDto {
 export interface ContextDto {
   ui?: Ui;
   place?: PlaceDto;
-  meet?: MeetFullDto;
+  meet?: MeetExtendedDto;
   ideas?: IdeaFullDto[];
   project?: ProjectFullDto;
   idea?: IdeaFullDto;

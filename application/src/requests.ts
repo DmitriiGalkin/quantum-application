@@ -20,7 +20,6 @@ import {
   type IdeaFullDto,
   type MeetDto,
   type MeetExtendedDto,
-  type MeetFullDto,
   type PassportExtendedDto,
   type PlaceFullDto,
   type ProjectFullDto,
@@ -49,7 +48,7 @@ export const fetchPassportProjects = () => get<ProjectFullDto[]>('/passport/proj
 export const fetchCreateProjectUser = (params: CreateProjectUser) => post<void>('/projectUser', params);
 export const fetchDeleteProjectUser = (params: DeleteProjectUser) => del<void>(`/projectUser?userId=${params.userId}&projectId=${params.projectId}`);
 
-export const fetchMeets = (params: GetMeetsQuery) => get<MeetFullDto[]>(`/meets?${toQuery(params)}`);
+export const fetchMeets = (params: GetMeetsQuery) => get<MeetExtendedDto[]>(`/meets?${toQuery(params)}`);
 export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
 export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);

@@ -1,6 +1,6 @@
 import Meet from '../repositories/meet.repository.js';
 import { Passport } from '../entities/passport.js';
-import type { CreateMeet, CreateProject, GetMeetsQuery } from '@shared/types';
+import type { CreateMeet, CreateProject, GetMeetsQuery, MeetExtendedDto } from '@shared/types';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
@@ -37,18 +37,21 @@ export class MeetService {
     return Meet.findById(id);
   }
 
-  static async findAll(data: GetMeetsQuery) {
+  static async findAll(data: GetMeetsQuery): Promise<MeetExtendedDto[]> {
     const meets = await Meet.findAll(data);
 
     const places = await Promise.all(meets.map(i => PlaceRepository.findById(i.placeId) as Promise<Place>));
     const users = await Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)));
     const passports = await Promise.all(meets.map(meet => PassportRepository.findById(meet.id)));
+    const passports = await Promise.all(meets.map(meet => PassportRepository.findById(meet.id)));
+
 
     return meets.map((meet, i) => ({
       ...meet,
       place: places[i],
       users: users[i],
       passport: passports[i],
+      capacity
     }));
   }
 }

@@ -11,7 +11,7 @@ import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import { ProjectUser } from '../entities/project-user.js';
 import { Place } from '../entities/place.js';
-import { CreateProject } from '@shared/types';
+import { CreateProject, type ProjectFullDto } from '@shared/types';
 import PaymentRepository from '../repositories/payment.repository.js';
 
 export class ProjectService {
@@ -39,7 +39,7 @@ export class ProjectService {
     await ProjectRepository.delete(projectId);
   }
 
-  static async findAll(params: FindAllProjectInput): Promise<ProjectFullEntity[]> {
+  static async findAll(params: FindAllProjectInput): Promise<ProjectFullDto[]> {
     const projects = await ProjectRepository.findAll(params);
 
     const [ideas, usersArr, meetsArr, passportsArr, placeArr, meetArr] = await Promise.all([
@@ -71,12 +71,12 @@ export class ProjectService {
         place: placeMeetArr[i][j],
         users: userMeetArr[i][j],
         passport: passportMeetArr[i][j],
-        isPaid: false
+        isPaid: false,
       })),
     }));
   }
 
-  static async findById(projectId: number): Promise<ProjectFullEntity> {
+  static async findById(projectId: number): Promise<ProjectFullDto> {
     const project = await ProjectRepository.findById(projectId);
     if (!project) throw new Error('NOT_FOUND');
 
@@ -89,18 +89,14 @@ export class ProjectService {
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
     ]);
 
-
-
-
     const placesForMeets = await Promise.all(meets.map(m => PlaceRepository.findById(m.id) as Promise<Place>));
     const usersForMeets = await Promise.all(meets.map(m => UserRepository.findByMeetId(m.id)));
     const passportsForMeets = await Promise.all(meets.map(m => PassportRepository.findById(m.passportId) as Promise<Passport>));
 
-
     const mIds = meets.map(m => m.id);
 
     const paymentIds = await PaymentRepository.findPaidMeetIdsByUser(45, mIds);
-    console.log(paymentIds,'paymentIds')
+    console.log(paymentIds, 'paymentIds');
 
     const meetExtendeds = meets.map((m, i) => ({
       ...m,
@@ -109,9 +105,9 @@ export class ProjectService {
       users: usersForMeets[i],
       isPaid: paymentIds.includes(m.id),
       passport: passportsForMeets[i],
+      capacity: users.length,
     }));
     console.log(meetExtendeds, 'meetExtendeds');
-
 
     const feeds = FeedService.merge({
       meets: meetExtendeds,

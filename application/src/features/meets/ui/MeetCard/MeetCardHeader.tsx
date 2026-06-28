@@ -12,7 +12,7 @@ const statusConfig = {
   cancelled: { label: 'Отменена', color: 'error' as const },
 };
 
-export default function MeetingCardHeader({ dto }: Props) {
+export default function MeetCardHeader({ dto }: Props) {
   const status = statusConfig['upcoming'];
   const startedAt = new Date(dto.startedAt);
   const date = startedAt.toLocaleDateString('ru-RU', {

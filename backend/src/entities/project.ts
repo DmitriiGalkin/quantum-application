@@ -3,7 +3,7 @@ import { Passport } from './passport.js';
 import { Place } from './place.js';
 import { Meet } from './meet.js';
 import { Idea } from './idea.js';
-import { FeedItem } from '@shared/types';
+import { FeedItem, MeetExtendedDto } from '@shared/types';
 
 export interface Project {
   id: number;
@@ -23,19 +23,11 @@ export interface FindAllProjectInput {
   currentUserId?: number;
 }
 
-interface MeetFullEntity extends Meet {
-  project: Project;
-  place: Place;
-  users: User[];
-  isPaid: boolean;
-  passport: Passport;
-}
-
 export interface ProjectFullEntity extends Project {
   users: User[];
   passport: Passport;
   place: Place;
-  meets: MeetFullEntity[];
+  meets: MeetExtendedDto[];
   idea: Idea | null;
   feeds?: FeedItem[];
 }

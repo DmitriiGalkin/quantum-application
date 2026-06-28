@@ -2,8 +2,8 @@ import type { MeetExtendedDto } from '@shared/types';
 import { useAuth } from '../../../../providers/AuthProvider.tsx';
 import { Paper, Stack } from '@mui/material';
 
-import MeetingCardHeader from './MeetingCardHeader';
-import MeetingCardBody from './MeetingCardBody';
+import MeetCardHeader from './MeetCardHeader.tsx';
+import MeetCardBody from './MeetCardBody.tsx';
 import StudentFooter from './StudentFooter';
 import TeacherFooter from './TeacherFooter';
 import PlaceFooter from './PlaceFooter';
@@ -15,7 +15,7 @@ interface Props {
   refetch?: () => void;
 }
 
-export default function MeetingCardContainer({ meet, refetch }: Props) {
+export default function MeetCard({ meet, refetch }: Props) {
   const { user, authHandler, passport, activeRole: role } = useAuth();
 
   const mutationLike = useMutation({
@@ -104,9 +104,9 @@ export default function MeetingCardContainer({ meet, refetch }: Props) {
       }}
     >
       <Stack spacing={2}>
-        <MeetingCardHeader dto={meet} />
+        <MeetCardHeader dto={meet} />
 
-        <MeetingCardBody meet={meet} />
+        <MeetCardBody meet={meet} />
 
         {role === 'user' && (
           <StudentFooter

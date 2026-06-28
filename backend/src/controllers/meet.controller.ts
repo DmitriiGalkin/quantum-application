@@ -46,7 +46,7 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
-const findAll: Controller<MeetDto[]> = async (req, res) => {
+const findAll: Controller<MeetExtendedDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,
@@ -65,7 +65,7 @@ const findPassportAll: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) 
       passportId: req.passport!.id,
     });
 
-    ok(res, meets.map(toMeetDto));
+    ok(res, meets);
   } catch (err) {
     fail(res, 'Ошибка при получении списка встреч');
   }

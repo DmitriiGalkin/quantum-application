@@ -4,10 +4,12 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchCreateMeet, fetchProject } from '../requests.ts';
 import { useParams } from 'react-router-dom';
 import Project from '../features/project/ui/Project.tsx';
-import { CreateMeetForm } from '../features/meets/ui/CreateMeetForm.tsx';
+import { type CreateMeet, CreateMeetForm } from '../features/meets/ui/CreateMeetForm.tsx';
+import { useAuth } from '../providers/AuthProvider.tsx';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
+  const { activeRole: role } = useAuth();
 
   const { data: project, refetch } = useQuery({
     queryKey: ['project', id],
@@ -18,6 +20,14 @@ export default function ProjectPage() {
     mutationFn: fetchCreateMeet,
   });
 
+  const onCreateMeet = (data: CreateMeet) => {
+    createMeetMutation.mutate(data, {
+      onSuccess: () => {
+        refetch();
+      },
+    });
+  };
+
   if (!project) return null;
 
   return (
@@ -27,17 +37,13 @@ export default function ProjectPage() {
       </Grid>
 
       <Grid size={{ xs: 12, md: 6 }}>
-        <CreateMeetForm
-          projectId={project.id}
-          placeId={project.place.id}
-          onSubmit={data => {
-            createMeetMutation.mutate(data, {
-              onSuccess: () => {
-                refetch();
-              },
-            });
-          }}
-        />
+        {role === 'teacher' && (
+          <CreateMeetForm
+            projectId={project.id}
+            placeId={project.place.id}
+            onSubmit={onCreateMeet}
+          />
+        )}
 
         <Feed items={project.feeds || []} passport={project.passport} refetch={refetch} />
       </Grid>

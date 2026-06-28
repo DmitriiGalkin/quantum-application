@@ -8,7 +8,7 @@ import { useAuth } from '../../../providers/AuthProvider.tsx';
 import LinkIcon from '@mui/icons-material/Link';
 import ProjectCardHeader from './ProjectCardHeader.tsx';
 import type { ProjectFullDto } from '@shared/types';
-import MeetingCardContainer from '../../meets/ui/MeetingCard/MeetingCardContainer.tsx';
+import MeetCard from '../../meets/ui/MeetCard/MeetCard.tsx';
 
 export default function Project({ project, refetch }: { project: ProjectFullDto; refetch?: () => void }) {
   const { user, authHandler } = useAuth();
@@ -101,7 +101,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
         </CardContent>
       )}
 
-      {isMember && nextMeet && <MeetingCardContainer meet={nextMeet} />}
+      {isMember && nextMeet && <MeetCard meet={nextMeet} />}
 
       {isMember && !nextMeet && (
         <Box sx={{ p: 2 }}>
