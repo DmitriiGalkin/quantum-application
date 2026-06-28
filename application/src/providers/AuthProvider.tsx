@@ -36,7 +36,7 @@ type User = {
   image: string | null;
 };
 
-export type ActiveRole = 'user' | 'teacher' | 'place';
+export type ActiveRole = 'user' | 'teacher' | 'place' | 'guest';
 
 type AuthContextType = {
   passport: PassportDto | null;

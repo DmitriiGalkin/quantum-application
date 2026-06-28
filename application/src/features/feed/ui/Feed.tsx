@@ -1,6 +1,9 @@
 import { Avatar, Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
-import type { FeedItem, PassportDto, UserDto } from '@shared/types';
-import Meet from '../../meets/ui/Meet.tsx';
+import type { FeedItem, MeetExtendedDto, PassportDto, UserDto } from '@shared/types';
+import Meet from '../../meets/ui/MeetComponent.tsx';
+import MeetOld from '../../meets/ui/Meet.tsx';
+import MeetingCardContainer, { toMeeting } from '../../meets/ui/MeetingCard/MeetingCardContainer.tsx';
+import { useAuth } from '../../../providers/AuthProvider.tsx';
 
 export function Feed({ items, passport, refetch }: { items: FeedItem[]; passport: PassportDto; refetch: () => void }) {
   return (
@@ -15,7 +18,13 @@ export function Feed({ items, passport, refetch }: { items: FeedItem[]; passport
 function FeedItemView({ item, passport, refetch }: { item: FeedItem; passport: PassportDto; refetch: () => void }) {
   switch (item.type) {
     case 'meet':
-      return <Meet meet={item.meet} passport={passport} refetch={refetch} />;
+      return (
+        <>
+          {/*<Meet meet={item.meet} passport={passport} refetch={refetch} />*/}
+          {/*<MeetOld meet={item.meet} passport={passport} refetch={refetch} />*/}
+          <MeetFeedCard m={item.meet} />
+        </>
+      );
 
     case 'comment':
       return <CommentCard comment={item.comment} user={item.user as UserDto} />;
@@ -61,4 +70,12 @@ function JoinCard({ user }: { user: UserDto }) {
       </Typography>
     </Divider>
   );
+}
+
+function MeetFeedCard({ m }: { m: MeetExtendedDto }) {
+  const { activeRole } = useAuth();
+  const openMeeting = () => console.log('openMeeting');
+  const payMeeting = () => console.log('payMeeting');
+
+  return <MeetingCardContainer key={m.id} meeting={toMeeting(m)} role={activeRole} onOpen={openMeeting} onPay={payMeeting} />;
 }

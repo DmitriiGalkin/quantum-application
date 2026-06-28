@@ -4,11 +4,14 @@ export type Ui = 'auth' | 'map' | 'idea' | 'project' | 'meet' | 'ideas';
 
 export type Role = 'user' | 'assistant' | 'system';
 
+
 export type Sort = 'nearby' | 'popular' | 'new';
 
 export type When = 'today' | 'tomorrow' | undefined;
 
 export type View = 'module' | 'map';
+
+export type MeetingStatus = 'today' | 'upcoming' | 'completed' | 'cancelled';
 
 export interface ChatDto {
   id: number;

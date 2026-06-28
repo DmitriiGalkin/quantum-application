@@ -16,6 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { CreateUserForm } from '../../user/ui/CreateUserForm.tsx';
 import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
+import MeetingCardContainer, { toMeeting } from '../../meets/ui/MeetingCard/MeetingCardContainer.tsx';
 
 type IdeaProjectCardProps = {
   project: ProjectExtendedDto; // частичное должно быть
@@ -105,6 +106,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
           {project.meets?.[0] && <Meet meet={project.meets[0]} withoutAction={!liked} refetch={refetch} withoutUsers />}
+          {project.meets?.[0] && <MeetingCardContainer meeting={toMeeting(project.meets?.[0] )} role="guest" onOpen={id => navigate(`/meeting/${id}`)} />}
         </Box>
 
         {Boolean(project.users.length) && (
