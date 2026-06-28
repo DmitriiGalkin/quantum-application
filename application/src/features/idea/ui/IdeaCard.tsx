@@ -11,6 +11,7 @@ import { Author } from '../../../shared/ui/Author.tsx';
 
 type IdeaCardProps = {
   idea: IdeaExtendedDto;
+  onSelect?: () => void;
 };
 
 function IdeaCard({ idea }: IdeaCardProps) {
