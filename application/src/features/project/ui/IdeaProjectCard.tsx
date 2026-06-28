@@ -5,7 +5,7 @@ import { type ProjectExtendedDto } from '@shared/types';
 import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateProjectUser, fetchCreateUser, fetchDeleteProjectUser } from '../../../requests.ts';
+import { fetchCreateProjectUser, fetchCreateUser } from '../../../requests.ts';
 import ProjectCardHeader from './ProjectCardHeader.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -45,13 +45,6 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
     },
   });
 
-  const mutationUnlike = useMutation({
-    mutationFn: fetchDeleteProjectUser,
-    onSuccess: () => {
-      refetch?.();
-    },
-  });
-
   const createUser = useMutation({
     mutationFn: fetchCreateUser,
     onSuccess: () => {
@@ -59,7 +52,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
     },
   });
 
-  const handleLike = () => {
+  const onJoin = () => {
     if (!user) {
       setAction({
         type: CREATE_PROJECT_USER_TYPE,
@@ -70,11 +63,6 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
     }
 
     mutationLike.mutate({ userId: user.id, projectId: project.id });
-  };
-
-  const handleUnlike = () => {
-    if (user) mutationUnlike.mutate({ userId: user.id, projectId: project.id });
-    else authHandler();
   };
 
   const handleUserCreate = (title: string) => {
@@ -101,7 +89,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
   return (
     <Card sx={{ borderRadius: 3 }}>
       <CardActionArea onClick={() => navigate(`/project/${project.id}`)}>
-        <ProjectCardHeader passport={project.passport} place={project.place} handleUnlike={liked && handleUnlike} />
+        <ProjectCardHeader passport={project.passport} place={project.place} />
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
           {project.meets?.[0] && <MeetCard meet={project.meets?.[0]} />}
@@ -119,7 +107,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
 
       {!liked && (
         <Stack spacing={2} direction="row" sx={{ alignItems: 'center', px: 2, pb: 2 }}>
-          <Button variant="contained" size="small" onClick={handleLike}>
+          <Button variant="contained" size="small" onClick={onJoin}>
             Присоединиться к проекту
           </Button>
           {!project.users.length && (

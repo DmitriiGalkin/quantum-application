@@ -1,12 +1,8 @@
 import UserRepository from '../repositories/user.repository.js';
 import { GetIdeasQuery, PageMeta } from '@shared/types';
 import IdeaRepository from '../repositories/idea.repository.js';
-import PassportRepository from '../repositories/passport.repository.js';
-import ProjectRepository from '../repositories/project.repository.js';
 import { generateIdeaImage, uploadImage } from './assistant/assistants/image.assistant.js';
 import { IdeaExtendedEntity, IdeaFullEntity } from '../entities/idea.js';
-import PlaceRepository from '../repositories/place.repository.js';
-import MeetRepository from '../repositories/meet.repository.js';
 import { User } from '../entities/user.js';
 import { ProjectService } from './project.service.js';
 

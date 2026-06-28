@@ -37,20 +37,18 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
 
   const nextMeet = sortedMeets.find(m => new Date(m.startedAt) > now);
 
-  const handleLike = () => {
+  const onJoin = () => {
     if (user) mutationLike.mutate({ userId: user.id, projectId: project.id });
     else authHandler();
   };
 
-  const handleUnlike = () => {
+  const onExit = () => {
     if (user) mutationUnlike.mutate({ userId: user.id, projectId: project.id });
     else authHandler();
   };
 
   return (
     <Card sx={{ borderRadius: 3 }}>
-      <ProjectCardHeader passport={project.passport} place={project.place} handleUnlike={handleUnlike} />
-
       <CardMedia
         component="img"
         height="360"
@@ -64,6 +62,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
           },
         }}
       />
+
       <CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography component="h1" variant="h6" gutterBottom>
@@ -88,6 +87,9 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
 
         <Typography sx={{ color: 'text.secondary' }}>{project.description}</Typography>
       </CardContent>
+
+      <ProjectCardHeader passport={project.passport} place={project.place} onExit={onExit} />
+
       {!isMember && (
         <CardContent>
           <Typography variant="h6">Вступите в проект</Typography>
@@ -95,7 +97,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
             Чтобы участвовать во встречах
           </Typography>
 
-          <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={handleLike}>
+          <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={onJoin}>
             Вступить
           </Button>
         </CardContent>

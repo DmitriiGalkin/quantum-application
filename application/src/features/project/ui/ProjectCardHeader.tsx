@@ -3,17 +3,16 @@ import { Avatar, CardHeader, IconButton, ListItemIcon, Menu, MenuItem, Stack } f
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
-import MailOutlineIcon from '@mui/icons-material/Mail';
 import PlaceIcon from '@mui/icons-material/Place';
 import Typography from '@mui/material/Typography';
 
 type Props = {
   passport: PassportDto;
   place: PlaceDto;
-  handleUnlike?: any;
+  onExit?: () => void;
 };
 
-function ProjectCardHeader({ passport, place, handleUnlike }: Props) {
+function ProjectCardHeader({ passport, place, onExit }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -43,23 +42,11 @@ function ProjectCardHeader({ passport, place, handleUnlike }: Props) {
           </IconButton>
 
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            <MenuItem
-              onClick={(e) => {
-                handleClose(e);
-                console.log('send message');
-              }}
-              disabled
-            >
-              <ListItemIcon>
-                <MailOutlineIcon fontSize="small" />
-              </ListItemIcon>
-              Написать письмо
-            </MenuItem>
-            {handleUnlike && (
+            {onExit && (
               <MenuItem
                 onClick={(e) => {
                   handleClose(e);
-                  handleUnlike();
+                  onExit();
                 }}
               >
                 <ListItemIcon>
@@ -78,7 +65,7 @@ function ProjectCardHeader({ passport, place, handleUnlike }: Props) {
           <Typography
             component="div"
             variant="subtitle2"
-            sx={{ fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+            sx={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}
           >
             {place.address}
           </Typography>

@@ -63,55 +63,55 @@ function IdeaPage() {
   if(!idea) return null;
 
   return (
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 3 }}>
-            <Idea idea={idea} />
-          </Grid>
+    <Grid container spacing={2}>
+      <Grid size={{ xs: 12, md: 3 }}>
+        <Idea idea={idea} />
+      </Grid>
 
-          <Grid size={{ xs: 12, md: 9 }}>
-            <Stack spacing={2}>
-              {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
-              {!(filters.when === undefined && !idea.projects.length) && (
-                <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
-              )}
+      <Grid size={{ xs: 12, md: 9 }}>
+        <Stack spacing={2}>
+          {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
+          {!(filters.when === undefined && !idea.projects.length) && (
+            <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
+          )}
 
-              {filters.view === 'map' && <div>Карта</div>}
+          {filters.view === 'map' && <div>Карта</div>}
 
-              {filters.view === 'module' && (
-                <Stack spacing={1}>
-                  {(idea.projects || []).map((project, index) => (
-                    <IdeaProjectCard key={index} project={project} refetch={refetch} />
-                  ))}
-                </Stack>
-              )}
-
-              {filters.when === undefined && !idea.projects.length && (
-                <Box
-                  sx={{
-                    p: 3,
-                    borderRadius: 3,
-                    backgroundColor: 'rgba(255,255,255,0.9)',
-                    textAlign: 'center',
-                  }}
-                >
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    Пока нет проектов
-                  </Typography>
-
-                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-                    Мы ищем учителей для реализации этой идеи
-                  </Typography>
-
-                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-                    Поделитесь идеей с друзьями — возможно, вместе вы запустите проект 🚀
-                  </Typography>
-
-                  <Button variant="contained">Поделиться</Button>
-                </Box>
-              )}
+          {filters.view === 'module' && !!idea.projects.length && (
+            <Stack spacing={1}>
+              {(idea.projects || []).map((project, index) => (
+                <IdeaProjectCard key={index} project={project} refetch={refetch} />
+              ))}
             </Stack>
-          </Grid>
-        </Grid>
+          )}
+
+          {filters.when === undefined && !idea.projects.length && (
+            <Box
+              sx={{
+                p: 3,
+                borderRadius: 3,
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                textAlign: 'center',
+              }}
+            >
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Пока нет проектов
+              </Typography>
+
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                Мы ищем учителей для реализации этой идеи
+              </Typography>
+
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                Поделитесь идеей с друзьями — возможно, вместе вы запустите проект 🚀
+              </Typography>
+
+              <Button variant="contained">Поделиться</Button>
+            </Box>
+          )}
+        </Stack>
+      </Grid>
+    </Grid>
   );
 }
 
