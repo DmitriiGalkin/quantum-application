@@ -3,15 +3,15 @@ import type { Meeting } from './MeetingCard.types';
 
 interface Props {
   meeting: Meeting;
-  onPrimaryAction: () => void;
+  onOpen: () => void;
 }
 
-export default function GuestFooter({ meeting, onPrimaryAction }: Props) {
+export default function GuestFooter({ meeting, onOpen }: Props) {
   const isCancelled = meeting.status === 'cancelled';
 
   return (
     <Stack spacing={1.5}>
-      <Button variant="contained" fullWidth onClick={onPrimaryAction} disabled={isCancelled}>
+      <Button variant="contained" fullWidth onClick={onOpen} disabled={isCancelled}>
         {isCancelled ? 'Недоступно' : 'Подробнее'}
       </Button>
     </Stack>

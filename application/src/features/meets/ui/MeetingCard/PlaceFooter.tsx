@@ -1,12 +1,12 @@
-import { Button, Stack, Chip, Typography } from '@mui/material';
+import { Button, Chip, Stack, Typography } from '@mui/material';
 import type { Meeting } from './MeetingCard.types';
 
 interface Props {
   meeting: Meeting;
-  onPrimaryAction: () => void;
+  onEdit: () => void;
 }
 
-export default function PlaceFooter({ meeting, onPrimaryAction }: Props) {
+export default function PlaceFooter({ meeting, onEdit }: Props) {
   const occupancy = `${meeting.enrolled}/${meeting.capacity}`;
 
   return (
@@ -21,7 +21,7 @@ export default function PlaceFooter({ meeting, onPrimaryAction }: Props) {
       </Stack>
 
       {/* ACTION */}
-      <Button variant="contained" fullWidth onClick={onPrimaryAction}>
+      <Button variant="contained" fullWidth onClick={onEdit}>
         Управление
       </Button>
     </Stack>

@@ -1,50 +1,45 @@
-import { Stack, Typography, Card, CardContent } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { groupMeets } from './groupMeets';
-
-type Meet = {
-  id: number;
-  title: string;
-  startedAt: string;
-};
+import MeetingCardContainer, { toMeeting } from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
+import { useQuery } from '@tanstack/react-query';
+import { fetchMeets } from '../../requests.ts';
+import { useAuth } from '../../providers/AuthProvider.tsx';
+import Page from '../../shared/ui/Page.tsx';
 
 export default function UserMeetsPage() {
-  // MVP мок
-  const meets: Meet[] = [
-    { id: 1, title: 'Робототехника', startedAt: '2026-06-25T18:00:00' },
-    { id: 2, title: 'Английский', startedAt: '2026-06-25T19:30:00' },
-    { id: 3, title: 'Математика', startedAt: '2026-06-26T17:00:00' },
-  ];
+  const { user } = useAuth()
+  const { data: meets } = useQuery({
+    queryKey: ['meets', user?.id],
+    queryFn: () => fetchMeets({ userId: user?.id || 0 }),
+    enabled: !!user?.id,
+  });
 
-  const grouped = groupMeets(meets);
+  const grouped = meets?.length ? groupMeets(meets) : [];
 
   return (
-    <Stack spacing={3}>
-      <Typography variant="h4" >
-        Мои встречи
-      </Typography>
+    <Page>
+      <Stack spacing={3}>
+        <Typography variant="h4">Мои встречи</Typography>
 
-      {Object.entries(grouped).map(([dateLabel, items]) => (
-        <Stack key={dateLabel} spacing={1}>
-          <Typography variant="h6" color="text.secondary">
-            {dateLabel}
-          </Typography>
+        {Object.entries(grouped).map(([dateLabel, items]) => (
+          <Stack key={dateLabel} spacing={1}>
+            <Typography variant="h6" color="text.secondary">
+              {dateLabel}
+            </Typography>
 
-          {items.map(meet => (
-            <Card key={meet.id} variant="outlined">
-              <CardContent>
-                <Typography>{meet.title}</Typography>
-
-                <Typography variant="body2" color="text.secondary">
-                  {new Date(meet.startedAt).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Stack>
-      ))}
-    </Stack>
+            {items.map(meet => (
+              <MeetingCardContainer
+                key={meet.id}
+                meeting={toMeeting(meet)}
+                role="user"
+                onPay={() => console.log('onPay')}
+                onJoin={() => console.log('onJoin')}
+                onOpen={open}
+              />
+            ))}
+          </Stack>
+        ))}
+      </Stack>
+    </Page>
   );
 }

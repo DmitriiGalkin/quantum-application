@@ -52,6 +52,7 @@ export interface MeetExtendedDto extends MeetDto {
   users: UserDto[];
   place: PlaceDto;
   isPaid?: boolean;
+  passport?: PassportDto;
 }
 
 export interface MeetFullDto extends MeetDto {
@@ -231,6 +232,12 @@ export interface GetIdeasQuery {
   when?: 'today' | 'tomorrow';
   latitude?: number;
   longitude?: number;
+}
+
+export interface GetMeetsQuery {
+  userId?: number;
+  passportId?: number;
+  placeId?: number;
 }
 
 // FEED system

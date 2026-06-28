@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchIdea } from '../requests.ts';
 import { Button, Grid } from '@mui/material';
-import Page from '../shared/ui/Page.tsx';
 import IdeaProjectCard from '../features/project/ui/IdeaProjectCard.tsx';
 import { useFilters } from '../features/idea/model/useFilters.ts';
 import Filter from '../features/idea/ui/Filter.tsx';
@@ -19,7 +18,6 @@ function IdeaPage() {
 
   const {
     data: idea,
-    isLoading,
     isError: isProjectError,
     refetch,
   } = useQuery({
@@ -36,7 +34,6 @@ function IdeaPage() {
 
   if (!id) {
     return (
-      <Page>
         <Box sx={{ py: 6, textAlign: 'center' }}>
           <Typography variant="h6">Проект не найден</Typography>
 
@@ -44,13 +41,11 @@ function IdeaPage() {
             Некорректная ссылка
           </Typography>
         </Box>
-      </Page>
     );
   }
 
   if (isProjectError) {
     return (
-      <Page>
         <Box sx={{ py: 6, textAlign: 'center' }}>
           <Typography variant="h6">Не удалось загрузить идею</Typography>
 
@@ -62,13 +57,12 @@ function IdeaPage() {
             Обновить
           </Button>
         </Box>
-      </Page>
     );
   }
 
+  if(!idea) return null;
+
   return (
-    <Page isLoading={isLoading} isError={isProjectError}>
-      {idea && (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 3 }}>
             <Idea idea={idea} />
@@ -118,8 +112,6 @@ function IdeaPage() {
             </Stack>
           </Grid>
         </Grid>
-      )}
-    </Page>
   );
 }
 

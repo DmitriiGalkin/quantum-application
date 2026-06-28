@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Stack } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 type Props = {

@@ -1,4 +1,4 @@
-import { Stack, Typography, Avatar, Box } from '@mui/material';
+import { Avatar, Box, Stack, Typography } from '@mui/material';
 import type { Meeting } from './MeetingCard.types';
 
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';

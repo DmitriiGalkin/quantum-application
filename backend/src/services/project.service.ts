@@ -103,6 +103,7 @@ export class ProjectService {
       place: placesForMeets[i],
       users: usersForMeets[i],
       isPaid: paymentIds.includes(m.id),
+      passport,
     }));
 
     const feeds = FeedService.merge({

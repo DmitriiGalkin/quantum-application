@@ -1,6 +1,6 @@
 import Meet from '../repositories/meet.repository.js';
 import { Passport } from '../entities/passport.js';
-import { CreateMeet, CreateProject } from '@shared/types';
+import type { CreateMeet, CreateProject, GetMeetsQuery } from '@shared/types';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
@@ -9,6 +9,7 @@ import IdeaRepository from '../repositories/idea.repository.js';
 import { User } from '../entities/user.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import { Place } from '../entities/place.js';
+import PassportRepository from '../repositories/passport.repository.js';
 
 export class MeetService {
   static async create(passport: Passport, data: CreateMeet) {
@@ -36,17 +37,20 @@ export class MeetService {
     return Meet.findById(id);
   }
 
-  static async findAll(data: any) {
+  static async findAll(data: GetMeetsQuery) {
     const meets = await Meet.findAll(data);
 
+    console.log(meets, data, 'findAll');
 
     const places = await Promise.all(meets.map(i => PlaceRepository.findById(i.placeId) as Promise<Place>));
     const users = await Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)));
+    const passports = await Promise.all(meets.map(meet => PassportRepository.findById(meet.id)));
 
     return meets.map((meet, i) => ({
       ...meet,
       place: places[i],
       users: users[i],
+      passport: passports[i],
     }));
   }
 }

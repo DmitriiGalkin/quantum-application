@@ -1,4 +1,4 @@
-import { Paper, Stack } from '@mui/material';
+import { Chip, Paper, Stack, Typography } from '@mui/material';
 import type { MeetingCardProps } from './MeetingCard.types';
 
 import MeetingCardHeader from './MeetingCardHeader';
@@ -9,8 +9,6 @@ import GuestFooter from './GuestFooter';
 import PlaceFooter from './PlaceFooter';
 
 export default function MeetingCard({ role, meeting, onPrimaryAction, onSecondaryAction }: MeetingCardProps) {
-  const { status } = meeting;
-
   const renderFooter = () => {
     switch (role) {
       case 'user':
@@ -47,6 +45,16 @@ export default function MeetingCard({ role, meeting, onPrimaryAction, onSecondar
         <MeetingCardHeader meeting={meeting} />
 
         <MeetingCardBody meeting={meeting} />
+
+        {role === 'user' && (
+          <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+            <Typography variant="body2" color="text.secondary">
+              Оплата
+            </Typography>
+
+            <Chip size="small" label={isPaid ? 'Оплачено' : 'Ожидает оплату'} color={isPaid ? 'success' : 'warning'} />
+          </Stack>
+        )}
 
         {renderFooter()}
       </Stack>

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { usePostAuthAction, type PostAuthAction } from './usePostAuthAction.ts';
+import { type PostAuthAction, usePostAuthAction } from './usePostAuthAction.ts';
 
 export const useRunPostAuthAction = (passport: any, handler: (action: PostAuthAction) => void) => {
   const { getAction, clearAction } = usePostAuthAction();

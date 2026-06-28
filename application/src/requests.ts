@@ -2,10 +2,12 @@ import {
   type ChatDto,
   type ChatMessagesResult,
   type CreateChatBody,
-  type CreateMessageDto,
   type CreateIdeaUser,
   type CreateMeet,
   type CreateMeetUser,
+  type CreateMessageDto,
+  type CreatePayment,
+  type CreatePaymentResult,
   type CreatePlace,
   type CreateProject,
   type CreateProjectUser,
@@ -13,16 +15,17 @@ import {
   type DeleteMeetUser,
   type DeleteProjectUser,
   type GetIdeasQuery,
+  type GetMeetsQuery,
   type IdeaExtendedDto,
   type IdeaFullDto,
   type MeetDto,
+  type MeetExtendedDto,
+  type MeetFullDto,
   type PassportExtendedDto,
   type PlaceFullDto,
   type ProjectFullDto,
   type TeacherDto,
   type UpdateMeet,
-  type MeetExtendedDto,
-  type CreatePayment, type CreatePaymentResult,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 
@@ -46,6 +49,7 @@ export const fetchPassportProjects = () => get<ProjectFullDto[]>('/passport/proj
 export const fetchCreateProjectUser = (params: CreateProjectUser) => post<void>('/projectUser', params);
 export const fetchDeleteProjectUser = (params: DeleteProjectUser) => del<void>(`/projectUser?userId=${params.userId}&projectId=${params.projectId}`);
 
+export const fetchMeets = (params: GetMeetsQuery) => get<MeetFullDto[]>(`/meets?${toQuery(params)}`);
 export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
 export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);

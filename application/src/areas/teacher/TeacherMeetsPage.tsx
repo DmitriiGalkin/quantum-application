@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherMeets } from '../../requests.ts';
-import { Stack } from "@mui/material";
+import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import Meet from '../../features/meets/ui/Meet.tsx';
+import MeetingCardContainer, { toMeeting } from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
 
 function TeacherMeetsPage() {
   const { data: meets = [], isLoading } = useQuery({
@@ -16,14 +16,16 @@ function TeacherMeetsPage() {
 
   return (
     <Stack spacing={2}>
-      <Typography variant="h4">
-        Встречи
-      </Typography>
+      <Typography variant="h4">Встречи</Typography>
 
       {meets.map(meet => (
-        <Meet
+        <MeetingCardContainer
           key={meet.id}
-          meet={meet}
+          meeting={toMeeting(meet)}
+          role="teacher"
+          onEdit={() => console.log('edit')}
+          onReschedule={() => console.log('onReschedule')}
+          onOpen={open}
         />
       ))}
     </Stack>

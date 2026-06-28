@@ -1,11 +1,8 @@
-import { Card, CardContent, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { fetchMeets } from '../../requests.ts';
+import MeetingCardContainer, { toMeeting } from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
 
-type Meet = {
-  id: number;
-  startedAt: string;
-  projectTitle: string;
-  teacherTitle: string;
-};
 //
 // Для центра это одна из самых полезных страниц, поэтому позже сюда хорошо ложатся:
 //
@@ -16,42 +13,22 @@ type Meet = {
 // отметка "встреча завершена"
 
 export default function PlaceMeetsPage() {
-  // TODO: заменить на useQuery(fetchPlaceMeets)
-  const meets: Meet[] = [
-    {
-      id: 1,
-      startedAt: '2026-06-25T16:00:00',
-      projectTitle: 'Робототехника',
-      teacherTitle: 'Анна Иванова',
-    },
-    {
-      id: 2,
-      startedAt: '2026-06-25T18:00:00',
-      projectTitle: 'Создание сайта',
-      teacherTitle: 'Дмитрий Петров',
-    },
-  ];
+const place = {id: 2}
+
+  const { data: meets } = useQuery({
+    queryKey: ['meets', place?.id],
+    queryFn: () => fetchMeets({ placeId: place?.id || 0 }),
+    enabled: !!place?.id,
+  });
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4">
-        Расписание центра
-      </Typography>
+      <Typography variant="h4">Расписание центра</Typography>
 
-      {meets.length === 0 && <Typography color="text.secondary">Запланированных встреч нет</Typography>}
+      {meets?.length === 0 && <Typography color="text.secondary">Запланированных встреч нет</Typography>}
 
-      {meets.map(meet => (
-        <Card key={meet.id}>
-          <CardContent>
-            <Stack spacing={1}>
-              <Typography variant="h6">{meet.projectTitle}</Typography>
-
-              <Typography color="text.secondary">{new Date(meet.startedAt).toLocaleString('ru-RU')}</Typography>
-
-              <Typography variant="body2">Учитель: {meet.teacherTitle}</Typography>
-            </Stack>
-          </CardContent>
-        </Card>
+      {meets?.map(meet => (
+        <MeetingCardContainer key={meet.id} meeting={toMeeting(meet)} role="place" onOpen={()=>console.log('open')} />
       ))}
     </Stack>
   );

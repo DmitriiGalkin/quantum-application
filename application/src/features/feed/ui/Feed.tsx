@@ -1,7 +1,5 @@
 import { Avatar, Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import type { FeedItem, MeetExtendedDto, PassportDto, UserDto } from '@shared/types';
-import Meet from '../../meets/ui/MeetComponent.tsx';
-import MeetOld from '../../meets/ui/Meet.tsx';
 import MeetingCardContainer, { toMeeting } from '../../meets/ui/MeetingCard/MeetingCardContainer.tsx';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 
@@ -20,8 +18,6 @@ function FeedItemView({ item, passport, refetch }: { item: FeedItem; passport: P
     case 'meet':
       return (
         <>
-          {/*<Meet meet={item.meet} passport={passport} refetch={refetch} />*/}
-          {/*<MeetOld meet={item.meet} passport={passport} refetch={refetch} />*/}
           <MeetFeedCard m={item.meet} />
         </>
       );
@@ -73,9 +69,9 @@ function JoinCard({ user }: { user: UserDto }) {
 }
 
 function MeetFeedCard({ m }: { m: MeetExtendedDto }) {
-  const { activeRole } = useAuth();
+  const { activeRole, user } = useAuth();
   const openMeeting = () => console.log('openMeeting');
   const payMeeting = () => console.log('payMeeting');
 
-  return <MeetingCardContainer key={m.id} meeting={toMeeting(m)} role={activeRole} onOpen={openMeeting} onPay={payMeeting} />;
+  return <MeetingCardContainer key={m.id} meeting={toMeeting(m, user)} role={activeRole} onOpen={openMeeting} onPay={payMeeting} />;
 }

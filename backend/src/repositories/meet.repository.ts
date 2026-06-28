@@ -4,6 +4,7 @@ import { toMeet, mapMeetWithProjectTitle } from '../mappers/meet.mapper.js';
 import { Meet, MeetWithProjectTitle } from '../entities/meet.js';
 import { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
 import { db } from '../dbNext.js';
+import type { GetMeetsQuery } from '@shared/types';
 
 class MeetRepository {
   static async create(data: CreateMeetInput): Promise<number> {
@@ -40,17 +41,26 @@ class MeetRepository {
   }
 
   // ✅ FIND ALL
-  static async findAll(data: { passportId?: number }): Promise<Meet[]> {
+  static async findAll(data: GetMeetsQuery): Promise<Meet[]> {
     const params: unknown[] = [];
 
     let sql = `
-    SELECT meet.*
-    FROM meet
-  `;
+      SELECT meet.*
+      FROM meet
+    `;
 
-    if (data.passportId) {
+    const needProjectJoin = !!data.passportId;
+    const needUserJoin = !!data.userId;
+
+    if (needProjectJoin) {
       sql += `
       INNER JOIN project ON project.id = meet.projectId
+    `;
+    }
+
+    if (needUserJoin) {
+      sql += `
+      INNER JOIN meetUser ON meetUser.meetId = meet.id
     `;
     }
 
@@ -63,8 +73,21 @@ class MeetRepository {
       sql += `
       AND meet.passportId = ?
     `;
-
       params.push(data.passportId);
+    }
+
+    if (data.userId) {
+      sql += `
+      AND meetUser.userId = ?
+    `;
+      params.push(data.userId);
+    }
+
+    if (data.placeId) {
+      sql += `
+      AND meet.placeId = ?
+    `;
+      params.push(data.placeId);
     }
 
     sql += `
@@ -72,7 +95,6 @@ class MeetRepository {
   `;
 
     const rows = await db.query(sql, params);
-
     return rows.map(toMeet);
   }
 

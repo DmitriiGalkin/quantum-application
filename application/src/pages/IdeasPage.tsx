@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchIdeas } from '../requests.ts';
 import Stack from '@mui/material/Stack';
 import IdeaCard from '../features/idea/ui/IdeaCard.tsx';
-import Page from '../shared/ui/Page.tsx';
 import { useFilters } from '../features/idea/model/useFilters.ts';
 import Filter from '../features/idea/ui/Filter.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -21,7 +20,6 @@ function IdeasPage() {
   const {
     data: ideas = [],
     isLoading,
-    isError,
   } = useQuery({
     queryKey: ['ideas', filters, location],
     queryFn: () =>
@@ -40,7 +38,6 @@ function IdeasPage() {
 
 
   return (
-    <Page isError={isError}>
       <Stack spacing={2}>
         <AIIdeaBanner/>
 
@@ -95,7 +92,6 @@ function IdeasPage() {
           </Box>
         )}
       </Stack>
-    </Page>
   );
 }
 

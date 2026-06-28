@@ -1,11 +1,7 @@
-type Meet = {
-  id: number;
-  title: string;
-  startedAt: string;
-};
+import type { MeetFullDto } from '@shared/types';
 
-export function groupMeets(meets: Meet[]) {
-  const groups: Record<string, Meet[]> = {};
+export function groupMeets(meets: MeetFullDto[]) {
+  const groups: Record<string, MeetFullDto[]> = {};
 
   const formatter = new Intl.DateTimeFormat('ru-RU', {
     day: '2-digit',

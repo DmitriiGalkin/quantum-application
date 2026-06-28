@@ -7,7 +7,6 @@ import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassportProjects } from '../../requests.ts';
 import CreateProjectBlock from '../../shared/ui/CreateProjectBlock.tsx';
-import Page from '../../shared/ui/Page.tsx';
 import { groupProjectsByIdea } from '../../utils/helper.ts';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -23,7 +22,6 @@ function PassportProjectsPage() {
 
   const {
     data: projects = [],
-    isLoading: isProjectsLoading,
     isError: isProjectsError,
   } = useQuery({
     queryKey: ['projects', userId],
@@ -33,7 +31,6 @@ function PassportProjectsPage() {
   const groupes = groupProjectsByIdea(projectsWithIdeas);
 
   return (
-    <Page isLoading={isProjectsLoading}>
       <Box component="section">
         {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
         <AISelectIdeaBanner />
@@ -123,7 +120,6 @@ function PassportProjectsPage() {
           </Stack>
         )}
       </Box>
-    </Page>
   );
 }
 

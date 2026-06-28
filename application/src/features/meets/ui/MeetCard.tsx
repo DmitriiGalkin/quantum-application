@@ -1,4 +1,15 @@
-import { Avatar, AvatarGroup, Box, Button, Chip, LinearProgress, Paper, Stack, Typography, IconButton } from '@mui/material';
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  LinearProgress,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 import ScheduleRounded from '@mui/icons-material/ScheduleRounded';

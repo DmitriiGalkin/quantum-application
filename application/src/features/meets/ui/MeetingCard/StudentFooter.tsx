@@ -1,24 +1,18 @@
-import { Button, Stack, Chip, Typography } from '@mui/material';
+import { Button, Chip, Stack, Typography } from '@mui/material';
 import type { Meeting } from './MeetingCard.types';
 
 interface Props {
   meeting: Meeting;
-  onPrimaryAction: () => void;
-  onSecondaryAction?: () => void;
+  onPay: () => void;
+  onJoin: () => void;
 }
 
-export default function StudentFooter({ meeting, onPrimaryAction, onSecondaryAction }: Props) {
+export default function StudentFooter({ meeting, onPay, onJoin }: Props) {
+  const isMember = meeting.meetUserStatus === 'member';
+  const isPending = meeting.paymentStatus === 'pending';
   const isPaid = meeting.paymentStatus === 'paid';
-
-  const isUpcoming = meeting.status === 'upcoming';
-  const isToday = meeting.status === 'today';
-
-  const getPrimaryLabel = () => {
-    if (!isPaid) return 'Оплатить';
-    if (isToday) return 'Присоединиться';
-    if (isUpcoming) return 'Подробнее';
-    return 'Открыть';
-  };
+  // const isUpcoming = meeting.status === 'upcoming';
+  // const isToday = meeting.status === 'today';
 
   return (
     <Stack spacing={1.5}>
@@ -33,13 +27,15 @@ export default function StudentFooter({ meeting, onPrimaryAction, onSecondaryAct
 
       {/* ACTIONS */}
       <Stack spacing={1}>
-        <Button variant="contained" fullWidth onClick={onPrimaryAction}>
-          {getPrimaryLabel()}
-        </Button>
+        {!isMember && (
+          <Button variant="contained" fullWidth onClick={onJoin}>
+            Присоединиться
+          </Button>
+        )}
 
-        {!isPaid && (
-          <Button variant="text" fullWidth onClick={onSecondaryAction}>
-            Подробнее
+        {isMember && isPending && (
+          <Button variant="contained" fullWidth onClick={onPay}>
+            Оплатить
           </Button>
         )}
       </Stack>
