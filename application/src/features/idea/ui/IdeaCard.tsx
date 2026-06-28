@@ -3,20 +3,17 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
-import type { IdeaDto, IdeaExtendedDto } from '@shared/types';
-import { Button, CardActionArea } from '@mui/material';
+import type { IdeaExtendedDto } from '@shared/types';
+import { CardActionArea } from '@mui/material';
 import Like from './Like.tsx';
 import { useNavigate } from 'react-router-dom';
 import { Author } from '../../../shared/ui/Author.tsx';
 
 type IdeaCardProps = {
   idea: IdeaExtendedDto;
-  actionType?: 'view' | 'draft';
-  onSelect?: (idea: IdeaDto) => void;
 };
 
-
-function IdeaCard({ idea, actionType = 'view', onSelect }: IdeaCardProps) {
+function IdeaCard({ idea }: IdeaCardProps) {
   const navigate = useNavigate();
 
   return (
@@ -53,16 +50,8 @@ function IdeaCard({ idea, actionType = 'view', onSelect }: IdeaCardProps) {
       </CardActionArea>
 
       <CardActions sx={{ justifyContent: 'space-between', pr: 2 }}>
-        {actionType === 'draft' ? (
-          <Button size="small" onClick={() => onSelect?.(idea)}>
-            Выбрать
-          </Button>
-        ) : (
-          <>
-            <Like ideaId={idea.id} isLiked={idea.isLiked} />
-            <Author user={idea.user}/>
-          </>
-        )}
+        <Like ideaId={idea.id} isLiked={idea.isLiked} likesCount={idea.userCount} />
+        <Author user={idea.user} />
       </CardActions>
     </Card>
   );

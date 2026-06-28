@@ -19,6 +19,7 @@ export default function Like({ isLiked, ideaId, likesCount }: ChatBubbleProps) {
   const { user, authHandler } = useAuth();
   const [liked, setLiked] = useState(isLiked);
   const [count, setCount] = useState<number>(likesCount || 0);
+
   const mutationLike = useMutation({
     mutationFn: fetchLike,
   });
