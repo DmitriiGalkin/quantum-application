@@ -1,26 +1,25 @@
 import { Button, Chip, Stack, Typography } from '@mui/material';
-import type { Meeting } from './MeetingCard.types';
+import type { MeetExtendedDto } from '@shared/types';
 
 interface Props {
-  meeting: Meeting;
+  meet: MeetExtendedDto;
   onEdit: () => void;
 }
 
-export default function PlaceFooter({ meeting, onEdit }: Props) {
-  const occupancy = `${meeting.enrolled}/${meeting.capacity}`;
+export default function PlaceFooter({ meet, onEdit }: Props) {
+  const occupancy = (meet.users?.length ?? 0) / 30;
+  const occupancyTitle = `${meet.users?.length ?? 0}/30`;
 
   return (
     <Stack spacing={1.5}>
-      {/* BUSINESS METRIC */}
       <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
         <Typography variant="body2" color="text.secondary">
           Загруженность
         </Typography>
 
-        <Chip size="small" label={occupancy} color={meeting.enrolled / meeting.capacity > 0.8 ? 'warning' : 'default'} />
+        <Chip size="small" label={occupancyTitle} color={occupancy > 0.8 ? 'warning' : 'default'} />
       </Stack>
 
-      {/* ACTION */}
       <Button variant="contained" fullWidth onClick={onEdit}>
         Управление
       </Button>

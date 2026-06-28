@@ -1,8 +1,8 @@
 import { Box, Chip, Stack, Typography } from '@mui/material';
-import type { Meeting } from './MeetingCard.types';
+import type { MeetExtendedDto } from '@shared/types';
 
 interface Props {
-  meeting: Meeting;
+  dto: MeetExtendedDto;
 }
 
 const statusConfig = {
@@ -12,8 +12,18 @@ const statusConfig = {
   cancelled: { label: 'Отменена', color: 'error' as const },
 };
 
-export default function MeetingCardHeader({ meeting }: Props) {
-  const status = statusConfig[meeting.status];
+export default function MeetingCardHeader({ dto }: Props) {
+  const status = statusConfig['upcoming'];
+  const startedAt = new Date(dto.startedAt);
+  const date = startedAt.toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: 'short',
+  });
+
+  const time = startedAt.toLocaleTimeString('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
   return (
     <Stack spacing={1}>
@@ -22,7 +32,7 @@ export default function MeetingCardHeader({ meeting }: Props) {
         <Chip label={status.label} color={status.color} size="small" />
 
         <Typography variant="body2" color="text.secondary">
-          {meeting.date} • {meeting.time}
+          {date} • {time}
         </Typography>
       </Stack>
 
@@ -35,7 +45,7 @@ export default function MeetingCardHeader({ meeting }: Props) {
             fontWeight: 700,
           }}
         >
-          {meeting.title}
+          {dto.place?.title ?? 'Untitled meeting'}
         </Typography>
       </Box>
     </Stack>

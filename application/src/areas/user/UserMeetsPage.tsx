@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import { groupMeets } from './groupMeets';
-import MeetingCardContainer, { toMeeting } from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
+import MeetingCardContainer from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';
 import { useAuth } from '../../providers/AuthProvider.tsx';
@@ -30,11 +30,7 @@ export default function UserMeetsPage() {
             {items.map(meet => (
               <MeetingCardContainer
                 key={meet.id}
-                meeting={toMeeting(meet)}
-                role="user"
-                onPay={() => console.log('onPay')}
-                onJoin={() => console.log('onJoin')}
-                onOpen={open}
+                meet={meet}
               />
             ))}
           </Stack>

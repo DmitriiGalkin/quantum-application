@@ -54,6 +54,9 @@ export class ProjectService {
       meetArr.map(meets => Promise.all(meets.map(meet => PlaceRepository.findById(meet.placeId) as Promise<Place>))),
     );
     const userMeetArr = await Promise.all(meetArr.map(meets => Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)))));
+    const passportMeetArr = await Promise.all(
+      meetArr.map(meets => Promise.all(meets.map(meet => PassportRepository.findById(meet.passportId) as Promise<Passport>))),
+    );
 
     return projects.map((project, i) => ({
       ...project,
@@ -67,6 +70,8 @@ export class ProjectService {
         project,
         place: placeMeetArr[i][j],
         users: userMeetArr[i][j],
+        passport: passportMeetArr[i][j],
+        isPaid: false
       })),
     }));
   }
@@ -82,7 +87,6 @@ export class ProjectService {
       PlaceRepository.findById(project.placeId) as Promise<Place>,
       project.ideaId ? (IdeaRepository.findById(project.ideaId) as Promise<Idea>) : null,
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
-
     ]);
 
 
@@ -90,9 +94,10 @@ export class ProjectService {
 
     const placesForMeets = await Promise.all(meets.map(m => PlaceRepository.findById(m.id) as Promise<Place>));
     const usersForMeets = await Promise.all(meets.map(m => UserRepository.findByMeetId(m.id)));
+    const passportsForMeets = await Promise.all(meets.map(m => PassportRepository.findById(m.passportId) as Promise<Passport>));
+
 
     const mIds = meets.map(m => m.id);
-    console.log(mIds, 'mIds');
 
     const paymentIds = await PaymentRepository.findPaidMeetIdsByUser(45, mIds);
     console.log(paymentIds,'paymentIds')
@@ -103,8 +108,10 @@ export class ProjectService {
       place: placesForMeets[i],
       users: usersForMeets[i],
       isPaid: paymentIds.includes(m.id),
-      passport,
+      passport: passportsForMeets[i],
     }));
+    console.log(meetExtendeds, 'meetExtendeds');
+
 
     const feeds = FeedService.merge({
       meets: meetExtendeds,

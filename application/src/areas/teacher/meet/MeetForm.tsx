@@ -34,8 +34,6 @@ export default function MeetForm({ projectId, initialValues, onSubmit, loading =
     }
   }, [initialValues]);
 
-  console.log('form', form);
-
   return (
     <Box>
       <Stack spacing={3}>

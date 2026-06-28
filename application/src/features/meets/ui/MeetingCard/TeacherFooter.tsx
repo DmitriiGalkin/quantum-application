@@ -4,7 +4,7 @@ import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 interface Props {
-  onEdit: () => void;
+  onEdit?: () => void;
   onDelete?: () => void;
 }
 
@@ -30,17 +30,19 @@ export default function TeacherFooter({ onEdit, onDelete }: Props) {
       </Button>
 
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem
-          onClick={e => {
-            handleClose(e);
-            onDelete?.();
-          }}
-        >
-          <ListItemIcon>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          Удалить встречу
-        </MenuItem>
+        {onDelete && (
+          <MenuItem
+            onClick={e => {
+              handleClose(e);
+              onDelete?.();
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            Удалить встречу
+          </MenuItem>
+        )}
       </Menu>
 
       <IconButton onClick={handleOpen}>

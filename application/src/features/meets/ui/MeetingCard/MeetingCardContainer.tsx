@@ -1,81 +1,91 @@
-import type { Meeting } from './MeetingCard.types';
-import type { MeetExtendedDto, UserDto } from '@shared/types';
-import type { ActiveRole } from '../../../../providers/AuthProvider.tsx';
+import type { MeetExtendedDto } from '@shared/types';
+import { useAuth } from '../../../../providers/AuthProvider.tsx';
 import { Paper, Stack } from '@mui/material';
 
 import MeetingCardHeader from './MeetingCardHeader';
 import MeetingCardBody from './MeetingCardBody';
 import StudentFooter from './StudentFooter';
 import TeacherFooter from './TeacherFooter';
-import GuestFooter from './GuestFooter';
 import PlaceFooter from './PlaceFooter';
+import { useMutation } from '@tanstack/react-query';
+import { fetchCreateMeetUser, fetchCreatePayment, fetchDeleteMeet, fetchDeleteMeetUser } from '../../../../requests.ts';
 
 interface Props {
-  meeting: Meeting;
-
-  role: ActiveRole | null;
-
-  onPay?: (id: string) => void;
-  onJoin?: (id: string) => void;
-  onEdit?: (id: string) => void;
-  onReschedule?: (id: string) => void;
-  onCancel?: (id: string) => void;
-  onDelete?: (id: string) => void;
-  onOpen?: (id: string) => void;
+  meet: MeetExtendedDto;
+  refetch?: () => void;
 }
 
-export function toMeeting(dto: MeetExtendedDto, user: UserDto | null): Meeting {
-  const startedAt = new Date(dto.startedAt);
+export default function MeetingCardContainer({ meet, refetch }: Props) {
+  const { user, authHandler, passport, activeRole: role } = useAuth();
 
-  const date = startedAt.toLocaleDateString('ru-RU', {
-    day: '2-digit',
-    month: 'short',
+  const mutationLike = useMutation({
+    mutationFn: fetchCreateMeetUser,
+    onSuccess: () => {
+      refetch?.();
+    },
   });
 
-  const time = startedAt.toLocaleTimeString('ru-RU', {
-    hour: '2-digit',
-    minute: '2-digit',
+  const mutationUnlike = useMutation({
+    mutationFn: fetchDeleteMeetUser,
+    onSuccess: () => {
+      refetch?.();
+    },
   });
 
-  const duration = dto.duration != null ? `${dto.duration} min` : '—';
+  const mutationDeleteMeet = useMutation({
+    mutationFn: fetchDeleteMeet,
+    onSuccess: () => {
+      refetch?.();
+    },
+  });
 
-  return {
-    id: String(dto.id),
-    title: dto.place?.title ?? 'Untitled meeting',
-    teacherName: dto.passport?.title ?? 'Unknown',
-    teacherAvatar: dto.passport?.image ?? undefined,
-    date,
-    time,
-    duration,
-    location: dto.place?.address ?? 'Unknown location',
+  const createPayment = useMutation({
+    mutationFn: fetchCreatePayment,
+    onSuccess: payment => {
+      console.log('payment', payment);
+      window.location.href = payment.paymentUrl;
+      return;
+    },
+  });
 
-    // ⚠️ важно: статус тут НЕ вычисляем "умно"
-    // оставляем плоскую мапу или дефолт
-    status: 'upcoming',
-    meetUserStatus: user?.id && dto.users.map(u => u.id).includes(user.id) ? 'member' : 'not_member',
-    enrolled: dto.users?.length ?? 0,
-    capacity: 30,
-    paymentStatus: dto.isPaid ? 'paid' : dto.price != null ? 'pending' : undefined,
-    price: dto.price,
-    isDel: Boolean(dto.deletedAt)
+  const onPay = () => {
+    if (meet.price && meet.price > 0) {
+      return createPayment.mutate({
+        targetType: 'meet',
+        targetId: meet.id,
+      });
+    } else {
+      console.log('Ты как сюда попал');
+    }
   };
-}
 
-export default function MeetingCardContainer({
-  meeting,
-  role = 'guest',
-  onPay,
-  onJoin,
-  onEdit,
-  //onReschedule,
-  onCancel,
-                                               onDelete,
-  onOpen,
-}: Props) {
-  const id = meeting.id;
+  const onJoin = async () => {
+    if (!user) {
+      authHandler();
+      return;
+    }
 
-  console.log(meeting);
+    mutationLike.mutate({
+      meetId: meet.id,
+      userId: user.id,
+    });
+  };
 
+  const onEdit = () => console.log('edit meet');
+
+  const onExit = () => {
+    if (user) mutationUnlike.mutate({ userId: user.id, meetId: meet.id });
+    else authHandler();
+  };
+
+  const onDelete = async () => {
+    mutationDeleteMeet.mutate(meet.id);
+  };
+
+  const paymentStatus = meet.isPaid ? 'paid' : (meet.price && meet.price > 0) ? 'pending' : undefined;
+  const meetUserStatus = user?.id && meet.users.map(u => u.id).includes(user.id) ? 'member' : 'not_member';
+  const isMember = meetUserStatus === 'member';
+  const isPending = paymentStatus === 'pending';
 
   return (
     <Paper
@@ -90,18 +100,24 @@ export default function MeetingCardContainer({
           boxShadow: 4,
           borderColor: 'primary.main',
         },
-        opacity: meeting.isDel ? .5 : 1,
+        opacity: Boolean(meet.deletedAt) ? 0.5 : 1,
       }}
     >
       <Stack spacing={2}>
-        <MeetingCardHeader meeting={meeting} />
+        <MeetingCardHeader dto={meet} />
 
-        <MeetingCardBody meeting={meeting} />
+        <MeetingCardBody meet={meet} />
 
-        {role === 'guest' && <GuestFooter meeting={meeting} onOpen={() => onOpen?.(id)} />}
-        {role === 'user' && <StudentFooter meeting={meeting} onPay={() => onPay?.(id)} onJoin={() => onJoin?.(id)} onCancel={() => onCancel?.(id)} />}
-        {role === 'teacher' && <TeacherFooter onEdit={() => onEdit?.(id)} onDelete={() => onDelete?.(id)} />}
-        {role === 'place' && <PlaceFooter meeting={meeting} onEdit={() => onEdit?.(id)} />}
+        {role === 'user' && (
+          <StudentFooter
+            meet={meet}
+            onPay={isMember && isPending ? onPay : undefined}
+            onJoin={!isMember ? onJoin : undefined}
+            onExit={isMember && isPending ? onExit : undefined}
+          />
+        )}
+        {role === 'teacher' && passport?.id === meet.passport.id && <TeacherFooter onEdit={onEdit} onDelete={onDelete} />}
+        {role === 'place' && <PlaceFooter meet={meet} onEdit={onEdit} />}
       </Stack>
     </Paper>
   );

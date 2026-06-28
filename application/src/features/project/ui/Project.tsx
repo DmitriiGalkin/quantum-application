@@ -3,12 +3,12 @@ import { useMutation } from '@tanstack/react-query';
 import { fetchCreateProjectUser, fetchDeleteProjectUser } from '../../../requests.ts';
 import { useNavigate } from 'react-router-dom';
 import CardMedia from '@mui/material/CardMedia';
-import Meet from '../../meets/ui/Meet.tsx';
 import Box from '@mui/material/Box';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import LinkIcon from '@mui/icons-material/Link';
 import ProjectCardHeader from './ProjectCardHeader.tsx';
 import type { ProjectFullDto } from '@shared/types';
+import MeetingCardContainer from '../../meets/ui/MeetingCard/MeetingCardContainer.tsx';
 
 export default function Project({ project, refetch }: { project: ProjectFullDto; refetch?: () => void }) {
   const { user, authHandler } = useAuth();
@@ -89,7 +89,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
         <Typography sx={{ color: 'text.secondary' }}>{project.description}</Typography>
       </CardContent>
       {!isMember && (
-        <>
+        <CardContent>
           <Typography variant="h6">Вступите в проект</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Чтобы участвовать во встречах
@@ -98,10 +98,10 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
           <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={handleLike}>
             Вступить
           </Button>
-        </>
+        </CardContent>
       )}
 
-      {isMember && nextMeet && <Meet meet={nextMeet} />}
+      {isMember && nextMeet && <MeetingCardContainer meet={nextMeet} />}
 
       {isMember && !nextMeet && (
         <Box sx={{ p: 2 }}>

@@ -40,8 +40,6 @@ export class MeetService {
   static async findAll(data: GetMeetsQuery) {
     const meets = await Meet.findAll(data);
 
-    console.log(meets, data, 'findAll');
-
     const places = await Promise.all(meets.map(i => PlaceRepository.findById(i.placeId) as Promise<Place>));
     const users = await Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)));
     const passports = await Promise.all(meets.map(meet => PassportRepository.findById(meet.id)));

@@ -44,7 +44,7 @@ export interface MeetDto {
   id: number;
   projectId: number;
   startedAt: string;
-  deletedAt: string;
+  deletedAt: string | null;
   duration: number | null;
   price: number | null;
 }
@@ -53,13 +53,14 @@ export interface MeetExtendedDto extends MeetDto {
   users: UserDto[];
   place: PlaceDto;
   isPaid?: boolean;
-  passport?: PassportDto;
+  passport: PassportDto;
 }
 
 export interface MeetFullDto extends MeetDto {
   project: ProjectDto | null;
   users: UserDto[];
   place: PlaceDto;
+  passport: PassportDto;
 }
 
 export type MessageDto = {

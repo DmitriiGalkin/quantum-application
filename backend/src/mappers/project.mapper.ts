@@ -61,6 +61,8 @@ export const toProjectFullDto = (project: ProjectFullEntity): ProjectFullDto => 
     place: u.place,
     project: u.project,
     isPaid: u.isPaid,
+    passport: u.passport,
+    deletedAt: u.deletedAt,
   })),
   feeds: project.feeds,
 });

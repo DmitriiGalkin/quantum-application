@@ -18,7 +18,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import ChatIntroduction from '../features/chat/ui/ChatIntroduction.tsx';
 import IdeaCard from '../features/idea/ui/IdeaCard.tsx';
 import Project from '../features/project/ui/Project.tsx';
-import Meet from '../features/meets/ui/Meet.tsx';
+import MeetingCardContainer from '../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
 
 function ChatPage() {
   const { token, authHandler } = useAuth();
@@ -106,7 +106,7 @@ function ChatPage() {
           )}
           {chat?.context?.ui === 'project' && chat?.context?.project && <Project project={chat.context.project} />}
           {chat?.context?.ui === 'meet' && chat?.context?.meet && chat?.context?.passport && (
-            <Meet meet={chat.context.meet} passport={chat.context.passport} />
+            <MeetingCardContainer meet={chat.context.meet} />
           )}
           {chat?.context?.ui === 'idea' && chat?.context?.idea && <IdeaCard idea={chat.context.idea} />}
         </Stack>

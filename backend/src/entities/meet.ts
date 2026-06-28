@@ -1,5 +1,6 @@
 import { User } from './user.js';
 import { Place } from './place.js';
+import { Passport } from './passport.js';
 
 export interface Meet {
   id: number;
@@ -18,5 +19,6 @@ export interface MeetWithProjectTitle extends Meet {
 
 export interface MeetExtendedEntity extends Meet {
   users: User[];
-  place: Place
+  place: Place;
+  passport: Passport;
 }

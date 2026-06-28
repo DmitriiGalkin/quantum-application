@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherMeets } from '../../requests.ts';
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import MeetingCardContainer, { toMeeting } from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
+import MeetingCardContainer from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
 
 function TeacherMeetsPage() {
   const { data: meets = [], isLoading } = useQuery({
@@ -21,11 +21,7 @@ function TeacherMeetsPage() {
       {meets.map(meet => (
         <MeetingCardContainer
           key={meet.id}
-          meeting={toMeeting(meet)}
-          role="teacher"
-          onEdit={() => console.log('edit')}
-          onReschedule={() => console.log('onReschedule')}
-          onOpen={open}
+          meet={meet}
         />
       ))}
     </Stack>

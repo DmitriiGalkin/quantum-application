@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import MeetForm, { type MeetFormValues } from '../areas/teacher/meet/MeetForm.tsx';
-import { fetchUpdateMeet } from '../requests.ts';
+import { fetchMeet, fetchUpdateMeet } from '../requests.ts';
 
 export default function EditMeetPage() {
   const navigate = useNavigate();

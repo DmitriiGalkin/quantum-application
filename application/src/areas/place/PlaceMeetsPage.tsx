@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';
-import MeetingCardContainer, { toMeeting } from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
+import MeetingCardContainer from '../../features/meets/ui/MeetingCard/MeetingCardContainer.tsx';
 
 //
 // Для центра это одна из самых полезных страниц, поэтому позже сюда хорошо ложатся:
@@ -28,7 +28,7 @@ const place = {id: 2}
       {meets?.length === 0 && <Typography color="text.secondary">Запланированных встреч нет</Typography>}
 
       {meets?.map(meet => (
-        <MeetingCardContainer key={meet.id} meeting={toMeeting(meet)} role="place" onOpen={()=>console.log('open')} />
+        <MeetingCardContainer key={meet.id} meet={meet} />
       ))}
     </Stack>
   );

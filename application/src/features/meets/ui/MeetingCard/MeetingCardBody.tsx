@@ -1,22 +1,25 @@
 import { Avatar, Box, Stack, Typography } from '@mui/material';
-import type { Meeting } from './MeetingCard.types';
 
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
+import type { MeetExtendedDto } from '@shared/types';
 
 interface Props {
-  meeting: Meeting;
+  meet: MeetExtendedDto;
 }
 
-export default function MeetingCardBody({ meeting }: Props) {
+export default function MeetingCardBody({ meet }: Props) {
+  const name = meet.passport?.title ?? 'Unknown';
+  const duration = meet.duration != null ? `${meet.duration} min` : '—';
+
   return (
     <Stack spacing={1.5}>
       {/* TEACHER / ORGANIZER */}
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-        <Avatar src={meeting.teacherAvatar}>{meeting.teacherName[0]}</Avatar>
+        <Avatar src={meet.passport?.image ?? undefined}>{name[0]}</Avatar>
 
         <Box>
-          <Typography sx={{ fontWeight: 600 }}>{meeting.teacherName}</Typography>
+          <Typography sx={{ fontWeight: 600 }}>{name}</Typography>
 
           <Typography variant="body2" color="text.secondary">
             Teacher
@@ -29,13 +32,13 @@ export default function MeetingCardBody({ meeting }: Props) {
         {/* duration */}
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <ScheduleOutlinedIcon fontSize="small" />
-          <Typography variant="body2">{meeting.duration}</Typography>
+          <Typography variant="body2">{duration}</Typography>
         </Stack>
 
         {/* location */}
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <LocationOnOutlinedIcon fontSize="small" />
-          <Typography variant="body2">{meeting.location}</Typography>
+          <Typography variant="body2">{meet.place?.address ?? 'Unknown location'}</Typography>
         </Stack>
 
         {/* participants (aggregated) */}
@@ -43,16 +46,14 @@ export default function MeetingCardBody({ meeting }: Props) {
           <ScheduleOutlinedIcon fontSize="small" />
 
           <Typography variant="body2">
-            {meeting.enrolled}/{meeting.capacity} participants
+            {meet.users?.length ?? 0}/30 participants
           </Typography>
         </Stack>
 
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <ScheduleOutlinedIcon fontSize="small" />
 
-          <Typography variant="body2">
-            {meeting.price}
-          </Typography>
+          <Typography variant="body2">{meet.price}</Typography>
         </Stack>
       </Stack>
     </Stack>

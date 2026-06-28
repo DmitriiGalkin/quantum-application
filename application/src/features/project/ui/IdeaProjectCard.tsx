@@ -7,7 +7,6 @@ import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateProjectUser, fetchCreateUser, fetchDeleteProjectUser } from '../../../requests.ts';
 import ProjectCardHeader from './ProjectCardHeader.tsx';
-import Meet from '../../meets/ui/Meet.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
@@ -16,7 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { CreateUserForm } from '../../user/ui/CreateUserForm.tsx';
 import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
-import MeetingCardContainer, { toMeeting } from '../../meets/ui/MeetingCard/MeetingCardContainer.tsx';
+import MeetingCardContainer from '../../meets/ui/MeetingCard/MeetingCardContainer.tsx';
 
 type IdeaProjectCardProps = {
   project: ProjectExtendedDto; // частичное должно быть
@@ -105,8 +104,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
         <ProjectCardHeader passport={project.passport} place={project.place} handleUnlike={liked && handleUnlike} />
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
-          {project.meets?.[0] && <Meet meet={project.meets[0]} withoutAction={!liked} refetch={refetch} withoutUsers />}
-          {project.meets?.[0] && <MeetingCardContainer meeting={toMeeting(project.meets?.[0] )} role="guest" onOpen={id => navigate(`/meeting/${id}`)} />}
+          {project.meets?.[0] && <MeetingCardContainer meet={project.meets?.[0]} />}
         </Box>
 
         {Boolean(project.users.length) && (
