@@ -1,5 +1,4 @@
-import type { MeetDto, MeetExtendedDto } from '@shared/types';
-import { Meet, MeetExtendedEntity, MeetWithProjectTitle } from '../entities/meet.js';
+import { Meet, MeetWithProjectTitle } from '../entities/meet.js';
 import { MeetRow, MeetWithProjectTitleRow } from '../entities/meet.db.js';
 
 export function toMeet(row: MeetRow): Meet {

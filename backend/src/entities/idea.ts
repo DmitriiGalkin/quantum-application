@@ -1,7 +1,4 @@
-import { Passport } from './passport.js';
 import { User } from './user.js';
-import { Place } from './place.js';
-import { Meet, MeetExtendedEntity } from './meet.js';
 import { type ProjectFullDto, Sort } from '@shared/types';
 
 export interface Idea {

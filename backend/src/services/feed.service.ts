@@ -1,15 +1,14 @@
-import { MeetExtendedEntity } from '../entities/meet.js';
 import { User } from '../entities/user.js';
 
 import { ProjectUser } from '../entities/project-user.js';
-import { FeedItem } from '@shared/types';
+import { FeedItem, MeetExtendedDto } from '@shared/types';
 
 interface Join extends ProjectUser {
   user: User
 }
 
 interface MergeFeed {
-  meets: MeetExtendedEntity[];
+  meets: MeetExtendedDto[];
   comments: any[];
   joins: Join[];
 }

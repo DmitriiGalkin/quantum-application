@@ -16,9 +16,3 @@ export interface Meet {
 export interface MeetWithProjectTitle extends Meet {
   title: string | null;
 }
-
-export interface MeetExtendedEntity extends Meet {
-  users: User[];
-  place: Place;
-  passport: Passport;
-}
