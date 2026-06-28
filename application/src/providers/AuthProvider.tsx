@@ -15,6 +15,7 @@ import { AUTH_401_EVENT } from '../api.ts';
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
 export const NEXT_STORAGE_KEY = 'next';
+export const ACTIVE_ROLE_STORAGE_KEY = 'active_role';
 
 const STRATEGIES = [
   {
@@ -47,7 +48,7 @@ type AuthContextType = {
   strategies: typeof STRATEGIES;
   authHandler: (next2?: string) => void;
   refetch: () => void;
-  activeRole: ActiveRole | null;
+  activeRole: ActiveRole;
   switchRole: (role: ActiveRole) => void;
   availableRoles: ActiveRole[];
 };
@@ -63,7 +64,15 @@ export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [activeRole, setActiveRole] = useState<ActiveRole | null>(null);
+  const [activeRole, setActiveRole] = useState<ActiveRole>(() => {
+    const role = localStorage.getItem(ACTIVE_ROLE_STORAGE_KEY);
+
+    if (role === 'user' || role === 'teacher' || role === 'place') {
+      return role;
+    }
+
+    return 'guest';
+  });
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');
   const availableRoles = ['user', 'teacher', 'place'] as ActiveRole[];
@@ -116,9 +125,12 @@ export const AuthProvider = ({ children }: Props) => {
 
   const logout = () => {
     localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+    localStorage.removeItem(ACTIVE_ROLE_STORAGE_KEY);
+
     setToken(null);
     setUser(null);
     setPassport(null);
+    setActiveRole('guest');
   };
 
   const authHandler = () => {
@@ -127,20 +139,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   const switchRole = (role: ActiveRole) => {
     setActiveRole(role);
-
-    // switch (role) {
-    //   case 'user':
-    //     navigate(`/user/${user?.id}`);
-    //     break;
-    //
-    //   case 'teacher':
-    //     navigate('/teacher');
-    //     break;
-    //
-    //   case 'place':
-    //     navigate('/place');
-    //     break;
-    // }
+    localStorage.setItem(ACTIVE_ROLE_STORAGE_KEY, role);
   };
 
   return (

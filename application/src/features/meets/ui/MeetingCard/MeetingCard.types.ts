@@ -29,6 +29,9 @@ export interface Meeting {
   capacity: number;
 
   paymentStatus?: PaymentStatus;
+
+  price: number | null;
+  isDel: boolean;
 }
 
 export interface MeetingCardProps {

@@ -20,6 +20,7 @@ interface Props {
   onEdit?: (id: string) => void;
   onReschedule?: (id: string) => void;
   onCancel?: (id: string) => void;
+  onDelete?: (id: string) => void;
   onOpen?: (id: string) => void;
 }
 
@@ -51,10 +52,12 @@ export function toMeeting(dto: MeetExtendedDto, user: UserDto | null): Meeting {
     // ⚠️ важно: статус тут НЕ вычисляем "умно"
     // оставляем плоскую мапу или дефолт
     status: 'upcoming',
-    meetUserStatus: user?.id && dto.users.map(u=>u.id).includes(user.id) ? 'member' : 'not_member',
+    meetUserStatus: user?.id && dto.users.map(u => u.id).includes(user.id) ? 'member' : 'not_member',
     enrolled: dto.users?.length ?? 0,
     capacity: 30,
     paymentStatus: dto.isPaid ? 'paid' : dto.price != null ? 'pending' : undefined,
+    price: dto.price,
+    isDel: Boolean(dto.deletedAt)
   };
 }
 
@@ -66,9 +69,12 @@ export default function MeetingCardContainer({
   onEdit,
   //onReschedule,
   onCancel,
+                                               onDelete,
   onOpen,
 }: Props) {
   const id = meeting.id;
+
+  console.log(meeting);
 
 
   return (
@@ -84,6 +90,7 @@ export default function MeetingCardContainer({
           boxShadow: 4,
           borderColor: 'primary.main',
         },
+        opacity: meeting.isDel ? .5 : 1,
       }}
     >
       <Stack spacing={2}>
@@ -92,8 +99,8 @@ export default function MeetingCardContainer({
         <MeetingCardBody meeting={meeting} />
 
         {role === 'guest' && <GuestFooter meeting={meeting} onOpen={() => onOpen?.(id)} />}
-        {role === 'user' && <StudentFooter meeting={meeting} onPay={() => onPay?.(id)} onJoin={() => onJoin?.(id)} />}
-        {role === 'teacher' && <TeacherFooter onEdit={() => onEdit?.(id)} onCancel={() => onCancel?.(id)} />}
+        {role === 'user' && <StudentFooter meeting={meeting} onPay={() => onPay?.(id)} onJoin={() => onJoin?.(id)} onCancel={() => onCancel?.(id)} />}
+        {role === 'teacher' && <TeacherFooter onEdit={() => onEdit?.(id)} onDelete={() => onDelete?.(id)} />}
         {role === 'place' && <PlaceFooter meeting={meeting} onEdit={() => onEdit?.(id)} />}
       </Stack>
     </Paper>

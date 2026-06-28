@@ -6,10 +6,10 @@ interface Props {
 }
 
 const statusConfig = {
-  today: { label: 'Today', color: 'success' as const },
-  upcoming: { label: 'Upcoming', color: 'info' as const },
-  completed: { label: 'Completed', color: 'default' as const },
-  cancelled: { label: 'Cancelled', color: 'error' as const },
+  today: { label: 'Сегодня', color: 'success' as const },
+  upcoming: { label: 'Скоро', color: 'info' as const },
+  completed: { label: 'Завершена', color: 'default' as const },
+  cancelled: { label: 'Отменена', color: 'error' as const },
 };
 
 export default function MeetingCardHeader({ meeting }: Props) {

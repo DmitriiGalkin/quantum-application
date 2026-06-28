@@ -8,6 +8,7 @@ export interface Meet {
   price: number | null;
   duration: number | null;
   startedAt: string;
+  deletedAt: string | null;
   placeId: number;
 }
 

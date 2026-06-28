@@ -118,7 +118,7 @@ function Menu({ setIsMenuOpen }: MenuProps) {
     ],
   };
 
-  const menuItems = MENU[activeRole || ('user' as ActiveRole)];
+  const menuItems = activeRole !== 'guest' ? MENU[activeRole] : [];
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>

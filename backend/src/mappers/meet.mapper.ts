@@ -10,6 +10,7 @@ export function toMeet(row: MeetRow): Meet {
     price: row.price,
     duration: row.duration,
     startedAt: row.startedAt,
+    deletedAt: row.deletedAt,
     placeId: row.placeId,
   };
 }

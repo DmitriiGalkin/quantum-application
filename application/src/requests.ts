@@ -53,6 +53,7 @@ export const fetchMeets = (params: GetMeetsQuery) => get<MeetFullDto[]>(`/meets?
 export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
 export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);
+export const fetchDeleteMeet = (id: number) => del<void>(`/meet/${id}`);
 export const fetchCreateMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', params);
 export const fetchDeleteMeetUser = ({ userId, meetId }: DeleteMeetUser) => del<void>(`/meetUser?userId=${userId}&meetId=${meetId}`);
 export const fetchTeacherMeets = () => get<MeetExtendedDto[]>('/teacher/meets');

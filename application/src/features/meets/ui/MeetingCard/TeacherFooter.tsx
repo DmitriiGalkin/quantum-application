@@ -5,10 +5,10 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 interface Props {
   onEdit: () => void;
-  onCancel?: () => void;
+  onDelete?: () => void;
 }
 
-export default function TeacherFooter({ onEdit, onCancel }: Props) {
+export default function TeacherFooter({ onEdit, onDelete }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -24,7 +24,7 @@ export default function TeacherFooter({ onEdit, onCancel }: Props) {
   const open = Boolean(anchorEl);
 
   return (
-    <Stack spacing={1.5} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+    <Stack spacing={1.5} direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
       <Button variant="contained" fullWidth onClick={onEdit}>
         Изменить
       </Button>
@@ -33,7 +33,7 @@ export default function TeacherFooter({ onEdit, onCancel }: Props) {
         <MenuItem
           onClick={e => {
             handleClose(e);
-            onCancel?.();
+            onDelete?.();
           }}
         >
           <ListItemIcon>

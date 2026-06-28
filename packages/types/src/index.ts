@@ -44,6 +44,7 @@ export interface MeetDto {
   id: number;
   projectId: number;
   startedAt: string;
+  deletedAt: string;
   duration: number | null;
   price: number | null;
 }

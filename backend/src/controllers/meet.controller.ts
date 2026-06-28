@@ -33,7 +33,7 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
     if (!meet) {
       return fail(res, 'Встреча не существует', 404);
     }
-
+    console.log(meet.passportId, req.passport!.id);
     if (meet.passportId !== req.passport!.id) {
       return fail(res, 'Нет прав на удаление', 403);
     }

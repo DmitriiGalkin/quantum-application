@@ -124,11 +124,11 @@ class MeetRepository {
       `SELECT *
        FROM meet
        WHERE projectId = ?
-         AND deletedAt IS NULL
        ORDER BY startedAt`,
       [projectId],
     );
     ////AND startedAt >= CURDATE()
+    // AND deletedAt IS NULL
     return rows.map(toMeet);
   }
 
