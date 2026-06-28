@@ -65,7 +65,11 @@ export const AuthProvider = ({ children }: Props) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [activeRole, setActiveRole] = useState<ActiveRole>(() => {
-    const role = localStorage.getItem(ACTIVE_ROLE_STORAGE_KEY);
+    let role;
+
+    if (typeof window !== 'undefined') {
+      role = localStorage.getItem(ACTIVE_ROLE_STORAGE_KEY);
+    }
 
     if (role === 'user' || role === 'teacher' || role === 'place') {
       return role;
