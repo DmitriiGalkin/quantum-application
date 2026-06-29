@@ -1,5 +1,5 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
-import type { CreateMeet, MeetExtendedDto } from '@shared/types';
+import type { CreateMeet, GetMeetsQuery, MeetExtendedDto } from '@shared/types';
 import { MeetService } from '../services/meet.service.js';
 
 const create: ControllerWithAuth<number, CreateMeet> = async (req, res) => {
@@ -45,6 +45,19 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
+
+const findAll: Controller<MeetExtendedDto[]> = async (req, res) => {
+  try {
+    const meets = await MeetService.findAll({
+      ...req.query,
+    } as GetMeetsQuery);
+
+    ok(res, meets);
+  } catch (err) {
+    fail(res, 'Ошибка при получении списка встреч');
+  }
+};
+
 const findPassportAll: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
@@ -76,6 +89,7 @@ export default {
   create,
   update,
   delete: remove,
+  findAll,
   findPassportAll,
   findById,
 };

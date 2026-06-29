@@ -104,6 +104,7 @@ publicRouter.get('/chat/:id', chat.findMessages);
 privateRouter.post('/chat', withAuth(chat.create));
 privateRouter.post('/chat/:id/messages', withAuth(chat.createMessages));
 
+publicRouter.get('/meets', meet.findAll);
 publicRouter.get('/meet/:id', meet.findById);
 privateRouter.post('/meet', withAuth(meet.create));
 privateRouter.put('/meet/:id', withAuth(meet.update));
