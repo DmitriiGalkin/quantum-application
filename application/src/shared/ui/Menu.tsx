@@ -35,7 +35,7 @@ interface MenuProps {
 }
 
 function Menu({ setIsMenuOpen }: MenuProps) {
-  const { user, passport, logout, activeRole, switchRole } = useAuth();
+  const { user, passport, place, logout, activeRole, switchRole } = useAuth();
 
   const MENU: { user: MenuItemConfig[]; teacher: MenuItemConfig[]; place: MenuItemConfig[] } = {
     user: [
@@ -132,6 +132,12 @@ function Menu({ setIsMenuOpen }: MenuProps) {
         >
           {activeRole === 'user' && <Avatar src={user?.image || undefined} alt={user?.title || 'Пользователь'} sx={{ width: 56, height: 56 }} />}
           {activeRole === 'teacher' && <Avatar src={user?.image || undefined} alt={passport?.title || 'Учитель'} sx={{ width: 56, height: 56 }} />}
+          {activeRole === 'place' && (
+            <Avatar alt={place?.title || 'Учитель'} sx={{ width: 56, height: 56 }}>
+              {place?.title[0]}
+            </Avatar>
+          )}
+
           <Box>
             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
               {activeRole === 'user' && 'Ученик'}
@@ -149,6 +155,15 @@ function Menu({ setIsMenuOpen }: MenuProps) {
             )}
 
             {activeRole === 'teacher' && <Typography sx={{ fontWeight: 800 }}>{passport?.title || 'Учитель'}</Typography>}
+
+            {activeRole === 'place' && (
+              <>
+                <Typography sx={{ fontWeight: 800 }}>{place?.title || 'Центр'}</Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {place?.address ? place.address : 'Возраст не указан'}
+                </Typography>
+              </>
+            )}
           </Box>
         </Stack>
         <FormControl size="small" fullWidth>
@@ -164,9 +179,9 @@ function Menu({ setIsMenuOpen }: MenuProps) {
               fontWeight: 600,
             }}
           >
-            <MenuItem value="user">Ученик</MenuItem>
-            <MenuItem value="teacher">Учитель</MenuItem>
-            <MenuItem value="place">Центр</MenuItem>
+            {user && <MenuItem value="user">Ученик</MenuItem>}
+            {passport && <MenuItem value="teacher">Учитель</MenuItem>}
+            {place && <MenuItem value="place">Центр</MenuItem>}
           </Select>
         </FormControl>
         <List disablePadding>

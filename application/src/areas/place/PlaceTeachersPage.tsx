@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { Box, Button, Card, CardContent, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { fetchAddTeacher, fetchPlaceTeachers, fetchRemoveTeacher } from '../../requests.ts';
-
+import TeacherCard from '../../features/teacher/TeacherCard.tsx';
 
 export default function PlaceTeachersPage() {
   const { id } = useParams();
@@ -11,7 +11,7 @@ export default function PlaceTeachersPage() {
 
   const [passportId, setPassportId] = useState('');
 
-  const teachersQuery = useQuery({
+  const { data: teachers, refetch} = useQuery({
     queryKey: ['place-teachers', placeId],
     queryFn: () => fetchPlaceTeachers(),
   });
@@ -19,15 +19,17 @@ export default function PlaceTeachersPage() {
   const addTeacher = useMutation({
     mutationFn: () => fetchAddTeacher(Number(passportId)),
     onSuccess: () => {
-      teachersQuery.refetch();
+      refetch();
       setPassportId('');
     },
   });
 
   const removeTeacher = useMutation({
     mutationFn: (passportId: number) => fetchRemoveTeacher(passportId),
-    onSuccess: () => teachersQuery.refetch(),
+    onSuccess: () => refetch(),
   });
+
+  const onDelete = (id: number) => removeTeacher.mutate(id);
 
   return (
     <Box>
@@ -43,18 +45,8 @@ export default function PlaceTeachersPage() {
         </Stack>
 
         <Stack spacing={2}>
-          {teachersQuery.data?.map((t: any) => (
-            <Card key={t.id}>
-              <CardContent>
-                <Stack direction="row" sx={{ justifyContent: 'space-between'}}>
-                  <Typography>{t.title}</Typography>
-
-                  <Button color="error" onClick={() => removeTeacher.mutate(t.id)}>
-                    Удалить
-                  </Button>
-                </Stack>
-              </CardContent>
-            </Card>
+          {teachers?.map(teacher => (
+            <TeacherCard teacher={teacher} onDelete={() => onDelete(teacher.id)} />
           ))}
         </Stack>
       </Stack>

@@ -1,0 +1,184 @@
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import GroupsIcon from '@mui/icons-material/Groups';
+import SchoolIcon from '@mui/icons-material/School';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import { Box, Button, Card, CardContent, Chip, Container, Grid, Stack, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../providers/AuthProvider.tsx';
+import { usePostAuthAction } from '../shared/lib/usePostAuthAction.ts';
+import { useRunPostAuthAction } from '../shared/lib/useRunPostAuthAction.ts';
+
+const CREATE_PLACE_TYPE = 'create-place';
+
+export function PlaceLandingPage() {
+  const navigate = useNavigate();
+  const { authHandler, passport } = useAuth();
+  const { setAction } = usePostAuthAction();
+
+  const onCreate = () => {
+    if(!passport) {
+      setAction({
+        type: CREATE_PLACE_TYPE,
+        payload: { ideaId: 1 },
+      });
+
+      return authHandler();
+    };
+
+    navigate('/place/create')
+  }
+
+  useRunPostAuthAction(passport, action => {
+    if (action.type === CREATE_PLACE_TYPE) {
+      navigate('/place/create');
+    }
+  });
+
+  return (
+    <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Stack spacing={10}>
+        <Box>
+          <Chip label="Для образовательных центров" color="primary" />
+
+          <Typography variant="h2" sx={{ mt: 3, fontWeight: 700 }}>
+            Управляйте обучением в одном месте
+          </Typography>
+
+          <Typography variant="h6" color="text.secondary" sx={{ mt: 2, maxWidth: 720, mx: 'auto' }}>
+            Создавайте программы, проекты, занятия, приглашайте преподавателей, принимайте учеников и контролируйте оплаты.
+          </Typography>
+
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 5, justifyContent: 'center' }}>
+            <Button variant="contained" size="large" onClick={onCreate}>
+              Создать образовательный центр
+            </Button>
+
+            <Button variant="outlined" size="large">
+              Подробнее
+            </Button>
+          </Stack>
+        </Box>
+
+        <Grid container spacing={4}>
+          {[
+            {
+              icon: <GroupsIcon color="primary" sx={{ fontSize: 42 }} />,
+              title: 'Ученики',
+              description: 'Храните профили, документы и историю обучения каждого ученика.',
+            },
+            {
+              icon: <CalendarMonthIcon color="primary" sx={{ fontSize: 42 }} />,
+              title: 'Расписание',
+              description: 'Создавайте проекты, занятия и управляйте расписанием преподавателей.',
+            },
+            {
+              icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
+              title: 'Оплаты',
+              description: 'Принимайте оплату за занятия и образовательные программы.',
+            },
+          ].map(item => (
+            <Grid key={item.title} size={{ xs: 12, md: 4 }}>
+              <Card sx={{ height: '100%' }}>
+                <CardContent>
+                  {item.icon}
+
+                  <Typography variant="h5" sx={{ mt: 2, fontWeight: 600 }}>
+                    {item.title}
+                  </Typography>
+
+                  <Typography color="text.secondary" sx={{ mt: 1 }}>
+                    {item.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Box>
+          <Typography variant="h3" sx={{ mb: 5, textAlign: 'center' }}>
+            Начните за несколько минут
+          </Typography>
+
+          <Grid container spacing={4}>
+            {[
+              {
+                title: '1. Создайте центр',
+                description: 'Укажите название и контактные данные.',
+              },
+              {
+                title: '2. Добавьте программу',
+                description: 'Создайте образовательный паспорт.',
+              },
+              {
+                title: '3. Создайте проект',
+                description: 'Настройте группу и сроки обучения.',
+              },
+              {
+                title: '4. Откройте запись',
+                description: 'Ученики смогут записываться на занятия.',
+              },
+            ].map(item => (
+              <Grid key={item.title} size={{ xs: 12, sm: 6, md: 3 }}>
+                <Card sx={{ height: '100%' }}>
+                  <CardContent>
+                    <AutoAwesomeIcon color="primary" />
+
+                    <Typography variant="h6" sx={{ mt: 2 }}>
+                      {item.title}
+                    </Typography>
+
+                    <Typography color="text.secondary" sx={{ mt: 1 }}>
+                      {item.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        <Box>
+          <Typography variant="h3" sx={{ mb: 5, textAlign: 'center' }}>
+            Всё необходимое для работы
+          </Typography>
+
+          <Grid container spacing={2}>
+            {['Проекты', 'Занятия', 'Преподаватели', 'Ученики', 'Образовательные паспорта', 'Расписание', 'Оплаты', 'Сообщения'].map(item => (
+              <Grid key={item} size={{ xs: 12, sm: 6, md: 3 }}>
+                <Card>
+                  <CardContent>
+                    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                      <TaskAltIcon color="success" />
+                      <Typography>{item}</Typography>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        <Card sx={{ textAlign: 'center', py: 6 }}>
+          <CardContent>
+            <SchoolIcon color="primary" sx={{ fontSize: 60 }} />
+
+            <Typography variant="h3" sx={{ mt: 2 }}>
+              Готовы начать?
+            </Typography>
+
+            <Typography color="text.secondary" sx={{ mt: 2 }}>
+              Создание образовательного центра занимает меньше минуты.
+            </Typography>
+
+            <Button variant="contained" size="large" sx={{ mt: 4 }} onClick={onCreate}>
+              Создать образовательный центр
+            </Button>
+          </CardContent>
+        </Card>
+      </Stack>
+    </Container>
+  );
+}

@@ -27,6 +27,11 @@ import TeacherDashboardPage from './areas/teacher/TeacherDashboardPage.tsx';
 import CreateMeetPage from './pages/CreateMeetPage.tsx';
 import EditMeetPage from './pages/EditMeetPage.tsx';
 import CreatePlacePage from './areas/place/CreatePlacePage.tsx';
+import MissionPage from './pages/MissionPage.tsx';
+import AboutPage from './pages/AboutPage.tsx';
+import PrivacyPage from './pages/PrivacyPage.tsx';
+import TermsPage from './pages/TermsPage.tsx';
+import { PlaceLandingPage } from './pages/PlaceLandingPage.tsx';
 
 function App() {
   return (
@@ -44,6 +49,14 @@ function App() {
         <Route path="project/:id/meets/:meetId/edit" element={<EditMeetPage />} />
       </Route>
 
+      <Route element={<AppLayout withoutPaddings />}>
+        <Route path="newplace" element={<PlaceLandingPage />} />
+        <Route path="mission" element={<MissionPage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="privacy" element={<PrivacyPage />} />
+        <Route path="terms" element={<TermsPage />} />
+      </Route>
+
       {/* Ученик */}
       <Route path="user/:id" element={<AppLayout />}>
         <Route index element={<UserIdeasPage />} />
@@ -51,7 +64,6 @@ function App() {
         <Route path="projects" element={<UserProjectsPage />} />
         <Route path="meets" element={<UserMeetsPage />} />
       </Route>
-
       {/* Учитель */}
       <Route path="teacher" element={<AppLayout />}>
         <Route index element={<TeacherDashboardPage />} />
@@ -60,7 +72,6 @@ function App() {
         <Route path="meets" element={<TeacherMeetsPage />} />
         <Route path="ideas" element={<TeacherIdeasPage />} />
       </Route>
-
       {/* Центр */}
       <Route path="place" element={<AppLayout />}>
         <Route index element={<PlaceDashboardPage />} />
@@ -69,7 +80,6 @@ function App() {
         <Route path="projects" element={<PlaceProjectsPage />} />
         <Route path="meets" element={<PlaceMeetsPage />} />
       </Route>
-
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

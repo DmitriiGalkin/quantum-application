@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassport } from '../requests.ts';
-import type { PassportDto } from '@shared/types';
+import type { PassportDto, PlaceDto } from '@shared/types';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
@@ -42,6 +42,7 @@ export type ActiveRole = 'user' | 'teacher' | 'place' | 'guest';
 type AuthContextType = {
   passport: PassportDto | null;
   user: User | null;
+  place: PlaceDto | null;
   token: string | null;
   login: (token: string) => void;
   logout: () => void;
@@ -64,6 +65,8 @@ export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [place, setPlace] = useState<PlaceDto | null>(null);
+
   const [activeRole, setActiveRole] = useState<ActiveRole>(() => {
     let role;
 
@@ -107,6 +110,7 @@ export const AuthProvider = ({ children }: Props) => {
     if (data) {
       setPassport(data);
       setUser(data.users?.[0]);
+      setPlace(data.place);
     }
   }, [data]);
 
@@ -148,7 +152,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   return (
     <AuthContext.Provider
-      value={{ passport, user, token, login, logout, strategies: STRATEGIES, authHandler, refetch, activeRole, switchRole, availableRoles }}
+      value={{ passport, user, place, token, login, logout, strategies: STRATEGIES, authHandler, refetch, activeRole, switchRole, availableRoles }}
     >
       <>
         {children}

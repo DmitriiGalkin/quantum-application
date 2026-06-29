@@ -1,4 +1,5 @@
 import { User } from './user.js';
+import { Place } from './place.js';
 
 export interface Passport {
   id: number;
@@ -13,4 +14,5 @@ export interface Passport {
 
 export interface PassportExtendedEntity extends Passport {
   users: User[];
+  place: Place | null;
 }

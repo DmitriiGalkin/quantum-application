@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './shared/ui/Header.tsx';
 import Page from './shared/ui/Page.tsx';
 
-export function AppLayout() {
+export function AppLayout({ withoutPaddings }: { withoutPaddings?: boolean }) {
   return (
     <Box
       sx={{
@@ -14,7 +14,8 @@ export function AppLayout() {
       }}
     >
       <Header />
-      <Page>
+
+      <Page withoutPaddings={withoutPaddings}>
         <Outlet />
       </Page>
     </Box>

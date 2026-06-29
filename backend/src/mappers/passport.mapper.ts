@@ -15,9 +15,10 @@ export function toPassport(row: PassportRow): Passport {
   };
 }
 
-export const toPassportDto = (row: PassportExtendedEntity): PassportExtendedDto => ({
+export const toPassportExtendedDto = (row: PassportExtendedEntity): PassportExtendedDto => ({
   id: row.id,
   title: row.title ?? null,
   description: row.description ?? null,
   users: row.users ?? [],
+  place: row.place || null,
 });

@@ -5,7 +5,6 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        mt: 10,
         py: 6,
         borderTop: '1px solid',
         borderColor: 'divider',
@@ -29,11 +28,14 @@ export default function Footer() {
             <Typography variant="subtitle1" gutterBottom>
               Платформа
             </Typography>
-            <Link href="/ideas" underline="hover" sx={{ display: 'block' }}>
-              <Typography>Идеи</Typography>
+            <Link href="/parent" underline="hover" sx={{ display: 'block' }}>
+              <Typography>Родителям</Typography>
             </Link>
-            <Link href="/projects" underline="hover" sx={{ display: 'block' }}>
-              <Typography>Проекты</Typography>
+            <Link href="/project" underline="hover" sx={{ display: 'block' }}>
+              <Typography>Учителям</Typography>
+            </Link>
+            <Link href="/newplace" underline="hover" sx={{ display: 'block' }}>
+              <Typography>Пространствам</Typography>
             </Link>
           </Grid>
 
@@ -42,10 +44,10 @@ export default function Footer() {
             <Typography variant="subtitle1" gutterBottom>
               Компания
             </Typography>
-            <Link href="#" underline="hover" sx={{ display: 'block' }}>
+            <Link href="/about" underline="hover" sx={{ display: 'block' }}>
               <Typography>О нас</Typography>
             </Link>
-            <Link href="#" underline="hover" sx={{ display: 'block' }}>
+            <Link href="/mission" underline="hover" sx={{ display: 'block' }}>
               <Typography>Миссия</Typography>
             </Link>
           </Grid>
@@ -56,7 +58,7 @@ export default function Footer() {
               Контакты
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              4757037@gmail.ru
+              info@q3-dev.ru
             </Typography>
           </Grid>
         </Grid>
@@ -79,11 +81,11 @@ export default function Footer() {
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 2 }}>
-            <Link href="#" underline="hover">
-              <Typography>Privacy</Typography>
+            <Link href="/privacy" underline="hover">
+              <Typography>Политика конфиденциальности</Typography>
             </Link>
-            <Link href="#" underline="hover">
-              <Typography>Terms</Typography>
+            <Link href="/terms" underline="hover">
+              <Typography>Условия использования</Typography>
             </Link>
           </Box>
         </Box>

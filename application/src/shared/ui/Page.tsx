@@ -8,9 +8,10 @@ interface Props {
   isLoading?: boolean;
   isError?: boolean;
   withoutLeft?: boolean;
+  withoutPaddings?: boolean;
 }
 
-function Page({ children, isLoading, isError }: Props) {
+function Page({ children, isLoading, isError, withoutPaddings }: Props) {
   return (
     <>
       {isError && <Alert severity="error">Не удалось загрузить.</Alert>}
@@ -43,10 +44,11 @@ function Page({ children, isLoading, isError }: Props) {
             }}
           >
             <Box
-              sx={{
+              sx={!withoutPaddings ? {
                 px: 2,
                 pt: 2,
-              }}
+                pb: 10
+              } : undefined}
             >
               {children}
             </Box>

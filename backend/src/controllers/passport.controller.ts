@@ -1,8 +1,8 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
 import PassportRepository from '../repositories/passport.repository.js';
-import { toPassportDto } from '../mappers/passport.mapper.js';
-import { PassportDto } from '@shared/types';
+import { toPassportExtendedDto } from '../mappers/passport.mapper.js';
+import { PassportDto, PassportExtendedDto } from '@shared/types';
 import { Request, Response } from 'express';
 
 const update: ControllerWithAuth<void> = async (req, res) => {
@@ -23,11 +23,11 @@ const login: ControllerWithAuth<{ access_token: string }> = async (req, res) => 
   }
 };
 
-const all: ControllerWithAuth<PassportDto> = async (req, res) => {
+const all: ControllerWithAuth<PassportExtendedDto> = async (req, res) => {
   try {
     const data = await AuthService.getFullProfile(req.passport!);
 
-    ok(res, toPassportDto(data));
+    ok(res, data);
   } catch (err) {
     fail(res, 'Ошибка получения полной информации');
   }
