@@ -25,11 +25,9 @@ export class AuthService {
   static async getFullProfile(passport: any): Promise<PassportExtendedDto> {
     const users = await UserRepository.findByPassportId(passport.id || 0);
     const placeId = await PlacePassportRepository.findAdminPlace(passport.id || 0);
-    console.log(placeId, 'placeId');
 
     const place = placeId ? await PlaceRepository.findById(placeId) : null;
 
-console.log(place,'place')
     return {
       ...passport,
       users,

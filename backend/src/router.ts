@@ -18,8 +18,9 @@ import projectUser from './controllers/project-user.controller.js';
 import chat from './controllers/chat.controller.js';
 import strategies from './strategies.js';
 import { ControllerWithAuth } from './controllers/helper.js';
-import placeTeacherController from "./controllers/placeTeacher.controller.js";
-import paymentController from "./controllers/payment.controller.js";
+import placeTeacherController from './controllers/placeTeacher.controller.js';
+import paymentController from './controllers/payment.controller.js';
+import teacherController from './controllers/teacher.controller.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -99,6 +100,7 @@ privateRouter.delete('/user/:id', withAuth(user.delete));
 privateRouter.get('/teacher/meets', withAuth(meet.findPassportAll));
 privateRouter.get('/teacher/users', withAuth(teacherUser.findByTeacher));
 privateRouter.get('/teacher/ideas', withAuth(teacherIdeaController.findByTeacher));
+privateRouter.get('/teacher/dashboard', withAuth(teacherController.dashboard));
 
 publicRouter.get('/chat/:id', chat.findMessages);
 privateRouter.post('/chat', withAuth(chat.create));
@@ -128,6 +130,8 @@ privateRouter.post('/image', upload.single('image'), withAuth(image.upload));
 privateRouter.post('/payments', withAuth(paymentController.create));
 privateRouter.post('/payments/webhook', paymentController.webhook);
 privateRouter.get('/payments/:id', withAuth(paymentController.getById));
+
+
 
 router.use(publicRouter);
 router.use(privateRouter);

@@ -1,6 +1,4 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
-import { TeacherUserService } from '../services/teacher-user.service.js';
-import { User } from '../entities/user.js';
 import { Idea } from '../entities/idea.js';
 import { TeacherIdeaService } from '../services/teacher-idea.service.js';
 

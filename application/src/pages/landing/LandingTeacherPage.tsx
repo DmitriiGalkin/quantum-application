@@ -5,16 +5,16 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SchoolIcon from '@mui/icons-material/School';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { Box, Button, Card, CardContent, Chip, Container, Grid, Stack, Typography } from '@mui/material';
-import Hero from '../shared/ui/Hero.tsx';
-import { FeatureCard } from '../shared/ui/FeatureCard.tsx';
+import Hero from '../../shared/ui/Hero.tsx';
+import { FeatureCard } from '../../shared/ui/FeatureCard.tsx';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../providers/AuthProvider.tsx';
-import { usePostAuthAction } from '../shared/lib/usePostAuthAction.ts';
-import { useRunPostAuthAction } from '../shared/lib/useRunPostAuthAction.ts';
+import { useAuth } from '../../providers/AuthProvider.tsx';
+import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
+import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
 
 const CREATE_TEACHER_TYPE = 'create-teacher';
 
-export function TeacherLandingPage() {
+export function LandingTeacherPage() {
 
   const navigate = useNavigate();
   const { authHandler, passport } = useAuth();

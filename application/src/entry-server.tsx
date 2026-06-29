@@ -5,6 +5,8 @@ import App from './App';
 import { StaticRouter } from 'react-router-dom';
 import type { PageMeta } from '@shared/types';
 import { AuthProvider } from './providers/AuthProvider.tsx';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './theme/theme';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
 const FRONTEND_SERVER = import.meta.env.FRONTEND_SERVER ?? 'http://localhost:4000';
@@ -108,9 +110,11 @@ export async function render(url: string) {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <StaticRouter location={url}>
+          <ThemeProvider theme={theme}>
           <AuthProvider>
             <App />
           </AuthProvider>
+            </ThemeProvider>
         </StaticRouter>
       </QueryClientProvider>
     </React.StrictMode>,

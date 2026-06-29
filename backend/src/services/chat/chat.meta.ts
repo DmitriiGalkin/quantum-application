@@ -4,7 +4,7 @@ import { Project } from '../../entities/project.js';
 import { User } from '../../entities/user.js';
 import { Idea, IdeaExtendedEntity } from '../../entities/idea.js';
 import { Meet } from '../../entities/meet.js';
-import { IdeaDto, IdeaExtendedDto, Ui } from '@shared/types';
+import { IdeaExtendedDto, Ui } from '@shared/types';
 
 export interface Teacher {
   description: string;

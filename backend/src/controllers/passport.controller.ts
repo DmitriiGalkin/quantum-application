@@ -1,8 +1,7 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
 import PassportRepository from '../repositories/passport.repository.js';
-import { toPassportExtendedDto } from '../mappers/passport.mapper.js';
-import { PassportDto, PassportExtendedDto } from '@shared/types';
+import { PassportExtendedDto } from '@shared/types';
 import { Request, Response } from 'express';
 
 const update: ControllerWithAuth<void> = async (req, res) => {
@@ -63,6 +62,8 @@ const usePassport = async (req: Request, res: Response, next: Function) => {
     return res.status(401).json({ error: true, message: 'Ошибка авторизации' });
   }
 };
+
+
 
 export default {
   update,

@@ -1,7 +1,6 @@
 import { User } from './user.js';
 import { Passport } from './passport.js';
 import { Place } from './place.js';
-import { Meet } from './meet.js';
 import { Idea } from './idea.js';
 import { FeedItem, MeetExtendedDto } from '@shared/types';
 

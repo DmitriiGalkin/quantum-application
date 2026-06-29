@@ -1,7 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
 import { Message } from '../../../entities/message.js';
 import { IdeaAssistant } from '../../../entities/idea.assistant.js';
-import { Context, DraftUser } from '../../chat/chat.meta.js';
+import { Context } from '../../chat/chat.meta.js';
 
 const getIdeaPrompt = (user: { title: string; description: string; age: number | null }) => `
 Ты — ассистент образовательного проекта для детей.

@@ -1,9 +1,9 @@
-import MeetForm from '../areas/teacher/meet/MeetForm.tsx';
+import MeetForm from '../../areas/teacher/meet/MeetForm.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateMeet } from '../requests.ts';
+import { fetchCreateMeet } from '../../requests.ts';
 
-export default function CreateMeetPage() {
+export default function MeetCreatePage() {
   const navigate = useNavigate();
   const { id } = useParams();
 

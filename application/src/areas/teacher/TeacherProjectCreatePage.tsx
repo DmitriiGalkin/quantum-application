@@ -12,7 +12,7 @@ interface CreateProject {
   placeId: number;
 }
 
-export default function PassportProjectCreatePage() {
+export default function TeacherProjectCreatePage() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<CreateProject>({

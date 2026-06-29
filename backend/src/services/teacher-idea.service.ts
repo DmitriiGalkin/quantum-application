@@ -1,5 +1,4 @@
 import UserRepository from '../repositories/user.repository.js';
-import TeacherUserRepository from '../repositories/teacher-user.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
 
 export class TeacherIdeaService {

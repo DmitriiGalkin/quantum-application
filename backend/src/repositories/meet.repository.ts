@@ -1,6 +1,6 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import { MeetRow, MeetWithProjectTitleRow } from '../entities/meet.db.js';
-import { toMeet, mapMeetWithProjectTitle } from '../mappers/meet.mapper.js';
+import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import { Meet, MeetWithProjectTitle } from '../entities/meet.js';
 import { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
 import { db } from '../dbNext.js';

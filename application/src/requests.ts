@@ -22,7 +22,7 @@ import {
   type MeetExtendedDto,
   type PassportExtendedDto,
   type PlaceFullDto,
-  type ProjectFullDto,
+  type ProjectFullDto, type TeacherDashboardDto,
   type TeacherDto,
   type UpdateMeet,
 } from '@shared/types';
@@ -68,3 +68,5 @@ export const fetchCreateUser = (params: { title: string; description?: string })
 
 export const fetchCreatePayment = (params: CreatePayment) => post<CreatePaymentResult>('/payments', params);
 
+export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/dashboard`);
+;

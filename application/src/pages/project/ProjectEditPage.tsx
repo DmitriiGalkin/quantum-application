@@ -14,7 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProject } from '../../requests.ts';
 
-function EditProjectPage() {
+function ProjectEditPage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -141,4 +141,4 @@ function EditProjectPage() {
   );
 }
 
-export default EditProjectPage;
+export default ProjectEditPage;

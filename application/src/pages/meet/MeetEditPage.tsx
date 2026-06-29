@@ -2,10 +2,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
-import MeetForm, { type MeetFormValues } from '../areas/teacher/meet/MeetForm.tsx';
-import { fetchMeet, fetchUpdateMeet } from '../requests.ts';
+import MeetForm, { type MeetFormValues } from '../../areas/teacher/meet/MeetForm.tsx';
+import { fetchMeet, fetchUpdateMeet } from '../../requests.ts';
 
-export default function EditMeetPage() {
+export default function MeetEditPage() {
   const navigate = useNavigate();
 
   const { id, meetId } = useParams();

@@ -6,15 +6,15 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import { Box, Button, Card, CardContent, Chip, Container, Grid, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../providers/AuthProvider.tsx';
-import { usePostAuthAction } from '../shared/lib/usePostAuthAction.ts';
-import { useRunPostAuthAction } from '../shared/lib/useRunPostAuthAction.ts';
-import Hero from '../shared/ui/Hero.tsx';
-import { FeatureCard } from '../shared/ui/FeatureCard.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
+import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
+import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
+import Hero from '../../shared/ui/Hero.tsx';
+import { FeatureCard } from '../../shared/ui/FeatureCard.tsx';
 
 const CREATE_PLACE_TYPE = 'create-place';
 
-export function PlaceLandingPage() {
+export function LandingPlacePage() {
   const navigate = useNavigate();
   const { authHandler, passport } = useAuth();
   const { setAction } = usePostAuthAction();

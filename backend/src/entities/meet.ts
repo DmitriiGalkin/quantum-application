@@ -1,7 +1,3 @@
-import { User } from './user.js';
-import { Place } from './place.js';
-import { Passport } from './passport.js';
-
 export interface Meet {
   id: number;
   projectId: number;

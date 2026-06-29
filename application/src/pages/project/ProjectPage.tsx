@@ -1,11 +1,11 @@
 import { Avatar, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
-import { Feed } from '../features/feed/ui/Feed.tsx';
+import { Feed } from '../../features/feed/ui/Feed.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchCreateMeet, fetchProject } from '../requests.ts';
+import { fetchCreateMeet, fetchProject } from '../../requests.ts';
 import { useParams } from 'react-router-dom';
-import Project from '../features/project/ui/Project.tsx';
-import { type CreateMeet, CreateMeetForm } from '../features/meets/ui/CreateMeetForm.tsx';
-import { useAuth } from '../providers/AuthProvider.tsx';
+import Project from '../../features/project/ui/Project.tsx';
+import { type CreateMeet, CreateMeetForm } from '../../features/meets/ui/CreateMeetForm.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();

@@ -16,7 +16,7 @@ import TeacherIdeaProjectCard from './idea/TeacherIdeaProjectCard.tsx';
 import AISelectIdeaBanner from '../../features/idea/ui/AISelectIdeaBanner.tsx';
 import type { IdeaDto, ProjectFullDto } from '@shared/types';
 
-function PassportProjectsPage() {
+function TeacherProjectsPage() {
   const { id } = useParams();
   const userId = id ? Number(id) : undefined;
 
@@ -123,4 +123,4 @@ function PassportProjectsPage() {
   );
 }
 
-export default PassportProjectsPage;
+export default TeacherProjectsPage;

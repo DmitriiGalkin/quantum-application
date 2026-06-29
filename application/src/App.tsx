@@ -3,13 +3,13 @@ import './App.css';
 
 import { AppLayout } from './AppLayout.tsx';
 
-import IdeasPage from './pages/IdeasPage.tsx';
+import IdeasPage from './pages/idea/IdeasPage.tsx';
 import ChatPage from './pages/ChatPage.tsx';
-import IdeaPage from './pages/IdeaPage.tsx';
-import ProjectPage from './pages/ProjectPage.tsx';
+import IdeaPage from './pages/idea/IdeaPage.tsx';
+import ProjectPage from './pages/project/ProjectPage.tsx';
 
-import EditProjectPage from './areas/teacher/EditProjectPage.tsx';
-import PassportProjectsPage from './areas/teacher/PassportProjectsPage.tsx';
+import ProjectEditPage from './pages/project/ProjectEditPage.tsx';
+import TeacherProjectsPage from './areas/teacher/TeacherProjectsPage.tsx';
 
 import UserIdeasPage from './areas/user/UserIdeasPage.tsx';
 import UserProjectsPage from './areas/user/UserProjectsPage.tsx';
@@ -18,21 +18,21 @@ import NotFound from './shared/ui/NotFound.tsx';
 import TeacherMeetsPage from './areas/teacher/TeacherMeetsPage.tsx';
 import TeacherIdeasPage from './areas/teacher/TeacherIdeasPage.tsx';
 import UserMeetsPage from './areas/user/UserMeetsPage.tsx';
-import PassportProjectCreatePage from './areas/teacher/PassportProjectCreatePage.tsx';
+import TeacherProjectCreatePage from './areas/teacher/TeacherProjectCreatePage.tsx';
 import PlaceTeachersPage from './areas/place/PlaceTeachersPage.tsx';
 import PlaceProjectsPage from './areas/place/PlaceProjectsPage.tsx';
 import PlaceMeetsPage from './areas/place/PlaceMeetsPage.tsx';
 import PlaceDashboardPage from './areas/place/PlaceDashboardPage.tsx';
 import TeacherDashboardPage from './areas/teacher/TeacherDashboardPage.tsx';
-import CreateMeetPage from './pages/CreateMeetPage.tsx';
-import EditMeetPage from './pages/EditMeetPage.tsx';
+import MeetCreatePage from './pages/meet/MeetCreatePage.tsx';
+import MeetEditPage from './pages/meet/MeetEditPage.tsx';
 import CreatePlacePage from './areas/place/CreatePlacePage.tsx';
 import MissionPage from './pages/MissionPage.tsx';
 import AboutPage from './pages/AboutPage.tsx';
 import PrivacyPage from './pages/PrivacyPage.tsx';
 import TermsPage from './pages/TermsPage.tsx';
-import { PlaceLandingPage } from './pages/PlaceLandingPage.tsx';
-import { TeacherLandingPage } from './pages/TeacherLandingPage.tsx';
+import { LandingPlacePage } from './pages/landing/LandingPlacePage.tsx';
+import { LandingTeacherPage } from './pages/landing/LandingTeacherPage.tsx';
 
 function App() {
   return (
@@ -44,15 +44,14 @@ function App() {
         <Route path="chat/:id" element={<ChatPage />} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
-        <Route path="project/:id/edit" element={<EditProjectPage />} />
-        <Route path="project/:id/edit" element={<EditProjectPage />} />
-        <Route path="project/:id/meets/create" element={<CreateMeetPage />} />
-        <Route path="project/:id/meets/:meetId/edit" element={<EditMeetPage />} />
+        <Route path="project/:id/edit" element={<ProjectEditPage />} />
+        <Route path="project/:id/meets/create" element={<MeetCreatePage />} />
+        <Route path="project/:id/meets/:meetId/edit" element={<MeetEditPage />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
-        <Route path="landing/teacher" element={<TeacherLandingPage />} />
-        <Route path="landing/place" element={<PlaceLandingPage />} />
+        <Route path="landing/teacher" element={<LandingTeacherPage />} />
+        <Route path="landing/place" element={<LandingPlacePage />} />
         <Route path="mission" element={<MissionPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="privacy" element={<PrivacyPage />} />
@@ -69,8 +68,8 @@ function App() {
       {/* Учитель */}
       <Route path="teacher" element={<AppLayout />}>
         <Route index element={<TeacherDashboardPage />} />
-        <Route path="projects" element={<PassportProjectsPage />} />
-        <Route path="projects/create" element={<PassportProjectCreatePage />} />
+        <Route path="projects" element={<TeacherProjectsPage />} />
+        <Route path="projects/create" element={<TeacherProjectCreatePage />} />
         <Route path="meets" element={<TeacherMeetsPage />} />
         <Route path="ideas" element={<TeacherIdeasPage />} />
       </Route>

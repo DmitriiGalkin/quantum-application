@@ -1,4 +1,3 @@
-import type { UserDto } from '@shared/types';
 import { User, UserWithMeet } from '../entities/user.js';
 import { UserRow, UserWithMeetRow } from '../entities/user.db.js';
 

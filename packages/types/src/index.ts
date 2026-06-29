@@ -298,3 +298,13 @@ export interface CreatePaymentResult {
   paymentId: number;
   paymentUrl: string;
 }
+
+
+export interface TeacherDashboardDto {
+  projects: number;
+  meets: number;
+  students: number;
+  debit: number;
+
+  bmeets: MeetExtendedDto[];
+};

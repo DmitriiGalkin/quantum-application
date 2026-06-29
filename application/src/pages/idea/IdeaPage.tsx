@@ -4,12 +4,12 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
-import { fetchIdea } from '../requests.ts';
+import { fetchIdea } from '../../requests.ts';
 import { Button, Grid } from '@mui/material';
-import IdeaProjectCard from '../features/project/ui/IdeaProjectCard.tsx';
-import { useFilters } from '../features/idea/model/useFilters.ts';
-import Filter from '../features/idea/ui/Filter.tsx';
-import Idea from '../features/idea/ui/Idea.tsx';
+import IdeaProjectCard from '../../features/project/ui/IdeaProjectCard.tsx';
+import { useFilters } from '../../features/idea/model/useFilters.ts';
+import Filter from '../../features/idea/ui/Filter.tsx';
+import Idea from '../../features/idea/ui/Idea.tsx';
 
 function IdeaPage() {
   const { filters, setView, setSort, setWhen } = useFilters();
