@@ -11,7 +11,7 @@ import type { ProjectFullDto } from '@shared/types';
 import MeetCard from '../../meets/ui/MeetCard/MeetCard.tsx';
 
 export default function Project({ project, refetch }: { project: ProjectFullDto; refetch?: () => void }) {
-  const { user, authHandler } = useAuth();
+  const { user, authHandler, activeRole } = useAuth();
   const navigate = useNavigate();
 
   const mutationLike = useMutation({
@@ -90,7 +90,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
 
       <ProjectCardHeader passport={project.passport} place={project.place} onExit={onExit} />
 
-      {!isMember && (
+      {!isMember && activeRole === 'user' && (
         <CardContent>
           <Typography variant="h6">Вступите в проект</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>

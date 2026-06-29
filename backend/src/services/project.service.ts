@@ -80,8 +80,7 @@ export class ProjectService {
 
     const mIds = meets.map(m => m.id);
 
-    const paymentIds = await PaymentRepository.findPaidMeetIdsByUser(45, mIds);
-    console.log(paymentIds, 'paymentIds');
+    const paymentIds = mIds.length ? await PaymentRepository.findPaidMeetIdsByUser(45, mIds ) : [];
 
     const meetExtendeds = meets.map((m, i) => ({
       ...m,
@@ -92,7 +91,6 @@ export class ProjectService {
       passport: passportsForMeets[i],
       capacity: users.length,
     }));
-    console.log(meetExtendeds, 'meetExtendeds');
 
     const feeds = FeedService.merge({
       meets: meetExtendeds,

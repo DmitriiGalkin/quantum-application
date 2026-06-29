@@ -134,7 +134,7 @@ function Menu({ setIsMenuOpen }: MenuProps) {
           {activeRole === 'teacher' && <Avatar src={user?.image || undefined} alt={passport?.title || 'Учитель'} sx={{ width: 56, height: 56 }} />}
           {activeRole === 'place' && (
             <Avatar alt={place?.title || 'Учитель'} sx={{ width: 56, height: 56 }}>
-              {place?.title[0]}
+              {place?.title?.[0] || 'Q'}
             </Avatar>
           )}
 

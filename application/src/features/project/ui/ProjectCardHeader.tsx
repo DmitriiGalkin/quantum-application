@@ -5,6 +5,7 @@ import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PlaceIcon from '@mui/icons-material/Place';
 import Typography from '@mui/material/Typography';
+import { useAuth } from '../../../providers/AuthProvider.tsx';
 
 type Props = {
   passport: PassportDto;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 function ProjectCardHeader({ passport, place, onExit }: Props) {
+  const { activeRole } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -42,7 +44,7 @@ function ProjectCardHeader({ passport, place, onExit }: Props) {
           </IconButton>
 
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            {onExit && (
+            {onExit && activeRole === 'user' && (
               <MenuItem
                 onClick={(e) => {
                   handleClose(e);

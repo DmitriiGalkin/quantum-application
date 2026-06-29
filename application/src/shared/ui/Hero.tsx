@@ -1,7 +1,7 @@
 import { Container, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 
-export default function Hero({children}: any) {
+export default function Hero({ children, chip }: any) {
   return (
     <Box
       sx={{
@@ -11,9 +11,9 @@ export default function Hero({children}: any) {
       }}
     >
       <Container maxWidth="lg">
-        <Stack spacing={3} sx={{ textAlign: 'center' }}>
+        {chip && <Box sx={{pb:2}}>{chip}</Box>}
+        <Stack spacing={3} sx={{ alignItems: 'center' }}>
           {children}
-
         </Stack>
       </Container>
     </Box>

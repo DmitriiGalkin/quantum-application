@@ -32,6 +32,7 @@ import AboutPage from './pages/AboutPage.tsx';
 import PrivacyPage from './pages/PrivacyPage.tsx';
 import TermsPage from './pages/TermsPage.tsx';
 import { PlaceLandingPage } from './pages/PlaceLandingPage.tsx';
+import { TeacherLandingPage } from './pages/TeacherLandingPage.tsx';
 
 function App() {
   return (
@@ -50,7 +51,8 @@ function App() {
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
-        <Route path="newplace" element={<PlaceLandingPage />} />
+        <Route path="landing/teacher" element={<TeacherLandingPage />} />
+        <Route path="landing/place" element={<PlaceLandingPage />} />
         <Route path="mission" element={<MissionPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="privacy" element={<PrivacyPage />} />

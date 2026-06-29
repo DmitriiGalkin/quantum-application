@@ -37,15 +37,11 @@ export default function ProjectPage() {
       </Grid>
 
       <Grid size={{ xs: 12, md: 6 }}>
-        {role === 'teacher' && (
-          <CreateMeetForm
-            projectId={project.id}
-            placeId={project.place.id}
-            onSubmit={onCreateMeet}
-          />
-        )}
+        <Stack spacing={2}>
+          {role === 'teacher' && <CreateMeetForm projectId={project.id} placeId={project.place.id} onSubmit={onCreateMeet} />}
 
-        <Feed items={project.feeds || []} passport={project.passport} refetch={refetch} />
+          <Feed items={project.feeds || []} passport={project.passport} refetch={refetch} />
+        </Stack>
       </Grid>
 
       <Grid size={{ xs: 12, md: 3 }}>

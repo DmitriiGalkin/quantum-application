@@ -28,13 +28,13 @@ export default function Footer() {
             <Typography variant="subtitle1" gutterBottom>
               Платформа
             </Typography>
-            <Link href="/parent" underline="hover" sx={{ display: 'block' }}>
+            <Link href="/landing/parent" underline="hover" sx={{ display: 'block' }}>
               <Typography>Родителям</Typography>
             </Link>
-            <Link href="/project" underline="hover" sx={{ display: 'block' }}>
+            <Link href="/landing/teacher" underline="hover" sx={{ display: 'block' }}>
               <Typography>Учителям</Typography>
             </Link>
-            <Link href="/newplace" underline="hover" sx={{ display: 'block' }}>
+            <Link href="/landing/place" underline="hover" sx={{ display: 'block' }}>
               <Typography>Пространствам</Typography>
             </Link>
           </Grid>

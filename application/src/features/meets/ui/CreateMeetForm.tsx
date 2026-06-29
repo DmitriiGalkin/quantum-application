@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Stack, TextField } from '@mui/material';
+import { Button, Card, CardContent, Stack, TextField } from '@mui/material';
 
 export interface CreateMeet {
   projectId: number;
@@ -33,24 +33,26 @@ export function CreateMeetForm({ projectId, placeId, onSubmit }: Props) {
   };
 
   return (
-    <Stack spacing={2}>
-      <TextField
-        label="Дата и время"
-        type="datetime-local"
-        //InputLabelProps={{ shrink: true }}
-        value={startedAt}
-        onChange={e => setStartedAt(e.target.value)}
-      />
+    <Card>
+      <CardContent>
+        <Stack spacing={2}>
+          <TextField
+            label="Дата и время"
+            type="datetime-local"
+            //InputLabelProps={{ shrink: true }}
+            value={startedAt}
+            onChange={e => setStartedAt(e.target.value)}
+          />
 
-      <TextField label="Цена (₽)" type="number" value={price} onChange={e => setPrice(e.target.value)} />
+          <TextField label="Цена (₽)" type="number" value={price} onChange={e => setPrice(e.target.value)} />
 
-      <TextField label="Длительность (мин)" type="number" value={duration} onChange={e => setDuration(e.target.value)} />
+          <TextField label="Длительность (мин)" type="number" value={duration} onChange={e => setDuration(e.target.value)} />
 
-      <Button
-        variant="contained"
-        onClick={handleSubmit}
-        disabled={!startedAt}
-      />
-    </Stack>
+          <Button variant="contained" onClick={handleSubmit} disabled={!startedAt} >
+            Создать встречу
+          </Button>
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }
