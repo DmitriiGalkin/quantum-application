@@ -50,6 +50,9 @@ export default function Footer() {
             <Link href="/mission" underline="hover" sx={{ display: 'block' }}>
               <Typography>Миссия</Typography>
             </Link>
+            <Link href="/oferta.odt" underline="hover" sx={{ display: 'block' }} target="_blank" rel="noopener noreferrer">
+              <Typography>Оферта</Typography>
+            </Link>
           </Grid>
 
           {/* Column 4 */}
