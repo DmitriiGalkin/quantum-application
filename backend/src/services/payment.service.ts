@@ -1,9 +1,12 @@
 import PaymentRepository from '../repositories/payment.repository.js';
-import type { PaymentProvider, PaymentTargetType } from '../entities/payment.types.js';
+import type { Payment, PaymentProvider } from '../entities/payment.types.js';
 import MeetRepository from '../repositories/meet.repository.js';
+import RobokassaService from './robokassa.service.js';
+import { PaymentTargetType } from '@shared/types';
 
 interface CreatePaymentDto {
   passportId: number;
+  userId: number;
 
   provider: PaymentProvider;
 
@@ -15,25 +18,26 @@ interface CreatePaymentDto {
   metadata?: unknown;
 }
 
-type YooKassaPayment = {
-  id: string;
-  status: string;
-  paid: boolean;
-  amount: {
-    value: string;
-    currency: string;
-  };
-  metadata?: {
-    meetId?: string;
-    ideaId?: string;
-    projectId?: string;
-    userId?: string;
-  };
-};
+// type YooKassaPayment = {
+//   id: string;
+//   status: string;
+//   paid: boolean;
+//   amount: {
+//     value: string;
+//     currency: string;
+//   };
+//   metadata?: {
+//     meetId?: string;
+//     ideaId?: string;
+//     projectId?: string;
+//     userId?: string;
+//   };
+// };
 
 export class PaymentService {
-  static async create({ passportId, provider, targetType, targetId, currency = 'RUB', metadata }: CreatePaymentDto) {
+  static async create({ passportId, provider, targetType, targetId, currency = 'RUB', userId }: CreatePaymentDto) {
     let amount = 0;
+    let description = '';
     switch (targetType) {
       case 'meet': {
         const meet = await MeetRepository.findById(targetId);
@@ -41,6 +45,7 @@ export class PaymentService {
         if (!meet) throw new Error('Встреча не найдена');
         if (!meet.price) throw new Error('Встреча то бесплатная');
 
+        description = `Оплата встречи «${meet.id}»`;
         amount = meet.price;
         break;
       }
@@ -48,61 +53,71 @@ export class PaymentService {
 
     const paymentId = await PaymentRepository.create({
       passportId,
+      userId,
       provider,
       status: 'pending',
       amount,
       currency,
       targetType,
       targetId,
-      metadata,
+      description,
     });
 
-    // TODO:
-    // здесь будет создание платежа через API ЮKassa / Stripe
-    // const externalPayment = await provider.createPayment(...)
+    const payment = await PaymentRepository.getById(paymentId);
 
-    // await paymentRepository.setProviderPaymentId(paymentId, externalPayment.id)
+    if (!payment) {
+      throw new Error('Payment was not created.');
+    }
+
+    const paymentUrl = RobokassaService.createPaymentUrl(payment.id, payment.amount, payment.description || '');
 
     return {
-      paymentId,
-
-      // Пока заглушка
-      paymentUrl: '',
+      payment,
+      paymentUrl,
     };
   }
 
-  static async webhookPaid(payment: YooKassaPayment) {
-    const provider: PaymentProvider = 'yookassa';
-    console.log('1')
-    const dbPayment = await PaymentRepository.getByProviderPaymentId(provider, payment.id);
-    console.log('2', dbPayment);
-    if (!dbPayment) {
-      throw new Error('Payment not found');
-    }
-    console.log('2.1', dbPayment);
-    // идемпотентность
-    if (dbPayment.status === 'paid') {
-      return dbPayment;
-    }
-    console.log('3');
-    if (!payment.paid || payment.status !== 'succeeded') {
-      return dbPayment;
+  static async getById(id: number): Promise<Payment> {
+    const payment = await PaymentRepository.getById(id);
+
+    if (!payment) {
+      throw new Error('Payment not found.');
     }
 
-    await PaymentRepository.setPaid(dbPayment.id);
-    console.log('4');
-    switch (dbPayment.targetType) {
-      case 'meet':
-        if (payment.metadata?.meetId) {
-          console.log('Поздраляю наш сервис с оплатой')
-        }
-        break;
-    }
+    return payment;
+  }
+  //
+  // async getByPassportId(passportId: number) {
+  //   return PaymentRepository.findByPassportId(passportId);
+  // }
+  //
+  // async getByUserId(userId: number) {
+  //   return PaymentRepository.findByUserId(userId);
+  // }
+  //
+  // async getByTarget(targetType: PaymentTargetType, targetId: number) {
+  //   return PaymentRepository.findByTarget(targetType, targetId);
+  // }
 
-    return dbPayment;
+  static async markPaid(paymentId: number) {
+    await PaymentRepository.setStatus(paymentId, 'paid');
   }
 
-  static async getById(a: any) {
-    return PaymentRepository.getById(a);
+  static async markFailed(paymentId: number) {
+    await PaymentRepository.setStatus(paymentId, 'failed');
+  }
+
+  static async markCancelled(paymentId: number) {
+    await PaymentRepository.setStatus(paymentId, 'cancelled');
+  }
+
+  static async markPending(paymentId: number) {
+    await PaymentRepository.setStatus(paymentId, 'pending');
+  }
+
+  static async isPaid(paymentId: number): Promise<boolean> {
+    const payment = await this.getById(paymentId);
+
+    return payment.status === 'paid';
   }
 }

@@ -18,7 +18,7 @@ function Drawer({ isMenuOpen, setIsMenuOpen }: DrawerProps) {
       }}
       anchor="right"
     >
-      <Menu setIsMenuOpen={setIsMenuOpen} />
+      <Menu setIsMenuOpen={setIsMenuOpen}/>
     </MUIDriwer>
   );
 }

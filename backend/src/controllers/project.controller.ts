@@ -51,6 +51,7 @@ const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
 
 const findById: Controller<ProjectFullDto> = async (req, res) => {
   try {
+    //console.log(process.env.ROBOKASSA_LOGIN, 'process.env.ROBOKASSA_LOGIN');
     const data = await ProjectService.findById(Number(req.params.id));
 
     if (!data) return fail(res, 'Проект не найден', 404);

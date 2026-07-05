@@ -92,7 +92,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
         <ProjectCardHeader passport={project.passport} place={project.place} />
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, overflowX: 'auto' }}>
-          {project.meets?.[0] && <MeetCard meet={project.meets?.[0]} />}
+          {project.meets?.[0] && <MeetCard meet={project.meets?.[0]} withoutPaper />}
         </Box>
 
         {Boolean(project.users.length) && (

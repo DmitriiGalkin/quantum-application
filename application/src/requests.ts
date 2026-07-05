@@ -6,8 +6,6 @@ import {
   type CreateMeet,
   type CreateMeetUser,
   type CreateMessageDto,
-  type CreatePayment,
-  type CreatePaymentResult,
   type CreatePlace,
   type CreateProject,
   type CreateProjectUser,
@@ -21,8 +19,11 @@ import {
   type MeetDto,
   type MeetExtendedDto,
   type PassportExtendedDto,
+  type PaymentCreateDto,
+  type PaymentCreateResponseDto,
   type PlaceFullDto,
-  type ProjectFullDto, type TeacherDashboardDto,
+  type ProjectFullDto,
+  type TeacherDashboardDto,
   type TeacherDto,
   type UpdateMeet,
 } from '@shared/types';
@@ -66,7 +67,7 @@ export const fetchRemoveTeacher = (passportId: number) => del<void>(`/place/teac
 export const fetchPassport = () => get<PassportExtendedDto>('/passport');
 export const fetchCreateUser = (params: { title: string; description?: string }) => post<number>('/user', params);
 
-export const fetchCreatePayment = (params: CreatePayment) => post<CreatePaymentResult>('/payments', params);
+export const fetchCreatePayment = (params: PaymentCreateDto) => post<PaymentCreateResponseDto>('/payments', params);
 
 export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/dashboard`);
 ;

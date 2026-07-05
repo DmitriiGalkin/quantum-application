@@ -50,7 +50,7 @@ export default function Footer() {
             <Link href="/mission" underline="hover" sx={{ display: 'block' }}>
               <Typography>Миссия</Typography>
             </Link>
-            <Link href="/oferta.odt" underline="hover" sx={{ display: 'block' }} target="_blank" rel="noopener noreferrer">
+            <Link href="/oferta.odt" underline="hover" sx={{ display: 'block' }} target="_blank">
               <Typography>Оферта</Typography>
             </Link>
           </Grid>
@@ -61,7 +61,13 @@ export default function Footer() {
               Контакты
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              info@q3-dev.ru
+              4757037@google.com
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              +7 (901) 536 37 06 по будням с 9:00 до 18:00
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              ИНН: 772793546441
             </Typography>
           </Grid>
         </Grid>

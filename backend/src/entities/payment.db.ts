@@ -1,10 +1,12 @@
-import { PaymentProvider, PaymentStatus, PaymentTargetType } from './payment.types.js';
+import { PaymentProvider, PaymentStatus } from './payment.types.js';
 import { RowDataPacket } from 'mysql2/promise';
+import { PaymentTargetType } from '@shared/types';
 
 export interface PaymentRow extends RowDataPacket {
   id: number;
 
   passportId: number;
+  userId: number;
 
   provider: PaymentProvider;
   providerPaymentId: string | null;
@@ -18,6 +20,7 @@ export interface PaymentRow extends RowDataPacket {
   targetId: number;
 
   metadata: string | null;
+  description: string | null;
 
   paidAt: string | null;
 

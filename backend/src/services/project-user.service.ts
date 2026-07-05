@@ -4,7 +4,7 @@ import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
 import type { DeleteProjectUser } from '@shared/types';
 
-function getPassportUserIds(passportId: number) {
+export function getPassportUserIds(passportId: number) {
   // если у тебя раньше был req.users — лучше заменить на нормальный сервис/запрос
   // здесь упрощённая версия: получаем пользователей по passportId
   return UserRepository.findByPassportId(passportId).then(users => users.map(u => u.id));

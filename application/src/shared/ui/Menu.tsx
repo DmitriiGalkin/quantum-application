@@ -121,7 +121,7 @@ function Menu({ setIsMenuOpen }: MenuProps) {
   const menuItems = activeRole !== 'guest' ? MENU[activeRole] : [];
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', width: 250 }}>
       <Stack spacing={3} sx={{ p: 3 }}>
         <Stack
           direction="row"

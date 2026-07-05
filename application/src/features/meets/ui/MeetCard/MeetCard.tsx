@@ -2,7 +2,6 @@ import type { MeetExtendedDto } from '@shared/types';
 import { useAuth } from '../../../../providers/AuthProvider.tsx';
 import { Paper, Stack } from '@mui/material';
 
-import MeetCardHeader from './MeetCardHeader.tsx';
 import MeetCardBody from './MeetCardBody.tsx';
 import StudentFooter from './StudentFooter';
 import TeacherFooter from './TeacherFooter';
@@ -13,9 +12,10 @@ import { fetchCreateMeetUser, fetchCreatePayment, fetchDeleteMeet, fetchDeleteMe
 interface Props {
   meet: MeetExtendedDto;
   refetch?: () => void;
+  withoutPaper?: boolean;
 }
 
-export default function MeetCard({ meet, refetch }: Props) {
+export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   const { user, authHandler, passport, activeRole: role } = useAuth();
 
   const mutationLike = useMutation({
@@ -49,10 +49,11 @@ export default function MeetCard({ meet, refetch }: Props) {
   });
 
   const onPay = () => {
-    if (meet.price && meet.price > 0) {
+    if (user && meet.price && meet.price > 0) {
       return createPayment.mutate({
         targetType: 'meet',
         targetId: meet.id,
+        userId: user.id,
       });
     } else {
       console.log('Ты как сюда попал');
@@ -87,6 +88,8 @@ export default function MeetCard({ meet, refetch }: Props) {
   const isMember = meetUserStatus === 'member';
   const isPending = paymentStatus === 'pending';
 
+  if (withoutPaper) return <MeetCardBody meet={meet} />;
+
   return (
     <Paper
       elevation={0}
@@ -104,8 +107,6 @@ export default function MeetCard({ meet, refetch }: Props) {
       }}
     >
       <Stack spacing={2}>
-        <MeetCardHeader dto={meet} />
-
         <MeetCardBody meet={meet} />
 
         {role === 'user' && (

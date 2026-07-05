@@ -1,35 +1,38 @@
-export type PaymentProvider = 'yookassa' | 'cloudpayments' | 'tbank' | 'stripe' | 'paypal';
+import { PaymentTargetType } from '@shared/types';
 
-export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'canceled' | 'refunded';
+export type PaymentProvider = 'yookassa' | 'cloudpayments' | 'tbank' | 'stripe' | 'paypal' | 'robokassa';
 
-export type PaymentTargetType = 'idea' | 'meet' | 'project';
+export type PaymentStatus = 'created' | 'pending' | 'paid' | 'failed' | 'cancelled';
 
 export interface Payment {
   id: number;
 
   passportId: number;
+  userId: number | null;
+
+  targetType: PaymentTargetType;
+  targetId: number | null;
 
   provider: PaymentProvider;
-  providerPaymentId: string | null;
+
+  amount: number;
+
+  description: string | null;
+  metadata: string
 
   status: PaymentStatus;
 
-  amount: number;
-  currency: string;
+  providerPaymentId: string | null;
 
-  targetType: PaymentTargetType;
-  targetId: number;
+  paidAt: string | null;
 
-  metadata: unknown;
-
-  paidAt: Date | null;
-
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreatePaymentInput {
   passportId: number;
+  userId: number;
 
   provider: PaymentProvider;
   status: PaymentStatus;
@@ -40,5 +43,5 @@ export interface CreatePaymentInput {
   targetType: PaymentTargetType;
   targetId: number;
 
-  metadata?: unknown;
+  description?: string;
 }

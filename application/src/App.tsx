@@ -33,6 +33,8 @@ import PrivacyPage from './pages/PrivacyPage.tsx';
 import TermsPage from './pages/TermsPage.tsx';
 import { LandingPlacePage } from './pages/landing/LandingPlacePage.tsx';
 import { LandingTeacherPage } from './pages/landing/LandingTeacherPage.tsx';
+import PaymentSuccessPage from './pages/PaymentSuccessPage.tsx';
+import PaymentFailPage from './pages/PaymentFailPage.tsx';
 
 function App() {
   return (
@@ -80,6 +82,11 @@ function App() {
         <Route path="teachers" element={<PlaceTeachersPage />} />
         <Route path="projects" element={<PlaceProjectsPage />} />
         <Route path="meets" element={<PlaceMeetsPage />} />
+      </Route>
+
+      <Route path="payment" element={<AppLayout />}>
+        <Route path="success" element={<PaymentSuccessPage />} />
+        <Route path="fail" element={<PaymentFailPage />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

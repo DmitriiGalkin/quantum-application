@@ -128,8 +128,7 @@ privateRouter.put('/passport', withAuth(passportController.update));
 privateRouter.post('/image', upload.single('image'), withAuth(image.upload));
 
 privateRouter.post('/payments', withAuth(paymentController.create));
-privateRouter.post('/payments/webhook', paymentController.webhook);
-privateRouter.get('/payments/:id', withAuth(paymentController.getById));
+privateRouter.post('/payment/robokassa/result', paymentController.result);
 
 
 

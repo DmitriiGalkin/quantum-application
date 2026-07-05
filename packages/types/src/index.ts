@@ -290,11 +290,16 @@ export type TeacherDto = {
   projectCount?: number;
 };
 
-export type CreatePayment = {
-  targetType: 'idea' | 'meet' | 'project';
+export type PaymentTargetType = 'project' | 'meet' | 'subscription' | 'other';
+
+export interface PaymentCreateDto {
+  userId: number;
+
+  targetType: PaymentTargetType;
   targetId: number;
-};
-export interface CreatePaymentResult {
+}
+
+export interface PaymentCreateResponseDto {
   paymentId: number;
   paymentUrl: string;
 }
