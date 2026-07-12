@@ -25,12 +25,12 @@ type IdeaProjectCardProps = {
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 
 function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
-  const { user, passport, authHandler, refetch: refetchPassport } = useAuth();
+  const { activeUser, passport, authHandler, refetch: refetchPassport } = useAuth();
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const [isUserModalOpen, setUserModalOpen] = useState(false);
 
-  const liked = user && project.users?.map(user => user.id).includes(user.id);
+  const liked = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
 
   useRunPostAuthAction(passport, action => {
     if (action.type === CREATE_PROJECT_USER_TYPE && action.payload.projectId === project.id) {
@@ -53,7 +53,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
   });
 
   const onJoin = () => {
-    if (!user) {
+    if (!activeUser) {
       setAction({
         type: CREATE_PROJECT_USER_TYPE,
         payload: { projectId: project.id },
@@ -62,7 +62,7 @@ function IdeaProjectCard({ project, refetch }: IdeaProjectCardProps) {
       return authHandler();
     }
 
-    mutationLike.mutate({ userId: user.id, projectId: project.id });
+    mutationLike.mutate({ userId: activeUser.id, projectId: project.id });
   };
 
   const handleUserCreate = (title: string) => {

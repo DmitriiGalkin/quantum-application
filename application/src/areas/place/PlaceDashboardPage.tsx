@@ -1,7 +1,17 @@
-import { Card, CardActionArea, CardContent, Grid, Stack, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Breadcrumbs, Card, CardActionArea, CardContent, Grid, Stack, Typography, Link as MUILink } from '@mui/material';
+import { Link, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { fetchPlace } from '../../requests.ts';
 
 export default function PlaceDashboardPage() {
+  const { id } = useParams<{ id: string }>();
+
+  const { data: place } = useQuery({
+    queryKey: ['place', id],
+    queryFn: () => fetchPlace(id as string),
+    enabled: Boolean(id),
+  });
+
   // TODO: заменить на useQuery(fetchPlaceDashboard)
   const stats = {
     teachers: 5,
@@ -10,11 +20,16 @@ export default function PlaceDashboardPage() {
     meets: 7,
   };
 
+  if (!place) return null;
+
   return (
     <Stack spacing={3}>
-      <Typography variant="h4">
-        Центр
-      </Typography>
+      <Breadcrumbs aria-label="breadcrumb">
+        <MUILink underline="hover" color="inherit" href="/">
+          {place.title}
+        </MUILink>
+        <Typography sx={{ color: 'text.primary' }}>Dashboard</Typography>
+      </Breadcrumbs>
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 6, md: 3 }}>
@@ -58,16 +73,16 @@ export default function PlaceDashboardPage() {
         </Grid>
       </Grid>
 
-      <Typography variant="h5">
-        Быстрые действия
-      </Typography>
+
+
+      <Typography variant="h5">Быстрые действия</Typography>
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
-            <CardActionArea component={Link} to="/place/teachers">
+            <CardActionArea component={Link} to={`/place/${place.id}/teachers`}>
               <CardContent>
-                <Typography >Учителя</Typography>
+                <Typography>Учителя</Typography>
 
                 <Typography color="text.secondary">Управление преподавателями</Typography>
               </CardContent>
@@ -77,7 +92,7 @@ export default function PlaceDashboardPage() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
-            <CardActionArea component={Link} to="/place/projects">
+            <CardActionArea component={Link} to={`/place/${place.id}/projects`}>
               <CardContent>
                 <Typography>Проекты</Typography>
 
@@ -89,7 +104,7 @@ export default function PlaceDashboardPage() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
-            <CardActionArea component={Link} to="/place/meets">
+            <CardActionArea component={Link} to={`/place/${place.id}/meets`}>
               <CardContent>
                 <Typography>Расписание</Typography>
 

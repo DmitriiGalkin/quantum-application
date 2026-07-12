@@ -11,7 +11,7 @@ import type { ProjectFullDto } from '@shared/types';
 import MeetCard from '../../meets/ui/MeetCard/MeetCard.tsx';
 
 export default function Project({ project, refetch }: { project: ProjectFullDto; refetch?: () => void }) {
-  const { user, authHandler, activeRole } = useAuth();
+  const { activeUser, authHandler, activeRole } = useAuth();
   const navigate = useNavigate();
 
   const mutationLike = useMutation({
@@ -31,19 +31,19 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
   if (!project) return null;
 
   const now = new Date();
-  const isMember = project.users.some(u => u.id === user?.id);
+  const isMember = project.users.some(u => u.id === activeUser?.id);
 
   const sortedMeets = [...project.meets].sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
 
   const nextMeet = sortedMeets.find(m => new Date(m.startedAt) > now);
 
   const onJoin = () => {
-    if (user) mutationLike.mutate({ userId: user.id, projectId: project.id });
+    if (activeUser) mutationLike.mutate({ userId: activeUser.id, projectId: project.id });
     else authHandler();
   };
 
   const onExit = () => {
-    if (user) mutationUnlike.mutate({ userId: user.id, projectId: project.id });
+    if (activeUser) mutationUnlike.mutate({ userId: activeUser.id, projectId: project.id });
     else authHandler();
   };
 

@@ -2,6 +2,7 @@ import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';
 import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
+import WeekCalendar from '../../features/meets/ui/WeekCalendar.tsx';
 
 //
 // Для центра это одна из самых полезных страниц, поэтому позже сюда хорошо ложатся:
@@ -30,6 +31,52 @@ const place = {id: 2}
       {meets?.map(meet => (
         <MeetCard key={meet.id} meet={meet} />
       ))}
+
+      <WeekCalendar
+        meets={[
+          {
+            id: 1,
+            title: 'Алгебра',
+            startedAt: '2026-07-06T09:00:00',
+            endedAt: '2026-07-06T10:30:00',
+            color: '#1976d2',
+            project: {
+              id: 1,
+              name: '9А класс',
+            },
+          },
+          {
+            id: 2,
+            title: 'Физика',
+            startedAt: '2026-07-08T14:00:00',
+            endedAt: '2026-07-08T15:30:00',
+            color: '#2e7d32',
+            project: {
+              id: 2,
+              name: 'Подготовка к ЕГЭ',
+            },
+          },
+          {
+            id: 3,
+            title: 'Химия',
+            startedAt: '2026-07-09T11:00:00',
+            endedAt: '2026-07-09T12:00:00',
+            color: '#ed6c02',
+            project: {
+              id: 3,
+              name: '10 класс',
+            },
+          },
+        ]}
+        onMeetClick={meet => {
+          console.log('Встреча', meet);
+          // navigate(`/meet/${meet.id}`);
+        }}
+        onCellClick={date => {
+          console.log('Создать встречу', date);
+          // navigate(`/meet/create?startedAt=${date.toISOString()}`);
+        }}
+      />
     </Stack>
   );
 }

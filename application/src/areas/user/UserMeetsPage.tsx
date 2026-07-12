@@ -6,11 +6,11 @@ import { fetchMeets } from '../../requests.ts';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function UserMeetsPage() {
-  const { user } = useAuth();
+  const { activeUser } = useAuth();
   const { data: meets } = useQuery({
-    queryKey: ['meets', user?.id],
-    queryFn: () => fetchMeets({ userId: user?.id || 0 }),
-    enabled: !!user?.id,
+    queryKey: ['meets', activeUser?.id],
+    queryFn: () => fetchMeets({ userId: activeUser?.id || 0 }),
+    enabled: !!activeUser?.id,
   });
 
   const grouped = meets?.length ? groupMeets(meets) : [];

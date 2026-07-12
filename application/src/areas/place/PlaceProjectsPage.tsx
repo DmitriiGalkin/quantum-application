@@ -26,9 +26,7 @@ export default function PlaceProjectsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4">
-        Проекты центра
-      </Typography>
+      <Typography variant="h4">Проекты центра</Typography>
 
       {projects.length === 0 && <Typography color="text.secondary">В центре пока нет проектов</Typography>}
 
@@ -49,6 +47,7 @@ export default function PlaceProjectsPage() {
           </CardContent>
         </Card>
       ))}
+
     </Stack>
   );
 }

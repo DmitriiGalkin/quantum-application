@@ -16,6 +16,7 @@ const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
 export const NEXT_STORAGE_KEY = 'next';
 export const ACTIVE_ROLE_STORAGE_KEY = 'active_role';
+export const ACTIVE_CONTEXT_STORAGE_KEY = 'active_context';
 
 const STRATEGIES = [
   {
@@ -38,19 +39,31 @@ type User = {
 };
 
 export type ActiveRole = 'user' | 'teacher' | 'place' | 'guest';
+export interface ActiveContext {
+  role: ActiveRole;
+  userId?: number;
+  placeId?: number;
+}
 
 type AuthContextType = {
   passport: PassportDto | null;
-  user: User | null;
-  place: PlaceDto | null;
+  activeUser: User | null;
+  users: User[];
+  places: PlaceDto[];
+  activePlace: PlaceDto | null;
   token: string | null;
   login: (token: string) => void;
   logout: () => void;
   strategies: typeof STRATEGIES;
   authHandler: (next2?: string) => void;
   refetch: () => void;
-  activeRole: ActiveRole;
-  switchRole: (role: ActiveRole) => void;
+  activeContext: ActiveContext;
+
+  switchUser: (userId: number) => void;
+
+  switchTeacher: () => void;
+
+  switchPlace: (placeId: number) => void;
   availableRoles: ActiveRole[];
 };
 
@@ -64,25 +77,30 @@ export const AuthProvider = ({ children }: Props) => {
   const location = useLocation();
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [place, setPlace] = useState<PlaceDto | null>(null);
+  //const [user, setUser] = useState<User | null>(null);
+  const [users, setUsers] = useState<User[]>([]);
+  const [places, setPlaces] = useState<PlaceDto[]>([]);
 
-  const [activeRole, setActiveRole] = useState<ActiveRole>(() => {
-    let role;
-
+  const [activeContext, setActiveContext] = useState<ActiveContext>(() => {
     if (typeof window !== 'undefined') {
-      role = localStorage.getItem(ACTIVE_ROLE_STORAGE_KEY);
+      const value = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
+
+      if (value) {
+        try {
+          return JSON.parse(value);
+        } catch {}
+      }
     }
 
-    if (role === 'user' || role === 'teacher' || role === 'place') {
-      return role;
-    }
-
-    return 'guest';
+    return {
+      role: 'guest',
+    };
   });
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');
   const availableRoles = ['user', 'teacher', 'place'] as ActiveRole[];
+  const activeUser = users.find(user => user.id === activeContext.userId) ?? users[0] ?? null;
+  const activePlace = places.find(place => place.id === activeContext.placeId) ?? places[0] ?? null;
 
   const { data, refetch } = useQuery({
     queryKey: ['passport'],
@@ -109,8 +127,19 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     if (data) {
       setPassport(data);
-      setUser(data.users?.[0]);
-      setPlace(data.place);
+      //setUser(data.users?.[0]);
+      setUsers(data.users);
+      setPlaces(data.places);
+      setActiveContext(context => {
+        if (context.role !== 'guest') {
+          return context;
+        }
+
+        return {
+          role: 'user',
+          userId: data.users?.[0]?.id,
+        };
+      });
     }
   }, [data]);
 
@@ -133,26 +162,72 @@ export const AuthProvider = ({ children }: Props) => {
 
   const logout = () => {
     localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-    localStorage.removeItem(ACTIVE_ROLE_STORAGE_KEY);
+    localStorage.removeItem(ACTIVE_CONTEXT_STORAGE_KEY);
 
+    setActiveContext({
+      role: 'guest',
+    });
     setToken(null);
-    setUser(null);
+    //setUser(null);
     setPassport(null);
-    setActiveRole('guest');
   };
 
   const authHandler = () => {
     setIsAuthModalOpen(true);
   };
 
-  const switchRole = (role: ActiveRole) => {
-    setActiveRole(role);
-    localStorage.setItem(ACTIVE_ROLE_STORAGE_KEY, role);
+  const switchUser = (userId: number) => {
+    const context: ActiveContext = {
+      role: 'user',
+      userId,
+    };
+
+    setActiveContext(context);
+
+    localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+  };
+
+  const switchTeacher = () => {
+    const context: ActiveContext = {
+      role: 'teacher',
+    };
+
+    setActiveContext(context);
+
+    localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+  };
+
+  const switchPlace = (placeId: number) => {
+    const context: ActiveContext = {
+      role: 'place',
+      placeId,
+    };
+
+    setActiveContext(context);
+
+    localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
   };
 
   return (
     <AuthContext.Provider
-      value={{ passport, user, place, token, login, logout, strategies: STRATEGIES, authHandler, refetch, activeRole, switchRole, availableRoles }}
+      value={{
+        passport,
+        activeUser,
+        users,
+        activePlace,
+        token,
+        login,
+        logout,
+        strategies: STRATEGIES,
+        authHandler,
+        refetch,
+        activeContext,
+        places: [],
+        switchUser,
+        switchTeacher,
+        switchPlace,
+        availableRoles,
+      }}
     >
       <>
         {children}

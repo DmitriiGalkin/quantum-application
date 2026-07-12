@@ -16,7 +16,7 @@ type ChatBubbleProps = {
 };
 
 export default function Like({ isLiked, ideaId, likesCount }: ChatBubbleProps) {
-  const { user, authHandler } = useAuth();
+  const { activeUser, authHandler } = useAuth();
   const [liked, setLiked] = useState(isLiked);
   const [count, setCount] = useState<number>(likesCount || 0);
 
@@ -28,15 +28,15 @@ export default function Like({ isLiked, ideaId, likesCount }: ChatBubbleProps) {
   });
 
   const handleLike = () => {
-    if (user) {
+    if (activeUser) {
       if (!liked) {
         setLiked(true);
         setCount(prev => prev + 1);
-        mutationLike.mutate({ ideaId, userId: user.id });
+        mutationLike.mutate({ ideaId, userId: activeUser.id });
       } else {
         setLiked(false);
         setCount(prev => prev - 1);
-        mutationUnlike.mutate({ ideaId, userId: user.id });
+        mutationUnlike.mutate({ ideaId, userId: activeUser.id });
       }
     } else {
       authHandler();

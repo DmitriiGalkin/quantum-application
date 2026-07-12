@@ -23,6 +23,7 @@
     "@shared/types": "file:../packages/types",
     "@tanstack/react-query": "^5.100.9",
     "compression": "^1.8.1",
+    "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "gigachat": "0.0.20",

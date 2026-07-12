@@ -2,12 +2,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import CardActions from '@mui/material/CardActions';
+//import CardActions from '@mui/material/CardActions';
 import type { IdeaExtendedDto } from '@shared/types';
 import { CardActionArea } from '@mui/material';
-import Like from './Like.tsx';
+//import Like from './Like.tsx';
 import { useNavigate } from 'react-router-dom';
-import { Author } from '../../../shared/ui/Author.tsx';
+//import { Author } from '../../../shared/ui/Author.tsx';
 
 type IdeaCardProps = {
   idea: IdeaExtendedDto;
@@ -50,10 +50,10 @@ function IdeaCard({ idea }: IdeaCardProps) {
         </CardContent>
       </CardActionArea>
 
-      <CardActions sx={{ justifyContent: 'space-between', pr: 2 }}>
-        <Like ideaId={idea.id} isLiked={idea.isLiked} likesCount={idea.userCount} />
-        <Author user={idea.user} />
-      </CardActions>
+      {/*<CardActions sx={{ justifyContent: 'space-between', pr: 2 }}>*/}
+      {/*  <Like ideaId={idea.id} isLiked={idea.isLiked} likesCount={idea.userCount} />*/}
+      {/*  <Author user={idea.user} />*/}
+      {/*</CardActions>*/}
     </Card>
   );
 }

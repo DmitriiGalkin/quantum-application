@@ -4,6 +4,9 @@ import { toPlace } from '../mappers/place.mapper.js';
 import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
 import { PlaceRow } from '../entities/place.db.js';
 import { db } from '../dbNext.js';
+import { User } from '../entities/user.js';
+import { UserRow } from '../entities/user.db.js';
+import { mapUserRow } from '../mappers/user.mapper.js';
 
 class PlaceRepository {
   // ✅ CREATE
@@ -54,6 +57,23 @@ class PlaceRepository {
     if (!rows[0]) return null;
 
     return toPlace(rows[0]);
+  }
+
+  // ✅ FIND BY PASSPORT
+  static async findByPassportId(passportId: number): Promise<Place[]> {
+    const rows = await db.query(
+      `
+        SELECT
+          place.*
+        FROM place
+               INNER JOIN placePassport pp
+                          ON pp.placeId = place.id
+        WHERE pp.passportId = ?
+      `,
+      [passportId],
+    );
+
+    return rows.map(toPlace);
   }
 
   static async findByTitle(title: string): Promise<Place | null> {

@@ -8,12 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import KeyOffIcon from '@mui/icons-material/KeyOff';
-
 import '../../App.css';
 import { type ActiveRole, useAuth } from '../../providers/AuthProvider.tsx';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -21,6 +17,9 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AddIcon from '@mui/icons-material/Add';
+import { ListItemAvatar, Tab, Tabs } from '@mui/material';
+import { useState } from 'react';
+import CheckIcon from '@mui/icons-material/Check';
 
 type MenuItemConfig = {
   label: string;
@@ -30,12 +29,31 @@ type MenuItemConfig = {
   variant?: 'default' | 'primary';
 };
 
+function a11yProps(index: ActiveRole) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+    sx: {
+      minHeight: 40,
+      py: 0,
+      px: 0,
+      minWidth: 0,
+    },
+  };
+}
+
 interface MenuProps {
   setIsMenuOpen?: (isMenuOpen: boolean) => void;
 }
 
 function Menu({ setIsMenuOpen }: MenuProps) {
-  const { user, passport, place, logout, activeRole, switchRole } = useAuth();
+  const { activeUser, users, places, passport, activePlace, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
+  const [value, setValue] = useState(0);
+
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+    //switchRole(newValue === 0 ? 'user' : newValue === 1 ? 'teacher' : 'place');
+    setValue(newValue);
+  };
 
   const MENU: { user: MenuItemConfig[]; teacher: MenuItemConfig[]; place: MenuItemConfig[] } = {
     user: [
@@ -47,17 +65,17 @@ function Menu({ setIsMenuOpen }: MenuProps) {
       },
       {
         label: 'Мои идеи',
-        to: `/user/${user?.id}/ideas`,
+        to: `/user/${activeUser?.id}/ideas`,
         icon: <LightbulbIcon />,
       },
       {
         label: 'Мои проекты',
-        to: `/user/${user?.id}/projects`,
+        to: `/user/${activeUser?.id}/projects`,
         icon: <AssignmentIcon />,
       },
       {
         label: 'Мои встречи',
-        to: `/user/${user?.id}/meets`,
+        to: `/user/${activeUser?.id}/meets`,
         icon: <CalendarMonthIcon />,
       },
     ],
@@ -102,27 +120,61 @@ function Menu({ setIsMenuOpen }: MenuProps) {
       },
       {
         label: 'Учителя',
-        to: '/place/teachers',
+        to: `/place/${activePlace?.id}/teachers`,
         icon: <AddIcon />,
       },
       {
         label: 'Проекты',
-        to: '/place/projects',
+        to: `/place/${activePlace?.id}/projects`,
         icon: <FolderIcon />,
       },
       {
         label: 'Расписание',
-        to: '/place/meets',
+        to: `/place/${activePlace?.id}/meets`,
         icon: <CalendarMonthIcon />,
       },
     ],
   };
 
-  const menuItems = activeRole !== 'guest' ? MENU[activeRole] : [];
+  const menuItems = activeContext.role !== 'guest' ? MENU[activeContext.role] : [];
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', width: 250 }}>
-      <Stack spacing={3} sx={{ p: 3 }}>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        indicatorColor="secondary"
+        textColor="inherit"
+        variant="fullWidth"
+        aria-label="full width tabs example"
+        sx={{
+          minHeight: 32,
+        }}
+      >
+        {activeUser && <Tab label="Ученик" {...a11yProps('user')} onClick={() => switchUser(activeUser?.id ?? users[0].id)} />}
+        {passport && <Tab label="Учитель" {...a11yProps('teacher')} onClick={switchTeacher} />}
+        {activePlace && <Tab label="Центр" {...a11yProps('place')} onClick={() => switchPlace(activePlace?.id ?? places[0].id)} />}
+      </Tabs>
+
+      {activeContext.role === 'user' && (
+        <>
+          {Boolean(users.length) && (
+            <List disablePadding>
+              {users.map(user1 => (
+                <ListItemButton selected={activeUser?.id === user1.id} onClick={() => switchUser(user1.id)}>
+                  <ListItemAvatar>
+                    <Avatar src={user1?.image || undefined} alt={user1?.title || 'Пользователь'} sx={{ width: 40, height: 40 }} />
+                  </ListItemAvatar>
+                  <ListItemText primary={user1?.title || 'Пользователь'} secondary={user1?.age ? `${user1.age} лет` : 'Возраст не указан'} />
+                  {activeUser?.id === user1.id && <CheckIcon />}
+                </ListItemButton>
+              ))}
+            </List>
+          )}
+        </>
+      )}
+
+      <Stack spacing={3} sx={{ p: 2 }}>
         <Stack
           direction="row"
           spacing={2}
@@ -130,60 +182,33 @@ function Menu({ setIsMenuOpen }: MenuProps) {
             alignItems: 'center',
           }}
         >
-          {activeRole === 'user' && <Avatar src={user?.image || undefined} alt={user?.title || 'Пользователь'} sx={{ width: 56, height: 56 }} />}
-          {activeRole === 'teacher' && <Avatar src={user?.image || undefined} alt={passport?.title || 'Учитель'} sx={{ width: 56, height: 56 }} />}
-          {activeRole === 'place' && (
-            <Avatar alt={place?.title || 'Учитель'} sx={{ width: 56, height: 56 }}>
-              {place?.title?.[0] || 'Q'}
+          {activeContext.role === 'teacher' && (
+            <Avatar src={activeUser?.image || undefined} alt={passport?.title || 'Учитель'} sx={{ width: 56, height: 56 }} />
+          )}
+          {activeContext.role === 'place' && (
+            <Avatar alt={activePlace?.title || 'Учитель'} sx={{ width: 56, height: 56 }} variant="rounded">
+              {activePlace?.title?.[0] || 'Q'}
             </Avatar>
           )}
 
           <Box>
             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-              {activeRole === 'user' && 'Ученик'}
-              {activeRole === 'teacher' && 'Учитель'}
-              {activeRole === 'place' && 'Центр'}
+              {activeContext.role === 'teacher' && 'Учитель'}
+              {activeContext.role === 'place' && 'Центр'}
             </Typography>
 
-            {activeRole === 'user' && (
-              <>
-                <Typography sx={{ fontWeight: 800 }}>{user?.title || 'Пользователь'}</Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {user?.age ? `${user.age} лет` : 'Возраст не указан'}
-                </Typography>
-              </>
-            )}
+            {activeContext.role === 'teacher' && <Typography sx={{ fontWeight: 800 }}>{passport?.title || 'Учитель'}</Typography>}
 
-            {activeRole === 'teacher' && <Typography sx={{ fontWeight: 800 }}>{passport?.title || 'Учитель'}</Typography>}
-
-            {activeRole === 'place' && (
+            {activeContext.role === 'place' && (
               <>
-                <Typography sx={{ fontWeight: 800 }}>{place?.title || 'Центр'}</Typography>
+                <Typography sx={{ fontWeight: 800 }}>{activePlace?.title || 'Центр'}</Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {place?.address ? place.address : 'Возраст не указан'}
+                  {activePlace?.address ? activePlace.address : 'Возраст не указан'}
                 </Typography>
               </>
             )}
           </Box>
         </Stack>
-        <FormControl size="small" fullWidth>
-          <Select
-            value={activeRole}
-            onChange={e => {
-              const value = e.target.value as ActiveRole;
-              switchRole(value);
-              //setIsMenuOpen?.(false);
-            }}
-            sx={{
-              borderRadius: 2,
-              fontWeight: 600,
-            }}
-          >
-            {user && <MenuItem value="user">Ученик</MenuItem>}
-            {passport && <MenuItem value="teacher">Учитель</MenuItem>}
-            {place && <MenuItem value="place">Центр</MenuItem>}
-          </Select>
-        </FormControl>
         <List disablePadding>
           {menuItems.map(item => (
             <ListItemButton
@@ -249,3 +274,8 @@ function Menu({ setIsMenuOpen }: MenuProps) {
 }
 
 export default Menu;
+
+// interface ActiveContext {
+//   role: 'user' | 'teacher' | 'place';
+//   entityId?: number; // user.id или place.id, для teacher не нужен
+// }

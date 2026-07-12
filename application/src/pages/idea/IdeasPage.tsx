@@ -12,10 +12,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation } from '../../shared/lib/useLocation.ts';
 import Typography from '@mui/material/Typography';
 import AIIdeaBanner from '../../features/idea/ui/AIIdeaBanner.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 
 function IdeasPage() {
   const { filters, setView, setSort, setWhen } = useFilters();
   const location = useLocation(filters.sort === 'nearby');
+  const { activeRole } = useAuth();
 
   const {
     data: ideas = [],
@@ -39,7 +41,7 @@ function IdeasPage() {
 
   return (
       <Stack spacing={2}>
-        <AIIdeaBanner/>
+        {activeRole === 'guest' && <AIIdeaBanner/>}
 
         <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
         {(isLoading || (filters.sort === 'nearby' && location.status === 'loading')) && (
@@ -83,7 +85,7 @@ function IdeasPage() {
                 md: 'repeat(3, minmax(0, 1fr))',
                 lg: 'repeat(4, minmax(0, 1fr))',
               },
-              gap: 1,
+              gap: 1.5,
             }}
           >
             {ideas.map(idea => (

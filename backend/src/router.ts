@@ -116,6 +116,7 @@ privateRouter.delete('/meetUser', withAuth(meetUser.delete));
 
 publicRouter.get('/places', place.findAll);
 privateRouter.post('/place', withAuth(place.create));
+publicRouter.get('/place/:id', place.findById);
 privateRouter.get('/place/teachers', withAuth(placeTeacherController.findAll));
 privateRouter.post('/place/teachers', withAuth(placeTeacherController.addTeacher));
 privateRouter.delete('/place/teachers/:passportId', withAuth(placeTeacherController.remove));

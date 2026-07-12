@@ -91,7 +91,7 @@ export interface PassportDto {
 
 export interface PassportExtendedDto extends PassportDto {
   users: UserDto[];
-  place: PlaceDto | null;
+  places: PlaceDto[];
 }
 
 export interface PlaceDto {

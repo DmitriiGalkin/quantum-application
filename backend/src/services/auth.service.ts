@@ -24,14 +24,13 @@ export class AuthService {
 
   static async getFullProfile(passport: any): Promise<PassportExtendedDto> {
     const users = await UserRepository.findByPassportId(passport.id || 0);
-    const placeId = await PlacePassportRepository.findAdminPlace(passport.id || 0);
-
-    const place = placeId ? await PlaceRepository.findById(placeId) : null;
+    const places = await PlaceRepository.findByPassportId(passport.id || 0);
 
     return {
       ...passport,
       users,
-      place,
+      places,
     };
   }
+
 }

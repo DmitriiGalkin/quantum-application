@@ -2,7 +2,7 @@ import type { Target } from '@shared/types';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 
 export const useWelcomeContent = (target: Target, ideaId?: number) => {
-  const { passport, user } = useAuth();
+  const { passport, activeUser } = useAuth();
 
   if (!passport) {
     if (target === 'idea') {
@@ -20,7 +20,7 @@ export const useWelcomeContent = (target: Target, ideaId?: number) => {
   }
 
   if (target === 'idea') {
-    return `${user?.title}, какая у тебя новая идея?`;
+    return `${activeUser?.title}, какая у тебя новая идея?`;
   } else if (target === 'project' && !ideaId) {
     return `${passport?.title}, какую идею проекта Вы хотели бы реализовать вместе с детьми?`;
   } else if (target === 'project' && ideaId) {

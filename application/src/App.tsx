@@ -49,6 +49,7 @@ function App() {
         <Route path="project/:id/edit" element={<ProjectEditPage />} />
         <Route path="project/:id/meets/create" element={<MeetCreatePage />} />
         <Route path="project/:id/meets/:meetId/edit" element={<MeetEditPage />} />
+        <Route path="create" element={<CreatePlacePage />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
@@ -67,6 +68,7 @@ function App() {
         <Route path="projects" element={<UserProjectsPage />} />
         <Route path="meets" element={<UserMeetsPage />} />
       </Route>
+
       {/* Учитель */}
       <Route path="teacher" element={<AppLayout />}>
         <Route index element={<TeacherDashboardPage />} />
@@ -75,10 +77,10 @@ function App() {
         <Route path="meets" element={<TeacherMeetsPage />} />
         <Route path="ideas" element={<TeacherIdeasPage />} />
       </Route>
+
       {/* Центр */}
-      <Route path="place" element={<AppLayout />}>
+      <Route path="place/:id" element={<AppLayout />}>
         <Route index element={<PlaceDashboardPage />} />
-        <Route path="create" element={<CreatePlacePage />} />
         <Route path="teachers" element={<PlaceTeachersPage />} />
         <Route path="projects" element={<PlaceProjectsPage />} />
         <Route path="meets" element={<PlaceMeetsPage />} />
