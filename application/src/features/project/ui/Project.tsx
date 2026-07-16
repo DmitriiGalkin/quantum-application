@@ -11,7 +11,7 @@ import type { ProjectFullDto } from '@shared/types';
 import MeetCard from '../../meets/ui/MeetCard/MeetCard.tsx';
 
 export default function Project({ project, refetch }: { project: ProjectFullDto; refetch?: () => void }) {
-  const { activeUser, authHandler, activeRole } = useAuth();
+  const { activeUser, authHandler, activeContext } = useAuth();
   const navigate = useNavigate();
 
   const mutationLike = useMutation({
@@ -90,7 +90,7 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
 
       <ProjectCardHeader passport={project.passport} place={project.place} onExit={onExit} />
 
-      {!isMember && activeRole === 'user' && (
+      {!isMember && activeContext.role === 'user' && (
         <CardContent>
           <Typography variant="h6">Вступите в проект</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -104,19 +104,6 @@ export default function Project({ project, refetch }: { project: ProjectFullDto;
       )}
 
       {isMember && nextMeet && <MeetCard meet={nextMeet} />}
-
-      {isMember && !nextMeet && (
-        <Box sx={{ p: 2 }}>
-          <Typography variant="h6">Пока нет встреч</Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Вы получите уведомление
-          </Typography>
-
-          <Button fullWidth variant="outlined" sx={{ mt: 2 }}>
-            Подписаться
-          </Button>
-        </Box>
-      )}
     </Card>
   );
 }

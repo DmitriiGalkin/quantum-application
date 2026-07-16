@@ -7,26 +7,23 @@ import IdeasPage from './pages/idea/IdeasPage.tsx';
 import ChatPage from './pages/ChatPage.tsx';
 import IdeaPage from './pages/idea/IdeaPage.tsx';
 import ProjectPage from './pages/project/ProjectPage.tsx';
-
 import ProjectEditPage from './pages/project/ProjectEditPage.tsx';
-import TeacherProjectsPage from './areas/teacher/TeacherProjectsPage.tsx';
-
-import UserIdeasPage from './areas/user/UserIdeasPage.tsx';
-import UserProjectsPage from './areas/user/UserProjectsPage.tsx';
-
+import TeacherProjectsPage from './pages/teacher/TeacherProjectsPage.tsx';
+import UserIdeasPage from './pages/user/UserIdeasPage.tsx';
+import UserProjectsPage from './pages/user/UserProjectsPage.tsx';
 import NotFound from './shared/ui/NotFound.tsx';
-import TeacherMeetsPage from './areas/teacher/TeacherMeetsPage.tsx';
-import TeacherIdeasPage from './areas/teacher/TeacherIdeasPage.tsx';
-import UserMeetsPage from './areas/user/UserMeetsPage.tsx';
-import TeacherProjectCreatePage from './areas/teacher/TeacherProjectCreatePage.tsx';
-import PlaceTeachersPage from './areas/place/PlaceTeachersPage.tsx';
-import PlaceProjectsPage from './areas/place/PlaceProjectsPage.tsx';
-import PlaceMeetsPage from './areas/place/PlaceMeetsPage.tsx';
-import PlaceDashboardPage from './areas/place/PlaceDashboardPage.tsx';
-import TeacherDashboardPage from './areas/teacher/TeacherDashboardPage.tsx';
+import TeacherMeetsPage from './pages/teacher/TeacherMeetsPage.tsx';
+import TeacherIdeasPage from './pages/teacher/TeacherIdeasPage.tsx';
+import UserMeetsPage from './pages/user/UserMeetsPage.tsx';
+import TeacherProjectCreatePage from './pages/teacher/TeacherProjectCreatePage.tsx';
+import PlaceTeachersPage from './pages/place/PlaceTeachersPage.tsx';
+import PlaceProjectsPage from './pages/place/PlaceProjectsPage.tsx';
+import PlaceMeetsPage from './pages/place/PlaceMeetsPage.tsx';
+import PlaceDashboardPage from './pages/place/PlaceDashboardPage.tsx';
+import TeacherDashboardPage from './pages/teacher/TeacherDashboardPage.tsx';
 import MeetCreatePage from './pages/meet/MeetCreatePage.tsx';
 import MeetEditPage from './pages/meet/MeetEditPage.tsx';
-import CreatePlacePage from './areas/place/CreatePlacePage.tsx';
+import PlaceCreatePage from './pages/place/PlaceCreatePage.tsx';
 import MissionPage from './pages/MissionPage.tsx';
 import AboutPage from './pages/AboutPage.tsx';
 import PrivacyPage from './pages/PrivacyPage.tsx';
@@ -49,7 +46,7 @@ function App() {
         <Route path="project/:id/edit" element={<ProjectEditPage />} />
         <Route path="project/:id/meets/create" element={<MeetCreatePage />} />
         <Route path="project/:id/meets/:meetId/edit" element={<MeetEditPage />} />
-        <Route path="create" element={<CreatePlacePage />} />
+        <Route path="create" element={<PlaceCreatePage />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>

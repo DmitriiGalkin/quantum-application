@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { fetchCreatePlace } from '../../requests.ts';
 
-export default function CreatePlacePage() {
+export default function PlaceCreatePage() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({

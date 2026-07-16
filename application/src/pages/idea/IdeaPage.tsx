@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchIdea } from '../../requests.ts';
 import { Button, Grid } from '@mui/material';
-import IdeaProjectCard from '../../features/project/ui/IdeaProjectCard.tsx';
+import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
 import { useFilters } from '../../features/idea/model/useFilters.ts';
 import Filter from '../../features/idea/ui/Filter.tsx';
 import Idea from '../../features/idea/ui/Idea.tsx';
@@ -78,11 +78,24 @@ function IdeaPage() {
           {filters.view === 'map' && <div>Карта</div>}
 
           {filters.view === 'module' && !!idea.projects.length && (
-            <Stack spacing={1}>
-              {(idea.projects || []).map((project, index) => (
-                <IdeaProjectCard key={index} project={project} refetch={refetch} />
-              ))}
-            </Stack>
+            <>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                    xs: '1fr',
+                    sm: 'repeat(2, minmax(0, 1fr))',
+                    md: 'repeat(3, minmax(0, 1fr))',
+                    lg: 'repeat(3, minmax(0, 1fr))',
+                  },
+                  gap: 1.5,
+                }}
+              >
+                {(idea.projects || []).map((project, index) => (
+                  <ProjectCard key={index} project={project} refetch={refetch} />
+                ))}
+              </Box>
+            </>
           )}
 
           {filters.when === undefined && !idea.projects.length && (

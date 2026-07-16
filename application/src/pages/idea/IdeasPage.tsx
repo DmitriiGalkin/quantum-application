@@ -17,7 +17,7 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 function IdeasPage() {
   const { filters, setView, setSort, setWhen } = useFilters();
   const location = useLocation(filters.sort === 'nearby');
-  const { activeRole } = useAuth();
+  const { activeContext } = useAuth();
 
   const {
     data: ideas = [],
@@ -41,7 +41,7 @@ function IdeasPage() {
 
   return (
       <Stack spacing={2}>
-        {activeRole === 'guest' && <AIIdeaBanner/>}
+        {activeContext.role === 'guest' && <AIIdeaBanner/>}
 
         <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
         {(isLoading || (filters.sort === 'nearby' && location.status === 'loading')) && (

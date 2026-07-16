@@ -1,3 +1,5 @@
+import type { MeetDto } from '@shared/types';
+
 export const onKassa = async (e: React.MouseEvent<HTMLElement>) => {
   e.stopPropagation();
   e.preventDefault();
@@ -29,4 +31,30 @@ export const onKassa = async (e: React.MouseEvent<HTMLElement>) => {
 
   // или после успешной эмуляции
   // mutationLike.mutate({ userId: user!.id, meetId: meet.id });
+};
+
+export const statusConfig = {
+  today: { label: 'Сегодня', color: 'success' as const },
+  upcoming: { label: 'Скоро', color: 'info' as const },
+  completed: { label: 'Завершена', color: 'default' as const },
+  cancelled: { label: 'Отменена', color: 'error' as const },
+};
+
+export const getMeetStatus = (meet: MeetDto): keyof typeof statusConfig => {
+  if (meet.deletedAt) {
+    return 'cancelled';
+  }
+
+  const now = new Date();
+  const startedAt = new Date(meet.startedAt);
+
+  if (startedAt.toDateString() === now.toDateString()) {
+    return 'today';
+  }
+
+  if (startedAt > now) {
+    return 'upcoming';
+  }
+
+  return 'completed';
 };

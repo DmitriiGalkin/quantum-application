@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherDashboard } from '../../requests.ts';
 import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
+import Box from '@mui/material/Box';
 
 export default function TeacherDashboardPage() {
 
@@ -101,11 +102,22 @@ export default function TeacherDashboardPage() {
 
       <Typography variant="h5">Ближайшие встречи</Typography>
 
-      <Stack spacing={2}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, minmax(0, 1fr))',
+            md: 'repeat(3, minmax(0, 1fr))',
+            lg: 'repeat(4, minmax(0, 1fr))',
+          },
+          gap: 1.5,
+        }}
+      >
         {data.bmeets.map(meet => (
           <MeetCard key={meet.id} meet={meet} />
         ))}
-      </Stack>
+      </Box>
     </Stack>
   );
 }

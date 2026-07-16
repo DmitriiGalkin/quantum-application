@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { groupMeets } from './groupMeets';
+import { groupMeets } from './groupMeets.ts';
 import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';

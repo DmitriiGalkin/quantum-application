@@ -1,4 +1,4 @@
-import MeetForm from '../../areas/teacher/meet/MeetForm.tsx';
+import MeetForm from '../../features/meets/ui/MeetForm.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateMeet } from '../../requests.ts';

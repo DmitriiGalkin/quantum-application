@@ -12,9 +12,9 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
-import TeacherIdeaProjectCard from './idea/TeacherIdeaProjectCard.tsx';
 import AISelectIdeaBanner from '../../features/idea/ui/AISelectIdeaBanner.tsx';
 import type { IdeaDto, ProjectFullDto } from '@shared/types';
+import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
 
 function TeacherProjectsPage() {
   const { id } = useParams();
@@ -109,8 +109,10 @@ function TeacherProjectsPage() {
                         gap: 1,
                       }}
                     >
-                      {projects.map(project => (
-                        <TeacherIdeaProjectCard key={project.id} project={project} />
+                      {projects.map((project, index) => (
+                        <>
+                          <ProjectCard key={index} project={project} />
+                        </>
                       ))}
                     </Box>
                   </Box>

@@ -61,7 +61,7 @@ export class ProjectService {
     }));
   }
 
-  static async findById(projectId: number): Promise<ProjectFullDto> {
+  static async findById(projectId: number, userId?: number): Promise<ProjectFullDto> {
     const project = await ProjectRepository.findById(projectId);
     if (!project) throw new Error('NOT_FOUND');
 
@@ -78,9 +78,9 @@ export class ProjectService {
     const usersForMeets = await Promise.all(meets.map(m => UserRepository.findByMeetId(m.id)));
     const passportsForMeets = await Promise.all(meets.map(m => PassportRepository.findById(m.passportId) as Promise<Passport>));
 
-    const mIds = meets.map(m => m.id);
+    const meetIds = meets.map(m => m.id);
 
-    const paymentIds = mIds.length ? await PaymentRepository.findPaidMeetIdsByUser(45, mIds ) : [];
+    const paymentIds = userId && meetIds.length ? await PaymentRepository.findPaidMeetIdsByUser(userId, meetIds) : [];
 
     const meetExtendeds = meets.map((m, i) => ({
       ...m,

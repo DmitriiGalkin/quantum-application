@@ -53,6 +53,7 @@ export interface MeetExtendedDto extends MeetDto {
   users: UserDto[];
   place: PlaceDto;
   passport: PassportDto;
+  project: ProjectDto;
 
   isPaid?: boolean;
   // Общее количество участников проекта
@@ -231,6 +232,10 @@ export interface GetIdeasQuery {
   when?: 'today' | 'tomorrow';
   latitude?: number;
   longitude?: number;
+}
+
+export interface GetProjectsQuery {
+  userId?: number;
 }
 
 export interface GetMeetsQuery {

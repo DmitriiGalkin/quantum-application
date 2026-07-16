@@ -9,13 +9,16 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
-  const { activeRole: role } = useAuth();
+  const { activeContext, passport } = useAuth();
+  const role = activeContext.role;
 
   const { data: project, refetch } = useQuery({
-    queryKey: ['project', id],
-    queryFn: () => fetchProject(id as string),
+    queryKey: ['project', id, activeContext.userId],
+    queryFn: () => fetchProject(id as string, { userId: activeContext.userId }),
     enabled: Boolean(id),
   });
+  const items = project?.feeds?.filter((feed) => !(feed.type === 'meet' && feed.meet.deletedAt && feed.meet.passport.id === passport?.id && (role === 'teacher' || role === 'place'))) || [];
+
   const createMeetMutation = useMutation({
     mutationFn: fetchCreateMeet,
   });
@@ -40,11 +43,17 @@ export default function ProjectPage() {
         <Stack spacing={2}>
           {role === 'teacher' && <CreateMeetForm projectId={project.id} placeId={project.place.id} onSubmit={onCreateMeet} />}
 
-          <Feed items={project.feeds || []} passport={project.passport} refetch={refetch} />
+          <Feed items={items} passport={project.passport} refetch={refetch} />
         </Stack>
       </Grid>
 
-      <Grid size={{ xs: 12, md: 3 }}>
+      <Grid
+        size={{ xs: 12, md: 3 }}
+      >
+        <Typography variant="overline" color="text.secondary" sx={{ px: 1, display: { xs: 'block', md: 'none' } }}>
+          Дополнительно
+        </Typography>
+
         {Boolean(project.users.length) ? (
           <Card sx={{ borderRadius: 3 }}>
             <CardContent>

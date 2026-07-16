@@ -1,13 +1,19 @@
 import type { MeetExtendedDto } from '@shared/types';
 import { useAuth } from '../../../../providers/AuthProvider.tsx';
-import { Paper, Stack } from '@mui/material';
+import { Button, Chip, Menu, MenuItem, Paper, Stack, Typography } from '@mui/material';
 
 import MeetCardBody from './MeetCardBody.tsx';
-import StudentFooter from './StudentFooter';
-import TeacherFooter from './TeacherFooter';
 import PlaceFooter from './PlaceFooter';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateMeetUser, fetchCreatePayment, fetchDeleteMeet, fetchDeleteMeetUser } from '../../../../requests.ts';
+import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import EditIcon from '@mui/icons-material/Edit';
+import LogoutIcon from '@mui/icons-material/Logout';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { getMeetStatus, statusConfig } from './helper.ts';
 
 interface Props {
   meet: MeetExtendedDto;
@@ -18,6 +24,19 @@ interface Props {
 export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   const { activeUser, authHandler, passport, activeContext } = useAuth();
   const role = activeContext.role;
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setAnchorEl(null);
+  };
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateMeetUser,
@@ -84,13 +103,66 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
     mutationDeleteMeet.mutate(meet.id);
   };
 
-  const paymentStatus = meet.isPaid ? 'paid' : (meet.price && meet.price > 0) ? 'pending' : undefined;
+  const paymentStatus = meet.isPaid ? 'paid' : meet.price && meet.price > 0 ? 'pending' : undefined;
   const meetUserStatus = activeUser?.id && meet.users.map(u => u.id).includes(activeUser.id) ? 'member' : 'not_member';
   const isMember = meetUserStatus === 'member';
   const isPending = paymentStatus === 'pending';
 
-  if (withoutPaper) return <MeetCardBody meet={meet} />;
-  console.log(role, 'role');
+  const startedAt = new Date(meet.startedAt);
+  const date = startedAt.toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: 'short',
+  });
+
+  const time = startedAt.toLocaleTimeString('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  const body = <MeetCardBody meet={meet} isMember={isMember} />;
+
+  // Только тело встречи
+  if (withoutPaper) return body;
+
+  const status = statusConfig[getMeetStatus(meet)];
+  const open = Boolean(anchorEl);
+
+  const menuItems = [];
+
+  if (meet.isPaid && role === 'user') {
+    menuItems.push({
+      key: 'refund',
+      label: 'Запросить возврат средств',
+      icon: <LogoutIcon fontSize="small" />,
+      onClick: () => {
+        console.log('Прошу возврат');
+      },
+    });
+  }
+
+  if (isMember && role === 'user') {
+    menuItems.push({
+      key: 'leave',
+      label: 'Отменить участие',
+      icon: <LogoutIcon fontSize="small" />,
+      onClick: onExit,
+    });
+  }
+
+  if (role === 'teacher' && passport?.id === meet.passport.id) {
+    menuItems.push({
+      key: 'edit',
+      label: 'Изменить',
+      icon: <EditIcon fontSize="small" />,
+      onClick: onEdit,
+    });
+    menuItems.push({
+      key: 'delete',
+      label: 'Удалить встречу',
+      icon: <DeleteIcon fontSize="small" />,
+      onClick: onDelete,
+    });
+  }
 
   return (
     <Paper
@@ -109,20 +181,57 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
       }}
     >
       <Stack spacing={2}>
-        <MeetCardBody meet={meet} />
+        {/* TOP ROW: status + time */}
+        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+          <Chip label={status.label} color={status.color} size="small" />
 
+          <Typography variant="body2" color="text.secondary">
+            {date} • {time}
+          </Typography>
+
+          {menuItems.length > 0 && (
+            <>
+              <IconButton onClick={handleOpen}>
+                <MoreVertIcon />
+              </IconButton>
+
+              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                {menuItems.map(item => (
+                  <MenuItem
+                    key={item.key}
+                    onClick={e => {
+                      handleClose(e);
+                      item.onClick();
+                    }}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </>
+          )}
+        </Stack>
+
+        {body}
+
+        {/* CTA кнопки */}
         {role === 'user' && (
-          <StudentFooter
-            meet={meet}
-            onPay={isMember && isPending ? onPay : undefined}
-            onJoin={!isMember ? onJoin : undefined}
-            onExit={isMember && isPending ? onExit : undefined}
-          />
+          <>
+            {!isMember && (
+              <Button variant="contained" fullWidth onClick={onJoin}>
+                Присоединиться
+              </Button>
+            )}
+            {isMember && meet.price && isPending && (
+              <Button variant="contained" fullWidth onClick={onPay}>
+                Оплатить
+              </Button>
+            )}
+          </>
         )}
-        {role === 'teacher' && passport?.id === meet.passport.id && <TeacherFooter onEdit={onEdit} onDelete={onDelete} />}
         {role === 'place' && <PlaceFooter meet={meet} onEdit={onEdit} />}
       </Stack>
     </Paper>
   );
 }
-

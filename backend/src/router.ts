@@ -83,7 +83,7 @@ privateRouter.post('/ideaUser', withAuth(ideaUser.create));
 privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));
 
 publicRouter.get('/projects', project.findAll);
-publicRouter.get('/project/:id', project.findById);
+privateRouter.get('/project/:id', withAuth(project.findById));
 publicRouter.get('/project/:id/meta', project.meta);
 privateRouter.post('/project', withAuth(project.create));
 privateRouter.delete('/project/:id', withAuth(project.delete));

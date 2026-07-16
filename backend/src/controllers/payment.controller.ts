@@ -30,6 +30,21 @@ const create: ControllerWithAuth<PaymentCreateResponseDto, PaymentCreateDto> = a
 };
 
 const result: Controller<string> = async (req, res) => {
+  // 2026-07-16 09:02:15: {
+  //   2026-07-16 09:02:15:   out_summ: '300',
+  //   2026-07-16 09:02:15:   OutSum: '300',
+  //   2026-07-16 09:02:15:   inv_id: '18',
+  //   2026-07-16 09:02:15:   InvId: '18',
+  //   2026-07-16 09:02:15:   crc: 'E797A299563B0F444180DA52191A0AC1',
+  //   2026-07-16 09:02:15:   SignatureValue: 'E797A299563B0F444180DA52191A0AC1',
+  //   2026-07-16 09:02:15:   PaymentMethod: 'PayButton',
+  //   2026-07-16 09:02:15:   IncSum: '300',
+  //   2026-07-16 09:02:15:   IncCurrLabel: 'SBPPSR',
+  //   2026-07-16 09:02:15:   IsTest: '1',
+  //   2026-07-16 09:02:15:   EMail: '',
+  //   2026-07-16 09:02:15:   Fee: '0.0'
+  //   2026-07-16 09:02:15: } RESULT
+
   try {
     console.log(req.body, 'RESULT');
     const { OutSum, InvId, SignatureValue } = req.body;

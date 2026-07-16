@@ -59,7 +59,7 @@ const CREATE_PROJECT_TYPE = 'create-project-type';
 
 function Idea({ idea }: { idea: any }) {
   const queryClient = useQueryClient();
-  const { passport, authHandler, activeRole } = useAuth();
+  const { passport, authHandler, activeContext } = useAuth();
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const [isPlaceModalOpen, setPlaceModalOpen] = useState(false);
@@ -175,7 +175,7 @@ function Idea({ idea }: { idea: any }) {
         </Stack>
       </CardContent>
 
-      {activeRole === 'teacher' && (
+      {activeContext.role === 'teacher' && (
         <>
           <CardActions sx={{ p: 2 }}>
             <Stack>
@@ -205,7 +205,7 @@ function Idea({ idea }: { idea: any }) {
         </>
       )}
 
-      {activeRole === 'user' && (
+      {activeContext.role === 'user' && (
         <CardActions sx={{ p: 2 }}>
           <Stack direction="row">
             <Like isLiked={idea.isLiked} ideaId={idea.id} />

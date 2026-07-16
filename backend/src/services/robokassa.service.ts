@@ -18,9 +18,6 @@ class RobokassaService {
   createPaymentUrl(paymentId: number, amount: number, description: string): string {
     const signature = this.md5(`${this.merchantLogin}:${amount}:${paymentId}:${this.password1}`);
 
-    console.log(process.env.ROBOKASSA_LOGIN, 'process.env.ROBOKASSA_LOGIN');
-    console.log(this.merchantLogin, 'this.merchantLogin');
-
     const params = new URLSearchParams({
       MerchantLogin: this.merchantLogin,
       OutSum: amount.toString(),

@@ -14,7 +14,7 @@ type Props = {
 };
 
 function ProjectCardHeader({ passport, place, onExit }: Props) {
-  const { activeRole } = useAuth();
+  const { activeContext } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -30,6 +30,17 @@ function ProjectCardHeader({ passport, place, onExit }: Props) {
   };
   const open = Boolean(anchorEl);
 
+  const menuItems = [];
+
+  if (onExit && activeContext.role === 'user') {
+    menuItems.push({
+      key: 'exit',
+      label: 'Выйти из проекта',
+      icon: <LogoutIcon fontSize="small" />,
+      onClick: onExit,
+    });
+  }
+
   return (
     <CardHeader
       avatar={
@@ -38,37 +49,34 @@ function ProjectCardHeader({ passport, place, onExit }: Props) {
         </Avatar>
       }
       action={
-        <>
-          <IconButton onClick={handleOpen}>
-            <MoreVertIcon />
-          </IconButton>
+        menuItems.length > 0 ? (
+          <>
+            <IconButton onClick={handleOpen}>
+              <MoreVertIcon />
+            </IconButton>
 
-          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            {onExit && activeRole === 'user' && (
-              <MenuItem
-                onClick={(e) => {
-                  handleClose(e);
-                  onExit();
-                }}
-              >
-                <ListItemIcon>
-                  <LogoutIcon fontSize="small" />
-                </ListItemIcon>
-                Выйти из проекта
-              </MenuItem>
-            )}
-          </Menu>
-        </>
+            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+              {menuItems.map(item => (
+                <MenuItem
+                  key={item.key}
+                  onClick={e => {
+                    handleClose(e);
+                    item.onClick();
+                  }}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.label}
+                </MenuItem>
+              ))}
+            </Menu>
+          </>
+        ) : undefined
       }
       title={passport.title}
       subheader={
         <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
           <PlaceIcon sx={{ fontSize: 12, opacity: 0.6 }} />
-          <Typography
-            component="div"
-            variant="subtitle2"
-            sx={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}
-          >
+          <Typography component="div" variant="subtitle2" noWrap sx={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {place.address}
           </Typography>
         </Stack>
