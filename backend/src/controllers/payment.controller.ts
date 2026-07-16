@@ -31,6 +31,7 @@ const create: ControllerWithAuth<PaymentCreateResponseDto, PaymentCreateDto> = a
 
 const result: Controller<string> = async (req, res) => {
   try {
+    console.log(req.body, 'RESULT');
     const { OutSum, InvId, SignatureValue } = req.body;
 
     const isValid = RobokassaService.verifyResultSignature(OutSum, InvId, SignatureValue);

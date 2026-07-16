@@ -1,5 +1,4 @@
-import { PassportExtendedDto } from '@shared/types';
-import { Passport, PassportExtendedEntity } from '../entities/passport.js';
+import { Passport } from '../entities/passport.js';
 import { PassportRow } from '../entities/passport.db.js';
 
 export function toPassport(row: PassportRow): Passport {
@@ -14,11 +13,3 @@ export function toPassport(row: PassportRow): Passport {
     image: row.image,
   };
 }
-
-export const toPassportExtendedDto = (row: PassportExtendedEntity): PassportExtendedDto => ({
-  id: row.id,
-  title: row.title ?? null,
-  description: row.description ?? null,
-  users: row.users ?? [],
-  place: row.place || null,
-});

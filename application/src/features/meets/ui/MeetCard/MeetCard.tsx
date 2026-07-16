@@ -16,7 +16,8 @@ interface Props {
 }
 
 export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
-  const { activeUser, authHandler, passport, activeRole: role } = useAuth();
+  const { activeUser, authHandler, passport, activeContext } = useAuth();
+  const role = activeContext.role;
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateMeetUser,
@@ -89,6 +90,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   const isPending = paymentStatus === 'pending';
 
   if (withoutPaper) return <MeetCardBody meet={meet} />;
+  console.log(role, 'role');
 
   return (
     <Paper
