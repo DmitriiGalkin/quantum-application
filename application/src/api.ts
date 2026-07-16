@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_STORAGE_KEY } from './providers/AuthProvider.tsx';
+import { ACCESS_TOKEN_STORAGE_KEY, getActiveContext } from './providers/AuthProvider.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 
@@ -6,12 +6,15 @@ export const AUTH_401_EVENT = 'auth:401';
 
 const api = async function <T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+  const activeContext = getActiveContext();
 
   const response = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: {
       ...(options.headers || {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ['X-Role']: activeContext.role,
+      ['X-User-Id']: String(activeContext.userId),
     },
   });
 

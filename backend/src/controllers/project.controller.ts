@@ -51,7 +51,7 @@ const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
 
 const findById: ControllerWithAuth<ProjectFullDto> = async (req, res) => {
   try {
-    const data = await ProjectService.findById(Number(req.params.id), Number(req.query.userId));
+    const data = await ProjectService.findById(Number(req.params.id), req.viewer!);
 
     if (!data) return fail(res, 'Проект не найден', 404);
 

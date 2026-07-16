@@ -15,13 +15,13 @@ export function Feed({ items, passport, refetch }: { items: FeedItem[]; passport
 function FeedItemView({ item, refetch }: { item: FeedItem; passport: PassportDto; refetch: () => void }) {
   switch (item.type) {
     case 'meet':
-      return <MeetCard meet={item.meet} refetch={refetch} />;
+      return <MeetCard key={item.id} meet={item.meet} refetch={refetch} />;
 
     case 'comment':
-      return <CommentCard comment={item.comment} user={item.user as UserDto} />;
+      return <CommentCard key={item.id} comment={item.comment} user={item.user as UserDto} />;
 
     case 'join':
-      return <JoinCard user={item.user as UserDto} />;
+      return <JoinCard key={item.id} user={item.user as UserDto} />;
 
     default:
       return null;

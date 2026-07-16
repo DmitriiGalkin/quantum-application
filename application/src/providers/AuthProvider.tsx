@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassport } from '../requests.ts';
-import type { PassportDto, PlaceDto } from '@shared/types';
+import type { ActiveRole, PassportDto, PlaceDto } from '@shared/types';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
@@ -38,7 +38,6 @@ type User = {
   image: string | null;
 };
 
-export type ActiveRole = 'user' | 'teacher' | 'place' | 'guest';
 export interface ActiveContext {
   role: ActiveRole;
   userId?: number;
@@ -69,6 +68,22 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>(null!);
 
+export const getActiveContext = (): ActiveContext => {
+  if (typeof window !== 'undefined') {
+    const value = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
+
+    if (value) {
+      try {
+        return JSON.parse(value);
+      } catch {}
+    }
+  }
+
+  return {
+    role: 'guest',
+  };
+};
+
 type Props = {
   children: ReactNode;
 };
@@ -81,21 +96,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [users, setUsers] = useState<User[]>([]);
   const [places, setPlaces] = useState<PlaceDto[]>([]);
 
-  const [activeContext, setActiveContext] = useState<ActiveContext>(() => {
-    if (typeof window !== 'undefined') {
-      const value = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
-
-      if (value) {
-        try {
-          return JSON.parse(value);
-        } catch {}
-      }
-    }
-
-    return {
-      role: 'guest',
-    };
-  });
+  const [activeContext, setActiveContext] = useState<ActiveContext>(getActiveContext);
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');
   const availableRoles = ['user', 'teacher', 'place'] as ActiveRole[];

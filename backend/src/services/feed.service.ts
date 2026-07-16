@@ -17,19 +17,19 @@ export class FeedService {
   static merge({ meets, comments, joins }: MergeFeed): FeedItem[] {
     const feed = [
       ...meets.map(meet => ({
-        id: meet.id,
+        id: 'meet' + meet.id,
         type: 'meet' as const,
         createdAt: meet.startedAt,
         meet: meet,
       })),
       ...comments.map(c => ({
-        id: c.id as number,
+        id: 'comment' + c.id,
         type: 'comment' as const,
         createdAt: c.createdAt,
         comment: c,
       })),
       ...joins.map(j => ({
-        id: j.id,
+        id: 'join'+j.id,
         type: 'join' as const,
         createdAt: j.createdAt,
         user: j.user,

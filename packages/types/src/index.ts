@@ -1,5 +1,7 @@
 export type Target = 'idea' | 'project' | 'meet';
 
+export type ActiveRole = 'user' | 'teacher' | 'place' | 'guest';
+
 export type Ui = 'auth' | 'map' | 'idea' | 'project' | 'meet' | 'ideas';
 
 export type Role = 'user' | 'assistant' | 'system';
@@ -234,10 +236,6 @@ export interface GetIdeasQuery {
   longitude?: number;
 }
 
-export interface GetProjectsQuery {
-  userId?: number;
-}
-
 export interface GetMeetsQuery {
   userId?: number;
   passportId?: number;
@@ -249,7 +247,7 @@ export interface GetMeetsQuery {
 export type FeedItem = FeedMeet | FeedComment | FeedJoin | FeedLike;
 
 interface BaseFeed {
-  id: number;
+  id: string;
   createdAt: string;
   user?: UserDto;
 }

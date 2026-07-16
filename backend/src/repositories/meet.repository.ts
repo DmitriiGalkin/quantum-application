@@ -126,16 +126,19 @@ class MeetRepository {
   }
 
   // ✅ FIND BY PROJECT ID
-  static async findByProjectId(projectId: number): Promise<Meet[]> {
+  static async findByProjectId(projectId: number, includeDeleted = false): Promise<Meet[]> {
+    console.log(includeDeleted, 'includeDeleted');
     const rows = await db.query<MeetRow>(
-      `SELECT *
-       FROM meet
-       WHERE projectId = ?
-       ORDER BY startedAt`,
+      `
+        SELECT *
+        FROM meet
+        WHERE projectId = ?
+          ${includeDeleted ? '' : 'AND deletedAt IS NULL'}
+        ORDER BY startedAt
+      `,
       [projectId],
     );
-    ////AND startedAt >= CURDATE()
-    // AND deletedAt IS NULL
+
     return rows.map(toMeet);
   }
 

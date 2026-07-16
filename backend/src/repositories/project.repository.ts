@@ -5,6 +5,7 @@ import { FindAllProjectInput, Project } from '../entities/project.js';
 import { CreateProjectInput } from '../entities/project.types.js';
 import { db } from '../dbNext.js';
 import { FindAllIdeaInput } from '../entities/idea.js';
+import { Viewer } from '../router.js';
 
 class ProjectRepository {
   // ✅ CREATE

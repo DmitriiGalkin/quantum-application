@@ -14,7 +14,6 @@ import {
   type DeleteProjectUser,
   type GetIdeasQuery,
   type GetMeetsQuery,
-  type GetProjectsQuery,
   type IdeaExtendedDto,
   type IdeaFullDto,
   type MeetDto,
@@ -43,7 +42,7 @@ export const fetchCreateChat = (params: CreateChatBody) => post<number>('/chat',
 export const fetchCreateChatMessages = (chatId: number, messages: CreateMessageDto[]) =>
   post<ChatMessagesResult>(`/chat/${chatId}/messages`, messages);
 
-export const fetchProject = (id: string, params?: GetProjectsQuery) => get<ProjectFullDto>(`/project/${id}?${params && toQuery(params)}`);
+export const fetchProject = (id: string) => get<ProjectFullDto>(`/project/${id}`);
 export const fetchCreateProject = (params: CreateProject) => post<number>('/project', params);
 export const fetchUserProjects = (userId: number) => get<ProjectFullDto[]>(`/user/${userId}/projects`);
 export const fetchPassportProjects = () => get<ProjectFullDto[]>('/passport/projects');

@@ -14,6 +14,7 @@ import { Place } from '../entities/place.js';
 import { CreateProject, type ProjectFullDto } from '@shared/types';
 import PaymentRepository from '../repositories/payment.repository.js';
 import { MeetService } from './meet.service.js';
+import { Viewer } from '../router.js';
 
 export class ProjectService {
   static async create(passport: Passport, data: CreateProject) {
@@ -48,7 +49,7 @@ export class ProjectService {
       Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
       Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),
       Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<Place>)),
-      Promise.all(projects.map(p => MeetService.findAll({ projectId: p.id}))),
+      Promise.all(projects.map(p => MeetService.findAll({ projectId: p.id }))),
     ]);
 
     return projects.map((project, i) => ({
@@ -61,14 +62,14 @@ export class ProjectService {
     }));
   }
 
-  static async findById(projectId: number, userId?: number): Promise<ProjectFullDto> {
+  static async findById(projectId: number, viewer?: Viewer): Promise<ProjectFullDto> {
     const project = await ProjectRepository.findById(projectId);
     if (!project) throw new Error('NOT_FOUND');
 
     const [passport, users, meets, place, idea, joins] = await Promise.all([
       PassportRepository.findById(project.passportId as number) as Promise<Passport>,
       UserRepository.findByProjectId(projectId),
-      MeetRepository.findByProjectId(projectId),
+      MeetRepository.findByProjectId(projectId, viewer?.role === 'teacher'),
       PlaceRepository.findById(project.placeId) as Promise<Place>,
       project.ideaId ? (IdeaRepository.findById(project.ideaId) as Promise<Idea>) : null,
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
@@ -80,7 +81,7 @@ export class ProjectService {
 
     const meetIds = meets.map(m => m.id);
 
-    const paymentIds = userId && meetIds.length ? await PaymentRepository.findPaidMeetIdsByUser(userId, meetIds) : [];
+    const paymentIds = viewer?.userId && meetIds.length ? await PaymentRepository.findPaidMeetIdsByUser(viewer.userId, meetIds) : [];
 
     const meetExtendeds = meets.map((m, i) => ({
       ...m,

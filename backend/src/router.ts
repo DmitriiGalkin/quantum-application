@@ -1,4 +1,4 @@
-import express, { RequestHandler } from 'express';
+import express, { NextFunction, Request, RequestHandler, Response } from 'express';
 import passport from 'passport';
 import multer from 'multer';
 
@@ -21,6 +21,9 @@ import { ControllerWithAuth } from './controllers/helper.js';
 import placeTeacherController from './controllers/placeTeacher.controller.js';
 import paymentController from './controllers/payment.controller.js';
 import teacherController from './controllers/teacher.controller.js';
+import { Passport } from './entities/passport.js';
+import { ActiveRole } from '@shared/types';
+import UserRepository from './repositories/user.repository.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -38,7 +41,41 @@ const withAuth =
     }
   };
 
+export interface Viewer {
+  role: ActiveRole;
+  passport: Passport | null;
+  userId?: number;
+};
+
+declare global {
+  namespace Express {
+    interface Request {
+      passport?: Passport;
+      viewer?: Viewer;
+    }
+  }
+}
 privateRouter.use(passportController.usePassport);
+
+export const verifyChild = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.viewer?.userId) {
+    return next();
+  }
+
+  const child = await UserRepository.findById(req.viewer.userId);
+
+  if (!child) {
+    return res.sendStatus(404);
+  }
+
+  if (child.passportId !== req.viewer.passport!.id) {
+    return res.sendStatus(403);
+  }
+
+  next();
+};
+
+privateRouter.use(verifyChild);
 
 const registerOAuth = (provider: 'yandex' | 'google') => {
   const strategy = strategies[provider];

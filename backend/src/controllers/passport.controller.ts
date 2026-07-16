@@ -1,7 +1,7 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
 import PassportRepository from '../repositories/passport.repository.js';
-import { PassportExtendedDto } from '@shared/types';
+import { ActiveRole, PassportExtendedDto } from '@shared/types';
 import { Request, Response } from 'express';
 import { Passport } from '../entities/passport.js';
 
@@ -33,19 +33,6 @@ const all: ControllerWithAuth<PassportExtendedDto> = async (req, res) => {
   }
 };
 
-declare global {
-  namespace Express {
-    interface Request {
-      passport?: Passport;
-
-      viewer?: {
-        role: ;
-        passport: Passport | null;
-        childId?: number;
-      };
-    }
-  }
-}
 
 /**
  * Middleware для проверки токена доступа
@@ -74,15 +61,14 @@ const usePassport = async (req: Request, res: Response, next: Function) => {
     }
 
     const childId = req.header('X-Child-Id');
-    const role = (req.header('X-Role') || 'guest') as ;
+    const role = (req.header('X-Role') || 'guest') as ActiveRole;
 
     req.viewer = {
-      role, // или вычислить роль по passport
+      role,
       passport,
       childId: childId ? Number(childId) : undefined,
     };
-    //req.users = await User.findByPassportId(req.passport.id || 0);
-    // @ts-ignore
+
     req.passport = passport;
 
     next(); // Передаем управление следующему обработчику
