@@ -55,8 +55,8 @@ export interface MeetExtendedDto extends MeetDto {
   users: UserDto[];
   place: PlaceDto;
   passport: PassportDto;
-  project: ProjectDto;
 
+  projectTitle?: string;
   isPaid?: boolean;
   // Общее количество участников проекта
   capacity: number;

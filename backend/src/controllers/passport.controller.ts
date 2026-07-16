@@ -60,13 +60,13 @@ const usePassport = async (req: Request, res: Response, next: Function) => {
       return res.status(401).json({ error: true, message: 'Токен недействителен или протух' });
     }
 
-    const childId = req.header('X-Child-Id');
+    const userId = req.header('X-User-Id');
     const role = (req.header('X-Role') || 'guest') as ActiveRole;
 
     req.viewer = {
       role,
       passport,
-      childId: childId ? Number(childId) : undefined,
+      userId: userId ? Number(userId) : undefined,
     };
 
     req.passport = passport;

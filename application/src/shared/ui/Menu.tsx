@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import KeyOffIcon from '@mui/icons-material/KeyOff';
 import '../../App.css';
-import { type ActiveRole, useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -20,6 +20,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { ListItemAvatar, Tab, Tabs } from '@mui/material';
 import { useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
+import type { ActiveRole } from '@shared/types';
 
 type MenuItemConfig = {
   label: string;

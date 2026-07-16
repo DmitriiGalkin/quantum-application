@@ -34,7 +34,7 @@ export default function MeetCardBody({ meet, isMember }: Props) {
               fontWeight: 700,
             }}
           >
-            {meet.project?.title ?? 'Untitled meeting'}
+            {meet.projectTitle ?? 'Untitled meeting'}
           </Typography>
         </Box>
 
@@ -45,7 +45,6 @@ export default function MeetCardBody({ meet, isMember }: Props) {
         </Stack>
       </Stack>
       <Stack spacing={1.5}>
-
         {/* META INFO */}
         <Stack spacing={1}>
           {/* Преподаватель */}
@@ -77,7 +76,7 @@ export default function MeetCardBody({ meet, isMember }: Props) {
                 <Typography variant="body2">{meet.price}</Typography>
               </Stack>
 
-              {isMember && activeContext.role==='user' && (
+              {isMember && activeContext.role === 'user' && (
                 <Chip size="small" label={isPaid ? 'Оплачено' : 'Ожидает оплату'} color={isPaid ? 'success' : 'warning'} />
               )}
             </Stack>

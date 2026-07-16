@@ -127,7 +127,6 @@ class MeetRepository {
 
   // ✅ FIND BY PROJECT ID
   static async findByProjectId(projectId: number, includeDeleted = false): Promise<Meet[]> {
-    console.log(includeDeleted, 'includeDeleted');
     const rows = await db.query<MeetRow>(
       `
         SELECT *

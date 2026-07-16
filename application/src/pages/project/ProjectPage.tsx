@@ -9,7 +9,7 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
-  const { activeContext, passport } = useAuth();
+  const { activeContext } = useAuth();
   const role = activeContext.role;
 
   const { data: project, refetch } = useQuery({

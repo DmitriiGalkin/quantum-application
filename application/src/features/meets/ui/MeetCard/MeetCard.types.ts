@@ -1,4 +1,4 @@
-import type { ActiveRole } from '../../../../providers/AuthProvider.tsx';
+import type { ActiveRole } from '@shared/types';
 
 export type UserRole = 'student' | 'teacher' | 'guest' | 'place';
 

@@ -85,7 +85,7 @@ export class ProjectService {
 
     const meetExtendeds = meets.map((m, i) => ({
       ...m,
-      project,
+      projectTitle: project.title,
       place: placesForMeets[i],
       users: usersForMeets[i],
       isPaid: paymentIds.includes(m.id),
