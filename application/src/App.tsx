@@ -32,6 +32,7 @@ import { LandingPlacePage } from './pages/landing/LandingPlacePage.tsx';
 import { LandingTeacherPage } from './pages/landing/LandingTeacherPage.tsx';
 import PaymentSuccessPage from './pages/payment/PaymentSuccessPage.tsx';
 import PaymentFailPage from './pages/payment/PaymentFailPage.tsx';
+import { LandingParentPage } from './pages/landing/LandingParentPage.tsx';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
+        <Route path="landing/parent" element={<LandingParentPage />} />
         <Route path="landing/teacher" element={<LandingTeacherPage />} />
         <Route path="landing/place" element={<LandingPlacePage />} />
         <Route path="mission" element={<MissionPage />} />

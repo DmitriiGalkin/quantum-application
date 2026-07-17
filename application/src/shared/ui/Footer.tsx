@@ -35,7 +35,7 @@ export default function Footer() {
               <Typography>Учителям</Typography>
             </Link>
             <Link href="/landing/place" underline="hover" sx={{ display: 'block' }}>
-              <Typography>Пространствам</Typography>
+              <Typography>Центрам</Typography>
             </Link>
           </Grid>
 

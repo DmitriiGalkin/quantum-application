@@ -1,23 +1,38 @@
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Header from './shared/ui/Header.tsx';
-import Page from './shared/ui/Page.tsx';
+import Footer from './shared/ui/Footer.tsx';
 
 export function AppLayout({ withoutPaddings }: { withoutPaddings?: boolean }) {
   return (
     <Box
       sx={{
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
       }}
     >
       <Header />
 
-      <Page withoutPaddings={withoutPaddings}>
+      <Box
+        component="main"
+        sx={
+          !withoutPaddings
+            ? {
+                px: 2,
+                pt: 2,
+                pb: 10,
+                flex: 1,
+              }
+            : {
+                flex: 1,
+              }
+        }
+      >
         <Outlet />
-      </Page>
+      </Box>
+
+      <Footer />
     </Box>
   );
 }

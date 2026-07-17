@@ -1,4 +1,4 @@
-import { Breadcrumbs, Card, CardActionArea, CardContent, Grid, Stack, Typography, Link as MUILink } from '@mui/material';
+import { Card, CardActionArea, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlace } from '../../requests.ts';
@@ -24,13 +24,6 @@ export default function PlaceDashboardPage() {
 
   return (
     <Stack spacing={3}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <MUILink underline="hover" color="inherit" href="/">
-          {place.title}
-        </MUILink>
-        <Typography sx={{ color: 'text.primary' }}>Dashboard</Typography>
-      </Breadcrumbs>
-
       <Grid container spacing={2}>
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
