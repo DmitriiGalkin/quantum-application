@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassport } from '../requests.ts';
-import type { ActiveRole, PassportDto, PlaceDto } from '@shared/types';
+import type { ActiveRole, PassportDto, PassportExtendedDto, PlaceDto } from '@shared/types';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
@@ -47,6 +47,7 @@ export interface ActiveContext {
 type AuthContextType = {
   passport: PassportDto | null;
   activeUser: User | null;
+  activeTeacher: boolean;
   users: User[];
   places: PlaceDto[];
   activePlace: PlaceDto | null;
@@ -93,6 +94,8 @@ export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   //const [user, setUser] = useState<User | null>(null);
+  const [activeTeacher, setActiveTeacher] = useState<boolean>(false);
+
   const [users, setUsers] = useState<User[]>([]);
   const [places, setPlaces] = useState<PlaceDto[]>([]);
 
@@ -125,17 +128,41 @@ export const AuthProvider = ({ children }: Props) => {
     setRedirect(window.location.pathname + window.location.search);
   }, [location]);
 
+  const getContext = (data: PassportExtendedDto): ActiveContext => {
+    if (Boolean(data.users.length)) {
+      return {
+        role: 'user' as ActiveRole,
+        userId: data.users?.[0]?.id,
+      };
+    }
+
+    if (data.isTeacher) {
+      return {
+        role: 'teacher' as ActiveRole,
+      };
+    }
+
+    if (!!data.places.length) {
+      return {
+        role: 'place' as ActiveRole,
+        placeId: data.places?.[0]?.id,
+      };
+    }
+
+    return {
+      role: 'teacher' as ActiveRole,
+    };
+  };
+
   useEffect(() => {
     if (data) {
       setPassport(data);
       //setUser(data.users?.[0]);
       setUsers(data.users);
       setPlaces(data.places);
+      setActiveTeacher(data.isTeacher);
 
-      const newContext = {
-        role: 'user' as ActiveRole,
-        userId: data.users?.[0]?.id,
-      };
+      const newContext = getContext(data);
 
       localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(newContext));
 
@@ -233,6 +260,7 @@ export const AuthProvider = ({ children }: Props) => {
         switchTeacher,
         switchPlace,
         availableRoles,
+        activeTeacher,
       }}
     >
       <>

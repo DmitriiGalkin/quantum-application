@@ -1,21 +1,32 @@
-import type { PassportDto, PlaceDto } from '@shared/types';
+import type { PlaceDto, ProjectExtendedDto } from '@shared/types';
 import { Avatar, CardHeader, IconButton, ListItemIcon, Menu, MenuItem, Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PlaceIcon from '@mui/icons-material/Place';
 import Typography from '@mui/material/Typography';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useMutation } from '@tanstack/react-query';
+import { fetchProjectLeave } from '../../requests.ts';
 
 type Props = {
-  passport: PassportDto;
+  project: ProjectExtendedDto;
   place: PlaceDto;
-  onExit?: () => void;
+  refetch?: () => void;
 };
 
-function ProjectCardHeader({ passport, place, onExit }: Props) {
-  const { activeContext } = useAuth();
+function ProjectCardHeader({ project, place, refetch }: Props) {
+  const passport = project.passport;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { activeUser, authHandler, activeContext } = useAuth();
+  const isMember = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
+
+  const mutationLeave = useMutation({
+    mutationFn: fetchProjectLeave,
+    onSuccess: () => {
+      refetch?.();
+    },
+  });
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -32,12 +43,17 @@ function ProjectCardHeader({ passport, place, onExit }: Props) {
 
   const menuItems = [];
 
-  if (onExit && activeContext.role === 'user') {
+  const onLeave = () => {
+    if (activeUser) mutationLeave.mutate(project.id);
+    else authHandler();
+  };
+
+  if (isMember && activeContext.role === 'user') {
     menuItems.push({
       key: 'exit',
       label: 'Выйти из проекта',
       icon: <LogoutIcon fontSize="small" />,
-      onClick: onExit,
+      onClick: onLeave,
     });
   }
 
@@ -65,7 +81,7 @@ function ProjectCardHeader({ passport, place, onExit }: Props) {
                   }}
                 >
                   <ListItemIcon>{item.icon}</ListItemIcon>
-                    {item.label}
+                  {item.label}
                 </MenuItem>
               ))}
             </Menu>

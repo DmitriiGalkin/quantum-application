@@ -24,7 +24,6 @@ import type {
   PlaceFullDto,
   CreateProject,
   CreateProjectUser,
-  DeleteProjectUser,
   ProjectFullDto,
   TeacherDto,
 } from '@shared/types';
@@ -48,7 +47,7 @@ export const fetchCreateProject = (params: CreateProject) => post<number>('/proj
 export const fetchUserProjects = (userId: number) => get<ProjectFullDto[]>(`/user/${userId}/projects`);
 export const fetchPassportProjects = () => get<ProjectFullDto[]>('/passport/projects');
 export const fetchCreateProjectUser = (params: CreateProjectUser) => post<void>('/projectUser', params);
-export const fetchDeleteProjectUser = (params: DeleteProjectUser) => del<void>(`/projectUser?userId=${params.userId}&projectId=${params.projectId}`);
+export const fetchProjectLeave = (id: number) => del<void>(`/project/${id}/leave`);
 
 export const fetchMeets = (params: GetMeetsQuery) => get<MeetExtendedDto[]>(`/meets?${toQuery(params)}`);
 export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
@@ -61,7 +60,7 @@ export const fetchTeacherMeets = () => get<MeetExtendedDto[]>('/teacher/meets');
 
 export const fetchPlace = (id: string) => get<PlaceFullDto>(`/place/${id}`);
 export const fetchPlaces = () => get<PlaceFullDto[]>('/places');
-export const fetchCreatePlace = (params: CreatePlace) => post<void>('/place', params);
+export const fetchCreatePlace = (params: CreatePlace) => post<number>('/place', params);
 export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { passportId });
 export const fetchPlaceTeachers = () => get<TeacherDto[]>('/place/teachers');
 export const fetchRemoveTeacher = (passportId: number) => del<void>(`/place/teachers/${passportId}`);

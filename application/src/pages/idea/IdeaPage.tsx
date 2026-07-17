@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchIdea } from '../../requests.ts';
 import { Button, Grid } from '@mui/material';
-import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
+import ProjectCard from '../../features/project/ProjectCard.tsx';
 import { useFilters } from '../../features/idea/model/useFilters.ts';
 import Filter from '../../features/idea/ui/Filter.tsx';
 import Idea from '../../features/idea/ui/Idea.tsx';
@@ -92,7 +92,7 @@ function IdeaPage() {
                 }}
               >
                 {(idea.projects || []).map((project, index) => (
-                  <ProjectCard key={index} project={project} refetch={refetch} />
+                  <ProjectCard key={index} project={project} refetch={refetch} withoutIdea />
                 ))}
               </Box>
             </>

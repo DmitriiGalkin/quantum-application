@@ -10,9 +10,10 @@ import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import EditIcon from '@mui/icons-material/Edit';
-import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PaymentIcon from '@mui/icons-material/Payment';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { getMeetStatus, statusConfig } from './helper.ts';
 
 interface Props {
@@ -133,7 +134,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
     menuItems.push({
       key: 'refund',
       label: 'Запросить возврат средств',
-      icon: <LogoutIcon fontSize="small" />,
+      icon: <PaymentIcon fontSize="small" />,
       onClick: () => {
         console.log('Прошу возврат');
       },
@@ -143,8 +144,9 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   if (isMember && role === 'user') {
     menuItems.push({
       key: 'leave',
+      sx: { color: 'error.main' },
       label: 'Отменить участие',
-      icon: <LogoutIcon fontSize="small" />,
+      icon: <PersonRemoveIcon fontSize="small" />,
       onClick: onExit,
     });
   }
@@ -203,6 +205,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
                       handleClose(e);
                       item.onClick();
                     }}
+                    sx={item.sx}
                   >
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     {item.label}

@@ -48,7 +48,7 @@ interface MenuProps {
 }
 
 function Menu({ setIsMenuOpen }: MenuProps) {
-  const { activeUser, users, places, passport, activePlace, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
+  const { activeUser, users, places, passport, activePlace, activeTeacher, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
   const [value, setValue] = useState(0);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -116,7 +116,7 @@ function Menu({ setIsMenuOpen }: MenuProps) {
     place: [
       {
         label: 'Дашборд',
-        to: '/place',
+        to: `/place/${activePlace?.id}`,
         icon: <AssignmentIcon />,
       },
       {
@@ -153,7 +153,7 @@ function Menu({ setIsMenuOpen }: MenuProps) {
         }}
       >
         {activeUser && <Tab label="Ученик" {...a11yProps('user')} onClick={() => switchUser(activeUser?.id ?? users[0].id)} />}
-        {passport && <Tab label="Учитель" {...a11yProps('teacher')} onClick={switchTeacher} />}
+        {activeTeacher && <Tab label="Учитель" {...a11yProps('teacher')} onClick={switchTeacher} />}
         {activePlace && <Tab label="Центр" {...a11yProps('place')} onClick={() => switchPlace(activePlace?.id ?? places[0].id)} />}
       </Tabs>
 

@@ -125,7 +125,7 @@ publicRouter.get('/project/:id/meta', project.meta);
 privateRouter.post('/project', withAuth(project.create));
 privateRouter.delete('/project/:id', withAuth(project.delete));
 privateRouter.post('/projectUser', withAuth(projectUser.create));
-privateRouter.delete('/projectUser', withAuth(projectUser.delete));
+privateRouter.delete('/project/:id/leave', withAuth(projectUser.leave));
 
 publicRouter.get('/user/:id', user.findById);
 privateRouter.post('/user', withAuth(user.create));

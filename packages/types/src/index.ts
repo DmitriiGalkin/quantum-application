@@ -95,6 +95,7 @@ export interface PassportDto {
 export interface PassportExtendedDto extends PassportDto {
   users: UserDto[];
   places: PlaceDto[];
+  isTeacher: boolean;
 }
 
 export interface PlaceDto {
@@ -208,10 +209,10 @@ export interface CreateProjectUser {
   projectId: number;
   userId: number;
 }
-export interface DeleteProjectUser {
-  projectId: number;
-  userId: number;
-}
+// export interface DeleteProjectUser {
+//   projectId: number;
+//   userId: number;
+// }
 
 export interface CreateMeetUser {
   meetId: number;

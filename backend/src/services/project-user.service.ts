@@ -2,7 +2,6 @@ import ProjectRepository from '../repositories/project.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { Passport } from '../entities/passport.js';
-import type { DeleteProjectUser } from '@shared/types';
 
 export function getPassportUserIds(passportId: number) {
   // если у тебя раньше был req.users — лучше заменить на нормальный сервис/запрос
@@ -46,11 +45,9 @@ export class ProjectUserService {
   }
 
   /**
-   * Удаление пользователя из проекта
+   * Выход пользователя из проекта
    */
-  static async remove(passportId: number, body: DeleteProjectUser) {
-    const { projectId, userId } = body;
-
+  static async leave(projectId: number, userId: number) {
     if (!projectId || !userId) {
       throw new Error('projectId и userId обязательны');
     }
@@ -60,14 +57,7 @@ export class ProjectUserService {
       throw new Error('Участие в проекте не существует');
     }
 
-    const allowedUsers = await UserRepository.findByPassportId(passportId);
-    const allowedUserIds = allowedUsers.map(u => u.id);
-
-    if (!allowedUserIds.includes(Number(userId))) {
-      throw new Error('Нет прав на удаление');
-    }
-
-    await ProjectUserRepository.delete({ projectId, userId });
+    await ProjectUserRepository.delete(projectId, userId );
 
     return true;
   }

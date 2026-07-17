@@ -14,7 +14,7 @@ import { CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
 import AISelectIdeaBanner from '../../features/idea/ui/AISelectIdeaBanner.tsx';
 import type { IdeaDto, ProjectFullDto } from '@shared/types';
-import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
+import ProjectCard from '../../features/project/ProjectCard.tsx';
 
 function TeacherProjectsPage() {
   const { id } = useParams();

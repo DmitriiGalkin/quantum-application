@@ -46,7 +46,7 @@ function App() {
         <Route path="project/:id/edit" element={<ProjectEditPage />} />
         <Route path="project/:id/meets/create" element={<MeetCreatePage />} />
         <Route path="project/:id/meets/:meetId/edit" element={<MeetEditPage />} />
-        <Route path="create" element={<PlaceCreatePage />} />
+        <Route path="place/create" element={<PlaceCreatePage />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>

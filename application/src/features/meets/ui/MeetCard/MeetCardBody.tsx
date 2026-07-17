@@ -76,9 +76,8 @@ export default function MeetCardBody({ meet, isMember }: Props) {
                 <Typography variant="body2">{meet.price}</Typography>
               </Stack>
 
-              {isMember && activeContext.role === 'user' && (
-                <Chip size="small" label={isPaid ? 'Оплачено' : 'Ожидает оплату'} color={isPaid ? 'success' : 'warning'} />
-              )}
+              {isMember && activeContext.role === 'user' && !isPaid && <Chip size="small" label="Ожидает оплату" color="warning" />}
+              {activeContext.role === 'user' && isPaid && <Chip size="small" label="Оплачено" color="success" />}
             </Stack>
           ) : (
             <Typography variant="body2">Бесплатная встреча</Typography>

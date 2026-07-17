@@ -4,6 +4,7 @@ import UserRepository from '../repositories/user.repository.js';
 import { PassportExtendedDto } from '@shared/types';
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
+import ProjectRepository from '../repositories/project.repository.js';
 
 export class AuthService {
   static async updateProfile(passport: any, data: any) {
@@ -25,11 +26,13 @@ export class AuthService {
   static async getFullProfile(passport: any): Promise<PassportExtendedDto> {
     const users = await UserRepository.findByPassportId(passport.id || 0);
     const places = await PlaceRepository.findByPassportId(passport.id || 0);
+    const isTeacher = await ProjectRepository.findAll({ passportId: passport.id });
 
     return {
       ...passport,
       users,
       places,
+      isTeacher: Boolean(isTeacher.length),
     };
   }
 

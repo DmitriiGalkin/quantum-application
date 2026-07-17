@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../../requests.ts';
-import Project from '../../features/project/ui/Project.tsx';
+import ProjectCard from '../../features/project/ProjectCard.tsx';
 
 function UserProjectsPage() {
   const { id } = useParams();
@@ -38,7 +38,7 @@ function UserProjectsPage() {
           }}
         >
           {projects.map(project => (
-            <Project project={project} refetch={refetch} />
+            <ProjectCard project={project} refetch={refetch} />
           ))}
         </Box>
       )}

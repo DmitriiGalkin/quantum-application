@@ -1,40 +1,47 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Button, Card, CardActionArea, CardContent, Chip, Stack } from '@mui/material';
+import { Button, Card, CardActionArea, CardContent, Chip, IconButton, Stack } from '@mui/material';
 import { type ProjectExtendedDto } from '@shared/types';
-import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import AvatarGroupUsers from '../../shared/ui/AvatarGroupUsers.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateProjectUser, fetchCreateUser } from '../../../requests.ts';
+import { fetchCreateProjectUser, fetchCreateUser } from '../../requests.ts';
 import ProjectCardHeader from './ProjectCardHeader.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { CreateUserForm } from '../../user/ui/CreateUserForm.tsx';
-import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
-import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
+import { CreateUserForm } from '../user/CreateUserForm.tsx';
+import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
+import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
-import { getMeetStatus, statusConfig } from '../../meets/ui/MeetCard/helper.ts';
+import { getMeetStatus, statusConfig } from '../meets/ui/MeetCard/helper.ts';
+import CardMedia from '@mui/material/CardMedia';
+import LinkIcon from '@mui/icons-material/Link';
 
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 
 type Props = {
   project: ProjectExtendedDto;
+  withoutIdea?: boolean;
   refetch?: any;
 };
 
-function ProjectCard({ project, refetch }: Props) {
+function ProjectCard({ project, refetch, withoutIdea }: Props) {
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const { activeUser, passport, authHandler, refetch: refetchPassport, activeContext } = useAuth();
   const [isUserModalOpen, setUserModalOpen] = useState(false);
 
   const isMember = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
-  const firstMeet = project.meets?.[0];
+  const sortedMeets = [...project.meets].sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
+  const now = new Date();
+
+  const firstMeet = sortedMeets.find(m => new Date(m.startedAt) > now);
+
   const status = firstMeet ? statusConfig[getMeetStatus(firstMeet)] : undefined;
-  const startedAt = new Date(firstMeet?.startedAt);
+  const startedAt = new Date(firstMeet?.startedAt || new Date());
   const date = startedAt.toLocaleDateString('ru-RU', {
     day: '2-digit',
     month: 'short',
@@ -112,7 +119,50 @@ function ProjectCard({ project, refetch }: Props) {
         }}
         onClick={() => navigate(`/project/${project.id}`)}
       >
-        <ProjectCardHeader passport={project.passport} place={project.place} />
+        <ProjectCardHeader project={project} place={project.place} refetch={refetch} />
+
+        {!withoutIdea && (
+          <>
+            <CardMedia
+              component="img"
+              height="360"
+              image={project.image || `/bg.jpeg`}
+              alt={project.title || 'Проект'}
+              sx={{
+                objectFit: 'cover',
+                height: {
+                  xs: 220,
+                  sm: 360,
+                },
+              }}
+            />
+
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography component="h1" variant="h6" gutterBottom>
+                  {project.title}
+                </Typography>
+                <IconButton
+                  size="small"
+                  onClick={e => {
+                    e.stopPropagation(); // важно: чтобы не триггерить Card click
+                    navigate(`/idea/${project.ideaId}`);
+                  }}
+                  sx={{
+                    opacity: 0.5,
+                    '&:hover': {
+                      opacity: 1,
+                    },
+                  }}
+                >
+                  <LinkIcon fontSize="small" />
+                </IconButton>
+              </Box>
+
+              <Typography sx={{ color: 'text.secondary' }}>{project.description}</Typography>
+            </CardContent>
+          </>
+        )}
 
         {firstMeet && status ? (
           <CardContent sx={{ backgroundColor: 'rgba(255,160,40,.1)' }}>

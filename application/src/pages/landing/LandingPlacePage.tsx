@@ -50,7 +50,7 @@ export function LandingPlacePage() {
             Создать образовательный центр
           </Button>
 
-          <Button variant="outlined" size="large" sx={{ color: 'white '}}>
+          <Button variant="outlined" size="large" sx={{ color: 'white ' }}>
             Подробнее
           </Button>
         </Stack>
@@ -63,7 +63,7 @@ export function LandingPlacePage() {
               {
                 icon: <GroupsIcon color="primary" sx={{ fontSize: 42 }} />,
                 title: 'Ученики',
-                description: 'Храните профили, документы и историю обучения каждого ученика.',
+                description: 'Храните контакты и историю участия в проектах каждого ученика',
               },
               {
                 icon: <CalendarMonthIcon color="primary" sx={{ fontSize: 42 }} />,
@@ -73,7 +73,7 @@ export function LandingPlacePage() {
               {
                 icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
                 title: 'Оплаты',
-                description: 'Принимайте оплату за занятия и образовательные программы.',
+                description: 'Принимайте оплату за занятия и образовательные программы прямо с сайта.',
               },
             ].map(item => (
               <Grid key={item.title} size={{ xs: 12, md: 4 }}>
@@ -95,10 +95,10 @@ export function LandingPlacePage() {
                 },
                 {
                   title: '2. Создайте проект',
-                  description: 'Настройте группу и сроки обучения.',
+                  description: 'Выберите идею проекта и план обучения.',
                 },
                 {
-                  title: '3. назначьте первую встречу',
+                  title: '3. Назначьте первую встречу',
                   description: 'Ученики смогут записываться на занятия.',
                 },
               ].map(item => (

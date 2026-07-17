@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { fetchCreatePlace } from '../../requests.ts';
+import Paper from '@mui/material/Paper';
 
 export default function PlaceCreatePage() {
   const navigate = useNavigate();
@@ -19,13 +20,13 @@ export default function PlaceCreatePage() {
   const createPlace = useMutation({
     mutationFn: fetchCreatePlace,
 
-    onSuccess() {
-      navigate('/place');
+    onSuccess: (placeId: number)=>  {
+      navigate(`/place/${placeId}`);
     },
   });
 
   return (
-    <Box>
+    <Paper sx={{p:2}}>
       <Stack spacing={3}>
         <Typography variant="h4">Создать учебный центр</Typography>
 
@@ -79,6 +80,6 @@ export default function PlaceCreatePage() {
           Создать центр
         </Button>
       </Stack>
-    </Box>
+    </Paper>
   );
 }
