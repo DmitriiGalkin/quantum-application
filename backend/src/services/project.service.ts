@@ -81,7 +81,9 @@ export class ProjectService {
 
     const meetIds = meets.map(m => m.id);
 
+    console.log(viewer, 'viewer');
     const paymentIds = viewer?.userId && meetIds.length ? await PaymentRepository.findPaidMeetIdsByUser(viewer.userId, meetIds) : [];
+    console.log(paymentIds, 'paymentIds');
 
     const meetExtendeds = meets.map((m, i) => ({
       ...m,

@@ -14,7 +14,7 @@ const api = async function <T>(path: string, options: RequestInit = {}): Promise
       ...(options.headers || {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ['X-Role']: activeContext.role,
-      ['X-User-Id']: String(activeContext.userId),
+      ...(activeContext.role === 'user' ? {['X-User-Id']: String(activeContext.userId)} : {} ),
     },
   });
 

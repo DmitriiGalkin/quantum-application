@@ -131,15 +131,20 @@ export const AuthProvider = ({ children }: Props) => {
       //setUser(data.users?.[0]);
       setUsers(data.users);
       setPlaces(data.places);
+
+      const newContext = {
+        role: 'user' as ActiveRole,
+        userId: data.users?.[0]?.id,
+      };
+
+      localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(newContext));
+
       setActiveContext(context => {
         if (context.role !== 'guest') {
           return context;
         }
 
-        return {
-          role: 'user',
-          userId: data.users?.[0]?.id,
-        };
+        return newContext;
       });
     }
   }, [data]);
