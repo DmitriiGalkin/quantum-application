@@ -3,6 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';
 import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
 import WeekCalendar from '../../features/meets/ui/WeekCalendar.tsx';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewWeekIcon from '@mui/icons-material/ViewWeek';
+
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+
 
 //
 // Для центра это одна из самых полезных страниц, поэтому позже сюда хорошо ложатся:
@@ -15,6 +23,7 @@ import WeekCalendar from '../../features/meets/ui/WeekCalendar.tsx';
 
 export default function PlaceMeetsPage() {
 const place = {id: 2}
+  const [view, setView] = useState<'week' | 'module'>('module');
 
   const { data: meets } = useQuery({
     queryKey: ['meets', place?.id],
@@ -24,59 +33,75 @@ const place = {id: 2}
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4">Расписание центра</Typography>
+      <Stack spacing={2} direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Typography variant="h4">Расписание центра</Typography>
+
+        <ToggleButtonGroup
+          value={view}
+          exclusive
+          onChange={(_, nextView: string) => {
+            setView(nextView as 'week' | 'module');
+          }}
+          size="small"
+          sx={{
+            '& .MuiToggleButton-root': {
+              color: '#fff', // иконки
+              borderColor: 'rgba(255,255,255,0.5)',
+
+              '&.Mui-selected': {
+                color: '#fff',
+                backgroundColor: 'rgba(255,255,255,0.2)',
+              },
+
+              '&:hover': {
+                backgroundColor: 'rgba(255,255,255,0.1)',
+              },
+            },
+          }}
+        >
+          <ToggleButton value="module" aria-label="module">
+            <ViewModuleIcon />
+          </ToggleButton>
+          <ToggleButton value="week" aria-label="week">
+            <ViewWeekIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Stack>
 
       {meets?.length === 0 && <Typography color="text.secondary">Запланированных встреч нет</Typography>}
 
-      {meets?.map(meet => (
-        <MeetCard key={meet.id} meet={meet} />
-      ))}
+      {view === 'module' && (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, minmax(0, 1fr))',
+              md: 'repeat(3, minmax(0, 1fr))',
+              lg: 'repeat(3, minmax(0, 1fr))',
+            },
+            gap: 1.5,
+          }}
+        >
+          {meets?.map(meet => (
+            <MeetCard key={meet.id} meet={meet} />
+          ))}
+        </Box>
+      )}
 
-      <WeekCalendar
-        meets={[
-          {
-            id: 1,
-            title: 'Алгебра',
-            startedAt: '2026-07-06T09:00:00',
-            endedAt: '2026-07-06T10:30:00',
-            color: '#1976d2',
-            project: {
-              id: 1,
-              name: '9А класс',
-            },
-          },
-          {
-            id: 2,
-            title: 'Физика',
-            startedAt: '2026-07-08T14:00:00',
-            endedAt: '2026-07-08T15:30:00',
-            color: '#2e7d32',
-            project: {
-              id: 2,
-              name: 'Подготовка к ЕГЭ',
-            },
-          },
-          {
-            id: 3,
-            title: 'Химия',
-            startedAt: '2026-07-09T11:00:00',
-            endedAt: '2026-07-09T12:00:00',
-            color: '#ed6c02',
-            project: {
-              id: 3,
-              name: '10 класс',
-            },
-          },
-        ]}
-        onMeetClick={meet => {
-          console.log('Встреча', meet);
-          // navigate(`/meet/${meet.id}`);
-        }}
-        onCellClick={date => {
-          console.log('Создать встречу', date);
-          // navigate(`/meet/create?startedAt=${date.toISOString()}`);
-        }}
-      />
+      {view === 'week' && (
+        <WeekCalendar
+          meets={meets || []}
+          onMeetClick={meet => {
+            console.log('Встреча', meet);
+            // navigate(`/meet/${meet.id}`);
+          }}
+          onCellClick={date => {
+            console.log('Создать встречу', date);
+            // navigate(`/meet/create?startedAt=${date.toISOString()}`);
+          }}
+        />
+      )}
     </Stack>
   );
 }

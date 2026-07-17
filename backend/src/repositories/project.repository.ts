@@ -65,6 +65,12 @@ class ProjectRepository {
       values.push(params.ideaId);
     }
 
+    // ✅ добавляем фильтр по placeId
+    if (params.placeId) {
+      sql += ' AND project.placeId = ?';
+      values.push(params.placeId);
+    }
+
     sql += params.deleted === 'true' ? ' AND project.deletedAt IS NOT NULL' : ' AND project.deletedAt IS NULL';
 
     const rows = await db.query<ProjectRow>(sql, values);

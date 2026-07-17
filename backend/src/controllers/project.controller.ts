@@ -49,6 +49,17 @@ const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
   ok(res, projects);
 };
 
+const findByPlaceId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
+  console.log(req.viewer, 'req.viewer');
+
+  const projects = await ProjectService.findAll({
+    ...req.query,
+    placeId: Number(req.params?.id),
+  });
+
+  ok(res, projects);
+};
+
 const findById: ControllerWithAuth<ProjectFullDto> = async (req, res) => {
   try {
     const data = await ProjectService.findById(Number(req.params.id), req.viewer!);
@@ -77,5 +88,6 @@ export default {
   findByUserId,
   findById,
   findByPassportId,
+  findByPlaceId,
   meta,
 };

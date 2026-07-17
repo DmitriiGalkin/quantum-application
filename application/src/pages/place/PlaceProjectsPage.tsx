@@ -1,28 +1,18 @@
-import { Card, CardContent, Stack, Typography } from '@mui/material';
-
-type Project = {
-  id: number;
-  title: string;
-  teacherTitle: string;
-  userCount: number;
-};
+import { Stack, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { fetchPlaceProjects } from '../../requests.ts';
+import { useParams } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import ProjectCard from '../../features/project/ProjectCard.tsx';
 
 export default function PlaceProjectsPage() {
-  // TODO: заменить на useQuery(fetchPlaceProjects)
-  const projects: Project[] = [
-    {
-      id: 1,
-      title: 'Робототехника',
-      teacherTitle: 'Анна Иванова',
-      userCount: 8,
-    },
-    {
-      id: 2,
-      title: 'Создание сайта',
-      teacherTitle: 'Дмитрий Петров',
-      userCount: 5,
-    },
-  ];
+  const { id } = useParams();
+  const placeId = Number(id);
+
+  const { data: projects = [] } = useQuery({
+    queryKey: ['place-projects', placeId],
+    queryFn: () => fetchPlaceProjects(2),
+  });
 
   return (
     <Stack spacing={3}>
@@ -30,24 +20,24 @@ export default function PlaceProjectsPage() {
 
       {projects.length === 0 && <Typography color="text.secondary">В центре пока нет проектов</Typography>}
 
-      {projects.map(project => (
-        <Card key={project.id}>
-          <CardContent>
-            <Stack spacing={1}>
-              <Typography variant="h6">{project.title}</Typography>
-
-              <Typography variant="body2" color="text.secondary">
-                Учитель: {project.teacherTitle}
-              </Typography>
-
-              <Typography variant="body2" color="text.secondary">
-                Участников: {project.userCount}
-              </Typography>
-            </Stack>
-          </CardContent>
-        </Card>
-      ))}
-
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, minmax(0, 1fr))',
+              md: 'repeat(3, minmax(0, 1fr))',
+              lg: 'repeat(4, minmax(0, 1fr))',
+            },
+            gap: 1,
+          }}
+        >
+          {projects.map((project, index) => (
+            <>
+              <ProjectCard key={index} project={project} />
+            </>
+          ))}
+        </Box>
     </Stack>
   );
 }

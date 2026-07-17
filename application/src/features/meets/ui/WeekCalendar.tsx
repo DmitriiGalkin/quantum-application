@@ -6,10 +6,10 @@ import { useMemo } from 'react';
 
 import WeekCalendarGrid from './WeekCalendarGrid';
 import WeekCalendarHeader from './WeekCalendarHeader';
-import type { Meet } from './types';
+import type { MeetExtendedDto } from '@shared/types';
 
 export interface WeekCalendarProps {
-  meets: Meet[];
+  meets: MeetExtendedDto[];
 
   weekStartsOn?: 0 | 1;
 
@@ -17,7 +17,7 @@ export interface WeekCalendarProps {
 
   endHour?: number;
 
-  onMeetClick?(meet: Meet): void;
+  onMeetClick?(meet: MeetExtendedDto): void;
 
   onCellClick?(date: Date): void;
 }
@@ -30,6 +30,8 @@ export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, e
       }),
     [weekStartsOn],
   );
+
+  console.log(meets, 'meets');
 
   const days = useMemo(() => Array.from({ length: 7 }, (_, index) => addDays(weekStart, index)), [weekStart]);
 

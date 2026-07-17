@@ -65,8 +65,7 @@ class MeetRepository {
     }
 
     sql += `
-    WHERE meet.startedAt >= CURDATE()
-      AND meet.deletedAt IS NULL
+    WHERE meet.deletedAt IS NULL
   `;
 
     if (data.passportId) {

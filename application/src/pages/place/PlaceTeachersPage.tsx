@@ -11,9 +11,9 @@ export default function PlaceTeachersPage() {
 
   const [passportId, setPassportId] = useState('');
 
-  const { data: teachers, refetch} = useQuery({
+  const { data: teachers, refetch } = useQuery({
     queryKey: ['place-teachers', placeId],
-    queryFn: () => fetchPlaceTeachers(),
+    queryFn: () => fetchPlaceTeachers(placeId),
   });
 
   const addTeacher = useMutation({

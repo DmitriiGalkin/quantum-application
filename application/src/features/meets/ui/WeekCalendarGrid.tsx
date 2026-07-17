@@ -1,25 +1,26 @@
 // components/meet/WeekCalendarGrid.tsx
 
 import { Box, Typography } from '@mui/material';
-import { differenceInMinutes, isSameDay } from 'date-fns';
+import { isSameDay } from 'date-fns';
 
-import type { Meet } from './types';
 import WeekCalendarMeet from './WeekCalendarMeet';
+import type { MeetExtendedDto } from '@shared/types';
 
 const HOUR_HEIGHT = 72;
 
 interface Props {
   days: Date[];
-  meets: Meet[];
+  meets: MeetExtendedDto[];
 
   startHour: number;
   endHour: number;
 
-  onMeetClick?(meet: Meet): void;
+  onMeetClick?(meet: MeetExtendedDto): void;
   onCellClick?(date: Date): void;
 }
 
 export default function WeekCalendarGrid({ days, meets, startHour, endHour, onMeetClick, onCellClick }: Props) {
+
   const hours = Array.from({ length: endHour - startHour }, (_, i) => startHour + i);
   return (
     <Box
@@ -94,11 +95,10 @@ export default function WeekCalendarGrid({ days, meets, startHour, endHour, onMe
             .filter(meet => isSameDay(new Date(meet.startedAt), day))
             .map(meet => {
               const started = new Date(meet.startedAt);
-              const ended = new Date(meet.endedAt);
 
               const top = ((started.getHours() - startHour) * 60 + started.getMinutes()) * (HOUR_HEIGHT / 60);
 
-              const height = differenceInMinutes(ended, started) * (HOUR_HEIGHT / 60);
+              const height = Number(meet.duration) * (HOUR_HEIGHT / 60);
 
               return <WeekCalendarMeet key={meet.id} meet={meet} top={top} height={height} onClick={() => onMeetClick?.(meet)} />;
             })}

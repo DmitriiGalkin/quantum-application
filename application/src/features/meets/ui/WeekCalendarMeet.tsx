@@ -3,10 +3,10 @@
 import { Box, Typography } from '@mui/material';
 import { format } from 'date-fns';
 
-import type { Meet } from './types';
+import type { MeetExtendedDto } from '@shared/types';
 
 interface Props {
-  meet: Meet;
+  meet: MeetExtendedDto;
 
   top: number;
 
@@ -17,7 +17,6 @@ interface Props {
 
 export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) {
   const started = new Date(meet.startedAt);
-  const ended = new Date(meet.endedAt);
 
   return (
     <Box
@@ -27,31 +26,18 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
       }}
       sx={{
         position: 'absolute',
-
         top,
-
         left: 4,
-
         right: 4,
-
         height,
-
         minHeight: 24,
-
         borderRadius: 1,
-
-        bgcolor: meet.color ?? 'primary.main',
-
+        bgcolor: 'primary.main',
         color: 'primary.contrastText',
-
         p: 0.75,
-
         overflow: 'hidden',
-
         cursor: 'pointer',
-
         boxShadow: 2,
-
         transition: '.15s',
 
         '&:hover': {
@@ -68,7 +54,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
           lineHeight: 1.2,
         }}
       >
-        {format(started, 'HH:mm')} – {format(ended, 'HH:mm')}
+        {format(started, 'HH:mm')} – {'HH:mm'}
       </Typography>
 
       <Typography
@@ -82,10 +68,10 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
           WebkitBoxOrient: 'vertical',
         }}
       >
-        {meet.title}
+        Приятная встреча
       </Typography>
 
-      {meet.project && height > 70 && (
+      {height > 70 && (
         <Typography
           variant="caption"
           sx={{
@@ -94,7 +80,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
             mt: 0.5,
           }}
         >
-          {meet.project.name}
+          Название
         </Typography>
       )}
     </Box>

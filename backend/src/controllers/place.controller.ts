@@ -24,6 +24,8 @@ const create: ControllerWithAuth<number, CreatePlace> = async (req, res) => {
 
 const findById: Controller<MeetExtendedDto> = async (req, res) => {
   try {
+    console.log('findById!!');
+
     const meet = await PlaceService.findById(Number(req.params.id));
 
     if (!meet) {

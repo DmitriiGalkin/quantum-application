@@ -61,12 +61,14 @@ const usePassport = async (req: Request, res: Response, next: Function) => {
     }
 
     const userId = req.header('X-User-Id');
+    const placeId = req.header('X-Place-Id');
     const role = (req.header('X-Role') || 'guest') as ActiveRole;
 
     req.viewer = {
       role,
       passport,
       userId: userId ? Number(userId) : undefined,
+      placeId: placeId ? Number(placeId) : undefined,
     };
 
     req.passport = passport;

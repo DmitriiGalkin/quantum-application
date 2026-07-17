@@ -62,7 +62,8 @@ export const fetchPlace = (id: string) => get<PlaceFullDto>(`/place/${id}`);
 export const fetchPlaces = () => get<PlaceFullDto[]>('/places');
 export const fetchCreatePlace = (params: CreatePlace) => post<number>('/place', params);
 export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { passportId });
-export const fetchPlaceTeachers = () => get<TeacherDto[]>('/place/teachers');
+export const fetchPlaceTeachers = (id: number) => get<TeacherDto[]>(`/place/${id}/teachers`);
+export const fetchPlaceProjects = (id: number) => get<ProjectFullDto[]>(`/place/${id}/projects`);
 export const fetchRemoveTeacher = (passportId: number) => del<void>(`/place/teachers/${passportId}`);
 
 export const fetchPassport = () => get<PassportExtendedDto>('/passport');
