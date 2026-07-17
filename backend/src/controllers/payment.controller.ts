@@ -3,8 +3,9 @@ import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { PaymentService } from '../services/payment.service.js';
 
 import { getPassportUserIds } from '../services/project-user.service.js';
-import { PaymentCreateDto, PaymentCreateResponseDto } from '@shared/types';
+import { type MeetExtendedDto, PaymentCreateDto, PaymentCreateResponseDto, PaymentDto } from '@shared/types';
 import RobokassaService from '../services/robokassa.service.js';
+import { MeetService } from '../services/meet.service.js';
 
 const create: ControllerWithAuth<PaymentCreateResponseDto, PaymentCreateDto> = async (req, res) => {
   try {
@@ -77,7 +78,22 @@ const result: Controller<string> = async (req, res) => {
   }
 };
 
+const findById: ControllerWithAuth<PaymentDto> = async (req, res) => {
+  try {
+    const payment = await PaymentService.getById(Number(req.params.id));
+
+    if (!payment) {
+      fail(res, 'Платеж не обнаружен', 404);
+    }
+
+    ok(res, payment);
+  } catch (err) {
+    fail(res, 'Ошибка при получении встречи');
+  }
+};
+
 export default {
   create,
   result,
+  findById,
 };

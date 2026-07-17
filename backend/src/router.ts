@@ -166,6 +166,7 @@ privateRouter.put('/passport', withAuth(passportController.update));
 privateRouter.post('/image', upload.single('image'), withAuth(image.upload));
 
 privateRouter.post('/payments', withAuth(paymentController.create));
+privateRouter.get('/payment/:id', withAuth(paymentController.findById));
 privateRouter.post('/payment/robokassa/result', paymentController.result);
 
 

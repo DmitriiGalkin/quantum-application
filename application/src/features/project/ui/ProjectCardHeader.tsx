@@ -81,6 +81,9 @@ function ProjectCardHeader({ passport, place, onExit }: Props) {
           </Typography>
         </Stack>
       }
+      sx={{
+        backgroundColor: 'rgba(255,160,40,.1)',
+      }}
     />
   );
 }

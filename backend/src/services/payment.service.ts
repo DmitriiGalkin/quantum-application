@@ -2,7 +2,13 @@ import PaymentRepository from '../repositories/payment.repository.js';
 import type { Payment, PaymentProvider } from '../entities/payment.types.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import RobokassaService from './robokassa.service.js';
-import { PaymentTargetType } from '@shared/types';
+import { PaymentDto, PaymentTargetType } from '@shared/types';
+import PlaceRepository from '../repositories/place.repository.js';
+import { Place } from '../entities/place.js';
+import UserRepository from '../repositories/user.repository.js';
+import PassportRepository from '../repositories/passport.repository.js';
+import { Passport } from '../entities/passport.js';
+import ProjectUserRepository from '../repositories/project-user.repository.js';
 
 interface CreatePaymentDto {
   passportId: number;
@@ -77,14 +83,16 @@ export class PaymentService {
     };
   }
 
-  static async getById(id: number): Promise<Payment> {
+  static async getById(id: number): Promise<PaymentDto> {
     const payment = await PaymentRepository.getById(id);
 
     if (!payment) {
       throw new Error('Payment not found.');
     }
 
-    return payment;
+    const meet = (payment.targetType === 'meet' && payment.targetId) ? await MeetRepository.findById(payment.targetId) : null;
+
+    return { ...payment, meet };
   }
   //
   // async getByPassportId(passportId: number) {
@@ -115,9 +123,9 @@ export class PaymentService {
     await PaymentRepository.setStatus(paymentId, 'pending');
   }
 
-  static async isPaid(paymentId: number): Promise<boolean> {
-    const payment = await this.getById(paymentId);
-
-    return payment.status === 'paid';
-  }
+  // static async isPaid(paymentId: number): Promise<boolean> {
+  //   const payment = await this.getById(paymentId);
+  //
+  //   return payment.status === 'paid';
+  // }
 }

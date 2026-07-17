@@ -1,31 +1,32 @@
-import {
-  type ChatDto,
-  type ChatMessagesResult,
-  type CreateChatBody,
-  type CreateIdeaUser,
-  type CreateMeet,
-  type CreateMeetUser,
-  type CreateMessageDto,
-  type CreatePlace,
-  type CreateProject,
-  type CreateProjectUser,
-  type DeleteIdeaUser,
-  type DeleteMeetUser,
-  type DeleteProjectUser,
-  type GetIdeasQuery,
-  type GetMeetsQuery,
-  type IdeaExtendedDto,
-  type IdeaFullDto,
-  type MeetDto,
-  type MeetExtendedDto,
-  type PassportExtendedDto,
-  type PaymentCreateDto,
-  type PaymentCreateResponseDto,
-  type PlaceFullDto,
-  type ProjectFullDto,
-  type TeacherDashboardDto,
-  type TeacherDto,
-  type UpdateMeet,
+import type {
+  ChatDto,
+  ChatMessagesResult,
+  CreateChatBody,
+  CreateMessageDto,
+  TeacherDashboardDto,
+  CreateIdeaUser,
+  DeleteIdeaUser,
+  GetIdeasQuery,
+  IdeaExtendedDto,
+  IdeaFullDto,
+  CreateMeet,
+  CreateMeetUser,
+  DeleteMeetUser,
+  GetMeetsQuery,
+  MeetDto,
+  MeetExtendedDto,
+  UpdateMeet,
+  PassportExtendedDto,
+  PaymentCreateDto,
+  PaymentCreateResponseDto,
+  PaymentDto,
+  CreatePlace,
+  PlaceFullDto,
+  CreateProject,
+  CreateProjectUser,
+  DeleteProjectUser,
+  ProjectFullDto,
+  TeacherDto,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 
@@ -68,7 +69,7 @@ export const fetchRemoveTeacher = (passportId: number) => del<void>(`/place/teac
 export const fetchPassport = () => get<PassportExtendedDto>('/passport');
 export const fetchCreateUser = (params: { title: string; description?: string }) => post<number>('/user', params);
 
+export const fetchPayment = (id: number) => get<PaymentDto>(`/payment/${id}`);
 export const fetchCreatePayment = (params: PaymentCreateDto) => post<PaymentCreateResponseDto>('/payments', params);
 
 export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/dashboard`);
-;

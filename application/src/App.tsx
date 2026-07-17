@@ -30,8 +30,8 @@ import PrivacyPage from './pages/PrivacyPage.tsx';
 import TermsPage from './pages/TermsPage.tsx';
 import { LandingPlacePage } from './pages/landing/LandingPlacePage.tsx';
 import { LandingTeacherPage } from './pages/landing/LandingTeacherPage.tsx';
-import PaymentSuccessPage from './pages/PaymentSuccessPage.tsx';
-import PaymentFailPage from './pages/PaymentFailPage.tsx';
+import PaymentSuccessPage from './pages/payment/PaymentSuccessPage.tsx';
+import PaymentFailPage from './pages/payment/PaymentFailPage.tsx';
 
 function App() {
   return (
