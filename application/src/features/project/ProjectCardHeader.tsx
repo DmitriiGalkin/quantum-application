@@ -98,7 +98,8 @@ function ProjectCardHeader({ project, place, refetch }: Props) {
         </Stack>
       }
       sx={{
-        backgroundColor: 'rgba(255,160,40,.1)',
+        backgroundColor: '#F8F9FB',
+        boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.1)',
       }}
     />
   );

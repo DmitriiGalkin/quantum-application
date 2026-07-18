@@ -210,37 +210,39 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
           </>
         )}
 
-        <CardContent>
-          <Stack spacing={2} direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', height: 48 }}>
-            {Boolean(project.users.length) && (
-              <Box>
-                <Typography component="div" variant="caption" sx={{ color: 'text.secondary', mb: 0.5 }}>
-                  Участники проекта
+        {(Boolean(project.users.length) || activeContext.role === 'user') && (
+          <CardContent>
+            <Stack spacing={2} direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+              {Boolean(project.users.length) && (
+                <Box>
+                  <Typography component="div" variant="caption" sx={{ color: 'text.secondary', mb: 0.5 }}>
+                    Участники проекта
+                  </Typography>
+                  <AvatarGroupUsers users={project.users || []} />
+                </Box>
+              )}
+
+              {activeContext.role === 'user' && !project.users.length && !isMember && (
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Станьте первым участником и помогите запустить проект
                 </Typography>
-                <AvatarGroupUsers users={project.users || []} />
-              </Box>
-            )}
+              )}
 
-            {activeContext.role === 'user' && !project.users.length && !isMember && (
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                Станьте первым участником и помогите запустить проект
-              </Typography>
-            )}
-
-            {activeContext.role === 'user' && !isMember && (
-              <Button
-                variant="contained"
-                size="small"
-                onClick={onJoin}
-                sx={{
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Вступить
-              </Button>
-            )}
-          </Stack>
-        </CardContent>
+              {activeContext.role === 'user' && !isMember && (
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={onJoin}
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Вступить
+                </Button>
+              )}
+            </Stack>
+          </CardContent>
+        )}
       </CardActionArea>
 
       <Dialog open={isUserModalOpen} onClose={() => setUserModalOpen(false)}>

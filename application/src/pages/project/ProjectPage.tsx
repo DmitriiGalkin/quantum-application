@@ -50,7 +50,7 @@ export default function ProjectPage() {
         <Stack spacing={2}>
           {role === 'teacher' && <CreateMeetForm projectId={project.id} placeId={project.place.id} onSubmit={onCreateMeet} />}
 
-          {Boolean(project.users.length) ? (
+          {Boolean(project.users.length) && (
             <Card sx={{ borderRadius: 3 }}>
               <CardContent>
                 <Typography variant="h6">Участники проекта</Typography>
@@ -68,9 +68,9 @@ export default function ProjectPage() {
                 </Typography>
               </CardContent>
             </Card>
-          ) : (
-            <div>Хей куратор, нажми кнопку поделиться своим проектом в соц сети</div>
           )}
+
+          {activeContext.role === 'teacher' && <div>Хей куратор, нажми кнопку поделиться своим проектом в соц сети</div>}
         </Stack>
       </Grid>
     </Grid>
