@@ -34,7 +34,9 @@ const place = {id: 2}
   return (
     <Stack spacing={3}>
       <Stack spacing={2} direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="h4">Расписание центра</Typography>
+        <Typography variant="h5" sx={{ color: 'white' }}>
+          Расписание центра
+        </Typography>
 
         <ToggleButtonGroup
           value={view}
