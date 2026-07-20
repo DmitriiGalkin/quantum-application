@@ -19,16 +19,16 @@ export const ACTIVE_ROLE_STORAGE_KEY = 'active_role';
 export const ACTIVE_CONTEXT_STORAGE_KEY = 'active_context';
 
 const STRATEGIES = [
-  {
-    title: 'Google',
-    href: `${API_URL}/login/google`,
-    icon: 'G',
-  },
   // {
-  //   title: 'Yandex',
-  //   href: `${API_URL}/login/yandex`,
-  //   icon: 'Я',
+  //   title: 'Google',
+  //   href: `${API_URL}/login/google`,
+  //   icon: 'G',
   // },
+  {
+    title: 'Yandex',
+    href: `${API_URL}/login/yandex`,
+    icon: 'Я',
+  },
 ];
 
 type User = {

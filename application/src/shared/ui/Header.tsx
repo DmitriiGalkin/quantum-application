@@ -21,8 +21,7 @@ function Header() {
   const { passport, authHandler } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMenu2Open, setIsMenu2Open] = useState(false);
-
-
+  
   return (
     <>
       <AppBar
