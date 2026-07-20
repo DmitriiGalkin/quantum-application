@@ -78,7 +78,7 @@ export const verifyChild = async (req: Request, res: Response, next: NextFunctio
 
 privateRouter.use(verifyChild);
 
-const registerOAuth = (provider: 'yandex' | 'google') => {
+const registerOAuth = (provider: 'yandex') => {
   const strategy = strategies[provider];
 
   if (!strategy) {
@@ -110,7 +110,7 @@ const registerOAuth = (provider: 'yandex' | 'google') => {
   });
 };
 
-['google' as const, 'yandex' as const].forEach(registerOAuth);
+['yandex' as const].forEach(registerOAuth);
 
 publicRouter.get('/ideas', idea.findAllPublic);
 publicRouter.get('/idea/:id', idea.findById);

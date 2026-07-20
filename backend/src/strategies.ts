@@ -66,9 +66,9 @@ function createStrategy(Strategy: any, provider: any, options = {}) {
 
 // Экспорт по умолчанию с готовыми стратегиями
 export default {
-  google: createStrategy(GoogleStrategy, 'GOOGLE', {
-    scope: ['profile', 'email'],
-    state: false,
-  }),
+  // google: createStrategy(GoogleStrategy, 'GOOGLE', {
+  //   scope: ['profile', 'email'],
+  //   state: false,
+  // }),
   yandex: createStrategy(YandexStrategy, 'YANDEX'),
 };
