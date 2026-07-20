@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }: Props) => {
   const availableRoles = ['user', 'teacher', 'place'] as ActiveRole[];
   const activeUser = users.find(user => user.id === activeContext.userId) ?? users[0] ?? null;
   const activePlace = places.find(place => place.id === activeContext.placeId) ?? places[0] ?? null;
-
+console.log(redirect, 'redirect');
   const { data, refetch } = useQuery({
     queryKey: ['passport'],
     queryFn: fetchPassport,
@@ -292,7 +292,7 @@ export const AuthProvider = ({ children }: Props) => {
                   <Button
                     component="a"
                     variant="contained"
-                    href={`${strategy.href}?redirect=${encodeURIComponent(redirect)}`}
+                    href={`${strategy.href}`}
                     key={strategy.title}
                     sx={{ minWidth: 120 }}
                     onClick={() => {
@@ -313,7 +313,7 @@ export const AuthProvider = ({ children }: Props) => {
     </AuthContext.Provider>
   );
 };
-
+//?redirect=${encodeURIComponent(redirect)}
 export const useAuth = () => useContext(AuthContext);
 
 const getTokenFromUrl = () => {
