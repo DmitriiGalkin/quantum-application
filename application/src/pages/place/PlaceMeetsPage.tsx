@@ -25,7 +25,7 @@ export default function PlaceMeetsPage() {
 const place = {id: 2}
   const [view, setView] = useState<'week' | 'module'>('module');
 
-  const { data: meets } = useQuery({
+  const { data: meets, refetch } = useQuery({
     queryKey: ['meets', place?.id],
     queryFn: () => fetchMeets({ placeId: place?.id || 0 }),
     enabled: !!place?.id,
@@ -86,7 +86,7 @@ const place = {id: 2}
           }}
         >
           {meets?.map(meet => (
-            <MeetCard key={meet.id} meet={meet} />
+            <MeetCard key={meet.id} meet={meet} refetch={refetch} />
           ))}
         </Box>
       )}

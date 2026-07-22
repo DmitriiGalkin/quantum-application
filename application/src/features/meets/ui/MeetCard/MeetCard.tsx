@@ -1,4 +1,4 @@
-import type { MeetExtendedDto } from '@shared/types';
+import type { MeetExtendedDto, MeetStatus } from '@shared/types';
 import { useAuth } from '../../../../providers/AuthProvider.tsx';
 import { Button, Chip, Menu, MenuItem, Paper, Stack, Typography } from '@mui/material';
 
@@ -9,7 +9,7 @@ import {
   fetchCreateMeetUser,
   fetchCreatePayment,
   fetchDeleteMeet,
-  fetchDeleteMeetUser, fetchUpdateMeet,
+  fetchDeleteMeetUser, fetchUpdateMeet, fetchUpdateMeetStatus,
 } from '../../../../requests.ts';
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
@@ -95,6 +95,13 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
       console.log('payment', payment);
       window.location.href = payment.paymentUrl;
       return;
+    },
+  });
+
+  const updateStatus = useMutation({
+    mutationFn: (status: MeetStatus) => fetchUpdateMeetStatus(meet.id, { status }),
+    onSuccess: () => {
+      refetch?.();
     },
   });
 
@@ -244,9 +251,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
             </>
           )}
         </Stack>
-
         {body}
-
         {role === 'user' && (
           <>
             {!isMember && (
@@ -261,7 +266,28 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
             )}
           </>
         )}
-        {role === 'place' && <PlaceFooter meet={meet} onEdit={onEdit} />}
+        {role === 'place' && meet.status === 'published' && (
+          <Typography variant="body2" color="text.secondary">
+            Опубликовано
+          </Typography>
+        )}
+        {role === 'place' && meet.status === 'cancelled' && (
+          <Typography variant="body2" color="text.secondary">
+            Отклонено
+          </Typography>
+        )}
+        {role === 'place' && meet.status === 'pending' && (
+          <Stack direction="row" spacing={1}>
+            <Button color="success" variant="contained" onClick={() => updateStatus.mutate('published')}>
+              Опубликовать
+            </Button>
+
+            <Button color="error" variant="outlined" onClick={() => updateStatus.mutate('cancelled')}>
+              Отменить
+            </Button>
+          </Stack>
+        )}
+        {role === 'place' && <PlaceFooter meet={meet} onEdit={onEdit} />};
       </Stack>
 
       <Dialog open={isEditModalOpen} onClose={() => setEditModalOpen(false)} fullWidth maxWidth="md">

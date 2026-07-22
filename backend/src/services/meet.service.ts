@@ -1,5 +1,5 @@
 import { Passport } from '../entities/passport.js';
-import type { CreateMeet, GetMeetsQuery, MeetExtendedDto } from '@shared/types';
+import type { CreateMeet, GetMeetsQuery, MeetExtendedDto, MeetStatus } from '@shared/types';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
@@ -13,7 +13,7 @@ export class MeetService {
     console.log(data, 'data');
     if (!passport) throw new Error('UNAUTHORIZED');
     const project = await ProjectRepository.findById(data.projectId);
-    console.log(project,'project');
+    console.log(project, 'project');
 
     if (!project) throw new Error('MeetService project не существуйет');
     console.log('3');
@@ -61,5 +61,9 @@ export class MeetService {
       passport: passports[i],
       capacity: projectUsers[i].length,
     }));
+  }
+
+  static async updateStatus(id: number, status: MeetStatus) {
+    return MeetRepository.updateStatus(id, status);
   }
 }

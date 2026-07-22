@@ -8,7 +8,7 @@ export default function PlaceDashboardPage() {
 
   const { data: place } = useQuery({
     queryKey: ['place', id],
-    queryFn: () => fetchPlace(id as string),
+    queryFn: () => fetchPlace(Number(id)),
     enabled: Boolean(id),
   });
 

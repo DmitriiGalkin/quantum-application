@@ -11,7 +11,7 @@ export default function PlaceInvitePage() {
   const navigate = useNavigate();
 
 
-  const { data: place, refetch } = useQuery({
+  const { data: place } = useQuery({
     queryKey: ['place', placeId],
     queryFn: () => fetchPlace(placeId),
   });
@@ -19,7 +19,6 @@ export default function PlaceInvitePage() {
   const addTeacher = useMutation({
     mutationFn: () => fetchAddTeacher2({passportId: Number(passport?.id), placeId }),
     onSuccess: () => {
-      console.log('teacher added');
       navigate(`/place/${placeId}/teachers`);
     },
   });

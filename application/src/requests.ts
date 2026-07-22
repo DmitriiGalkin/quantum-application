@@ -25,7 +25,7 @@ import type {
   CreateProject,
   CreateProjectUser,
   ProjectFullDto,
-  TeacherDto,
+  TeacherDto, MeetStatus,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 
@@ -54,6 +54,7 @@ export const fetchMeets = (params: GetMeetsQuery) => get<MeetExtendedDto[]>(`/me
 export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
 export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);
+export const fetchUpdateMeetStatus = (id: number, params: { status: MeetStatus }) => put<void>(`/meet/${id}/status`, params);
 export const fetchDeleteMeet = (id: number) => del<void>(`/meet/${id}`);
 export const fetchCreateMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', params);
 export const fetchDeleteMeetUser = ({ userId, meetId }: DeleteMeetUser) => del<void>(`/meetUser?userId=${userId}&meetId=${meetId}`);

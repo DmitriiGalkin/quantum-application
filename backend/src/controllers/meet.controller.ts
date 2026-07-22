@@ -86,6 +86,16 @@ const findById: Controller<MeetExtendedDto> = async (req, res) => {
   }
 };
 
+const updateStatus: ControllerWithAuth<void> = async (req, res) => {
+  try {
+    await MeetService.updateStatus(Number(req.params.id), req.body.status);
+
+    ok(res, '1');
+  } catch (err) {
+    fail(res, 'Ошибка при получении встречи');
+  }
+};
+
 export default {
   create,
   update,
@@ -93,4 +103,5 @@ export default {
   findAll,
   findPassportAll,
   findById,
+  updateStatus,
 };

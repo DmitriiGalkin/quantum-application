@@ -1,3 +1,5 @@
+import { MeetStatus } from '@shared/types';
+
 export interface Meet {
   id: number;
   projectId: number;
@@ -7,6 +9,7 @@ export interface Meet {
   startedAt: string;
   deletedAt: string | null;
   placeId: number;
+  status: MeetStatus;
 }
 
 export interface MeetWithProjectTitle extends Meet {

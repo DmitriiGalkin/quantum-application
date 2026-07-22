@@ -41,6 +41,13 @@ export interface IdeaFullDto extends IdeaDto {
   user: UserDto;
   projects: ProjectExtendedDto[];
 }
+//
+// export enum MeetStatus {
+//   Pending = 'pending',
+//   Published = 'published',
+//   Cancelled = 'cancelled',
+// }
+export type MeetStatus = 'pending' | 'published' | 'cancelled';
 
 export interface MeetDto {
   id: number;
@@ -49,6 +56,7 @@ export interface MeetDto {
   deletedAt: string | null;
   duration: number | null;
   price: number | null;
+  status: MeetStatus;
 }
 
 export interface MeetExtendedDto extends MeetDto {
@@ -334,3 +342,4 @@ export interface TeacherDashboardDto {
 
   bmeets: MeetExtendedDto[];
 };
+

@@ -150,6 +150,7 @@ publicRouter.get('/meet/:id', meet.findById);
 privateRouter.post('/meet', withAuth(meet.create));
 privateRouter.put('/meet/:id', withAuth(meet.update));
 privateRouter.delete('/meet/:id', withAuth(meet.delete));
+privateRouter.put('/meet/:id/status', withAuth(meet.updateStatus));
 privateRouter.post('/meetUser', withAuth(meetUser.create));
 privateRouter.delete('/meetUser', withAuth(meetUser.delete));
 

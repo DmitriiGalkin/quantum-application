@@ -11,6 +11,7 @@ export function toMeet(row: MeetRow): Meet {
     startedAt: row.startedAt,
     deletedAt: row.deletedAt,
     placeId: row.placeId,
+    status: row.status,
   };
 }
 

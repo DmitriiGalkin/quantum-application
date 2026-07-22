@@ -3,7 +3,7 @@ import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import { Passport } from '../entities/passport.js';
-import { FindAllProjectInput } from '../entities/project.js';
+import { FindAllProjectInput, Project } from '../entities/project.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
 import { Idea } from '../entities/idea.js';
@@ -26,7 +26,7 @@ export class ProjectService {
     });
   }
 
-  static async update(projectId: number, data: CreateProject) {
+  static async update(projectId: number, data: Project) {
     if (!projectId) throw new Error('нет идентификатора проекта');
 
     return ProjectRepository.update(projectId, data);

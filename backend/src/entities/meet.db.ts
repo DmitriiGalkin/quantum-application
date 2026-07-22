@@ -1,4 +1,5 @@
 import { RowDataPacket } from 'mysql2/promise';
+import { MeetStatus } from '@shared/types';
 
 export interface MeetRow extends RowDataPacket {
   id: number;
@@ -9,6 +10,7 @@ export interface MeetRow extends RowDataPacket {
   startedAt: string;
   deletedAt: string | null;
   placeId: number;
+  status: MeetStatus;
 }
 
 export interface MeetWithProjectTitleRow extends MeetRow {

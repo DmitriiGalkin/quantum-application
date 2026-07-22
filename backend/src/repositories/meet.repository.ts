@@ -4,7 +4,7 @@ import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import { Meet, MeetWithProjectTitle } from '../entities/meet.js';
 import { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
 import { db } from '../dbNext.js';
-import type { GetMeetsQuery } from '@shared/types';
+import { GetMeetsQuery, MeetStatus } from '@shared/types';
 
 class MeetRepository {
   static async create(data: CreateMeetInput): Promise<number> {
@@ -190,6 +190,17 @@ class MeetRepository {
     );
 
     return rows.length === 0 ? timer : null;
+  }
+
+  static async updateStatus(id: number, status: MeetStatus) {
+    await db.execute(
+      `
+        UPDATE meet
+        SET status = ?
+        WHERE id = ?
+      `,
+      [status, id],
+    );
   }
 }
 

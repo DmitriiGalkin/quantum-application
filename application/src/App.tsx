@@ -20,8 +20,6 @@ import PlaceProjectsPage from './pages/place/PlaceProjectsPage.tsx';
 import PlaceMeetsPage from './pages/place/PlaceMeetsPage.tsx';
 import PlaceDashboardPage from './pages/place/PlaceDashboardPage.tsx';
 import TeacherDashboardPage from './pages/teacher/TeacherDashboardPage.tsx';
-import MeetCreatePage from './pages/meet/MeetCreatePage.tsx';
-import MeetEditPage from './pages/meet/MeetEditPage.tsx';
 import MissionPage from './pages/MissionPage.tsx';
 import AboutPage from './pages/AboutPage.tsx';
 import PrivacyPage from './pages/PrivacyPage.tsx';
@@ -43,8 +41,6 @@ function App() {
         <Route path="chat/:id" element={<ChatPage />} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
-        <Route path="project/:id/meets/create" element={<MeetCreatePage />} />
-        <Route path="project/:id/meets/:meetId/edit" element={<MeetEditPage />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
