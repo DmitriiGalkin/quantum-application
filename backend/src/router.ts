@@ -124,6 +124,7 @@ publicRouter.get('/projects', project.findAll);
 privateRouter.get('/project/:id', withAuth(project.findById));
 publicRouter.get('/project/:id/meta', project.meta);
 privateRouter.post('/project', withAuth(project.create));
+privateRouter.post('/project/:id/update', withAuth(project.update));
 privateRouter.delete('/project/:id', withAuth(project.delete));
 privateRouter.post('/projectUser', withAuth(projectUser.create));
 privateRouter.delete('/project/:id/leave', withAuth(projectUser.leave));
@@ -157,6 +158,7 @@ privateRouter.post('/place', withAuth(place.create));
 publicRouter.get('/place/:id', place.findById);
 privateRouter.get('/place/:id/projects', withAuth(project.findByPlaceId));
 privateRouter.get('/place/:id/teachers', withAuth(placeTeacherController.findAll));
+privateRouter.post('/place/:id/teacher', withAuth(placeTeacherController.create));
 privateRouter.post('/place/teachers', withAuth(placeTeacherController.addTeacher));
 privateRouter.delete('/place/teachers/:passportId', withAuth(placeTeacherController.remove));
 

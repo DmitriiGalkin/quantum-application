@@ -12,3 +12,7 @@ export function extractTime(isoString: string) {
   const match = isoString.match(/\d\d:\d\d/);
   return match ? match[0] : '';
 }
+
+export function toDateTimeLocal(value: string) {
+  return new Date(value).toISOString().slice(0, 16);
+}

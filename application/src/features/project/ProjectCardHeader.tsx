@@ -7,7 +7,12 @@ import PlaceIcon from '@mui/icons-material/Place';
 import Typography from '@mui/material/Typography';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
-import { fetchProjectLeave } from '../../requests.ts';
+import { fetchProjectLeave, fetchUpdateProject } from '../../requests.ts';
+import EditIcon from '@mui/icons-material/Edit';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import ProjectForm, { type ProjectFormValues } from './ProjectForm.tsx';
 
 type Props = {
   project: ProjectExtendedDto;
@@ -16,10 +21,26 @@ type Props = {
 };
 
 function ProjectCardHeader({ project, place, refetch }: Props) {
-  const passport = project.passport;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { activeUser, authHandler, activeContext } = useAuth();
+  const { activeUser, authHandler, activeContext, passport } = useAuth();
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
   const isMember = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
+
+  const [form, setForm] = useState<ProjectFormValues>({
+    title: project.passport.title,
+    description: project.description || '',
+    image: project.image ?? '',
+    placeId: project.place.id,
+  });
+
+  const updateProject = useMutation({
+    mutationFn: (data: ProjectFormValues) => fetchUpdateProject(project.id, data),
+
+    onSuccess: () => {
+      setEditModalOpen(false);
+      refetch?.();
+    },
+  });
 
   const mutationLeave = useMutation({
     mutationFn: fetchProjectLeave,
@@ -48,6 +69,15 @@ function ProjectCardHeader({ project, place, refetch }: Props) {
     else authHandler();
   };
 
+  if (activeContext.role === 'teacher' && project.passport.id === passport?.id) {
+    menuItems.push({
+      key: 'edit',
+      label: 'Редактировать',
+      icon: <EditIcon fontSize="small" />,
+      onClick: () => setEditModalOpen(true),
+    });
+  }
+
   if (isMember && activeContext.role === 'user') {
     menuItems.push({
       key: 'exit',
@@ -58,50 +88,91 @@ function ProjectCardHeader({ project, place, refetch }: Props) {
   }
 
   return (
-    <CardHeader
-      avatar={
-        <Avatar alt={passport.title} src={passport.image || ''}>
-          R
-        </Avatar>
-      }
-      action={
-        menuItems.length > 0 ? (
-          <>
-            <IconButton onClick={handleOpen}>
-              <MoreVertIcon />
-            </IconButton>
+    <>
+      <CardHeader
+        avatar={
+          <Avatar alt={project.passport.title} src={project.passport.image || ''}>
+            R
+          </Avatar>
+        }
+        action={
+          menuItems.length > 0 ? (
+            <>
+              <IconButton onClick={handleOpen}>
+                <MoreVertIcon />
+              </IconButton>
 
-            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-              {menuItems.map(item => (
-                <MenuItem
-                  key={item.key}
-                  onClick={e => {
-                    handleClose(e);
-                    item.onClick();
-                  }}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  {item.label}
-                </MenuItem>
-              ))}
-            </Menu>
-          </>
-        ) : undefined
-      }
-      title={passport.title}
-      subheader={
-        <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
-          <PlaceIcon sx={{ fontSize: 12, opacity: 0.6 }} />
-          <Typography component="div" variant="subtitle2" noWrap sx={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {place.address}
-          </Typography>
-        </Stack>
-      }
-      sx={{
-        backgroundColor: '#F8F9FB',
-        boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.1)',
-      }}
-    />
+              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                {menuItems.map(item => (
+                  <MenuItem
+                    key={item.key}
+                    onClick={e => {
+                      handleClose(e);
+                      item.onClick();
+                    }}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </>
+          ) : undefined
+        }
+        title={project.passport.title}
+        subheader={
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: 'center',
+              minWidth: 0,
+            }}
+          >
+            <PlaceIcon sx={{ fontSize: 12, opacity: 0.6, flexShrink: 0 }} />
+
+            <Typography
+              variant="subtitle2"
+              noWrap
+              sx={{
+                minWidth: 0,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {place.address}
+            </Typography>
+          </Stack>
+        }
+        sx={{
+          backgroundColor: project.passport.id === passport?.id ? 'rgba(255,160,40,.1)' : '#F8F9FB',
+          boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.1)',
+
+          // Самое важное
+          '& .MuiCardHeader-content': {
+            minWidth: 0,
+          },
+
+          '& .MuiCardHeader-action': {
+            flexShrink: 0,
+          },
+        }}
+      />
+      <Dialog open={isEditModalOpen} onClose={() => setEditModalOpen(false)} fullWidth maxWidth="md">
+        <DialogTitle>Редактирование проекта</DialogTitle>
+
+        <DialogContent sx={{ pt: 2 }}>
+          <ProjectForm
+            values={form}
+            onChange={setForm}
+            onSubmit={() => updateProject.mutate(form)}
+            loading={updateProject.isPending}
+            error={updateProject.isError}
+            submitLabel="Сохранить изменения"
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 

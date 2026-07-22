@@ -1,4 +1,5 @@
 import { db } from '../dbNext.js';
+import { Teacher } from '../services/chat/chat.meta.js';
 
 class PlacePassportRepository {
   static async create(data: { placeId: number; passportId: number; role: 'admin' | 'teacher' }): Promise<number> {
@@ -11,7 +12,7 @@ class PlacePassportRepository {
     return result.insertId;
   }
 
-  static async findTeachers(placeId: number) {
+  static async findTeachers(placeId: number): Promise<{ id: number, title: string }[]> {
     const rows = await db.query(
       `SELECT passport.id, passport.title
        FROM placePassport
@@ -45,6 +46,20 @@ class PlacePassportRepository {
     );
 
     return rows[0]?.placeId ?? null;
+  }
+
+  static async exists(passportId: number, placeId: number): Promise<number | boolean> {
+    const rows = await db.query(
+      `SELECT id
+     FROM placePassport
+     WHERE passportId = ?
+       AND placeId = ?
+     LIMIT 1`,
+      [passportId, placeId],
+    );
+    console.log(rows, 'rows');
+
+    return rows[0]?.id || false;
   }
 }
 export default PlacePassportRepository;

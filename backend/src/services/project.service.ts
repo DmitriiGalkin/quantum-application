@@ -26,6 +26,12 @@ export class ProjectService {
     });
   }
 
+  static async update(projectId: number, data: CreateProject) {
+    if (!projectId) throw new Error('нет идентификатора проекта');
+
+    return ProjectRepository.update(projectId, data);
+  }
+
   static async remove(projectId: number, passport: Passport) {
     const project = await ProjectRepository.findById(projectId);
 

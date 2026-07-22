@@ -22,9 +22,7 @@ export default function MissionPage() {
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Paper sx={{ p: 5, mb: 8 }}>
           <Stack spacing={3}>
-            <Typography variant="h4">
-              Каждый ребёнок талантлив
-            </Typography>
+            <Typography variant="h4">Каждый ребёнок талантлив</Typography>
 
             <Typography variant="body1">
               Мы убеждены, что у каждого ребёнка есть сильные стороны. Но далеко не всегда родители знают, где именно их можно раскрыть. Большинство
@@ -61,6 +59,12 @@ export default function MissionPage() {
             />
           </Grid>
         </Grid>
+
+        <Box>
+          <Typography variant="h3" sx={{ mb: 5, textAlign: 'center' }}>
+            Миссии:
+          </Typography>
+        </Box>
 
         <Divider sx={{ my: 8 }} />
 

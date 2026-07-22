@@ -19,19 +19,18 @@ class ProjectRepository {
     return result.insertId;
   }
 
-  // ✅ UPDATE
-  // static async update(id: number, data: UpdateProjectInput): Promise<boolean> {
-  //   const entries = Object.entries(data).filter(([, v]) => v !== undefined);
-  //
-  //   if (entries.length === 0) return false;
-  //
-  //   const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-  //   const values = entries.map(([, v]) => v);
-  //
-  //   const result = await db.execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
-  //
-  //   return result.affectedRows > 0;
-  // }
+  static async update(id: number, data: Project): Promise<boolean> {
+    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+
+    if (entries.length === 0) return false;
+
+    const fields = entries.map(([k]) => `${k} = ?`).join(', ');
+    const values = entries.map(([, v]) => v);
+
+    const result = await db.execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
+
+    return result.affectedRows > 0;
+  }
 
   // ✅ DELETE (soft)
   static async delete(id: number): Promise<void> {

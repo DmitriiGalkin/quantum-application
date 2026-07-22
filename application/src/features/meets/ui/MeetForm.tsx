@@ -1,96 +1,66 @@
-import { useEffect, useState } from 'react';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 
 export interface MeetFormValues {
+  projectId: number;
   startedAt: string;
   duration: number;
   price: number;
 }
 
 interface MeetFormProps {
-  projectId: number;
-  initialValues?: MeetFormValues;
-  onSubmit: (data: MeetFormValues & { projectId: number }) => void;
+  values: MeetFormValues;
   loading?: boolean;
+  submitLabel?: string;
+
+  onChange: (values: MeetFormValues) => void;
+  onSubmit: () => void;
 }
 
-function toDateTimeLocal(value: string) {
-  return new Date(value).toISOString().slice(0, 16);
-}
-
-export default function MeetForm({ projectId, initialValues, onSubmit, loading = false }: MeetFormProps) {
-  const [form, setForm] = useState<MeetFormValues>({
-    startedAt: '',
-    duration: 60,
-    price: 0,
-  });
-
-  useEffect(() => {
-    if (initialValues) {
-      setForm({
-        ...initialValues,
-        startedAt: toDateTimeLocal(initialValues.startedAt),
-      });
-    }
-  }, [initialValues]);
-
+export default function MeetForm({ values, loading = false, submitLabel = 'Сохранить', onChange, onSubmit }: MeetFormProps) {
   return (
-    <Box>
-      <Stack spacing={3}>
-        <Typography variant="h4">{initialValues ? 'Редактирование встречи' : 'Новая встреча'}</Typography>
+    <Stack spacing={3}>
+      <TextField
+        type="datetime-local"
+        label="Дата и время"
+        value={values.startedAt}
+        onChange={e =>
+          onChange({
+            ...values,
+            startedAt: e.target.value,
+          })
+        }
+        fullWidth
+      />
 
-        <TextField
-          type="datetime-local"
-          label="Дата и время"
-          value={form.startedAt}
-          onChange={e =>
-            setForm(prev => ({
-              ...prev,
-              startedAt: e.target.value,
-            }))
-          }
-          fullWidth
-        />
+      <TextField
+        type="number"
+        label="Продолжительность (мин.)"
+        value={values.duration}
+        onChange={e =>
+          onChange({
+            ...values,
+            duration: Number(e.target.value),
+          })
+        }
+        fullWidth
+      />
 
-        <TextField
-          type="number"
-          label="Продолжительность (мин.)"
-          value={form.duration}
-          onChange={e =>
-            setForm(prev => ({
-              ...prev,
-              duration: Number(e.target.value),
-            }))
-          }
-          fullWidth
-        />
+      <TextField
+        type="number"
+        label="Стоимость"
+        value={values.price}
+        onChange={e =>
+          onChange({
+            ...values,
+            price: Number(e.target.value),
+          })
+        }
+        fullWidth
+      />
 
-        <TextField
-          type="number"
-          label="Стоимость"
-          value={form.price}
-          onChange={e =>
-            setForm(prev => ({
-              ...prev,
-              price: Number(e.target.value),
-            }))
-          }
-          fullWidth
-        />
-
-        <Button
-          variant="contained"
-          disabled={loading}
-          onClick={() =>
-            onSubmit({
-              projectId,
-              ...form,
-            })
-          }
-        >
-          {initialValues ? 'Сохранить' : 'Создать'}
-        </Button>
-      </Stack>
-    </Box>
+      <Button variant="contained" disabled={loading} onClick={onSubmit}>
+        {loading ? 'Сохранение...' : submitLabel}
+      </Button>
+    </Stack>
   );
 }

@@ -2,7 +2,17 @@ import PlacePassportRepository from '../repositories/place-passport.repository.j
 
 class PlaceTeacherService {
   static async addTeacher(placeId: number, teacherPassportId: number) {
-    // TODO: проверить что passportId = admin place
+    const exists = await PlacePassportRepository.exists(
+      teacherPassportId,
+      placeId
+    );
+
+    console.log('exists', exists, teacherPassportId, placeId);
+
+    if (exists) {
+      return exists as number;
+    }
+
     return PlacePassportRepository.create({
       placeId,
       passportId: teacherPassportId,

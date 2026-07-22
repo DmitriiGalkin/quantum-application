@@ -11,6 +11,15 @@ const create: ControllerWithAuth<number, CreateProject> = async (req, res) => {
   }
 };
 
+const update: ControllerWithAuth<number, CreateProject> = async (req, res) => {
+  try {
+    const id = await ProjectService.update(Number(req.params.id), req.body);
+    ok(res, id);
+  } catch (err) {
+    fail(res, 'Ошибка при создании проекта');
+  }
+};
+
 const remove: ControllerWithAuth<void> = async (req, res) => {
   try {
     await ProjectService.remove(Number(req.params.id), req.passport!);
@@ -50,7 +59,6 @@ const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
 };
 
 const findByPlaceId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
-  console.log(req.viewer, 'req.viewer');
 
   const projects = await ProjectService.findAll({
     ...req.query,
@@ -83,6 +91,7 @@ const meta: Controller<PageMeta> = async (req, res) => {
 
 export default {
   create,
+  update,
   delete: remove,
   findAll,
   findByUserId,

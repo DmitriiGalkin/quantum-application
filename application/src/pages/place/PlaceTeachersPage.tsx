@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { fetchAddTeacher, fetchPlaceTeachers, fetchRemoveTeacher } from '../../requests.ts';
 import TeacherCard from '../../features/teacher/TeacherCard.tsx';
+import ShareIcon from '@mui/icons-material/Share';
 
 export default function PlaceTeachersPage() {
   const { id } = useParams();
@@ -37,10 +38,16 @@ export default function PlaceTeachersPage() {
         <Typography variant="h4">Учителя центра</Typography>
 
         <Stack direction="row" spacing={2}>
-          <TextField label="Passport ID" value={passportId} onChange={e => setPassportId(e.target.value)} />
+          <Stack direction="row" spacing={2}>
+            <TextField label="Passport ID" value={passportId} onChange={e => setPassportId(e.target.value)} />
 
-          <Button variant="contained" onClick={() => addTeacher.mutate()}>
-            Добавить
+            <Button variant="contained" onClick={() => addTeacher.mutate()}>
+              Добавить
+            </Button>
+          </Stack>
+
+          <Button startIcon={<ShareIcon />} onClick={() => navigator.clipboard.writeText(`${window.location.origin}/place/${placeId}/invite`)}>
+            Скопировать ссылку приглашения
           </Button>
         </Stack>
 

@@ -1,95 +1,42 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { Alert, Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { fetchCreateProject } from '../../requests.ts';
 import { useNavigate } from 'react-router-dom';
-
-interface CreateProject {
-  title: string;
-  description: string;
-  image: string;
-  ideaId?: number;
-  placeId: number;
-}
+import ProjectForm, { type ProjectFormValues } from '../../features/project/ProjectForm.tsx';
 
 export default function TeacherProjectCreatePage() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState<CreateProject>({
+  const [form, setForm] = useState<ProjectFormValues>({
     title: '',
     description: '',
     image: '',
-    placeId: 1, // TODO: брать из авторизации/центра
+    placeId: 1,
   });
 
   const createProject = useMutation({
-    mutationFn: fetchCreateProject,
-    onSuccess: projectId => {
-      navigate(`/project/${projectId}`);
-    },
+    mutationFn: (data: ProjectFormValues) =>
+      fetchCreateProject({
+        ...data,
+        placeId: 1,
+      }),
+    onSuccess: projectId => navigate(`/project/${projectId}`),
   });
-
-  const handleSubmit = () => {
-    createProject.mutate(form);
-  };
 
   return (
     <Box>
       <Stack spacing={3}>
-        <Typography variant="h4">
-          Новый проект
-        </Typography>
+        <Typography variant="h4">Новый проект</Typography>
 
-        <TextField
-          label="Название"
-          value={form.title}
-          onChange={e =>
-            setForm(prev => ({
-              ...prev,
-              title: e.target.value,
-            }))
-          }
-          required
-          fullWidth
+        <ProjectForm
+          values={form}
+          onChange={setForm}
+          onSubmit={() => createProject.mutate(form)}
+          loading={createProject.isPending}
+          error={createProject.isError}
+          submitLabel="Создать проект"
         />
-
-        <TextField
-          label="Описание"
-          value={form.description}
-          onChange={e =>
-            setForm(prev => ({
-              ...prev,
-              description: e.target.value,
-            }))
-          }
-          multiline
-          minRows={6}
-          required
-          fullWidth
-        />
-
-        <TextField
-          label="URL изображения"
-          value={form.image}
-          onChange={e =>
-            setForm(prev => ({
-              ...prev,
-              image: e.target.value,
-            }))
-          }
-          fullWidth
-        />
-
-        {createProject.isError && <Alert severity="error">Не удалось создать проект</Alert>}
-
-        <Button
-          variant="contained"
-          size="large"
-          onClick={handleSubmit}
-          disabled={createProject.isPending || !form.title.trim() || !form.description.trim()}
-        >
-          {createProject.isPending ? 'Создание...' : 'Создать проект'}
-        </Button>
       </Stack>
     </Box>
   );

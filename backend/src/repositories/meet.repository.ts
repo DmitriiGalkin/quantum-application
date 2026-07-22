@@ -8,6 +8,7 @@ import type { GetMeetsQuery } from '@shared/types';
 
 class MeetRepository {
   static async create(data: CreateMeetInput): Promise<number> {
+    console.log(data);
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId)
        VALUES (?, ?, ?, ?, ?, ?)`,
@@ -20,6 +21,7 @@ class MeetRepository {
   // ✅ UPDATE (нормальный partial)
   static async update(id: number, data: UpdateMeetInput): Promise<boolean> {
     const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+    console.log(entries);
 
     if (entries.length === 0) return false;
 

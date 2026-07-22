@@ -4,20 +4,58 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import SchoolIcon from '@mui/icons-material/School';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import { Box, Button, Card, CardContent, Chip, Container, Grid, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
 import Hero from '../../shared/ui/Hero.tsx';
 import { FeatureCard } from '../../shared/ui/FeatureCard.tsx';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.tsx';
+import { fetchCreatePlace } from '../../requests.ts';
 
+
+const defaultValues: PlaceFormValues = {
+  title: '',
+  description: '',
+  image: '',
+  address: '',
+  latitude: 55.76127510250765,
+  longitude: 37.64222000000001,
+};
 const CREATE_PLACE_TYPE = 'create-place';
 
 export function LandingPlacePage() {
   const navigate = useNavigate();
   const { authHandler, passport } = useAuth();
   const { setAction } = usePostAuthAction();
+
+  const [open, setOpen] = useState(false);
+  const [values, setValues] = useState(defaultValues);
+
+  const createPlace = useMutation({
+    mutationFn: fetchCreatePlace,
+
+    onSuccess: placeId => {
+      setOpen(false);
+      navigate(`/place/${placeId}`);
+    },
+  });
 
   const onCreate = () => {
     if(!passport) {
@@ -29,12 +67,12 @@ export function LandingPlacePage() {
       return authHandler();
     };
 
-    navigate('/place/create')
+    setOpen(true);
   }
 
   useRunPostAuthAction(passport, action => {
     if (action.type === CREATE_PLACE_TYPE) {
-      navigate('/place/create');
+      setOpen(true);
     }
   });
 
@@ -62,18 +100,33 @@ export function LandingPlacePage() {
             {[
               {
                 icon: <GroupsIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Ученики',
+                title: 'Дополнительный поток клиентов',
                 description: 'Храните контакты и историю участия в проектах каждого ученика',
               },
               {
                 icon: <CalendarMonthIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Расписание',
+                title: 'Легкая CRM',
                 description: 'Создавайте проекты, занятия и управляйте расписанием преподавателей.',
               },
               {
                 icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Оплаты',
+                title: 'Ведение финансов',
                 description: 'Принимайте оплату за занятия и образовательные программы прямо с сайта.',
+              },
+              {
+                icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
+                title: 'Поиск учителей',
+                description: 'Расширяйте штат центра привлекая учителей на сдельной договоренности.',
+              },
+              {
+                icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
+                title: 'Аналитика',
+                description: 'Качественная статистика по проводимым занятиям.',
+              },
+              {
+                icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
+                title: 'Продвижение',
+                description: 'Пока не знаю что сказать.',
               },
             ].map(item => (
               <Grid key={item.title} size={{ xs: 12, md: 4 }}>
@@ -161,6 +214,21 @@ export function LandingPlacePage() {
           </Card>
         </Stack>
       </Container>
+
+      <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>Создать учебный центр</DialogTitle>
+
+        <DialogContent>
+          <PlaceForm
+            values={values}
+            onChange={setValues}
+            onSubmit={() => createPlace.mutate(values)}
+            loading={createPlace.isPending}
+            error={createPlace.isError}
+            submitLabel="Создать центр"
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

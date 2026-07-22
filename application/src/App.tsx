@@ -7,7 +7,6 @@ import IdeasPage from './pages/idea/IdeasPage.tsx';
 import ChatPage from './pages/ChatPage.tsx';
 import IdeaPage from './pages/idea/IdeaPage.tsx';
 import ProjectPage from './pages/project/ProjectPage.tsx';
-import ProjectEditPage from './pages/project/ProjectEditPage.tsx';
 import TeacherProjectsPage from './pages/teacher/TeacherProjectsPage.tsx';
 import UserIdeasPage from './pages/user/UserIdeasPage.tsx';
 import UserProjectsPage from './pages/user/UserProjectsPage.tsx';
@@ -23,7 +22,6 @@ import PlaceDashboardPage from './pages/place/PlaceDashboardPage.tsx';
 import TeacherDashboardPage from './pages/teacher/TeacherDashboardPage.tsx';
 import MeetCreatePage from './pages/meet/MeetCreatePage.tsx';
 import MeetEditPage from './pages/meet/MeetEditPage.tsx';
-import PlaceCreatePage from './pages/place/PlaceCreatePage.tsx';
 import MissionPage from './pages/MissionPage.tsx';
 import AboutPage from './pages/AboutPage.tsx';
 import PrivacyPage from './pages/PrivacyPage.tsx';
@@ -33,6 +31,7 @@ import { LandingTeacherPage } from './pages/landing/LandingTeacherPage.tsx';
 import PaymentSuccessPage from './pages/payment/PaymentSuccessPage.tsx';
 import PaymentFailPage from './pages/payment/PaymentFailPage.tsx';
 import { LandingParentPage } from './pages/landing/LandingParentPage.tsx';
+import PlaceInvitePage from './pages/place/PlaceInvitePage.tsx';
 
 function App() {
   return (
@@ -44,10 +43,8 @@ function App() {
         <Route path="chat/:id" element={<ChatPage />} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
-        <Route path="project/:id/edit" element={<ProjectEditPage />} />
         <Route path="project/:id/meets/create" element={<MeetCreatePage />} />
         <Route path="project/:id/meets/:meetId/edit" element={<MeetEditPage />} />
-        <Route path="place/create" element={<PlaceCreatePage />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
@@ -83,6 +80,7 @@ function App() {
         <Route path="teachers" element={<PlaceTeachersPage />} />
         <Route path="projects" element={<PlaceProjectsPage />} />
         <Route path="meets" element={<PlaceMeetsPage />} />
+        <Route path="invite" element={<PlaceInvitePage />} />
       </Route>
 
       <Route path="payment" element={<AppLayout />}>

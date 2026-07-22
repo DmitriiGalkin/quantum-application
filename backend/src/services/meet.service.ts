@@ -10,10 +10,13 @@ import ProjectUserRepository from '../repositories/project-user.repository.js';
 
 export class MeetService {
   static async create(passport: Passport, data: CreateMeet) {
+    console.log(data, 'data');
     if (!passport) throw new Error('UNAUTHORIZED');
     const project = await ProjectRepository.findById(data.projectId);
+    console.log(project,'project');
 
     if (!project) throw new Error('MeetService project не существуйет');
+    console.log('3');
 
     return MeetRepository.create({
       ...data,

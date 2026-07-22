@@ -3,13 +3,15 @@ import { Feed } from '../../features/feed/Feed.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchCreateMeet, fetchProject } from '../../requests.ts';
 import { useParams } from 'react-router-dom';
-import { type CreateMeet, CreateMeetForm } from '../../features/meets/ui/CreateMeetForm.tsx';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import ProjectCard from '../../features/project/ProjectCard.tsx';
+import MeetForm, { type MeetFormValues } from '../../features/meets/ui/MeetForm.tsx';
+import { useState } from 'react';
+import Paper from '@mui/material/Paper';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
-  const { activeContext } = useAuth();
+  const { activeContext, passport } = useAuth();
   const role = activeContext.role;
 
   const { data: project, refetch } = useQuery({
@@ -18,19 +20,19 @@ export default function ProjectPage() {
     enabled: Boolean(id),
   });
 
+  const [form, setForm] = useState<MeetFormValues>({
+    startedAt: '',
+    duration: 60,
+    price: 0,
+    projectId: Number(id) || 0,
+  });
+
   const createMeetMutation = useMutation({
     mutationFn: fetchCreateMeet,
   });
 
-  const onCreateMeet = (data: CreateMeet) => {
-    createMeetMutation.mutate(data, {
-      onSuccess: () => {
-        refetch();
-      },
-    });
-  };
-
   if (!project) return null;
+
 
   return (
     <Grid container spacing={2}>
@@ -48,7 +50,23 @@ export default function ProjectPage() {
         </Typography>
 
         <Stack spacing={2}>
-          {role === 'teacher' && <CreateMeetForm projectId={project.id} placeId={project.place.id} onSubmit={onCreateMeet} />}
+          {role === 'teacher' && project.passport.id === passport?.id && (
+            <Paper sx={{ p: 2 }}>
+              <MeetForm
+                values={form}
+                onChange={setForm}
+                onSubmit={() =>
+                  createMeetMutation.mutate(form, {
+                    onSuccess: () => {
+                      refetch();
+                    },
+                  })
+                }
+                loading={createMeetMutation.isPending}
+                submitLabel="Создать встречу"
+              />
+            </Paper>
+          )}
 
           {Boolean(project.users.length) && (
             <Card sx={{ borderRadius: 3 }}>

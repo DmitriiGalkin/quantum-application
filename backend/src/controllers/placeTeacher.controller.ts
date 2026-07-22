@@ -18,11 +18,21 @@ const addTeacher: ControllerWithAuth<number, AddTeacherBody> = async (req, res) 
   }
 };
 
+const create: ControllerWithAuth<number, AddTeacherBody> = async (req, res) => {
+  try {
+    const placeId = Number(req.params.id);
+    const id = await PlaceTeacherService.addTeacher(placeId, req.body.passportId);
+
+    ok(res, id);
+  } catch (err) {
+    console.log(err);
+    fail(res, 'Не удалось добавить учителя');
+  }
+};
+
 const findAll: ControllerWithAuth<number> = async (req, res) => {
   try {
-    const placeId = await PlaceTeacherService.resolveAdminPlace(req.passport.id!);
-
-    const data = await PlaceTeacherService.findAll(placeId);
+    const data = await PlaceTeacherService.findAll(Number(req.params.id!));
 
 
     ok(res, data);
@@ -48,6 +58,7 @@ const remove: ControllerWithAuth<number> = async (req, res) => {
 
 export default {
   addTeacher,
+  create,
   findAll,
   remove,
 };

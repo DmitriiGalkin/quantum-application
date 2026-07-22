@@ -5,7 +5,12 @@ import { Button, Chip, Menu, MenuItem, Paper, Stack, Typography } from '@mui/mat
 import MeetCardBody from './MeetCardBody.tsx';
 import PlaceFooter from './PlaceFooter';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateMeetUser, fetchCreatePayment, fetchDeleteMeet, fetchDeleteMeetUser } from '../../../../requests.ts';
+import {
+  fetchCreateMeetUser,
+  fetchCreatePayment,
+  fetchDeleteMeet,
+  fetchDeleteMeetUser, fetchUpdateMeet,
+} from '../../../../requests.ts';
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -15,6 +20,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { getMeetStatus, statusConfig } from './helper.ts';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import MeetForm, { type MeetFormValues } from '../MeetForm.tsx';
+import { toDateTimeLocal } from '../../../../utils/time.ts';
 
 interface Props {
   meet: MeetExtendedDto;
@@ -25,8 +35,27 @@ interface Props {
 export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   const { activeUser, authHandler, passport, activeContext } = useAuth();
   const role = activeContext.role;
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+
+  const [form, setForm] = useState<MeetFormValues>({
+    projectId: meet.projectId,
+    startedAt: toDateTimeLocal(meet.startedAt),
+    duration: meet.duration || 0,
+    price: meet.price || 0,
+  });
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+
+  const updateMeet = useMutation({
+    mutationFn: (data: MeetFormValues) => fetchUpdateMeet(meet.id, data),
+
+    onSuccess: () => {
+      setEditModalOpen(false);
+      refetch?.();
+    },
+  });
+
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     event.preventDefault();
@@ -156,7 +185,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
       key: 'edit',
       label: 'Изменить',
       icon: <EditIcon fontSize="small" />,
-      onClick: onEdit,
+      onClick: () => setEditModalOpen(true),
     });
     menuItems.push({
       key: 'delete',
@@ -218,7 +247,6 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
 
         {body}
 
-        {/* CTA кнопки */}
         {role === 'user' && (
           <>
             {!isMember && (
@@ -235,6 +263,20 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
         )}
         {role === 'place' && <PlaceFooter meet={meet} onEdit={onEdit} />}
       </Stack>
+
+      <Dialog open={isEditModalOpen} onClose={() => setEditModalOpen(false)} fullWidth maxWidth="md">
+        <DialogTitle>Редактирование проекта</DialogTitle>
+
+        <DialogContent sx={{ pt: 2 }}>
+          <MeetForm
+            values={form}
+            onChange={setForm}
+            onSubmit={() => updateMeet.mutate(form)}
+            loading={updateMeet.isPending}
+            submitLabel="Сохранить"
+          />
+        </DialogContent>
+      </Dialog>
     </Paper>
   );
 }
