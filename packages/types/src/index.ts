@@ -6,7 +6,6 @@ export type Ui = 'auth' | 'map' | 'idea' | 'project' | 'meet' | 'ideas';
 
 export type Role = 'user' | 'assistant' | 'system';
 
-
 export type Sort = 'nearby' | 'popular' | 'new';
 
 export type When = 'today' | 'tomorrow' | undefined;
@@ -114,10 +113,13 @@ export interface PlaceDto {
   latitude: number;
   longitude: number;
   priceFrom: number | null;
+
+  image?: string | null;
 }
 
 export interface PlaceFullDto extends PlaceDto {
   meets: MeetDto[];
+  schedule: PlaceScheduleDayDto[];
 }
 
 export interface ProjectDto {
@@ -333,7 +335,6 @@ export interface PaymentCreateResponseDto {
   paymentUrl: string;
 }
 
-
 export interface TeacherDashboardDto {
   projects: number;
   meets: number;
@@ -341,5 +342,22 @@ export interface TeacherDashboardDto {
   debit: number;
 
   bmeets: MeetExtendedDto[];
+}
+
+export type PlaceScheduleDayDto = {
+  weekday: number;
+  enabled: boolean;
+  startTime: string;
+  endTime: string;
 };
 
+export interface PlaceUpdateDto {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  schedule: PlaceScheduleDayDto[];
+}

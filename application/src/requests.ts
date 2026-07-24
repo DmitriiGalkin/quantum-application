@@ -2,32 +2,34 @@ import type {
   ChatDto,
   ChatMessagesResult,
   CreateChatBody,
-  CreateMessageDto,
-  TeacherDashboardDto,
   CreateIdeaUser,
-  DeleteIdeaUser,
-  GetIdeasQuery,
-  IdeaExtendedDto,
-  IdeaFullDto,
   CreateMeet,
   CreateMeetUser,
+  CreateMessageDto,
+  CreatePlace,
+  CreateProject,
+  CreateProjectUser,
+  DeleteIdeaUser,
   DeleteMeetUser,
+  GetIdeasQuery,
   GetMeetsQuery,
+  IdeaExtendedDto,
+  IdeaFullDto,
   MeetDto,
   MeetExtendedDto,
-  UpdateMeet,
+  MeetStatus,
   PassportExtendedDto,
   PaymentCreateDto,
   PaymentCreateResponseDto,
   PaymentDto,
-  CreatePlace,
   PlaceFullDto,
-  CreateProject,
-  CreateProjectUser,
   ProjectFullDto,
-  TeacherDto, MeetStatus,
+  TeacherDashboardDto,
+  TeacherDto,
+  UpdateMeet,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
+import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 
 export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas?${toQuery(params)}`);
 export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaFullDto>(`/idea/${id}?${toQuery(params)}`);
@@ -63,11 +65,13 @@ export const fetchTeacherMeets = () => get<MeetExtendedDto[]>('/teacher/meets');
 export const fetchPlace = (id: number) => get<PlaceFullDto>(`/place/${id}`);
 export const fetchPlaces = () => get<PlaceFullDto[]>('/places');
 export const fetchCreatePlace = (params: CreatePlace) => post<number>('/place', params);
+export const fetchUpdatePlace = (id: number, params: PlaceFormValues) => put<void>(`/place/${id}`, params);
 export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { passportId });
 export const fetchAddTeacher2 = (params: { passportId: number; placeId: number }) => post<number>(`/place/${params.placeId}/teacher`, params);
 export const fetchPlaceTeachers = (id: number) => get<TeacherDto[]>(`/place/${id}/teachers`);
 export const fetchPlaceProjects = (id: number) => get<ProjectFullDto[]>(`/place/${id}/projects`);
-export const fetchRemoveTeacher = (passportId: number) => del<void>(`/place/teachers/${passportId}`);
+export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<void>(`/place/${placeId}/teacher/${passportId}`);
+export const fetchLeavePlace = (id: number) => del<void>(`/place/${id}/leave`);
 
 export const fetchPassport = () => get<PassportExtendedDto>('/passport');
 export const fetchCreateUser = (params: { title: string; description?: string }) => post<number>('/user', params);

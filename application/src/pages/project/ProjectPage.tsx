@@ -21,14 +21,19 @@ export default function ProjectPage() {
   });
 
   const [form, setForm] = useState<MeetFormValues>({
-    startedAt: '',
+    date: '',
+    time: '',
     duration: 60,
     price: 0,
     projectId: Number(id) || 0,
   });
 
   const createMeetMutation = useMutation({
-    mutationFn: fetchCreateMeet,
+    mutationFn: (form: MeetFormValues) =>
+      fetchCreateMeet({
+        ...form,
+        startedAt: `${form.date}T${form.time}:00`,
+      }),
   });
 
   if (!project) return null;

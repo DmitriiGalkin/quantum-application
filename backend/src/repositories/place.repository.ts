@@ -31,6 +31,7 @@ class PlaceRepository {
 
   // ✅ UPDATE (универсальный)
   static async update(id: number, data: UpdatePlaceInput): Promise<boolean> {
+    console.log(id, data);
     const entries = Object.entries(data).filter(([, value]) => value !== undefined);
 
     if (entries.length === 0) return false;

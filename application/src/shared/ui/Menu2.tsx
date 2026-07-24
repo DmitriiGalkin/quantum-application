@@ -33,6 +33,7 @@ interface MenuProps {
 
 function Menu2({ setIsMenuOpen }: MenuProps) {
   const { activeUser, users, places, passport, activePlace, activeTeacher, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
+
   const [value, setValue] = useState(0);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -112,6 +113,26 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
         </Stack>
       </Stack>
 
+      {activeContext.role === 'place' && (
+        <List>
+          <ListItemButton
+            onClick={() => {
+              setIsMenuOpen?.(false);
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 40,
+              }}
+            >
+              <KeyOffIcon />
+            </ListItemIcon>
+
+            <ListItemText primary="Настройки центра" />
+          </ListItemButton>
+        </List>
+      )}
+
       <Box sx={{ p: 3, mt: 'auto', backgroundColor: 'gray', filter: 'invert(1)' }}>
         <List disablePadding>
           <ListItemButton
@@ -130,6 +151,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
       </Box>
     </Box>
   );
+
 }
 
 export default Menu2;

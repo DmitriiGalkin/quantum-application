@@ -1,6 +1,6 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import { CreatePlace, type MeetExtendedDto, PlaceDto } from '@shared/types';
+import { CreatePlace, type MeetExtendedDto, PlaceDto, PlaceUpdateDto } from '@shared/types';
 import { MeetService } from '../services/meet.service.js';
 
 const findAll: Controller<PlaceDto[]> = async (_req, res) => {
@@ -22,17 +22,30 @@ const create: ControllerWithAuth<number, CreatePlace> = async (req, res) => {
   }
 };
 
+const update: ControllerWithAuth<void, PlaceUpdateDto> = async (req, res) => {
+  try {
+    await PlaceService.update({
+      ...req.body,
+      id: Number(req.params.id),
+    });
+
+    ok(res, { message: 'Центр обновлен' });
+  } catch (err) {
+    fail(res, 'Не удалось обновить центр');
+  }
+};
+
 const findById: Controller<MeetExtendedDto> = async (req, res) => {
   try {
     console.log('findById!!');
 
-    const meet = await PlaceService.findById(Number(req.params.id));
+    const place = await PlaceService.findById(Number(req.params.id));
 
-    if (!meet) {
+    if (!place) {
       fail(res, 'Место не найдено', 404);
     }
 
-    ok(res, meet);
+    ok(res, place);
   } catch (err) {
     fail(res, 'Ошибка при получении места');
   }
@@ -41,5 +54,6 @@ const findById: Controller<MeetExtendedDto> = async (req, res) => {
 export default {
   findAll,
   create,
+  update,
   findById,
 };

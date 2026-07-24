@@ -2,10 +2,7 @@ import PlacePassportRepository from '../repositories/place-passport.repository.j
 
 class PlaceTeacherService {
   static async addTeacher(placeId: number, teacherPassportId: number) {
-    const exists = await PlacePassportRepository.exists(
-      teacherPassportId,
-      placeId
-    );
+    const exists = await PlacePassportRepository.exists(teacherPassportId, placeId);
 
     console.log('exists', exists, teacherPassportId, placeId);
 
@@ -28,6 +25,10 @@ class PlaceTeacherService {
   static async remove(placeId: number, teacherPassportId: number) {
     // TODO: проверить доступ
     return PlacePassportRepository.removeTeacher(placeId, teacherPassportId);
+  }
+
+  static async leave(placeId: number, passportId: number) {
+    return PlacePassportRepository.removeTeacher(placeId, passportId);
   }
 
   static async resolveAdminPlace(passportId: number) {

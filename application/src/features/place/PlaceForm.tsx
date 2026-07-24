@@ -1,4 +1,6 @@
 import { Alert, Button, Stack, TextField } from '@mui/material';
+import { PlaceScheduleField } from './PlaceScheduleField.tsx';
+import type { PlaceScheduleDayDto } from './PlaceScheduleRow.tsx';
 
 export interface PlaceFormValues {
   title: string;
@@ -7,6 +9,8 @@ export interface PlaceFormValues {
   address: string;
   latitude: number;
   longitude: number;
+
+  schedule: PlaceScheduleDayDto[];
 }
 
 interface PlaceFormProps {
@@ -19,7 +23,19 @@ interface PlaceFormProps {
   onSubmit: () => void;
 }
 
+export const weekdaysShort = [
+  { value: 1, label: 'Пн' },
+  { value: 2, label: 'Вт' },
+  { value: 3, label: 'Ср' },
+  { value: 4, label: 'Чт' },
+  { value: 5, label: 'Пт' },
+  { value: 6, label: 'Сб' },
+  { value: 0, label: 'Вс' },
+] as const;
+
 export default function PlaceForm({ values, loading = false, error = false, submitLabel = 'Сохранить', onChange, onSubmit }: PlaceFormProps) {
+
+
   return (
     <Stack spacing={3}>
       <TextField
@@ -34,7 +50,6 @@ export default function PlaceForm({ values, loading = false, error = false, subm
         required
         fullWidth
       />
-
       <TextField
         label="Описание"
         value={values.description}
@@ -49,7 +64,6 @@ export default function PlaceForm({ values, loading = false, error = false, subm
         required
         fullWidth
       />
-
       <TextField
         label="URL изображения"
         value={values.image}
@@ -61,7 +75,6 @@ export default function PlaceForm({ values, loading = false, error = false, subm
         }
         fullWidth
       />
-
       <TextField
         label="Адрес"
         value={values.address}
@@ -74,9 +87,16 @@ export default function PlaceForm({ values, loading = false, error = false, subm
         required
         fullWidth
       />
-
-      {error && <Alert severity="error">Не удалось сохранить учебный центр</Alert>}
-
+      <PlaceScheduleField
+        value={values.schedule}
+        onChange={schedule =>
+          onChange({
+            ...values,
+            schedule,
+          })
+        }
+      />
+      ;{error && <Alert severity="error">Не удалось сохранить учебный центр</Alert>}
       <Button
         variant="contained"
         size="large"

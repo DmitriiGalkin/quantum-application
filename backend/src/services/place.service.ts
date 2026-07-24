@@ -1,12 +1,8 @@
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
-import { CreatePlace, type MeetExtendedDto, PlaceFullDto } from '@shared/types';
+import { CreatePlace, PlaceFullDto, PlaceUpdateDto } from '@shared/types';
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
-import { Place } from '../entities/place.js';
-import UserRepository from '../repositories/user.repository.js';
-import PassportRepository from '../repositories/passport.repository.js';
-import { Passport } from '../entities/passport.js';
-import ProjectUserRepository from '../repositories/project-user.repository.js';
+import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
 
 export class PlaceService {
   static async findAll() {
@@ -31,10 +27,24 @@ export class PlaceService {
     return placeId;
   }
 
+  static async update(data: PlaceUpdateDto) {
+    const { schedule, ...place } = data;
+    await PlaceRepository.update(data.id, place);
+
+    if (schedule) {
+      console.log('schedule', schedule);
+      await PlaceScheduleRepository.replace(data.id, schedule);
+    }
+
+    return PlaceRepository.findById(data.id);
+  }
+
   static async findById(id: number): Promise<PlaceFullDto | null> {
     const place = await PlaceRepository.findById(id);
     if (!place) return null;
 
-    return { ...place, meets: [] };
+   const schedule = await PlaceScheduleRepository.findByPlaceId(id);
+
+    return { ...place, meets: [], schedule };
   }
 }

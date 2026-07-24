@@ -255,7 +255,7 @@ export const AuthProvider = ({ children }: Props) => {
         authHandler,
         refetch,
         activeContext,
-        places: [],
+        places,
         switchUser,
         switchTeacher,
         switchPlace,

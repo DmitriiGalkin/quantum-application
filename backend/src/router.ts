@@ -156,14 +156,14 @@ privateRouter.delete('/meetUser', withAuth(meetUser.delete));
 
 publicRouter.get('/places', place.findAll);
 privateRouter.post('/place', withAuth(place.create));
+privateRouter.put('/place/:id', withAuth(place.update));
 publicRouter.get('/place/:id', place.findById);
 privateRouter.get('/place/:id/projects', withAuth(project.findByPlaceId));
 privateRouter.get('/place/:id/teachers', withAuth(placeTeacherController.findAll));
 privateRouter.post('/place/:id/teacher', withAuth(placeTeacherController.create));
 privateRouter.post('/place/teachers', withAuth(placeTeacherController.addTeacher));
-privateRouter.delete('/place/teachers/:passportId', withAuth(placeTeacherController.remove));
-
-
+privateRouter.delete('/place/:id/teacher/:passportId', withAuth(placeTeacherController.remove));
+privateRouter.delete('/place/:id/leave', withAuth(placeTeacherController.leave));
 
 publicRouter.post('/passport/login', withAuth(passportController.login));
 privateRouter.get('/passport/projects', withAuth(project.findByPassportId));

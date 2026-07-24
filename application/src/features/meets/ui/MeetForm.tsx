@@ -1,14 +1,21 @@
-import { Button, Stack, TextField } from '@mui/material';
+import { Button, MenuItem, Stack, TextField } from '@mui/material';
+
+import MeetDateField from './MeetDateField';
+import MeetTimeField from './MeetTimeField';
 
 export interface MeetFormValues {
   projectId: number;
-  startedAt: string;
+
+  date: string;
+  time: string;
+
   duration: number;
   price: number;
 }
 
-interface MeetFormProps {
+interface Props {
   values: MeetFormValues;
+
   loading?: boolean;
   submitLabel?: string;
 
@@ -16,25 +23,33 @@ interface MeetFormProps {
   onSubmit: () => void;
 }
 
-export default function MeetForm({ values, loading = false, submitLabel = 'Сохранить', onChange, onSubmit }: MeetFormProps) {
+export default function MeetForm({ values, loading = false, submitLabel = 'Сохранить', onChange, onSubmit }: Props) {
   return (
-    <Stack spacing={3}>
-      <TextField
-        type="datetime-local"
-        label="Дата и время"
-        value={values.startedAt}
-        onChange={e =>
+    <Stack spacing={2}>
+      <MeetDateField
+        value={values.date}
+        schedule={place.schedule}
+        onChange={date =>
           onChange({
             ...values,
-            startedAt: e.target.value,
+            date,
           })
         }
-        fullWidth
+      />
+
+      <MeetTimeField
+        value={values.time}
+        onChange={time =>
+          onChange({
+            ...values,
+            time,
+          })
+        }
       />
 
       <TextField
-        type="number"
-        label="Продолжительность (мин.)"
+        select
+        label="Продолжительность"
         value={values.duration}
         onChange={e =>
           onChange({
@@ -42,8 +57,13 @@ export default function MeetForm({ values, loading = false, submitLabel = 'Со�
             duration: Number(e.target.value),
           })
         }
-        fullWidth
-      />
+      >
+        {[30, 45, 60, 90, 120].map(duration => (
+          <MenuItem key={duration} value={duration}>
+            {duration} мин
+          </MenuItem>
+        ))}
+      </TextField>
 
       <TextField
         type="number"
@@ -55,7 +75,6 @@ export default function MeetForm({ values, loading = false, submitLabel = 'Со�
             price: Number(e.target.value),
           })
         }
-        fullWidth
       />
 
       <Button variant="contained" disabled={loading} onClick={onSubmit}>

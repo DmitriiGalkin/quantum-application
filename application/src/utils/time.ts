@@ -16,3 +16,13 @@ export function extractTime(isoString: string) {
 export function toDateTimeLocal(value: string) {
   return new Date(value).toISOString().slice(0, 16);
 }
+
+export function formatDate(date: Date) {
+  return date.toISOString().split('T')[0];
+}
+
+export function addDays(date: Date, days: number) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+}
