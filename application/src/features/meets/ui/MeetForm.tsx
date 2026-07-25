@@ -26,7 +26,6 @@ interface Props {
 }
 
 export default function MeetForm({ schedule, values, loading = false, submitLabel = 'Сохранить', onChange, onSubmit }: Props) {
-  console.log(values, 'values');
   return (
     <Stack spacing={2}>
       <MeetDateField

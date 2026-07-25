@@ -33,10 +33,9 @@ interface MenuProps {
 
 function Menu2({ setIsMenuOpen }: MenuProps) {
   const { activeUser, users, places, passport, activePlace, activeTeacher, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
+  const [value, setValue] = useState(activeContext.role);
 
-  const [value, setValue] = useState(0);
-
-  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: ActiveRole) => {
     setValue(newValue);
   };
 
@@ -53,9 +52,9 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
           minHeight: 32,
         }}
       >
-        {activeUser && <Tab label="Ученик" {...a11yProps('user')} onClick={() => switchUser(activeUser?.id ?? users[0].id)} />}
-        {activeTeacher && <Tab label="Учитель" {...a11yProps('teacher')} onClick={switchTeacher} />}
-        {activePlace && <Tab label="Центр" {...a11yProps('place')} onClick={() => switchPlace(activePlace?.id ?? places[0].id)} />}
+        {activeUser && <Tab value="user" label="Ученик" {...a11yProps('user')} onClick={() => switchUser(activeUser?.id ?? users[0].id)} />}
+        {activeTeacher && <Tab value="teacher" label="Учитель" {...a11yProps('teacher')} onClick={switchTeacher} />}
+        {activePlace && <Tab value="place" label="Центр" {...a11yProps('place')} onClick={() => switchPlace(activePlace?.id ?? places[0].id)} />}
       </Tabs>
 
       {activeContext.role === 'user' && (
@@ -112,26 +111,6 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
           </Box>
         </Stack>
       </Stack>
-
-      {activeContext.role === 'place' && (
-        <List>
-          <ListItemButton
-            onClick={() => {
-              setIsMenuOpen?.(false);
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 40,
-              }}
-            >
-              <KeyOffIcon />
-            </ListItemIcon>
-
-            <ListItemText primary="Настройки центра" />
-          </ListItemButton>
-        </List>
-      )}
 
       <Box sx={{ p: 3, mt: 'auto', backgroundColor: 'gray', filter: 'invert(1)' }}>
         <List disablePadding>

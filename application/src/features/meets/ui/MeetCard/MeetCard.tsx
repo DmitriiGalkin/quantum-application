@@ -35,12 +35,10 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   const { activeUser, authHandler, passport, activeContext } = useAuth();
   const role = activeContext.role;
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-const f = new Date(meet.startedAt).toTimeString().slice(0, 5);
-console.log(f,'f')
   const [form, setForm] = useState<MeetFormValues>({
     projectId: meet.projectId,
     date: new Date(meet.startedAt).toISOString().slice(0, 10), // YYYY-MM-DD
-    time: f, // HH:mm
+    time: new Date(meet.startedAt).toTimeString().slice(0, 5), // HH:mm
     duration: meet.duration || 0,
     price: meet.price || 0,
   });
