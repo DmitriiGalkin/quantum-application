@@ -26,6 +26,7 @@ export class MeetService {
   }
 
   static async update(data: any) {
+    console.log(data, 'data');
     return MeetRepository.update(data.id, data);
   }
 

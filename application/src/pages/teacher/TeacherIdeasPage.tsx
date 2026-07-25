@@ -23,7 +23,7 @@ export default function TeacherIdeasPage() {
               <Typography>{idea.title}</Typography>
 
               <Typography color="text.secondary">
-                {idea.user.title} · {idea.createdAt}
+                {idea.createdAt}
               </Typography>
             </CardContent>
           </Card>

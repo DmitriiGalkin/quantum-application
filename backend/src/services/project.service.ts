@@ -81,7 +81,7 @@ export class ProjectService {
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
     ]);
 
-    const placesForMeets = await Promise.all(meets.map(m => PlaceRepository.findById(m.id) as Promise<Place>));
+    const placesForMeets = await Promise.all(meets.map(m => PlaceRepository.findById(m.placeId) as Promise<Place>));
     const usersForMeets = await Promise.all(meets.map(m => UserRepository.findByMeetId(m.id)));
     const passportsForMeets = await Promise.all(meets.map(m => PassportRepository.findById(m.passportId) as Promise<Passport>));
 

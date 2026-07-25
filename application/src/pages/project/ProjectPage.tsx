@@ -100,7 +100,7 @@ export default function ProjectPage() {
             </Card>
           )}
 
-          {activeContext.role === 'teacher' && <div>Хей куратор, нажми кнопку поделиться своим проектом в соц сети</div>}
+          {/**activeContext.role === 'teacher' && <div>Хей куратор, нажми кнопку поделиться своим проектом в соц сети</div>**/}
         </Stack>
       </Grid>
     </Grid>

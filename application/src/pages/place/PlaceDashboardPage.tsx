@@ -8,8 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.tsx';
 import EditIcon from '@mui/icons-material/Edit';
-import type { PlaceScheduleDayDto } from '../../features/place/PlaceScheduleRow.tsx';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import type { PlaceScheduleDayDto } from '@shared/types';
 
 export const DEFAULT_PLACE_SCHEDULE: PlaceScheduleDayDto[] = [
   { weekday: 1, enabled: true, startTime: '09:00', endTime: '21:00' },

@@ -18,10 +18,9 @@ interface Props {
   height: number;
 
   onClick?(): void;
-  refetch?: () => void
 }
 
-export default function WeekCalendarMeet({ meet, top, height, onClick, refetch }: Props) {
+export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) {
   const started = new Date(meet.startedAt);
   const queryClient = useQueryClient();
 

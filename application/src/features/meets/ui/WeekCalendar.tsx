@@ -2,17 +2,14 @@ import {
   Box,
   Paper,
   Stack,
-  Tab,
-  Tabs,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { addDays, startOfWeek } from 'date-fns';
+import { addDays, format, startOfWeek } from 'date-fns';
 import { useMemo, useState } from 'react';
-import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import WeekCalendarGrid from './WeekCalendarGrid';
 import WeekCalendarHeader from './WeekCalendarHeader';
@@ -31,8 +28,6 @@ export interface WeekCalendarProps {
 
   onCellClick?(date: Date): void;
 }
-
-const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, endHour = 22, onMeetClick, onCellClick }: WeekCalendarProps) {
   const theme = useTheme();

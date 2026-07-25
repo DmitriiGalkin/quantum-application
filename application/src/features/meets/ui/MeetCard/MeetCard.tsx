@@ -4,12 +4,12 @@ import { Button, Chip, Menu, MenuItem, Paper, Stack, Typography } from '@mui/mat
 
 import MeetCardBody from './MeetCardBody.tsx';
 import PlaceFooter from './PlaceFooter';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   fetchCreateMeetUser,
   fetchCreatePayment,
   fetchDeleteMeet,
-  fetchDeleteMeetUser, fetchUpdateMeet, fetchUpdateMeetStatus,
+  fetchDeleteMeetUser, fetchPlace, fetchUpdateMeet, fetchUpdateMeetStatus,
 } from '../../../../requests.ts';
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
@@ -24,7 +24,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import MeetForm, { type MeetFormValues } from '../MeetForm.tsx';
-import { toDateTimeLocal } from '../../../../utils/time.ts';
 
 interface Props {
   meet: MeetExtendedDto;
@@ -36,19 +35,29 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   const { activeUser, authHandler, passport, activeContext } = useAuth();
   const role = activeContext.role;
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-
+const f = new Date(meet.startedAt).toTimeString().slice(0, 5);
+console.log(f,'f')
   const [form, setForm] = useState<MeetFormValues>({
     projectId: meet.projectId,
-    startedAt: toDateTimeLocal(meet.startedAt),
+    date: new Date(meet.startedAt).toISOString().slice(0, 10), // YYYY-MM-DD
+    time: f, // HH:mm
     duration: meet.duration || 0,
     price: meet.price || 0,
   });
 
+  const { data: place } = useQuery({
+    queryKey: ['place', meet.place.id],
+    queryFn: () => fetchPlace(meet.place.id || 0),
+    enabled: Boolean(meet.place.id),
+  });
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-
   const updateMeet = useMutation({
-    mutationFn: (data: MeetFormValues) => fetchUpdateMeet(meet.id, data),
+    mutationFn: (form: MeetFormValues) => {
+      const { date, time, ...data } = form;
+      return fetchUpdateMeet(meet.id, { ...data, startedAt: `${form.date}T${form.time}:00` });
+    },
 
     onSuccess: () => {
       setEditModalOpen(false);
@@ -202,6 +211,8 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
     });
   }
 
+  if(!place) return null
+
   return (
     <Paper
       elevation={0}
@@ -298,6 +309,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
           <MeetForm
             values={form}
             onChange={setForm}
+            schedule={place.schedule}
             onSubmit={() => updateMeet.mutate(form)}
             loading={updateMeet.isPending}
             submitLabel="Сохранить"

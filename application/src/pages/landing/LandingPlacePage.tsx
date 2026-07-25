@@ -28,6 +28,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.tsx';
 import { fetchCreatePlace } from '../../requests.ts';
+import { DEFAULT_PLACE_SCHEDULE } from '../place/PlaceDashboardPage.tsx';
 
 
 const defaultValues: PlaceFormValues = {
@@ -37,6 +38,7 @@ const defaultValues: PlaceFormValues = {
   address: '',
   latitude: 55.76127510250765,
   longitude: 37.64222000000001,
+  schedule: DEFAULT_PLACE_SCHEDULE
 };
 const CREATE_PLACE_TYPE = 'create-place';
 
