@@ -2,8 +2,13 @@
 
 import { Box, Typography } from '@mui/material';
 import { format } from 'date-fns';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import { Stack } from '@mui/material';
 
-import type { MeetExtendedDto } from '@shared/types';
+import type { MeetExtendedDto, MeetStatus } from '@shared/types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchUpdateMeetStatus } from '../../../requests.ts';
 
 interface Props {
   meet: MeetExtendedDto;
@@ -13,10 +18,21 @@ interface Props {
   height: number;
 
   onClick?(): void;
+  refetch?: () => void
 }
 
-export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) {
+export default function WeekCalendarMeet({ meet, top, height, onClick, refetch }: Props) {
   const started = new Date(meet.startedAt);
+  const queryClient = useQueryClient();
+
+  const updateStatus = useMutation({
+    mutationFn: (status: MeetStatus) => fetchUpdateMeetStatus(meet.id, { status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['meets', meet.place.id],
+      });
+    },
+  });
 
   return (
     <Box
@@ -32,7 +48,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
         height,
         minHeight: 24,
         borderRadius: 1,
-        bgcolor: 'primary.main',
+        bgcolor: meet.status === 'published' ? 'primary.main' : 'pink',
         color: 'primary.contrastText',
         p: 0.75,
         overflow: 'hidden',
@@ -46,16 +62,22 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
         },
       }}
     >
-      <Typography
-        variant="caption"
-        sx={{
-          display: 'block',
-          fontWeight: 700,
-          lineHeight: 1.2,
-        }}
-      >
-        {format(started, 'HH:mm')} – {'HH:mm'}
-      </Typography>
+      <Stack direction="row" spacing={0.5} sx={{ justifyContent: 'space-between' }}>
+        <Typography
+          variant="caption"
+          sx={{
+            display: 'block',
+            fontWeight: 700,
+            lineHeight: 1.2,
+          }}
+        >
+          {format(started, 'HH:mm')} – {'HH:mm'}
+        </Typography>{' '}
+        <Stack direction="row" spacing={0.5} sx={{ justifyContent: 'flex-end' }}>
+          <CheckIcon color="success" fontSize="small" sx={{ cursor: 'pointer' }} onClick={() => updateStatus.mutate('published')} />
+          <CloseIcon color="error" fontSize="small" sx={{ cursor: 'pointer' }} onClick={() => updateStatus.mutate('cancelled')} />
+        </Stack>{' '}
+      </Stack>
 
       <Typography
         variant="body2"
@@ -72,16 +94,18 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
       </Typography>
 
       {height > 70 && (
-        <Typography
-          variant="caption"
-          sx={{
-            display: 'block',
-            opacity: 0.9,
-            mt: 0.5,
-          }}
-        >
-          Название
-        </Typography>
+        <>
+          <Typography
+            variant="caption"
+            sx={{
+              display: 'block',
+              opacity: 0.9,
+              mt: 0.5,
+            }}
+          >
+            Название
+          </Typography>
+        </>
       )}
     </Box>
   );

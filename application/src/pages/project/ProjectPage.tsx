@@ -1,7 +1,7 @@
 import { Avatar, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { Feed } from '../../features/feed/Feed.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchCreateMeet, fetchProject } from '../../requests.ts';
+import { fetchCreateMeet, fetchPlace, fetchProject } from '../../requests.ts';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import ProjectCard from '../../features/project/ProjectCard.tsx';
@@ -20,6 +20,12 @@ export default function ProjectPage() {
     enabled: Boolean(id),
   });
 
+  const { data: place } = useQuery({
+    queryKey: ['place', project?.place.id],
+    queryFn: () => fetchPlace(project?.place.id || 0),
+    enabled: Boolean(project?.place.id),
+  });
+
   const [form, setForm] = useState<MeetFormValues>({
     date: '',
     time: '',
@@ -36,7 +42,7 @@ export default function ProjectPage() {
       }),
   });
 
-  if (!project) return null;
+  if (!project || !place) return null;
 
 
   return (
@@ -58,6 +64,7 @@ export default function ProjectPage() {
           {role === 'teacher' && project.passport.id === passport?.id && (
             <Paper sx={{ p: 2 }}>
               <MeetForm
+                schedule={place.schedule}
                 values={form}
                 onChange={setForm}
                 onSubmit={() =>

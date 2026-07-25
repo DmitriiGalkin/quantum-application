@@ -10,6 +10,7 @@ import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 
 import { useState } from 'react';
 import Box from '@mui/material/Box';
+import { useParams } from 'react-router-dom';
 
 
 //
@@ -22,13 +23,14 @@ import Box from '@mui/material/Box';
 // отметка "встреча завершена"
 
 export default function PlaceMeetsPage() {
-const place = {id: 2}
+  const { id } = useParams();
+  const placeId = Number(id);
   const [view, setView] = useState<'week' | 'module'>('module');
 
   const { data: meets, refetch } = useQuery({
-    queryKey: ['meets', place?.id],
-    queryFn: () => fetchMeets({ placeId: place?.id || 0 }),
-    enabled: !!place?.id,
+    queryKey: ['meets', placeId],
+    queryFn: () => fetchMeets({ placeId: placeId || 0 }),
+    enabled: !!placeId,
   });
 
   return (

@@ -6,6 +6,9 @@ import 'normalize.css';
 import { AuthProvider } from './providers/AuthProvider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme/theme';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ru } from 'date-fns/locale';
 
 const queryClient = new QueryClient();
 
@@ -15,9 +18,11 @@ hydrateRoot(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </LocalizationProvider>
       </ThemeProvider>
     </BrowserRouter>
   </QueryClientProvider>,

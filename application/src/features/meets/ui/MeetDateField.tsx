@@ -1,32 +1,34 @@
-import { MenuItem, TextField } from '@mui/material';
-import { addDays, formatDate } from '../../../utils/time.ts';
+import { useMemo } from 'react';
+import { format } from 'date-fns';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+
+import type { PlaceScheduleDayDto } from '@shared/types';
 
 interface Props {
   value: string;
+  schedule: PlaceScheduleDayDto[];
+
   onChange: (value: string) => void;
 }
 
-export default function MeetDateField({ value, onChange }: Props) {
-  const dates = Array.from({ length: 30 }, (_, i) => {
-    const d = addDays(new Date(), i);
-
-    return {
-      value: formatDate(d),
-      label: d.toLocaleDateString('ru-RU', {
-        weekday: 'short',
-        day: 'numeric',
-        month: 'long',
-      }),
-    };
-  });
+export default function MeetDateField({ value, schedule, onChange }: Props) {
+  const workingDays = useMemo(() => new Set(schedule.filter(day => day.enabled).map(day => day.weekday)), [schedule]);
 
   return (
-    <TextField select label="Дата" value={value} onChange={e => onChange(e.target.value)} fullWidth>
-      {dates.map(date => (
-        <MenuItem key={date.value} value={date.value}>
-          {date.label}
-        </MenuItem>
-      ))}
-    </TextField>
+    <DateCalendar
+      disablePast
+      value={value ? new Date(value) : null}
+      onChange={date => {
+        if (!date) return;
+
+        onChange(format(date, 'yyyy-MM-dd'));
+      }}
+      shouldDisableDate={date => {
+        // JS: 0 = воскресенье ... 6 = суббота
+        const weekday = date.getDay() === 0 ? 7 : date.getDay();
+
+        return !workingDays.has(weekday);
+      }}
+    />
   );
 }

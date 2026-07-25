@@ -33,11 +33,11 @@ export interface IdeaDto {
 }
 
 export interface IdeaExtendedDto extends IdeaDto {
-  user: UserDto;
+  user: UserDto | null;
 }
 
 export interface IdeaFullDto extends IdeaDto {
-  user: UserDto;
+  user: UserDto | null;
   projects: ProjectExtendedDto[];
 }
 //

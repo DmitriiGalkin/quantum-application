@@ -276,6 +276,8 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
             Отклонено
           </Typography>
         )}
+        {role === 'place' && <PlaceFooter meet={meet} onEdit={onEdit} />}
+
         {role === 'place' && meet.status === 'pending' && (
           <Stack direction="row" spacing={1}>
             <Button color="success" variant="contained" onClick={() => updateStatus.mutate('published')}>
@@ -287,7 +289,6 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
             </Button>
           </Stack>
         )}
-        {role === 'place' && <PlaceFooter meet={meet} onEdit={onEdit} />};
       </Stack>
 
       <Dialog open={isEditModalOpen} onClose={() => setEditModalOpen(false)} fullWidth maxWidth="md">

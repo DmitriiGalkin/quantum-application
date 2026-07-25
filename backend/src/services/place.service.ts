@@ -43,8 +43,11 @@ export class PlaceService {
     const place = await PlaceRepository.findById(id);
     if (!place) return null;
 
-   const schedule = await PlaceScheduleRepository.findByPlaceId(id);
+    const meets = await MeetRepository.findAll({ placeId: id });
 
-    return { ...place, meets: [], schedule };
+    const schedule = await PlaceScheduleRepository.findByPlaceId(id);
+
+    console.log(meets, 'meets');
+    return { ...place, meets, schedule };
   }
 }

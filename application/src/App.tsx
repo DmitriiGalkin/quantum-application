@@ -30,6 +30,7 @@ import PaymentSuccessPage from './pages/payment/PaymentSuccessPage.tsx';
 import PaymentFailPage from './pages/payment/PaymentFailPage.tsx';
 import { LandingParentPage } from './pages/landing/LandingParentPage.tsx';
 import PlaceInvitePage from './pages/place/PlaceInvitePage.tsx';
+import TeacherUserIdeasPage from './pages/teacher/TeacherUserIdeasPage.tsx';
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
         <Route path="projects/create" element={<TeacherProjectCreatePage />} />
         <Route path="meets" element={<TeacherMeetsPage />} />
         <Route path="ideas" element={<TeacherIdeasPage />} />
+        <Route path="userIdeas" element={<TeacherUserIdeasPage />} />
       </Route>
 
       {/* Центр */}

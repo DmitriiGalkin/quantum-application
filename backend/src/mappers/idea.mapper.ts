@@ -33,12 +33,12 @@ export const toIdeaExtendedDto = (idea: IdeaExtendedEntity): IdeaExtendedDto => 
     isLiked: idea.isLiked,
     createdAt: idea.createdAt,
 
-    user: {
+    user: idea.user ? {
       id: idea.user.id,
       title: idea.user.title,
       age: idea.user.age,
       image: idea.user.image,
-    },
+    } : null,
   };
 };
 
@@ -52,12 +52,12 @@ export const toIdeaFullDto = (idea: IdeaFullEntity): IdeaFullDto => {
     isLiked: idea.isLiked,
     createdAt: idea.createdAt,
 
-    user: {
+    user: idea.user ? {
       id: idea.user.id,
       title: idea.user.title,
       age: idea.user.age,
       image: idea.user.image,
-    },
+    } : null,
 
     projects:
       idea.projects?.map(project => ({

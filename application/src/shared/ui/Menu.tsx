@@ -82,6 +82,11 @@ function Menu({ setIsMenuOpen }: any) {
         icon: <CreateNewFolderIcon />,
       },
       {
+        label: 'Мои идеи',
+        to: `/teacher/ideas`,
+        icon: <LightbulbIcon />,
+      },
+      {
         label: 'Мои проекты',
         to: '/teacher/projects',
         icon: <FolderIcon />,
@@ -93,7 +98,7 @@ function Menu({ setIsMenuOpen }: any) {
       },
       {
         label: 'Идеи учеников',
-        to: '/teacher/ideas',
+        to: '/teacher/userIdeas',
         icon: <LightbulbIcon />,
       },
     ],

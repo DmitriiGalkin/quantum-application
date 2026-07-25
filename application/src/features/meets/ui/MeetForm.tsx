@@ -2,6 +2,7 @@ import { Button, MenuItem, Stack, TextField } from '@mui/material';
 
 import MeetDateField from './MeetDateField';
 import MeetTimeField from './MeetTimeField';
+import type { PlaceScheduleDayDto } from '@shared/types';
 
 export interface MeetFormValues {
   projectId: number;
@@ -14,6 +15,7 @@ export interface MeetFormValues {
 }
 
 interface Props {
+  schedule: PlaceScheduleDayDto[];
   values: MeetFormValues;
 
   loading?: boolean;
@@ -23,26 +25,17 @@ interface Props {
   onSubmit: () => void;
 }
 
-export default function MeetForm({ values, loading = false, submitLabel = 'Сохранить', onChange, onSubmit }: Props) {
+export default function MeetForm({ schedule, values, loading = false, submitLabel = 'Сохранить', onChange, onSubmit }: Props) {
   return (
     <Stack spacing={2}>
       <MeetDateField
         value={values.date}
-        schedule={place.schedule}
+        schedule={schedule}
         onChange={date =>
           onChange({
             ...values,
             date,
-          })
-        }
-      />
-
-      <MeetTimeField
-        value={values.time}
-        onChange={time =>
-          onChange({
-            ...values,
-            time,
+            time: '', // сбрасываем выбранное время
           })
         }
       />
@@ -64,6 +57,19 @@ export default function MeetForm({ values, loading = false, submitLabel = 'Со�
           </MenuItem>
         ))}
       </TextField>
+
+      <MeetTimeField
+        date={values.date}
+        duration={values.duration}
+        schedule={schedule}
+        value={values.time}
+        onChange={time =>
+          onChange({
+            ...values,
+            time,
+          })
+        }
+      />
 
       <TextField
         type="number"

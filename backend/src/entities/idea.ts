@@ -48,7 +48,7 @@ export interface IdeaExtendedEntity extends Idea {
 
 export interface IdeaFullEntity extends Idea {
   isLiked?: boolean;
-  user: User;
+  user: User | null;
   projects: ProjectFullDto[];
 }
 

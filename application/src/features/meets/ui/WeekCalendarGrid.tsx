@@ -26,7 +26,7 @@ export default function WeekCalendarGrid({ days, meets, startHour, endHour, onMe
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: '72px repeat(7, 1fr)',
+        gridTemplateColumns: `80px repeat(${days.length}, 1fr)`,
         position: 'relative',
       }}
     >
@@ -45,7 +45,7 @@ export default function WeekCalendarGrid({ days, meets, startHour, endHour, onMe
               borderBottom: 1,
               borderColor: 'divider',
               px: 1,
-              pt: 0.5,
+              //pt: 0.5,
             }}
           >
             <Typography variant="caption" color="text.secondary">

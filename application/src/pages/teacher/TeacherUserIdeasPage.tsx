@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherIdeas } from '../../requests.ts';
 
-export default function TeacherIdeasPage() {
+export default function TeacherUserIdeasPage() {
   const { data: ideas = [], isLoading } = useQuery({
     queryKey: ['teacher-ideas'],
     queryFn: fetchTeacherIdeas,
@@ -15,7 +15,7 @@ export default function TeacherIdeasPage() {
 
   return (
       <Stack spacing={2}>
-        <Typography variant="h4">Мои идеи проектов</Typography>
+        <Typography variant="h4">Идеи учеников</Typography>
 
         {ideas.map(idea => (
           <Card key={idea.id}>

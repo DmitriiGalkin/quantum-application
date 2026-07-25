@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Card, CardActionArea, CardContent, Chip, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchPlace, fetchUpdatePlace } from '../../requests.ts';
@@ -9,6 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.tsx';
 import EditIcon from '@mui/icons-material/Edit';
 import type { PlaceScheduleDayDto } from '../../features/place/PlaceScheduleRow.tsx';
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
 
 export const DEFAULT_PLACE_SCHEDULE: PlaceScheduleDayDto[] = [
   { weekday: 1, enabled: true, startTime: '09:00', endTime: '21:00' },
@@ -49,6 +50,7 @@ export default function PlaceDashboardPage() {
     meets: 7,
   };
 
+
   useEffect(() => {
     if (place && !values) {
       setValues({
@@ -65,6 +67,9 @@ export default function PlaceDashboardPage() {
   }, [place, values]);
 
   if (!place || !values) return null;
+
+  const pendingPlaceCount = place.meets.filter(meet => meet.status === 'pending').length;
+
 
   return (
     <Stack spacing={3}>
@@ -97,6 +102,20 @@ export default function PlaceDashboardPage() {
             </CardContent>
           </Card>
         </Grid>
+        <Grid size={{ xs: 6, md: 3 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h4">{stats.meets}</Typography>
+
+              <Typography color="text.secondary">Встреч на неделе</Typography>
+              {pendingPlaceCount && (
+                <Stack sx={{ mt: 1 }}>
+                  <Chip icon={<PendingActionsIcon />} label={`${pendingPlaceCount} заявки на бронирование`} size="small" color="warning" />
+                </Stack>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
 
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
@@ -111,9 +130,9 @@ export default function PlaceDashboardPage() {
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
             <CardContent>
-              <Typography variant="h4">{stats.meets}</Typography>
+              <Typography variant="h4">210 000 рублей</Typography>
 
-              <Typography color="text.secondary">Встреч на неделе</Typography>
+              <Typography color="text.secondary">Приход от проектов</Typography>
             </CardContent>
           </Card>
         </Grid>

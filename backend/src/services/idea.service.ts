@@ -30,7 +30,7 @@ export class IdeaService {
 
     const [user, projects] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectService.findAll({ideaId: idea.id})]);
 
-    if (!user) throw new Error('IdeaService findById: не найден пользователь идеи');
+    //if (!user) throw new Error('IdeaService findById: не найден пользователь идеи');
 
     return {
       ...idea,

@@ -1,9 +1,19 @@
-// components/meet/WeekCalendar.tsx
-
-import { Box, Paper } from '@mui/material';
+import {
+  Box,
+  Paper,
+  Stack,
+  Tab,
+  Tabs,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { addDays, startOfWeek } from 'date-fns';
-import { useMemo } from 'react';
-
+import { useMemo, useState } from 'react';
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import WeekCalendarGrid from './WeekCalendarGrid';
 import WeekCalendarHeader from './WeekCalendarHeader';
 import type { MeetExtendedDto } from '@shared/types';
@@ -22,7 +32,14 @@ export interface WeekCalendarProps {
   onCellClick?(date: Date): void;
 }
 
+const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
 export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, endHour = 22, onMeetClick, onCellClick }: WeekCalendarProps) {
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [selectedDay, setSelectedDay] = useState(0);
+
   const weekStart = useMemo(
     () =>
       startOfWeek(new Date(), {
@@ -31,9 +48,9 @@ export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, e
     [weekStartsOn],
   );
 
-  console.log(meets, 'meets');
-
   const days = useMemo(() => Array.from({ length: 7 }, (_, index) => addDays(weekStart, index)), [weekStart]);
+
+  const visibleDays = mobile ? [days[selectedDay]] : days;
 
   return (
     <Paper
@@ -47,7 +64,50 @@ export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, e
         height: '100%',
       }}
     >
-      <WeekCalendarHeader days={days} />
+      {mobile ? (
+        <ToggleButtonGroup
+          exclusive
+          value={selectedDay}
+          onChange={(_, value) => {
+            if (value !== null) {
+              setSelectedDay(value);
+            }
+          }}
+          sx={{
+            p: 0.5,
+            overflowX: 'auto',
+            flexWrap: 'nowrap',
+
+            '& .MuiToggleButtonGroup-grouped': {
+              borderRadius: 2,
+              mx: 0.25,
+              border: 1,
+              borderColor: 'divider',
+              minWidth: 60,
+              flexShrink: 0,
+            },
+
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            scrollbarWidth: 'none',
+          }}
+        >
+          {days.map((day, index) => (
+            <ToggleButton key={index} value={index}>
+              <Stack spacing={0.25} sx={{ alignItems: 'center'}}>
+                <Typography variant="caption">{format(day, 'EE', { locale: ru })}</Typography>
+
+                <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                  {format(day, 'd')}
+                </Typography>
+              </Stack>
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      ) : (
+        <WeekCalendarHeader days={days} />
+      )}
 
       <Box
         sx={{
@@ -55,7 +115,14 @@ export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, e
           overflow: 'auto',
         }}
       >
-        <WeekCalendarGrid days={days} meets={meets} startHour={startHour} endHour={endHour} onMeetClick={onMeetClick} onCellClick={onCellClick} />
+        <WeekCalendarGrid
+          days={visibleDays}
+          meets={meets}
+          startHour={startHour}
+          endHour={endHour}
+          onMeetClick={onMeetClick}
+          onCellClick={onCellClick}
+        />
       </Box>
     </Paper>
   );

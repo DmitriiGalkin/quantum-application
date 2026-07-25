@@ -171,7 +171,7 @@ function Idea({ idea }: { idea: any }) {
             {idea.description}
           </Typography>
 
-          <Author user={idea.user} />
+          {idea.user && <Author user={idea.user} />}
         </Stack>
       </CardContent>
 
