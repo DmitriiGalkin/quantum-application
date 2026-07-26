@@ -356,9 +356,8 @@ export interface TeacherPublicDto {
 
   meets: number;
   students: number;
-  debit: number;
-
-  bmeets: MeetExtendedDto[];
+  centersCount: number; // Add centers count
+  centers: PlaceDto[]; // Add list of centers
 }
 
 export type PlaceScheduleDayDto = {

@@ -32,7 +32,7 @@ import { LandingParentPage } from './pages/landing/LandingParentPage.tsx';
 import PlaceInvitePage from './pages/place/PlaceInvitePage.tsx';
 import TeacherUserIdeasPage from './pages/teacher/TeacherUserIdeasPage.tsx';
 import TeacherIdeaCreatePage from './pages/teacher/TeacherIdeaCreatePage.tsx';
-import TeacherPage from './pages/teacher/TeacherPage.tsx';
+import TeacherPage from './pages/TeacherPage.tsx';
 
 function App() {
   return (
@@ -44,6 +44,7 @@ function App() {
         <Route path="chat/:id" element={<ChatPage />} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
+        <Route path="teacher/:id" element={<TeacherPage />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
@@ -67,7 +68,6 @@ function App() {
       {/* Учитель */}
       <Route path="teacher" element={<AppLayout />}>
         <Route index element={<TeacherDashboardPage />} />
-        <Route path=":id/" element={<TeacherPage />} />
         <Route path="projects" element={<TeacherProjectsPage />} />
         <Route path="projects/create" element={<TeacherProjectCreatePage />} />
         <Route path="ideas/create" element={<TeacherIdeaCreatePage />} />

@@ -32,11 +32,12 @@ export class TeacherService {
     const projects = await ProjectRepository.findAll({ passportId: id });
     const ideas = await IdeaRepository.findByTeacherId(id);
 
-    const [usersArr, placeArr, meetsArr, ideaUsers] = await Promise.all([
+    const [usersArr, placeArr, meetsArr, ideaUsers, centers] = await Promise.all([
       Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
       Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<any>)),
       Promise.all(projects.map(p => MeetService.findAll({ projectId: p.id }))),
       Promise.all(ideas.map(i => UserRepository.findById(i.userId))),
+      PlaceRepository.findByPassportId(id), // Fetch centers where teacher works
     ]);
 
     const projectExtendeds = projects.map((project, i) => ({
@@ -52,10 +53,18 @@ export class TeacherService {
       user: ideaUsers[i] || null,
     }));
 
+    // Calculate statistics
+    const students = [...new Set(usersArr.flat().map(u => u.id))].length;
+    const meets = meetsArr.flat().length;
+
     return {
       passport,
       projects: projectExtendeds,
       ideas: ideaExtendeds,
+      meets,
+      students,
+      centersCount: centers.length,
+      centers,
     };
   }
 }

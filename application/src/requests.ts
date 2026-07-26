@@ -26,7 +26,7 @@ import {
   type PlaceFullDto,
   type ProjectFullDto,
   type TeacherDashboardDto,
-  type TeacherDto, TeacherPublicDto,
+  type TeacherDto, type TeacherPublicDto,
   type UpdateMeet,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
