@@ -1,5 +1,6 @@
 import { Passport } from '../entities/passport.js';
 import type { CreateMeet, GetMeetsQuery, MeetExtendedDto, MeetStatus } from '@shared/types';
+import type { UpdateMeetInput } from '../entities/meet.types.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
@@ -25,9 +26,26 @@ export class MeetService {
     });
   }
 
-  static async update(data: any) {
-    console.log(data, 'data');
-    return MeetRepository.update(data.id, data);
+  static async update(data: { id: number } & UpdateMeetInput) {
+    const { id, ...fields } = data;
+
+    const existingMeet = await MeetRepository.findById(id);
+    if (!existingMeet) {
+      throw new Error('MEET_NOT_FOUND');
+    }
+
+    const updateData: UpdateMeetInput = { ...fields };
+
+    if (fields.startedAt !== undefined) {
+      const existingTime = new Date(existingMeet.startedAt).getTime();
+      const newTime = new Date(fields.startedAt).getTime();
+
+      if (existingTime !== newTime) {
+        updateData.status = 'pending';
+      }
+    }
+
+    return MeetRepository.update(id, updateData);
   }
 
   static async remove(id: number) {
