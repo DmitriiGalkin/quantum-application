@@ -25,108 +25,143 @@ type MenuItemConfig = {
   variant?: 'default' | 'primary';
 };
 
+type MenuSection = {
+  items: MenuItemConfig[];
+};
+
 function Menu({ setIsMenuOpen }: any) {
   const { activeUser, activePlace, activeContext } = useAuth();
 
-  const MENU: { guest: MenuItemConfig[]; user: MenuItemConfig[]; teacher: MenuItemConfig[]; place: MenuItemConfig[] } = {
+  const MENU: {
+    guest: MenuSection[];
+    user: MenuSection[];
+    teacher: MenuSection[];
+    place: MenuSection[];
+  } = {
     guest: [
       {
-        label: 'Идеи',
-        to: `/`,
-        icon: <LightbulbIcon />,
-      },
-      {
-        label: 'Проекты',
-        to: `/projects`,
-        icon: <AssignmentIcon />,
+        items: [
+          {
+            label: 'Идеи',
+            to: `/`,
+            icon: <LightbulbIcon />,
+          },
+          {
+            label: 'Проекты',
+            to: `/projects`,
+            icon: <AssignmentIcon />,
+          },
+        ],
       },
     ],
     user: [
       {
-        label: 'Создать идею',
-        to: '/chat?target=idea',
-        icon: <AutoAwesomeIcon />,
-        variant: 'primary',
-      },
-      {
-        label: 'Мои идеи',
-        to: `/user/${activeUser?.id}/ideas`,
-        icon: <LightbulbIcon />,
-      },
-      {
-        label: 'Мои проекты',
-        to: `/user/${activeUser?.id}/projects`,
-        icon: <AssignmentIcon />,
-      },
-      {
-        label: 'Мои встречи',
-        to: `/user/${activeUser?.id}/meets`,
-        icon: <CalendarMonthIcon />,
+        items: [
+          {
+            label: 'Создать идею',
+            to: '/chat?target=idea',
+            icon: <AutoAwesomeIcon />,
+            variant: 'primary',
+          },
+          {
+            label: 'Мои идеи',
+            to: `/user/${activeUser?.id}/ideas`,
+            icon: <LightbulbIcon />,
+          },
+          {
+            label: 'Мои проекты',
+            to: `/user/${activeUser?.id}/projects`,
+            icon: <AssignmentIcon />,
+          },
+          {
+            label: 'Мои встречи',
+            to: `/user/${activeUser?.id}/meets`,
+            icon: <CalendarMonthIcon />,
+          },
+        ],
       },
     ],
     teacher: [
       {
-        label: 'Дашборд',
-        to: '/teacher',
-        icon: <AssignmentIcon />,
+        items: [
+          {
+            label: 'Дашборд',
+            to: '/teacher',
+            icon: <AssignmentIcon />,
+          },
+          {
+            label: 'ИИ проект',
+            to: '/chat?target=project',
+            icon: <CreateNewFolderIcon />,
+            variant: 'primary',
+          },
+          {
+            label: 'Новый проект',
+            to: '/teacher/projects/create',
+            icon: <CreateNewFolderIcon />,
+          },
+          {
+            label: 'Мои проекты',
+            to: '/teacher/projects',
+            icon: <FolderIcon />,
+          },
+          {
+            label: 'Встречи',
+            to: '/teacher/meets',
+            icon: <CalendarMonthIcon />,
+          },
+        ],
       },
       {
-        label: 'ИИ проект',
-        to: '/chat?target=project',
-        icon: <CreateNewFolderIcon />,
-        variant: 'primary',
-      },
-      {
-        label: 'Новый проект',
-        to: '/teacher/projects/create',
-        icon: <CreateNewFolderIcon />,
-      },
-      {
-        label: 'Мои идеи',
-        to: `/teacher/ideas`,
-        icon: <LightbulbIcon />,
-      },
-      {
-        label: 'Мои проекты',
-        to: '/teacher/projects',
-        icon: <FolderIcon />,
-      },
-      {
-        label: 'Встречи',
-        to: '/teacher/meets',
-        icon: <CalendarMonthIcon />,
-      },
-      {
-        label: 'Идеи учеников',
-        to: '/teacher/userIdeas',
-        icon: <LightbulbIcon />,
+        items: [
+          {
+            label: 'Создать идею',
+            to: '/teacher/ideas/create',
+            icon: <AutoAwesomeIcon />,
+            disabled: true,
+          },
+          {
+            label: 'Мои идеи',
+            to: `/teacher/ideas`,
+            icon: <LightbulbIcon />,
+          },
+          {
+            label: 'Идеи учеников',
+            to: '/teacher/userIdeas',
+            icon: <LightbulbIcon />,
+          },
+        ],
       },
     ],
     place: [
       {
-        label: 'Дашборд',
-        to: `/place/${activePlace?.id}`,
-        icon: <AssignmentIcon />,
-      },
-      {
-        label: 'Учителя',
-        to: `/place/${activePlace?.id}/teachers`,
-        icon: <AddIcon />,
-      },
-      {
-        label: 'Проекты',
-        to: `/place/${activePlace?.id}/projects`,
-        icon: <FolderIcon />,
-      },
-      {
-        label: 'Расписание',
-        to: `/place/${activePlace?.id}/meets`,
-        icon: <CalendarMonthIcon />,
+        items: [
+          {
+            label: 'Дашборд',
+            to: `/place/${activePlace?.id}`,
+            icon: <AssignmentIcon />,
+          },
+          {
+            label: 'Учителя',
+            to: `/place/${activePlace?.id}/teachers`,
+            icon: <AddIcon />,
+          },
+          {
+            label: 'Проекты',
+            to: `/place/${activePlace?.id}/projects`,
+            icon: <FolderIcon />,
+          },
+          {
+            label: 'Расписание',
+            to: `/place/${activePlace?.id}/meets`,
+            icon: <CalendarMonthIcon />,
+          },
+        ],
       },
     ],
   };
 
-  const menuItems = MENU[activeContext.role];
+  const menuSections = MENU[activeContext.role];
 
   return (
     <Stack sx={{ width: 250, height: '100%' }}>
@@ -137,44 +172,52 @@ function Menu({ setIsMenuOpen }: any) {
       <Divider />
 
       <List>
-        {menuItems.map(item => (
-          <ListItemButton
-            key={item.to}
-            component={NavLink}
-            to={item.to}
-            disabled={item.disabled}
-            onClick={() => {
-              setIsMenuOpen?.(false);
-            }}
-            sx={{
-              mb: item.variant === 'primary' ? 1 : 0,
+        {menuSections.map((section, sectionIndex) => (
+          <Box key={sectionIndex}>
+            {sectionIndex > 0 && <Divider sx={{ my: 1 }} />}
 
-              ...(item.variant === 'primary'
-                ? {
-                    bgcolor: 'secondary.main',
-                    color: '#fff',
-                    '&:hover': {
-                      backgroundColor: '#3B1992',
-                    },
+            {section.items.map(item => (
+              <ListItemButton
+                key={item.label}
+                component={item.disabled ? 'div' : NavLink}
+                to={item.disabled ? undefined : item.to}
+                disabled={item.disabled}
+                onClick={() => {
+                  if (!item.disabled) {
+                    setIsMenuOpen?.(false);
                   }
-                : {
-                    '&.active': {
-                      bgcolor: 'action.selected',
-                    },
-                  }),
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 40,
-                color: item.variant === 'primary' ? 'inherit' : undefined,
-              }}
-            >
-              {item.icon}
-            </ListItemIcon>
+                }}
+                sx={{
+                  mb: item.variant === 'primary' ? 1 : 0,
 
-            <ListItemText primary={item.label} />
-          </ListItemButton>
+                  ...(item.variant === 'primary'
+                    ? {
+                        bgcolor: 'secondary.main',
+                        color: '#fff',
+                        '&:hover': {
+                          backgroundColor: '#3B1992',
+                        },
+                      }
+                    : {
+                        '&.active': {
+                          bgcolor: 'action.selected',
+                        },
+                      }),
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 40,
+                    color: item.variant === 'primary' ? 'inherit' : undefined,
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            ))}
+          </Box>
         ))}
       </List>
 
