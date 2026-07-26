@@ -349,6 +349,19 @@ export interface TeacherDashboardDto {
   bmeets: MeetExtendedDto[];
 }
 
+export interface TeacherPublicDto {
+  passport: PassportDto;
+  projects: ProjectExtendedDto[];
+  ideas: IdeaExtendedDto[];
+}
+  projects: number;
+  meets: number;
+  students: number;
+  debit: number;
+
+  bmeets: MeetExtendedDto[];
+}
+
 export type PlaceScheduleDayDto = {
   weekday: number;
   enabled: boolean;
