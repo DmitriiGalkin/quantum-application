@@ -353,8 +353,7 @@ export interface TeacherPublicDto {
   passport: PassportDto;
   projects: ProjectExtendedDto[];
   ideas: IdeaExtendedDto[];
-}
-  projects: number;
+
   meets: number;
   students: number;
   debit: number;

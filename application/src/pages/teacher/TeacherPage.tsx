@@ -1,0 +1,137 @@
+import { Card, CardActionArea, CardContent, Grid, Stack, Typography } from '@mui/material';
+import { Link, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { fetchProject, fetchTeacher, fetchTeacherDashboard } from '../../requests.ts';
+import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
+import Box from '@mui/material/Box';
+
+export default function TeacherPage() {
+  const { id } = useParams<{ id: string }>();
+
+  const { data: teacher, refetch } = useQuery({
+    queryKey: ['teacher', id],
+    queryFn: () => fetchTeacher(Number(id)),
+    enabled: Boolean(id),
+  });
+
+  if (!teacher) return null;
+
+  return (
+    <Stack spacing={3}>
+      <Typography variant="h4">Кабинет учите23ля</Typography>
+
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 6, md: 3 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h4">{teacher.projects}</Typography>
+
+              <Typography color="text.secondary">Проектов</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 6, md: 3 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h4">{data.meets}</Typography>
+
+              <Typography color="text.secondary">Встреч на неделе</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 6, md: 3 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h4">{data.students}</Typography>
+
+              <Typography color="text.secondary">Учеников</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 6, md: 3 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h4">{data.debit} рублей</Typography>
+
+              <Typography color="text.secondary">Доход</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      <Typography variant="h5">Быстрые действия</Typography>
+
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Card>
+            <CardActionArea component={Link} to="/teacher/projects">
+              <CardContent>
+                <Typography>Мои проекты</Typography>
+
+                <Typography color="text.secondary">Управление проектами</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Card>
+            <CardActionArea component={Link} to="/teacher/meets">
+              <CardContent>
+                <Typography>Встречи</Typography>
+
+                <Typography color="text.secondary">Расписание занятий</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Card>
+            <CardActionArea component={Link} to="/teacher/ideas">
+              <CardContent>
+                <Typography>Идеи учеников</Typography>
+
+                <Typography color="text.secondary">Новые предложения и заявки</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Card>
+            <CardActionArea component={Link} to="/teacher/ideas/create">
+              <CardContent>
+                <Typography>Создать идею</Typography>
+
+                <Typography color="text.secondary">Новая идея проекта</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+      </Grid>
+
+      <Typography variant="h5">Ближайшие встречи</Typography>
+
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, minmax(0, 1fr))',
+            md: 'repeat(3, minmax(0, 1fr))',
+            lg: 'repeat(4, minmax(0, 1fr))',
+          },
+          gap: 1.5,
+        }}
+      >
+        {data.bmeets.map(meet => (
+          <MeetCard key={meet.id} meet={meet} />
+        ))}
+      </Box>
+    </Stack>
+  );
+}
