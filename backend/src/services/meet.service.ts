@@ -40,7 +40,7 @@ export class MeetService {
       const existingTime = new Date(existingMeet.startedAt).getTime();
       const newTime = new Date(fields.startedAt).getTime();
 
-      if (existingTime !== newTime) {
+      if (existingTime !== newTime || existingMeet.duration !== fields.duration) {
         updateData.status = 'pending';
       }
     }
