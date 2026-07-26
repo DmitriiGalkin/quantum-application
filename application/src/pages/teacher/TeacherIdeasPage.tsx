@@ -1,9 +1,11 @@
-import { CardContent, Stack, Typography } from '@mui/material';
-import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import { fetchTeacherIdeas } from '../../requests.ts';
+import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
 
 export default function TeacherIdeasPage() {
   const { data: ideas = [], isLoading } = useQuery({
@@ -16,57 +18,30 @@ export default function TeacherIdeasPage() {
   }
 
   return (
-      <Stack spacing={2}>
-        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center'}}>
-          <Typography variant="h4">Мои идеи проектов</Typography>
-          <Button variant="contained" component={Link} to="/teacher/ideas/create">
-            Создать идею
-          </Button>
-        </Stack>
-
-        {ideas.map(idea => (
-          <Card key={idea.id}>
-            <CardContent>
-              <Typography>{idea.title}</Typography>
-
-              <Typography color="text.secondary">
-                {idea.createdAt}
-              </Typography>
-            </CardContent>
-          </Card>
-        ))}
+    <Stack spacing={2}>
+      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h4">Мои идеи проектов</Typography>
+        <Button variant="contained" component={Link} to="/teacher/ideas/create">
+          Создать идею
+        </Button>
       </Stack>
+
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, minmax(0, 1fr))',
+            md: 'repeat(3, minmax(0, 1fr))',
+            lg: 'repeat(4, minmax(0, 1fr))',
+          },
+          gap: 1.5,
+        }}
+      >
+        {ideas.map(idea => (
+          <IdeaCard key={idea.id} idea={idea} />
+        ))}
+      </Box>
+    </Stack>
   );
 }
-// import Card from '@mui/material/Card';
-// import { useQuery } from '@tanstack/react-query';
-// import { fetchTeacherIdeas } from '../../requests.ts';
-//
-// export default function TeacherIdeasPage() {
-//   const { data: ideas = [], isLoading } = useQuery({
-//     queryKey: ['teacher-ideas'],
-//     queryFn: fetchTeacherIdeas,
-//   });
-//
-//   if (isLoading) {
-//     return <>Загрузка...</>;
-//   }
-//
-//   return (
-//       <Stack spacing={2}>
-//         <Typography variant="h4">Мои идеи проектов</Typography>
-//
-//         {ideas.map(idea => (
-//           <Card key={idea.id}>
-//             <CardContent>
-//               <Typography>{idea.title}</Typography>
-//
-//               <Typography color="text.secondary">
-//                 {idea.createdAt}
-//               </Typography>
-//             </CardContent>
-//           </Card>
-//         ))}
-//       </Stack>
-//   );
-// }

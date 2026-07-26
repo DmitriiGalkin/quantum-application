@@ -118,7 +118,6 @@ function Menu({ setIsMenuOpen }: any) {
             label: 'Создать идею',
             to: '/teacher/ideas/create',
             icon: <AutoAwesomeIcon />,
-            disabled: true,
           },
           {
             label: 'Мои идеи',
