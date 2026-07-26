@@ -1,3 +1,5 @@
+import type { MeetStatus } from '@shared/types';
+
 export type CreateMeetInput = {
   passportId: number;
   projectId: number;
@@ -11,4 +13,5 @@ export type UpdateMeetInput = Partial<{
   startedAt: string;
   duration: number | null;
   price: number | null;
+  status: MeetStatus;
 }>;
