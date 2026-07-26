@@ -208,6 +208,11 @@ export interface CreateProject {
   placeId: number;
 }
 
+export interface CreateIdea {
+  title: string;
+  description: string;
+}
+
 export interface CreateMeet {
   projectId: number;
   price: number | null;

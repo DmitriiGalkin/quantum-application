@@ -20,7 +20,7 @@ export interface IdeaWithLike extends Idea {
 export type CreateIdeaInput = {
   title: string | null;
   description: string | null;
-  userId: number;
+  userId: number | null;
   passportId: number | null;
 };
 

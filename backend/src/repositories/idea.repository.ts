@@ -7,6 +7,7 @@ import { CreateIdeaInput, FindAllIdeaInput, Idea, IdeaWithLike, UpdateIdeaInput 
 class IdeaRepository {
   // ✅ CREATE
   static async create(data: CreateIdeaInput): Promise<number> {
+    console.log(data, 'data');
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO idea (title, description, userId, passportId)
        VALUES (?, ?, ?, ?)`,

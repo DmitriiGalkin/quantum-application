@@ -2,6 +2,7 @@ import type {
   ChatDto,
   ChatMessagesResult,
   CreateChatBody,
+  CreateIdea,
   CreateIdeaUser,
   CreateMeet,
   CreateMeetUser,
@@ -33,6 +34,7 @@ import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 
 export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas?${toQuery(params)}`);
 export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaFullDto>(`/idea/${id}?${toQuery(params)}`);
+export const fetchCreateIdea = (params: CreateIdea) => post<number>('/idea', params);
 export const fetchUserIdeas = (userId: number) => get<IdeaExtendedDto[]>(`/user/${userId}/ideas`);
 export const fetchTeacherIdeas = () => get<IdeaExtendedDto[]>('/teacher/ideas');
 export const generateImage = (ideaId: number) => post<void>(`/idea/${ideaId}/generateImage`, {});

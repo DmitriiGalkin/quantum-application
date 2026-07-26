@@ -1,7 +1,16 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { toIdeaExtendedDto, toIdeaFullDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
-import { GetIdeasQuery, IdeaDto, IdeaExtendedDto, PageMeta } from '@shared/types';
+import { CreateIdea, GetIdeasQuery, IdeaDto, IdeaExtendedDto, PageMeta } from '@shared/types';
+
+const create: ControllerWithAuth<number, CreateIdea> = async (req, res) => {
+  try {
+    const id = await IdeaService.create(req.passport!, req.body, req.viewer?.userId);
+    ok(res, id);
+  } catch (err) {
+    fail(res, 'Ошибка при создании идеи');
+  }
+};
 
 const findAllPublic: Controller<IdeaExtendedDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll(req.query as GetIdeasQuery);
@@ -54,6 +63,7 @@ const meta: Controller<PageMeta> = async (req, res) => {
 };
 
 export default {
+  create,
   findAllPublic,
   findByUserId,
   findById,

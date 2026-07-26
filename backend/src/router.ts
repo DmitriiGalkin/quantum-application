@@ -116,6 +116,7 @@ publicRouter.get('/ideas', idea.findAllPublic);
 publicRouter.get('/idea/:id', idea.findById);
 publicRouter.get('/idea/:id/projects', idea.findById);
 publicRouter.get('/idea/:id/meta', idea.meta);
+privateRouter.post('/idea', withAuth(idea.create));
 privateRouter.post('/idea/:id/generateImage', withAuth(idea.generateImage));
 privateRouter.post('/ideaUser', withAuth(ideaUser.create));
 privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));

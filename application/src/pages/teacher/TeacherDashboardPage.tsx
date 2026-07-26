@@ -63,7 +63,7 @@ export default function TeacherDashboardPage() {
       <Typography variant="h5">Быстрые действия</Typography>
 
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Card>
             <CardActionArea component={Link} to="/teacher/projects">
               <CardContent>
@@ -75,7 +75,7 @@ export default function TeacherDashboardPage() {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Card>
             <CardActionArea component={Link} to="/teacher/meets">
               <CardContent>
@@ -87,13 +87,25 @@ export default function TeacherDashboardPage() {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Card>
             <CardActionArea component={Link} to="/teacher/ideas">
               <CardContent>
                 <Typography>Идеи учеников</Typography>
 
                 <Typography color="text.secondary">Новые предложения и заявки</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Card>
+            <CardActionArea component={Link} to="/teacher/ideas/create">
+              <CardContent>
+                <Typography>Создать идею</Typography>
+
+                <Typography color="text.secondary">Новая идея проекта</Typography>
               </CardContent>
             </CardActionArea>
           </Card>

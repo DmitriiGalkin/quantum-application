@@ -31,6 +31,7 @@ import PaymentFailPage from './pages/payment/PaymentFailPage.tsx';
 import { LandingParentPage } from './pages/landing/LandingParentPage.tsx';
 import PlaceInvitePage from './pages/place/PlaceInvitePage.tsx';
 import TeacherUserIdeasPage from './pages/teacher/TeacherUserIdeasPage.tsx';
+import TeacherIdeaCreatePage from './pages/teacher/TeacherIdeaCreatePage.tsx';
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
         <Route index element={<TeacherDashboardPage />} />
         <Route path="projects" element={<TeacherProjectsPage />} />
         <Route path="projects/create" element={<TeacherProjectCreatePage />} />
+        <Route path="ideas/create" element={<TeacherIdeaCreatePage />} />
         <Route path="meets" element={<TeacherMeetsPage />} />
         <Route path="ideas" element={<TeacherIdeasPage />} />
         <Route path="userIdeas" element={<TeacherUserIdeasPage />} />
