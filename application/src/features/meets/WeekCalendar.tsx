@@ -11,8 +11,8 @@ import {
 import { addDays, format, startOfWeek } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { ru } from 'date-fns/locale';
-import WeekCalendarGrid from './WeekCalendarGrid';
-import WeekCalendarHeader from './WeekCalendarHeader';
+import WeekCalendarGrid from './WeekCalendarGrid.tsx';
+import WeekCalendarHeader from './WeekCalendarHeader.tsx';
 import type { MeetExtendedDto } from '@shared/types';
 
 export interface WeekCalendarProps {

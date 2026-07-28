@@ -16,7 +16,7 @@ const TeacherPage: React.FC = () => {
     setChatOpen(true);
   };
 
-  const { data: teacher, refetch } = useQuery({
+  const { data: teacher } = useQuery({
     queryKey: ['teacher', id],
     queryFn: () => fetchTeacher(Number(id)),
     enabled: Boolean(id),

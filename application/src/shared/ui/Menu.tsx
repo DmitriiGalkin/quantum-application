@@ -26,6 +26,7 @@ type MenuItemConfig = {
 };
 
 type MenuSection = {
+  title?: string;
   items: MenuItemConfig[];
 };
 
@@ -149,19 +150,44 @@ function Menu({ setIsMenuOpen }: any) {
             icon: <AssignmentIcon />,
           },
           {
-            label: 'Учителя',
-            to: `/place/${activePlace?.id}/teachers`,
-            icon: <AddIcon />,
+            label: 'Расписание',
+            to: `/place/${activePlace?.id}/meets`,
+            icon: <CalendarMonthIcon />,
           },
           {
             label: 'Проекты',
             to: `/place/${activePlace?.id}/projects`,
             icon: <FolderIcon />,
           },
+        ],
+      },
+      {
+        title: 'Масштабирование',
+        items: [
           {
-            label: 'Расписание',
-            to: `/place/${activePlace?.id}/meets`,
-            icon: <CalendarMonthIcon />,
+            label: 'Учителя',
+            to: `/place/${activePlace?.id}/teachers`,
+            icon: <AddIcon />,
+          },
+          {
+            label: 'Помещения',
+            to: `/place/${activePlace?.id}/teachers`,
+            icon: <AddIcon />,
+          },
+        ],
+      },
+      {
+        title: 'Финансы',
+        items: [
+          {
+            label: 'Поступления',
+            to: `/place/${activePlace?.id}`,
+            icon: <AssignmentIcon />,
+          },
+          {
+            label: 'Статистика',
+            to: `/place/${activePlace?.id}/projects`,
+            icon: <FolderIcon />,
           },
         ],
       },
@@ -181,7 +207,7 @@ function Menu({ setIsMenuOpen }: any) {
       <List>
         {menuSections.map((section, sectionIndex) => (
           <Box key={sectionIndex}>
-            {sectionIndex > 0 && <Divider sx={{ my: 1 }} />}
+            {sectionIndex > 0 && <Divider sx={{ my: 1 }} children={section.title} />}
 
             {section.items.map(item => (
               <ListItemButton

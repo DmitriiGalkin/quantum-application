@@ -2,7 +2,7 @@ import { Card, CardActionArea, CardContent, Grid, Stack, Typography } from '@mui
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacher } from '../../requests.ts';
-import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
+import MeetCard from '../../features/meets/MeetCard/MeetCard.tsx';
 import Box from '@mui/material/Box';
 
 export default function TeacherPage() {

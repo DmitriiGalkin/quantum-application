@@ -5,7 +5,7 @@ import { fetchCreateMeet, fetchPlace, fetchProject } from '../../requests.ts';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import ProjectCard from '../../features/project/ProjectCard.tsx';
-import MeetForm, { type MeetFormValues } from '../../features/meets/ui/MeetForm.tsx';
+import MeetForm, { type MeetFormValues } from '../../features/meets/MeetForm.tsx';
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import UserCard from '../../features/user/UserCard.tsx';

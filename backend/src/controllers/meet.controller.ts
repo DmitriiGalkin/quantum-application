@@ -4,7 +4,6 @@ import { MeetService } from '../services/meet.service.js';
 
 const create: ControllerWithAuth<number, CreateMeet> = async (req, res) => {
   try {
-    console.log('create meet');
     const meetId = await MeetService.create(req.passport!, req.body);
 
     ok(res, meetId);

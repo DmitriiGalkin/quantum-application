@@ -16,7 +16,7 @@ import { CreateUserForm } from '../user/CreateUserForm.tsx';
 import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
-import { getMeetStatus, statusConfig } from '../meets/ui/MeetCard/helper.ts';
+import { getMeetStatus, statusConfig } from '../meets/MeetCard/helper.ts';
 import CardMedia from '@mui/material/CardMedia';
 import LinkIcon from '@mui/icons-material/Link';
 import ChatDialog from '../../components/ChatDialog'; // Добавлен импорт

@@ -7,7 +7,7 @@ import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 
 import type { MeetExtendedDto } from '@shared/types';
 import PersonIcon from '@mui/icons-material/Person';
-import { useAuth } from '../../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../../providers/AuthProvider.tsx';
 
 interface Props {
   meet: MeetExtendedDto;

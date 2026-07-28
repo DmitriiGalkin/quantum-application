@@ -1,10 +1,10 @@
 import type { MeetExtendedDto, MeetStatus } from '@shared/types';
-import { useAuth } from '../../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { Button, Chip, Paper, Stack, Typography } from '@mui/material';
-import MenuButton from '../../../../components/MenuButton';
+import MenuButton from '../../../components/MenuButton.tsx';
 
 import MeetCardBody from './MeetCardBody.tsx';
-import PlaceFooter from './PlaceFooter';
+import PlaceFooter from './PlaceFooter.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   fetchCreateMeetUser,
@@ -14,7 +14,7 @@ import {
   fetchPlace,
   fetchUpdateMeet,
   fetchUpdateMeetStatus,
-} from '../../../../requests.ts';
+} from '../../../requests.ts';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';

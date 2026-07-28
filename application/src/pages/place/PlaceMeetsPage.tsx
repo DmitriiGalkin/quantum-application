@@ -1,8 +1,8 @@
 import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';
-import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
-import WeekCalendar from '../../features/meets/ui/WeekCalendar.tsx';
+import MeetCard from '../../features/meets/MeetCard/MeetCard.tsx';
+import WeekCalendar from '../../features/meets/WeekCalendar.tsx';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';

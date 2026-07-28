@@ -3,7 +3,7 @@
 import { Box, Typography } from '@mui/material';
 import { isSameDay } from 'date-fns';
 
-import WeekCalendarMeet from './WeekCalendarMeet';
+import WeekCalendarMeet from './WeekCalendarMeet.tsx';
 import type { MeetExtendedDto } from '@shared/types';
 
 const HOUR_HEIGHT = 72;

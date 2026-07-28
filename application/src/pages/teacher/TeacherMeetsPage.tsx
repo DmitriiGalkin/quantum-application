@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherMeets } from '../../requests.ts';
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
+import MeetCard from '../../features/meets/MeetCard/MeetCard.tsx';
 
 function TeacherMeetsPage() {
   const { data: meets = [], isLoading } = useQuery({
