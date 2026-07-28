@@ -23,19 +23,7 @@ interface PlaceFormProps {
   onSubmit: () => void;
 }
 
-export const weekdaysShort = [
-  { value: 1, label: 'Пн' },
-  { value: 2, label: 'Вт' },
-  { value: 3, label: 'Ср' },
-  { value: 4, label: 'Чт' },
-  { value: 5, label: 'Пт' },
-  { value: 6, label: 'Сб' },
-  { value: 0, label: 'Вс' },
-] as const;
-
 export default function PlaceForm({ values, loading = false, error = false, submitLabel = 'Сохранить', onChange, onSubmit }: PlaceFormProps) {
-
-
   return (
     <Stack spacing={3}>
       <TextField
