@@ -59,19 +59,9 @@ Quantum — образовательная платформа, объединя�
 ---
 
 ## Структура проекта
-- `application/` — фронтенд
-- `application/src/main.tsx` - точка входа в приложение
-- `application/src/App.tsx` - маршруты фронта
-- `application/src/pages` - страницы
-- `application/src/features` - компоненты
-- `backend/` — бекенд
-- `backend/src/router.ts` — маршруты бекенда
-- `backend/src/controllers` - контроллеры для обработки HTTP запросов
-- `backend/src/entities` — типы для бека (*.db.ts типы для бд)
-- `backend/src/mappers` - файлы мапперы для сущностей БД
-- `backend/src/repositories` - файлы по кждой таблице БД
-- `backend/src/services` - сервисы для работы с бизнес логикой
-- `packages/types/src/index.ts` — общие типы и интерфейсы между фронтом и беком
+- `application/` — фронтенд.
+- `application/src/main.tsx` - точка входа в приложение.
+- `backend/` — бекенд.
 
 # Архитектура
 
@@ -238,3 +228,14 @@ Repository работает только с моделями базы данны
 - быть максимально простым.
 
 Предпочитать небольшие независимые изменения вместо крупных рефакторингов.
+
+
+# MUI v9 & Grid Component Rules
+- Мы используем Material UI версии 9 (MUI v9).
+- ПОЛНОСТЬЮ ИГНОРИРУЙ старый синтаксис Grid v1 (`import Grid from '@mui/material/Grid'`).
+- ВСЕГДА используй только новый Grid v2. Импортируй его строго так: `import Grid from '@mui/material/Grid2';` или из актуальной директории v9.
+- В MUI v9 свойства `xs`, `sm`, `md`, `lg`, `xl` заменены на свойство `size`.
+  - НЕПРАВИЛЬНО: `<Grid xs={12} md={6}>`
+  - ПРАВИЛЬНО: `<Grid size={{ xs: 12, md: 6 }}>`
+- Для отступов используй свойство `spacing` (например, `spacing={2}`). Свойства `rowSpacing` и `columnSpacing` передавай только при необходимости разделения.
+- Если ты не уверен в существовании пропса в MUI v9, прочитай файл `package.json`
