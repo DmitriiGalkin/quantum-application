@@ -20,7 +20,7 @@ import IdeaCard from '../features/idea/ui/IdeaCard.tsx';
 import MeetCard from '../features/meets/ui/MeetCard/MeetCard.tsx';
 import ProjectCard from "../features/project/ProjectCard.tsx";
 
-function ChatPage() {
+function ChatPageOld() {
   const { token, authHandler } = useAuth();
 
   const [searchParams] = useSearchParams();
@@ -124,4 +124,4 @@ function ChatPage() {
   );
 }
 
-export default ChatPage;
+export default ChatPageOld;

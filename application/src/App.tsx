@@ -4,7 +4,7 @@ import './App.css';
 import { AppLayout } from './AppLayout.tsx';
 
 import IdeasPage from './pages/idea/IdeasPage.tsx';
-import ChatPage from './pages/ChatPage.tsx';
+import ChatPageOld from './pages/ChatPageOld.tsx';
 import IdeaPage from './pages/idea/IdeaPage.tsx';
 import ProjectPage from './pages/project/ProjectPage.tsx';
 import TeacherProjectsPage from './pages/teacher/TeacherProjectsPage.tsx';
@@ -40,8 +40,8 @@ function App() {
       {/* Общедоступная часть */}
       <Route element={<AppLayout />}>
         <Route index element={<IdeasPage />} />
-        <Route path="chat" element={<ChatPage />} />
-        <Route path="chat/:id" element={<ChatPage />} />
+        <Route path="chat" element={<ChatPageOld />} />
+        <Route path="chatOld/:id" element={<ChatPageOld />} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="teacher/:id" element={<TeacherPage />} />

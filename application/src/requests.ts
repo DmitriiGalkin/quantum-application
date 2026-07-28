@@ -26,8 +26,13 @@ import {
   type PlaceFullDto,
   type ProjectFullDto,
   type TeacherDashboardDto,
-  type TeacherDto, type TeacherPublicDto,
+  type TeacherDto,
+  type TeacherPublicDto,
   type UpdateMeet,
+  // New types
+  type Conversation,
+  type ConversationWithMessages,
+  type Message,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
@@ -83,3 +88,13 @@ export const fetchCreatePayment = (params: PaymentCreateDto) => post<PaymentCrea
 
 export const fetchTeacher = (id: number) => get<TeacherPublicDto>(`/teacher/${id}`);
 export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/dashboard`);
+
+// Conversation methods
+export const fetchConversations = () => get<Conversation[]>('/conversation');
+export const fetchStartConversation = (passportId: number) => post<Conversation>('/conversation/start', { passportId });
+export const fetchConversation = (id: number) => get<ConversationWithMessages>(`/conversation/${id}`);
+
+// Message methods
+export const fetchCreateMessage = (conversationId: number, content: string) => post<Message>(`/conversation/${conversationId}/messages`, { content });
+export const fetchUpdateMessage = (id: number, content: string) => put<void>(`/message2s/${id}`, { content });
+export const fetchDeleteMessage = (id: number) => del<void>(`/message2s/${id}`);
