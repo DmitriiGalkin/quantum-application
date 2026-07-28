@@ -118,7 +118,6 @@ publicRouter.get('/ideas', idea.findAllPublic);
 publicRouter.get('/idea/:id', idea.findById);
 publicRouter.get('/idea/:id/projects', idea.findById);
 publicRouter.get('/idea/:id/meta', idea.meta);
-publicRouter.get('/teacher/:id', teacherController.getTeacher);
 privateRouter.post('/idea', withAuth(idea.create));
 privateRouter.post('/idea/:id/generateImage', withAuth(idea.generateImage));
 privateRouter.post('/ideaUser', withAuth(ideaUser.create));
@@ -140,10 +139,11 @@ privateRouter.get('/user/:id/projects', withAuth(project.findByUserId));
 privateRouter.put('/user/:id', withAuth(user.update));
 privateRouter.delete('/user/:id', withAuth(user.delete));
 
+privateRouter.get('/teacher/dashboard', withAuth(teacherController.dashboard));
 privateRouter.get('/teacher/meets', withAuth(meet.findPassportAll));
 privateRouter.get('/teacher/users', withAuth(teacherUser.findByTeacher));
 privateRouter.get('/teacher/ideas', withAuth(teacherIdeaController.findByTeacher));
-privateRouter.get('/teacher/dashboard', withAuth(teacherController.dashboard));
+publicRouter.get('/teachers/:id', teacherController.getTeacher);
 
 publicRouter.get('/chat/:id', chat.findMessages);
 privateRouter.post('/chat', withAuth(chat.create));

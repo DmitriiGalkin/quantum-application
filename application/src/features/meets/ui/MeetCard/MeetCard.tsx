@@ -157,7 +157,6 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   if (withoutPaper) return body;
 
   const status = statusConfig[getMeetStatus(meet)];
-  const open = Boolean(anchorEl);
 
   const menuItems = [];
 

@@ -1,4 +1,4 @@
-import { Avatar, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { Feed } from '../../features/feed/Feed.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchCreateMeet, fetchPlace, fetchProject } from '../../requests.ts';
@@ -8,6 +8,7 @@ import ProjectCard from '../../features/project/ProjectCard.tsx';
 import MeetForm, { type MeetFormValues } from '../../features/meets/ui/MeetForm.tsx';
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
+import UserCard from '../../features/user/UserCard.tsx';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
@@ -86,10 +87,8 @@ export default function ProjectPage() {
                 <Typography variant="h6">Участники проекта</Typography>
 
                 <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                  {project.users.map(project => (
-                    <Avatar key={project.id} src={project.image ? project.image : undefined}>
-                      {project.title[0]}
-                    </Avatar>
+                  {project.users.map(user => (
+                    <UserCard key={user.id} user={user}/>
                   ))}
                 </Stack>
 

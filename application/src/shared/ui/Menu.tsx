@@ -63,6 +63,10 @@ function Menu({ setIsMenuOpen }: any) {
             icon: <AutoAwesomeIcon />,
             variant: 'primary',
           },
+        ],
+      },
+      {
+        items: [
           {
             label: 'Мои идеи',
             to: `/user/${activeUser?.id}/ideas`,
@@ -90,11 +94,20 @@ function Menu({ setIsMenuOpen }: any) {
             icon: <AssignmentIcon />,
           },
           {
-            label: 'ИИ проект',
-            to: '/chat?target=project',
-            icon: <CreateNewFolderIcon />,
-            variant: 'primary',
+            label: 'Встречи',
+            to: '/teacher/meets',
+            icon: <CalendarMonthIcon />,
           },
+        ],
+      },
+      {
+        items: [
+          // {
+          //   label: 'ИИ проект',
+          //   to: '/chat?target=project',
+          //   icon: <CreateNewFolderIcon />,
+          //   variant: 'primary',
+          // },
           {
             label: 'Новый проект',
             to: '/teacher/projects/create',
@@ -104,11 +117,6 @@ function Menu({ setIsMenuOpen }: any) {
             label: 'Мои проекты',
             to: '/teacher/projects',
             icon: <FolderIcon />,
-          },
-          {
-            label: 'Встречи',
-            to: '/teacher/meets',
-            icon: <CalendarMonthIcon />,
           },
         ],
       },

@@ -45,7 +45,7 @@ function App() {
         <Route path="chatOld/:id" element={<ChatPageOld />} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
-        <Route path="teacher/:id" element={<TeacherPage />} />
+        <Route path="teachers/:id" element={<TeacherPage />} />
         <Route path="chats" element={<ChatPage />} />
       </Route>
 
