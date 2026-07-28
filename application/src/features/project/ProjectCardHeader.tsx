@@ -9,6 +9,7 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
 import { fetchProjectLeave, fetchUpdateProject } from '../../requests.ts';
 import EditIcon from '@mui/icons-material/Edit';
+import ChatIcon from '@mui/icons-material/Chat'; // Добавлен ChatIcon
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -20,9 +21,10 @@ type Props = {
   project: ProjectExtendedDto;
   place: PlaceDto;
   refetch?: () => void;
+  onMessageTeacher?: () => void; // Добавлен обработчик
 };
 
-function ProjectCardHeader({ project, place, refetch }: Props) {
+function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { activeUser, authHandler, activeContext, passport } = useAuth();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -80,6 +82,13 @@ function ProjectCardHeader({ project, place, refetch }: Props) {
     });
   }
 
+  menuItems.push({
+    key: 'message',
+    label: 'Написать учителю',
+    icon: <ChatIcon fontSize="small" />,
+    onClick: () => onMessageTeacher?.(),
+  });
+
   if (isMember && activeContext.role === 'user') {
     menuItems.push({
       key: 'exit',
@@ -91,72 +100,72 @@ function ProjectCardHeader({ project, place, refetch }: Props) {
 
   return (
     <>
-        <CardHeader
-          avatar={
-            <Link to={`/teacher/${project.passport.id}`} style={{ textDecoration: 'none' }}>
-              <Avatar alt={project.passport.title} src={project.passport.image || ''}>
-                R
-              </Avatar>
-            </Link>
-          }
-          action={
-            menuItems.length > 0 ? (
-              <>
-                <IconButton onClick={handleOpen}>
-                  <MoreVertIcon />
-                </IconButton>
+      <CardHeader
+        avatar={
+          <Link to={`/teacher/${project.passport.id}`} style={{ textDecoration: 'none' }}>
+            <Avatar alt={project.passport.title} src={project.passport.image || ''}>
+              R
+            </Avatar>
+          </Link>
+        }
+        action={
+          menuItems.length > 0 ? (
+            <>
+              <IconButton onClick={handleOpen}>
+                <MoreVertIcon />
+              </IconButton>
 
-                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                  {menuItems.map(item => (
-                    <MenuItem
-                      key={item.key}
-                      onClick={e => {
-                        handleClose(e);
-                        item.onClick();
-                      }}
-                    >
-                      <ListItemIcon>{item.icon}</ListItemIcon>
-                      {item.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </>
-            ) : undefined
-          }
-          title={
-            <Link to={`/teacher/${project.passport.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
-                <Typography variant="subtitle1" component="span">
-                  {project.passport.title}
-                </Typography>
-                <ArrowOutwardIcon fontSize="small" sx={{ opacity: 0.7 }} />
-              </Stack>
-            </Link>
-          }
-          subheader={
-            <Stack
-              direction="row"
-              spacing={0.5}
+              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                {menuItems.map(item => (
+                  <MenuItem
+                    key={item.key}
+                    onClick={e => {
+                      handleClose(e);
+                      item.onClick();
+                    }}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </>
+          ) : undefined
+        }
+        title={
+          <Link to={`/teacher/${project.passport.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+              <Typography variant="subtitle1" component="span">
+                {project.passport.title}
+              </Typography>
+              <ArrowOutwardIcon fontSize="small" sx={{ opacity: 0.7 }} />
+            </Stack>
+          </Link>
+        }
+        subheader={
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: 'center',
+              minWidth: 0,
+            }}
+          >
+            <PlaceIcon sx={{ fontSize: 12, opacity: 0.6, flexShrink: 0 }} />
+
+            <Typography
+              variant="subtitle2"
+              noWrap
               sx={{
-                alignItems: 'center',
                 minWidth: 0,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
-              <PlaceIcon sx={{ fontSize: 12, opacity: 0.6, flexShrink: 0 }} />
-
-              <Typography
-                variant="subtitle2"
-                noWrap
-                sx={{
-                  minWidth: 0,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {place.address}
-              </Typography>
-            </Stack>
-          }
+              {place.address}
+            </Typography>
+          </Stack>
+        }
         sx={{
           backgroundColor: project.passport.id === passport?.id ? 'rgba(255,160,40,.1)' : '#F8F9FB',
           boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.1)',

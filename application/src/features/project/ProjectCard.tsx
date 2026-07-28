@@ -19,6 +19,7 @@ import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 import { getMeetStatus, statusConfig } from '../meets/ui/MeetCard/helper.ts';
 import CardMedia from '@mui/material/CardMedia';
 import LinkIcon from '@mui/icons-material/Link';
+import ChatDialog from '../../components/ChatDialog'; // Добавлен импорт
 
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 
@@ -33,6 +34,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
   const { setAction } = usePostAuthAction();
   const { activeUser, passport, authHandler, refetch: refetchPassport, activeContext } = useAuth();
   const [isUserModalOpen, setUserModalOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false); // Добавлено состояние
 
   const isMember = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
   const sortedMeets = [...project.meets].sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
@@ -111,7 +113,12 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
 
   return (
     <Card sx={{ borderRadius: 3 }}>
-      <ProjectCardHeader project={project} place={project.place} refetch={refetch} />
+      <ProjectCardHeader 
+        project={project} 
+        place={project.place} 
+        refetch={refetch}
+        onMessageTeacher={() => setIsChatOpen(true)} // Передан обработчик
+      />
       <CardActionArea
         sx={{
           '&:hover': {
@@ -250,6 +257,12 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
           <CreateUserForm onSubmit={data => handleUserCreate(data.title)} />
         </DialogContent>
       </Dialog>
+
+      <ChatDialog
+        open={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        teacherId={project.passport.id}
+      />
     </Card>
   );
 }
