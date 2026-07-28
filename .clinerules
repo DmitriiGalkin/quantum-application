@@ -239,3 +239,13 @@ Repository работает только с моделями базы данны
   - ПРАВИЛЬНО: `<Grid size={{ xs: 12, md: 6 }}>`
 - Для отступов используй свойство `spacing` (например, `spacing={2}`). Свойства `rowSpacing` и `columnSpacing` передавай только при необходимости разделения.
 - Если ты не уверен в существовании пропса в MUI v9, прочитай файл `package.json`
+
+# MUI Component Styling Rules (Stack, Typography, etc.)
+- ЗАПРЕЩЕНО использовать прямые стилевые пропсы (shortcut props) вроде `alignItems`, `justifyContent`, `flexDirection`, `gap`, `textAlign` непосредственно на компонентах MUI (включая <Stack>, <Typography>, <Box>).
+- ВСЕ стилевые и флексбокс-свойства необходимо строго выносить внутрь объекта `sx`.
+  - НЕПРАВИЛЬНО: `<Stack alignItems="center" justifyContent="space-between">`
+  - НЕПРАВИЛЬНО: `<Typography textAlign="center">`
+  - ПРАВИЛЬНО: `<Stack sx={{ alignItems: 'center', justifyContent: 'space-between' }}>`
+  - ПРАВИЛЬНО: `<Typography sx={{ textAlign: 'center' }}>`
+- Исключение: пропсы, которые являются частью семантического API компонента (например, `spacing` для <Stack>, `variant` и `component` для <Typography>, `size` для <Grid>).
+- Перед тем как отдать готовый код, выполни self-check: убедись, что CSS-свойства

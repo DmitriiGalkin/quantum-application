@@ -111,6 +111,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
 
   return (
     <Card sx={{ borderRadius: 3 }}>
+      <ProjectCardHeader project={project} place={project.place} refetch={refetch} />
       <CardActionArea
         sx={{
           '&:hover': {
@@ -119,8 +120,6 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
         }}
         onClick={() => navigate(`/project/${project.id}`)}
       >
-        <ProjectCardHeader project={project} place={project.place} refetch={refetch} />
-
         {!withoutIdea && (
           <>
             <CardMedia
