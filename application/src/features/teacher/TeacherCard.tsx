@@ -1,8 +1,8 @@
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import type { TeacherDto } from '@shared/types';
-import { Avatar, CardHeader, IconButton, ListItemIcon, Menu, MenuItem, Stack } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Avatar, CardHeader, Stack } from '@mui/material';
+import MenuButton from '../../components/MenuButton';
 import PlaceIcon from '@mui/icons-material/Place';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
@@ -18,8 +18,6 @@ type IdeaCardProps = {
 
 function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
   const { activeContext, activePlace, passport, places } = useAuth();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   const removeTeacher = useMutation({
     mutationFn: () => fetchRemoveTeacher(placeId, teacher.id),
     onSuccess: () => refetch?.(),
@@ -33,17 +31,6 @@ function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
   const onDelete = () => removeTeacher.mutate();
   const onLeave = () => leaveTeacher.mutate();
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setAnchorEl(null);
-  };
 
   const menuItems = [];
 
@@ -72,30 +59,7 @@ function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
             R
           </Avatar>
         }
-        action={
-          menuItems.length > 0 ? (
-            <>
-              <IconButton onClick={handleOpen}>
-                <MoreVertIcon />
-              </IconButton>
-
-              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                {menuItems.map(item => (
-                  <MenuItem
-                    key={item.key}
-                    onClick={e => {
-                      handleClose(e);
-                      item.onClick?.();
-                    }}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    {item.label}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          ) : undefined
-        }
+        action={<MenuButton menuItems={menuItems} />}
         title={teacher.title}
         subheader={
           <Stack

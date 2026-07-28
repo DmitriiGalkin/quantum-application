@@ -1,6 +1,7 @@
 import type { MeetExtendedDto, MeetStatus } from '@shared/types';
 import { useAuth } from '../../../../providers/AuthProvider.tsx';
-import { Button, Chip, Menu, MenuItem, Paper, Stack, Typography } from '@mui/material';
+import { Button, Chip, Paper, Stack, Typography } from '@mui/material';
+import MenuButton from '../../../../components/MenuButton';
 
 import MeetCardBody from './MeetCardBody.tsx';
 import PlaceFooter from './PlaceFooter';
@@ -12,8 +13,6 @@ import {
   fetchDeleteMeetUser, fetchPlace, fetchUpdateMeet, fetchUpdateMeetStatus,
 } from '../../../../requests.ts';
 import { useState } from 'react';
-import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -49,8 +48,6 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
     enabled: Boolean(meet.place.id),
   });
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   const updateMeet = useMutation({
     mutationFn: (form: MeetFormValues) => {
       const { date, time, ...data } = form;
@@ -63,17 +60,6 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
     },
   });
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setAnchorEl(null);
-  };
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateMeetUser,
@@ -236,29 +222,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
             {date} • {time}
           </Typography>
 
-          {menuItems.length > 0 && (
-            <>
-              <IconButton onClick={handleOpen}>
-                <MoreVertIcon />
-              </IconButton>
-
-              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                {menuItems.map(item => (
-                  <MenuItem
-                    key={item.key}
-                    onClick={e => {
-                      handleClose(e);
-                      item.onClick();
-                    }}
-                    sx={item.sx}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    {item.label}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          )}
+              <MenuButton menuItems={menuItems} />
         </Stack>
         {body}
         {role === 'user' && (

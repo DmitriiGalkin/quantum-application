@@ -1,5 +1,6 @@
 import type { PlaceDto, ProjectExtendedDto } from '@shared/types';
-import { Avatar, CardHeader, IconButton, ListItemIcon, Menu, MenuItem, Stack } from '@mui/material';
+import { Avatar, CardHeader, Stack } from '@mui/material';
+import MenuButton from '../../components/MenuButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -108,30 +109,7 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
             </Avatar>
           </Link>
         }
-        action={
-          menuItems.length > 0 ? (
-            <>
-              <IconButton onClick={handleOpen}>
-                <MoreVertIcon />
-              </IconButton>
-
-              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                {menuItems.map(item => (
-                  <MenuItem
-                    key={item.key}
-                    onClick={e => {
-                      handleClose(e);
-                      item.onClick();
-                    }}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    {item.label}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          ) : undefined
-        }
+        action={<MenuButton menuItems={menuItems} />}
         title={
           <Link to={`/teacher/${project.passport.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
