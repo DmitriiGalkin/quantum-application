@@ -1,7 +1,6 @@
 import type { PlaceDto, ProjectExtendedDto } from '@shared/types';
 import { Avatar, CardHeader, Stack } from '@mui/material';
 import MenuButton from '../../components/MenuButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PlaceIcon from '@mui/icons-material/Place';

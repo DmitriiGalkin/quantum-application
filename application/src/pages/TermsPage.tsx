@@ -1,4 +1,16 @@
-import { Box, Container, Typography, Paper, Stack, Link, Divider, Accordion, AccordionSummary, AccordionDetails, Chip } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Chip,
+  Container,
+  Divider,
+  Link,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Section } from '../shared/ui/Section.tsx';

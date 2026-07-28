@@ -1,4 +1,4 @@
-import { Box, Container, Typography, Paper, Grid, Stack, Divider } from '@mui/material';
+import { Box, Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material';
 
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import PsychologyIcon from '@mui/icons-material/Psychology';

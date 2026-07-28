@@ -1,7 +1,7 @@
 import { Card, CardActionArea, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { fetchProject, fetchTeacher, fetchTeacherDashboard } from '../../requests.ts';
+import { fetchTeacher } from '../../requests.ts';
 import MeetCard from '../../features/meets/ui/MeetCard/MeetCard.tsx';
 import Box from '@mui/material/Box';
 

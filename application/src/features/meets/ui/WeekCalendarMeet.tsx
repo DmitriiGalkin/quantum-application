@@ -1,10 +1,9 @@
 // components/meet/WeekCalendarMeet.tsx
 
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import { Stack } from '@mui/material';
 
 import type { MeetExtendedDto, MeetStatus } from '@shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

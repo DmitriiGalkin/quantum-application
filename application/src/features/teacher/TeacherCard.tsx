@@ -6,7 +6,6 @@ import MenuButton from '../../components/MenuButton';
 import PlaceIcon from '@mui/icons-material/Place';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
-import { useState } from 'react';
 import { fetchLeavePlace, fetchRemoveTeacher } from '../../requests.ts';
 import { useMutation } from '@tanstack/react-query';
 

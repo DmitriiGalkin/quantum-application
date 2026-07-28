@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 
 export interface ThirdPartyServicesSectionProps {
   id: string;

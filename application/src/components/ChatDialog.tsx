@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Box,
   Button,
-  TextField,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
   List,
   ListItem,
   ListItemText,
-  IconButton,
-  Box,
-  CircularProgress,
-  Typography
+  TextField,
+  Typography,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchStartChat, fetchCreateMessage, fetchConversation } from '../requests';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetchConversation, fetchCreateMessage, fetchStartChat } from '../requests';
 
 type Props = {
   open: boolean;

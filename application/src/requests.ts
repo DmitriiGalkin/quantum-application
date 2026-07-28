@@ -1,6 +1,8 @@
 import {
   type ChatDto,
   type ChatMessagesResult,
+  type Conversation,
+  type ConversationWithMessage,
   type CreateChatBody,
   type CreateIdea,
   type CreateIdeaUser,
@@ -19,20 +21,18 @@ import {
   type MeetDto,
   type MeetExtendedDto,
   type MeetStatus,
+  type Message,
   type PassportExtendedDto,
   type PaymentCreateDto,
   type PaymentCreateResponseDto,
   type PaymentDto,
   type PlaceFullDto,
   type ProjectFullDto,
+  type StartConversationResponse,
   type TeacherDashboardDto,
   type TeacherDto,
   type TeacherPublicDto,
   type UpdateMeet,
-  // New types
-  type Conversation,
-  type ConversationWithMessage,
-  type Message, type StartConversationResponse,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
