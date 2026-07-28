@@ -97,7 +97,7 @@ export default function PlaceMeetsPage() {
       {view === 'week' && (
         <WeekCalendar
           meets={meets || []}
-          onMeetClick={meet => {
+          onMeetClick={() => {
             // console.log('Встреча', meet);
             // navigate(`/meet/${meet.id}`);
           }}

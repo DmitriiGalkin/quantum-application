@@ -79,7 +79,7 @@ const ChatDialog: React.FC<Props> = ({ open, teacherId, onClose }) => {
       setSending(false);
     },
     onError: (error, _, context) => {
-      setSendError('Ошибка отправки сообщения');
+      setSendError('Ошибка отправки сообщения' + error);
       queryClient.setQueryData(['messages', chat?.conversation.id], context?.previousMessages);
       setSending(false);
     }

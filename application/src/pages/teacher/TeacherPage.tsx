@@ -2,13 +2,11 @@ import { Card, CardActionArea, CardContent, Grid, Stack, Typography } from '@mui
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacher } from '../../requests.ts';
-import MeetCard from '../../features/meets/MeetCard/MeetCard.tsx';
-import Box from '@mui/material/Box';
 
 export default function TeacherPage() {
   const { id } = useParams<{ id: string }>();
 
-  const { data: teacher, refetch } = useQuery({
+  const { data: teacher } = useQuery({
     queryKey: ['teacher', id],
     queryFn: () => fetchTeacher(Number(id)),
     enabled: Boolean(id),
@@ -24,7 +22,7 @@ export default function TeacherPage() {
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
             <CardContent>
-              <Typography variant="h4">{teacher.projects}</Typography>
+              <Typography variant="h4">{teacher.projects.length}</Typography>
 
               <Typography color="text.secondary">Проектов</Typography>
             </CardContent>
@@ -34,7 +32,7 @@ export default function TeacherPage() {
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
             <CardContent>
-              <Typography variant="h4">{data.meets}</Typography>
+              <Typography variant="h4">{teacher.meets}</Typography>
 
               <Typography color="text.secondary">Встреч на неделе</Typography>
             </CardContent>
@@ -44,22 +42,13 @@ export default function TeacherPage() {
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
             <CardContent>
-              <Typography variant="h4">{data.students}</Typography>
+              <Typography variant="h4">{teacher.students}</Typography>
 
               <Typography color="text.secondary">Учеников</Typography>
             </CardContent>
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 6, md: 3 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h4">{data.debit} рублей</Typography>
-
-              <Typography color="text.secondary">Доход</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
       </Grid>
 
       <Typography variant="h5">Быстрые действия</Typography>
@@ -113,25 +102,6 @@ export default function TeacherPage() {
           </Card>
         </Grid>
       </Grid>
-
-      <Typography variant="h5">Ближайшие встречи</Typography>
-
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            sm: 'repeat(2, minmax(0, 1fr))',
-            md: 'repeat(3, minmax(0, 1fr))',
-            lg: 'repeat(4, minmax(0, 1fr))',
-          },
-          gap: 1.5,
-        }}
-      >
-        {data.bmeets.map(meet => (
-          <MeetCard key={meet.id} meet={meet} />
-        ))}
-      </Box>
     </Stack>
   );
 }
