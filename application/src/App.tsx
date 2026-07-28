@@ -33,6 +33,7 @@ import PlaceInvitePage from './pages/place/PlaceInvitePage.tsx';
 import TeacherUserIdeasPage from './pages/teacher/TeacherUserIdeasPage.tsx';
 import TeacherIdeaCreatePage from './pages/teacher/TeacherIdeaCreatePage.tsx';
 import TeacherPage from './pages/TeacherPage.tsx';
+import ChatPage from './pages/ChatPage.tsx';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="teacher/:id" element={<TeacherPage />} />
+        <Route path="chats" element={<ChatPage />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>

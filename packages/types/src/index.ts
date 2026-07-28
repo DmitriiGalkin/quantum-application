@@ -387,10 +387,17 @@ export interface Conversation {
 
 export interface Message {
   id: number;
-  conversationId: number;
   content: string;
   createdAt: Date;
-  updatedAt: Date;
+  userId: number;
+  conversationId: number;
+}
+
+export interface Chat {
+  id: number;
+  name: string;
+  avatarUrl?: string;
+  lastMessage?: Message;
 }
 
 export interface StartConversationRequest {
