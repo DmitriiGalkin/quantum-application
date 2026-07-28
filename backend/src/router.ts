@@ -21,6 +21,8 @@ import { ControllerWithAuth } from './controllers/helper.js';
 import placeTeacherController from './controllers/placeTeacher.controller.js';
 import paymentController from './controllers/payment.controller.js';
 import teacherController from './controllers/teacher.controller.js';
+import conversationController from './controllers/conversation.controller.js';
+import message2Controller from './controllers/message2.controller.js';
 import { Passport } from './entities/passport.js';
 import { ActiveRole } from '@shared/types';
 import UserRepository from './repositories/user.repository.js';
@@ -166,6 +168,16 @@ privateRouter.post('/place/:id/teacher', withAuth(placeTeacherController.create)
 privateRouter.post('/place/teachers', withAuth(placeTeacherController.addTeacher));
 privateRouter.delete('/place/:id/teacher/:passportId', withAuth(placeTeacherController.remove));
 privateRouter.delete('/place/:id/leave', withAuth(placeTeacherController.leave));
+
+// Conversation routes
+privateRouter.get('/conversation', withAuth(conversationController.findAll));
+privateRouter.post('/conversation/start', withAuth(conversationController.start));
+privateRouter.get('/conversation/:id', withAuth(conversationController.findById));
+
+// Message routes
+privateRouter.post('/conversation/:id/messages', withAuth(message2Controller.create));
+privateRouter.patch('/message2s/:id', withAuth(message2Controller.update));
+privateRouter.delete('/message2s/:id', withAuth(message2Controller.remove));
 
 publicRouter.post('/passport/login', withAuth(passportController.login));
 privateRouter.get('/passport/projects', withAuth(project.findByPassportId));

@@ -377,3 +377,30 @@ export interface PlaceUpdateDto {
   longitude: number;
   schedule: PlaceScheduleDayDto[];
 }
+
+// Conversation and Message DTOs
+export interface Conversation {
+  id: number;
+  passportId: number;
+  createdAt: Date;
+}
+
+export interface Message {
+  id: number;
+  conversationId: number;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface StartConversationRequest {
+  passportId: number;
+}
+
+export interface CreateMessageRequest {
+  content: string;
+}
+
+export interface UpdateMessageRequest {
+  content: string;
+}
