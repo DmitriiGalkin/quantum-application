@@ -382,8 +382,8 @@ export interface PlaceUpdateDto {
 export interface Conversation {
   id: number;
   passportId: number;
-  createdAt: number[];
-  participants: {
+  createdAt: string;
+  participants?: {
     passportId: number;
     userId: number;
   }[];
@@ -397,7 +397,7 @@ export interface Message {
   id: number;
   text: string;
   createdAt: Date;
-  userId: number;
+  updatedAt: Date;
   conversationId: number;
 }
 

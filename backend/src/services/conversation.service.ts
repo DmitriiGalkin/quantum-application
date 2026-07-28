@@ -17,7 +17,7 @@ export class ConversationService {
     const conversationRow = await ConversationRepository.findById(conversationId);
 
     if (!conversationRow) throw new Error('Failed to create conversation');
-    return mapConversationRow(conversationRow);
+    return { exists: false, conversation: mapConversationRow(conversationRow)};
   }
 
   static async getConversationList(passportId: number): Promise<Conversation[]> {

@@ -14,8 +14,8 @@ const findAll: ControllerWithAuth<Conversation[]> = async (req, res) => {
 const start: ControllerWithAuth<Conversation, StartConversationRequest> = async (req, res) => {
   try {
     const conversation = await ConversationService.startConversation({
-      passportId: req.passport!.id,
-      ...req.body
+      ...req.body,
+      passportId: req.passport!.id
     });
     ok(res, conversation);
   } catch (error) {

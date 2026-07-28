@@ -17,7 +17,7 @@ export type TypedResponse<T> = Response<ApiResponse<T>>;
 export type Controller<T> = (req: Request, res: Response<ApiResponse<T>>, next: NextFunction) => Promise<void>;
 export type ControllerWithAuth<TResponse, TBody = any> = (req: RequestWithPassport<TBody>, res: TypedResponse<TResponse>) => Promise<void>;
 
-export const ok = <T>(res: Response, data: T) => {
+export const ok = <T>(res: Response, data?: T) => {
   return res.json(data);
 };
 
