@@ -70,15 +70,15 @@ const TeacherPage: React.FC = () => {
                 <Typography variant="h6">Проекты</Typography>
                 <Typography variant="h4">{teacher.projects.length}</Typography>
               </Grid>
-              <Grid item xs={6} sm={3}>
+              <Grid  size={{ xs: 6, sm: 3 }}>
                 <Typography variant="h6">Ученики</Typography>
                 <Typography variant="h4">{teacher.students}</Typography>
               </Grid>
-              <Grid item xs={6} sm={3}>
+              <Grid size={{ xs: 6, sm: 3 }}>
                 <Typography variant="h6">Встречи</Typography>
                 <Typography variant="h4">{teacher.meets}</Typography>
               </Grid>
-              <Grid item xs={6} sm={3}>
+              <Grid size={{ xs: 6, sm: 3 }}>
                 <Typography variant="h6">Центры</Typography>
                 <Typography variant="h4">{teacher.centersCount}</Typography>
               </Grid>
@@ -94,7 +94,7 @@ const TeacherPage: React.FC = () => {
           </Typography>
           <Grid container spacing={2}>
             {teacher.centers.map(center => (
-              <Grid xs={12} sm={6} key={center.id}>
+<Grid size={{ xs: 12, sm: 6 }} key={center.id}>
                 <Card>
                   <CardMedia
                     component="img"
@@ -131,13 +131,13 @@ const TeacherPage: React.FC = () => {
       <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
         Идеи учителя
       </Typography>
-      <Grid container item spacing={3}>
-        {teacher.ideas.map(idea => (
-          <Grid size={{ xs: 12, md: 3 }} key={idea.id}>
-            <IdeaCard idea={idea} />
-          </Grid>
-        ))}
-      </Grid>
+<Grid container spacing={3}>
+  {teacher.ideas.map(idea => (
+    <Grid size={{ xs: 12, md: 3 }} key={idea.id}>
+      <IdeaCard idea={idea} />
+    </Grid>
+  ))}
+</Grid>
       
       <ChatDialog
         open={chatOpen}
