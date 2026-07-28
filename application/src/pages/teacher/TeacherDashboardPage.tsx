@@ -6,7 +6,6 @@ import MeetCard from '../../features/meets/MeetCard/MeetCard.tsx';
 import Box from '@mui/material/Box';
 
 export default function TeacherDashboardPage() {
-
   const { data } = useQuery({
     queryKey: ['teacher-dashboard'],
     queryFn: fetchTeacherDashboard,

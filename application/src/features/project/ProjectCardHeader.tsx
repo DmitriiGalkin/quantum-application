@@ -25,7 +25,6 @@ type Props = {
 };
 
 function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { activeUser, authHandler, activeContext, passport } = useAuth();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const isMember = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
@@ -52,19 +51,6 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
       refetch?.();
     },
   });
-
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setAnchorEl(null);
-  };
-  const open = Boolean(anchorEl);
 
   const menuItems = [];
 

@@ -1,5 +1,5 @@
 import { Card, CardActionArea, CardContent, Chip, Grid, IconButton, Stack, Typography } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchPlace, fetchUpdatePlace } from '../../requests.ts';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.
 import EditIcon from '@mui/icons-material/Edit';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import type { PlaceScheduleDayDto } from '@shared/types';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export const DEFAULT_PLACE_SCHEDULE: PlaceScheduleDayDto[] = [
   { weekday: 1, enabled: true, startTime: '09:00', endTime: '21:00' },
@@ -22,7 +23,8 @@ export const DEFAULT_PLACE_SCHEDULE: PlaceScheduleDayDto[] = [
 ];
 
 export default function PlaceDashboardPage() {
-  const { id } = useParams<{ id: string }>();
+  const { activePlace } = useAuth();
+  const id = activePlace?.id;
   const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
 
   const { data: place, refetch } = useQuery({

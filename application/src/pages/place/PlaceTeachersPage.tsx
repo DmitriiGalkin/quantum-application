@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { fetchAddTeacher, fetchPlaceTeachers } from '../../requests.ts';
@@ -11,9 +10,11 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function PlaceTeachersPage() {
-  const { id } = useParams();
+  const { activePlace } = useAuth();
+  const id = activePlace?.id;
   const placeId = Number(id);
   const [isPersonAddModalOpen, setIsPersonAddModalOpen] = useState(false);
 

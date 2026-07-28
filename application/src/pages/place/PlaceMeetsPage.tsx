@@ -10,7 +10,7 @@ import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import { useParams } from 'react-router-dom';
+import {useAuth} from "../../providers/AuthProvider.tsx";
 
 
 //
@@ -23,7 +23,8 @@ import { useParams } from 'react-router-dom';
 // отметка "встреча завершена"
 
 export default function PlaceMeetsPage() {
-  const { id } = useParams();
+  const { activePlace } = useAuth();
+  const id = activePlace?.id;
   const placeId = Number(id);
   const [view, setView] = useState<'week' | 'module'>('module');
 
@@ -97,7 +98,7 @@ export default function PlaceMeetsPage() {
         <WeekCalendar
           meets={meets || []}
           onMeetClick={meet => {
-            console.log('Встреча', meet);
+            // console.log('Встреча', meet);
             // navigate(`/meet/${meet.id}`);
           }}
           onCellClick={date => {

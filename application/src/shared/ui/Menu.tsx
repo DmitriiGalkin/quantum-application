@@ -31,7 +31,7 @@ type MenuSection = {
 };
 
 function Menu({ setIsMenuOpen }: any) {
-  const { activeUser, activePlace, activeContext } = useAuth();
+  const { activeContext } = useAuth();
 
   const MENU: {
     guest: MenuSection[];
@@ -56,31 +56,36 @@ function Menu({ setIsMenuOpen }: any) {
       },
     ],
     user: [
+      // {
+      //   items: [
+      //     {
+      //       label: 'Создать идею',
+      //       to: '/chat?target=idea',
+      //       icon: <AutoAwesomeIcon />,
+      //       variant: 'primary',
+      //     },
+      //   ],
+      // },
       {
         items: [
           {
-            label: 'Создать идею',
-            to: '/chat?target=idea',
-            icon: <AutoAwesomeIcon />,
-            variant: 'primary',
+            label: 'Главная',
+            to: `/user`,
+            icon: <LightbulbIcon />,
           },
-        ],
-      },
-      {
-        items: [
           {
             label: 'Мои идеи',
-            to: `/user/${activeUser?.id}/ideas`,
+            to: `/user/ideas`,
             icon: <LightbulbIcon />,
           },
           {
             label: 'Мои проекты',
-            to: `/user/${activeUser?.id}/projects`,
+            to: `/user/projects`,
             icon: <AssignmentIcon />,
           },
           {
             label: 'Мои встречи',
-            to: `/user/${activeUser?.id}/meets`,
+            to: `/user/meets`,
             icon: <CalendarMonthIcon />,
           },
         ],
@@ -146,17 +151,17 @@ function Menu({ setIsMenuOpen }: any) {
         items: [
           {
             label: 'Дашборд',
-            to: `/place/${activePlace?.id}`,
+            to: `/place`,
             icon: <AssignmentIcon />,
           },
           {
             label: 'Расписание',
-            to: `/place/${activePlace?.id}/meets`,
+            to: `/place/meets`,
             icon: <CalendarMonthIcon />,
           },
           {
             label: 'Проекты',
-            to: `/place/${activePlace?.id}/projects`,
+            to: `/place/projects`,
             icon: <FolderIcon />,
           },
         ],
@@ -166,12 +171,12 @@ function Menu({ setIsMenuOpen }: any) {
         items: [
           {
             label: 'Учителя',
-            to: `/place/${activePlace?.id}/teachers`,
+            to: `/place/teachers`,
             icon: <AddIcon />,
           },
           {
             label: 'Помещения',
-            to: `/place/${activePlace?.id}/teachers`,
+            to: `/place/locations`,
             icon: <AddIcon />,
           },
         ],
@@ -181,12 +186,12 @@ function Menu({ setIsMenuOpen }: any) {
         items: [
           {
             label: 'Поступления',
-            to: `/place/${activePlace?.id}`,
+            to: `/place/billing`,
             icon: <AssignmentIcon />,
           },
           {
             label: 'Статистика',
-            to: `/place/${activePlace?.id}/projects`,
+            to: `/place/stats`,
             icon: <FolderIcon />,
           },
         ],

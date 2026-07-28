@@ -4,10 +4,11 @@ import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserIdeas } from '../../requests.ts';
 import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
-import { useParams } from 'react-router-dom';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 
 function IdeasPage() {
-  const { id } = useParams();
+  const { activeUser } = useAuth();
+  const id = activeUser?.id;
   const userId = id ? Number(id) : undefined;
 
   const {

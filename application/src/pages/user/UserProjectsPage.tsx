@@ -1,13 +1,14 @@
-import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../../requests.ts';
 import ProjectCard from '../../features/project/ProjectCard.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 
 function UserProjectsPage() {
-  const { id } = useParams();
+  const { activeUser } = useAuth();
+  const id = activeUser?.id;
   const userId = id ? Number(id) : undefined;
 
   const {

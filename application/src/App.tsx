@@ -43,9 +43,11 @@ function App() {
         <Route index element={<IdeasPage />} />
         <Route path="chat" element={<ChatPageOld />} />
         <Route path="chatOld/:id" element={<ChatPageOld />} />
+        <Route path="users/:id" element={<div>UserPage</div>} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="teachers/:id" element={<TeacherPage />} />
+        <Route path="places/:id" element={<div />} />
         <Route path="chats" element={<ChatPage />} />
       </Route>
 
@@ -60,8 +62,8 @@ function App() {
       </Route>
 
       {/* Ученик */}
-      <Route path="user/:id" element={<AppLayout />}>
-        <Route index element={<UserIdeasPage />} />
+      <Route path="user" element={<AppLayout />}>
+        <Route index element={<div>UserHomePage</div>} />
         <Route path="ideas" element={<UserIdeasPage />} />
         <Route path="projects" element={<UserProjectsPage />} />
         <Route path="meets" element={<UserMeetsPage />} />
@@ -79,7 +81,7 @@ function App() {
       </Route>
 
       {/* Центр */}
-      <Route path="place/:id" element={<AppLayout />}>
+      <Route path="place" element={<AppLayout />}>
         <Route index element={<PlaceDashboardPage />} />
         <Route path="teachers" element={<PlaceTeachersPage />} />
         <Route path="projects" element={<PlaceProjectsPage />} />

@@ -1,12 +1,13 @@
 import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaceProjects } from '../../requests.ts';
-import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import ProjectCard from '../../features/project/ProjectCard.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function PlaceProjectsPage() {
-  const { id } = useParams();
+  const { activePlace } = useAuth();
+  const id = activePlace?.id;
   const placeId = Number(id);
 
   const { data: projects = [] } = useQuery({

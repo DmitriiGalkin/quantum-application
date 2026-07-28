@@ -10,9 +10,10 @@ import KeyOffIcon from '@mui/icons-material/KeyOff';
 import '../../App.css';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { ListItemAvatar, Tab, Tabs } from '@mui/material';
-import { useState } from 'react';
+import { type SyntheticEvent, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import type { ActiveRole } from '@shared/types';
+import { useNavigate } from 'react-router-dom';
 
 function a11yProps(index: ActiveRole) {
   return {
@@ -32,10 +33,11 @@ interface MenuProps {
 }
 
 function Menu2({ setIsMenuOpen }: MenuProps) {
+  const navigate = useNavigate();
   const { activeUser, users, places, passport, activePlace, activeTeacher, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
   const [value, setValue] = useState(activeContext.role);
 
-  const handleChange = (_: React.SyntheticEvent, newValue: ActiveRole) => {
+  const handleChange = (_: SyntheticEvent, newValue: ActiveRole) => {
     setValue(newValue);
   };
 
@@ -52,9 +54,18 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
           minHeight: 32,
         }}
       >
-        {activeUser && <Tab value="user" label="Ученик" {...a11yProps('user')} onClick={() => switchUser(activeUser?.id ?? users[0].id)} />}
-        {activeTeacher && <Tab value="teacher" label="Учитель" {...a11yProps('teacher')} onClick={switchTeacher} />}
-        {activePlace && <Tab value="place" label="Центр" {...a11yProps('place')} onClick={() => switchPlace(activePlace?.id ?? places[0].id)} />}
+        {activeUser && <Tab value="user" label="Ученик" {...a11yProps('user')} onClick={() => {
+          switchUser(activeUser?.id ?? users[0].id);
+          navigate(`/user`);
+        }} />}
+        {activeTeacher && <Tab value="teacher" label="Учитель" {...a11yProps('teacher')} onClick={()=> {
+          switchTeacher();
+          navigate(`/teacher`);
+        }} />}
+        {activePlace && <Tab value="place" label="Центр" {...a11yProps('place')} onClick={() => {
+          switchPlace(activePlace?.id ?? places[0].id);
+          navigate(`/place`);
+        }} />}
       </Tabs>
 
       {activeContext.role === 'user' && (
