@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
@@ -7,9 +7,14 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchTeacher } from '../requests.ts';
 import ProjectCard from '../features/project/ProjectCard';
 import IdeaCard from '../features/idea/ui/IdeaCard';
+import ChatDialog from '../components/ChatDialog';
 
 const TeacherPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const [chatOpen, setChatOpen] = useState(false);
+  const handleStartChat = () => {
+    setChatOpen(true);
+  };
 
   const { data: teacher, refetch } = useQuery({
     queryKey: ['teacher', id],
@@ -38,7 +43,11 @@ const TeacherPage: React.FC = () => {
               </Typography>
               
               <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
-                <Button variant="contained" startIcon={<MessageIcon />}>
+                <Button 
+                  variant="contained" 
+                  startIcon={<MessageIcon />}
+                  onClick={handleStartChat}
+                >
                   Написать
                 </Button>
                 <Button variant="outlined" startIcon={<ShareIcon />}>
@@ -129,6 +138,12 @@ const TeacherPage: React.FC = () => {
           </Grid>
         ))}
       </Grid>
+      
+      <ChatDialog
+        open={chatOpen}
+        teacherId={teacher.passport.id}
+        onClose={() => setChatOpen(false)}
+      />
     </Box>
   );
 };

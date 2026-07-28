@@ -4,17 +4,17 @@ import { db } from '../dbNext.js';
 
 class Message2Repository {
   // Create a new message
-  static async create(conversationId: number, content: string): Promise<Message> {
+  static async create(conversationId: number, senderPassportId: number, text: string): Promise<Message> {
     const result = await db.execute<ResultSetHeader>(
-      `INSERT INTO message2 (conversationId, content)
-       VALUES (?, ?)`,
-      [conversationId, content]
+      `INSERT INTO message2 (conversationId, senderPassportId, text)
+       VALUES (?, ?, ?)`,
+      [conversationId, senderPassportId, text],
     );
-    
+
     return {
       id: result.insertId,
       conversationId,
-      content,
+      text,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -24,9 +24,9 @@ class Message2Repository {
   static async update(id: number, update: UpdateMessageRequest): Promise<boolean> {
     const result = await db.execute<ResultSetHeader>(
       `UPDATE message2 
-       SET content = ?, updatedAt = NOW()
+       SET text = ?, updatedAt = NOW()
        WHERE id = ?`,
-      [update.content, id]
+      [update.content, id],
     );
     return result.affectedRows > 0;
   }
@@ -37,7 +37,7 @@ class Message2Repository {
       `UPDATE message2 
        SET deletedAt = NOW()
        WHERE id = ?`,
-      [id]
+      [id],
     );
     return result.affectedRows > 0;
   }
@@ -50,7 +50,7 @@ class Message2Repository {
        WHERE conversationId = ? 
          AND deletedAt IS NULL
        ORDER BY createdAt`,
-      [conversationId]
+      [conversationId],
     );
   }
 }

@@ -382,12 +382,20 @@ export interface PlaceUpdateDto {
 export interface Conversation {
   id: number;
   passportId: number;
-  createdAt: Date;
+  createdAt: number[];
+  participants: {
+    passportId: number;
+    userId: number;
+  }[];
+}
+
+export interface ConversationWithMessage extends Conversation {
+  messages?: Message[];
 }
 
 export interface Message {
   id: number;
-  content: string;
+  text: string;
   createdAt: Date;
   userId: number;
   conversationId: number;
@@ -402,6 +410,18 @@ export interface Chat {
 
 export interface StartConversationRequest {
   passportId: number;
+  targetPassportId?: number;
+}
+
+export interface StartConversationResponse {
+  exists: boolean;
+  conversation: Conversation;
+}
+
+export interface StartChatResponse {
+  exists: boolean;
+  chatId: number;
+  messages?: Message[];
 }
 
 export interface CreateMessageRequest {

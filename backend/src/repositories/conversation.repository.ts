@@ -61,7 +61,7 @@ class ConversationRepository {
   static async createIndividual(passportId: number): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
         `INSERT INTO conversation (type, createdAt, updatedAt)
-       VALUES ('individual', NOW(), NOW())`
+       VALUES ('direct', NOW(), NOW())`
     );
     const conversationId = result.insertId;
     

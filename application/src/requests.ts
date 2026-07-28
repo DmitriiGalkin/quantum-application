@@ -31,8 +31,8 @@ import {
   type UpdateMeet,
   // New types
   type Conversation,
-  type ConversationWithMessages,
-  type Message,
+  type ConversationWithMessage,
+  type Message, type StartConversationResponse,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
@@ -91,8 +91,8 @@ export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/da
 
 // Conversation methods
 export const fetchConversations = () => get<Conversation[]>('/conversation');
-export const fetchStartConversation = (passportId: number) => post<Conversation>('/conversation/start', { passportId });
-export const fetchConversation = (id: number) => get<ConversationWithMessages>(`/conversation/${id}`);
+export const fetchStartChat = (passportId: number) => post<StartConversationResponse>('/conversation/start', { passportId });
+export const fetchConversation = (id: number) => get<ConversationWithMessage>(`/conversation/${id}`);
 
 // Message methods
 export const fetchCreateMessage = (conversationId: number, content: string) => post<Message>(`/conversation/${conversationId}/messages`, { content });

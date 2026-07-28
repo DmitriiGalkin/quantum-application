@@ -7,10 +7,10 @@ const create: ControllerWithAuth<Message, CreateMessageRequest> = async (req, re
     const conversationId = Number(req.params.id);
     if (isNaN(conversationId)) return fail(res, 'Некорректный ID диалога', 400);
     
-    const message = await Message2Service.create(conversationId, req.body);
+    const message = await Message2Service.create(conversationId, req.passport.id, req.body);
     ok(res, message);
   } catch (error) {
-    fail(res, 'Ошибка при создании сообщения');
+    fail(res, 'Ошибка при создании сообщения2');
   }
 };
 
@@ -46,11 +46,4 @@ export default {
   create,
   update,
   remove
-};
-
-
-export default {
-  createMessage,
-  updateMessage,
-  deleteMessage
 };
