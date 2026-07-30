@@ -34,6 +34,7 @@ import TeacherUserIdeasPage from './pages/teacher/TeacherUserIdeasPage.tsx';
 import TeacherIdeaCreatePage from './pages/teacher/TeacherIdeaCreatePage.tsx';
 import TeacherPage from './pages/TeacherPage.tsx';
 import ChatPage from './pages/ChatPage.tsx';
+import UserHomePage from './pages/user/UserHomePage.tsx';
 
 function App() {
   return (
@@ -63,7 +64,7 @@ function App() {
 
       {/* Ученик */}
       <Route path="user" element={<AppLayout />}>
-        <Route index element={<div>UserHomePage</div>} />
+        <Route index element={<UserHomePage/>} />
         <Route path="ideas" element={<UserIdeasPage />} />
         <Route path="projects" element={<UserProjectsPage />} />
         <Route path="meets" element={<UserMeetsPage />} />

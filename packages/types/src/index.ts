@@ -431,3 +431,8 @@ export interface CreateMessageRequest {
 export interface UpdateMessageRequest {
   content: string;
 }
+
+
+export interface UserDashboardDto {
+  projects: ProjectExtendedDto[];
+};

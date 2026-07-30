@@ -1,7 +1,8 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { UserService } from '../services/user.service.js';
 import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
-import { UserDto } from '@shared/types';
+import { TeacherDashboardDto, UserDashboardDto, UserDto } from '@shared/types';
+import { TeacherService } from '../services/teacher.service.js';
 
 const create: ControllerWithAuth<number> = async (req, res) => {
   try {
@@ -33,6 +34,16 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
+const dashboard: ControllerWithAuth<UserDashboardDto> = async (req, res) => {
+  try {
+    const dashboard = await UserService.getDashboard(req.viewer?.userId!);
+
+    ok(res, dashboard);
+  } catch (err) {
+    fail(res, 'Ошибка получения полной информации');
+  }
+};
+
 const findById: Controller<UserDto> = async (req, res) => {
   try {
     const user = await UserService.findById(Number(req.params.id));
@@ -52,4 +63,5 @@ export default {
   update,
   delete: remove,
   findById,
+  dashboard,
 };
