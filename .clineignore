@@ -1,45 +1,7 @@
-# Logs
-logs
-*.log
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Dependencies
-node_modules/
-package-lock.json
-
-# Build outputs
-dist/
-*.local
-
-# IDE / Editor
-.idea/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Environment files
-.env
-.env.*
-!.env.example
-*.env
-local.env
-
-# Coverage
-coverage/
-*.lcov
-
-# TypeScript
-*.tsbuildinfo
-
-*.crt
-*.key
-*.ppk
-
-#sonar
-.scannerwork/
+**/node_modules/**
+**/.git/**
+**/dist/**
+**/build/**
+**/.vscode/**
+**/.next/**
+**/.idea/**
