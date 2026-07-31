@@ -145,7 +145,7 @@ export default function PlaceDashboardPage() {
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
-            <CardActionArea component={Link} to={`/place/${place.id}/teachers`}>
+            <CardActionArea component={Link} to={`/place/teachers`}>
               <CardContent>
                 <Typography>Учителя</Typography>
 
@@ -157,7 +157,7 @@ export default function PlaceDashboardPage() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
-            <CardActionArea component={Link} to={`/place/${place.id}/projects`}>
+            <CardActionArea component={Link} to={`/place/projects`}>
               <CardContent>
                 <Typography>Проекты</Typography>
 
@@ -169,7 +169,7 @@ export default function PlaceDashboardPage() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
-            <CardActionArea component={Link} to={`/place/${place.id}/meets`}>
+            <CardActionArea component={Link} to={`/place/meets`}>
               <CardContent>
                 <Typography>Расписание</Typography>
 
