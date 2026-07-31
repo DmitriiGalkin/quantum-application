@@ -215,7 +215,7 @@ export default function MeetCard({ meet, refetch }: Props) {
         </Stack>
 
         <Stack spacing={1}>
-          {/* TITLE */}
+          {/* title */}
           <Box>
             <Typography
               variant="h6"
