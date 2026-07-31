@@ -11,6 +11,7 @@ import {
 import { addDays, format, startOfWeek } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { ru } from 'date-fns/locale';
+import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import WeekCalendarGrid from './WeekCalendarGrid.tsx';
 import WeekCalendarHeader from './WeekCalendarHeader.tsx';
 import type { MeetExtendedDto } from '@shared/types';
@@ -35,6 +36,15 @@ export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, e
 
   const [selectedDay, setSelectedDay] = useState(0);
 
+  const handleDragEnd = (event: DragEndEvent) => {
+      console.log(event);
+    const { active, over } = event;
+    if (over) {
+      // TODO: Implement meet time update logic
+      console.log('Meet moved from', active.id, 'to', over.id);
+    }
+  };
+
   const weekStart = useMemo(
     () =>
       startOfWeek(new Date(), {
@@ -48,17 +58,18 @@ export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, e
   const visibleDays = mobile ? [days[selectedDay]] : days;
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        border: 1,
-        borderColor: 'divider',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-      }}
-    >
+    <DndContext onDragEnd={handleDragEnd}>
+      <Paper
+        elevation={0}
+        sx={{
+          border: 1,
+          borderColor: 'divider',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+        }}
+      >
       {mobile ? (
         <ToggleButtonGroup
           exclusive
@@ -119,6 +130,7 @@ export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, e
           onCellClick={onCellClick}
         />
       </Box>
-    </Paper>
+      </Paper>
+    </DndContext>
   );
 }

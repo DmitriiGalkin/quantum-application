@@ -4,6 +4,8 @@ import { Box, Stack, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 
 import type { MeetExtendedDto, MeetStatus } from '@shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -22,6 +24,15 @@ interface Props {
 export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) {
   const started = new Date(meet.startedAt);
   const queryClient = useQueryClient();
+  
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: meet.id,
+    data: { meet },
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+  };
 
   const updateStatus = useMutation({
     mutationFn: (status: MeetStatus) => fetchUpdateMeetStatus(meet.id, { status }),
@@ -34,11 +45,15 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
 
   return (
     <Box
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
       onClick={event => {
         event.stopPropagation();
         onClick?.();
       }}
       sx={{
+        ...style,
         position: 'absolute',
         top,
         left: 4,
@@ -50,7 +65,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
         color: 'primary.contrastText',
         p: 0.75,
         overflow: 'hidden',
-        cursor: 'pointer',
+        cursor: 'grab',
         boxShadow: 2,
         transition: '.15s',
 
