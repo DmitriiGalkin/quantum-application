@@ -9,7 +9,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 import type { MeetExtendedDto, MeetStatus } from '@shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchUpdateMeetStatus } from '../../requests.ts';
+import { fetchUpdateMeetStatus } from '../../../requests.ts';
 
 interface Props {
   meet: MeetExtendedDto;

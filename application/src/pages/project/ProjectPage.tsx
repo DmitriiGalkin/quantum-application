@@ -1,14 +1,13 @@
 import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { Feed } from '../../features/feed/Feed.tsx';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchCreateMeet, fetchPlace, fetchProject } from '../../requests.ts';
+import { useQuery } from '@tanstack/react-query';
+import { fetchPlace, fetchProject } from '../../requests.ts';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
-import MeetForm, { type MeetFormValues } from '../../features/meets/MeetForm.tsx';
-import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import UserCard from '../../features/user/UserCard.tsx';
+import CreateMeet from '../../features/meets/CreateMeet.tsx';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
@@ -27,21 +26,9 @@ export default function ProjectPage() {
     enabled: Boolean(project?.place.id),
   });
 
-  const [form, setForm] = useState<MeetFormValues>({
-    date: '',
-    time: '',
-    duration: 60,
-    price: 0,
-    projectId: Number(id) || 0,
-  });
 
-  const createMeetMutation = useMutation({
-    mutationFn: (form: MeetFormValues) =>
-      fetchCreateMeet({
-        ...form,
-        startedAt: `${form.date}T${form.time}:00`,
-      }),
-  });
+
+
 
   if (!project || !place) return null;
 
@@ -64,20 +51,7 @@ export default function ProjectPage() {
         <Stack spacing={2}>
           {role === 'teacher' && project.passport.id === passport?.id && (
             <Paper sx={{ p: 2 }}>
-              <MeetForm
-                schedule={place.schedule}
-                values={form}
-                onChange={setForm}
-                onSubmit={() =>
-                  createMeetMutation.mutate(form, {
-                    onSuccess: () => {
-                      refetch();
-                    },
-                  })
-                }
-                loading={createMeetMutation.isPending}
-                submitLabel="Создать встречу"
-              />
+              <CreateMeet projectId={project.id} schedule={place.schedule} refetch={refetch} />
             </Paper>
           )}
 
@@ -88,7 +62,7 @@ export default function ProjectPage() {
 
                 <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
                   {project.users.map(user => (
-                    <UserCard key={user.id} user={user}/>
+                    <UserCard key={user.id} user={user} />
                   ))}
                 </Stack>
 
@@ -98,8 +72,6 @@ export default function ProjectPage() {
               </CardContent>
             </Card>
           )}
-
-          {/**activeContext.role === 'teacher' && <div>Хей куратор, нажми кнопку поделиться своим проектом в соц сети</div>**/}
         </Stack>
       </Grid>
     </Grid>

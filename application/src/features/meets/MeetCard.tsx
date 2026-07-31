@@ -1,8 +1,7 @@
 import type { MeetExtendedDto, MeetStatus } from '@shared/types';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
-import MenuButton from '../../../components/MenuButton.tsx';
-import PlaceFooter from './PlaceFooter.tsx';
+import MenuButton from '../../components/MenuButton.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   fetchCreateMeetUser,
@@ -11,7 +10,7 @@ import {
   fetchDeleteMeetUser,
   fetchPlace,
   fetchUpdateMeetStatus,
-} from '../../../requests.ts';
+} from '../../requests.ts';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -24,7 +23,7 @@ import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 import PeopleIcon from '@mui/icons-material/People';
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import PersonIcon from '@mui/icons-material/Person';
-import { EditMeetDialog } from '../EditMeetDialog.tsx';
+import { EditMeetDialog } from './EditMeetDialog.tsx';
 
 interface Props {
   meet: MeetExtendedDto;
@@ -103,8 +102,6 @@ export default function MeetCard({ meet, refetch }: Props) {
     });
   };
 
-  const onEdit = () => console.log('edit meet');
-
   const onExit = () => {
     if (activeUser) mutationUnlike.mutate({ userId: activeUser.id, meetId: meet.id });
     else authHandler();
@@ -134,6 +131,9 @@ export default function MeetCard({ meet, refetch }: Props) {
     hour: '2-digit',
     minute: '2-digit',
   });
+
+  const occupancy = (meet.users?.length ?? 0) / 30;
+  const occupancyTitle = `${meet.users?.length ?? 0}/30`;
 
   const status = statusConfig[getMeetStatus(meet)];
 
@@ -298,7 +298,17 @@ export default function MeetCard({ meet, refetch }: Props) {
             Отклонено
           </Typography>
         )}
-        {role === 'place' && <PlaceFooter meet={meet} onEdit={onEdit} />}
+        {role === 'place' && (
+          <Stack spacing={1.5}>
+            <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+              <Typography variant="body2" color="text.secondary">
+                Загруженность
+              </Typography>
+
+              <Chip size="small" label={occupancyTitle} color={occupancy > 0.8 ? 'warning' : 'default'} />
+            </Stack>
+          </Stack>
+        )}
 
         {role === 'place' && meet.status === 'pending' && (
           <Stack direction="row" spacing={1}>

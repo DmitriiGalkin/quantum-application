@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import { groupMeets } from './groupMeets.ts';
-import MeetCard from '../../features/meets/MeetCard/MeetCard.tsx';
+import MeetCard from '../../features/meets/MeetCard.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';
 import { useAuth } from '../../providers/AuthProvider.tsx';

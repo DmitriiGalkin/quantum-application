@@ -1,32 +1,34 @@
 import { useState } from 'react';
-import type { ProjectFormValues } from '../ui/ProjectForm.tsx';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateProject } from '../../../requests.ts';
-import { useNavigate } from 'react-router-dom';
+import { fetchCreateMeet } from '../../../requests.ts';
+import type { MeetFormValues } from '../MeetForm.tsx';
 
-export function useCreateMeet() {
-  const navigate = useNavigate();
-
-  const [form, setForm] = useState<ProjectFormValues>({
-    title: '',
-    description: '',
-    image: '',
-    placeId: 0,
+export function useCreateMeet(projectId: number, refetch: ()=>void) {
+  const [form, setForm] = useState<MeetFormValues>({
+    date: '',
+    time: '',
+    duration: 60,
+    price: 0,
+    projectId: Number(projectId) || 0,
   });
 
-  const createProject = useMutation({
-    mutationFn: (data: ProjectFormValues) =>
-      fetchCreateProject({
-        ...data,
-        placeId: 1,
+  const createMeetMutation = useMutation({
+    mutationFn: (form: MeetFormValues) =>
+      fetchCreateMeet({
+        ...form,
+        startedAt: `${form.date}T${form.time}:00`,
       }),
-    onSuccess: projectId => navigate(`/project/${projectId}`),
   });
 
   return {
     form,
     setForm,
-    onSubmit: () => createProject.mutate(form),
-    loading: createProject.isPending,
+    onSubmit: () =>
+      createMeetMutation.mutate(form, {
+        onSuccess: () => {
+          refetch();
+        },
+      }),
+    loading: createMeetMutation.isPending,
   };
 }
