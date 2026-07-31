@@ -5,11 +5,17 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchUserIdeas } from '../../requests.ts';
 import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
 import { useAuth } from '../../providers/AuthProvider.tsx';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { useState } from 'react';
+import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
 
 function IdeasPage() {
   const { activeUser } = useAuth();
   const id = activeUser?.id;
   const userId = id ? Number(id) : undefined;
+  const [openCreateIdea, setOpenCreateIdea] = useState(false);
 
   const {
     data: ideas = [],
@@ -21,7 +27,16 @@ function IdeasPage() {
   });
 
   return (
-    <Box component="section">
+    <Stack spacing={2}>
+      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h4">Идеи ученика</Typography>
+        <Button variant="contained" onClick={() => setOpenCreateIdea(true)}>
+          Создать идею
+        </Button>
+
+        <CreateIdeaDialog open={openCreateIdea} onClose={() => setOpenCreateIdea(false)} />
+      </Stack>
+
       {isIdeasError && <Alert severity="error">Не удалось загрузить идеи.</Alert>}
 
       {!isIdeasLoading && !isIdeasError && (
@@ -42,7 +57,7 @@ function IdeasPage() {
           ))}
         </Box>
       )}
-    </Box>
+    </Stack>
   );
 }
 

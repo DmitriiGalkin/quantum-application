@@ -3,15 +3,18 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
 import { fetchTeacherIdeas } from '../../requests.ts';
 import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
+import { useState } from 'react';
+import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
 
 export default function TeacherIdeasPage() {
   const { data: ideas = [], isLoading } = useQuery({
     queryKey: ['teacher-ideas'],
     queryFn: fetchTeacherIdeas,
   });
+
+  const [openCreateIdea, setOpenCreateIdea] = useState(false);
 
   if (isLoading) {
     return <>Загрузка...</>;
@@ -21,9 +24,11 @@ export default function TeacherIdeasPage() {
     <Stack spacing={2}>
       <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h4">Мои идеи проектов</Typography>
-        <Button variant="contained" component={Link} to="/teacher/ideas/create">
+        <Button variant="contained" onClick={() => setOpenCreateIdea(true)}>
           Создать идею
         </Button>
+
+        <CreateIdeaDialog open={openCreateIdea} onClose={() => setOpenCreateIdea(false)} />
       </Stack>
 
       <Box

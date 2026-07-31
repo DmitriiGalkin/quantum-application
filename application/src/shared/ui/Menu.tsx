@@ -7,11 +7,9 @@ import ListItemText from '@mui/material/ListItemText';
 import '../../App.css';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import FolderIcon from '@mui/icons-material/Folder';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AddIcon from '@mui/icons-material/Add';
 import HelpIcon from '@mui/icons-material/Help';
 import Toolbar from '@mui/material/Toolbar';
@@ -115,11 +113,6 @@ function Menu({ setIsMenuOpen }: any) {
           //   variant: 'primary',
           // },
           {
-            label: 'Новый проект',
-            to: '/teacher/projects/create',
-            icon: <CreateNewFolderIcon />,
-          },
-          {
             label: 'Мои проекты',
             to: '/teacher/projects',
             icon: <FolderIcon />,
@@ -128,11 +121,6 @@ function Menu({ setIsMenuOpen }: any) {
       },
       {
         items: [
-          {
-            label: 'Создать идею',
-            to: '/teacher/ideas/create',
-            icon: <AutoAwesomeIcon />,
-          },
           {
             label: 'Мои идеи',
             to: `/teacher/ideas`,
@@ -203,12 +191,11 @@ function Menu({ setIsMenuOpen }: any) {
 
   return (
     <Stack sx={{ width: 250, height: '100%' }}>
+
       <Toolbar>
         <Typography variant="h6">Quantum</Typography>
       </Toolbar>
-
       <Divider />
-
       <List>
         {menuSections.map((section, sectionIndex) => (
           <Box key={sectionIndex}>
@@ -258,11 +245,8 @@ function Menu({ setIsMenuOpen }: any) {
           </Box>
         ))}
       </List>
-
       <Box sx={{ flexGrow: 1 }} />
-
       <Divider />
-
       <List>
         <ListItemButton>
           <ListItemIcon
