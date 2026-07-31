@@ -5,7 +5,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import MessageIcon from '@mui/icons-material/Message';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacher } from '../requests.ts';
-import ProjectCard from '../features/project/ProjectCard';
+import ProjectCard from '../features/project/ui/ProjectCard.tsx';
 import IdeaCard from '../features/idea/ui/IdeaCard';
 import ChatDialog from '../components/ChatDialog';
 

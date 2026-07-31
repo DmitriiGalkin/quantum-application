@@ -2,24 +2,24 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button, Card, CardActionArea, CardContent, Chip, IconButton, Stack } from '@mui/material';
 import { type ProjectExtendedDto } from '@shared/types';
-import AvatarGroupUsers from '../../shared/ui/AvatarGroupUsers.tsx';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
+import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
-import { fetchCreateProjectUser, fetchCreateUser } from '../../requests.ts';
+import { fetchCreateProjectUser, fetchCreateUser } from '../../../requests.ts';
 import ProjectCardHeader from './ProjectCardHeader.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { CreateUserForm } from '../user/CreateUserForm.tsx';
-import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
-import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
+import { CreateUserForm } from '../../user/CreateUserForm.tsx';
+import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
+import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
-import { getMeetStatus, statusConfig } from '../meets/MeetCard/helper.ts';
+import { getMeetStatus, statusConfig } from '../../meets/MeetCard/helper.ts';
 import CardMedia from '@mui/material/CardMedia';
 import LinkIcon from '@mui/icons-material/Link';
-import ChatDialog from '../../components/ChatDialog'; // Добавлен импорт
+import ChatDialog from '../../../components/ChatDialog.tsx'; // Добавлен импорт
 
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 

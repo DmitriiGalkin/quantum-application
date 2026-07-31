@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaceProjects } from '../../requests.ts';
 import Box from '@mui/material/Box';
-import ProjectCard from '../../features/project/ProjectCard.tsx';
+import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function PlaceProjectsPage() {

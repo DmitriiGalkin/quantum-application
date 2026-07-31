@@ -18,7 +18,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import ChatIntroduction from '../features/chat/ui/ChatIntroduction.tsx';
 import IdeaCard from '../features/idea/ui/IdeaCard.tsx';
 import MeetCard from '../features/meets/MeetCard/MeetCard.tsx';
-import ProjectCard from '../features/project/ProjectCard.tsx';
+import ProjectCard from '../features/project/ui/ProjectCard.tsx';
 
 function ChatPageOld() {
   const { token, authHandler } = useAuth();

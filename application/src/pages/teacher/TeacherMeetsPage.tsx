@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import MeetCard from '../../features/meets/MeetCard/MeetCard.tsx';
 
 function TeacherMeetsPage() {
-  const { data: meets = [], isLoading } = useQuery({
+  const { data: meets = [], isLoading, refetch } = useQuery({
     queryKey: ['teacher-meets'],
     queryFn: fetchTeacherMeets,
   });
@@ -19,10 +19,7 @@ function TeacherMeetsPage() {
       <Typography variant="h4">Встречи</Typography>
 
       {meets.map(meet => (
-        <MeetCard
-          key={meet.id}
-          meet={meet}
-        />
+        <MeetCard key={meet.id} meet={meet} refetch={refetch} />
       ))}
     </Stack>
   );

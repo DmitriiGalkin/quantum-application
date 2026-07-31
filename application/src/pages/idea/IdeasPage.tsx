@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchIdeas } from '../../requests.ts';
 import Stack from '@mui/material/Stack';
 import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
-import { useFilters } from '../../features/idea/model/useFilters.ts';
+import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 import Filter from '../../features/idea/ui/Filter.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation } from '../../shared/lib/useLocation.ts';

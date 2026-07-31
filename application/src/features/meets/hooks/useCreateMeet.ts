@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { fetchCreateProject } from '../../../requests.ts';
 import { useNavigate } from 'react-router-dom';
 
-export function useCreateProject() {
+export function useCreateMeet() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<ProjectFormValues>({

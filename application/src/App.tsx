@@ -14,7 +14,6 @@ import NotFound from './shared/ui/NotFound.tsx';
 import TeacherMeetsPage from './pages/teacher/TeacherMeetsPage.tsx';
 import TeacherIdeasPage from './pages/teacher/TeacherIdeasPage.tsx';
 import UserMeetsPage from './pages/user/UserMeetsPage.tsx';
-import TeacherProjectCreatePage from './pages/teacher/TeacherProjectCreatePage.tsx';
 import PlaceTeachersPage from './pages/place/PlaceTeachersPage.tsx';
 import PlaceProjectsPage from './pages/place/PlaceProjectsPage.tsx';
 import PlaceMeetsPage from './pages/place/PlaceMeetsPage.tsx';
@@ -73,7 +72,6 @@ function App() {
       <Route path="teacher" element={<AppLayout />}>
         <Route index element={<TeacherDashboardPage />} />
         <Route path="projects" element={<TeacherProjectsPage />} />
-        <Route path="projects/create" element={<TeacherProjectCreatePage />} />
         <Route path="meets" element={<TeacherMeetsPage />} />
         <Route path="ideas" element={<TeacherIdeasPage />} />
         <Route path="userIdeas" element={<TeacherUserIdeasPage />} />

@@ -1,13 +1,13 @@
 import type { PlaceDto, ProjectExtendedDto } from '@shared/types';
 import { Avatar, CardHeader, Stack } from '@mui/material';
-import MenuButton from '../../components/MenuButton';
+import MenuButton from '../../../components/MenuButton.tsx';
 import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PlaceIcon from '@mui/icons-material/Place';
 import Typography from '@mui/material/Typography';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
-import { fetchProjectLeave, fetchUpdateProject } from '../../requests.ts';
+import { fetchProjectLeave, fetchUpdateProject } from '../../../requests.ts';
 import EditIcon from '@mui/icons-material/Edit';
 import ChatIcon from '@mui/icons-material/Chat'; // Добавлен ChatIcon
 import Dialog from '@mui/material/Dialog';

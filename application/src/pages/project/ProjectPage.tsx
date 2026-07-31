@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchCreateMeet, fetchPlace, fetchProject } from '../../requests.ts';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../providers/AuthProvider.tsx';
-import ProjectCard from '../../features/project/ProjectCard.tsx';
+import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
 import MeetForm, { type MeetFormValues } from '../../features/meets/MeetForm.tsx';
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';

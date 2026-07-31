@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../../requests.ts';
-import ProjectCard from '../../features/project/ProjectCard.tsx';
+import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 
 function UserProjectsPage() {

@@ -1,9 +1,7 @@
 import type { MeetExtendedDto, MeetStatus } from '@shared/types';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
-import { Button, Chip, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
 import MenuButton from '../../../components/MenuButton.tsx';
-
-import MeetCardBody from './MeetCardBody.tsx';
 import PlaceFooter from './PlaceFooter.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
@@ -12,7 +10,6 @@ import {
   fetchDeleteMeet,
   fetchDeleteMeetUser,
   fetchPlace,
-  fetchUpdateMeet,
   fetchUpdateMeetStatus,
 } from '../../../requests.ts';
 import { useState } from 'react';
@@ -21,47 +18,29 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { getMeetStatus, statusConfig } from './helper.ts';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import MeetForm, { type MeetFormValues } from '../MeetForm.tsx';
+
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
+import PeopleIcon from '@mui/icons-material/People';
+import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
+import PersonIcon from '@mui/icons-material/Person';
+import { EditMeetDialog } from '../EditMeetDialog.tsx';
 
 interface Props {
   meet: MeetExtendedDto;
   refetch?: () => void;
-  withoutPaper?: boolean;
 }
 
-export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
+export default function MeetCard({ meet, refetch }: Props) {
   const { activeUser, authHandler, passport, activeContext } = useAuth();
   const role = activeContext.role;
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [form, setForm] = useState<MeetFormValues>({
-    projectId: meet.projectId,
-    date: new Date(meet.startedAt).toISOString().slice(0, 10), // YYYY-MM-DD
-    time: new Date(meet.startedAt).toTimeString().slice(0, 5), // HH:mm
-    duration: meet.duration || 0,
-    price: meet.price || 0,
-  });
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const { data: place } = useQuery({
     queryKey: ['place', meet.place.id],
     queryFn: () => fetchPlace(meet.place.id || 0),
     enabled: Boolean(meet.place.id),
   });
-
-  const updateMeet = useMutation({
-    mutationFn: (form: MeetFormValues) => {
-      const { date, time, ...data } = form;
-      return fetchUpdateMeet(meet.id, { ...data, startedAt: `${form.date}T${form.time}:00` });
-    },
-
-    onSuccess: () => {
-      setEditModalOpen(false);
-      refetch?.();
-    },
-  });
-
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateMeetUser,
@@ -140,6 +119,11 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
   const isMember = meetUserStatus === 'member';
   const isPending = paymentStatus === 'pending';
 
+  const name = meet.passport?.title ?? 'Unknown';
+  const duration = meet.duration != null ? `${meet.duration} min` : '—';
+
+  const isPaid = paymentStatus === 'paid';
+
   const startedAt = new Date(meet.startedAt);
   const date = startedAt.toLocaleDateString('ru-RU', {
     day: '2-digit',
@@ -150,11 +134,6 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
     hour: '2-digit',
     minute: '2-digit',
   });
-
-  const body = <MeetCardBody meet={meet} isMember={isMember} />;
-
-  // Только тело встречи
-  if (withoutPaper) return body;
 
   const status = statusConfig[getMeetStatus(meet)];
 
@@ -186,7 +165,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
       key: 'edit',
       label: 'Изменить',
       icon: <EditIcon fontSize="small" />,
-      onClick: () => setEditModalOpen(true),
+      onClick: () => setIsEditOpen(true),
     });
     menuItems.push({
       key: 'delete',
@@ -196,7 +175,7 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
     });
   }
 
-  if(!place) return null
+  if (!place) return null;
 
   return (
     <Paper
@@ -215,7 +194,6 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
       }}
     >
       <Stack spacing={2}>
-        {/* TOP ROW: status + time */}
         <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Chip label={status.label} color={status.color} size="small" />
 
@@ -223,9 +201,79 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
             {date} • {time}
           </Typography>
 
-              <MenuButton menuItems={menuItems} />
+          <MenuButton menuItems={menuItems} />
+
+          <EditMeetDialog
+            meet={meet}
+            schedule={place.schedule}
+            open={isEditOpen}
+            onClose={() => {
+              setIsEditOpen(false);
+              refetch?.();
+            }}
+          />
         </Stack>
-        {body}
+
+        <Stack spacing={1}>
+          {/* TITLE */}
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{
+                lineHeight: 1.2,
+                fontWeight: 700,
+              }}
+            >
+              {meet.projectTitle ?? 'Untitled meeting'}
+            </Typography>
+          </Box>
+
+          {/* location */}
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <LocationOnOutlinedIcon fontSize="small" color="disabled" />
+            <Typography variant="body2">{meet.place?.address ?? 'Unknown location'}</Typography>
+          </Stack>
+        </Stack>
+        <Stack spacing={1.5}>
+          <Stack spacing={1}>
+            {/* Преподаватель */}
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <PersonIcon fontSize="small" color="disabled" />
+              <Typography variant="body2">{name}</Typography>
+            </Stack>
+
+            {/* duration */}
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <ScheduleOutlinedIcon fontSize="small" color="disabled" />
+              <Typography variant="body2">{duration}</Typography>
+            </Stack>
+
+            {/* participants (aggregated) */}
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <PeopleIcon fontSize="small" color="disabled" />
+
+              <Typography variant="body2">
+                {meet.users?.length ?? 0}/{meet.capacity} участников проекта
+              </Typography>
+            </Stack>
+
+            {meet.price ? (
+              <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                  <CurrencyRubleIcon fontSize="small" color="disabled" />
+
+                  <Typography variant="body2">{meet.price}</Typography>
+                </Stack>
+
+                {isMember && activeContext.role === 'user' && !isPaid && <Chip size="small" label="Ожидает оплату" color="warning" />}
+                {activeContext.role === 'user' && isPaid && <Chip size="small" label="Оплачено" color="success" />}
+              </Stack>
+            ) : (
+              <Typography variant="body2">Бесплатная встреча</Typography>
+            )}
+          </Stack>
+        </Stack>
+
         {role === 'user' && (
           <>
             {!isMember && (
@@ -264,21 +312,6 @@ export default function MeetCard({ meet, refetch, withoutPaper }: Props) {
           </Stack>
         )}
       </Stack>
-
-      <Dialog open={isEditModalOpen} onClose={() => setEditModalOpen(false)} fullWidth maxWidth="md">
-        <DialogTitle>Редактирование проекта</DialogTitle>
-
-        <DialogContent sx={{ pt: 2 }}>
-          <MeetForm
-            values={form}
-            onChange={setForm}
-            schedule={place.schedule}
-            onSubmit={() => updateMeet.mutate(form)}
-            loading={updateMeet.isPending}
-            submitLabel="Сохранить"
-          />
-        </DialogContent>
-      </Dialog>
     </Paper>
   );
 }

@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserDashboard } from '../../requests.ts';
-import ProjectCard from '../../features/project/ProjectCard.tsx';
+import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
 
 const UserHomePage: React.FC = () => {
   // Запрос активных проектов текущего пользователя
