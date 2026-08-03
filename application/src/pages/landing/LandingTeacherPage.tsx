@@ -11,14 +11,16 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
+import { useState } from 'react';
+import { CreateProjectDialog } from '../../features/project/ui/CreateProjectDialog.tsx';
 
 const CREATE_TEACHER_TYPE = 'create-teacher';
 
 export function LandingTeacherPage() {
-
   const navigate = useNavigate();
   const { authHandler, passport } = useAuth();
   const { setAction } = usePostAuthAction();
+  const [isCreateProjectDialogOpen, setIsCreateProjectDialogOpen] = useState(false);
 
   const onCreate = () => {
     if (!passport) {
@@ -51,9 +53,11 @@ export function LandingTeacherPage() {
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 5, justifyContent: 'center' }}>
-          <Button variant="contained" size="large" onClick={onCreate}>
+          <Button variant="contained" size="large" onClick={() => setIsCreateProjectDialogOpen(true)}>
             Стать преподавателем
           </Button>
+
+          <CreateProjectDialog open={isCreateProjectDialogOpen} onClose={() => setIsCreateProjectDialogOpen(false)} />
 
           <Button variant="outlined" size="large">
             Подробнее
@@ -67,18 +71,33 @@ export function LandingTeacherPage() {
             {[
               {
                 icon: <EventAvailableIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Расписание',
-                description: 'Просматривайте занятия, проекты и своё персональное расписание.',
+                title: 'Создать профессиональный профиль',
+                description: 'Представить себя, Устроиться в центр.',
               },
               {
                 icon: <GroupsIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Ученики',
-                description: 'Работайте с группами, отслеживайте посещаемость и прогресс.',
+                title: 'Превратите образовательную идею в готовый проект',
+                description: 'Создать идеи и проекты, управлять образовательными проектами.',
               },
               {
                 icon: <MenuBookIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Программы',
-                description: 'Участвуйте в образовательных проектах и реализуйте свои методики.',
+                title: 'Открыть набор учеников и начать проводить занятия',
+                description: 'Подбирать места проведения и время проведения встреч по проектам.',
+              },
+              {
+                icon: <MenuBookIcon color="primary" sx={{ fontSize: 42 }} />,
+                title: 'Управление расписанием и посещаемостью',
+                description: 'Отслеживать расписание, оплаты, возвраты, уведомлять об изменениях.',
+              },
+              {
+                icon: <MenuBookIcon color="primary" sx={{ fontSize: 42 }} />,
+                title: 'Поддерживать доверие родителей',
+                description: 'Вести общение с родителями, предоставлять актуальную информацию об участии ученика.',
+              },
+              {
+                icon: <MenuBookIcon color="primary" sx={{ fontSize: 42 }} />,
+                title: 'Управление финансами',
+                description: 'Ослеживание прибыли по проектам.',
               },
             ].map(item => (
               <Grid key={item.title} size={{ xs: 12, md: 4 }}>
