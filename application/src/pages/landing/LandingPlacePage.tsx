@@ -81,7 +81,7 @@ export function LandingPlacePage() {
   return (
     <>
       <Hero chip={<Chip label="Для образовательных центров" color="primary" sx={{ width: 200 }} />}>
-        <Typography variant="h2">Управляйте обучением в одном месте</Typography>
+        <Typography variant="h2">Повысьте эффективность и масштаб работы образовательного центра</Typography>
         <Typography variant="h5" sx={{ maxWidth: 720 }}>
           Создавайте программы, проекты, занятия, приглашайте преподавателей, принимайте учеников и контролируйте оплаты.
         </Typography>
@@ -102,33 +102,28 @@ export function LandingPlacePage() {
             {[
               {
                 icon: <GroupsIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Дополнительный поток клиентов',
-                description: 'Храните контакты и историю участия в проектах каждого ученика',
+                title: 'Цифровой кабинет центра',
+                description: 'Бесплатное создание цифрового кабинета центра за пару минут.',
               },
               {
                 icon: <CalendarMonthIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Легкая CRM',
-                description: 'Создавайте проекты, занятия и управляйте расписанием преподавателей.',
+                title: 'Зарабатывать на свободном помещении',
+                description: 'Добавлять помещения, получать заявки на аренду помещения учителями, управлять расписанием.',
               },
               {
                 icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Ведение финансов',
-                description: 'Принимайте оплату за занятия и образовательные программы прямо с сайта.',
+                title: 'Расширение аудитории учеников центра',
+                description: 'Приглашать учителей к сотрудничеству, расширять ассортимент видов занятий',
               },
               {
                 icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Поиск учителей',
-                description: 'Расширяйте штат центра привлекая учителей на сдельной договоренности.',
+                title: 'Управлять развитием направлений',
+                description: 'Получать подробную статистику проводимих занятий на территории центра: загруженность помещений, учителей. Популярность проектов.',
               },
               {
                 icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Аналитика',
-                description: 'Качественная статистика по проводимым занятиям.',
-              },
-              {
-                icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Продвижение',
-                description: 'Пока не знаю что сказать.',
+                title: 'Управление финансами',
+                description: 'Подробная статистика и отчеты о поступлениях с учеников, с субаренты помещений.',
               },
             ].map(item => (
               <Grid key={item.title} size={{ xs: 12, md: 4 }}>

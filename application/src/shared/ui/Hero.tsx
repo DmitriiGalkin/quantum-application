@@ -11,7 +11,7 @@ export default function Hero({ children, chip }: any) {
       }}
     >
       <Container maxWidth="lg">
-        {chip && <Box sx={{pb:2}}>{chip}</Box>}
+        {chip && <Box sx={{pb:4}}>{chip}</Box>}
         <Stack spacing={3} sx={{ alignItems: 'center' }}>
           {children}
         </Stack>
