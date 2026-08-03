@@ -4,60 +4,21 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import SchoolIcon from '@mui/icons-material/School';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Container,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Box, Button, Card, CardContent, Chip, Container, Grid, Stack, Typography } from '@mui/material';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
 import Hero from '../../shared/ui/Hero.tsx';
 import { FeatureCard } from '../../shared/ui/FeatureCard.tsx';
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.tsx';
-import { fetchCreatePlace } from '../../requests.ts';
-import { DEFAULT_PLACE_SCHEDULE } from '../place/PlaceDashboardPage.tsx';
+import { CreatePlaceDialog } from '../../features/place/CreatePlaceDialog.tsx';
 
-
-const defaultValues: PlaceFormValues = {
-  title: '',
-  description: '',
-  image: '',
-  address: '',
-  latitude: 55.76127510250765,
-  longitude: 37.64222000000001,
-  schedule: DEFAULT_PLACE_SCHEDULE
-};
 const CREATE_PLACE_TYPE = 'create-place';
 
 export function LandingPlacePage() {
-  const navigate = useNavigate();
   const { authHandler, passport } = useAuth();
   const { setAction } = usePostAuthAction();
-
-  const [open, setOpen] = useState(false);
-  const [values, setValues] = useState(defaultValues);
-
-  const createPlace = useMutation({
-    mutationFn: fetchCreatePlace,
-
-    onSuccess: placeId => {
-      setOpen(false);
-      navigate(`/place/${placeId}`);
-    },
-  });
+  const [openCreatePlace, setOpenCreatePlace] = useState(false);
 
   const onCreate = () => {
     if(!passport) {
@@ -69,19 +30,29 @@ export function LandingPlacePage() {
       return authHandler();
     };
 
-    setOpen(true);
+    setOpenCreatePlace(true);
   }
 
   useRunPostAuthAction(passport, action => {
     if (action.type === CREATE_PLACE_TYPE) {
-      setOpen(true);
+      setOpenCreatePlace(true);
     }
   });
 
   return (
     <>
       <Hero chip={<Chip label="Для образовательных центров" color="primary" sx={{ width: 200 }} />}>
-        <Typography variant="h2">Повысьте эффективность и масштаб работы образовательного центра</Typography>
+        <Typography
+          variant="h2"
+          sx={{
+            fontSize: {
+              xs: '3.0em',
+              sm: 'inherit',
+            },
+          }}
+        >
+          Повысьте эффективность и масштаб работы образовательного центра
+        </Typography>
         <Typography variant="h5" sx={{ maxWidth: 720 }}>
           Создавайте программы, проекты, занятия, приглашайте преподавателей, принимайте учеников и контролируйте оплаты.
         </Typography>
@@ -118,7 +89,8 @@ export function LandingPlacePage() {
               {
                 icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
                 title: 'Управлять развитием направлений',
-                description: 'Получать подробную статистику проводимих занятий на территории центра: загруженность помещений, учителей. Популярность проектов.',
+                description:
+                  'Получать подробную статистику проводимих занятий на территории центра: загруженность помещений, учителей. Популярность проектов.',
               },
               {
                 icon: <WorkspacePremiumIcon color="primary" sx={{ fontSize: 42 }} />,
@@ -212,20 +184,7 @@ export function LandingPlacePage() {
         </Stack>
       </Container>
 
-      <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Создать учебный центр</DialogTitle>
-
-        <DialogContent>
-          <PlaceForm
-            values={values}
-            onChange={setValues}
-            onSubmit={() => createPlace.mutate(values)}
-            loading={createPlace.isPending}
-            error={createPlace.isError}
-            submitLabel="Создать центр"
-          />
-        </DialogContent>
-      </Dialog>
+      <CreatePlaceDialog open={openCreatePlace} onClose={() => setOpenCreatePlace(false)} />
     </>
   );
 }
