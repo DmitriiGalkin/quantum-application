@@ -3,11 +3,14 @@ import Box from '@mui/material/Box';
 import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../../requests.ts';
-import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
 import { useAuth } from '../../providers/AuthProvider.tsx';
+import Projects from '../../features/project/ui/Projects.tsx';
+import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function UserProjectsPage() {
   const { activeUser } = useAuth();
+  const filter = useFilters();
+
   const id = activeUser?.id;
   const userId = id ? Number(id) : undefined;
 
@@ -26,22 +29,7 @@ function UserProjectsPage() {
       {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
 
       {!isProjectsLoading && !isProjectsError && Boolean(projects.length) && (
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: {
-              xs: '1fr',
-              sm: 'repeat(2, minmax(0, 1fr))',
-              md: 'repeat(3, minmax(0, 1fr))',
-              lg: 'repeat(4, minmax(0, 1fr))',
-            },
-            gap: 2,
-          }}
-        >
-          {projects.map(project => (
-            <ProjectCard project={project} refetch={refetch} />
-          ))}
-        </Box>
+        <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea />
       )}
     </Box>
   );

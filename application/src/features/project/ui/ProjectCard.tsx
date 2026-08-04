@@ -261,7 +261,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
       <ChatDialog
         open={isChatOpen}
         onClose={() => setIsChatOpen(false)}
-        teacherId={project.passport.id}
+        teacherId={project.passport?.id || 0}
       />
     </Card>
   );

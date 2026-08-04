@@ -4,6 +4,7 @@ import MeetCard from '../../features/meets/MeetCard.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';
 import { useAuth } from '../../providers/AuthProvider.tsx';
+import Title from '../../shared/ui/Title.tsx';
 
 export default function UserMeetsPage() {
   const { activeUser } = useAuth();
@@ -17,7 +18,7 @@ export default function UserMeetsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4">Мои встречи</Typography>
+      <Title text="Мои встречи" />
 
       {Object.entries(grouped).map(([dateLabel, items]) => (
         <Stack key={dateLabel} spacing={1}>

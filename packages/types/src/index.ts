@@ -10,7 +10,7 @@ export type Sort = 'nearby' | 'popular' | 'new';
 
 export type When = 'today' | 'tomorrow' | undefined;
 
-export type View = 'module' | 'map';
+export type View = 'module' | 'map' | 'group';
 
 export type MeetingStatus = 'today' | 'upcoming' | 'completed' | 'cancelled';
 

@@ -5,6 +5,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import MapIcon from '@mui/icons-material/Map';
+import GroupIcon from '@mui/icons-material/Group';
 
 function Filter({ filters, setView, setSort, setWhen }: any) {
   const sortOptions = [
@@ -116,6 +117,9 @@ function Filter({ filters, setView, setSort, setWhen }: any) {
           </ToggleButton>
           <ToggleButton value="map" aria-label="map">
             <MapIcon />
+          </ToggleButton>
+          <ToggleButton value="group" aria-label="group">
+            <GroupIcon />
           </ToggleButton>
         </ToggleButtonGroup>
       </Stack>

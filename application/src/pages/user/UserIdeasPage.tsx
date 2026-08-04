@@ -6,10 +6,10 @@ import { fetchUserIdeas } from '../../requests.ts';
 import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
+import Title from '../../shared/ui/Title.tsx';
 
 function IdeasPage() {
   const { activeUser } = useAuth();
@@ -29,7 +29,7 @@ function IdeasPage() {
   return (
     <Stack spacing={2}>
       <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h4">Идеи ученика</Typography>
+        <Title text="Идеи ученика" />
         <Button variant="contained" onClick={() => setOpenCreateIdea(true)}>
           Создать идею
         </Button>

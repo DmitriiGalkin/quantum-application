@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { type Sort, type View, type When } from '@shared/types';
 
-export function useFilters() {
+export interface FilterProps {
+  filters: { view: View; sort: Sort; when: When };
+  setView: (view: View) => void;
+  setSort: (sort: Sort) => void;
+  setWhen: (when?: When) => void;
+}
+
+export function useFilters(): FilterProps {
   const [filters, setFilters] = useState({
     view: 'module' as View,
     sort: 'nearby' as Sort,
@@ -10,11 +17,9 @@ export function useFilters() {
 
   const setView = (view: View) => setFilters(f => ({ ...f, view }));
 
-  const setSort = (sort: Sort) =>
-    setFilters(f => ({ ...f, sort }));
+  const setSort = (sort: Sort) => setFilters(f => ({ ...f, sort }));
 
-  const setWhen = (when?: When) =>
-    setFilters(f => ({ ...f, when }));
+  const setWhen = (when?: When) => setFilters(f => ({ ...f, when }));
 
   return {
     filters,
