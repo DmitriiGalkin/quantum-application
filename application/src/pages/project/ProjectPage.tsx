@@ -60,7 +60,7 @@ export default function ProjectPage() {
               <CardContent>
                 <Typography variant="h6">Участники проекта</Typography>
 
-                <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                <Stack direction="column" spacing={1} sx={{ mt: 1 }}>
                   {project.users.map(user => (
                     <UserCard key={user.id} user={user} />
                   ))}

@@ -32,7 +32,7 @@ function UserCard({ user }: UserCardProps) {
         }}
       />
       <Stack direction="column" spacing={1}>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Stack direction="row" spacing={1}>
             <Typography sx={{ fontWeight: 800 }}>{user.title ?? 'Без имени'}</Typography>
             {user.age !== null && user.age !== undefined && <Typography>{user.age} лет</Typography>}

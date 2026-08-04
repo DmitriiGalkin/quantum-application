@@ -88,7 +88,7 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
     <>
       <CardHeader
         avatar={
-          <Link to={`/teacher/${project.passport.id}`} style={{ textDecoration: 'none' }}>
+          <Link to={`/teachers/${project.passport.id}`} style={{ textDecoration: 'none' }}>
             <Avatar alt={project.passport.title} src={project.passport.image || ''}>
               R
             </Avatar>
@@ -96,7 +96,7 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
         }
         action={<MenuButton menuItems={menuItems} />}
         title={
-          <Link to={`/teacher/${project.passport.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link to={`/teachers/${project.passport.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
               <Typography variant="subtitle1" component="span">
                 {project.passport.title}

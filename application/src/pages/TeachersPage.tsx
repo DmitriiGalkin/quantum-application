@@ -7,9 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchTeacher } from '../requests.ts';
 import IdeaCard from '../features/idea/ui/IdeaCard';
 import ChatDialog from '../components/ChatDialog';
-import ProjectGrids from '../features/project/ui/ProjectGrids.tsx';
+import Projects from '../features/project/ui/Projects.tsx';
+import { useFilters } from '../features/idea/hooks/useFilters.ts';
 
-const TeacherPage: React.FC = () => {
+const TeachersPage: React.FC = () => {
+  const filter = useFilters();
   const { id } = useParams<{ id: string }>();
   const [chatOpen, setChatOpen] = useState(false);
   const handleStartChat = () => {
@@ -101,11 +103,13 @@ const TeacherPage: React.FC = () => {
         </Grid>
       </Grid>
 
+      <Projects title="Проекты учителя" filter={filter} projects={teacher.projects} refetch={refetch} withoutIdea />
+
       {/* Projects */}
-      <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-        Проекты учителя
-      </Typography>
-      <ProjectGrids projects={teacher.projects} refetch={refetch} />
+      {/*<Typography variant="h4" sx={{ mt: 4, mb: 2 }}>*/}
+      {/*  Проекты учителя*/}
+      {/*</Typography>*/}
+      {/*<ProjectGrids projects={teacher.projects} refetch={refetch} />*/}
 
       {/* Ideas */}
       <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
@@ -124,4 +128,4 @@ const TeacherPage: React.FC = () => {
   );
 };
 
-export default TeacherPage;
+export default TeachersPage;

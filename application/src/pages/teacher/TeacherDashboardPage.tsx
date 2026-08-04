@@ -2,11 +2,10 @@ import { Card, CardActionArea, CardContent, Grid, Stack, Typography } from '@mui
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherDashboard } from '../../requests.ts';
-import MeetCard from '../../features/meets/MeetCard.tsx';
-import Box from '@mui/material/Box';
+import MeetGrids from '../../features/meets/MeetGrids.tsx';
 
 export default function TeacherDashboardPage() {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['teacher-dashboard'],
     queryFn: fetchTeacherDashboard,
   });
@@ -113,22 +112,7 @@ export default function TeacherDashboardPage() {
 
       <Typography variant="h5">Ближайшие встречи</Typography>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            sm: 'repeat(2, minmax(0, 1fr))',
-            md: 'repeat(3, minmax(0, 1fr))',
-            lg: 'repeat(4, minmax(0, 1fr))',
-          },
-          gap: 1.5,
-        }}
-      >
-        {data.bmeets.map(meet => (
-          <MeetCard key={meet.id} meet={meet} />
-        ))}
-      </Box>
+      <MeetGrids meets={data.bmeets} refetch={refetch} />
     </Stack>
   );
 }

@@ -90,7 +90,7 @@ export const fetchCreatePayment = (params: PaymentCreateDto) => post<PaymentCrea
 export const fetchUser = (id: number) => get<any>(`/user/${id}`);
 export const fetchUserDashboard = () => get<UserDashboardDto>(`/user/dashboard`);
 
-export const fetchTeacher = (id: number) => get<TeacherPublicDto>(`/teacher/${id}`);
+export const fetchTeacher = (id: number) => get<TeacherPublicDto>(`/teachers/${id}`);
 export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/dashboard`);
 
 // Conversation methods

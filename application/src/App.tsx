@@ -30,7 +30,7 @@ import PaymentFailPage from './pages/payment/PaymentFailPage.tsx';
 import { LandingParentPage } from './pages/landing/LandingParentPage.tsx';
 import PlaceInvitePage from './pages/place/PlaceInvitePage.tsx';
 import TeacherUserIdeasPage from './pages/teacher/TeacherUserIdeasPage.tsx';
-import TeacherPage from './pages/TeacherPage.tsx';
+import TeachersPage from './pages/TeachersPage.tsx';
 import ChatPage from './pages/ChatPage.tsx';
 import UserHomePage from './pages/user/UserHomePage.tsx';
 
@@ -45,7 +45,7 @@ function App() {
         <Route path="users/:id" element={<div>UserPage</div>} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
-        <Route path="teachers/:id" element={<TeacherPage />} />
+        <Route path="teachers/:id" element={<TeachersPage />} />
         <Route path="places/:id" element={<div />} />
         <Route path="chats" element={<ChatPage />} />
       </Route>
