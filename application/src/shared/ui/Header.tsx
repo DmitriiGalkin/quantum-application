@@ -13,12 +13,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
 import Menu from './Menu.tsx';
 import Menu2 from './Menu2.tsx';
+import { Fade } from "@mui/material";
 
 //const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 function Header() {
   //const navigate = useNavigate();
-  const { passport, authHandler } = useAuth();
+  const { passport, authHandler, isPending } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMenu2Open, setIsMenu2Open] = useState(false);
   
@@ -73,15 +74,17 @@ function Header() {
           {/*>*/}
           {/*  <AutoAwesomeIcon />*/}
           {/*</IconButton>*/}
-          {passport ? (
-            <IconButton aria-label="open drawer" sx={{ color: 'white' }} onClick={() => setIsMenuOpen(currentValue => !currentValue)}>
-              <AccountCircleIcon />
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => authHandler()} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
-              <KeyIcon />
-            </IconButton>
-          )}
+          <Fade in={!isPending || !passport} timeout={1000}>
+            {passport ? (
+              <IconButton aria-label="open drawer" sx={{ color: 'white' }} onClick={() => setIsMenuOpen(currentValue => !currentValue)}>
+                <AccountCircleIcon />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => authHandler()} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
+                <KeyIcon />
+              </IconButton>
+            )}
+          </Fade>
         </Toolbar>
       </AppBar>
 

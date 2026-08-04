@@ -65,6 +65,8 @@ type AuthContextType = {
 
   switchPlace: (placeId: number) => void;
   availableRoles: ActiveRole[];
+
+  isPending: boolean;
 };
 
 const AuthContext = createContext<AuthContextType>(null!);
@@ -106,7 +108,7 @@ export const AuthProvider = ({ children }: Props) => {
   const activeUser = users.find(user => user.id === activeContext.userId) ?? users[0] ?? null;
   const activePlace = places.find(place => place.id === activeContext.placeId) ?? places[0] ?? null;
 
-  const { data, refetch } = useQuery({
+  const { data, refetch, isPending } = useQuery({
     queryKey: ['passport'],
     queryFn: fetchPassport,
     enabled: Boolean(token),
@@ -261,6 +263,7 @@ export const AuthProvider = ({ children }: Props) => {
         switchPlace,
         availableRoles,
         activeTeacher,
+        isPending,
       }}
     >
       <>
