@@ -28,34 +28,20 @@ export interface WeekCalendarProps {
   onMeetClick?(meet: MeetExtendedDto): void;
 
   onCellClick?(date: Date): void;
+  single?: boolean;
+  visibleDays: Date[];
 }
 
-export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, endHour = 22, onMeetClick, onCellClick }: WeekCalendarProps) {
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const [selectedDay, setSelectedDay] = useState(0);
+export default function WeekCalendar({ meets, visibleDays, single, startHour = 8, endHour = 22, onMeetClick, onCellClick }: WeekCalendarProps) {
 
   const handleDragEnd = (event: DragEndEvent) => {
-      console.log(event);
+    console.log(event);
     const { active, over } = event;
     if (over) {
       // TODO: Implement meet time update logic
       console.log('Meet moved from', active.id, 'to', over.id);
     }
   };
-
-  const weekStart = useMemo(
-    () =>
-      startOfWeek(new Date(), {
-        weekStartsOn,
-      }),
-    [weekStartsOn],
-  );
-
-  const days = useMemo(() => Array.from({ length: 7 }, (_, index) => addDays(weekStart, index)), [weekStart]);
-
-  const visibleDays = mobile ? [days[selectedDay]] : days;
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
@@ -70,66 +56,23 @@ export default function WeekCalendar({ meets, weekStartsOn = 1, startHour = 8, e
           height: '100%',
         }}
       >
-      {mobile ? (
-        <ToggleButtonGroup
-          exclusive
-          value={selectedDay}
-          onChange={(_, value) => {
-            if (value !== null) {
-              setSelectedDay(value);
-            }
-          }}
+        {!single && <WeekCalendarHeader days={visibleDays} />}
+
+        <Box
           sx={{
-            p: 0.5,
-            overflowX: 'auto',
-            flexWrap: 'nowrap',
-
-            '& .MuiToggleButtonGroup-grouped': {
-              borderRadius: 2,
-              mx: 0.25,
-              border: 1,
-              borderColor: 'divider',
-              minWidth: 60,
-              flexShrink: 0,
-            },
-
-            '&::-webkit-scrollbar': {
-              display: 'none',
-            },
-            scrollbarWidth: 'none',
+            flex: 1,
+            overflow: 'auto',
           }}
         >
-          {days.map((day, index) => (
-            <ToggleButton key={index} value={index}>
-              <Stack spacing={0.25} sx={{ alignItems: 'center'}}>
-                <Typography variant="caption">{format(day, 'EE', { locale: ru })}</Typography>
-
-                <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                  {format(day, 'd')}
-                </Typography>
-              </Stack>
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      ) : (
-        <WeekCalendarHeader days={days} />
-      )}
-
-      <Box
-        sx={{
-          flex: 1,
-          overflow: 'auto',
-        }}
-      >
-        <WeekCalendarGrid
-          days={visibleDays}
-          meets={meets}
-          startHour={startHour}
-          endHour={endHour}
-          onMeetClick={onMeetClick}
-          onCellClick={onCellClick}
-        />
-      </Box>
+          <WeekCalendarGrid
+            days={visibleDays}
+            meets={meets}
+            startHour={startHour}
+            endHour={endHour}
+            onMeetClick={onMeetClick}
+            onCellClick={onCellClick}
+          />
+        </Box>
       </Paper>
     </DndContext>
   );

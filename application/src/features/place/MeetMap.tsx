@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function MeetMap({ lat, lng, zoom }: Props) {
-  const { data: meets = [] } = useQuery({
+  const { data: places = [] } = useQuery({
     queryKey: ['places'],
     queryFn: fetchPlaces,
   });
@@ -20,46 +20,74 @@ export function MeetMap({ lat, lng, zoom }: Props) {
     const markersRef = useRef<L.LayerGroup | null>(null);
 
     useEffect(() => {
-      if (!isReady || !mapInstance.current || !leafletRef.current) return;
+      if (!isReady || !mapInstance.current || !leafletRef.current) {
+        return;
+      }
 
       const L = leafletRef.current;
+      const map = mapInstance.current;
 
       if (!markersRef.current) {
-        markersRef.current = L.layerGroup().addTo(mapInstance.current);
+        markersRef.current = L.layerGroup().addTo(map);
       }
 
       const getPlaceIcon = (count: number) =>
         L.divIcon({
           className: 'custom-map-marker',
-          html: `<div class="marker-pin${!count ? ' marker-pin-empty' : ''}"></div>
-               <div class="marker-text">${count || ''}</div>`,
+          html: `
+            <div class="marker-pin${!count ? ' marker-pin-empty' : ''}"></div>
+            <div class="marker-text">
+              ${count || ''}
+            </div>
+          `,
           iconSize: [30, 42],
         });
 
       markersRef.current.clearLayers();
 
-      meets.forEach((place) => {
+      places.forEach(place => {
         const meetsList = place.meets
           .map(
-            meet =>
-              `<li>
-              <span>${extractTime(meet.startedAt)} - ${addMinutes(extractTime(meet.startedAt), 90)}</span>
-              <a href="/project/${meet.projectId}">Уточнить надо</a>
-            </li>`,
+            meet => `
+              <li>
+                <span>
+                  ${extractTime(meet.startedAt)}
+                  -
+                  ${addMinutes(extractTime(meet.startedAt), 90)}
+                </span>
+                <a href="/project/${meet.projectId}">
+                  Уточнить надо
+                </a>
+              </li>
+            `,
           )
           .join('');
 
-        const marker = L.marker([Number(place.latitude), Number(place.longitude)], { icon: getPlaceIcon(place.meets.length) }).bindPopup(`
-        <div class="place-popup">
-          <h4><b>${place.title}</b></h4>
-          <ul>${meetsList}</ul>
-          <p>Адрес: ${place.address}</p>
-        </div>
-      `);
+        const marker = L.marker([Number(place.latitude), Number(place.longitude)], {
+          icon: getPlaceIcon(place.meets.length),
+        }).bindPopup(`
+          <div class="place-popup">
+            <h4>
+              <b>${place.title}</b>
+            </h4>
+
+            <ul>
+              ${meetsList}
+            </ul>
+
+            <p>
+              Адрес: ${place.address}
+            </p>
+          </div>
+        `);
 
         marker.addTo(markersRef.current!);
       });
-    }, [meets, isReady]);
+
+      return () => {
+        markersRef.current?.clearLayers();
+      };
+    }, [places, isReady, mapInstance, leafletRef]);
   }
 
   return <BaseMap lat={lat} lng={lng} zoom={zoom} useLayer={useMeetLayer} />;
