@@ -35,8 +35,11 @@ function Meets({ title, meets, refetch }: Props) {
   const days = useMemo(() => Array.from({ length: 7 }, (_, index) => addDays(weekStart, index)), [weekStart]);
   const visibleDays = mobile ? [days[selectedDay]] : days;
 
+  console.log(selectedDay, 'selectedDay');
+  console.log(days, 'days');
+
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       <Stack spacing={2} direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant="h5" sx={{ color: 'white' }}>
           {title}
@@ -83,29 +86,23 @@ function Meets({ title, meets, refetch }: Props) {
           }
         }}
         sx={{
-          p: 0.5,
-          overflowX: 'auto',
-          flexWrap: 'nowrap',
+          width: '100%',
 
           '& .MuiToggleButtonGroup-grouped': {
+            flex: 1,
+            minWidth: 0,
+
             borderRadius: 2,
             mx: 0.25,
             border: 1,
             borderColor: 'divider',
-            minWidth: 60,
-            flexShrink: 0,
           },
-
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
-          scrollbarWidth: 'none',
         }}
       >
         {days.map((day, index) => (
           <ToggleButton key={index} value={index}>
             <Stack spacing={0.25} sx={{ alignItems: 'center' }}>
-              <Typography variant="caption">{format(day, 'EE', { locale: ru })}</Typography>
+              <Typography variant="caption">{format(day, 'EEEEEE', { locale: ru })}</Typography>
 
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
                 {format(day, 'd')}

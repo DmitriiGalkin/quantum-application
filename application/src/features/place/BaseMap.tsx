@@ -1,5 +1,6 @@
 import { useLeafletMap } from './useLeafletMap.ts';
 import './BaseMap.css';
+import 'leaflet/dist/leaflet.css';
 
 interface BaseMapProps {
   lat: number;

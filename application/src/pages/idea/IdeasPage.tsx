@@ -10,14 +10,12 @@ import Filter from '../../features/idea/ui/Filter.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation } from '../../shared/lib/useLocation.ts';
 import Typography from '@mui/material/Typography';
-import AIIdeaBanner from '../../features/idea/ui/AIIdeaBanner.tsx';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import IdeaGrids from '../../features/idea/ui/IdeaGrids.tsx';
 
 function IdeasPage() {
   const { filters, setView, setSort, setWhen } = useFilters();
   const location = useLocation(filters.sort === 'nearby');
-  const { activeContext } = useAuth();
 
   const { data: ideas = [], isLoading } = useQuery({
     queryKey: ['ideas', filters, location],
@@ -36,7 +34,7 @@ function IdeasPage() {
 
   return (
     <Stack spacing={2}>
-      {activeContext.role === 'guest' && <AIIdeaBanner />}
+      {/*{activeContext.role === 'guest' && <AIIdeaBanner />}*/}
 
       <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
       {(isLoading || (filters.sort === 'nearby' && location.status === 'loading')) && (

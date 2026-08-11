@@ -1,30 +1,25 @@
 import type { MeetExtendedDto } from '@shared/types';
 
 export function groupMeets(meets: MeetExtendedDto[]) {
-  const groups: Record<string, MeetExtendedDto[]> = {};
+  const groups: Record<number, MeetExtendedDto[]> = {}; // Используем timestamp как ключ
 
-  const formatter = new Intl.DateTimeFormat('ru-RU', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
+  const now = new Date();
+  now.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня
+
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() + 1);
 
   for (const meet of meets) {
     const date = new Date(meet.startedAt);
+    date.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня
 
-    let key = formatter.format(date);
+    let key: number = date.getTime();
 
-    const now = new Date();
-
-    const isToday = date.toDateString() === now.toDateString();
-
-    const tomorrow = new Date();
-    tomorrow.setDate(now.getDate() + 1);
-
-    const isTomorrow = date.toDateString() === tomorrow.toDateString();
-
-    if (isToday) key = 'Сегодня';
-    if (isTomorrow) key = 'Завтра';
+    if (date.getTime() === now.getTime()) {
+      key = now.getTime(); // Сегодня
+    } else if (date.getTime() === tomorrow.getTime()) {
+      key = tomorrow.getTime(); // Завтра
+    }
 
     if (!groups[key]) groups[key] = [];
     groups[key].push(meet);

@@ -246,24 +246,24 @@ function Menu({ setIsMenuOpen }: any) {
         ))}
       </List>
       <Box sx={{ flexGrow: 1 }} />
-      <Divider />
-      <List>
-        <ListItemButton>
-          <ListItemIcon
-            sx={{
-              minWidth: 40,
-            }}
-          >
-            <HelpIcon />
-          </ListItemIcon>
+      {/*<Divider />*/}
+      {/*<List>*/}
+      {/*  <ListItemButton>*/}
+      {/*    <ListItemIcon*/}
+      {/*      sx={{*/}
+      {/*        minWidth: 40,*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      <HelpIcon />*/}
+      {/*    </ListItemIcon>*/}
 
-          <ListItemText primary="Помощь" />
-        </ListItemButton>
+      {/*    <ListItemText primary="Помощь" />*/}
+      {/*  </ListItemButton>*/}
 
-        <ListItemButton>
-          <ListItemText primary="Обратная связь" />
-        </ListItemButton>
-      </List>
+      {/*  <ListItemButton>*/}
+      {/*    <ListItemText primary="Обратная связь" />*/}
+      {/*  </ListItemButton>*/}
+      {/*</List>*/}
     </Stack>
   );
 }
