@@ -18,4 +18,24 @@ export const theme = createTheme({
       secondary: '#6b7280',
     },
   },
+  components: {
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          color: '#fff',
+          borderColor: 'rgba(255,255,255,0.5)',
+
+          '&.Mui-selected': {
+            color: '#fff',
+            backgroundColor: 'rgba(255,255,255,0.2)',
+          },
+
+          '&:hover': {
+            backgroundColor: 'rgba(255,255,255,0.1)',
+          },
+
+        },
+      },
+    },
+  },
 });

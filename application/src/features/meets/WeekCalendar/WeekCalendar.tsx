@@ -1,16 +1,4 @@
-import {
-  Box,
-  Paper,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import { addDays, format, startOfWeek } from 'date-fns';
-import { useMemo, useState } from 'react';
-import { ru } from 'date-fns/locale';
+import { Box, Paper } from '@mui/material';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import WeekCalendarGrid from './WeekCalendarGrid.tsx';
 import WeekCalendarHeader from './WeekCalendarHeader.tsx';
@@ -29,7 +17,7 @@ export interface WeekCalendarProps {
 
   onCellClick?(date: Date): void;
   single?: boolean;
-  visibleDays: Date[];
+  visibleDays: number[];
 }
 
 export default function WeekCalendar({ meets, visibleDays, single, startHour = 8, endHour = 22, onMeetClick, onCellClick }: WeekCalendarProps) {

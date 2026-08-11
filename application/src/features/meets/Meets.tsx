@@ -22,7 +22,6 @@ function Meets({ title, meets, refetch }: Props) {
   const theme = useTheme();
   const [view, setView] = useState<'week' | 'module'>('module');
   const grouped = groupMeets(meets);
-  console.log(grouped, 'grouped');
 
   const now = new Date();
   now.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня
@@ -42,21 +41,14 @@ function Meets({ title, meets, refetch }: Props) {
       Array.from({ length: 7 }, (_, index) => {
         const date = addDays(weekStart, index);
         date.setHours(0, 0, 0, 0); // Обнуляем время
-        console.log(date, 'date');
         return date.getTime();
       }),
     [weekStart],
   );
-  console.log(days, 'days');
-  console.log(selectedDay, 'selectedDay');
-
 
   const visibleDays = mobile ? [selectedDay] : days;
 
-
   const group = grouped.get(selectedDay);
-
-  console.log(group, 'group');
 
   return (
     <Stack spacing={2}>
@@ -68,25 +60,10 @@ function Meets({ title, meets, refetch }: Props) {
         <ToggleButtonGroup
           value={view}
           exclusive
-          onChange={(_, nextView: string) => {
-            setView(nextView as 'week' | 'module');
+          onChange={(_, nextView: 'week' | 'module') => {
+            setView(nextView);
           }}
           size="small"
-          sx={{
-            '& .MuiToggleButton-root': {
-              color: '#fff', // иконки
-              borderColor: 'rgba(255,255,255,0.5)',
-
-              '&.Mui-selected': {
-                color: '#fff',
-                backgroundColor: 'rgba(255,255,255,0.2)',
-              },
-
-              '&:hover': {
-                backgroundColor: 'rgba(255,255,255,0.1)',
-              },
-            },
-          }}
         >
           <ToggleButton value="module" aria-label="module">
             <ViewModuleIcon />
@@ -120,6 +97,10 @@ function Meets({ title, meets, refetch }: Props) {
                 mx: 0.25,
                 border: 1,
                 borderColor: 'divider',
+              },
+              '& .MuiToggleButton-root': {
+                color: '#fff', // иконки
+                borderColor: 'rgba(255,255,255,0.5)',
               },
             }}
           >
