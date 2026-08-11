@@ -26,6 +26,7 @@ import message2Controller from './controllers/message2.controller.js';
 import { Passport } from './entities/passport.js';
 import { ActiveRole } from '@shared/types';
 import UserRepository from './repositories/user.repository.js';
+import teacherUserController from './controllers/teacher-user.controller.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -165,6 +166,7 @@ privateRouter.put('/place/:id', withAuth(place.update));
 publicRouter.get('/place/:id', place.findById);
 privateRouter.get('/place/:id/projects', withAuth(project.findByPlaceId));
 privateRouter.get('/place/:id/teachers', withAuth(placeTeacherController.findAll));
+privateRouter.get('/place/:id/users', withAuth(teacherUserController.getPlaceUsers));
 privateRouter.post('/place/:id/teacher', withAuth(placeTeacherController.create));
 privateRouter.post('/place/teachers', withAuth(placeTeacherController.addTeacher));
 privateRouter.delete('/place/:id/teacher/:passportId', withAuth(placeTeacherController.remove));

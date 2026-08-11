@@ -100,18 +100,8 @@ function Menu({ setIsMenuOpen }: any) {
             to: '/teacher/meets',
             icon: <CalendarMonthIcon />,
           },
-        ],
-      },
-      {
-        items: [
-          // {
-          //   label: 'ИИ проект',
-          //   to: '/chat?target=project',
-          //   icon: <CreateNewFolderIcon />,
-          //   variant: 'primary',
-          // },
           {
-            label: 'Мои проекты',
+            label: 'Проекты',
             to: '/teacher/projects',
             icon: <FolderIcon />,
           },
@@ -148,6 +138,11 @@ function Menu({ setIsMenuOpen }: any) {
           {
             label: 'Проекты',
             to: `/place/projects`,
+            icon: <FolderIcon />,
+          },
+          {
+            label: 'Ученики',
+            to: `/place/users`,
             icon: <FolderIcon />,
           },
         ],

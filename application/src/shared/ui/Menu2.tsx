@@ -54,18 +54,39 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
           minHeight: 32,
         }}
       >
-        {activeUser && <Tab value="user" label="Ученик" {...a11yProps('user')} onClick={() => {
-          switchUser(activeUser?.id ?? users[0].id);
-          navigate(`/user`);
-        }} />}
-        {activeTeacher && <Tab value="teacher" label="Учитель" {...a11yProps('teacher')} onClick={()=> {
-          switchTeacher();
-          navigate(`/teacher`);
-        }} />}
-        {activePlace && <Tab value="place" label="Центр" {...a11yProps('place')} onClick={() => {
-          switchPlace(activePlace?.id ?? places[0].id);
-          navigate(`/place`);
-        }} />}
+        {activeUser && (
+          <Tab
+            value="user"
+            label="Ученик"
+            {...a11yProps('user')}
+            onClick={() => {
+              switchUser(activeUser?.id ?? users[0].id);
+              navigate(`/user`);
+            }}
+          />
+        )}
+        {activeTeacher && (
+          <Tab
+            value="teacher"
+            label="Учитель"
+            {...a11yProps('teacher')}
+            onClick={() => {
+              switchTeacher();
+              navigate(`/teacher`);
+            }}
+          />
+        )}
+        {activePlace && (
+          <Tab
+            value="place"
+            label="Центр"
+            {...a11yProps('place')}
+            onClick={() => {
+              switchPlace(activePlace?.id ?? places[0].id);
+              navigate(`/place`);
+            }}
+          />
+        )}
       </Tabs>
 
       {activeContext.role === 'user' && (
@@ -86,42 +107,60 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
         </>
       )}
 
-      <Stack spacing={3} sx={{ p: 2 }}>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            alignItems: 'center',
-          }}
-        >
-          {activeContext.role === 'teacher' && (
+      {activeContext.role === 'place' && (
+        <>
+          {Boolean(places.length) && (
+            <Stack spacing={3} sx={{ p: 2 }}>
+              {places.map(place => (
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  sx={{
+                    alignItems: 'center',
+                  }}
+                  onClick={() => switchPlace(place.id)}
+                >
+                  <Avatar alt={place?.title || 'Учитель'} sx={{ width: 56, height: 56 }} variant="rounded">
+                    {place?.title?.[0] || 'Q'}
+                  </Avatar>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {'Центр'}
+                    </Typography>
+
+                    <Typography sx={{ fontWeight: 800 }}>{place?.title || 'Центр'}</Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {place?.address ? place.address : 'Возраст не указан'}
+                    </Typography>
+                  </Box>
+                </Stack>
+              ))}
+            </Stack>
+          )}
+        </>
+      )}
+
+      {activeContext.role === 'teacher' && (
+        <Stack spacing={3} sx={{ p: 2 }}>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
             <Avatar src={activeUser?.image || undefined} alt={passport?.title || 'Учитель'} sx={{ width: 56, height: 56 }} />
-          )}
-          {activeContext.role === 'place' && (
-            <Avatar alt={activePlace?.title || 'Учитель'} sx={{ width: 56, height: 56 }} variant="rounded">
-              {activePlace?.title?.[0] || 'Q'}
-            </Avatar>
-          )}
 
-          <Box>
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-              {activeContext.role === 'teacher' && 'Учитель'}
-              {activeContext.role === 'place' && 'Центр'}
-            </Typography>
+            <Box>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                Учитель
+              </Typography>
 
-            {activeContext.role === 'teacher' && <Typography sx={{ fontWeight: 800 }}>{passport?.title || 'Учитель'}</Typography>}
-
-            {activeContext.role === 'place' && (
-              <>
-                <Typography sx={{ fontWeight: 800 }}>{activePlace?.title || 'Центр'}</Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {activePlace?.address ? activePlace.address : 'Возраст не указан'}
-                </Typography>
-              </>
-            )}
-          </Box>
+              <Typography sx={{ fontWeight: 800 }}>{passport?.title || 'Учитель'}</Typography>
+            </Box>
+          </Stack>
         </Stack>
-      </Stack>
+      )}
 
       <Box sx={{ p: 3, mt: 'auto', backgroundColor: 'gray', filter: 'invert(1)' }}>
         <List disablePadding>

@@ -14,7 +14,9 @@ export default function TeacherDashboardPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4">Кабинет учителя</Typography>
+      <Typography variant="h5" sx={{ color: 'white' }}>
+        Кабинет учителя
+      </Typography>
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 6, md: 3 }}>

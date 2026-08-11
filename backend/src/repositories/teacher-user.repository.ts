@@ -6,8 +6,10 @@ import { TeacherUserRow } from '../entities/teacher-user.db.js';
 class TeacherUserRepository {
 
   static async findByTeacherId(teacherId: number): Promise<TeacherUser[]> {
-    const rows = await db.query<TeacherUserRow>(`SELECT * FROM teacherUser WHERE teacherId = ?`, [teacherId]);
+    console.log(teacherId, 'teacherId');
 
+    const rows = await db.query<TeacherUserRow>(`SELECT * FROM teacherUser WHERE teacherId = ?`, [teacherId]);
+console.log(rows);
     return rows.map(toTeacherUser);
   }
 

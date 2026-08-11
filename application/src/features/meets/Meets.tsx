@@ -12,6 +12,7 @@ import WeekCalendar from './WeekCalendar/WeekCalendar.tsx';
 import { groupMeets } from './groupMeets.ts';
 import MeetGroupGrids from './MeetGroupGrids.tsx';
 import { getStartDateTime } from '../../utils/time.ts';
+import Box from '@mui/material/Box';
 
 type Props = {
   title: string;
@@ -94,28 +95,40 @@ function Meets({ title, meets, refetch }: Props) {
               },
             }}
           >
-            {days.map((day, index) => (
-              <ToggleButton key={index} value={day}>
-                <Stack spacing={0.25} sx={{ alignItems: 'center' }}>
-                  <Typography variant="caption">{format(day, 'EEEEEE', { locale: ru })}</Typography>
+            {days.map((day, index) => {
+              const hasMeetings = Boolean(grouped.get(day)?.length);
+              return (
+                <ToggleButton key={index} value={day}>
+                  <Stack spacing={0.25} sx={{ alignItems: 'center' }}>
+                    <Typography variant="caption">{format(day, 'EEEEEE', { locale: ru })}</Typography>
 
-                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                    {format(day, 'd')}
-                  </Typography>
-                </Stack>
-              </ToggleButton>
-            ))}
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                      {format(day, 'd')}
+                    </Typography>
+
+                    {hasMeetings && (
+                      <Box
+                        sx={{
+                          width: 4,
+                          height: 4,
+                          borderRadius: '50%',
+                          bgcolor: 'white',
+                        }}
+                      />
+                    )}
+                  </Stack>
+                </ToggleButton>
+              );
+            })}
           </ToggleButtonGroup>
 
           {view === 'module' && group && <MeetGroupGrids meets={group} refetch={refetch} />}
         </Stack>
       ) : (
         <Stack spacing={2} direction="column">
-          {view === 'module' && meets && (
-            Object.entries(grouped).map(([dateLabel, items]) => (
-              <MeetGroupGrids key={dateLabel} title={dateLabel} meets={items} refetch={refetch} />
-            ))
-          )}
+          {view === 'module' &&
+            meets &&
+            Object.entries(grouped).map(([dateLabel, items]) => <MeetGroupGrids key={dateLabel} title={dateLabel} meets={items} refetch={refetch} />)}
         </Stack>
       )}
 

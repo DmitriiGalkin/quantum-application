@@ -181,7 +181,7 @@ export default function MeetCard({ meet, refetch }: Props) {
     <Paper
       elevation={0}
       sx={{
-        p: 2.5,
+        p: 2,
         borderRadius: 4,
         border: '1px solid',
         borderColor: 'divider',
@@ -214,25 +214,39 @@ export default function MeetCard({ meet, refetch }: Props) {
           />
         </Stack>
 
-        <Stack spacing={1}>
-          {/* title */}
-          <Box>
-            <Typography
-              variant="h6"
-              sx={{
-                lineHeight: 1.2,
-                fontWeight: 700,
-              }}
-            >
-              {meet.projectTitle ?? 'Untitled meeting'}
-            </Typography>
-          </Box>
+        <Stack direction="row" spacing={2}>
+          <Stack spacing={1} sx={{ flex: 1 }}>
+            {/* title */}
+            <Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  lineHeight: 1.2,
+                  fontWeight: 700,
+                }}
+              >
+                {meet.projectTitle ?? 'Забота о лошадях'}
+              </Typography>
+            </Box>
 
-          {/* location */}
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <LocationOnOutlinedIcon fontSize="small" color="disabled" />
-            <Typography variant="body2">{meet.place?.address ?? 'Unknown location'}</Typography>
+            {/* location */}
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <LocationOnOutlinedIcon fontSize="small" color="disabled" />
+              <Typography variant="body2">{meet.place?.address ?? 'Unknown location'}</Typography>
+            </Stack>
           </Stack>
+
+          <Box
+            component="img"
+            src="https://storage.yandexcloud.net/quantum-education/b1a3d8d5-52dd-4d8c-b998-a3cc95e9f70b.jpg"
+            alt="Описание изображения"
+            sx={{
+              height: 56,
+              objectFit: 'cover',
+              borderRadius: 2,
+              display: 'block',
+            }}
+          />
         </Stack>
         <Stack spacing={1.5}>
           <Stack spacing={1}>

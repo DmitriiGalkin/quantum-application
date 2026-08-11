@@ -33,7 +33,7 @@ import type {
   TeacherDto,
   TeacherPublicDto,
   UpdateMeet,
-  UserDashboardDto,
+  UserDashboardDto, UserDto,
 } from '@shared/types';
 import { del, get, post, put, toQuery } from './api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
@@ -78,6 +78,7 @@ export const fetchAddTeacher = (passportId: number) => post<void>('/place/teache
 export const fetchAddTeacher2 = (params: { passportId: number; placeId: number }) => post<number>(`/place/${params.placeId}/teacher`, params);
 export const fetchPlaceTeachers = (id: number) => get<TeacherDto[]>(`/place/${id}/teachers`);
 export const fetchPlaceProjects = (id: number) => get<ProjectFullDto[]>(`/place/${id}/projects`);
+export const fetchPlaceUsers = (id: number) => get<UserDto[]>(`/place/${id}/users`);
 export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<void>(`/place/${placeId}/teacher/${passportId}`);
 export const fetchLeavePlace = (id: number) => del<void>(`/place/${id}/leave`);
 

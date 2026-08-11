@@ -33,6 +33,7 @@ import TeacherUserIdeasPage from './pages/teacher/TeacherUserIdeasPage.tsx';
 import TeachersPage from './pages/TeachersPage.tsx';
 import ChatPage from './pages/ChatPage.tsx';
 import UserHomePage from './pages/user/UserHomePage.tsx';
+import PlaceUsersPage from './pages/place/PlaceUsersPage.tsx';
 
 function App() {
   return (
@@ -62,7 +63,7 @@ function App() {
 
       {/* Ученик */}
       <Route path="user" element={<AppLayout />}>
-        <Route index element={<UserHomePage/>} />
+        <Route index element={<UserHomePage />} />
         <Route path="ideas" element={<UserIdeasPage />} />
         <Route path="projects" element={<UserProjectsPage />} />
         <Route path="meets" element={<UserMeetsPage />} />
@@ -82,6 +83,7 @@ function App() {
         <Route index element={<PlaceDashboardPage />} />
         <Route path="teachers" element={<PlaceTeachersPage />} />
         <Route path="projects" element={<PlaceProjectsPage />} />
+        <Route path="users" element={<PlaceUsersPage />} />
         <Route path="meets" element={<PlaceMeetsPage />} />
         <Route path="invite" element={<PlaceInvitePage />} />
       </Route>

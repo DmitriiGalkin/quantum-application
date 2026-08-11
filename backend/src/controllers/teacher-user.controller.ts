@@ -18,6 +18,23 @@ const findByTeacher: ControllerWithAuth<User[]> = async (req, res) => {
   }
 };
 
+const getPlaceUsers: ControllerWithAuth<User[]> = async (req, res) => {
+  try {
+    const passportId = Number(req.passport.id!);
+
+    if (!passportId) {
+      fail(res, 'passportId обязателен для getPlaceUsers', 400);
+    }
+
+    const rows = await TeacherUserService.findByPlaceId(passportId, req.viewer?.placeId!);
+
+    ok(res, rows);
+  } catch (err) {
+    fail(res, 'Не удалось получить учеников центра');
+  }
+};
+
 export default {
   findByTeacher,
+  getPlaceUsers,
 };
