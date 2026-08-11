@@ -58,7 +58,7 @@ export default function WeekCalendarGrid({ days, meets, startHour, endHour, onMe
       {/* дни */}
       {days.map(day => (
         <Box
-          key={day.toISOString()}
+          key={day}
           sx={{
             position: 'relative',
             borderRight: 1,

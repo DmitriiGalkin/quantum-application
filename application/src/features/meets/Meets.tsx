@@ -5,12 +5,12 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import MeetGrids from './MeetGrids.tsx';
 import WeekCalendar from './WeekCalendar/WeekCalendar.tsx';
 import { useMemo, useState } from 'react';
 import { groupMeets } from './groupMeets.ts';
 import { addDays, format, startOfWeek } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import MeetGroupGrids from './MeetGroupGrids.tsx';
 
 type Props = {
   title: string;
@@ -21,8 +21,13 @@ type Props = {
 function Meets({ title, meets, refetch }: Props) {
   const theme = useTheme();
   const [view, setView] = useState<'week' | 'module'>('module');
-  const grouped = meets?.length ? groupMeets(meets) : [];
-  const [selectedDay, setSelectedDay] = useState(0);
+  const grouped = groupMeets(meets);
+  console.log(grouped, 'grouped');
+
+  const now = new Date();
+  now.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня
+
+  const [selectedDay, setSelectedDay] = useState(now.getTime());
   const weekStart = useMemo(
     () =>
       startOfWeek(new Date(), {
@@ -32,11 +37,26 @@ function Meets({ title, meets, refetch }: Props) {
   );
   const mobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const days = useMemo(() => Array.from({ length: 7 }, (_, index) => addDays(weekStart, index)), [weekStart]);
-  const visibleDays = mobile ? [days[selectedDay]] : days;
-
-  console.log(selectedDay, 'selectedDay');
+  const days = useMemo(
+    () =>
+      Array.from({ length: 7 }, (_, index) => {
+        const date = addDays(weekStart, index);
+        date.setHours(0, 0, 0, 0); // Обнуляем время
+        console.log(date, 'date');
+        return date.getTime();
+      }),
+    [weekStart],
+  );
   console.log(days, 'days');
+  console.log(selectedDay, 'selectedDay');
+
+
+  const visibleDays = mobile ? [selectedDay] : days;
+
+
+  const group = grouped.get(selectedDay);
+
+  console.log(group, 'group');
 
   return (
     <Stack spacing={2}>
@@ -77,54 +97,54 @@ function Meets({ title, meets, refetch }: Props) {
         </ToggleButtonGroup>
       </Stack>
 
-      <ToggleButtonGroup
-        exclusive
-        value={selectedDay}
-        onChange={(_, value) => {
-          if (value !== null) {
-            setSelectedDay(value);
-          }
-        }}
-        sx={{
-          width: '100%',
-
-          '& .MuiToggleButtonGroup-grouped': {
-            flex: 1,
-            minWidth: 0,
-
-            borderRadius: 2,
-            mx: 0.25,
-            border: 1,
-            borderColor: 'divider',
-          },
-        }}
-      >
-        {days.map((day, index) => (
-          <ToggleButton key={index} value={index}>
-            <Stack spacing={0.25} sx={{ alignItems: 'center' }}>
-              <Typography variant="caption">{format(day, 'EEEEEE', { locale: ru })}</Typography>
-
-              <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                {format(day, 'd')}
-              </Typography>
-            </Stack>
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
-
       {meets?.length === 0 && <Typography color="text.secondary">Запланированных встреч нет</Typography>}
 
-      {view === 'module' &&
-        meets &&
-        Object.entries(grouped).map(([dateLabel, items]) => (
-          <Stack key={dateLabel} spacing={1}>
-            <Typography variant="h6" color="text.secondary">
-              {dateLabel}
-            </Typography>
+      {mobile ? (
+        <Stack spacing={2} direction="column">
+          <ToggleButtonGroup
+            exclusive
+            value={selectedDay}
+            onChange={(_, value) => {
+              if (value !== null) {
+                setSelectedDay(value);
+              }
+            }}
+            sx={{
+              width: '100%',
 
-            <MeetGrids meets={items} refetch={refetch} />
-          </Stack>
-        ))}
+              '& .MuiToggleButtonGroup-grouped': {
+                flex: 1,
+                minWidth: 0,
+
+                borderRadius: 2,
+                mx: 0.25,
+                border: 1,
+                borderColor: 'divider',
+              },
+            }}
+          >
+            {days.map((day, index) => (
+              <ToggleButton key={index} value={day}>
+                <Stack spacing={0.25} sx={{ alignItems: 'center' }}>
+                  <Typography variant="caption">{format(day, 'EEEEEE', { locale: ru })}</Typography>
+
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                    {format(day, 'd')}
+                  </Typography>
+                </Stack>
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+
+          {view === 'module' && group && <MeetGroupGrids meets={group} refetch={refetch} />}
+        </Stack>
+      ) : (
+        <Stack spacing={2} direction="column">
+          {view === 'module' &&
+            meets &&
+            Object.entries(grouped).map(([dateLabel, items]) => <MeetGroupGrids title={dateLabel} meets={items} refetch={refetch} />)}
+        </Stack>
+      )}
 
       {view === 'week' && (
         <WeekCalendar
