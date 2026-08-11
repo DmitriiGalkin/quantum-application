@@ -23,7 +23,7 @@ function ProjectGrids({ projects, refetch, withoutIdea }: Props) {
       }}
     >
       {projects.map(project => (
-        <ProjectCard project={project} refetch={refetch} withoutIdea={withoutIdea} />
+        <ProjectCard key={project.id} project={project} refetch={refetch} withoutIdea={withoutIdea} />
       ))}
     </Box>
   );

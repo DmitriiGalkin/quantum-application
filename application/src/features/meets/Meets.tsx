@@ -1,16 +1,17 @@
+import { useMemo, useState } from 'react';
+import { addDays, format, startOfWeek } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import Stack from '@mui/material/Stack';
-import { type MeetExtendedDto } from '@shared/types';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { type MeetExtendedDto } from '@shared/types';
 import WeekCalendar from './WeekCalendar/WeekCalendar.tsx';
-import { useMemo, useState } from 'react';
 import { groupMeets } from './groupMeets.ts';
-import { addDays, format, startOfWeek } from 'date-fns';
-import { ru } from 'date-fns/locale';
 import MeetGroupGrids from './MeetGroupGrids.tsx';
+import { getStartDateTime } from '../../utils/time.ts';
 
 type Props = {
   title: string;
@@ -20,31 +21,20 @@ type Props = {
 
 function Meets({ title, meets, refetch }: Props) {
   const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('md'));
   const [view, setView] = useState<'week' | 'module'>('module');
   const grouped = groupMeets(meets);
 
-  const now = new Date();
-  now.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня
+  const [selectedDay, setSelectedDay] = useState(getStartDateTime(new Date()));
 
-  const [selectedDay, setSelectedDay] = useState(now.getTime());
   const weekStart = useMemo(
-    () =>
-      startOfWeek(new Date(), {
-        weekStartsOn: 1,
-      }),
-    [1],
+    () => startOfWeek(new Date(), { weekStartsOn: 1 }),
+    []
   );
-  const mobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const days = useMemo(
-    () =>
-      Array.from({ length: 7 }, (_, index) => {
-        const date = addDays(weekStart, index);
-        date.setHours(0, 0, 0, 0); // Обнуляем время
-        return date.getTime();
-      }),
-    [weekStart],
-  );
+  const days = useMemo(() => {
+    return Array.from({ length: 7 }, (_, index) => getStartDateTime(addDays(weekStart, index)));
+  }, [weekStart]);
 
   const visibleDays = mobile ? [selectedDay] : days;
 
@@ -121,9 +111,11 @@ function Meets({ title, meets, refetch }: Props) {
         </Stack>
       ) : (
         <Stack spacing={2} direction="column">
-          {view === 'module' &&
-            meets &&
-            Object.entries(grouped).map(([dateLabel, items]) => <MeetGroupGrids title={dateLabel} meets={items} refetch={refetch} />)}
+          {view === 'module' && meets && (
+            Object.entries(grouped).map(([dateLabel, items]) => (
+              <MeetGroupGrids key={dateLabel} title={dateLabel} meets={items} refetch={refetch} />
+            ))
+          )}
         </Stack>
       )}
 

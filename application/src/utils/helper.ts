@@ -17,3 +17,5 @@ export function groupProjectsByIdea<T extends { idea: { id: number } }>(projects
 
   return Array.from(map.values());
 }
+
+export const getImage = (id: number) => `https://api.dicebear.com/10.x/lorelei/svg?seed=${id}`;

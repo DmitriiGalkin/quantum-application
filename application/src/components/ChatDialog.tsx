@@ -37,8 +37,6 @@ const ChatDialog: React.FC<Props> = ({ open, teacherId, onClose }) => {
     enabled: open
   });
 
-  console.log(chat)
-
   // Загрузка сообщений чата
   const { data: conversation } = useQuery({
     queryKey: ['messages', chat?.conversation.id],

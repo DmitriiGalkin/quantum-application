@@ -5,7 +5,7 @@ import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 interface Props {
-  days: Date[];
+  days: number[];
 }
 
 export default function WeekCalendarHeader({ days }: Props) {
@@ -31,7 +31,7 @@ export default function WeekCalendarHeader({ days }: Props) {
 
       {days.map(day => (
         <Box
-          key={day.toISOString()}
+          key={day}
           sx={{
             py: 1.5,
             px: 1,

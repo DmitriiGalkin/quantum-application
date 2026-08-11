@@ -9,7 +9,7 @@ import type { MeetExtendedDto } from '@shared/types';
 const HOUR_HEIGHT = 72;
 
 interface Props {
-  days: Date[];
+  days: number[];
   meets: MeetExtendedDto[];
 
   startHour: number;

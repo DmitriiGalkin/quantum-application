@@ -8,6 +8,7 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { fetchLeavePlace, fetchRemoveTeacher } from '../../requests.ts';
 import { useMutation } from '@tanstack/react-query';
+import { getImage } from '../../utils/helper.ts';
 
 type IdeaCardProps = {
   placeId: number;
@@ -50,11 +51,13 @@ function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
     });
   }
 
+
+
   return (
     <Card key={teacher.id}>
       <CardHeader
         avatar={
-          <Avatar alt={teacher.title} src={teacher.image || ''}>
+          <Avatar alt={teacher.title} src={getImage(teacher.id) || teacher.image || ''}>
             R
           </Avatar>
         }

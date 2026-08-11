@@ -11,14 +11,13 @@ import FolderIcon from '@mui/icons-material/Folder';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddIcon from '@mui/icons-material/Add';
-import HelpIcon from '@mui/icons-material/Help';
 import Toolbar from '@mui/material/Toolbar';
 import { Divider, Stack, Typography } from '@mui/material';
 
 type MenuItemConfig = {
   label: string;
   to: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   disabled?: boolean;
   variant?: 'default' | 'primary';
 };
@@ -69,7 +68,6 @@ function Menu({ setIsMenuOpen }: any) {
           {
             label: 'Главная',
             to: `/user`,
-            icon: <LightbulbIcon />,
           },
           {
             label: 'Мои идеи',
@@ -191,7 +189,6 @@ function Menu({ setIsMenuOpen }: any) {
 
   return (
     <Stack sx={{ width: 250, height: '100%' }}>
-
       <Toolbar>
         <Typography variant="h6">Quantum</Typography>
       </Toolbar>
@@ -199,13 +196,20 @@ function Menu({ setIsMenuOpen }: any) {
       <List>
         {menuSections.map((section, sectionIndex) => (
           <Box key={sectionIndex}>
-            {sectionIndex > 0 && <Divider sx={{ my: 1 }} children={section.title} />}
+            {sectionIndex > 0 && (
+              <Divider sx={{ my: 1 }}>
+                <Typography variant="caption" color="textDisabled">
+                  {section.title}
+                </Typography>
+              </Divider>
+            )}
 
             {section.items.map(item => (
               <ListItemButton
                 key={item.label}
                 component={item.disabled ? 'div' : NavLink}
                 to={item.disabled ? undefined : item.to}
+                end={!item.disabled}
                 disabled={item.disabled}
                 onClick={() => {
                   if (!item.disabled) {

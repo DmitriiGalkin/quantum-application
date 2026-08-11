@@ -26,3 +26,8 @@ export function addDays(date: Date, days: number) {
   d.setDate(d.getDate() + days);
   return d;
 }
+
+export const getStartDateTime = (date: Date): number => {
+  date.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня
+  return date.getTime();
+};

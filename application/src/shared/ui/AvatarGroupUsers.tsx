@@ -2,6 +2,7 @@ import Stack from '@mui/material/Stack';
 import type { UserDto } from '@shared/types';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import Avatar from '@mui/material/Avatar';
+import { getImage } from '../../utils/helper.ts';
 
 
 type Props = {
@@ -27,7 +28,7 @@ function AvatarGroupUsers({ users }: Props) {
         }}
       >
         {users.map(user => (
-          <Avatar src={user.image || ''} alt="Участник" key={user.id} sx={{ width: 24, height: 24 }} />
+          <Avatar src={getImage(user.id) || user.image || ''} alt="Участник" key={user.id} sx={{ width: 24, height: 24 }} />
         ))}
       </AvatarGroup>
     </Stack>

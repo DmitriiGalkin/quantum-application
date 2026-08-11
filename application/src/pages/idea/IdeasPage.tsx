@@ -10,7 +10,6 @@ import Filter from '../../features/idea/ui/Filter.tsx';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation } from '../../shared/lib/useLocation.ts';
 import Typography from '@mui/material/Typography';
-import { useAuth } from '../../providers/AuthProvider.tsx';
 import IdeaGrids from '../../features/idea/ui/IdeaGrids.tsx';
 
 function IdeasPage() {
