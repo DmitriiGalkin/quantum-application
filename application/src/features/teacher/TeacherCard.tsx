@@ -11,20 +11,20 @@ import { useMutation } from '@tanstack/react-query';
 import { getImage } from '../../utils/helper.ts';
 
 type IdeaCardProps = {
-  placeId: number;
+  placeIdIn: number;
   teacher: TeacherDto;
   refetch?: () => void;
 };
 
-function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
-  const { activeContext, passport, places } = useAuth();
+function TeacherCard({ placeIdIn, teacher, refetch }: IdeaCardProps) {
+  const { role, placeId,  passport, places } = useAuth();
   const removeTeacher = useMutation({
-    mutationFn: () => fetchRemoveTeacher(placeId, teacher.id),
+    mutationFn: () => fetchRemoveTeacher(placeIdIn, teacher.id),
     onSuccess: () => refetch?.(),
   });
 
   const leaveTeacher = useMutation({
-    mutationFn: () => fetchLeavePlace(placeId),
+    mutationFn: () => fetchLeavePlace(placeIdIn),
     onSuccess: () => refetch?.(),
   });
 
@@ -34,7 +34,7 @@ function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
 
   const menuItems = [];
 
-  if (places.map(place => place.id).includes(placeId) && activeContext.role === 'teacher' && teacher.id === passport?.id) {
+  if (places.map(place => place.id).includes(placeIdIn) && role === 'teacher' && teacher.id === passport?.id) {
     menuItems.push({
       key: 'leave',
       label: 'Выйти из центра',
@@ -42,7 +42,7 @@ function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
       onClick: onLeave,
     });
   }
-  if (activeContext?.placeId === placeId && activeContext.role === 'place') {
+  if (placeId === placeIdIn && role === 'place') {
     menuItems.push({
       key: 'delete',
       label: 'Удалить из центра',
@@ -101,17 +101,6 @@ function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
           },
         }}
       />
-      {/*<CardContent>*/}
-      {/*  <Stack direction="row" sx={{ justifyContent: 'space-between' }}>*/}
-      {/*    <Typography>{teacher.title}</Typography>*/}
-
-      {/*    {onDelete && (*/}
-      {/*      <Button color="error" onClick={onDelete}>*/}
-      {/*        Удалить*/}
-      {/*      </Button>*/}
-      {/*    )}*/}
-      {/*  </Stack>*/}
-      {/*</CardContent>*/}
     </Card>
   );
 }

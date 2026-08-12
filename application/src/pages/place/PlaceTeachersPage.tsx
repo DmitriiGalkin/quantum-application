@@ -13,13 +13,13 @@ import IconButton from '@mui/material/IconButton';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function PlaceTeachersPage() {
-  const { activeContext } = useAuth();
+  const { placeId } = useAuth();
   const [isPersonAddModalOpen, setIsPersonAddModalOpen] = useState(false);
 
   const [passportId, setPassportId] = useState('');
 
   const { data: teachers, refetch } = useQuery({
-    queryKey: ['place-teachers', activeContext?.placeId],
+    queryKey: ['place-teachers', placeId],
     queryFn: fetchPlaceTeachers,
   });
 
@@ -31,7 +31,7 @@ export default function PlaceTeachersPage() {
     },
   });
 
-  const inviteUrl = `${window.location.origin}/place/${activeContext?.placeId}/invite`;
+  const inviteUrl = `${window.location.origin}/place/${placeId}/invite`;
 
   async function handleCopy() {
     await navigator.clipboard.writeText(inviteUrl);
@@ -54,7 +54,6 @@ export default function PlaceTeachersPage() {
     }
   }
 
-  const placeId = activeContext?.placeId;
   if (!placeId) return null;
 
   return (
@@ -72,7 +71,7 @@ export default function PlaceTeachersPage() {
 
         <Stack spacing={2}>
           {teachers?.map(teacher => (
-            <TeacherCard teacher={teacher} refetch={refetch} placeId={placeId} />
+            <TeacherCard teacher={teacher} refetch={refetch} placeIdIn={placeId} />
           ))}
         </Stack>
       </Stack>

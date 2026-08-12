@@ -12,7 +12,7 @@ import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
 import Title from '../../shared/ui/Title.tsx';
 
 function IdeasPage() {
-  const { activeContext } = useAuth();
+  const { userId } = useAuth();
   const [openCreateIdea, setOpenCreateIdea] = useState(false);
 
   const {
@@ -20,7 +20,7 @@ function IdeasPage() {
     isLoading: isIdeasLoading,
     isError: isIdeasError,
   } = useQuery({
-    queryKey: ['ideas', activeContext?.userId],
+    queryKey: ['ideas', userId],
     queryFn: fetchUserIdeas,
   });
 

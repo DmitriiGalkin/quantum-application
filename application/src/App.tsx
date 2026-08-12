@@ -81,7 +81,7 @@ function App() {
       </Route>
 
       {/* Центр */}
-      <Route path="place" element={<PrivateLayout role="place" />}>
+      <Route path="place" element={<PrivateLayout privateRole="place" />}>
         <Route index element={<PlaceDashboardPage />} />
         <Route path="teachers" element={<PlaceTeachersPage />} />
         <Route path="locations" element={<PlaceLocationsPage />} />

@@ -7,10 +7,10 @@ import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 export default function PlaceProjectsPage() {
   const filter = useFilters();
-  const { activeContext } = useAuth();
+  const { placeId } = useAuth();
 
   const { data: projects = [], refetch } = useQuery({
-    queryKey: ['place-projects', activeContext?.placeId],
+    queryKey: ['place-projects', placeId],
     queryFn: fetchPlaceProjects,
   });
 

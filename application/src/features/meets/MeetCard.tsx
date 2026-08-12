@@ -31,8 +31,7 @@ interface Props {
 }
 
 export default function MeetCard({ meet, refetch }: Props) {
-  const { authHandler, passport, activeContext } = useAuth();
-  const role = activeContext.role;
+  const { authHandler, passport, role, userId } = useAuth();
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const { data: place } = useQuery({
@@ -79,11 +78,11 @@ export default function MeetCard({ meet, refetch }: Props) {
   });
 
   const onPay = () => {
-    if (activeContext?.userId && meet.price && meet.price > 0) {
+    if (userId && meet.price && meet.price > 0) {
       return createPayment.mutate({
         targetType: 'meet',
         targetId: meet.id,
-        userId: activeContext.userId,
+        userId,
       });
     } else {
       console.log('Ты как сюда попал');
@@ -91,19 +90,19 @@ export default function MeetCard({ meet, refetch }: Props) {
   };
 
   const onJoin = async () => {
-    if (!activeContext?.userId) {
+    if (!userId) {
       authHandler();
       return;
     }
 
     mutationLike.mutate({
       meetId: meet.id,
-      userId: activeContext?.userId,
+      userId,
     });
   };
 
   const onExit = () => {
-    if (activeContext.userId) mutationUnlike.mutate({ userId: activeContext?.userId, meetId: meet.id });
+    if (userId) mutationUnlike.mutate({ userId, meetId: meet.id });
     else authHandler();
   };
 
@@ -112,7 +111,7 @@ export default function MeetCard({ meet, refetch }: Props) {
   };
 
   const paymentStatus = meet.isPaid ? 'paid' : meet.price && meet.price > 0 ? 'pending' : undefined;
-  const meetUserStatus = activeContext?.userId && meet.users.map(u => u.id).includes(activeContext?.userId) ? 'member' : 'not_member';
+  const meetUserStatus = userId && meet.users.map(u => u.id).includes(userId) ? 'member' : 'not_member';
   const isMember = meetUserStatus === 'member';
   const isPending = paymentStatus === 'pending';
 
@@ -279,8 +278,8 @@ export default function MeetCard({ meet, refetch }: Props) {
                   <Typography variant="body2">{meet.price}</Typography>
                 </Stack>
 
-                {isMember && activeContext.role === 'user' && !isPaid && <Chip size="small" label="Ожидает оплату" color="warning" />}
-                {activeContext.role === 'user' && isPaid && <Chip size="small" label="Оплачено" color="success" />}
+                {isMember && role === 'user' && !isPaid && <Chip size="small" label="Ожидает оплату" color="warning" />}
+                {role === 'user' && isPaid && <Chip size="small" label="Оплачено" color="success" />}
               </Stack>
             ) : (
               <Typography variant="body2">Бесплатная встреча</Typography>

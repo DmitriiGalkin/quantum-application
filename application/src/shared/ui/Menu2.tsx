@@ -34,8 +34,8 @@ interface MenuProps {
 
 function Menu2({ setIsMenuOpen }: MenuProps) {
   const navigate = useNavigate();
-  const { users, places, passport, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
-  const [value, setValue] = useState(activeContext.role);
+  const { users, places, passport, logout, role, userId, placeId, switchUser, switchTeacher, switchPlace } = useAuth();
+  const [value, setValue] = useState(role);
 
   const handleChange = (_: SyntheticEvent, newValue: ActiveRole) => {
     setValue(newValue);
@@ -60,7 +60,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
             label="Ученик"
             {...a11yProps('user')}
             onClick={() => {
-              switchUser((activeContext?.userId) ?? users[0].id);
+              switchUser((userId) ?? users[0].id);
               navigate(`/user`);
             }}
           />
@@ -82,24 +82,24 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
             label="Центр"
             {...a11yProps('place')}
             onClick={() => {
-              switchPlace(activeContext?.placeId ?? places[0].id);
+              switchPlace(placeId ?? places[0].id);
               navigate(`/place`);
             }}
           />
         )}
       </Tabs>
 
-      {activeContext.role === 'user' && (
+      {role === 'user' && (
         <>
           {Boolean(users.length) && (
             <List disablePadding>
               {users.map(user => (
-                <ListItemButton selected={activeContext?.userId === user.id} onClick={() => switchUser(user.id)}>
+                <ListItemButton selected={userId === user.id} onClick={() => switchUser(user.id)}>
                   <ListItemAvatar>
                     <Avatar src={user?.image || undefined} alt={user?.title || 'Пользователь'} sx={{ width: 40, height: 40 }} />
                   </ListItemAvatar>
                   <ListItemText primary={user?.title || 'Пользователь'} secondary={user?.age ? `${user.age} лет` : 'Возраст не указан'} />
-                  {activeContext?.userId === user.id && <CheckIcon />}
+                  {userId === user.id && <CheckIcon />}
                 </ListItemButton>
               ))}
             </List>
@@ -107,7 +107,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
         </>
       )}
 
-      {activeContext.role === 'place' && (
+      {role === 'place' && (
         <>
           {Boolean(places.length) && (
             <Stack spacing={3} sx={{ p: 2 }}>
@@ -141,7 +141,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
         </>
       )}
 
-      {activeContext.role === 'teacher' && (
+      {role === 'teacher' && (
         <Stack spacing={3} sx={{ p: 2 }}>
           <Stack
             direction="row"

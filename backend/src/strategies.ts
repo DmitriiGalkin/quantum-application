@@ -1,4 +1,3 @@
-import GoogleStrategy from 'passport-google-oauth20';
 import { Strategy as YandexStrategy } from 'passport-yandex'; // Импорт с алиасом
 import Passport from './repositories/passport.repository.js'; // Обновляем расширение на .js
 

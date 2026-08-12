@@ -9,11 +9,11 @@ import LocationCard from '../../features/place/LocationCard.tsx';
 import { CreateLocationDialog } from '../../features/place/CreateLocationDialog.tsx';
 
 export default function PlaceLocationsPage() {
-  const { activeContext } = useAuth();
+  const { placeId } = useAuth();
   const [open, setOpen] = useState(false);
 
   const { data: locations } = useQuery({
-    queryKey: ['place-locations', activeContext?.placeId],
+    queryKey: ['place-locations', placeId],
     queryFn: fetchPlaceLocations,
   });
 

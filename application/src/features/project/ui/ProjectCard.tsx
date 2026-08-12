@@ -32,11 +32,11 @@ type Props = {
 function ProjectCard({ project, refetch, withoutIdea }: Props) {
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
-  const { passport, authHandler, refetch: refetchPassport, activeContext } = useAuth();
+  const { passport, authHandler, refetch: refetchPassport, userId, role } = useAuth();
   const [isUserModalOpen, setUserModalOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false); // Добавлено состояние
 
-  const isMember = activeContext?.userId && project.users?.map(user => user.id).includes(activeContext.userId);
+  const isMember = userId && project.users?.map(user => user.id).includes(userId);
   const sortedMeets = [...project.meets].sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
   const now = new Date();
 
@@ -78,7 +78,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
     e.stopPropagation();
     e.preventDefault();
 
-    if (!activeContext?.userId) {
+    if (!userId) {
       setAction({
         type: CREATE_PROJECT_USER_TYPE,
         payload: { projectId: project.id },
@@ -87,7 +87,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
       return authHandler();
     }
 
-    mutationLike.mutate({ userId: activeContext?.userId, projectId: project.id });
+    mutationLike.mutate({ userId, projectId: project.id });
   };
 
   const handleUserCreate = (title: string) => {
@@ -187,7 +187,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
           </CardContent>
         ) : (
           <>
-            {activeContext.role === 'teacher' && project.passport.id === passport?.id ? (
+            {role === 'teacher' && project.passport.id === passport?.id ? (
               <CardContent sx={{ height: 24, backgroundColor: 'rgba(0,0,0,.1)', alignItems: 'center' }}>
                 <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -216,7 +216,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
           </>
         )}
 
-        {(Boolean(project.users.length) || activeContext.role === 'user') && (
+        {(Boolean(project.users.length) || role === 'user') && (
           <CardContent>
             <Stack spacing={2} direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
               {Boolean(project.users.length) && (
@@ -228,13 +228,13 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
                 </Box>
               )}
 
-              {activeContext.role === 'user' && !project.users.length && !isMember && (
+              {role === 'user' && !project.users.length && !isMember && (
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                   Станьте первым участником и помогите запустить проект
                 </Typography>
               )}
 
-              {activeContext.role === 'user' && !isMember && (
+              {role === 'user' && !isMember && (
                 <Button
                   variant="contained"
                   size="small"

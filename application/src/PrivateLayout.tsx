@@ -5,14 +5,11 @@ import { Footer } from './shared/ui/Footer2.tsx';
 import { useAuth } from './providers/AuthProvider.tsx';
 import type { ActiveRole } from '@shared/types';
 
-export function PrivateLayout({ role }: { role: ActiveRole }) {
-  const { activeContext, switchPlace, places } = useAuth();
-  //console.log(activeContext?.role, 'ROLE');
-  //console.log(activeContext.placeId, 'placeId');
+export function PrivateLayout({ privateRole }: { privateRole: ActiveRole }) {
+  const { role, switchPlace, places } = useAuth();
 
-  if (role !== activeContext?.role && activeContext?.role !== 'guest') {
-    if (role === 'place') {
-      //console.log('switch place');
+  if (privateRole !== role && role !== 'guest') {
+    if (privateRole === 'place') {
       switchPlace(places[0]?.id ?? 0);
     }
   }

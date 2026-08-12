@@ -11,11 +11,10 @@ import CreateMeet from '../../features/meets/CreateMeet.tsx';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
-  const { activeContext, passport } = useAuth();
-  const role = activeContext.role;
+  const { role, passport } = useAuth();
 
   const { data: project, refetch } = useQuery({
-    queryKey: ['project', id, activeContext],
+    queryKey: ['project', id, role],
     queryFn: () => fetchProject(id as string),
     enabled: Boolean(id),
   });

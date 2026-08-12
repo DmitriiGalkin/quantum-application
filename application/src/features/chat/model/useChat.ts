@@ -9,7 +9,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 export const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
 
 export function useChat(target: Target, projectId?: number, ideaId?: number) {
-  const { activeContext } = useAuth();
+  const { context } = useAuth();
   const welcomeContent = useWelcomeContent(target, ideaId);
 
   const params = useParams();
@@ -85,7 +85,7 @@ export function useChat(target: Target, projectId?: number, ideaId?: number) {
     if (!chatId) {
       console.log('Создаю новый чат');
       createChatMutation.mutate(
-        { target, userId: activeContext?.userId, projectId, ideaId },
+        { target, userId: context?.userId, projectId, ideaId },
         {
           onSuccess: chatId => {
             setChatId(chatId);

@@ -30,43 +30,30 @@ export interface ActiveContext {
   placeId?: number;
 }
 
-type AuthContextType = {
-  passport: PassportDto | null;
-  users: UserDto[];
-  places: PlaceDto[];
+type ContextType = {
   token: string | null;
   login: (token: string) => void;
   logout: () => void;
-  strategies: typeof STRATEGIES;
   authHandler: (next2?: string) => void;
   refetch: () => void;
 
-  activeContext: ActiveContext;
+  passport: PassportDto | null;
+  users: UserDto[];
+  places: PlaceDto[];
+
+  context: ActiveContext;
+  role: ActiveRole;
+  userId?: number;
+  placeId?: number;
+
   switchUser: (userId: number) => void;
   switchTeacher: () => void;
   switchPlace: (placeId: number) => void;
 
-  availableRoles: ActiveRole[];
   isPending: boolean;
 };
 
-const AuthContext = createContext<AuthContextType>(null!);
-
-export const getActiveContext = (): ActiveContext => {
-  if (typeof window !== 'undefined') {
-    const value = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
-
-    if (value) {
-      try {
-        return JSON.parse(value);
-      } catch {}
-    }
-  }
-
-  return {
-    role: 'guest',
-  };
-};
+const AuthContext = createContext<ContextType>(null!);
 
 type Props = {
   children: ReactNode;
@@ -75,16 +62,15 @@ type Props = {
 export const AuthProvider = ({ children }: Props) => {
   const location = useLocation();
   const [token, setToken] = useState<string | null>(null);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const [users, setUsers] = useState<UserDto[]>([]);
   const [places, setPlaces] = useState<PlaceDto[]>([]);
 
-  const [activeContext, setActiveContext] = useState<ActiveContext>(getActiveContext);
+  const [context, setContext] = useState<ActiveContext>(getActiveContext);
 
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');
-  const availableRoles = ['user', 'teacher', 'place'] as ActiveRole[];
 
   const { data, refetch, isPending } = useQuery({
     queryKey: ['passport'],
@@ -144,7 +130,7 @@ export const AuthProvider = ({ children }: Props) => {
 
       localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(newContext));
 
-      setActiveContext(context => {
+      setContext(context => {
         if (context.role !== 'guest') {
           return context;
         }
@@ -152,7 +138,7 @@ export const AuthProvider = ({ children }: Props) => {
         return newContext;
       });
     } else {
-      setActiveContext(context => {
+      setContext(context => {
         if (context.role !== 'guest') {
           return context;
         }
@@ -185,16 +171,15 @@ export const AuthProvider = ({ children }: Props) => {
     localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
     localStorage.removeItem(ACTIVE_CONTEXT_STORAGE_KEY);
 
-    setActiveContext({
+    setContext({
       role: 'guest',
     });
     setToken(null);
-    //setUser(null);
     setPassport(null);
   };
 
   const authHandler = () => {
-    setIsAuthModalOpen(true);
+    setOpen(true);
   };
 
   const switchUser = (userId: number) => {
@@ -203,7 +188,7 @@ export const AuthProvider = ({ children }: Props) => {
       userId,
     };
 
-    setActiveContext(context);
+    setContext(context);
 
     localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
   };
@@ -213,7 +198,7 @@ export const AuthProvider = ({ children }: Props) => {
       role: 'teacher',
     };
 
-    setActiveContext(context);
+    setContext(context);
 
     localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
   };
@@ -224,7 +209,7 @@ export const AuthProvider = ({ children }: Props) => {
       placeId,
     };
 
-    setActiveContext(context);
+    setContext(context);
 
     localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
   };
@@ -237,15 +222,13 @@ export const AuthProvider = ({ children }: Props) => {
         token,
         login,
         logout,
-        strategies: STRATEGIES,
         authHandler,
         refetch,
-        activeContext,
+        context,
         places,
         switchUser,
         switchTeacher,
         switchPlace,
-        availableRoles,
         isPending,
       }}
     >
@@ -255,9 +238,9 @@ export const AuthProvider = ({ children }: Props) => {
           sx={{
             zIndex: theme => theme.zIndex.appBar - 1,
           }}
-          open={isAuthModalOpen}
+          open={open}
           fullScreen={false}
-          onClose={() => setIsAuthModalOpen(false)}
+          onClose={() => setOpen(false)}
         >
           <DialogTitle>Авторизуйтесь одним нажатием</DialogTitle>
 

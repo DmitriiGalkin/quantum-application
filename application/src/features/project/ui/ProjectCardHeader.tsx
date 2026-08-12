@@ -25,9 +25,9 @@ type Props = {
 };
 
 function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props) {
-  const { authHandler, activeContext, passport } = useAuth();
+  const { authHandler, role, userId, passport } = useAuth();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const isMember = activeContext?.role === 'user' && activeContext?.userId && project.users?.map(user => user.id).includes(activeContext.userId);
+  const isMember = role === 'user' && userId && project.users?.map(user => user.id).includes(userId);
 
   const [form, setForm] = useState<ProjectFormValues>({
     title: project.passport?.title || '',
@@ -55,11 +55,11 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
   const menuItems = [];
 
   const onLeave = () => {
-    if (activeContext?.userId) mutationLeave.mutate(project.id);
+    if (userId) mutationLeave.mutate(project.id);
     else authHandler();
   };
 
-  if (activeContext.role === 'teacher' && project.passport.id === passport?.id) {
+  if (role === 'teacher' && project.passport.id === passport?.id) {
     menuItems.push({
       key: 'edit',
       label: 'Редактировать',
@@ -75,7 +75,7 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
     onClick: () => onMessageTeacher?.(),
   });
 
-  if (isMember && activeContext.role === 'user') {
+  if (isMember && role === 'user') {
     menuItems.push({
       key: 'exit',
       label: 'Выйти из проекта',

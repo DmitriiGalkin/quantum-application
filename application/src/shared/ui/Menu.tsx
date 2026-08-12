@@ -28,7 +28,7 @@ type MenuSection = {
 };
 
 function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
-  const { activeContext } = useAuth();
+  const { role } = useAuth();
 
   const MENU: {
     guest: MenuSection[];
@@ -170,7 +170,7 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
     ],
   };
 
-  const menuSections = MENU[activeContext.role];
+  const menuSections = MENU[role];
 
   return (
     <Stack sx={{ width: 250, height: '100%' }}>
