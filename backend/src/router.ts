@@ -172,7 +172,7 @@ privateRouter.get('/place/locations', withAuth(placeLocation.findAll));
 publicRouter.get('/places', place.findAll);
 privateRouter.post('/place', withAuth(place.create));
 privateRouter.post('/place/location', withAuth(placeLocation.create));
-privateRouter.put('/place/:id', withAuth(place.update));
+privateRouter.put('/place', withAuth(place.update));
 publicRouter.get('/place/:id', place.findById);
 
 privateRouter.post('/place/:id/teacher', withAuth(placeTeacherController.create));

@@ -34,7 +34,7 @@ interface MenuProps {
 
 function Menu2({ setIsMenuOpen }: MenuProps) {
   const navigate = useNavigate();
-  const { activeUser, users, places, passport, activePlace, activeTeacher, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
+  const { users, places, passport, logout, activeContext, switchUser, switchTeacher, switchPlace } = useAuth();
   const [value, setValue] = useState(activeContext.role);
 
   const handleChange = (_: SyntheticEvent, newValue: ActiveRole) => {
@@ -54,18 +54,18 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
           minHeight: 32,
         }}
       >
-        {activeUser && (
+        {!!users.length && (
           <Tab
             value="user"
             label="Ученик"
             {...a11yProps('user')}
             onClick={() => {
-              switchUser(activeUser?.id ?? users[0].id);
+              switchUser((activeContext?.userId) ?? users[0].id);
               navigate(`/user`);
             }}
           />
         )}
-        {activeTeacher && (
+        {true && (
           <Tab
             value="teacher"
             label="Учитель"
@@ -76,13 +76,13 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
             }}
           />
         )}
-        {activePlace && (
+        {!!places.length && (
           <Tab
             value="place"
             label="Центр"
             {...a11yProps('place')}
             onClick={() => {
-              switchPlace(activePlace?.id ?? places[0].id);
+              switchPlace(activeContext?.placeId ?? places[0].id);
               navigate(`/place`);
             }}
           />
@@ -93,13 +93,13 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
         <>
           {Boolean(users.length) && (
             <List disablePadding>
-              {users.map(user1 => (
-                <ListItemButton selected={activeUser?.id === user1.id} onClick={() => switchUser(user1.id)}>
+              {users.map(user => (
+                <ListItemButton selected={activeContext?.userId === user.id} onClick={() => switchUser(user.id)}>
                   <ListItemAvatar>
-                    <Avatar src={user1?.image || undefined} alt={user1?.title || 'Пользователь'} sx={{ width: 40, height: 40 }} />
+                    <Avatar src={user?.image || undefined} alt={user?.title || 'Пользователь'} sx={{ width: 40, height: 40 }} />
                   </ListItemAvatar>
-                  <ListItemText primary={user1?.title || 'Пользователь'} secondary={user1?.age ? `${user1.age} лет` : 'Возраст не указан'} />
-                  {activeUser?.id === user1.id && <CheckIcon />}
+                  <ListItemText primary={user?.title || 'Пользователь'} secondary={user?.age ? `${user.age} лет` : 'Возраст не указан'} />
+                  {activeContext?.userId === user.id && <CheckIcon />}
                 </ListItemButton>
               ))}
             </List>
@@ -150,7 +150,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
               alignItems: 'center',
             }}
           >
-            <Avatar src={activeUser?.image || undefined} alt={passport?.title || 'Учитель'} sx={{ width: 56, height: 56 }} />
+            <Avatar src={passport?.image || undefined} alt={passport?.title || 'Учитель'} sx={{ width: 56, height: 56 }} />
 
             <Box>
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>

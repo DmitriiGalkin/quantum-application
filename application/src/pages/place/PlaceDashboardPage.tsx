@@ -24,20 +24,18 @@ export const DEFAULT_PLACE_SCHEDULE: PlaceScheduleDayDto[] = [
 ];
 
 export default function PlaceDashboardPage() {
-  const { activePlace } = useAuth();
-  const id = activePlace?.id;
+  const { activeContext } = useAuth();
   const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
 
   const { data, refetch } = useQuery({
-    queryKey: ['place', id],
+    queryKey: ['place', activeContext?.placeId],
     queryFn: fetchPlaceDashboard,
-    enabled: Boolean(id),
   });
   const [values, setValues] = useState<PlaceFormValues | null>(null);
   const place = data?.place;
 
   const updatePlace = useMutation({
-    mutationFn: () => fetchUpdatePlace(Number(id), values!),
+    mutationFn: () => fetchUpdatePlace(values!),
 
     onSuccess: () => {
       refetch?.();

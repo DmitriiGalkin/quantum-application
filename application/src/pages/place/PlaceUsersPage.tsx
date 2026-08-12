@@ -5,12 +5,10 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 import UserCard from '../../features/user/UserCard.tsx';
 
 export default function PlaceUsersPage() {
-  const { activePlace } = useAuth();
-  const id = activePlace?.id;
-  const placeId = Number(id);
+  const { activeContext } = useAuth();
 
   const { data: users = [] } = useQuery({
-    queryKey: ['place-users', placeId],
+    queryKey: ['place-users', activeContext?.placeId],
     queryFn: fetchPlaceUsers,
   });
 

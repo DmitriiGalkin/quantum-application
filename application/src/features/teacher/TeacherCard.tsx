@@ -17,7 +17,7 @@ type IdeaCardProps = {
 };
 
 function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
-  const { activeContext, activePlace, passport, places } = useAuth();
+  const { activeContext, passport, places } = useAuth();
   const removeTeacher = useMutation({
     mutationFn: () => fetchRemoveTeacher(placeId, teacher.id),
     onSuccess: () => refetch?.(),
@@ -42,7 +42,7 @@ function TeacherCard({ placeId, teacher, refetch }: IdeaCardProps) {
       onClick: onLeave,
     });
   }
-  if (activePlace?.id === placeId && activeContext.role === 'place') {
+  if (activeContext?.placeId === placeId && activeContext.role === 'place') {
     menuItems.push({
       key: 'delete',
       label: 'Удалить из центра',

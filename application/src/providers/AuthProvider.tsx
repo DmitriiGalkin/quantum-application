@@ -32,11 +32,8 @@ export interface ActiveContext {
 
 type AuthContextType = {
   passport: PassportDto | null;
-  activeUser: UserDto | null;
-  activeTeacher: boolean;
   users: UserDto[];
   places: PlaceDto[];
-  activePlace: PlaceDto | null;
   token: string | null;
   login: (token: string) => void;
   logout: () => void;
@@ -79,7 +76,6 @@ export const AuthProvider = ({ children }: Props) => {
   const location = useLocation();
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [activeTeacher, setActiveTeacher] = useState<boolean>(false);
 
   const [users, setUsers] = useState<UserDto[]>([]);
   const [places, setPlaces] = useState<PlaceDto[]>([]);
@@ -89,8 +85,6 @@ export const AuthProvider = ({ children }: Props) => {
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');
   const availableRoles = ['user', 'teacher', 'place'] as ActiveRole[];
-  const activeUser = users.find(user => user.id === activeContext.userId) ?? users[0] ?? null;
-  const activePlace = places.find(place => place.id === activeContext.placeId) ?? places[0] ?? null;
 
   const { data, refetch, isPending } = useQuery({
     queryKey: ['passport'],
@@ -143,10 +137,8 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     if (data) {
       setPassport(data);
-      //setUser(data.users?.[0]);
       setUsers(data.users);
       setPlaces(data.places);
-      setActiveTeacher(data.isTeacher);
 
       const newContext = getContext(data);
 
@@ -241,9 +233,7 @@ export const AuthProvider = ({ children }: Props) => {
     <AuthContext.Provider
       value={{
         passport,
-        activeUser,
         users,
-        activePlace,
         token,
         login,
         logout,
@@ -256,7 +246,6 @@ export const AuthProvider = ({ children }: Props) => {
         switchTeacher,
         switchPlace,
         availableRoles,
-        activeTeacher,
         isPending,
       }}
     >

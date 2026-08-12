@@ -15,7 +15,6 @@ import {
   type DeleteIdeaUser,
   type DeleteMeetUser,
   type GetIdeasQuery,
-  type GetMeetsQuery,
   type IdeaExtendedDto,
   type IdeaFullDto, type LocationDto,
   type MeetDto,
@@ -74,14 +73,14 @@ export const fetchTeacherMeets = () => get<MeetExtendedDto[]>('/teacher/meets');
 export const fetchPlace = (id: number) => get<PlaceFullDto>(`/place/${id}`);
 export const fetchPlaces = () => get<PlaceFullDto[]>('/places');
 export const fetchCreatePlace = (params: CreatePlace) => post<number>('/place', params);
-export const fetchUpdatePlace = (id: number, params: PlaceFormValues) => put<void>(`/place/${id}`, params);
+export const fetchUpdatePlace = (params: PlaceFormValues) => put<void>(`/place`, params);
 export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { passportId });
 export const fetchAddTeacher2 = (params: { passportId: number; placeId: number }) => post<number>(`/place/${params.placeId}/teacher`, params);
 export const fetchCreateLocation = (params: CreateLocation) => post<number>('/place/location', params);
 export const fetchPlaceDashboard = () => get<PlaceDashboardDto>(`/place/dashboard`);
 export const fetchPlaceTeachers = () => get<TeacherDto[]>(`/place/teachers`);
 export const fetchPlaceProjects = () => get<ProjectFullDto[]>(`/place/projects`);
-export const fetchPlaceMeets = (params?: GetMeetsQuery) => get<MeetExtendedDto[]>(`/place/meets${toQuery(params)}`);
+export const fetchPlaceMeets = () => get<MeetExtendedDto[]>(`/place/meets`);
 export const fetchPlaceUsers = () => get<UserDto[]>(`/place/users`);
 export const fetchPlaceLocations = () => get<LocationDto[]>(`/place/locations`);
 export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<void>(`/place/${placeId}/teacher/${passportId}`);

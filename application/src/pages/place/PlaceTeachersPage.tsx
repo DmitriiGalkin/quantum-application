@@ -13,15 +13,13 @@ import IconButton from '@mui/material/IconButton';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 
 export default function PlaceTeachersPage() {
-  const { activePlace } = useAuth();
-  const id = activePlace?.id;
-  const placeId = Number(id);
+  const { activeContext } = useAuth();
   const [isPersonAddModalOpen, setIsPersonAddModalOpen] = useState(false);
 
   const [passportId, setPassportId] = useState('');
 
   const { data: teachers, refetch } = useQuery({
-    queryKey: ['place-teachers', placeId],
+    queryKey: ['place-teachers', activeContext?.placeId],
     queryFn: fetchPlaceTeachers,
   });
 
@@ -33,8 +31,7 @@ export default function PlaceTeachersPage() {
     },
   });
 
-
-  const inviteUrl = `${window.location.origin}/place/${placeId}/invite`;
+  const inviteUrl = `${window.location.origin}/place/${activeContext?.placeId}/invite`;
 
   async function handleCopy() {
     await navigator.clipboard.writeText(inviteUrl);
@@ -56,6 +53,9 @@ export default function PlaceTeachersPage() {
       // Пользователь закрыл системное окно "Поделиться"
     }
   }
+
+  const placeId = activeContext?.placeId;
+  if (!placeId) return null;
 
   return (
     <Box>

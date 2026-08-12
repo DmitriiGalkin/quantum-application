@@ -26,7 +26,7 @@ const update: ControllerWithAuth<void, PlaceUpdateDto> = async (req, res) => {
   try {
     await PlaceService.update({
       ...req.body,
-      id: Number(req.params.id),
+      id: req.viewer?.placeId!,
     });
 
     ok(res, { message: 'Центр обновлен' });

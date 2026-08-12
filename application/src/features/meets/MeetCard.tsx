@@ -31,7 +31,7 @@ interface Props {
 }
 
 export default function MeetCard({ meet, refetch }: Props) {
-  const { activeUser, authHandler, passport, activeContext } = useAuth();
+  const { authHandler, passport, activeContext } = useAuth();
   const role = activeContext.role;
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -79,11 +79,11 @@ export default function MeetCard({ meet, refetch }: Props) {
   });
 
   const onPay = () => {
-    if (activeUser && meet.price && meet.price > 0) {
+    if (activeContext?.userId && meet.price && meet.price > 0) {
       return createPayment.mutate({
         targetType: 'meet',
         targetId: meet.id,
-        userId: activeUser.id,
+        userId: activeContext.userId,
       });
     } else {
       console.log('Ты как сюда попал');
@@ -91,19 +91,19 @@ export default function MeetCard({ meet, refetch }: Props) {
   };
 
   const onJoin = async () => {
-    if (!activeUser) {
+    if (!activeContext?.userId) {
       authHandler();
       return;
     }
 
     mutationLike.mutate({
       meetId: meet.id,
-      userId: activeUser.id,
+      userId: activeContext?.userId,
     });
   };
 
   const onExit = () => {
-    if (activeUser) mutationUnlike.mutate({ userId: activeUser.id, meetId: meet.id });
+    if (activeContext.userId) mutationUnlike.mutate({ userId: activeContext?.userId, meetId: meet.id });
     else authHandler();
   };
 
@@ -112,7 +112,7 @@ export default function MeetCard({ meet, refetch }: Props) {
   };
 
   const paymentStatus = meet.isPaid ? 'paid' : meet.price && meet.price > 0 ? 'pending' : undefined;
-  const meetUserStatus = activeUser?.id && meet.users.map(u => u.id).includes(activeUser.id) ? 'member' : 'not_member';
+  const meetUserStatus = activeContext?.userId && meet.users.map(u => u.id).includes(activeContext?.userId) ? 'member' : 'not_member';
   const isMember = meetUserStatus === 'member';
   const isPending = paymentStatus === 'pending';
 
