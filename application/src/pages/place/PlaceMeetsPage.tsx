@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchMeets } from '../../requests.ts';
-import {useAuth} from "../../providers/AuthProvider.tsx";
+import { fetchPlaceMeets } from '../../requests.ts';
+import { useAuth } from '../../providers/AuthProvider.tsx';
 import Meets from '../../features/meets/Meets.tsx';
 
 
@@ -20,7 +20,7 @@ export default function PlaceMeetsPage() {
 
   const { data: meets, refetch } = useQuery({
     queryKey: ['meets', placeId],
-    queryFn: () => fetchMeets({ placeId: placeId || 0 }),
+    queryFn: () => fetchPlaceMeets(),
     enabled: !!placeId,
   });
 

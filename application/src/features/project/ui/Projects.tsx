@@ -23,9 +23,14 @@ function Projects({ title, filter, projects, refetch, withoutIdea }: Props) {
 
         {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
         {!(filter.filters.when === undefined && !projects.length) && (
-          <Box sx={{ flexGrow: 1 }}>
-            <Filter filters={filter.filters} setView={filter.setView} setSort={filter.setSort} setWhen={filter.setWhen} />
-          </Box>
+            <Filter
+              withOutLocation
+              withOutWhen
+              filters={filter.filters}
+              setView={filter.setView}
+              setSort={filter.setSort}
+              setWhen={filter.setWhen}
+            />
         )}
       </Stack>
 

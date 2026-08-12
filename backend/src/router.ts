@@ -164,6 +164,7 @@ privateRouter.get('/place/dashboard', withAuth(place.dashboard));
 privateRouter.get('/place/projects', withAuth(project.findByPlaceId));
 privateRouter.get('/place/users', withAuth(teacherUserController.getPlaceUsers));
 privateRouter.get('/place/teachers', withAuth(placeTeacherController.findAll));
+privateRouter.get('/place/meets', withAuth(meet.getPlaceMeets));
 
 publicRouter.get('/places', place.findAll);
 privateRouter.post('/place', withAuth(place.create));

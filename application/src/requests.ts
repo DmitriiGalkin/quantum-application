@@ -39,8 +39,8 @@ import {
 import { del, get, post, put, toQuery } from './api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 
-export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas?${toQuery(params)}`);
-export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaFullDto>(`/idea/${id}?${toQuery(params)}`);
+export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas${toQuery(params)}`);
+export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaFullDto>(`/idea/${id}${toQuery(params)}`);
 export const fetchCreateIdea = (params: CreateIdea) => post<number>('/idea', params);
 export const fetchUserIdeas = (userId: number) => get<IdeaExtendedDto[]>(`/user/${userId}/ideas`);
 export const fetchTeacherIdeas = () => get<IdeaExtendedDto[]>('/teacher/ideas');
@@ -61,7 +61,7 @@ export const fetchPassportProjects = () => get<ProjectFullDto[]>('/passport/proj
 export const fetchCreateProjectUser = (params: CreateProjectUser) => post<void>('/projectUser', params);
 export const fetchProjectLeave = (id: number) => del<void>(`/project/${id}/leave`);
 
-export const fetchMeets = (params: GetMeetsQuery) => get<MeetExtendedDto[]>(`/meets?${toQuery(params)}`);
+export const fetchMeets = (params: GetMeetsQuery) => get<MeetExtendedDto[]>(`/meets${toQuery(params)}`);
 export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
 export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);
@@ -80,6 +80,7 @@ export const fetchAddTeacher2 = (params: { passportId: number; placeId: number }
 export const fetchPlaceDashboard = () => get<PlaceDashboardDto>(`/place/dashboard`);
 export const fetchPlaceTeachers = () => get<TeacherDto[]>(`/place/teachers`);
 export const fetchPlaceProjects = () => get<ProjectFullDto[]>(`/place/projects`);
+export const fetchPlaceMeets = (params?: GetMeetsQuery) => get<MeetExtendedDto[]>(`/place/meets${toQuery(params)}`);
 export const fetchPlaceUsers = () => get<UserDto[]>(`/place/users`);
 export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<void>(`/place/${placeId}/teacher/${passportId}`);
 export const fetchLeavePlace = (id: number) => del<void>(`/place/${id}/leave`);

@@ -95,6 +95,19 @@ const updateStatus: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
+const getPlaceMeets: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => {
+  try {
+    const meets = await MeetService.findAll({
+      ...req.query,
+      placeId: req.viewer?.placeId,
+    } as GetMeetsQuery);
+
+    ok(res, meets);
+  } catch (err) {
+    fail(res, 'Ошибка при получении списка встреч');
+  }
+};
+
 export default {
   create,
   update,
@@ -103,4 +116,5 @@ export default {
   findPassportAll,
   findById,
   updateStatus,
+  getPlaceMeets,
 };

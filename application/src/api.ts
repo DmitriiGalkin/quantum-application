@@ -53,7 +53,9 @@ async function del<T>(url: string): Promise<T> {
   });
 }
 
-function toQuery(params: Record<string, any>) {
+function toQuery(params?: Record<string, any>) {
+  if (!params) return '';
+
   const search = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
@@ -62,7 +64,7 @@ function toQuery(params: Record<string, any>) {
     }
   });
 
-  return search.toString();
+  return '?' + search.toString();
 }
 
 export { get, post, put, patch, del, toQuery };
