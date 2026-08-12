@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassport } from '../requests.ts';
-import { type ActiveRole, type PassportDto, type PassportExtendedDto, type PlaceDto, type UserDto } from '@shared/types';
+import { type ActiveRole, type PassportExtendedDto } from '@shared/types';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
@@ -11,24 +11,15 @@ import Box from '@mui/material/Box';
 import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatEffects.ts';
 import { useLocation } from 'react-router-dom';
 import { AUTH_401_EVENT } from '../api.ts';
+import {
+  ACCESS_TOKEN_STORAGE_KEY,
+  ACTIVE_CONTEXT_STORAGE_KEY, type ActiveContext,
+  getContext,
+  getTokenFromUrl,
+  STRATEGIES,
+} from './helper.ts';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
-export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
-export const ACTIVE_CONTEXT_STORAGE_KEY = 'active_context';
 
-const STRATEGIES = [
-  {
-    title: 'Yandex',
-    href: `${API_URL}/login/yandex`,
-    icon: 'Я',
-  },
-];
-
-export interface ActiveContext {
-  role: ActiveRole;
-  userId?: number;
-  placeId?: number;
-}
 
 type ContextType = {
   token: string | null;
@@ -37,11 +28,8 @@ type ContextType = {
   authHandler: (next2?: string) => void;
   refetch: () => void;
 
-  passport: PassportDto | null;
-  users: UserDto[];
-  places: PlaceDto[];
+  passport: PassportExtendedDto | null;
 
-  context: ActiveContext;
   role: ActiveRole;
   userId?: number;
   placeId?: number;
@@ -64,12 +52,22 @@ export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  const [users, setUsers] = useState<UserDto[]>([]);
-  const [places, setPlaces] = useState<PlaceDto[]>([]);
+  const [activeContext, setActiveContext] = useState<ActiveContext>(() => {
+    const stored = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
 
-  const [context, setContext] = useState<ActiveContext>(getActiveContext);
+    if (!stored) {
+      return { role: 'guest' };
+    }
 
-  const [passport, setPassport] = useState<PassportDto | null>(null);
+    try {
+      return JSON.parse(stored);
+    } catch {
+      localStorage.removeItem(ACTIVE_CONTEXT_STORAGE_KEY);
+      return { role: 'guest' };
+    }
+  });
+
+  const [passport, setPassport] = useState<PassportExtendedDto | null>(null);
   const [redirect, setRedirect] = useState('');
 
   const { data, refetch, isPending } = useQuery({
@@ -94,59 +92,19 @@ export const AuthProvider = ({ children }: Props) => {
     setRedirect(window.location.pathname + window.location.search);
   }, [location]);
 
-  const getContext = (data: PassportExtendedDto): ActiveContext => {
-    if (Boolean(data.users.length)) {
-      return {
-        role: 'user' as ActiveRole,
-        userId: data.users?.[0]?.id,
-      };
-    }
-
-    if (data.isTeacher) {
-      return {
-        role: 'teacher' as ActiveRole,
-      };
-    }
-
-    if (!!data.places.length) {
-      return {
-        role: 'place' as ActiveRole,
-        placeId: data.places?.[0]?.id,
-      };
-    }
-
-    return {
-      role: 'guest' as ActiveRole,
-    };
-  };
-
   useEffect(() => {
-    if (data) {
-      setPassport(data);
-      setUsers(data.users);
-      setPlaces(data.places);
+    if (!data) return;
 
-      const newContext = getContext(data);
+    setPassport(data);
 
-      localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(newContext));
+    const storedContext = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
 
-      setContext(context => {
-        if (context.role !== 'guest') {
-          return context;
-        }
+    if (!storedContext) {
+      const defaultContext = getContext(data);
 
-        return newContext;
-      });
-    } else {
-      setContext(context => {
-        if (context.role !== 'guest') {
-          return context;
-        }
+      setActiveContext(defaultContext);
 
-        return {
-          role: 'guest' as ActiveRole,
-        };
-      });
+      localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(defaultContext));
     }
   }, [data]);
 
@@ -171,9 +129,10 @@ export const AuthProvider = ({ children }: Props) => {
     localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
     localStorage.removeItem(ACTIVE_CONTEXT_STORAGE_KEY);
 
-    setContext({
+    setActiveContext({
       role: 'guest',
     });
+
     setToken(null);
     setPassport(null);
   };
@@ -183,33 +142,27 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   const switchUser = (userId: number) => {
-    const context: ActiveContext = {
+    setActiveRole({
       role: 'user',
       userId,
-    };
-
-    setContext(context);
-
-    localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+    });
   };
 
   const switchTeacher = () => {
-    const context: ActiveContext = {
+    setActiveRole({
       role: 'teacher',
-    };
-
-    setContext(context);
-
-    localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+    });
   };
 
   const switchPlace = (placeId: number) => {
-    const context: ActiveContext = {
+    setActiveRole({
       role: 'place',
       placeId,
-    };
+    });
+  };
 
-    setContext(context);
+  const setActiveRole = (context: ActiveContext) => {
+    setActiveContext(context);
 
     localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
   };
@@ -218,14 +171,14 @@ export const AuthProvider = ({ children }: Props) => {
     <AuthContext.Provider
       value={{
         passport,
-        users,
         token,
         login,
         logout,
         authHandler,
         refetch,
-        context,
-        places,
+        role: activeContext.role,
+        userId: activeContext.role === 'user' ? activeContext?.userId : undefined,
+        placeId: activeContext.role === 'place' ? activeContext?.placeId : undefined,
         switchUser,
         switchTeacher,
         switchPlace,
@@ -284,19 +237,3 @@ export const AuthProvider = ({ children }: Props) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-
-const getTokenFromUrl = () => {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  const url = new URL(window.location.href);
-  const token = url.searchParams.get('access_token');
-
-  if (!token) return null;
-
-  url.searchParams.delete('access_token');
-  window.history.replaceState({}, document.title, url.toString());
-
-  return token;
-};

@@ -9,7 +9,7 @@ interface Props {
   onClose: () => void;
 }
 
-export function CreateProjectDialog({ open, onClose }: any) {
+export function CreateProjectDialog({ open, onClose }: Props) {
   const { form, setForm, onSubmit, loading } = useCreateProject();
 
   return (
@@ -17,13 +17,7 @@ export function CreateProjectDialog({ open, onClose }: any) {
       <DialogTitle>Создать проект</DialogTitle>
 
       <DialogContent sx={{ pt: 2 }}>
-        <ProjectForm
-          values={form}
-          onChange={setForm}
-          onSubmit={onSubmit}
-          loading={loading}
-          submitLabel="Создать проект"
-        />
+        <ProjectForm values={form} onChange={setForm} onSubmit={onSubmit} loading={loading} submitLabel="Создать проект" />
       </DialogContent>
     </Dialog>
   );

@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_STORAGE_KEY, getActiveContext } from './providers/AuthProvider.tsx';
+import { ACCESS_TOKEN_STORAGE_KEY, getActiveContext } from './providers/helper.ts';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 

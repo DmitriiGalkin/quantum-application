@@ -6,11 +6,11 @@ import { useAuth } from './providers/AuthProvider.tsx';
 import type { ActiveRole } from '@shared/types';
 
 export function PrivateLayout({ privateRole }: { privateRole: ActiveRole }) {
-  const { role, switchPlace, places } = useAuth();
+  const { role, switchPlace, passport } = useAuth();
 
   if (privateRole !== role && role !== 'guest') {
     if (privateRole === 'place') {
-      switchPlace(places[0]?.id ?? 0);
+      switchPlace(passport?.places[0]?.id ?? 0);
     }
   }
 

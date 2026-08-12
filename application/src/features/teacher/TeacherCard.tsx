@@ -17,7 +17,7 @@ type IdeaCardProps = {
 };
 
 function TeacherCard({ placeIdIn, teacher, refetch }: IdeaCardProps) {
-  const { role, placeId,  passport, places } = useAuth();
+  const { role, placeId,  passport } = useAuth();
   const removeTeacher = useMutation({
     mutationFn: () => fetchRemoveTeacher(placeIdIn, teacher.id),
     onSuccess: () => refetch?.(),
@@ -34,7 +34,7 @@ function TeacherCard({ placeIdIn, teacher, refetch }: IdeaCardProps) {
 
   const menuItems = [];
 
-  if (places.map(place => place.id).includes(placeIdIn) && role === 'teacher' && teacher.id === passport?.id) {
+  if (passport?.places.map(place => place.id).includes(placeIdIn) && role === 'teacher' && teacher.id === passport?.id) {
     menuItems.push({
       key: 'leave',
       label: 'Выйти из центра',

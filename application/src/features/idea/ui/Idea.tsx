@@ -59,7 +59,7 @@ const CREATE_PROJECT_TYPE = 'create-project-type';
 
 function Idea({ idea }: { idea: any }) {
   const queryClient = useQueryClient();
-  const { passport, authHandler, context } = useAuth();
+  const { passport, authHandler, role } = useAuth();
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const [isPlaceModalOpen, setPlaceModalOpen] = useState(false);

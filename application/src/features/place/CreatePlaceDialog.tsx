@@ -4,6 +4,11 @@ import DialogContent from "@mui/material/DialogContent";
 import PlaceForm from './PlaceForm.tsx';
 import { useCreatePlace } from './hooks/useCreatePlace.ts';
 
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
+
 export function CreatePlaceDialog({ open, onClose }: Props) {
   const { form, setForm, onSubmit, loading } = useCreatePlace();
 
