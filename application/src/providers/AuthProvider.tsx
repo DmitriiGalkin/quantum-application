@@ -52,20 +52,25 @@ export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  const [activeContext, setActiveContext] = useState<ActiveContext>(() => {
+  const [activeContext, setActiveContext] = useState<ActiveContext>({
+    role: 'guest',
+  });
+
+  const [isContextInitialized, setIsContextInitialized] = useState(false);
+
+  useEffect(() => {
     const stored = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
 
-    if (!stored) {
-      return { role: 'guest' };
+    if (stored) {
+      try {
+        setActiveContext(JSON.parse(stored) as ActiveContext);
+      } catch {
+        localStorage.removeItem(ACTIVE_CONTEXT_STORAGE_KEY);
+      }
     }
 
-    try {
-      return JSON.parse(stored);
-    } catch {
-      localStorage.removeItem(ACTIVE_CONTEXT_STORAGE_KEY);
-      return { role: 'guest' };
-    }
-  });
+    setIsContextInitialized(true);
+  }, []);
 
   const [passport, setPassport] = useState<PassportExtendedDto | null>(null);
   const [redirect, setRedirect] = useState('');
@@ -93,20 +98,20 @@ export const AuthProvider = ({ children }: Props) => {
   }, [location]);
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || !isContextInitialized) return;
 
     setPassport(data);
 
-    const storedContext = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
+    const stored = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
 
-    if (!storedContext) {
+    if (!stored) {
       const defaultContext = getContext(data);
 
       setActiveContext(defaultContext);
 
       localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(defaultContext));
     }
-  }, [data]);
+  }, [data, isContextInitialized]);
 
   useEffect(() => {
     const handler = () => {

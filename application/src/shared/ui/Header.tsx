@@ -180,20 +180,6 @@ function Header() {
 
                   <Divider />
 
-                  {/* Профиль */}
-                  <MenuItem
-                    onClick={() => {
-                      handleAccountMenuClose();
-                      // navigate('/profile');
-                    }}
-                  >
-                    <ListItemIcon>
-                      <AccountCircleIcon />
-                    </ListItemIcon>
-
-                    <ListItemText primary="Профиль" />
-                  </MenuItem>
-
                   {/* Выход */}
                   <MenuItem
                     onClick={() => {
