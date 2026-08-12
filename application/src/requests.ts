@@ -5,7 +5,7 @@ import {
   type ConversationWithMessage,
   type CreateChatBody,
   type CreateIdea,
-  type CreateIdeaUser,
+  type CreateIdeaUser, type CreateLocation,
   type CreateMeet,
   type CreateMeetUser,
   type CreateMessageDto,
@@ -17,7 +17,7 @@ import {
   type GetIdeasQuery,
   type GetMeetsQuery,
   type IdeaExtendedDto,
-  type IdeaFullDto,
+  type IdeaFullDto, type LocationDto,
   type MeetDto,
   type MeetExtendedDto,
   type MeetStatus,
@@ -77,11 +77,13 @@ export const fetchCreatePlace = (params: CreatePlace) => post<number>('/place', 
 export const fetchUpdatePlace = (id: number, params: PlaceFormValues) => put<void>(`/place/${id}`, params);
 export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { passportId });
 export const fetchAddTeacher2 = (params: { passportId: number; placeId: number }) => post<number>(`/place/${params.placeId}/teacher`, params);
+export const fetchCreateLocation = (params: CreateLocation) => post<number>('/place/location', params);
 export const fetchPlaceDashboard = () => get<PlaceDashboardDto>(`/place/dashboard`);
 export const fetchPlaceTeachers = () => get<TeacherDto[]>(`/place/teachers`);
 export const fetchPlaceProjects = () => get<ProjectFullDto[]>(`/place/projects`);
 export const fetchPlaceMeets = (params?: GetMeetsQuery) => get<MeetExtendedDto[]>(`/place/meets${toQuery(params)}`);
 export const fetchPlaceUsers = () => get<UserDto[]>(`/place/users`);
+export const fetchPlaceLocations = () => get<LocationDto[]>(`/place/locations`);
 export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<void>(`/place/${placeId}/teacher/${passportId}`);
 export const fetchLeavePlace = (id: number) => del<void>(`/place/${id}/leave`);
 

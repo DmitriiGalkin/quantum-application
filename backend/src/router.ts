@@ -19,6 +19,7 @@ import chat from './controllers/chat.controller.js';
 import strategies from './strategies.js';
 import { ControllerWithAuth } from './controllers/helper.js';
 import placeTeacherController from './controllers/placeTeacher.controller.js';
+import placeLocation from './controllers/placeLocation.controller.js';
 import paymentController from './controllers/payment.controller.js';
 import teacherController from './controllers/teacher.controller.js';
 import conversationController from './controllers/conversation.controller.js';
@@ -165,9 +166,11 @@ privateRouter.get('/place/projects', withAuth(project.findByPlaceId));
 privateRouter.get('/place/users', withAuth(teacherUserController.getPlaceUsers));
 privateRouter.get('/place/teachers', withAuth(placeTeacherController.findAll));
 privateRouter.get('/place/meets', withAuth(meet.getPlaceMeets));
+privateRouter.get('/place/locations', withAuth(placeLocation.findAll));
 
 publicRouter.get('/places', place.findAll);
 privateRouter.post('/place', withAuth(place.create));
+privateRouter.post('/place/location', withAuth(placeLocation.create));
 privateRouter.put('/place/:id', withAuth(place.update));
 publicRouter.get('/place/:id', place.findById);
 

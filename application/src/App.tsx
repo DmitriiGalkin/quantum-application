@@ -34,6 +34,8 @@ import TeachersPage from './pages/TeachersPage.tsx';
 import ChatPage from './pages/ChatPage.tsx';
 import UserHomePage from './pages/user/UserHomePage.tsx';
 import PlaceUsersPage from './pages/place/PlaceUsersPage.tsx';
+import PlaceLocationsPage from './pages/place/PlaceLocationsPage.tsx';
+import { PrivateLayout } from './PrivateLayout.tsx';
 
 function App() {
   return (
@@ -79,9 +81,10 @@ function App() {
       </Route>
 
       {/* Центр */}
-      <Route path="place" element={<AppLayout />}>
+      <Route path="place" element={<PrivateLayout role="place" />}>
         <Route index element={<PlaceDashboardPage />} />
         <Route path="teachers" element={<PlaceTeachersPage />} />
+        <Route path="locations" element={<PlaceLocationsPage />} />
         <Route path="projects" element={<PlaceProjectsPage />} />
         <Route path="users" element={<PlaceUsersPage />} />
         <Route path="meets" element={<PlaceMeetsPage />} />

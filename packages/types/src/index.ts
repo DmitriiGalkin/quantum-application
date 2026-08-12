@@ -432,10 +432,9 @@ export interface UpdateMessageRequest {
   content: string;
 }
 
-
 export interface UserDashboardDto {
   projects: ProjectExtendedDto[];
-};
+}
 
 export interface PlaceDashboardDto {
   place: PlaceDto;
@@ -449,4 +448,12 @@ export interface PlaceDashboardDto {
   };
   // meets: MeetDto[];
   //projects: ProjectExtendedDto[];
-};
+}
+
+export interface LocationDto {
+  title: string;
+}
+
+export interface CreateLocation {
+  title: string;
+}

@@ -113,6 +113,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
             <Stack spacing={3} sx={{ p: 2 }}>
               {places.map(place => (
                 <Stack
+                  key={place.id}
                   direction="row"
                   spacing={2}
                   sx={{

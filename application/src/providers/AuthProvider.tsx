@@ -102,6 +102,8 @@ export const AuthProvider = ({ children }: Props) => {
   const [places, setPlaces] = useState<PlaceDto[]>([]);
 
   const [activeContext, setActiveContext] = useState<ActiveContext>(getActiveContext);
+  console.log('activeContext', activeContext);
+
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');
   const availableRoles = ['user', 'teacher', 'place'] as ActiveRole[];
@@ -152,7 +154,7 @@ export const AuthProvider = ({ children }: Props) => {
     }
 
     return {
-      role: 'teacher' as ActiveRole,
+      role: 'guest' as ActiveRole,
     };
   };
 
@@ -174,6 +176,16 @@ export const AuthProvider = ({ children }: Props) => {
         }
 
         return newContext;
+      });
+    } else {
+      setActiveContext(context => {
+        if (context.role !== 'guest') {
+          return context;
+        }
+
+        return {
+          role: 'guest' as ActiveRole,
+        };
       });
     }
   }, [data]);
