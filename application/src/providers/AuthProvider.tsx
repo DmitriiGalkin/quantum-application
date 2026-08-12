@@ -95,14 +95,12 @@ export const AuthProvider = ({ children }: Props) => {
   const location = useLocation();
   const [token, setToken] = useState<string | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  //const [user, setUser] = useState<User | null>(null);
   const [activeTeacher, setActiveTeacher] = useState<boolean>(false);
 
   const [users, setUsers] = useState<User[]>([]);
   const [places, setPlaces] = useState<PlaceDto[]>([]);
 
   const [activeContext, setActiveContext] = useState<ActiveContext>(getActiveContext);
-  console.log('activeContext', activeContext);
 
   const [passport, setPassport] = useState<PassportDto | null>(null);
   const [redirect, setRedirect] = useState('');

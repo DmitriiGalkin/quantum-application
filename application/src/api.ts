@@ -8,8 +8,6 @@ const api = async function <T>(path: string, options: RequestInit = {}): Promise
   const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
   const activeContext = getActiveContext();
 
-  console.log(activeContext, 'activeContext');
-
   const response = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: {

@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import type { UserDto } from '@shared/types';
 import MenuButton from '../../components/MenuButton.tsx';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import { getImage } from '../../utils/helper.ts';
 
 type UserCardProps = {
   user: UserDto;
@@ -22,7 +23,7 @@ function UserCard({ user }: UserCardProps) {
   return (
     <Stack direction="row" spacing={2}>
       <Avatar
-        src={user.image ?? undefined}
+        src={(getImage(user.id) || user.image) ?? undefined}
         alt={user.title ?? 'Участник'}
         sx={{
           width: 64,
