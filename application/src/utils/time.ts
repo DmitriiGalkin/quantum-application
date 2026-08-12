@@ -31,3 +31,22 @@ export const getStartDateTime = (date: Date): number => {
   date.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня
   return date.getTime();
 };
+
+export function formatMoney(value: number): string {
+  const formatted = new Intl.NumberFormat('ru-RU').format(value);
+
+  const mod100 = Math.abs(value) % 100;
+  const mod10 = Math.abs(value) % 10;
+
+  let currency = 'рублей';
+
+  if (mod100 >= 11 && mod100 <= 19) {
+    currency = 'рублей';
+  } else if (mod10 === 1) {
+    currency = 'рубль';
+  } else if (mod10 >= 2 && mod10 <= 4) {
+    currency = 'рубля';
+  }
+
+  return `${formatted} ${currency}`;
+}

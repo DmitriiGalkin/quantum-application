@@ -30,7 +30,7 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
   const isMember = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
 
   const [form, setForm] = useState<ProjectFormValues>({
-    title: project.passport.title,
+    title: project.passport?.title || '',
     description: project.description || '',
     image: project.image ?? '',
     placeId: project.place.id,
@@ -88,18 +88,18 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
     <>
       <CardHeader
         avatar={
-          <Link to={`/teachers/${project.passport.id}`} style={{ textDecoration: 'none' }}>
-            <Avatar alt={project.passport.title} src={project.passport.image || ''}>
+          <Link to={`/teachers/${project.passport?.id}`} style={{ textDecoration: 'none' }}>
+            <Avatar alt={project.passport?.title} src={project.passport?.image || ''}>
               R
             </Avatar>
           </Link>
         }
         action={<MenuButton menuItems={menuItems} />}
         title={
-          <Link to={`/teachers/${project.passport.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link to={`/teachers/${project.passport?.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
               <Typography variant="subtitle1" component="span">
-                {project.passport.title}
+                {project.passport?.title}
               </Typography>
               <ArrowOutwardIcon fontSize="small" sx={{ opacity: 0.7 }} />
             </Stack>
@@ -130,7 +130,7 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
           </Stack>
         }
         sx={{
-          backgroundColor: project.passport.id === passport?.id ? 'rgba(255,160,40,.1)' : '#F8F9FB',
+          backgroundColor: project.passport?.id === passport?.id ? 'rgba(255,160,40,.1)' : '#F8F9FB',
           boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.1)',
 
           // Самое важное

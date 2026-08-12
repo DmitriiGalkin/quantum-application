@@ -1,7 +1,7 @@
 import { Card, CardActionArea, CardContent, Chip, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchPlace, fetchUpdatePlace } from '../../requests.ts';
+import { fetchPlaceDashboard, fetchUpdatePlace } from '../../requests.ts';
 import { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import type { PlaceScheduleDayDto } from '@shared/types';
 import { useAuth } from '../../providers/AuthProvider.tsx';
+import { formatMoney } from '../../utils/time.ts';
 
 export const DEFAULT_PLACE_SCHEDULE: PlaceScheduleDayDto[] = [
   { weekday: 1, enabled: true, startTime: '09:00', endTime: '21:00' },
@@ -27,13 +28,13 @@ export default function PlaceDashboardPage() {
   const id = activePlace?.id;
   const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
 
-  const { data: place, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['place', id],
-    queryFn: () => fetchPlace(Number(id)),
+    queryFn: fetchPlaceDashboard,
     enabled: Boolean(id),
   });
   const [values, setValues] = useState<PlaceFormValues | null>(null);
-
+  const place = data?.place;
 
   const updatePlace = useMutation({
     mutationFn: () => fetchUpdatePlace(Number(id), values!),
@@ -44,13 +45,8 @@ export default function PlaceDashboardPage() {
     },
   });
 
-  // TODO: заменить на useQuery(fetchPlaceDashboard)
-  const stats = {
-    teachers: 5,
-    projects: 12,
-    users: 86,
-    meets: 7,
-  };
+
+
 
 
   useEffect(() => {
@@ -68,10 +64,9 @@ export default function PlaceDashboardPage() {
     }
   }, [place, values]);
 
-  if (!place || !values) return null;
+  if (!place || !values || !data) return null;
 
-  const pendingPlaceCount = place.meets.filter(meet => meet.status === 'pending').length;
-
+  const stats = data.stats;
 
   return (
     <Stack spacing={3}>
@@ -110,9 +105,9 @@ export default function PlaceDashboardPage() {
               <Typography variant="h4">{stats.meets}</Typography>
 
               <Typography color="text.secondary">Встреч на неделе</Typography>
-              {pendingPlaceCount && (
+              {!!stats.pendingPlaceCount && (
                 <Stack sx={{ mt: 1 }}>
-                  <Chip icon={<PendingActionsIcon />} label={`${pendingPlaceCount} заявки на бронирование`} size="small" color="warning" />
+                  <Chip icon={<PendingActionsIcon />} label={`${stats.pendingPlaceCount} заявки на бронирование`} size="small" color="warning" />
                 </Stack>
               )}
             </CardContent>
@@ -132,7 +127,7 @@ export default function PlaceDashboardPage() {
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
             <CardContent>
-              <Typography variant="h4">210 000 рублей</Typography>
+              <Typography variant="h4">{formatMoney(stats.incoming)}</Typography>
 
               <Typography color="text.secondary">Приход от проектов</Typography>
             </CardContent>

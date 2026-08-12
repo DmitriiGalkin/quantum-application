@@ -31,8 +31,8 @@ import teacherUserController from './controllers/teacher-user.controller.js';
 const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
-const publicRouter = express.Router();
 const privateRouter = express.Router();
+const publicRouter = express.Router();
 
 const withAuth =
   <T>(controller: ControllerWithAuth<T>): RequestHandler =>
@@ -160,13 +160,16 @@ privateRouter.put('/meet/:id/status', withAuth(meet.updateStatus));
 privateRouter.post('/meetUser', withAuth(meetUser.create));
 privateRouter.delete('/meetUser', withAuth(meetUser.delete));
 
+privateRouter.get('/place/dashboard', withAuth(place.dashboard));
+privateRouter.get('/place/projects', withAuth(project.findByPlaceId));
+privateRouter.get('/place/users', withAuth(teacherUserController.getPlaceUsers));
+privateRouter.get('/place/teachers', withAuth(placeTeacherController.findAll));
+
 publicRouter.get('/places', place.findAll);
 privateRouter.post('/place', withAuth(place.create));
 privateRouter.put('/place/:id', withAuth(place.update));
 publicRouter.get('/place/:id', place.findById);
-privateRouter.get('/place/:id/projects', withAuth(project.findByPlaceId));
-privateRouter.get('/place/:id/teachers', withAuth(placeTeacherController.findAll));
-privateRouter.get('/place/:id/users', withAuth(teacherUserController.getPlaceUsers));
+
 privateRouter.post('/place/:id/teacher', withAuth(placeTeacherController.create));
 privateRouter.post('/place/teachers', withAuth(placeTeacherController.addTeacher));
 privateRouter.delete('/place/:id/teacher/:passportId', withAuth(placeTeacherController.remove));
@@ -194,8 +197,7 @@ privateRouter.get('/payment/:id', withAuth(paymentController.findById));
 privateRouter.post('/payment/robokassa/result', paymentController.result);
 
 
-
-router.use(publicRouter);
 router.use(privateRouter);
+router.use(publicRouter);
 
 export default router;

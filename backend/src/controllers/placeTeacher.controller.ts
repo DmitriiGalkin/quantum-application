@@ -32,7 +32,7 @@ const create: ControllerWithAuth<number, AddTeacherBody> = async (req, res) => {
 
 const findAll: ControllerWithAuth<number> = async (req, res) => {
   try {
-    const data = await PlaceTeacherService.findAll(Number(req.params.id!));
+    const data = await PlaceTeacherService.findAll(Number(req.viewer?.placeId!));
 
 
     ok(res, data);

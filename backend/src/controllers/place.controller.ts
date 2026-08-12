@@ -1,6 +1,6 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import { CreatePlace, type MeetExtendedDto, PlaceDto, PlaceUpdateDto } from '@shared/types';
+import { CreatePlace, type MeetExtendedDto, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from '@shared/types';
 import { MeetService } from '../services/meet.service.js';
 
 const findAll: Controller<PlaceDto[]> = async (_req, res) => {
@@ -37,7 +37,7 @@ const update: ControllerWithAuth<void, PlaceUpdateDto> = async (req, res) => {
 
 const findById: Controller<MeetExtendedDto> = async (req, res) => {
   try {
-    console.log('findById!!');
+    console.log('findById');
 
     const place = await PlaceService.findById(Number(req.params.id));
 
@@ -51,9 +51,25 @@ const findById: Controller<MeetExtendedDto> = async (req, res) => {
   }
 };
 
+const dashboard: ControllerWithAuth<PlaceDashboardDto> = async (req, res) => {
+  try {
+    console.log('dashboard');
+    const place = await PlaceService.getDashboard(Number(req.viewer?.placeId!));
+
+    if (!place) {
+      fail(res, 'Место не найдено', 404);
+    }
+
+    ok(res, place);
+  } catch (err) {
+    fail(res, 'Ошибка при получении dashboard');
+  }
+};
+
 export default {
   findAll,
   create,
   update,
   findById,
+  dashboard,
 };

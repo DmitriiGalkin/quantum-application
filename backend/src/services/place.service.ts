@@ -1,6 +1,6 @@
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
-import { CreatePlace, PlaceFullDto, PlaceUpdateDto } from '@shared/types';
+import { CreatePlace, PlaceDashboardDto, PlaceFullDto, PlaceUpdateDto } from '@shared/types';
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
 import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
 
@@ -47,7 +47,25 @@ export class PlaceService {
 
     const schedule = await PlaceScheduleRepository.findByPlaceId(id);
 
-    console.log(meets, 'meets');
     return { ...place, meets, schedule };
+  }
+
+  static async getDashboard(id: number): Promise<PlaceDashboardDto> {
+    const place = await PlaceRepository.findById(id);
+    if (!place) throw Error('Нет такого места');
+
+    const meets = await MeetRepository.findAll({ placeId: id });
+
+    return {
+      place,
+      stats: {
+        teachers: 5,
+        projects: 12,
+        users: 86,
+        meets: 7,
+        pendingPlaceCount: meets.filter(meet => meet.status === 'pending').length,
+        incoming: 210000,
+      },
+    };
   }
 }

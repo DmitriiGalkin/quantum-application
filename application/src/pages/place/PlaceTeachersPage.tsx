@@ -22,7 +22,7 @@ export default function PlaceTeachersPage() {
 
   const { data: teachers, refetch } = useQuery({
     queryKey: ['place-teachers', placeId],
-    queryFn: () => fetchPlaceTeachers(placeId),
+    queryFn: fetchPlaceTeachers,
   });
 
   const addTeacher = useMutation({

@@ -63,7 +63,7 @@ const findByPlaceId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
 
   const projects = await ProjectService.findAll({
     ...req.query,
-    placeId: Number(req.params?.id),
+    placeId: Number(req.viewer?.placeId),
   });
 
   ok(res, projects);

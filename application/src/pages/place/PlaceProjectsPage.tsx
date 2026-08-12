@@ -13,7 +13,7 @@ export default function PlaceProjectsPage() {
 
   const { data: projects = [], refetch } = useQuery({
     queryKey: ['place-projects', placeId],
-    queryFn: () => fetchPlaceProjects(2),
+    queryFn: fetchPlaceProjects,
   });
 
   return (

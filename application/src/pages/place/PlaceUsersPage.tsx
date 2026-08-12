@@ -1,9 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { fetchPlaceProjects, fetchPlaceUsers } from '../../requests.ts';
+import { fetchPlaceUsers } from '../../requests.ts';
 import { useAuth } from '../../providers/AuthProvider.tsx';
-import Projects from '../../features/project/ui/Projects.tsx';
-import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 import UserCard from '../../features/user/UserCard.tsx';
 
 export default function PlaceUsersPage() {
@@ -11,9 +9,9 @@ export default function PlaceUsersPage() {
   const id = activePlace?.id;
   const placeId = Number(id);
 
-  const { data: users = [], refetch } = useQuery({
+  const { data: users = [] } = useQuery({
     queryKey: ['place-users', placeId],
-    queryFn: () => fetchPlaceUsers(2),
+    queryFn: fetchPlaceUsers,
   });
 
   return (

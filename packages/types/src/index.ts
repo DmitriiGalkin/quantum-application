@@ -436,3 +436,17 @@ export interface UpdateMessageRequest {
 export interface UserDashboardDto {
   projects: ProjectExtendedDto[];
 };
+
+export interface PlaceDashboardDto {
+  place: PlaceDto;
+  stats: {
+    teachers: number;
+    projects: number;
+    users: number;
+    meets: number;
+    pendingPlaceCount: number;
+    incoming: number;
+  };
+  // meets: MeetDto[];
+  //projects: ProjectExtendedDto[];
+};
