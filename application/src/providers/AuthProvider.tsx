@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassport } from '../requests.ts';
-import type { ActiveRole, PassportDto, PassportExtendedDto, PlaceDto } from '@shared/types';
+import { type ActiveRole, type PassportDto, type PassportExtendedDto, type PlaceDto, type UserDto } from '@shared/types';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
@@ -14,29 +14,15 @@ import { AUTH_401_EVENT } from '../api.ts';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
-export const NEXT_STORAGE_KEY = 'next';
-export const ACTIVE_ROLE_STORAGE_KEY = 'active_role';
 export const ACTIVE_CONTEXT_STORAGE_KEY = 'active_context';
 
 const STRATEGIES = [
-  // {
-  //   title: 'Google',
-  //   href: `${API_URL}/login/google`,
-  //   icon: 'G',
-  // },
   {
     title: 'Yandex',
     href: `${API_URL}/login/yandex`,
     icon: 'Я',
   },
 ];
-
-type User = {
-  id: number;
-  title: string;
-  age: number | null;
-  image: string | null;
-};
 
 export interface ActiveContext {
   role: ActiveRole;
@@ -46,9 +32,9 @@ export interface ActiveContext {
 
 type AuthContextType = {
   passport: PassportDto | null;
-  activeUser: User | null;
+  activeUser: UserDto | null;
   activeTeacher: boolean;
-  users: User[];
+  users: UserDto[];
   places: PlaceDto[];
   activePlace: PlaceDto | null;
   token: string | null;
@@ -57,15 +43,13 @@ type AuthContextType = {
   strategies: typeof STRATEGIES;
   authHandler: (next2?: string) => void;
   refetch: () => void;
+
   activeContext: ActiveContext;
-
   switchUser: (userId: number) => void;
-
   switchTeacher: () => void;
-
   switchPlace: (placeId: number) => void;
-  availableRoles: ActiveRole[];
 
+  availableRoles: ActiveRole[];
   isPending: boolean;
 };
 
@@ -97,7 +81,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [activeTeacher, setActiveTeacher] = useState<boolean>(false);
 
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserDto[]>([]);
   const [places, setPlaces] = useState<PlaceDto[]>([]);
 
   const [activeContext, setActiveContext] = useState<ActiveContext>(getActiveContext);

@@ -32,11 +32,11 @@ type Props = {
 function ProjectCard({ project, refetch, withoutIdea }: Props) {
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
-  const { activeUser, passport, authHandler, refetch: refetchPassport, activeContext } = useAuth();
+  const { passport, authHandler, refetch: refetchPassport, activeContext } = useAuth();
   const [isUserModalOpen, setUserModalOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false); // Добавлено состояние
 
-  const isMember = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
+  const isMember = activeContext?.userId && project.users?.map(user => user.id).includes(activeContext.userId);
   const sortedMeets = [...project.meets].sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
   const now = new Date();
 
@@ -78,7 +78,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
     e.stopPropagation();
     e.preventDefault();
 
-    if (!activeUser) {
+    if (!activeContext?.userId) {
       setAction({
         type: CREATE_PROJECT_USER_TYPE,
         payload: { projectId: project.id },
@@ -87,7 +87,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
       return authHandler();
     }
 
-    mutationLike.mutate({ userId: activeUser.id, projectId: project.id });
+    mutationLike.mutate({ userId: activeContext?.userId, projectId: project.id });
   };
 
   const handleUserCreate = (title: string) => {

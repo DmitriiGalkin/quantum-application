@@ -8,11 +8,8 @@ import Projects from '../../features/project/ui/Projects.tsx';
 import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function UserProjectsPage() {
-  const { activeUser } = useAuth();
+  const { activeContext } = useAuth();
   const filter = useFilters();
-
-  const id = activeUser?.id;
-  const userId = id ? Number(id) : undefined;
 
   const {
     data: projects = [],
@@ -20,8 +17,8 @@ function UserProjectsPage() {
     isError: isProjectsError,
     refetch,
   } = useQuery({
-    queryKey: ['projects', userId],
-    queryFn: () => fetchUserProjects(userId!),
+    queryKey: ['projects', activeContext?.userId],
+    queryFn: fetchUserProjects,
   });
 
   return (

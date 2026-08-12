@@ -43,7 +43,7 @@ const findAll: Controller<ProjectDto[]> = async (req, res) => {
 const findByUserId: ControllerWithAuth<ProjectFullDto[]> = async (req, res) => {
   const projects = await ProjectService.findAll({
     ...req.query,
-    userId: req.params.id,
+    userId: req.viewer?.userId,
   });
 
   ok(res, projects);

@@ -4,7 +4,12 @@ import DialogContent from "@mui/material/DialogContent";
 import IdeaForm from "./IdeaForm.tsx";
 import {useCreateIdea} from "../hooks/useCreateIdea.ts";
 
-export function CreateIdeaDialog({ open, onClose }: any) {
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
+
+export function CreateIdeaDialog({ open, onClose }: Props) {
     const { form, setForm, onSubmit, loading } = useCreateIdea();
 
   return (

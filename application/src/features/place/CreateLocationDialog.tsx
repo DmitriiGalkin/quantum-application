@@ -4,7 +4,12 @@ import DialogContent from "@mui/material/DialogContent";
 import LocationForm from './LocationForm.tsx';
 import { useCreateLocation } from './hooks/useCreateLocation.ts';
 
-export function CreateLocationDialog({ open, onClose }: any) {
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
+
+export function CreateLocationDialog({ open, onClose }: Props) {
   const { form, setForm, onSubmit, loading } = useCreateLocation();
 
   return (

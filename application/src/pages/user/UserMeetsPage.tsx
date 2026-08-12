@@ -4,11 +4,10 @@ import { useAuth } from '../../providers/AuthProvider.tsx';
 import Meets from '../../features/meets/Meets.tsx';
 
 export default function UserMeetsPage() {
-  const { activeUser } = useAuth();
+  const { activeContext} = useAuth();
   const { data: meets, refetch } = useQuery({
-    queryKey: ['meets', activeUser?.id],
-    queryFn: () => fetchMeets({ userId: activeUser?.id || 0 }),
-    enabled: !!activeUser?.id,
+    queryKey: ['meets', activeContext?.userId],
+    queryFn: fetchMeets,
   });
 
   if (!meets) return null;

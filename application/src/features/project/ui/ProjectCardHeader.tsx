@@ -25,9 +25,9 @@ type Props = {
 };
 
 function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props) {
-  const { activeUser, authHandler, activeContext, passport } = useAuth();
+  const { authHandler, activeContext, passport } = useAuth();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const isMember = activeUser && project.users?.map(user => user.id).includes(activeUser.id);
+  const isMember = activeContext?.role === 'user' && activeContext?.userId && project.users?.map(user => user.id).includes(activeContext.userId);
 
   const [form, setForm] = useState<ProjectFormValues>({
     title: project.passport?.title || '',
@@ -55,7 +55,7 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
   const menuItems = [];
 
   const onLeave = () => {
-    if (activeUser) mutationLeave.mutate(project.id);
+    if (activeContext?.userId) mutationLeave.mutate(project.id);
     else authHandler();
   };
 

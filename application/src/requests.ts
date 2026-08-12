@@ -42,7 +42,7 @@ import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas${toQuery(params)}`);
 export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaFullDto>(`/idea/${id}${toQuery(params)}`);
 export const fetchCreateIdea = (params: CreateIdea) => post<number>('/idea', params);
-export const fetchUserIdeas = (userId: number) => get<IdeaExtendedDto[]>(`/user/${userId}/ideas`);
+export const fetchUserIdeas = () => get<IdeaExtendedDto[]>(`/user/ideas`);
 export const fetchTeacherIdeas = () => get<IdeaExtendedDto[]>('/teacher/ideas');
 export const generateImage = (ideaId: number) => post<void>(`/idea/${ideaId}/generateImage`, {});
 export const fetchLike = (params: CreateIdeaUser) => post<void>('/ideaUser', params);
@@ -56,12 +56,12 @@ export const fetchCreateChatMessages = (chatId: number, messages: CreateMessageD
 export const fetchProject = (id: string) => get<ProjectFullDto>(`/project/${id}`);
 export const fetchCreateProject = (params: CreateProject) => post<number>('/project', params);
 export const fetchUpdateProject = (id: number, params: CreateProject) => post<number>(`/project/${id}/update`, params);
-export const fetchUserProjects = (userId: number) => get<ProjectFullDto[]>(`/user/${userId}/projects`);
+export const fetchUserProjects = () => get<ProjectFullDto[]>(`/user/projects`);
 export const fetchPassportProjects = () => get<ProjectFullDto[]>('/passport/projects');
 export const fetchCreateProjectUser = (params: CreateProjectUser) => post<void>('/projectUser', params);
 export const fetchProjectLeave = (id: number) => del<void>(`/project/${id}/leave`);
 
-export const fetchMeets = (params: GetMeetsQuery) => get<MeetExtendedDto[]>(`/meets${toQuery(params)}`);
+export const fetchMeets = () => get<MeetExtendedDto[]>(`/user/meets`);
 export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
 export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);

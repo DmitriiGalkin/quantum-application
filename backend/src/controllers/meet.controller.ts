@@ -58,6 +58,16 @@ const findAll: Controller<MeetExtendedDto[]> = async (req, res) => {
   }
 };
 
+const findByUserId: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => {
+  try {
+    const meets = await MeetService.findAll({ userId: req.viewer?.userId });
+
+    ok(res, meets);
+  } catch (err) {
+    fail(res, 'Ошибка при получении приватного списка встреч ученика');
+  }
+};
+
 const findPassportAll: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
@@ -117,4 +127,5 @@ export default {
   findById,
   updateStatus,
   getPlaceMeets,
+  findByUserId,
 };

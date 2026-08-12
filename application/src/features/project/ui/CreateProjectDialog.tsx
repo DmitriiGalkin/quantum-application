@@ -4,6 +4,11 @@ import DialogContent from "@mui/material/DialogContent";
 import { useCreateProject } from "../hooks/useCreateProject";
 import ProjectForm from './ProjectForm.tsx';
 
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
+
 export function CreateProjectDialog({ open, onClose }: any) {
   const { form, setForm, onSubmit, loading } = useCreateProject();
 

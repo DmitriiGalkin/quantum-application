@@ -136,8 +136,9 @@ privateRouter.delete('/project/:id/leave', withAuth(projectUser.leave));
 
 privateRouter.get('/user/dashboard', withAuth(user.dashboard));
 privateRouter.post('/user', withAuth(user.create));
-privateRouter.get('/user/:id/ideas', withAuth(idea.findByUserId));
-privateRouter.get('/user/:id/projects', withAuth(project.findByUserId));
+privateRouter.get('/user/ideas', withAuth(idea.findByUserId));
+privateRouter.get('/user/meets', withAuth(meet.findByUserId));
+privateRouter.get('/user/projects', withAuth(project.findByUserId));
 privateRouter.put('/user/:id', withAuth(user.update));
 privateRouter.delete('/user/:id', withAuth(user.delete));
 publicRouter.get('/users/:id', user.findById);

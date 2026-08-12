@@ -19,7 +19,7 @@ const findAllPublic: Controller<IdeaExtendedDto[]> = async (req, res) => {
 
 const findByUserId: ControllerWithAuth<IdeaExtendedDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll({
-    userId: Number(req.params.id),
+    userId: Number(req.viewer?.userId),
   });
 
   ok(res, ideas.map(toIdeaExtendedDto));
