@@ -13,7 +13,6 @@ import { ListItemAvatar, Tab, Tabs } from '@mui/material';
 import { type SyntheticEvent, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import type { ActiveRole } from '@shared/types';
-import { useNavigate } from 'react-router-dom';
 
 function a11yProps(index: ActiveRole) {
   return {
@@ -33,8 +32,7 @@ interface MenuProps {
 }
 
 function Menu2({ setIsMenuOpen }: MenuProps) {
-  const navigate = useNavigate();
-  const { passport, logout, role, userId, placeId, switchUser, switchTeacher, switchPlace } = useAuth();
+  const { passport, logout, role, userId, switchUser, switchPlace } = useAuth();
   const [value, setValue] = useState(role);
 
   const handleChange = (_: SyntheticEvent, newValue: ActiveRole) => {
@@ -60,8 +58,8 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
             label="Ученик"
             {...a11yProps('user')}
             onClick={() => {
-              switchUser(userId ?? passport?.users[0].id);
-              navigate(`/user`);
+              //switchUser(userId ?? passport?.users[0].id);
+              //navigate(`/user`);
             }}
           />
         )}
@@ -71,8 +69,8 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
             label="Учитель"
             {...a11yProps('teacher')}
             onClick={() => {
-              switchTeacher();
-              navigate(`/teacher`);
+              //switchTeacher();
+              //navigate(`/teacher`);
             }}
           />
         )}
@@ -82,14 +80,14 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
             label="Центр"
             {...a11yProps('place')}
             onClick={() => {
-              switchPlace(placeId ?? passport?.places[0].id);
-              navigate(`/place`);
+              //switchPlace(placeId ?? passport?.places[0].id);
+              //navigate(`/place`);
             }}
           />
         )}
       </Tabs>
 
-      {role === 'user' && (
+      {value === 'user' && (
         <>
           {Boolean(passport?.users.length) && (
             <List disablePadding>
@@ -107,7 +105,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
         </>
       )}
 
-      {role === 'place' && (
+      {value === 'place' && (
         <>
           {Boolean(passport?.places.length) && (
             <Stack spacing={3} sx={{ p: 2 }}>
@@ -141,7 +139,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
         </>
       )}
 
-      {role === 'teacher' && (
+      {value === 'teacher' && (
         <Stack spacing={3} sx={{ p: 2 }}>
           <Stack
             direction="row"

@@ -7,12 +7,16 @@ import ListItemText from '@mui/material/ListItemText';
 import '../../App.css';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import FolderIcon from '@mui/icons-material/Folder';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import AddIcon from '@mui/icons-material/Add';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import Toolbar from '@mui/material/Toolbar';
 import { Divider, Stack, Typography } from '@mui/material';
+import SchoolIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
+import DomainIcon from '@mui/icons-material/Domain';
+import PersonIcon from '@mui/icons-material/Person';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 type MenuItemConfig = {
   label: string;
@@ -47,7 +51,7 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
           {
             label: 'Проекты',
             to: `/projects`,
-            icon: <AssignmentIcon />,
+            icon: <WorkIcon />,
           },
         ],
       },
@@ -58,21 +62,22 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
           {
             label: 'Главная',
             to: `/user`,
-          },
-          {
-            label: 'Мои идеи',
-            to: `/user/ideas`,
-            icon: <LightbulbIcon />,
-          },
-          {
-            label: 'Мои проекты',
-            to: `/user/projects`,
-            icon: <AssignmentIcon />,
+            icon: <DashboardIcon />,
           },
           {
             label: 'Мои встречи',
             to: `/user/meets`,
             icon: <CalendarMonthIcon />,
+          },
+          {
+            label: 'Мои проекты',
+            to: `/user/projects`,
+            icon: <WorkIcon />,
+          },
+          {
+            label: 'Мои идеи',
+            to: `/user/ideas`,
+            icon: <LightbulbIcon />,
           },
         ],
       },
@@ -83,7 +88,7 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
           {
             label: 'Дашборд',
             to: '/teacher',
-            icon: <AssignmentIcon />,
+            icon: <DashboardIcon />,
           },
           {
             label: 'Встречи',
@@ -93,7 +98,7 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
           {
             label: 'Проекты',
             to: '/teacher/projects',
-            icon: <FolderIcon />,
+            icon: <WorkIcon />,
           },
         ],
       },
@@ -118,7 +123,7 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
           {
             label: 'Дашборд',
             to: `/place`,
-            icon: <AssignmentIcon />,
+            icon: <DashboardIcon />,
           },
           {
             label: 'Расписание',
@@ -128,12 +133,12 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
           {
             label: 'Проекты',
             to: `/place/projects`,
-            icon: <FolderIcon />,
+            icon: <WorkIcon />,
           },
           {
             label: 'Ученики',
             to: `/place/users`,
-            icon: <FolderIcon />,
+            icon: <PersonIcon />,
           },
         ],
       },
@@ -143,12 +148,12 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
           {
             label: 'Учителя',
             to: `/place/teachers`,
-            icon: <AddIcon />,
+            icon: <SchoolIcon />,
           },
           {
             label: 'Помещения',
             to: `/place/locations`,
-            icon: <AddIcon />,
+            icon: <DomainIcon />,
           },
         ],
       },
@@ -158,12 +163,12 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
           {
             label: 'Поступления',
             to: `/place/billing`,
-            icon: <AssignmentIcon />,
+            icon: <PaymentsIcon />,
           },
           {
             label: 'Статистика',
             to: `/place/stats`,
-            icon: <FolderIcon />,
+            icon: <BarChartIcon />,
           },
         ],
       },

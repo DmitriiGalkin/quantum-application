@@ -2,11 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { fetchPlaceLocations } from '../../requests.ts';
-import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import IconButton from '@mui/material/IconButton';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import LocationCard from '../../features/place/LocationCard.tsx';
 import { CreateLocationDialog } from '../../features/place/CreateLocationDialog.tsx';
+import DomainAddIcon from '@mui/icons-material/DomainAdd';
+
 
 export default function PlaceLocationsPage() {
   const { placeId } = useAuth();
@@ -26,7 +27,7 @@ export default function PlaceLocationsPage() {
           </Typography>
 
           <IconButton aria-label="Сгенерировать обложку" onClick={() => setOpen(true)}>
-            <AddBusinessIcon sx={{ color: 'white' }} />
+            <DomainAddIcon sx={{ color: 'white' }} />
           </IconButton>
         </Stack>
 
