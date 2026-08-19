@@ -9,14 +9,10 @@ pipeline {
     }
 
     environment {
-        CONTAINER_NAME = 'quantum-application'
-        APPLICATION_NAME = 'application'
-        BACKEND_NAME = 'backend'
+        CONTAINER_NAME = 'quantum'
         NODE_IMAGE = 'node:latest'
-        APP_DIR = 'application'
         APP_PORT = '443'
         HOST_PORT = '443'
-        BACKEND_DIR = 'backend'
     }
 
     stages {
@@ -41,21 +37,23 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                                checkout scm
+                checkout scm
 
-                                withCredentials([file(credentialsId: 'quantum-env-file', variable: 'ENV_FILE')]) {
-                                    sh '''
-                                      cp "$ENV_FILE" "$WORKSPACE/.env"
-                                      chmod 600 "$WORKSPACE/.env"
-                                    '''
-                                }
+                withCredentials([
+                    file(credentialsId: 'quantum-env-file', variable: 'ENV_FILE')
+                ]) {
+                    sh '''
+                      cp "$ENV_FILE" "$WORKSPACE/.env"
+                      chmod 600 "$WORKSPACE/.env"
+                    '''
+                }
 
-                                sh '''
-                                  set -eux
-                                  git rev-parse --short HEAD
-                                  git log -1 --oneline
-                                '''
-                            }
+                sh '''
+                  set -eux
+                  git rev-parse --short HEAD
+                  git log -1 --oneline
+                '''
+            }
         }
 
         stage('Pull Node image') {
@@ -80,7 +78,7 @@ pipeline {
                     -v "$WORKSPACE:/workspace" \
                     -w /workspace \
                     "$NODE_IMAGE" \
-                    sh -lc "cd application && npm ci --include=dev && npm run build:production  && cd ../backend && npm ci --include=dev && npm run build && test -f dist/index.js"
+                    sh -lc "npm ci --include=dev && npm run build:production"
                 '''
             }
         }
@@ -92,20 +90,20 @@ pipeline {
 
                   docker rm -f "$CONTAINER_NAME" || true
 
-                    docker run -d \
-                      --name "$CONTAINER_NAME" \
-                      --restart unless-stopped \
-                      -p "$HOST_PORT:$APP_PORT" \
-                      -p "4000:4000" \
-                      --env-file "$WORKSPACE/.env" \
-                      -e HOME=/tmp \
-                      -e npm_config_cache=/tmp/.npm \
-                      -e PM2_LOG_TRANSPORT=console \
-                      -v "$WORKSPACE:/workspace" \
-                      -v "/etc/ssl/quantum:/run/secrets/ssl:ro" \
-                      -w /workspace \
-                      "$NODE_IMAGE" \
-                          sh -lc "npm install -g pm2 && npx pm2-runtime ecosystem.config.mjs"
+                  docker run -d \
+                    --name "$CONTAINER_NAME" \
+                    --restart unless-stopped \
+                    -p "$HOST_PORT:$APP_PORT" \
+                    -p "4000:4000" \
+                    --env-file "$WORKSPACE/.env" \
+                    -e HOME=/tmp \
+                    -e npm_config_cache=/tmp/.npm \
+                    -e PM2_LOG_TRANSPORT=console \
+                    -v "$WORKSPACE:/workspace" \
+                    -v "/etc/ssl/quantum:/run/secrets/ssl:ro" \
+                    -w /workspace \
+                    "$NODE_IMAGE" \
+                    sh -lc "npm install -g pm2 && pm2-runtime ecosystem.config.mjs"
 
                   sleep 5
 
@@ -114,13 +112,18 @@ pipeline {
                   echo "Container logs:"
                   docker logs "$CONTAINER_NAME" --tail 100
 
-                    echo "Healthcheck:"
-                      if ! curl -sSf --resolve q3-dev.ru:443:127.0.0.1 "https://q3-dev.ru" | head -n 20; then
-                        echo "Healthcheck failed. Container logs:"
-                        docker logs "$CONTAINER_NAME" --tail 300 || true
-                        exit 1
-                      fi
-                      '''
+                  echo "Healthcheck:"
+
+                  if ! curl -sSf \
+                    --resolve q3-dev.ru:443:127.0.0.1 \
+                    "https://q3-dev.ru" | head -n 20; then
+
+                    echo "Healthcheck failed. Container logs:"
+                    docker logs "$CONTAINER_NAME" --tail 300 || true
+
+                    exit 1
+                  fi
+                '''
             }
         }
     }
