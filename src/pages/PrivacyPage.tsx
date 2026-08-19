@@ -18,7 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useMemo } from 'react';
-import { Section } from '../shared/ui/Section.tsx';
+import { Section } from 'components/Section.tsx';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 type SectionType = 'data' | 'usage' | 'cookies' | 'services' | 'security' | 'retention' | 'rights' | 'ai' | 'contact';

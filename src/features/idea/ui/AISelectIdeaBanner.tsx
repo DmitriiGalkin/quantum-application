@@ -1,4 +1,4 @@
-import AIBanner from '../../../shared/ui/AiBanner.tsx';
+import AIBanner from 'components/AiBanner.tsx';
 import { useNavigate } from 'react-router-dom';
 
 export default function AISelectIdeaBanner() {

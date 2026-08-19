@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
-import Title from '../../shared/ui/Title.tsx';
+import Title from 'components/Title.tsx';
 
 function IdeasPage() {
   const { userId } = useAuth();

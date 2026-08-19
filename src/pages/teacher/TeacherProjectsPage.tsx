@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassportProjects } from '../../requests.ts';
-import CreateProjectBlock from '../../shared/ui/CreateProjectBlock.tsx';
+import CreateProjectBlock from 'components/CreateProjectBlock.tsx';
 import Button from '@mui/material/Button';
 import AISelectIdeaBanner from '../../features/idea/ui/AISelectIdeaBanner.tsx';
 import { CreateProjectDialog } from '../../features/project/ui/CreateProjectDialog.tsx';

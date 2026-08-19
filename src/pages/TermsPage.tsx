@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Section } from '../shared/ui/Section.tsx';
+import { Section } from 'components/Section.tsx';
 
 const sections = [
   {

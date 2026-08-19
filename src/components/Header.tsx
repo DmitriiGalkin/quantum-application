@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import '../../App.css';
+import '../App.css';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate } from 'react-router-dom';
 import KeyIcon from '@mui/icons-material/Key';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from 'providers/AuthProvider.tsx';
 import MenuIcon from '@mui/icons-material/Menu';
 import SchoolIcon from '@mui/icons-material/School';
 import PersonIcon from '@mui/icons-material/Person';
@@ -72,7 +72,7 @@ function Header() {
                 color: 'white',
               }}
             >
-              Quantum
+              Quantum 2
             </Typography>
           </Link>
 

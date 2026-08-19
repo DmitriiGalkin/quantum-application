@@ -3,7 +3,7 @@ import { type ProjectExtendedDto, type ProjectFullDto } from 'dto';
 import Filter from '../../idea/ui/Filter.tsx';
 import ProjectGrids from './ProjectGrids.tsx';
 import type { FilterProps } from '../../idea/hooks/useFilters.ts';
-import Title from '../../../shared/ui/Title.tsx';
+import Title from 'components/Title.tsx';
 import ProjectGroups from './ProjectGroups.tsx'; // Добавлен импорт
 
 type Props = {

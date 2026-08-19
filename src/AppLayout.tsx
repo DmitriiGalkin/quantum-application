@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import Header from './shared/ui/Header.tsx';
-import { Footer } from './shared/ui/Footer2.tsx';
+import Header from 'components/Header.tsx';
+import { Footer } from 'components/Footer2.tsx';
 
 export function AppLayout({ withoutPaddings }: { withoutPaddings?: boolean }) {
   return (

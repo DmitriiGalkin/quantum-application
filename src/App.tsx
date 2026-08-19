@@ -10,7 +10,7 @@ import ProjectPage from './pages/project/ProjectPage.tsx';
 import TeacherProjectsPage from './pages/teacher/TeacherProjectsPage.tsx';
 import UserIdeasPage from './pages/user/UserIdeasPage.tsx';
 import UserProjectsPage from './pages/user/UserProjectsPage.tsx';
-import NotFound from './shared/ui/NotFound.tsx';
+import NotFound from 'components/NotFound.tsx';
 import TeacherMeetsPage from './pages/teacher/TeacherMeetsPage.tsx';
 import TeacherIdeasPage from './pages/teacher/TeacherIdeasPage.tsx';
 import UserMeetsPage from './pages/user/UserMeetsPage.tsx';

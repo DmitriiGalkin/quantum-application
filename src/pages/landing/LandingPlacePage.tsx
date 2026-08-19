@@ -8,8 +8,8 @@ import { Box, Button, Card, CardContent, Chip, Container, Grid, Stack, Typograph
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
-import Hero from '../../shared/ui/Hero.tsx';
-import { FeatureCard } from '../../shared/ui/FeatureCard.tsx';
+import Hero from 'components/Hero.tsx';
+import { FeatureCard } from 'components/FeatureCard.tsx';
 import { useState } from 'react';
 import { CreatePlaceDialog } from '../../features/place/CreatePlaceDialog.tsx';
 

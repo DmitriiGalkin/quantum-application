@@ -9,7 +9,7 @@ import ChatDialog from '../components/ChatDialog';
 import Projects from '../features/project/ui/Projects.tsx';
 import { useFilters } from '../features/idea/hooks/useFilters.ts';
 import IdeaGrids from '../features/idea/ui/IdeaGrids.tsx';
-import Title from '../shared/ui/Title.tsx';
+import Title from 'components/Title.tsx';
 import PlaceCard from '../features/place/PlaceCard.tsx';
 
 const TeachersPage: React.FC = () => {

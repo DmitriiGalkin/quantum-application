@@ -7,7 +7,7 @@ import type { IdeaExtendedDto } from 'dto';
 import { CardActionArea } from '@mui/material';
 //import Like from './Like.tsx';
 import { useNavigate } from 'react-router-dom';
-//import { Author } from '../../../shared/ui/Author.tsx';
+//import { Author } from 'components/Author.tsx';
 
 type IdeaCardProps = {
   idea: IdeaExtendedDto;

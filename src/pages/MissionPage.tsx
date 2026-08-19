@@ -6,8 +6,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import SchoolIcon from '@mui/icons-material/School';
 import GroupsIcon from '@mui/icons-material/Groups';
-import Hero from '../shared/ui/Hero.tsx';
-import { FeatureCard } from '../shared/ui/FeatureCard.tsx';
+import Hero from 'components/Hero.tsx';
+import { FeatureCard } from 'components/FeatureCard.tsx';
 
 export default function MissionPage() {
   return (

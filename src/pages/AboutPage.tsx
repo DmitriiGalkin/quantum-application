@@ -5,8 +5,8 @@ import PsychologyIcon from '@mui/icons-material/Psychology';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import Hero from '../shared/ui/Hero.tsx';
-import { FeatureCard } from '../shared/ui/FeatureCard.tsx';
+import Hero from 'components/Hero.tsx';
+import { FeatureCard } from 'components/FeatureCard.tsx';
 
 export default function AboutPage() {
   return (
