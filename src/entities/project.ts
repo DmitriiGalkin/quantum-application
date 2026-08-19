@@ -1,8 +1,8 @@
-import { User } from './user.js';
-import { Passport } from './passport.js';
-import { Place } from './place.js';
-import { Idea } from './idea.js';
-import { FeedItem, MeetExtendedDto } from 'types';
+import type { User } from './user.js';
+import type { Passport } from './passport.js';
+import type { Place } from './place.js';
+import type { Idea } from './idea.js';
+import type { FeedItem, MeetExtendedDto } from 'types';
 
 export interface Project {
   id: number;

@@ -1,5 +1,5 @@
-import { User } from './user.js';
-import { type ProjectFullDto, Sort } from 'types';
+import type{ User } from './user.js';
+import type { ProjectFullDto, Sort } from 'types';
 
 export interface Idea {
   id: number;

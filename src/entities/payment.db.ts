@@ -1,6 +1,6 @@
-import { PaymentProvider, PaymentStatus } from './payment.types.js';
-import { RowDataPacket } from 'mysql2/promise';
-import { PaymentTargetType } from 'types';
+import type{ PaymentProvider, PaymentStatus } from './payment.types.js';
+import type { RowDataPacket } from 'mysql2/promise';
+import type{ PaymentTargetType } from 'types';
 
 export interface PaymentRow extends RowDataPacket {
   id: number;

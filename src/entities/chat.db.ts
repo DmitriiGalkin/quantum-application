@@ -1,6 +1,6 @@
-import { RowDataPacket } from 'mysql2/promise';
-import { Target } from 'types';
-import { Context } from '../services/chat/chat.meta.js';
+import type { RowDataPacket } from 'mysql2/promise';
+import type{ Target } from 'types';
+import type { Context } from '../services/chat/chat.meta.js';
 
 export interface ChatRow extends RowDataPacket {
   id: number;

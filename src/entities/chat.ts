@@ -1,5 +1,5 @@
-import { Target } from 'types';
-import { Context } from '../services/chat/chat.meta.js';
+import type { Target } from 'types';
+import type { Context } from '../services/chat/chat.meta.js';
 
 export interface Chat {
   id: number;

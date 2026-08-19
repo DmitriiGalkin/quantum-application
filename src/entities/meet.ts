@@ -1,4 +1,4 @@
-import { MeetStatus } from 'types';
+import type { MeetStatus } from 'types';
 
 export interface Meet {
   id: number;

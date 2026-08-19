@@ -1,5 +1,5 @@
-import { User } from './user.js';
-import { Place } from './place.js';
+import type { User } from './user.js';
+import type { Place } from './place.js';
 
 export interface Passport {
   id: number;

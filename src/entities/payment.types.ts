@@ -1,4 +1,4 @@
-import { PaymentTargetType } from 'types';
+import type { PaymentTargetType } from 'types';
 
 export type PaymentProvider = 'yookassa' | 'cloudpayments' | 'tbank' | 'stripe' | 'paypal' | 'robokassa';
 
