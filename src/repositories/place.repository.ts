@@ -4,9 +4,6 @@ import { toPlace } from '../mappers/place.mapper.js';
 import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
 import { PlaceRow } from '../entities/place.db.js';
 import { db } from '../dbNext.js';
-import { User } from '../entities/user.js';
-import { UserRow } from '../entities/user.db.js';
-import { mapUserRow } from '../mappers/user.mapper.js';
 
 class PlaceRepository {
   // ✅ CREATE

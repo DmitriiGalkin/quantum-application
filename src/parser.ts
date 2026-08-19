@@ -20,7 +20,7 @@ const items = data.items as {
 
 
 items.map(async (item) => {
-  const placeId = await PlaceRepository.create({
+   await PlaceRepository.create({
     provider: 'mos.ru',
     providerId: item.id,
     title: item.name,

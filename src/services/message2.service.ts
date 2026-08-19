@@ -1,5 +1,5 @@
 import Message2Repository from '../repositories/message2.repository.js';
-import { Message, CreateMessageRequest, UpdateMessageRequest } from 'dto';
+import type { CreateMessageRequest, Message, UpdateMessageRequest } from 'dto';
 
 export class Message2Service {
   static async create(conversationId: number, senderPassportId: number, request: CreateMessageRequest): Promise<Message> {

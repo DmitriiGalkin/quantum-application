@@ -11,7 +11,7 @@ import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import { ProjectUser } from '../entities/project-user.js';
 import { Place } from '../entities/place.js';
-import { CreateProject, type ProjectFullDto } from 'dto';
+import type { CreateProject, ProjectFullDto } from 'dto';
 import PaymentRepository from '../repositories/payment.repository.js';
 import { MeetService } from './meet.service.js';
 import { Viewer } from '../router.js';

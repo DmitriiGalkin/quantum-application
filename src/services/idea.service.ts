@@ -1,13 +1,10 @@
 import UserRepository from '../repositories/user.repository.js';
-import { GetIdeasQuery, PageMeta } from 'dto';
+import type { CreateIdea, GetIdeasQuery, PageMeta } from 'dto';
 import IdeaRepository from '../repositories/idea.repository.js';
-import IdeaUserRepository from '../repositories/idea-user.repository.js';
 import { generateIdeaImage, uploadImage } from './assistant/assistants/image.assistant.js';
 import { IdeaExtendedEntity, IdeaFullEntity } from '../entities/idea.js';
 import { User } from '../entities/user.js';
 import { ProjectService } from './project.service.js';
-import { Viewer } from '../router.js';
-import { CreateIdea } from 'dto';
 import { Passport } from '../entities/passport.js';
 
 export class IdeaService {
@@ -39,7 +36,7 @@ export class IdeaService {
     }));
   }
 
-  static async findById(id: number, params: GetIdeasQuery): Promise<IdeaFullEntity | null> {
+  static async findById(id: number): Promise<IdeaFullEntity | null> {
     const idea = await IdeaRepository.findById(id);
     if (!idea) return null;
 

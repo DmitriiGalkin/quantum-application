@@ -15,6 +15,7 @@ export class TeacherUserService {
   }
 
   static async findByPlaceId(passportId: number, placeId: number) {
+    console.log(passportId, 'passportId');
     const teachers = await PlacePassportRepository.findTeachers(placeId);
 
     const rows = await Promise.all(teachers.map(row => TeacherUserRepository.findByTeacherId(row.id)));

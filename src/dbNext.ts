@@ -1,4 +1,4 @@
-import mysql, { Pool, PoolConnection, QueryResult, ResultSetHeader } from 'mysql2/promise';
+import mysql, { type Pool, PoolConnection, type QueryResult, type ResultSetHeader } from 'mysql2/promise';
 
 const RETRY_ERRORS = [
     'PROTOCOL_CONNECTION_LOST',
@@ -6,8 +6,6 @@ const RETRY_ERRORS = [
     'ETIMEDOUT',
     'EPIPE',
 ];
-
-type QueryFn<T> = (conn: Pool | PoolConnection) => Promise<T>;
 
 export class DatabaseService {
   private pool: Pool;
@@ -96,7 +94,7 @@ export class DatabaseService {
   }
 
   // 📊 логирование запросов
-  private logQuery(sql: string, params: any, duration: number) {
+  private logQuery(_sql: string, _params: any, _duration: number) {
     //console.log('🟢 SQL:', sql);
     //if (params) console.log('📦 params:', params);
     //console.log('⏱ duration:', duration, 'ms');

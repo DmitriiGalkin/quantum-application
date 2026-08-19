@@ -1,7 +1,6 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
 import { CreatePlace, type MeetExtendedDto, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'dto';
-import { MeetService } from '../services/meet.service.js';
 
 const findAll: Controller<PlaceDto[]> = async (_req, res) => {
   try {

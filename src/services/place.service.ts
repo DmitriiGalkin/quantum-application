@@ -1,7 +1,6 @@
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
-import { CreatePlace, PlaceDashboardDto, PlaceFullDto, PlaceUpdateDto } from 'dto';
-import PlacePassportRepository from '../repositories/place-passport.repository.js';
+import type { CreatePlace, PlaceDashboardDto, PlaceFullDto, PlaceUpdateDto } from 'dto';
 import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
 
 export class PlaceService {
@@ -17,12 +16,12 @@ export class PlaceService {
   }
 
   static async create(passportId: number, data: CreatePlace) {
+    console.log(passportId, 'passportId');
     if (!data || Object.keys(data).length === 0) {
       throw new Error('EMPTY_PLACE');
     }
 
     const placeId = await PlaceRepository.create({ ...data });
-    const placePassportId = await PlacePassportRepository.create({ placeId, passportId, role: 'admin' as const });
 
     return placeId;
   }

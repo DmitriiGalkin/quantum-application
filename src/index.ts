@@ -36,7 +36,7 @@ app.use(
 app.use('/', router);
 
 // 5. Обработка ошибок 404
-app.use((req, res, next) => {
+app.use((_req, _res, next) => {
   next(createError(404));
 });
 

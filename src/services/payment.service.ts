@@ -1,14 +1,8 @@
 import PaymentRepository from '../repositories/payment.repository.js';
-import type { Payment, PaymentProvider } from '../entities/payment.types.js';
+import type { PaymentProvider } from '../entities/payment.types.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import RobokassaService from './robokassa.service.js';
-import { PaymentDto, PaymentTargetType } from 'dto';
-import PlaceRepository from '../repositories/place.repository.js';
-import { Place } from '../entities/place.js';
-import UserRepository from '../repositories/user.repository.js';
-import PassportRepository from '../repositories/passport.repository.js';
-import { Passport } from '../entities/passport.js';
-import ProjectUserRepository from '../repositories/project-user.repository.js';
+import type { PaymentDto, PaymentTargetType } from 'dto';
 
 interface CreatePaymentDto {
   passportId: number;

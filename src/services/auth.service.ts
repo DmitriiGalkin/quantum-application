@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 import PassportRepository from '../repositories/passport.repository.js';
 import UserRepository from '../repositories/user.repository.js';
-import { PassportExtendedDto } from 'dto';
-import PlacePassportRepository from '../repositories/place-passport.repository.js';
+import type { PassportExtendedDto } from 'dto';
 import PlaceRepository from '../repositories/place.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
 

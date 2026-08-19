@@ -4,10 +4,7 @@ import ProjectUserRepository from '../repositories/project-user.repository.js';
 import type { User } from '../entities/user.js';
 import type { Passport } from '../entities/passport.js';
 import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
-import { TeacherDashboardDto, UserDashboardDto } from 'dto';
-import ProjectRepository from '../repositories/project.repository.js';
-import MeetRepository from '../repositories/meet.repository.js';
-import { MeetService } from './meet.service.js';
+import type { UserDashboardDto } from 'dto';
 import { ProjectService } from './project.service.js';
 
 export class UserService {
@@ -58,7 +55,6 @@ export class UserService {
   }
 
   static async getDashboard(userId: number): Promise<UserDashboardDto> {
-    const user = await UserRepository.findById(userId);
     const projects = await ProjectService.findAll({
       userId,
     });

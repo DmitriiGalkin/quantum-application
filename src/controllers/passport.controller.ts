@@ -3,7 +3,6 @@ import { AuthService } from '../services/auth.service.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import { ActiveRole, PassportExtendedDto } from 'dto';
 import { Request, Response } from 'express';
-import { Passport } from '../entities/passport.js';
 
 const update: ControllerWithAuth<void> = async (req, res) => {
   try {

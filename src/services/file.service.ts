@@ -15,7 +15,7 @@ export class FileService {
     const form = new formidable.IncomingForm();
 
     const { files } = await new Promise<{ files: any }>((resolve, reject) => {
-      form.parse(req as any, (err, fields, files) => {
+      form.parse(req as any, (err, _, files) => {
         if (err) return reject(err);
         resolve({ files });
       });

@@ -7,7 +7,7 @@ const API_URL = process.env.VITE_API_URL || process.env.BACKEND_SERVER;
  * Основная функция для поиска или создания пользователя.
  * Теперь она async и использует try/catch для обработки ошибок.
  */
-async function findOrCreate(accessToken: string, refreshToken: string, profile: any, done: any) {
+async function findOrCreate(accessToken: string, _refreshToken: string, profile: any, done: any) {
   try {
     const email =
       profile.emails && profile.emails.length

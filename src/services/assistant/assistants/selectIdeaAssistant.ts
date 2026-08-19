@@ -47,7 +47,7 @@ export async function selectIdeaAssistant(messages: Message[], context: Context)
   return baseAssistantAnswer2({
     messages,
     prompt: getSystemPrompt(ideas, teacher),
-    schema: (data: ProjectAssistant) => true,
+    schema: () => true,
     transformer: (data: ProjectAssistant[]): Context => ({
       ...context,
       ideas: (data.map(projectAssistant => ideas.find(idea => idea.id === projectAssistant.id) || null).filter(Boolean)) as Idea[],

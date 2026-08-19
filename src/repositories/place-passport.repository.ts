@@ -1,5 +1,4 @@
 import { db } from '../dbNext.js';
-import { Teacher } from '../services/chat/chat.meta.js';
 
 class PlacePassportRepository {
   static async create(data: { placeId: number; passportId: number; role: 'admin' | 'teacher' }): Promise<number> {
