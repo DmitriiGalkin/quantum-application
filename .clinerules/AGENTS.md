@@ -16,10 +16,9 @@ Quantum — образовательная платформа, объединя�
 
 ---
 
-# Стек
+# Стек технологий
 
 ## Frontend
-
 - React
 - TypeScript
 - React Router
@@ -29,7 +28,6 @@ Quantum — образовательная платформа, объединя�
 - PWA
 
 ## Backend
-
 - Node.js
 - Express
 - TypeScript
