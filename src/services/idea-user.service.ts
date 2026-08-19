@@ -1,6 +1,6 @@
 import UserRepository from '../repositories/user.repository.js';
 import IdeaUserRepository from '../repositories/idea-user.repository.js';
-import { DeleteIdeaUser } from 'types';
+import { DeleteIdeaUser } from 'dto';
 
 export class IdeaUserService {
   static async create(passportId: number, body: any) {

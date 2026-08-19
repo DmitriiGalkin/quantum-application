@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { type MeetExtendedDto } from 'types';
+import { type MeetExtendedDto } from 'dto';
 import MeetCard from './MeetCard.tsx'; // Добавлен импорт
 
 type Props = {

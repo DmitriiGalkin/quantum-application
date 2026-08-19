@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { fetchUpdateMeet } from '../../../requests.ts';
 import type { MeetFormValues } from '../MeetForm.tsx';
-import type { MeetDto } from 'types';
+import type { MeetDto } from 'dto';
 
 export function useEditMeet(meet: MeetDto, onClose: () => void) {
   const [form, setForm] = useState<MeetFormValues>({

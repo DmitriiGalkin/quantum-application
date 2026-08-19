@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button, Card, CardActionArea, CardContent, Chip, IconButton, Stack } from '@mui/material';
-import { type ProjectExtendedDto } from 'types';
+import { type ProjectExtendedDto } from 'dto';
 import AvatarGroupUsers from '../../../shared/ui/AvatarGroupUsers.tsx';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';

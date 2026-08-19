@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { PlaceScheduleRow } from './PlaceScheduleRow';
-import type { PlaceScheduleDayDto } from 'types';
+import type { PlaceScheduleDayDto } from 'dto';
 
 type Props = {
   value: PlaceScheduleDayDto[];

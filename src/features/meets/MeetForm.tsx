@@ -2,7 +2,7 @@ import { Button, MenuItem, Stack, TextField } from '@mui/material';
 
 import MeetDateField from './MeetDateField.tsx';
 import MeetTimeField from './MeetTimeField.tsx';
-import type { PlaceScheduleDayDto } from 'types';
+import type { PlaceScheduleDayDto } from 'dto';
 
 export interface MeetFormValues {
   projectId: number;

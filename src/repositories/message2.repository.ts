@@ -1,5 +1,5 @@
 ﻿import { ResultSetHeader } from 'mysql2/promise';
-import { Message, UpdateMessageRequest } from 'types';
+import { Message, UpdateMessageRequest } from 'dto';
 import { db } from '../dbNext.js';
 
 class Message2Repository {

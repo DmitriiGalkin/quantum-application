@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import '../BaseMap.css';
-import type { PlaceFullDto } from 'types';
+import type { PlaceFullDto } from 'dto';
 
 interface Props {
   lat: number;

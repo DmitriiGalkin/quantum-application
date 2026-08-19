@@ -25,7 +25,7 @@ import teacherController from './controllers/teacher.controller.js';
 import conversationController from './controllers/conversation.controller.js';
 import message2Controller from './controllers/message2.controller.js';
 import { Passport } from './entities/passport.js';
-import { ActiveRole } from 'types';
+import { ActiveRole } from 'dto';
 import UserRepository from './repositories/user.repository.js';
 import teacherUserController from './controllers/teacher-user.controller.js';
 

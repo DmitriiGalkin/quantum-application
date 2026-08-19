@@ -1,5 +1,5 @@
 import { Link, Typography } from '@mui/material';
-import type { UserDto } from 'types';
+import type { UserDto } from 'dto';
 
 export const Author = ({ user }: { user: UserDto }) => {
     return (

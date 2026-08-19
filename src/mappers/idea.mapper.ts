@@ -1,4 +1,4 @@
-import { IdeaExtendedDto, IdeaFullDto } from 'types';
+import { IdeaExtendedDto, IdeaFullDto } from 'dto';
 import { Idea, IdeaExtendedEntity, IdeaFullEntity, IdeaWithLike } from '../entities/idea.js';
 import { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
 

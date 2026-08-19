@@ -1,4 +1,4 @@
-import type { MeetDto } from 'types';
+import type { MeetDto } from 'dto';
 
 export const statusConfig = {
   today: { label: 'Сегодня', color: 'success' as const },

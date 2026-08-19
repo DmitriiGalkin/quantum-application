@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack';
-import type { UserDto } from 'types';
+import type { UserDto } from 'dto';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import Avatar from '@mui/material/Avatar';
 import { getImage } from '../../utils/helper.ts';

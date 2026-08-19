@@ -1,5 +1,5 @@
 import Paper from '@mui/material/Paper';
-import type { MessageDto } from 'types';
+import type { MessageDto } from 'dto';
 import React from 'react';
 
 type ChatBubbleProps = {

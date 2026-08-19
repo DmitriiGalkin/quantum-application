@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import { StaticRouter } from 'react-router-dom';
-import type { PageMeta } from 'types';
+import type { PageMeta } from 'dto';
 import { AuthProvider } from './providers/AuthProvider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme/theme';

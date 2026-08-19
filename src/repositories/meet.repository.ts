@@ -4,7 +4,7 @@ import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import { Meet, MeetWithProjectTitle } from '../entities/meet.js';
 import { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
 import { db } from '../dbNext.js';
-import { GetMeetsQuery, MeetStatus } from 'types';
+import { GetMeetsQuery, MeetStatus } from 'dto';
 
 class MeetRepository {
   static async create(data: CreateMeetInput): Promise<number> {

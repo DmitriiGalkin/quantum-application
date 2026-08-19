@@ -8,7 +8,7 @@ import { MeetUser, MeetUserWithMeet } from '../entities/meet-user.js';
 
 import { MeetUserFull } from '../entities/meet-user.view.js';
 import { db } from '../dbNext.js';
-import { DeleteMeetUser } from 'types';
+import { DeleteMeetUser } from 'dto';
 
 class MeetUserRepository {
   // ✅ CREATE

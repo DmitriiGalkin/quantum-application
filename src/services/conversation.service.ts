@@ -1,7 +1,7 @@
 import ConversationRepository from '../repositories/conversation.repository.js';
 import Message2Repository from '../repositories/message2.repository.js';
 import { mapConversationRow } from '../mappers/conversation.mapper.js';
-import { Conversation, Message, StartConversationRequest, StartConversationResponse } from 'types';
+import { Conversation, Message, StartConversationRequest, StartConversationResponse } from 'dto';
 
 export class ConversationService {
   static async startConversation(request: StartConversationRequest): Promise<StartConversationResponse> {

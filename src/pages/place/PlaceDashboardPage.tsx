@@ -9,7 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.tsx';
 import EditIcon from '@mui/icons-material/Edit';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
-import type { PlaceScheduleDayDto } from 'types';
+import type { PlaceScheduleDayDto } from 'dto';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { formatMoney } from '../../utils/time.ts';
 

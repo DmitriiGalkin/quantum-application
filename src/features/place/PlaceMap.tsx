@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchPlaces } from '../../requests.ts';
 import { useEffect, useRef } from 'react';
 import { BaseMap, type MapContext } from './BaseMap.tsx';
-import type { PlaceDto } from 'types';
+import type { PlaceDto } from 'dto';
 import { createRoot } from 'react-dom/client';
 
 export interface PlaceMapProps {

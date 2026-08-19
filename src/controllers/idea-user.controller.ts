@@ -1,6 +1,6 @@
 import { ControllerWithAuth, fail, ok } from './helper.js';
 import { IdeaUserService } from '../services/idea-user.service.js';
-import { CreateIdeaUser, DeleteIdeaUser } from 'types';
+import { CreateIdeaUser, DeleteIdeaUser } from 'dto';
 
 const create: ControllerWithAuth<void, CreateIdeaUser> = async (req, res) => {
   try {

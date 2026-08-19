@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { UserDto } from 'types';
+import type { UserDto } from 'dto';
 import MenuButton from '../../components/MenuButton.tsx';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { getImage } from '../../utils/helper.ts';

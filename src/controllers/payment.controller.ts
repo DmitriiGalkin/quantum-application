@@ -3,7 +3,7 @@ import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { PaymentService } from '../services/payment.service.js';
 
 import { getPassportUserIds } from '../services/project-user.service.js';
-import { type MeetExtendedDto, PaymentCreateDto, PaymentCreateResponseDto, PaymentDto } from 'types';
+import { type MeetExtendedDto, PaymentCreateDto, PaymentCreateResponseDto, PaymentDto } from 'dto';
 import RobokassaService from '../services/robokassa.service.js';
 import { MeetService } from '../services/meet.service.js';
 

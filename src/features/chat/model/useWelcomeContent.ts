@@ -1,4 +1,4 @@
-import type { Target } from 'types';
+import type { Target } from 'dto';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 
 export const useWelcomeContent = (target: Target, ideaId?: number) => {

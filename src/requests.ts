@@ -34,7 +34,7 @@ import {
   type TeacherPublicDto,
   type UpdateMeet,
   type UserDashboardDto, type UserDto,
-} from 'types';
+} from 'dto';
 import { del, get, post, put, toQuery } from './api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 

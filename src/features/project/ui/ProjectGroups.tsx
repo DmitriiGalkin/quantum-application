@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { type IdeaDto, type ProjectFullDto } from 'types';
+import { type IdeaDto, type ProjectFullDto } from 'dto';
 import ProjectGrids from "./ProjectGrids";
 import { Button, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { groupProjectsByIdea } from '../../../utils/helper.ts';

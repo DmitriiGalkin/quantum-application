@@ -1,4 +1,4 @@
-import type { Target } from 'types';
+import type { Target } from 'dto';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';

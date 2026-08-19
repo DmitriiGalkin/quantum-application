@@ -14,7 +14,7 @@ import Share from '../../../shared/ui/Share.tsx';
 import { Author } from '../../../shared/ui/Author.tsx';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useNavigate } from 'react-router-dom';
-import type { PlaceDto } from 'types';
+import type { PlaceDto } from 'dto';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';

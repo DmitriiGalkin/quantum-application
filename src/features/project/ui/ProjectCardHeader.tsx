@@ -1,4 +1,4 @@
-import type { PlaceDto, ProjectExtendedDto } from 'types';
+import type { PlaceDto, ProjectExtendedDto } from 'dto';
 import { Avatar, CardHeader, Stack } from '@mui/material';
 import MenuButton from '../../../components/MenuButton.tsx';
 import { useState } from 'react';

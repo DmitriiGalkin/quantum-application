@@ -1,6 +1,6 @@
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
-import { CreatePlace, PlaceDashboardDto, PlaceFullDto, PlaceUpdateDto } from 'types';
+import { CreatePlace, PlaceDashboardDto, PlaceFullDto, PlaceUpdateDto } from 'dto';
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
 import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
 

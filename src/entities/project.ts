@@ -2,7 +2,7 @@ import type { User } from './user.js';
 import type { Passport } from './passport.js';
 import type { Place } from './place.js';
 import type { Idea } from './idea.js';
-import type { FeedItem, MeetExtendedDto } from 'types';
+import type { FeedItem, MeetExtendedDto } from 'dto';
 
 export interface Project {
   id: number;

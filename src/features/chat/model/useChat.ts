@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
-import { type ContextDto, type CreateMessageDto, type Target } from 'types';
+import { type ContextDto, type CreateMessageDto, type Target } from 'dto';
 import { fetchChat, fetchCreateChat, fetchCreateChatMessages } from '../../../requests.ts';
 import { useWelcomeContent } from './useWelcomeContent.ts';
 import { useParams, useSearchParams } from 'react-router-dom';

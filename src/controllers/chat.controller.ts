@@ -1,6 +1,6 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { ChatService } from '../services/chat/chat.service.js';
-import { CreateChatBody, type CreateChatMessages, MessageDto } from 'types';
+import { CreateChatBody, type CreateChatMessages, MessageDto } from 'dto';
 
 const create: ControllerWithAuth<number, CreateChatBody> = async (req, res) => {
   try {

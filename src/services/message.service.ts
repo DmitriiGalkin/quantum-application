@@ -1,5 +1,5 @@
 import MessageRepository from '../repositories/message.repository.js';
-import type { ChatMessagesResult, ContextDto, CreateMessage } from 'types';
+import type { ChatMessagesResult, ContextDto, CreateMessage } from 'dto';
 import ChatRepository from '../repositories/chat.repository.js';
 import { toMessageDto } from '../mappers/message.mapper.js';
 import { Passport } from '../entities/passport.js';

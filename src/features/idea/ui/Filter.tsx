@@ -1,6 +1,6 @@
 import Stack from '@mui/material/Stack';
 import { MenuItem, TextField } from '@mui/material';
-import type { Sort, View } from 'types';
+import type { Sort, View } from 'dto';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';

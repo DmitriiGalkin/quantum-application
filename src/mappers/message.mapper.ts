@@ -1,4 +1,4 @@
-import { MessageDto } from 'types';
+import { MessageDto } from 'dto';
 import { Message } from '../entities/message.js';
 import { MessageRow } from '../entities/message.db.js';
 

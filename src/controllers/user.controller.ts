@@ -1,7 +1,7 @@
 import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
 import { UserService } from '../services/user.service.js';
 import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
-import { TeacherDashboardDto, UserDashboardDto, UserDto } from 'types';
+import { TeacherDashboardDto, UserDashboardDto, UserDto } from 'dto';
 import { TeacherService } from '../services/teacher.service.js';
 
 const create: ControllerWithAuth<number> = async (req, res) => {

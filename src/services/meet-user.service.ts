@@ -1,7 +1,7 @@
 import Meet from '../repositories/meet.repository.js';
 import MeetUserRepository from '../repositories/meet-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
-import { CreateMeetUser, DeleteMeetUser } from 'types';
+import { CreateMeetUser, DeleteMeetUser } from 'dto';
 
 export class MeetUserService {
   static async create(passportId: number, body: CreateMeetUser) {

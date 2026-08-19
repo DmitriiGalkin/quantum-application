@@ -1,5 +1,5 @@
 import { Avatar, Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
-import type { FeedItem, PassportDto, UserDto } from 'types';
+import type { FeedItem, PassportDto, UserDto } from 'dto';
 import MeetCard from '../meets/MeetCard.tsx';
 
 export function Feed({ items, passport, refetch }: { items: FeedItem[]; passport: PassportDto; refetch: () => void }) {

@@ -1,5 +1,5 @@
 import UserRepository from '../repositories/user.repository.js';
-import { TeacherDashboardDto, TeacherPublicDto } from 'types';
+import { TeacherDashboardDto, TeacherPublicDto } from 'dto';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import { MeetService } from './meet.service.js';

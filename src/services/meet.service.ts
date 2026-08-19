@@ -1,5 +1,5 @@
 import { Passport } from '../entities/passport.js';
-import type { CreateMeet, GetMeetsQuery, MeetExtendedDto, MeetStatus } from 'types';
+import type { CreateMeet, GetMeetsQuery, MeetExtendedDto, MeetStatus } from 'dto';
 import type { UpdateMeetInput } from '../entities/meet.types.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { CreateMessageDto, Ui } from 'types';
+import type { CreateMessageDto, Ui } from 'dto';
 
 export const MESSAGE_AFTER_LOGIN_STORAGE_KEY = 'message_after_login';
 

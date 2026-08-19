@@ -1,6 +1,6 @@
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
-import type { TeacherDto } from 'types';
+import type { TeacherDto } from 'dto';
 import { Avatar, CardHeader, Stack } from '@mui/material';
 import MenuButton from '../../components/MenuButton';
 import PlaceIcon from '@mui/icons-material/Place';

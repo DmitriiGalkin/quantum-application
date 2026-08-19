@@ -1,5 +1,5 @@
 import PlaceLocationRepository from '../repositories/place-location.repository.js';
-import { CreateLocation } from 'types';
+import { CreateLocation } from 'dto';
 
 class PlaceLocationService {
   static async create(placeId: number, body: CreateLocation) {
