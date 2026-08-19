@@ -39,7 +39,6 @@ import PlaceLocationsPage from './pages/place/PlaceLocationsPage.tsx';
 function App() {
   return (
     <Routes>
-      {/* Общедоступная часть */}
       <Route element={<AppLayout />}>
         <Route index element={<IdeasPage />} />
         <Route path="chat" element={<ChatPageOld />} />
@@ -50,6 +49,36 @@ function App() {
         <Route path="teachers/:id" element={<TeachersPage />} />
         <Route path="places/:id" element={<div />} />
         <Route path="chats" element={<ChatPage />} />
+
+        <Route path="user">
+          <Route index element={<UserHomePage />} />
+          <Route path="ideas" element={<UserIdeasPage />} />
+          <Route path="projects" element={<UserProjectsPage />} />
+          <Route path="meets" element={<UserMeetsPage />} />
+        </Route>
+
+        <Route path="teacher">
+          <Route index element={<TeacherDashboardPage />} />
+          <Route path="projects" element={<TeacherProjectsPage />} />
+          <Route path="meets" element={<TeacherMeetsPage />} />
+          <Route path="ideas" element={<TeacherIdeasPage />} />
+          <Route path="userIdeas" element={<TeacherUserIdeasPage />} />
+        </Route>
+
+        <Route path="place">
+          <Route index element={<PlaceDashboardPage />} />
+          <Route path="teachers" element={<PlaceTeachersPage />} />
+          <Route path="locations" element={<PlaceLocationsPage />} />
+          <Route path="projects" element={<PlaceProjectsPage />} />
+          <Route path="users" element={<PlaceUsersPage />} />
+          <Route path="meets" element={<PlaceMeetsPage />} />
+          <Route path="invite" element={<PlaceInvitePage />} />
+        </Route>
+
+        <Route path="payment">
+          <Route path="success" element={<PaymentSuccessPage />} />
+          <Route path="fail" element={<PaymentFailPage />} />
+        </Route>
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
@@ -62,38 +91,6 @@ function App() {
         <Route path="terms" element={<TermsPage />} />
       </Route>
 
-      {/* Ученик */}
-      <Route path="user" element={<AppLayout />}>
-        <Route index element={<UserHomePage />} />
-        <Route path="ideas" element={<UserIdeasPage />} />
-        <Route path="projects" element={<UserProjectsPage />} />
-        <Route path="meets" element={<UserMeetsPage />} />
-      </Route>
-
-      {/* Учитель */}
-      <Route path="teacher" element={<AppLayout />}>
-        <Route index element={<TeacherDashboardPage />} />
-        <Route path="projects" element={<TeacherProjectsPage />} />
-        <Route path="meets" element={<TeacherMeetsPage />} />
-        <Route path="ideas" element={<TeacherIdeasPage />} />
-        <Route path="userIdeas" element={<TeacherUserIdeasPage />} />
-      </Route>
-
-      {/* Центр */}
-      <Route path="place" element={<AppLayout />}>
-        <Route index element={<PlaceDashboardPage />} />
-        <Route path="teachers" element={<PlaceTeachersPage />} />
-        <Route path="locations" element={<PlaceLocationsPage />} />
-        <Route path="projects" element={<PlaceProjectsPage />} />
-        <Route path="users" element={<PlaceUsersPage />} />
-        <Route path="meets" element={<PlaceMeetsPage />} />
-        <Route path="invite" element={<PlaceInvitePage />} />
-      </Route>
-
-      <Route path="payment" element={<AppLayout />}>
-        <Route path="success" element={<PaymentSuccessPage />} />
-        <Route path="fail" element={<PaymentFailPage />} />
-      </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
