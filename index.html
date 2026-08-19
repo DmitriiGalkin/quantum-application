@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <title><!--app-title--></title>
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#FFA028" />
+  <meta name="description" content="<!--app-description-->" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+
+  <!-- Для iOS/Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Quantum" />
+  <link rel="apple-touch-icon" href="/icons/192.png" />
+
+  <!-- Для Android/Chrome и других PWA-браузеров -->
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Open Graph (шаринг в соц сетях) -->
+  <meta property="og:title" content="<!--app-og-title-->" />
+  <meta property="og:description" content="<!--app-og-description-->" />
+  <meta property="og:image" content="<!--app-og-image-->" />
+  <meta property="og:type" content="<!--app-og-type-->" />
+  <meta property="og:site_name" content="<!--app-og-site-name-->" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,minimum-scale=1">
+  <style>
+    body {background-color: #FFA028; margin: 0; padding: 0;}
+  </style>
+</head>
+<body>
+<div id="root"><!--ssr-outlet--></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

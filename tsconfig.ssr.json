@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "nodenext",
+    "target": "ESNext",
+    "esModuleInterop": true,
+
+    // Типы в отдельный "проект"
+    "paths": {
+      "@shared/types": ["../packages/types"]
+    }
+  },
+  "include": ["server.ts"]
+}
