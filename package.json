@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "lint": "npm run lint --workspaces",
-    "test": "npm run test --workspaces",
-    "build": "npm run build --workspaces",
-    "check": "npm run lint && npm run test && npm run build"
-  }
-}
