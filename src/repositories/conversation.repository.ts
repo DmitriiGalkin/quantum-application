@@ -1,6 +1,6 @@
 ﻿import { db } from '../dbNext.js';
-import { ResultSetHeader } from 'mysql2/promise';
-import { ConversationRow } from '../entities/conversation.db.js';
+import type { ResultSetHeader } from 'mysql2/promise';
+import type { ConversationRow } from '../entities/conversation.db.js';
 
 class ConversationRepository {
   // Create a new conversation

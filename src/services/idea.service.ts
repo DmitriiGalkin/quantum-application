@@ -2,10 +2,10 @@ import UserRepository from '../repositories/user.repository.js';
 import type { CreateIdea, GetIdeasQuery, PageMeta } from 'dto';
 import IdeaRepository from '../repositories/idea.repository.js';
 import { generateIdeaImage, uploadImage } from './assistant/assistants/image.assistant.js';
-import { IdeaExtendedEntity, IdeaFullEntity } from '../entities/idea.js';
-import { User } from '../entities/user.js';
+import type { IdeaExtendedEntity, IdeaFullEntity } from '../entities/idea.js';
+import type { User } from '../entities/user.js';
 import { ProjectService } from './project.service.js';
-import { Passport } from '../entities/passport.js';
+import type { Passport } from '../entities/passport.js';
 
 export class IdeaService {
   static async create(passport: Passport, data: CreateIdea, userId?: number) {

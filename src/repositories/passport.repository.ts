@@ -1,11 +1,11 @@
 import { db } from '../dbNext.js';
-import { ResultSetHeader } from 'mysql2/promise';
+import type { ResultSetHeader } from 'mysql2/promise';
 
-import { PassportRow } from '../entities/passport.db.js';
+import type { PassportRow } from '../entities/passport.db.js';
 import { toPassport } from '../mappers/passport.mapper.js';
 
-import { Passport } from '../entities/passport.js';
-import { CreatePassportInput, UpdatePassportInput } from '../entities/passport.types.js';
+import type { Passport } from '../entities/passport.js';
+import type { CreatePassportInput, UpdatePassportInput } from '../entities/passport.types.js';
 
 class PassportRepository {
   // ✅ CREATE

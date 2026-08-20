@@ -1,6 +1,6 @@
-import { ControllerWithAuth, fail, ok } from './helper.js';
+import { type ControllerWithAuth, fail, ok } from './helper.js';
 import { Message2Service } from '../services/message2.service.js';
-import { CreateMessageRequest, Message, UpdateMessageRequest } from 'dto';
+import type { CreateMessageRequest, Message, UpdateMessageRequest } from 'dto';
 
 const create: ControllerWithAuth<Message, CreateMessageRequest> = async (req, res) => {
   try {

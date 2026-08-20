@@ -1,6 +1,6 @@
 ﻿import { db } from '../dbNext.js';
-import { ResultSetHeader } from 'mysql2/promise';
-import { ConversationPassportRow } from '../entities/conversation-passport.db.js';
+import type { ResultSetHeader } from 'mysql2/promise';
+import type { ConversationPassportRow } from '../entities/conversation-passport.db.js';
 
 class ConversationPassportRepository {
   // Add passport to conversation

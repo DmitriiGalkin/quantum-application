@@ -1,4 +1,4 @@
-import { Passport } from '../../entities/passport.js';
+import type { Passport } from '../../entities/passport.js';
 import type { ChatMessagesResult, CreateChatBody, CreateMessageDto, Target } from 'dto';
 import ChatRepository from '../../repositories/chat.repository.js';
 import MessageRepository from '../../repositories/message.repository.js';
@@ -6,7 +6,7 @@ import { toMessageDto } from '../../mappers/message.mapper.js';
 import { MessageService } from '../message.service.js';
 import ProjectRepository from '../../repositories/project.repository.js';
 import UserRepository from '../../repositories/user.repository.js';
-import { Context } from './chat.meta.js';
+import type { Context } from './chat.meta.js';
 import IdeaRepository from '../../repositories/idea.repository.js';
 
 export class ChatService {

@@ -1,7 +1,7 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
-import { UserAssistant } from '../../../entities/user.assistant.js';
-import { Message } from '../../../entities/message.js';
-import { Context } from '../../chat/chat.meta.js';
+import type { UserAssistant } from '../../../entities/user.assistant.js';
+import type { Message } from '../../../entities/message.js';
+import type{ Context } from '../../chat/chat.meta.js';
 
 export const USER_SYSTEM_PROMPT = `
 Ты — ассистент образовательного проекта для детей.

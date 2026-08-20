@@ -1,10 +1,10 @@
-import { ResultSetHeader } from 'mysql2/promise';
+import type { ResultSetHeader } from 'mysql2/promise';
 
-import { IdeaUserRow } from '../entities/idea-user.db.js';
+import type { IdeaUserRow } from '../entities/idea-user.db.js';
 import { mapIdeaUserRow } from '../mappers/idea-user.mapper.js';
 
-import { IdeaUser } from '../entities/idea-user.js';
-import { CreateIdeaUserInput } from '../entities/idea-user.types.js';
+import type { IdeaUser } from '../entities/idea-user.js';
+import type { CreateIdeaUserInput } from '../entities/idea-user.types.js';
 import { db } from '../dbNext.js';
 
 class IdeaUserRepository {

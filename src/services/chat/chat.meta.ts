@@ -1,9 +1,9 @@
 import type { Passport } from '../../entities/passport.js';
-import { Place } from '../../entities/place.js';
-import { Project } from '../../entities/project.js';
-import { User } from '../../entities/user.js';
-import { Idea, IdeaExtendedEntity } from '../../entities/idea.js';
-import { Meet } from '../../entities/meet.js';
+import type { Place } from '../../entities/place.js';
+import type { Project } from '../../entities/project.js';
+import type { User } from '../../entities/user.js';
+import type { Idea, IdeaExtendedEntity } from '../../entities/idea.js';
+import type { Meet } from '../../entities/meet.js';
 import type { IdeaExtendedDto, Ui } from 'dto';
 
 export interface Teacher {

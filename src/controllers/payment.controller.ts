@@ -1,9 +1,9 @@
-import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
+import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 
 import { PaymentService } from '../services/payment.service.js';
 
 import { getPassportUserIds } from '../services/project-user.service.js';
-import { PaymentCreateDto, PaymentCreateResponseDto, PaymentDto } from 'dto';
+import type { PaymentCreateDto, PaymentCreateResponseDto, PaymentDto } from 'dto';
 import RobokassaService from '../services/robokassa.service.js';
 
 const create: ControllerWithAuth<PaymentCreateResponseDto, PaymentCreateDto> = async (req, res) => {

@@ -1,5 +1,5 @@
-import { User, UserWithMeet } from '../entities/user.js';
-import { UserRow, UserWithMeetRow } from '../entities/user.db.js';
+import type { User, UserWithMeet } from '../entities/user.js';
+import type { UserRow, UserWithMeetRow } from '../entities/user.db.js';
 
 export function mapUserRow(row: UserRow): User {
   return {

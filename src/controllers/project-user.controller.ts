@@ -1,4 +1,4 @@
-import { ControllerWithAuth, fail, ok } from './helper.js';
+import { type ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectUserService } from '../services/project-user.service.js';
 import type { CreateProjectUser } from 'dto';
 

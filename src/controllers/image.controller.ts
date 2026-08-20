@@ -1,4 +1,4 @@
-import { ControllerWithAuth, fail, ok } from './helper.js';
+import { type ControllerWithAuth, fail, ok } from './helper.js';
 import { FileService } from '../services/file.service.js';
 
 const upload: ControllerWithAuth<{ url: string }> = async (req, res) => {

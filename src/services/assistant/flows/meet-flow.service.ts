@@ -1,4 +1,4 @@
-import { Context } from '../../chat/chat.meta.js';
+import type { Context } from '../../chat/chat.meta.js';
 import MeetRepository from '../../../repositories/meet.repository.js';
 
 export class MeetFlowService {

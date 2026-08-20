@@ -5,19 +5,19 @@ import { selectIdeaAssistant } from './assistants/selectIdeaAssistant.js';
 import { meetAssistant } from './assistants/meet.assistant.js';
 import { IdeaFlowService } from './flows/idea-flow.service.js';
 import { ProjectFlowService } from './flows/project-flow.service.js';
-import { Message } from '../../entities/message.js';
-import { Context } from '../chat/chat.meta.js';
+import type { Message } from '../../entities/message.js';
+import type { Context } from '../chat/chat.meta.js';
 import { ChatService } from '../chat/chat.service.js';
-import { Chat } from '../../entities/chat.js';
+import type { Chat } from '../../entities/chat.js';
 import ProjectRepository from '../../repositories/project.repository.js';
 import { MeetFlowService } from './flows/meet-flow.service.js';
 import IdeaRepository from '../../repositories/idea.repository.js';
 import MeetRepository from '../../repositories/meet.repository.js';
 import PlaceRepository from '../../repositories/place.repository.js';
-import { AssistantAnswer } from './base-assistant.js';
+import type { AssistantAnswer } from './base-assistant.js';
 import UserRepository from '../../repositories/user.repository.js';
-import { Idea } from '../../entities/idea.js';
-import { User } from '../../entities/user.js';
+import type { Idea } from '../../entities/idea.js';
+import type { User } from '../../entities/user.js';
 
 const FRONTEND_SERVER = process.env.FRONTEND_SERVER ?? 'http://localhost:3000';
 

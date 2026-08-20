@@ -1,10 +1,10 @@
-import { ResultSetHeader } from 'mysql2/promise';
+import type { ResultSetHeader } from 'mysql2/promise';
 
-import { ProjectUserRow } from '../entities/project-user.db.js';
+import type { ProjectUserRow } from '../entities/project-user.db.js';
 import { mapProjectUserRow } from '../mappers/project-user.mapper.js';
 
-import { ProjectUser } from '../entities/project-user.js';
-import { CreateProjectUserInput } from '../entities/project-user.types.js';
+import type { ProjectUser } from '../entities/project-user.js';
+import type { CreateProjectUserInput } from '../entities/project-user.types.js';
 import { db } from '../dbNext.js';
 
 class ProjectUserRepository {

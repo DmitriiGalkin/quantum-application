@@ -1,5 +1,5 @@
 import PlaceTeacherService from '../services/placeTeacher.service.js';
-import { ControllerWithAuth, fail, ok } from './helper.js';
+import { type ControllerWithAuth, fail, ok } from './helper.js';
 
 type AddTeacherBody = {
   passportId: number;

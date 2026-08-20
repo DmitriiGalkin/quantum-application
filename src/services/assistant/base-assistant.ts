@@ -1,7 +1,7 @@
 import assistant from '../../assistant.js';
 import { extractJsonFromString } from './assistants/helper.js';
-import { Message } from '../../entities/message.js';
-import { Context } from '../chat/chat.meta.js';
+import type { Message } from '../../entities/message.js';
+import type { Context } from '../chat/chat.meta.js';
 
 export interface GetBaseAssistantAnswer {
   prompt: string;
@@ -37,10 +37,10 @@ export async function baseAssistantAnswer({ prompt, messages, schema, transforme
       throw new Error('Ошибка API: Получен пустой или некорректный ответ от сервера.');
     }
 
-    const freeContent = resp.choices[0]?.message.content;
+    const freeContent = resp.choices[0]?.message.content as any;
 
     const data = extractJsonFromString(freeContent);
-    const content = !data ? freeContent : null;
+    const content = !data ? freeContent : '';
 
     if (data) {
       if (!schema(data)) {

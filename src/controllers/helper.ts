@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import type { UserDto } from 'dto';
-import { Passport } from '../entities/passport.js';
+import type { Passport } from '../entities/passport.js';
 
 export interface RequestWithPassport<TBody = any> extends Request {
   params: Record<string, string>;

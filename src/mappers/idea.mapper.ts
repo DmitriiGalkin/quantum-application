@@ -1,6 +1,6 @@
-import { IdeaExtendedDto, IdeaFullDto } from 'dto';
-import { Idea, IdeaExtendedEntity, IdeaFullEntity, IdeaWithLike } from '../entities/idea.js';
-import { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
+import type { IdeaExtendedDto, IdeaFullDto } from 'dto';
+import type { Idea, IdeaExtendedEntity, IdeaFullEntity, IdeaWithLike } from '../entities/idea.js';
+import type { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
 
 export function mapIdeaRow(row: IdeaRow): Idea {
   return {

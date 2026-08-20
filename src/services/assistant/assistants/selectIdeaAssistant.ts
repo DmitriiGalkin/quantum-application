@@ -1,8 +1,8 @@
 import IdeaModel from '../../../repositories/idea.repository.js';
 import type { Idea } from '../../../entities/idea.js';
-import { ProjectAssistant } from '../../../entities/project.assistant.js';
-import { Message } from '../../../entities/message.js';
-import { Context, DraftTeacher } from '../../chat/chat.meta.js';
+import type { ProjectAssistant } from '../../../entities/project.assistant.js';
+import type { Message } from '../../../entities/message.js';
+import type { Context, DraftTeacher } from '../../chat/chat.meta.js';
 import { baseAssistantAnswer2 } from '../base-assistant2.js';
 
 const getSystemPrompt = (ideas: Idea[], teacher: DraftTeacher) => {

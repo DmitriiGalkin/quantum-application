@@ -10,7 +10,6 @@
     "skipLibCheck": true,
 
     "paths": {
-      "dto": ["dto/index.ts"],
       "dto/*": ["dto/*"],
       "components/*": ["components/*"],
       "providers/*": ["providers/*"],
@@ -31,5 +30,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/application.tsx"]
+  "include": ["src/**/*"]
 }

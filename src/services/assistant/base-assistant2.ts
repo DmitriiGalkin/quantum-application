@@ -1,7 +1,7 @@
 import assistant from '../../assistant.js';
 import { extractJsonFromString2 } from './assistants/helper.js';
-import { Message } from '../../entities/message.js';
-import { Context } from '../chat/chat.meta.js';
+import type { Message } from '../../entities/message.js';
+import type { Context } from '../chat/chat.meta.js';
 
 export interface GetBaseAssistantAnswer {
   prompt: string;
@@ -38,7 +38,7 @@ export async function baseAssistantAnswer2({ prompt, messages, schema, transform
       throw new Error('Ошибка API: Получен пустой или некорректный ответ от сервера.');
     }
 
-    const freeContent = resp.choices[0]?.message.content;
+    const freeContent = resp.choices[0]?.message.content as any;
 
     // const freeContent =
     //   '[{\n' +
@@ -50,7 +50,7 @@ export async function baseAssistantAnswer2({ prompt, messages, schema, transform
     //   'Этот проект идеально соответствует интересам учителя, так как включает изучение подземного мира кротов — темы, связанной с его увлечением. Занятия будут носить творческий и активный характер, поскольку дети смогут самостоятельно создавать модель норы крота, что обеспечит практическое применение знаний и развитие навыков конструирования.';
 
     const data = extractJsonFromString2(freeContent);
-    const restText = freeContent.replace(/\[.*\]/s, '').trim();
+    const restText = freeContent?.replace(/\[.*\]/s, '').trim();
 
     //const content = !data ? freeContent : null;
     //

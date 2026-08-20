@@ -2,19 +2,19 @@ import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
-import { Passport } from '../entities/passport.js';
-import { FindAllProjectInput, Project } from '../entities/project.js';
+import type { Passport } from '../entities/passport.js';
+import type { FindAllProjectInput, Project } from '../entities/project.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
-import { Idea } from '../entities/idea.js';
+import type { Idea } from '../entities/idea.js';
 import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
-import { ProjectUser } from '../entities/project-user.js';
-import { Place } from '../entities/place.js';
+import type { ProjectUser } from '../entities/project-user.js';
+import type { Place } from '../entities/place.js';
 import type { CreateProject, ProjectFullDto } from 'dto';
 import PaymentRepository from '../repositories/payment.repository.js';
 import { MeetService } from './meet.service.js';
-import { Viewer } from '../router.js';
+import type { Viewer } from '../router.js';
 
 export class ProjectService {
   static async create(passport: Passport, data: CreateProject) {

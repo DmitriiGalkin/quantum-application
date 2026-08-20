@@ -1,8 +1,8 @@
-import { ResultSetHeader } from 'mysql2/promise';
-import { MessageRow } from '../entities/message.db.js';
+import type { ResultSetHeader } from 'mysql2/promise';
+import type { MessageRow } from '../entities/message.db.js';
 import { mapMessageRow } from '../mappers/message.mapper.js';
-import { Message } from '../entities/message.js';
-import { CreateMessageInput } from '../entities/message.types.js';
+import type { Message } from '../entities/message.js';
+import type { CreateMessageInput } from '../entities/message.types.js';
 import { db } from '../dbNext.js';
 
 class MessageRepository {

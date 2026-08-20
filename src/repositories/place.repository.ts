@@ -1,8 +1,8 @@
-import { ResultSetHeader } from 'mysql2/promise';
+import type { ResultSetHeader } from 'mysql2/promise';
 
 import { toPlace } from '../mappers/place.mapper.js';
-import { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
-import { PlaceRow } from '../entities/place.db.js';
+import type { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
+import type { PlaceRow } from '../entities/place.db.js';
 import { db } from '../dbNext.js';
 
 class PlaceRepository {

@@ -1,7 +1,7 @@
-import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
+import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectService } from '../services/project.service.js';
-import { CreateProject, PageMeta, ProjectDto, type ProjectFullDto } from 'dto';
-import { Project } from '../entities/project.js';
+import type { CreateProject, PageMeta, ProjectDto, ProjectFullDto } from 'dto';
+import type { Project } from '../entities/project.js';
 
 const create: ControllerWithAuth<number, CreateProject> = async (req, res) => {
   try {
@@ -31,16 +31,6 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
 };
 
 const findAll: Controller<ProjectDto[]> = async (req, res) => {
-  try {
-    const data = await ProjectService.findAll(req.query);
-
-    ok(res, data);
-  } catch (err) {
-    fail(res, 'Не удалось получить проекты');
-  }
-};
-
-const findAllPublic: Controller<ProjectDto[]> = async (req, res) => {
   try {
     const data = await ProjectService.findAll(req.query);
 
@@ -105,7 +95,6 @@ export default {
   update,
   delete: remove,
   findAll,
-  findAllPublic,
   findByUserId,
   findById,
   findByPassportId,

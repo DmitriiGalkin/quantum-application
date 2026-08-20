@@ -1,10 +1,10 @@
-import { ResultSetHeader } from 'mysql2/promise';
-import { ProjectRow } from '../entities/project.db.js';
+import type { ResultSetHeader } from 'mysql2/promise';
+import type { ProjectRow } from '../entities/project.db.js';
 import { toProject } from '../mappers/project.mapper.js';
-import { FindAllProjectInput, Project } from '../entities/project.js';
-import { CreateProjectInput } from '../entities/project.types.js';
+import type { FindAllProjectInput, Project } from '../entities/project.js';
+import type { CreateProjectInput } from '../entities/project.types.js';
 import { db } from '../dbNext.js';
-import { FindAllIdeaInput } from '../entities/idea.js';
+import type { FindAllIdeaInput } from '../entities/idea.js';
 
 class ProjectRepository {
   // ✅ CREATE

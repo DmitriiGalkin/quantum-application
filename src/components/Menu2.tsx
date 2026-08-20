@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import KeyOffIcon from '@mui/icons-material/KeyOff';
 import '../../App.css';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../providers/AuthProvider.tsx';
 import { ListItemAvatar, Tab, Tabs } from '@mui/material';
 import { type SyntheticEvent, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';

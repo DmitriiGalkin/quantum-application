@@ -1,8 +1,8 @@
 import { db } from '../dbNext.js';
-import { ResultSetHeader } from 'mysql2/promise';
-import { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
-import { mapIdeaRow, mapIdeaWithLikeRow } from '../mappers/idea.mapper.js';
-import { CreateIdeaInput, FindAllIdeaInput, Idea, IdeaWithLike, UpdateIdeaInput } from '../entities/idea.js';
+import type { ResultSetHeader } from 'mysql2/promise';
+import type { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
+import  { mapIdeaRow, mapIdeaWithLikeRow } from '../mappers/idea.mapper.js';
+import type { CreateIdeaInput, FindAllIdeaInput, Idea, IdeaWithLike, UpdateIdeaInput } from '../entities/idea.js';
 
 class IdeaRepository {
   // ✅ CREATE

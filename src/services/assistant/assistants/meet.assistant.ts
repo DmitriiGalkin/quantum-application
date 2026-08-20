@@ -1,8 +1,8 @@
 import { baseAssistantAnswer } from '../base-assistant.js';
-import { MeetAssistant } from '../../../entities/meet.assistant.js';
-import { Message } from '../../../entities/message.js';
-import { Context } from '../../chat/chat.meta.js';
-import { Place } from '../../../entities/place.js';
+import type { MeetAssistant } from '../../../entities/meet.assistant.js';
+import type { Message } from '../../../entities/message.js';
+import type { Context } from '../../chat/chat.meta.js';
+import type { Place } from '../../../entities/place.js';
 
 const getPrompt = (place: Place) => {
   return `

@@ -1,7 +1,7 @@
 import IdeaRepository from '../../../repositories/idea.repository.js';
 import IdeaUserRepository from '../../../repositories/idea-user.repository.js';
 import UserRepository from '../../../repositories/user.repository.js';
-import { Context } from '../../chat/chat.meta.js';
+import type { Context } from '../../chat/chat.meta.js';
 
 export class IdeaFlowService {
   static async create(context: Context) {

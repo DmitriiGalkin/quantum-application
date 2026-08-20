@@ -1,7 +1,7 @@
-import { ResultSetHeader } from 'mysql2/promise';
+import type { ResultSetHeader } from 'mysql2/promise';
 import type { ChatRow } from '../entities/chat.db.js';
 import { mapChatRow } from '../mappers/chat.mapper.js';
-import { Chat, CreateChatInput, UpdateChat } from '../entities/chat.js';
+import type { Chat, CreateChatInput, UpdateChat } from '../entities/chat.js';
 import { db } from '../dbNext.js';
 
 class ChatRepository {

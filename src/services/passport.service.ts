@@ -1,4 +1,4 @@
-import { Context } from './chat/chat.meta.js';
+import type { Context } from './chat/chat.meta.js';
 import PassportRepository from '../repositories/passport.repository.js';
 
 export class PassportService {

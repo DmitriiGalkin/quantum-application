@@ -1,9 +1,9 @@
-import { ResultSetHeader } from 'mysql2/promise';
+import type { ResultSetHeader } from 'mysql2/promise';
 
 import { db } from '../dbNext.js';
 
-import { PaymentRow } from '../entities/payment.db.js';
-import { CreatePaymentInput, Payment } from '../entities/payment.types.js';
+import type { PaymentRow } from '../entities/payment.db.js';
+import type { CreatePaymentInput, Payment } from '../entities/payment.types.js';
 
 import { toPayment } from '../mappers/payment.mapper.js';
 

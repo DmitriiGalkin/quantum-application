@@ -1,7 +1,7 @@
 import { getAnswer } from '../assistant/assistant.factory.js';
-import { Message } from '../../entities/message.js';
-import { Context } from './chat.meta.js';
-import { Chat } from '../../entities/chat.js';
+import type { Message } from '../../entities/message.js';
+import type { Context } from './chat.meta.js';
+import type { Chat } from '../../entities/chat.js';
 
 export type Answer = Promise<{
   content: string;

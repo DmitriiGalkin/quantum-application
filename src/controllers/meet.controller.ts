@@ -1,4 +1,4 @@
-import { Controller, ControllerWithAuth, fail, ok } from './helper.js';
+import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import type { CreateMeet, GetMeetsQuery, MeetExtendedDto } from 'dto';
 import { MeetService } from '../services/meet.service.js';
 

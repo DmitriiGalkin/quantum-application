@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, RequestHandler, Response } from 'express';
+import express, { type NextFunction, type Request, type RequestHandler, type Response } from 'express';
 import passport from 'passport';
 import multer from 'multer';
 
@@ -12,20 +12,19 @@ import teacherIdeaController from './controllers/teacher-idea.controller.js';
 import image from './controllers/image.controller.js';
 import place from './controllers/place.controller.js';
 import project from './controllers/project.controller.js';
-import projectsRouter from './routers.js';
 import idea from './controllers/idea.controller.js';
 import ideaUser from './controllers/idea-user.controller.js';
 import projectUser from './controllers/project-user.controller.js';
 import chat from './controllers/chat.controller.js';
 import strategies from './strategies.js';
-import { ControllerWithAuth } from './controllers/helper.js';
+import type { ControllerWithAuth } from './controllers/helper.js';
 import placeTeacherController from './controllers/placeTeacher.controller.js';
 import placeLocation from './controllers/placeLocation.controller.js';
 import paymentController from './controllers/payment.controller.js';
 import teacherController from './controllers/teacher.controller.js';
 import conversationController from './controllers/conversation.controller.js';
 import message2Controller from './controllers/message2.controller.js';
-import { Passport } from './entities/passport.js';
+import type { Passport } from './entities/passport.js';
 import type { ActiveRole } from 'dto';
 import UserRepository from './repositories/user.repository.js';
 import teacherUserController from './controllers/teacher-user.controller.js';
@@ -126,7 +125,7 @@ privateRouter.post('/idea/:id/generateImage', withAuth(idea.generateImage));
 privateRouter.post('/ideaUser', withAuth(ideaUser.create));
 privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));
 
-publicRouter.use('/projects', projectsRouter);
+publicRouter.get('/projects', project.findAll);
 privateRouter.get('/project/:id', withAuth(project.findById));
 publicRouter.get('/project/:id/meta', project.meta);
 privateRouter.post('/project', withAuth(project.create));

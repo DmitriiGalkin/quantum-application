@@ -1,6 +1,6 @@
 import type { Place } from '../entities/place.js';
 
-import { PlaceRow } from '../entities/place.db.js';
+import type { PlaceRow } from '../entities/place.db.js';
 
 export function toPlace(row: PlaceRow): Place {
   return {

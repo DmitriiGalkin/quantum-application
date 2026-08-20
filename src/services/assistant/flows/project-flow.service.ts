@@ -1,6 +1,6 @@
 import ProjectRepository from '../../../repositories/project.repository.js';
 import IdeaRepository from '../../../repositories/idea.repository.js';
-import { Context } from '../../chat/chat.meta.js';
+import type { Context } from '../../chat/chat.meta.js';
 import PassportRepository from '../../../repositories/passport.repository.js';
 
 export class ProjectFlowService {
