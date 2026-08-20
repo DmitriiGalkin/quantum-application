@@ -96,14 +96,9 @@ function ProjectCardHeader({ project, place, refetch, onMessageTeacher }: Props)
         }
         action={<MenuButton menuItems={menuItems} />}
         title={
-          <Link to={`/teachers/${project.passport?.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
-              <Typography variant="subtitle1" component="span">
-                {project.passport?.title}
-              </Typography>
-              <ArrowOutwardIcon fontSize="small" sx={{ opacity: 0.7 }} />
-            </Stack>
-          </Link>
+          <Typography variant="subtitle1" component="span">
+            {project.passport?.title}
+          </Typography>
         }
         subheader={
           <Stack
