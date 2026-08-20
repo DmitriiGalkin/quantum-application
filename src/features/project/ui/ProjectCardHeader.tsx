@@ -15,7 +15,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import ProjectForm, { type ProjectFormValues } from './ProjectForm.tsx';
 import { Link } from 'react-router-dom';
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 type Props = {
   project: ProjectExtendedDto;

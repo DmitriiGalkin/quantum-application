@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "baseUrl": "./src",
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "es2023",
@@ -7,6 +8,14 @@
     "module": "es2022",
     "types": ["vite/client"],
     "skipLibCheck": true,
+
+    "paths": {
+      "dto": ["dto/index.ts"],
+      "dto/*": ["dto/*"],
+      "components/*": ["components/*"],
+      "providers/*": ["providers/*"],
+      "utils/*": ["utils/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -20,7 +29,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src/application.tsx"]
 }

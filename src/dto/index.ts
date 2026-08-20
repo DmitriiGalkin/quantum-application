@@ -252,6 +252,14 @@ export interface GetIdeasQuery {
   longitude?: number;
 }
 
+export interface GetProjectsQuery {
+  userId?: number;
+  sort?: Sort;
+  when?: 'today' | 'tomorrow';
+  latitude?: number;
+  longitude?: number;
+}
+
 export interface GetMeetsQuery {
   userId?: number;
   passportId?: number;

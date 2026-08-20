@@ -7,6 +7,7 @@ import IdeasPage from './pages/idea/IdeasPage.tsx';
 import ChatPageOld from './pages/ChatPageOld.tsx';
 import IdeaPage from './pages/idea/IdeaPage.tsx';
 import ProjectPage from './pages/project/ProjectPage.tsx';
+import ProjectsPage from './pages/project/ProjectsPage.tsx';
 import TeacherProjectsPage from './pages/teacher/TeacherProjectsPage.tsx';
 import UserIdeasPage from './pages/user/UserIdeasPage.tsx';
 import UserProjectsPage from './pages/user/UserProjectsPage.tsx';
@@ -45,6 +46,7 @@ function App() {
         <Route path="chatOld/:id" element={<ChatPageOld />} />
         <Route path="users/:id" element={<div>UserPage</div>} />
         <Route path="idea/:id" element={<IdeaPage />} />
+        <Route path="projects" element={<ProjectsPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="teachers/:id" element={<TeachersPage />} />
         <Route path="places/:id" element={<div />} />

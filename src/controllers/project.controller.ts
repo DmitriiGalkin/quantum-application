@@ -40,6 +40,16 @@ const findAll: Controller<ProjectDto[]> = async (req, res) => {
   }
 };
 
+const findAllPublic: Controller<ProjectDto[]> = async (req, res) => {
+  try {
+    const data = await ProjectService.findAll(req.query);
+
+    ok(res, data);
+  } catch (err) {
+    fail(res, 'Не удалось получить проекты');
+  }
+};
+
 const findByUserId: ControllerWithAuth<ProjectFullDto[]> = async (req, res) => {
   const projects = await ProjectService.findAll({
     ...req.query,
@@ -95,6 +105,7 @@ export default {
   update,
   delete: remove,
   findAll,
+  findAllPublic,
   findByUserId,
   findById,
   findByPassportId,

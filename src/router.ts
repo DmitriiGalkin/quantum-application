@@ -12,6 +12,7 @@ import teacherIdeaController from './controllers/teacher-idea.controller.js';
 import image from './controllers/image.controller.js';
 import place from './controllers/place.controller.js';
 import project from './controllers/project.controller.js';
+import projectsRouter from './routers.js';
 import idea from './controllers/idea.controller.js';
 import ideaUser from './controllers/idea-user.controller.js';
 import projectUser from './controllers/project-user.controller.js';
@@ -25,7 +26,7 @@ import teacherController from './controllers/teacher.controller.js';
 import conversationController from './controllers/conversation.controller.js';
 import message2Controller from './controllers/message2.controller.js';
 import { Passport } from './entities/passport.js';
-import { ActiveRole } from 'dto';
+import type { ActiveRole } from 'dto';
 import UserRepository from './repositories/user.repository.js';
 import teacherUserController from './controllers/teacher-user.controller.js';
 
@@ -125,7 +126,7 @@ privateRouter.post('/idea/:id/generateImage', withAuth(idea.generateImage));
 privateRouter.post('/ideaUser', withAuth(ideaUser.create));
 privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));
 
-publicRouter.get('/projects', project.findAll);
+publicRouter.use('/projects', projectsRouter);
 privateRouter.get('/project/:id', withAuth(project.findById));
 publicRouter.get('/project/:id/meta', project.meta);
 privateRouter.post('/project', withAuth(project.create));

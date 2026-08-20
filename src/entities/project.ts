@@ -2,7 +2,7 @@ import type { User } from './user.js';
 import type { Passport } from './passport.js';
 import type { Place } from './place.js';
 import type { Idea } from './idea.js';
-import type { FeedItem, MeetExtendedDto } from 'dto';
+import type { FeedItem, MeetExtendedDto, Sort } from 'dto';
 
 export interface Project {
   id: number;
@@ -21,6 +21,10 @@ export interface FindAllProjectInput {
   passportId?: string | number;
   deleted?: 'true' | 'false';
   currentUserId?: number;
+  when?: 'today' | 'tomorrow';
+  sort?: Sort;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface ProjectFullEntity extends Project {

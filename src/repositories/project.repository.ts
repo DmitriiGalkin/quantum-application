@@ -38,8 +38,36 @@ class ProjectRepository {
 
   // ✅ FIND ALL
   static async findAll(params: FindAllProjectInput = {}): Promise<Project[]> {
-    let sql = `SELECT project.* FROM project WHERE 1=1`;
+    const select: string[] = ['project.*'];
     const values: (string | number)[] = [];
+
+    const lat = Number(params.latitude);
+    const lng = Number(params.longitude);
+    const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
+
+    // 📍 DISTANCE (через project.placeId)
+    if (params.sort === 'nearby' && hasCoords) {
+      select.push(`
+      (
+        6371 * ACOS(
+          COS(RADIANS(?)) *
+          COS(RADIANS(pl.latitude)) *
+          COS(RADIANS(pl.longitude) - RADIANS(?)) +
+          SIN(RADIANS(?)) *
+          SIN(RADIANS(pl.latitude))
+        )
+      ) AS distance
+    `);
+
+      values.push(lat, lng, lat);
+    }
+
+    let sql = `
+      SELECT ${select.join(', ')}
+      FROM project
+             LEFT JOIN place pl ON pl.id = project.placeId
+      WHERE 1=1
+    `;
 
     if (params.userId) {
       sql += `
@@ -69,7 +97,48 @@ class ProjectRepository {
       values.push(params.placeId);
     }
 
+    // 📅 FILTER: when (через meet)
+    if (params.when) {
+      switch (params.when) {
+        case 'today':
+          sql += `
+          AND EXISTS (
+            SELECT 1
+            FROM meet m
+            WHERE m.projectId = project.id
+              AND m.startedAt >= CURDATE()
+              AND m.startedAt < CURDATE() + INTERVAL 1 DAY
+          )
+        `;
+          break;
+
+        case 'tomorrow':
+          sql += `
+          AND EXISTS (
+            SELECT 1
+            FROM meet m
+            WHERE m.projectId = project.id
+              AND m.startedAt >= CURDATE() + INTERVAL 1 DAY
+              AND m.startedAt < CURDATE() + INTERVAL 2 DAY
+          )
+        `;
+          break;
+      }
+    }
+
     sql += params.deleted === 'true' ? ' AND project.deletedAt IS NOT NULL' : ' AND project.deletedAt IS NULL';
+
+    // 📍 FILTER + SORT: nearby
+    if (params.sort === 'nearby' && hasCoords) {
+      sql += `
+      AND pl.latitude IS NOT NULL
+      AND pl.longitude IS NOT NULL
+    `;
+
+      sql += ` ORDER BY distance ASC`;
+    } else if (params.sort === 'new') {
+      sql += ` ORDER BY project.createdAt DESC`;
+    }
 
     const rows = await db.query<ProjectRow>(sql, values);
 

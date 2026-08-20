@@ -29,7 +29,7 @@ const __dirname = path.dirname(__filename);
 
 const isProd = process.env.NODE_ENV === 'production';
 
-async function server() {
+async function ssr() {
   const app = express();
   app.use(compression());
 
@@ -123,7 +123,7 @@ async function server() {
   }
 }
 
-server();
+ssr();
 
 function escapeHtml(value: string = '') {
   return String(value)

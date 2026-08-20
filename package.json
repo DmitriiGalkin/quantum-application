@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "dev:ssr": "tsx --watch server.ts",
+    "dev:ssr": "tsx --watch ssr.ts",
     "dev:backend": "tsx --watch src/index.ts",
     "build:client": "vite build",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist/server",
