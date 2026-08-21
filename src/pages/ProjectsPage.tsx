@@ -3,11 +3,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
-import { fetchProjects } from '../../requests.ts';
-import { useFilters } from '../../features/idea/hooks/useFilters.ts';
-import Filter from '../../features/idea/ui/Filter.tsx';
-import ProjectGrids from '../../features/project/ui/ProjectGrids.tsx';
-import { useLocation } from '../../shared/lib/useLocation.ts';
+import { fetchProjects } from '../requests.ts';
+import { useFilters } from '../features/idea/hooks/useFilters.ts';
+import Filter from '../features/idea/ui/Filter.tsx';
+import ProjectGrids from '../features/project/ui/ProjectGrids.tsx';
+import { useLocation } from '../shared/lib/useLocation.ts';
+import ProjectGroups from '../features/project/ui/ProjectGroups.tsx';
 
 function ProjectsPage() {
   const { filters, setView, setSort, setWhen } = useFilters();
@@ -30,13 +31,7 @@ function ProjectsPage() {
 
   return (
     <Stack spacing={2}>
-      <Filter
-        withOutLocation
-        filters={filters}
-        setView={setView}
-        setSort={setSort}
-        setWhen={setWhen}
-      />
+      <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
 
       {(isLoading || (filters.sort === 'nearby' && location.status === 'loading')) && (
         <Box
@@ -56,6 +51,8 @@ function ProjectsPage() {
       )}
 
       {filters.view === 'module' && <ProjectGrids projects={projects} />}
+
+      {filters.view === 'group' && <ProjectGroups projects={projects} withoutIdea />}
     </Stack>
   );
 }

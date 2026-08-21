@@ -1,13 +1,13 @@
 import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
-import { Feed } from '../../features/feed/Feed.tsx';
+import { Feed } from '../features/feed/Feed.tsx';
 import { useQuery } from '@tanstack/react-query';
-import { fetchPlace, fetchProject } from '../../requests.ts';
+import { fetchPlace, fetchProject } from '../requests.ts';
 import { useParams } from 'react-router-dom';
-import { useAuth } from '../../providers/AuthProvider.tsx';
-import ProjectCard from '../../features/project/ui/ProjectCard.tsx';
+import { useAuth } from 'providers/AuthProvider.tsx';
+import ProjectCard from '../features/project/ui/ProjectCard.tsx';
 import Paper from '@mui/material/Paper';
-import UserCard from '../../features/user/UserCard.tsx';
-import CreateMeet from '../../features/meets/CreateMeet.tsx';
+import UserCard from '../features/user/UserCard.tsx';
+import CreateMeet from '../features/meets/CreateMeet.tsx';
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();

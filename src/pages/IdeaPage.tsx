@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
-import { fetchIdea } from '../../requests.ts';
+import { fetchIdea } from '../requests.ts';
 import { Button, Grid } from '@mui/material';
-import { useFilters } from '../../features/idea/hooks/useFilters.ts';
-import Idea from '../../features/idea/ui/Idea.tsx';
-import Projects from '../../features/project/ui/Projects.tsx';
+import { useFilters } from '../features/idea/hooks/useFilters.ts';
+import Idea from '../features/idea/ui/Idea.tsx';
+import Projects from '../features/project/ui/Projects.tsx';
 
 function IdeaPage() {
   const filter = useFilters();

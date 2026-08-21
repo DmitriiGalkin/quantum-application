@@ -2,11 +2,11 @@ import { Route, Routes } from 'react-router-dom';
 
 import { AppLayout } from './components/AppLayout.tsx';
 
-import IdeasPage from './pages/idea/IdeasPage.tsx';
+import IdeasPage from './pages/IdeasPage.tsx';
 import ChatPageOld from './pages/ChatPageOld.tsx';
-import IdeaPage from './pages/idea/IdeaPage.tsx';
-import ProjectPage from './pages/project/ProjectPage.tsx';
-import ProjectsPage from './pages/project/ProjectsPage.tsx';
+import IdeaPage from './pages/IdeaPage.tsx';
+import ProjectPage from './pages/ProjectPage.tsx';
+import ProjectsPage from './pages/ProjectsPage.tsx';
 import TeacherProjectsPage from './pages/teacher/TeacherProjectsPage.tsx';
 import UserIdeasPage from './pages/user/UserIdeasPage.tsx';
 import UserProjectsPage from './pages/user/UserProjectsPage.tsx';

@@ -3,14 +3,14 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 //import CardActions from '@mui/material/CardActions';
-import type { IdeaExtendedDto } from 'dto';
+import type { IdeaDto, IdeaExtendedDto } from 'dto';
 import { CardActionArea } from '@mui/material';
 //import Like from './Like.tsx';
 import { useNavigate } from 'react-router-dom';
 //import { Author } from 'components/Author.tsx';
 
 type IdeaCardProps = {
-  idea: IdeaExtendedDto;
+  idea: IdeaDto;
   onSelect?: () => void;
 };
 
