@@ -3,7 +3,7 @@ import type { ResultSetHeader } from 'mysql2/promise';
 import { toPlace } from '../mappers/place.mapper.js';
 import type { CreatePlaceInput, Place, UpdatePlaceInput } from '../entities/place.js';
 import type { PlaceRow } from '../entities/place.db.js';
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 
 class PlaceRepository {
   // ✅ CREATE

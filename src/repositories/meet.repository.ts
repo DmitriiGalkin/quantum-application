@@ -3,7 +3,7 @@ import type { MeetRow, MeetWithProjectTitleRow } from '../entities/meet.db.js';
 import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import type { Meet, MeetWithProjectTitle } from '../entities/meet.js';
 import type { CreateMeetInput, UpdateMeetInput } from '../entities/meet.types.js';
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 import type { GetMeetsQuery, MeetStatus } from 'dto';
 
 class MeetRepository {

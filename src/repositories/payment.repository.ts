@@ -1,6 +1,6 @@
 import type { ResultSetHeader } from 'mysql2/promise';
 
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 
 import type { PaymentRow } from '../entities/payment.db.js';
 import type { CreatePaymentInput, Payment } from '../entities/payment.types.js';

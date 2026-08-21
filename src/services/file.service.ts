@@ -7,7 +7,7 @@ import mime from 'mime';
 import { v4 as uuidv4 } from 'uuid';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
-import s3Client from '../s3.js';
+import s3Client from '../utils/s3.js';
 import type { RequestWithPassport } from '../controllers/helper.js';
 
 export class FileService {

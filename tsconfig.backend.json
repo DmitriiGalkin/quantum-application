@@ -2,28 +2,17 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-
     "target": "ES2023",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-
     "paths": {
-      "dto/*": ["dto/*"],
-      "components/*": ["components/*"],
-      "providers/*": ["providers/*"],
-      "utils/*": ["utils/*"]
+      "dto": ["./src/dto/index.ts"],
+      "dto/*": ["./src/dto/*"],
+      "utils/*": ["./src/utils/*"]
     },
-
     "types": ["node"],
     "esModuleInterop": true,
-    "skipLibCheck": true,
-
-    "sourceMap": true,
-
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "skipLibCheck": true
   },
   "include": ["src/backend.ts"]
 }

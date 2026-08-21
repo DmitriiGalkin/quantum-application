@@ -1,4 +1,4 @@
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 import type { PlaceSchedule } from '../entities/place-schedule.db.js';
 import type { PlaceScheduleDayDto } from 'dto';
 

@@ -7,7 +7,7 @@ import { mapMeetUserFullRow, mapMeetUserRow, mapMeetUserWithMeetRow } from '../m
 import type { MeetUser, MeetUserWithMeet } from '../entities/meet-user.js';
 
 import type { MeetUserFull } from '../entities/meet-user.view.js';
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 import type { DeleteMeetUser } from 'dto';
 
 class MeetUserRepository {

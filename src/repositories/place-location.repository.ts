@@ -1,4 +1,4 @@
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 
 class PlaceLocationRepository {
   static async create(data: { placeId: number; title: string }): Promise<number> {

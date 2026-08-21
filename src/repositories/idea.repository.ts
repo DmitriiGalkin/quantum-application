@@ -1,4 +1,4 @@
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 import type { ResultSetHeader } from 'mysql2/promise';
 import type { IdeaRow, IdeaWithLikeRow } from '../entities/idea.db.js';
 import  { mapIdeaRow, mapIdeaWithLikeRow } from '../mappers/idea.mapper.js';

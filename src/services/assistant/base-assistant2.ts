@@ -1,4 +1,4 @@
-import assistant from '../../assistant.js';
+import assistant from '../../utils/assistant.js';
 import { extractJsonFromString2 } from './assistants/helper.js';
 import type { Message } from '../../entities/message.js';
 import type { Context } from '../chat/chat.meta.js';

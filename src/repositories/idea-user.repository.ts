@@ -5,7 +5,7 @@ import { mapIdeaUserRow } from '../mappers/idea-user.mapper.js';
 
 import type { IdeaUser } from '../entities/idea-user.js';
 import type { CreateIdeaUserInput } from '../entities/idea-user.types.js';
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 
 class IdeaUserRepository {
   // ✅ CREATE

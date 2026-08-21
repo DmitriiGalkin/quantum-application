@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
-    "baseUrl": "./src",
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "es2023",
     "lib": ["ES2023", "DOM"],
@@ -10,10 +8,11 @@
     "skipLibCheck": true,
 
     "paths": {
-      "dto/*": ["dto/*"],
-      "components/*": ["components/*"],
-      "providers/*": ["providers/*"],
-      "utils/*": ["utils/*"]
+      "dto": ["./src/dto/index.ts"],
+      "dto/*": ["./src/dto/*"],
+      "components/*": ["./src/components/*"],
+      "providers/*": ["./src/providers/*"],
+      "utils/*": ["./src/utils/*"]
     },
 
     /* Bundler mode */

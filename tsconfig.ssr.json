@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": "./src",
     "module": "nodenext",
     "target": "ESNext",
     "esModuleInterop": true,
+    "paths": {
+      "dto": ["./src/dto/index.ts"],
+      "dto/*": ["./src/dto/*"]
+    }
   },
   "include": ["src/ssr.ts"]
 }

@@ -1,4 +1,4 @@
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 import type { ResultSetHeader } from 'mysql2/promise';
 import type { UserRow, UserWithMeetRow } from '../entities/user.db.js';
 import { mapUserRow, mapUserWithMeetRow } from '../mappers/user.mapper.js';

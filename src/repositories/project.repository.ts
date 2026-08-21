@@ -3,7 +3,7 @@ import type { ProjectRow } from '../entities/project.db.js';
 import { toProject } from '../mappers/project.mapper.js';
 import type { FindAllProjectInput, Project } from '../entities/project.js';
 import type { CreateProjectInput } from '../entities/project.types.js';
-import { db } from '../dbNext.js';
+import { db } from '../utils/dbNext.js';
 import type { FindAllIdeaInput } from '../entities/idea.js';
 
 class ProjectRepository {
