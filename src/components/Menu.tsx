@@ -4,7 +4,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import '../App.css';
+//import '../App.css';
 import { useAuth } from 'providers/AuthProvider.tsx';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';

@@ -5,5 +5,5 @@
     "target": "ESNext",
     "esModuleInterop": true,
   },
-  "include": ["ssr.ts"]
+  "include": ["src/ssr.ts"]
 }

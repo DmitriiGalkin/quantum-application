@@ -76,11 +76,11 @@ async function ssr() {
       if (!isProd) {
         template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
         template = await vite.transformIndexHtml(url, template);
-        render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
+        render = (await vite.ssrLoadModule('/src/ssr-application.tsx')).render;
       } else {
         template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
         // @ts-ignore
-        render = (await import('./server/entry-server.js')).render;
+        render = (await import('./server/ssr-application.js')).render;
       }
 
       const { html, meta } = await render(url);

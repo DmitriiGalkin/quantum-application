@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatEffects.ts';
 import { useLocation } from 'react-router-dom';
-import { AUTH_401_EVENT } from '../api.ts';
+import { AUTH_401_EVENT } from '../utils/api.ts';
 import {
   ACCESS_TOKEN_STORAGE_KEY,
   ACTIVE_CONTEXT_STORAGE_KEY, type ActiveContext,

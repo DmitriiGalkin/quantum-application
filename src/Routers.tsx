@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
 
-import { AppLayout } from './AppLayout.tsx';
+import { AppLayout } from './components/AppLayout.tsx';
 
 import IdeasPage from './pages/idea/IdeasPage.tsx';
 import ChatPageOld from './pages/ChatPageOld.tsx';
@@ -37,7 +36,7 @@ import UserHomePage from './pages/user/UserHomePage.tsx';
 import PlaceUsersPage from './pages/place/PlaceUsersPage.tsx';
 import PlaceLocationsPage from './pages/place/PlaceLocationsPage.tsx';
 
-function App() {
+function Routers() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
@@ -98,4 +97,4 @@ function App() {
   );
 }
 
-export default App;
+export default Routers;

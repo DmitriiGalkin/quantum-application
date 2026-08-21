@@ -1,7 +1,8 @@
 import { hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import App from './App.tsx';
+import Routers from './Routers.tsx';
+import './application.css';
 import 'normalize.css';
 import { AuthProvider } from './providers/AuthProvider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
@@ -20,7 +21,7 @@ hydrateRoot(
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
           <AuthProvider>
-            <App />
+            <Routers />
           </AuthProvider>
         </LocalizationProvider>
       </ThemeProvider>

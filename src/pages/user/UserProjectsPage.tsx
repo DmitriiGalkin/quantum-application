@@ -1,6 +1,6 @@
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import '../../App.css';
+//import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../../requests.ts';
 import { useAuth } from '../../providers/AuthProvider.tsx';

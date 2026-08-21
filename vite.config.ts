@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     tsconfigPaths({
-      projects: ['tsconfig.app.json'],
+      projects: ['tsconfig.application.json'],
     }),
   ],
   server: {

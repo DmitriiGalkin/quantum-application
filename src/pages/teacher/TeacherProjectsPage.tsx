@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import '../../App.css';
+//import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassportProjects } from '../../requests.ts';
 import CreateProjectBlock from 'components/CreateProjectBlock.tsx';

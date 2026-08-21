@@ -7,6 +7,13 @@
     "types": ["node"],
     "skipLibCheck": true,
 
+    "paths": {
+      "dto/*": ["dto/*"],
+      "components/*": ["components/*"],
+      "providers/*": ["providers/*"],
+      "utils/*": ["utils/*"]
+    },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

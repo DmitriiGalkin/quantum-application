@@ -8,7 +8,7 @@
     "dev:ssr": "tsx --watch ssr.ts",
     "dev:backend": "tsx --watch src/index.ts",
     "build:client": "vite build",
-    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "build:ssr": "vite build --ssr src/ssr-application.tsx --outDir dist/server",
     "build:server": "tsc -p tsconfig.ssr.json",
     "build:backend": "tsc -p tsconfig.backend.json",
     "build": "npm run build:client && npm run build:ssr && npm run build:server && npm run build:backend",

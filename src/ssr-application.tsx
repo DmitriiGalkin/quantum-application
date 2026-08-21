@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import App from './App';
+import Routers from './Routers.tsx';
 import { StaticRouter } from 'react-router-dom';
 import type { PageMeta } from 'dto';
 import { AuthProvider } from './providers/AuthProvider.tsx';
@@ -112,7 +112,7 @@ export async function render(url: string) {
         <StaticRouter location={url}>
           <ThemeProvider theme={theme}>
           <AuthProvider>
-            <App />
+            <Routers />
           </AuthProvider>
             </ThemeProvider>
         </StaticRouter>

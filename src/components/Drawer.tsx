@@ -1,5 +1,5 @@
 import MUIDriwer from '@mui/material/Drawer';
-import '../../App.css';
+//import '../../App.css';
 import Menu from './Menu.tsx';
 
 interface DrawerProps {

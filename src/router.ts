@@ -16,7 +16,7 @@ import idea from './controllers/idea.controller.js';
 import ideaUser from './controllers/idea-user.controller.js';
 import projectUser from './controllers/project-user.controller.js';
 import chat from './controllers/chat.controller.js';
-import strategies from './strategies.js';
+import strategies from './utils/strategies.js';
 import type { ControllerWithAuth } from './controllers/helper.js';
 import placeTeacherController from './controllers/placeTeacher.controller.js';
 import placeLocation from './controllers/placeLocation.controller.js';

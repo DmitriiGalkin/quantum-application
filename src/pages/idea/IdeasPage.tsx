@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import '../../App.css';
+//import '../../App.css';
 import { MeetMap } from '../../features/place/MeetMap.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchIdeas } from '../../requests.ts';

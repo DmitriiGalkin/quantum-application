@@ -8,8 +8,10 @@
     "moduleResolution": "NodeNext",
 
     "paths": {
-      "dto": ["./src/dto/index.ts"],
-      "dto/*": ["./src/dto/*"]
+      "dto/*": ["dto/*"],
+      "components/*": ["components/*"],
+      "providers/*": ["providers/*"],
+      "utils/*": ["utils/*"]
     },
 
     "types": ["node"],
@@ -23,5 +25,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/index.ts"]
+  "include": ["src/backend.ts"]
 }

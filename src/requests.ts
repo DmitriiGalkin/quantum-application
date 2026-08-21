@@ -37,7 +37,7 @@ import {
   type UpdateMeet,
   type UserDashboardDto, type UserDto,
 } from 'dto';
-import { del, get, post, put, toQuery } from './api.ts';
+import { del, get, post, put, toQuery } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 
 export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas${toQuery(params)}`);
