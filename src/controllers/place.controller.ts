@@ -16,7 +16,6 @@ const create: ControllerWithAuth<number, CreatePlace> = async (req, res) => {
     const id = await PlaceService.create(req.passport.id!, req.body);
     ok(res, id);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось создать место');
   }
 };
@@ -36,8 +35,6 @@ const update: ControllerWithAuth<void, PlaceUpdateDto> = async (req, res) => {
 
 const findById: Controller<MeetExtendedDto> = async (req, res) => {
   try {
-    console.log('findById');
-
     const place = await PlaceService.findById(Number(req.params.id));
 
     if (!place) {
@@ -52,7 +49,6 @@ const findById: Controller<MeetExtendedDto> = async (req, res) => {
 
 const dashboard: ControllerWithAuth<PlaceDashboardDto> = async (req, res) => {
   try {
-    console.log('dashboard');
     const place = await PlaceService.getDashboard(Number(req.viewer?.placeId!));
 
     if (!place) {

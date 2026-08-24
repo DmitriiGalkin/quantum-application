@@ -13,7 +13,6 @@ const addTeacher: ControllerWithAuth<number, AddTeacherBody> = async (req, res) 
 
     ok(res, id);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось добавить учителя');
   }
 };
@@ -25,7 +24,6 @@ const create: ControllerWithAuth<number, AddTeacherBody> = async (req, res) => {
 
     ok(res, id);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось добавить учителя');
   }
 };
@@ -34,10 +32,8 @@ const findAll: ControllerWithAuth<number> = async (req, res) => {
   try {
     const data = await PlaceTeacherService.findAll(Number(req.viewer?.placeId!));
 
-
     ok(res, data);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось получить учителей');
   }
 };
@@ -51,7 +47,6 @@ const remove: ControllerWithAuth<number> = async (req, res) => {
 
     ok(res, true);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось удалить учителя');
   }
 };
@@ -66,7 +61,6 @@ const leave: ControllerWithAuth<number> = async (req, res) => {
 
     ok(res, true);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось учителю покинуть центр');
   }
 };

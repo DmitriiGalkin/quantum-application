@@ -4,8 +4,13 @@ import UserRepository from '../repositories/user.repository.js';
 import type { PassportExtendedDto } from 'dto';
 import PlaceRepository from '../repositories/place.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
+import type { Passport } from '../entities/passport.js';
 
 export class AuthService {
+  static async authenticateByToken(token: string): Promise<Passport | null> {
+    return PassportRepository.findByAccessToken(token);
+  }
+
   static async updateProfile(passport: any, data: any) {
     if (!Object.keys(data).length) {
       throw new Error('EMPTY_UPDATE');

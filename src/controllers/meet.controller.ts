@@ -27,17 +27,7 @@ const update: ControllerWithAuth<void> = async (req, res) => {
 
 const remove: ControllerWithAuth<void> = async (req, res) => {
   try {
-    const meet = await MeetService.findById(Number(req.params.id));
-
-    if (!meet) {
-      return fail(res, 'Встреча не существует', 404);
-    }
-
-    if (meet.passport.id !== req.passport!.id) {
-      return fail(res, 'Нет прав на удаление', 403);
-    }
-
-    await MeetService.remove(Number(req.params.id));
+    await MeetService.remove(Number(req.params.id), req.passport!.id);
 
     ok(res, { message: 'Встреча удалена' });
   } catch (err) {

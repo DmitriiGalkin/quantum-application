@@ -4,6 +4,10 @@ import PlacePassportRepository from '../repositories/place-passport.repository.j
 
 export class TeacherUserService {
   static async findByTeacherId(teacherId: number) {
+    if (!teacherId) {
+      throw new Error('passportId обязателен для findByTeacher');
+    }
+
     const rows = await TeacherUserRepository.findByTeacherId(teacherId);
 
     const users = await Promise.all(rows.map(row => UserRepository.findById(row.userId)));
@@ -15,7 +19,10 @@ export class TeacherUserService {
   }
 
   static async findByPlaceId(passportId: number, placeId: number) {
-    console.log(passportId, 'passportId');
+    if (!passportId) {
+      throw new Error('passportId обязателен для getPlaceUsers');
+    }
+
     const teachers = await PlacePassportRepository.findTeachers(placeId);
 
     const rows = await Promise.all(teachers.map(row => TeacherUserRepository.findByTeacherId(row.id)));

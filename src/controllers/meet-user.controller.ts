@@ -13,7 +13,7 @@ const create: ControllerWithAuth<void, CreateMeetUser> = async (req, res) => {
   }
 };
 
-const remove: ControllerWithAuth<{}> = async (req, res) => {
+const remove: ControllerWithAuth<void> = async (req, res) => {
   try {
     await MeetUserService.remove(req.passport.id!, req.query as unknown as DeleteMeetUser);
 
@@ -25,13 +25,7 @@ const remove: ControllerWithAuth<{}> = async (req, res) => {
 
 const findAll: ControllerWithAuth<MeetUserFull[]> = async (req, res) => {
   try {
-    const userId = Number(req.query.userId);
-
-    if (!userId) {
-      fail(res, 'userId обязателен', 400);
-    }
-
-    const rows = await MeetUserService.findAll(userId);
+    const rows = await MeetUserService.findAll(Number(req.query.userId));
 
     ok(res, rows);
   } catch (err) {

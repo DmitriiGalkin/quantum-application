@@ -9,7 +9,6 @@ const create: ControllerWithAuth<number, CreateLocation> = async (req, res) => {
 
     ok(res, id);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось добавить учителя');
   }
 };
@@ -20,7 +19,6 @@ const findAll: ControllerWithAuth<LocationDto> = async (req, res) => {
 
     ok(res, data);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось получить кабинеты центра');
   }
 };
@@ -33,7 +31,6 @@ const remove: ControllerWithAuth<number> = async (req, res) => {
 
     ok(res, true);
   } catch (err) {
-    console.log(err);
     fail(res, 'Не удалось удалить учителя');
   }
 };

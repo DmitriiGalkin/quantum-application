@@ -2,6 +2,7 @@ import PaymentRepository from '../repositories/payment.repository.js';
 import type { PaymentProvider } from '../entities/payment.types.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import RobokassaService from './robokassa.service.js';
+import { getPassportUserIds } from './project-user.service.js';
 import type { PaymentDto, PaymentTargetType } from 'dto';
 
 interface CreatePaymentDto {
@@ -35,6 +36,19 @@ interface CreatePaymentDto {
 // };
 
 export class PaymentService {
+  static async createForPassport(passportId: number, data: Omit<CreatePaymentDto, 'passportId'>) {
+    const allowedIds = await getPassportUserIds(passportId);
+
+    if (!allowedIds.includes(data.userId)) {
+      throw new Error('Нельзя добавлять участника не из своего пасспорта');
+    }
+
+    return PaymentService.create({
+      ...data,
+      passportId,
+    });
+  }
+
   static async create({ passportId, provider, targetType, targetId, currency = 'RUB', userId }: CreatePaymentDto) {
     let amount = 0;
     let description = '';
@@ -100,6 +114,30 @@ export class PaymentService {
   // async getByTarget(targetType: PaymentTargetType, targetId: number) {
   //   return PaymentRepository.findByTarget(targetType, targetId);
   // }
+
+  static async confirmResult({ OutSum, InvId, SignatureValue }: { OutSum: string; InvId: string; SignatureValue: string }) {
+    const isValid = RobokassaService.verifyResultSignature(OutSum, InvId, SignatureValue);
+
+    if (!isValid) {
+      throw new Error('Наверная подпись');
+    }
+
+    const payment = await PaymentRepository.getById(Number(InvId));
+
+    if (!payment) {
+      throw new Error('Платеж не обнаружен');
+    }
+
+    if (payment.status !== 'paid') {
+      if (Number(payment.amount) !== Number(OutSum)) {
+        throw new Error('Стоимость не совпадает');
+      }
+
+      await PaymentService.markPaid(payment.id);
+    }
+
+    return `OK${InvId}`;
+  }
 
   static async markPaid(paymentId: number) {
     await PaymentRepository.setStatus(paymentId, 'paid');

@@ -53,6 +53,10 @@ export class MeetUserService {
   }
 
   static async findAll(userId: number) {
+    if (!userId) {
+      throw new Error('userId обязателен');
+    }
+
     const [rows] = await MeetUserRepository.findAll(userId);
     return rows;
   }

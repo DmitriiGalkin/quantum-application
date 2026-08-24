@@ -48,7 +48,17 @@ export class MeetService {
     return MeetRepository.update(id, updateData);
   }
 
-  static async remove(id: number) {
+  static async remove(id: number, passportId: number) {
+    const meet = await MeetRepository.findById(id);
+
+    if (!meet) {
+      throw new Error('MEET_NOT_FOUND');
+    }
+
+    if (meet.passportId !== passportId) {
+      throw new Error('FORBIDDEN');
+    }
+
     return MeetRepository.delete(id);
   }
 

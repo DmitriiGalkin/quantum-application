@@ -3,9 +3,11 @@ import { UserService } from '../services/user.service.js';
 import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
 import type { UserDashboardDto, UserDto } from 'dto';
 
-const create: ControllerWithAuth<number> = async (req, res) => {
+type UpdateUserBody = UpdateUserInput & { userId: number };
+
+const create: ControllerWithAuth<number, CreateUserInput> = async (req, res) => {
   try {
-    const userId = await UserService.create(req.passport!, req.body as unknown as CreateUserInput);
+    const userId = await UserService.create(req.passport!, req.body);
 
     ok(res, userId);
   } catch (err) {
@@ -13,9 +15,9 @@ const create: ControllerWithAuth<number> = async (req, res) => {
   }
 };
 
-const update: ControllerWithAuth<void> = async (req, res) => {
+const update: ControllerWithAuth<void, UpdateUserBody> = async (req, res) => {
   try {
-    await UserService.update(req.passport!, (req.body as any).userId as number, req.body as unknown as UpdateUserInput);
+    await UserService.update(req.passport!, req.body.userId, req.body);
 
     ok(res, { message: 'Участник успешно обновлен' });
   } catch (err) {

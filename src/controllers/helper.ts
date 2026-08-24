@@ -5,7 +5,6 @@ import type { Passport } from '../entities/passport.js';
 export interface RequestWithPassport<TBody = any> extends Request {
   params: Record<string, string>;
   passport: Passport;
-  query: Record<string, string>;
   users: UserDto[];
   body: TBody; // 👈 вот ключ
 }

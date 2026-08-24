@@ -4,13 +4,7 @@ import type { User } from '../entities/user.js';
 
 const findByTeacher: ControllerWithAuth<User[]> = async (req, res) => {
   try {
-    const passportId = Number(req.passport.id!);
-
-    if (!passportId) {
-      fail(res, 'passportId обязателен для findByTeacher', 400);
-    }
-
-    const rows = await TeacherUserService.findByTeacherId(passportId);
+    const rows = await TeacherUserService.findByTeacherId(Number(req.passport.id!));
 
     ok(res, rows);
   } catch (err) {
@@ -20,13 +14,7 @@ const findByTeacher: ControllerWithAuth<User[]> = async (req, res) => {
 
 const getPlaceUsers: ControllerWithAuth<User[]> = async (req, res) => {
   try {
-    const passportId = Number(req.passport.id!);
-
-    if (!passportId) {
-      fail(res, 'passportId обязателен для getPlaceUsers', 400);
-    }
-
-    const rows = await TeacherUserService.findByPlaceId(passportId, req.viewer?.placeId!);
+    const rows = await TeacherUserService.findByPlaceId(Number(req.passport.id!), req.viewer?.placeId!);
 
     ok(res, rows);
   } catch (err) {

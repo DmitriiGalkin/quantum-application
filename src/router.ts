@@ -4,6 +4,7 @@ import multer from 'multer';
 
 import user from './controllers/user.controller.js';
 import passportController from './controllers/passport.controller.js';
+import { usePassport } from './middlewares/auth.middleware.js';
 import meet from './controllers/meet.controller.js';
 import meetUser from './controllers/meet-user.controller.js';
 import teacherUser from './controllers/teacher-user.controller.js';
@@ -36,7 +37,7 @@ const privateRouter = express.Router();
 const publicRouter = express.Router();
 
 const withAuth =
-  <T>(controller: ControllerWithAuth<T>): RequestHandler =>
+  (controller: ControllerWithAuth<any, any>): RequestHandler =>
   async (req, res, next) => {
     try {
       await controller(req as any, res as any);
@@ -60,7 +61,7 @@ declare global {
     }
   }
 }
-privateRouter.use(passportController.usePassport);
+privateRouter.use(usePassport);
 
 export const verifyChild = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.viewer?.userId) {
