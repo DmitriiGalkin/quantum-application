@@ -8,6 +8,7 @@ import { usePassport } from './middlewares/auth.middleware.js';
 import meet from './controllers/meet.controller.js';
 import meetUser from './controllers/meet-user.controller.js';
 import teacherUser from './controllers/teacher-user.controller.js';
+import teacherUserController from './controllers/teacher-user.controller.js';
 import teacherIdeaController from './controllers/teacher-idea.controller.js';
 
 import image from './controllers/image.controller.js';
@@ -26,9 +27,8 @@ import teacherController from './controllers/teacher.controller.js';
 import conversationController from './controllers/conversation.controller.js';
 import message2Controller from './controllers/message2.controller.js';
 import type { Passport } from './entities/passport.js';
-import type { ActiveRole } from 'dto';
+import type { ActiveRole } from 'entities';
 import UserRepository from './repositories/user.repository.js';
-import teacherUserController from './controllers/teacher-user.controller.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 

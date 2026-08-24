@@ -1,4 +1,4 @@
-import type { Sort } from 'dto';
+import type { Sort } from 'entities';
 
 export interface Project {
   id: number;

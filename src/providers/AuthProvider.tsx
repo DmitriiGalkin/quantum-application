@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassport } from '../requests.ts';
-import { type ActiveRole, type PassportExtendedDto } from 'dto';
+import { type ActiveRole, type PassportExtendedDto } from 'entities';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
@@ -13,12 +13,12 @@ import { useLocation } from 'react-router-dom';
 import { AUTH_401_EVENT } from '../utils/api.ts';
 import {
   ACCESS_TOKEN_STORAGE_KEY,
-  ACTIVE_CONTEXT_STORAGE_KEY, type ActiveContext,
+  ACTIVE_CONTEXT_STORAGE_KEY,
+  type ActiveContext,
   getContext,
   getTokenFromUrl,
   STRATEGIES,
 } from './helper.ts';
-
 
 
 type ContextType = {

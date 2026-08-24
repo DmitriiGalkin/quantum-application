@@ -1,7 +1,7 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { UserService } from '../services/user.service.js';
-import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
-import type { UserDashboardDto, UserDto } from 'dto';
+import type { CreateUserInput, UpdateUserInput } from 'entities/user.types.js';
+import type { UserDashboardDto, UserDto } from 'entities';
 
 type UpdateUserBody = UpdateUserInput & { userId: number };
 

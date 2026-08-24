@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Message from './Message.tsx';
-import { type CreateMessageDto } from 'dto';
+import { type CreateMessageDto } from 'entities';
 import ReactMarkdown from 'markdown-to-jsx';
 import React from 'react';
 

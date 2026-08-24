@@ -1,6 +1,6 @@
 import { type ControllerWithAuth, fail, ok } from './helper.js';
 import { TeacherUserService } from '../services/teacher-user.service.js';
-import type { User } from '../entities/user.js';
+import type { User } from 'entities/user.js';
 
 const findByTeacher: ControllerWithAuth<User[]> = async (req, res) => {
   try {

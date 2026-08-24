@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { type IdeaExtendedDto } from 'dto';
+import { type IdeaExtendedDto } from 'entities';
 import IdeaCard from './IdeaCard.tsx'; // Добавлен импорт
 
 type Props = {

@@ -2,7 +2,7 @@ import { Box, Paper } from '@mui/material';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import WeekCalendarGrid from './WeekCalendarGrid.tsx';
 import WeekCalendarHeader from './WeekCalendarHeader.tsx';
-import type { MeetDto } from 'dto';
+import type { MeetDto } from 'entities';
 
 export interface WeekCalendarProps {
   meets: MeetDto[];

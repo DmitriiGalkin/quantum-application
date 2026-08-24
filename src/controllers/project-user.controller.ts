@@ -1,6 +1,6 @@
 import { type ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectUserService } from '../services/project-user.service.js';
-import type { CreateProjectUser } from 'dto';
+import type { CreateProjectUser } from 'entities';
 
 const create: ControllerWithAuth<number, CreateProjectUser> = async (req, res) => {
   try {

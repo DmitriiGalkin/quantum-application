@@ -1,6 +1,6 @@
 import { type ControllerWithAuth, fail, ok } from './helper.js';
 import { AuthService } from '../services/auth.service.js';
-import type { PassportExtendedDto } from 'dto';
+import type { PassportExtendedDto } from 'entities';
 
 const update: ControllerWithAuth<void> = async (req, res) => {
   try {

@@ -1,8 +1,8 @@
-import type { PaymentTargetType } from 'dto';
+import type { PaymentTargetType } from 'entities';
+import type { PaymentStatus } from './index.ts';
 
 export type PaymentProvider = 'yookassa' | 'cloudpayments' | 'tbank' | 'stripe' | 'paypal' | 'robokassa';
 
-export type PaymentStatus = 'created' | 'pending' | 'paid' | 'failed' | 'cancelled';
 
 export interface Payment {
   id: number;

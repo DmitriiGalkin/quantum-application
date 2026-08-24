@@ -1,4 +1,4 @@
-import type { Target, ContextDto, MessageDto } from 'dto/index.ts';
+import type { ContextDto, MessageDto, Target } from 'entities';
 
 export interface ChatDto {
   id: number;

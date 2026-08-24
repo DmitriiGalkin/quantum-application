@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import { AuthService } from '../services/auth.service.js';
-import type { ActiveRole } from 'dto';
+import type { ActiveRole } from 'entities';
 
 /**
  * Middleware для проверки токена доступа

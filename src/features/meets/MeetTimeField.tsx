@@ -1,6 +1,6 @@
 import { MenuItem, TextField } from '@mui/material';
 import { useMemo } from 'react';
-import type { PlaceScheduleDayDto } from 'dto';
+import type { PlaceScheduleDayDto } from 'entities';
 
 interface MeetTimeFieldProps {
   date: string;

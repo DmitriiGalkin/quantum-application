@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type Sort, type View, type When } from 'dto';
+import { type Sort, type View, type When } from 'entities';
 
 export interface FilterProps {
   filters: { view: View; sort: Sort; when: When };

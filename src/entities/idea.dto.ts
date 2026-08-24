@@ -1,4 +1,4 @@
-import type { ProjectDto, UserDto } from 'dto/index.ts';
+import type { ProjectDto, UserDto } from 'entities';
 
 export interface IdeaDto {
   id: number;

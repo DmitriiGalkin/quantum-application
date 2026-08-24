@@ -1,4 +1,4 @@
-import type { PassportExtendedDto } from 'dto';
+import type { PassportExtendedDto } from 'entities';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';

@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel, Stack, TextField, Typography } from '@mui/material';
-import type { PlaceScheduleDayDto } from 'dto';
+import type { PlaceScheduleDayDto } from 'entities';
 
 type Props = {
   label: string;

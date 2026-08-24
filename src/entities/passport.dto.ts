@@ -1,5 +1,5 @@
-import type { UserDto } from 'dto/user.dto.ts';
-import type { PlaceDto } from 'dto/place.dto.ts';
+import type { UserDto } from './user.dto.ts';
+import type { PlaceDto } from './place.dto.ts';
 
 export interface PassportDto {
   id: number;

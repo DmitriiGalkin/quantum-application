@@ -1,4 +1,4 @@
-import type { Role } from 'dto';
+import type { Role } from 'entities';
 
 export type CreateMessageInput = {
   chatId: number;

@@ -1,5 +1,5 @@
 import type { RowDataPacket } from 'mysql2/promise';
-import type { Role } from 'dto';
+import type { Role } from 'entities';
 
 export interface MessageRow extends RowDataPacket {
   id: number;

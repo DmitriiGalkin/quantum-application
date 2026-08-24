@@ -1,4 +1,4 @@
-import type { MeetDto, MeetStatus } from 'dto';
+import type { MeetDto, MeetStatus } from 'entities';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
 import MenuButton from '../../components/MenuButton.tsx';

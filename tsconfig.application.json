@@ -8,8 +8,8 @@
     "skipLibCheck": true,
 
     "paths": {
-      "dto": ["./src/dto/index.ts"],
-      "dto/*": ["./src/dto/*"],
+      "entities": ["./src/entities/index.ts"],
+      "entities/*": ["./src/entities/*"],
       "components/*": ["./src/components/*"],
       "providers/*": ["./src/providers/*"],
       "utils/*": ["./src/utils/*"]

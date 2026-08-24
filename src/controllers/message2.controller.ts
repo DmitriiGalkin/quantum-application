@@ -1,6 +1,6 @@
 import { type ControllerWithAuth, fail, ok } from './helper.js';
 import { Message2Service } from '../services/message2.service.js';
-import type { CreateMessageRequest, Message, UpdateMessageRequest } from 'dto';
+import type { CreateMessageRequest, Message, UpdateMessageRequest } from 'entities';
 
 const create: ControllerWithAuth<Message, CreateMessageRequest> = async (req, res) => {
   try {

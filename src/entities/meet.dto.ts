@@ -1,5 +1,5 @@
-import type { PassportDto, PlaceDto, UserDto } from 'dto/index.ts';
-import type { Meet } from '../entities/meet.ts';
+import type { PassportDto, PlaceDto, UserDto } from 'entities';
+import type { Meet } from './meet.ts';
 
 export interface MeetDto extends Omit<Meet, 'passportId' | 'placeId'> {
   users: UserDto[] | null;

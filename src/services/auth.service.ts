@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 import PassportRepository from '../repositories/passport.repository.js';
 import UserRepository from '../repositories/user.repository.js';
-import type { PassportExtendedDto } from 'dto';
+import type { PassportExtendedDto } from 'entities';
 import PlaceRepository from '../repositories/place.repository.js';
 import ProjectRepository from '../repositories/project.repository.js';
-import type { Passport } from '../entities/passport.js';
+import type { Passport } from 'entities/passport.js';
 
 export class AuthService {
   static async authenticateByToken(token: string): Promise<Passport | null> {

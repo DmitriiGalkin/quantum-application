@@ -1,4 +1,4 @@
-import type { MeetStatus } from 'dto';
+import type { MeetStatus } from 'entities';
 
 export interface Meet {
   id: number;

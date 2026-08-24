@@ -1,4 +1,4 @@
-import type { Target } from 'dto';
+import type { Target } from 'entities';
 import type { Context } from '../services/chat/chat.meta.js';
 
 export interface Chat {

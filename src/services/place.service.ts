@@ -1,6 +1,6 @@
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
-import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'dto';
+import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'entities';
 import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
 import { MeetService } from './meet.service.ts';
 
@@ -17,7 +17,6 @@ export class PlaceService {
   }
 
   static async create(passportId: number, data: CreatePlace) {
-    console.log(passportId, 'passportId');
     if (!data || Object.keys(data).length === 0) {
       throw new Error('EMPTY_PLACE');
     }
@@ -32,7 +31,6 @@ export class PlaceService {
     await PlaceRepository.update(data.id, place);
 
     if (schedule) {
-      console.log('schedule', schedule);
       await PlaceScheduleRepository.replace(data.id, schedule);
     }
 

@@ -5,7 +5,8 @@ import {
   type ConversationWithMessage,
   type CreateChatBody,
   type CreateIdea,
-  type CreateIdeaUser, type CreateLocation,
+  type CreateIdeaUser,
+  type CreateLocation,
   type CreateMeet,
   type CreateMeetUser,
   type CreateMessageDto,
@@ -17,7 +18,8 @@ import {
   type GetIdeasQuery,
   type GetProjectsQuery,
   type IdeaExtendedDto,
-  type IdeaFullDto, type LocationDto,
+  type IdeaFullDto,
+  type LocationDto,
   type MeetDto,
   type MeetStatus,
   type Message,
@@ -33,8 +35,9 @@ import {
   type TeacherDto,
   type TeacherPublicDto,
   type UpdateMeet,
-  type UserDashboardDto, type UserDto,
-} from 'dto';
+  type UserDashboardDto,
+  type UserDto,
+} from 'entities';
 import { del, get, post, put, toQuery } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 

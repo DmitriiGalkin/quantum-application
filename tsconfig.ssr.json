@@ -6,8 +6,8 @@
     "target": "ESNext",
     "esModuleInterop": true,
     "paths": {
-      "dto": ["./src/dto/index.ts"],
-      "dto/*": ["./src/dto/*"]
+      "entities": ["./src/entities/index.ts"],
+      "entities/*": ["./src/entities/*"]
     }
   },
   "include": ["src/ssr.ts"]

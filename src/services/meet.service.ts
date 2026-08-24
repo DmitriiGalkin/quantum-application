@@ -1,11 +1,11 @@
-import type { Passport } from '../entities/passport.js';
-import type { CreateMeet, GetMeetsQuery, MeetDto, MeetStatus } from 'dto';
-import type { UpdateMeetInput } from '../entities/meet.types.js';
+import type { Passport } from 'entities/passport.js';
+import type { CreateMeet, GetMeetsQuery, MeetDto, MeetStatus } from 'entities';
+import type { UpdateMeetInput } from 'entities/meet.types.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
-import type { Place } from '../entities/place.js';
+import type { Place } from 'entities/place.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 

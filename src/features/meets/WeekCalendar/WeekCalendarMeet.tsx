@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 
-import type { MeetDto, MeetStatus } from 'dto';
+import type { MeetDto, MeetStatus } from 'entities';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchUpdateMeetStatus } from '../../../requests.ts';
 

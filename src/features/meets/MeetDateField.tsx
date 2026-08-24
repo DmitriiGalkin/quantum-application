@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
-import type { PlaceScheduleDayDto } from 'dto';
+import type { PlaceScheduleDayDto } from 'entities';
 
 interface Props {
   value: string;

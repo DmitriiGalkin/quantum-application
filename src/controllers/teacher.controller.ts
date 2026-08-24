@@ -1,5 +1,5 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
-import type { TeacherDashboardDto, TeacherPublicDto } from 'dto';
+import type { TeacherDashboardDto, TeacherPublicDto } from 'entities';
 import { TeacherService } from '../services/teacher.service.js';
 
 const dashboard: ControllerWithAuth<TeacherDashboardDto> = async (req, res) => {

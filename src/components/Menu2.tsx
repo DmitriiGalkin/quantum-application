@@ -12,7 +12,7 @@ import { useAuth } from '../providers/AuthProvider.tsx';
 import { ListItemAvatar, Tab, Tabs } from '@mui/material';
 import { type SyntheticEvent, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
-import type { ActiveRole } from 'dto';
+import type { ActiveRole } from 'entities';
 
 function a11yProps(index: ActiveRole) {
   return {

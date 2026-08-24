@@ -3,7 +3,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CloseIcon from '@mui/icons-material/Close';
 import Dialog from '@mui/material/Dialog';
 import { PlaceMap } from '../PlaceMap.tsx';
-import type { PlaceDto } from 'dto';
+import type { PlaceDto } from 'entities';
 
 type MeetCardProps = {
   isAuthModalOpen: boolean;

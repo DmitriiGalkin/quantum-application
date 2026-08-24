@@ -1,5 +1,5 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
-import type { CreateMeet, GetMeetsQuery, MeetDto } from 'dto';
+import type { CreateMeet, GetMeetsQuery, MeetDto } from 'entities';
 import { MeetService } from '../services/meet.service.js';
 
 const create: ControllerWithAuth<number, CreateMeet> = async (req, res) => {

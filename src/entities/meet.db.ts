@@ -1,5 +1,5 @@
 import type { RowDataPacket } from 'mysql2/promise';
-import type { MeetStatus } from 'dto';
+import type { MeetStatus } from 'entities';
 
 export interface MeetRow extends RowDataPacket {
   id: number;

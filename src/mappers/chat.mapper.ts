@@ -1,5 +1,5 @@
-import type { Chat, ChatWithLastMessage } from '../entities/chat.js';
-import type { ChatRow, ChatWithLastMessageRow } from '../entities/chat.db.js';
+import type { Chat, ChatWithLastMessage } from 'entities/chat.js';
+import type { ChatRow, ChatWithLastMessageRow } from 'entities/chat.db.js';
 
 export function mapChatRow(row: ChatRow): Chat {
   return {

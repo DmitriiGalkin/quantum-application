@@ -1,7 +1,7 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { toIdeaExtendedDto, toIdeaFullDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
-import type { CreateIdea, GetIdeasQuery, IdeaDto, IdeaExtendedDto, PageMeta } from 'dto';
+import type { CreateIdea, GetIdeasQuery, IdeaDto, IdeaExtendedDto, PageMeta } from 'entities';
 
 const create: ControllerWithAuth<number, CreateIdea> = async (req, res) => {
   try {

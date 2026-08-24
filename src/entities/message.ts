@@ -1,4 +1,4 @@
-import type { Role } from 'dto';
+import type { Role } from 'entities';
 
 export interface Message {
   id: number;
@@ -6,4 +6,12 @@ export interface Message {
   passportId: number | null;
   role: Role;
   content: string | null;
+}
+
+export interface Message {
+  id: number;
+  text: string;
+  createdAt: Date;
+  updatedAt: Date;
+  conversationId: number;
 }

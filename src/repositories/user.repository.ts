@@ -1,9 +1,9 @@
 import { db } from '../utils/dbNext.js';
 import type { ResultSetHeader } from 'mysql2/promise';
-import type { UserRow, UserWithMeetRow } from '../entities/user.db.js';
+import type { UserRow, UserWithMeetRow } from 'entities/user.db.js';
 import { mapUserRow, mapUserWithMeetRow } from '../mappers/user.mapper.js';
-import type { User, UserWithMeet } from '../entities/user.js';
-import type { CreateUserInput, UpdateUserInput } from '../entities/user.types.js';
+import type { User, UserWithMeet } from 'entities/user.js';
+import type { CreateUserInput, UpdateUserInput } from 'entities/user.types.js';
 
 class UserRepository {
   // ✅ CREATE

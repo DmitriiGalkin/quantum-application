@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack';
-import type { ProjectDto } from 'dto';
+import type { ProjectDto } from 'entities';
 import Filter from '../../idea/ui/Filter.tsx';
 import ProjectGrids from './ProjectGrids.tsx';
 import type { FilterProps } from '../../idea/hooks/useFilters.ts';

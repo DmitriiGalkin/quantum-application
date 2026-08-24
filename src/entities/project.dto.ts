@@ -1,5 +1,5 @@
-import type { FeedItem, IdeaDto, MeetDto, PassportDto, PlaceDto, UserDto } from 'dto/index.ts';
-import type { Project } from '../entities/project.ts';
+import type { FeedItem, IdeaDto, MeetDto, PassportDto, PlaceDto, UserDto } from 'entities';
+import type { Project } from './project.ts';
 
 export interface ProjectDto extends Omit<Project, 'passportId' | 'placeId' | 'ideaId'> {
   passport: PassportDto;

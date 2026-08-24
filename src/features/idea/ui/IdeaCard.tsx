@@ -2,7 +2,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import type { IdeaDto } from 'dto';
+import type { IdeaDto } from 'entities';
 import { CardActionArea } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 

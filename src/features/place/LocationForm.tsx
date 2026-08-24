@@ -1,6 +1,6 @@
 import { Alert, Button, Stack, TextField } from '@mui/material';
 import { PlaceScheduleField } from './PlaceScheduleField.tsx';
-import type { PlaceScheduleDayDto } from 'dto';
+import type { PlaceScheduleDayDto } from 'entities';
 
 export interface LocationFormValues {
   title: string;

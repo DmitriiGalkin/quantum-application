@@ -7,7 +7,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { type MeetDto } from 'dto';
+import { type MeetDto } from 'entities';
 import WeekCalendar from './WeekCalendar/WeekCalendar.tsx';
 import { groupMeets } from './groupMeets.ts';
 import MeetGroupGrids from './MeetGroupGrids.tsx';

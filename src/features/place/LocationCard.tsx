@@ -1,7 +1,7 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import type { LocationDto } from 'dto';
+import type { LocationDto } from 'entities';
 
 type Props = {
   location: LocationDto;

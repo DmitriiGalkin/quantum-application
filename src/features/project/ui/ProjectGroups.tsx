@@ -1,4 +1,4 @@
-import { type IdeaDto, type ProjectDto } from 'dto';
+import { type IdeaDto, type ProjectDto } from 'entities';
 import ProjectGrids from './ProjectGrids';
 import { Grid, Stack } from '@mui/material';
 import { groupProjectsByIdea } from '../../../utils/helper.ts';

@@ -1,6 +1,6 @@
 import { type ControllerWithAuth, fail, ok } from './helper.js';
 import PlaceLocationService from '../services/placeLocation.service.js';
-import type { CreateLocation, LocationDto } from 'dto';
+import type { CreateLocation, LocationDto } from 'entities';
 
 const create: ControllerWithAuth<number, CreateLocation> = async (req, res) => {
   try {

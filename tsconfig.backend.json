@@ -6,8 +6,8 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "paths": {
-      "dto": ["./src/dto/index.ts"],
-      "dto/*": ["./src/dto/*"],
+      "entities": ["./src/entities/index.ts"],
+      "entities/*": ["./src/entities/*"],
       "utils/*": ["./src/utils/*"]
     },
     "types": ["node"],

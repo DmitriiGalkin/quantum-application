@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import { IconButton, Stack, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useState } from "react";
+import { useState } from 'react';
 import { FooterLinks } from './FooterLinks.tsx';
 
 type FooterSectionProps = {

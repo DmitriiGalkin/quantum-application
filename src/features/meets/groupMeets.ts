@@ -1,4 +1,4 @@
-import type { MeetDto } from 'dto';
+import type { MeetDto } from 'entities';
 
 export function groupMeets(meets: MeetDto[]) {
   const groups: Map<number, MeetDto[]> = new Map; // Используем Date как ключ

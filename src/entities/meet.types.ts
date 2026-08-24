@@ -1,4 +1,4 @@
-import type { MeetStatus } from 'dto';
+import type { MeetStatus } from 'entities';
 
 export type CreateMeetInput = {
   passportId: number;

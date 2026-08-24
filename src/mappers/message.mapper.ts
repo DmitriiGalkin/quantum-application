@@ -1,6 +1,4 @@
-import type { MessageDto } from 'dto';
-import type { Message } from '../entities/message.js';
-import type { MessageRow } from '../entities/message.db.js';
+import type { MessageDto, Message, MessageRow } from 'entities';
 
 export function mapMessageRow(row: MessageRow): Message {
   return {

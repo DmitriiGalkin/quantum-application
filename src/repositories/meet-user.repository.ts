@@ -1,14 +1,14 @@
 import type { ResultSetHeader } from 'mysql2/promise';
 
-import type { MeetUserFullRow, MeetUserRow, MeetUserWithMeetRow } from '../entities/meet-user.db.js';
+import type { MeetUserFullRow, MeetUserRow, MeetUserWithMeetRow } from 'entities/meet-user.db.js';
 
 import { mapMeetUserFullRow, mapMeetUserRow, mapMeetUserWithMeetRow } from '../mappers/meet-user.mapper.js';
 
-import type { MeetUser, MeetUserWithMeet } from '../entities/meet-user.js';
+import type { MeetUser, MeetUserWithMeet } from 'entities/meet-user.js';
 
-import type { MeetUserFull } from '../entities/meet-user.view.js';
+import type { MeetUserFull } from 'entities/meet-user.view.js';
 import { db } from '../utils/dbNext.js';
-import type { DeleteMeetUser } from 'dto';
+import type { DeleteMeetUser } from 'entities';
 
 class MeetUserRepository {
   // ✅ CREATE

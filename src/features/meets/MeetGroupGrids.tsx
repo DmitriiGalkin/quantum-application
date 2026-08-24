@@ -1,4 +1,4 @@
-import { type MeetDto } from 'dto';
+import { type MeetDto } from 'entities';
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 import MeetGrids from './MeetGrids.tsx'; // Добавлен импорт

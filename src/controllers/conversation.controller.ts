@@ -1,6 +1,6 @@
 import { type ControllerWithAuth, fail, ok } from './helper.js';
 import { ConversationService } from '../services/conversation.service.js';
-import type { Conversation, StartConversationRequest } from 'dto';
+import type { Conversation, StartConversationRequest } from 'entities';
 
 const findAll: ControllerWithAuth<Conversation[]> = async (req, res) => {
   try {

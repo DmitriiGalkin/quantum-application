@@ -1,4 +1,5 @@
-import type { MeetDto } from 'dto/meet.dto.ts';
+import type { MeetDto } from './meet.dto.ts';
+import type { PaymentStatus } from './index.ts';
 
 export type PaymentTargetType = 'project' | 'meet' | 'subscription' | 'other';
 
@@ -9,7 +10,6 @@ export interface PaymentCreateDto {
   targetId: number;
 }
 
-export type PaymentStatus = 'created' | 'pending' | 'paid' | 'failed' | 'cancelled';
 
 export interface PaymentDto {
   id: number;

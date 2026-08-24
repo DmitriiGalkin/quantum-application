@@ -2,7 +2,7 @@ import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js'
 
 import { PaymentService } from '../services/payment.service.js';
 
-import type { PaymentCreateDto, PaymentCreateResponseDto, PaymentDto } from 'dto';
+import type { PaymentCreateDto, PaymentCreateResponseDto, PaymentDto } from 'entities';
 
 const create: ControllerWithAuth<PaymentCreateResponseDto, PaymentCreateDto> = async (req, res) => {
   try {

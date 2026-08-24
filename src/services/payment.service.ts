@@ -1,9 +1,9 @@
 import PaymentRepository from '../repositories/payment.repository.js';
-import type { PaymentProvider } from '../entities/payment.types.js';
+import type { PaymentProvider } from 'entities/payment.types.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import RobokassaService from './robokassa.service.js';
 import { getPassportUserIds } from './project-user.service.js';
-import type { PaymentDto, PaymentTargetType } from 'dto';
+import type { PaymentDto, PaymentTargetType } from 'entities';
 import { MeetService } from './meet.service.ts';
 
 interface CreatePaymentDto {
@@ -19,22 +19,6 @@ interface CreatePaymentDto {
 
   metadata?: unknown;
 }
-
-// type YooKassaPayment = {
-//   id: string;
-//   status: string;
-//   paid: boolean;
-//   amount: {
-//     value: string;
-//     currency: string;
-//   };
-//   metadata?: {
-//     meetId?: string;
-//     ideaId?: string;
-//     projectId?: string;
-//     userId?: string;
-//   };
-// };
 
 export class PaymentService {
   static async createForPassport(passportId: number, data: Omit<CreatePaymentDto, 'passportId'>) {

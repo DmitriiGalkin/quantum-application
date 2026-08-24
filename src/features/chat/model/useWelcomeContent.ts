@@ -1,4 +1,4 @@
-import type { Target } from 'dto';
+import type { Target } from 'entities';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 
 export const useWelcomeContent = (target: Target, ideaId?: number) => {

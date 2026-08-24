@@ -1,7 +1,7 @@
-import type { User } from '../entities/user.js';
+import type { User } from 'entities/user.js';
 
-import type { ProjectUser } from '../entities/project-user.js';
-import type { FeedItem, MeetDto } from 'dto';
+import type { ProjectUser } from 'entities/project-user.js';
+import type { FeedItem, MeetDto } from 'entities';
 
 interface Join extends ProjectUser {
   user: User

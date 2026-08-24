@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import { fetchConversations } from '../requests';
-import type { Conversation } from 'dto';
+import type { Conversation } from 'entities';
 
 const ChatPage: React.FC = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);

@@ -1,4 +1,4 @@
-import type { Role } from 'dto/index.ts';
+import type { Role } from 'entities';
 
 export type MessageDto = {
   id: number;
