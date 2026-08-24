@@ -2,7 +2,7 @@ import type { ProjectDto } from './project.dto.ts';
 import type { MeetDto } from './meet.dto.ts';
 import type { PlaceDto } from './place.dto.ts';
 import type { UserDto } from './user.dto.ts';
-import type { IdeaExtendedDto, IdeaFullDto, IdeaDto } from 'dto/idea.dto.ts';
+import type { IdeaExtendedDto, IdeaDto, IdeaFullDto } from 'dto/idea.dto.ts';
 import type { ChatDto } from './chat.dto.ts';
 import type { MessageDto } from './message.dto.ts';
 import type { PassportDto, PassportExtendedDto } from './passport.dto.ts';
@@ -299,6 +299,7 @@ export type {
   UserDto,
   IdeaDto,
   IdeaExtendedDto,
+  IdeaFullDto,
   ChatDto,
   MessageDto,
   PassportDto,

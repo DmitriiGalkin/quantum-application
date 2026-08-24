@@ -111,7 +111,7 @@ export default function MeetCard({ meet, refetch }: Props) {
   };
 
   const paymentStatus = meet.isPaid ? 'paid' : meet.price && meet.price > 0 ? 'pending' : undefined;
-  const meetUserStatus = userId && meet.users.map(u => u.id).includes(userId) ? 'member' : 'not_member';
+  const meetUserStatus = userId && (meet.users || []).map(u => u.id).includes(userId) ? 'member' : 'not_member';
   const isMember = meetUserStatus === 'member';
   const isPending = paymentStatus === 'pending';
 

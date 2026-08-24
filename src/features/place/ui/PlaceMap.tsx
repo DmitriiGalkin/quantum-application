@@ -75,7 +75,7 @@ export function PlaceMap({ lat, lng, zoom, places }: Props) {
 
     // Ставим новые
     places.forEach(place => {
-      const marker = L.marker([Number(place.latitude), Number(place.longitude)], { icon: getPlaceIcon(place.meets.length) })
+      const marker = L.marker([Number(place.latitude), Number(place.longitude)], { icon: getPlaceIcon(place.meets?.length || 0) })
         .bindPopup(`<div class="place-popup">
                   <h4><b>${place.title}</b></h4>
                   <p>Адрес: ${place.address}</p>

@@ -50,7 +50,7 @@ export default function ProjectPage() {
         <Stack spacing={2}>
           {role === 'teacher' && project.passport.id === passport?.id && (
             <Paper sx={{ p: 2 }}>
-              <CreateMeet projectId={project.id} schedule={place.schedule} refetch={refetch} />
+              <CreateMeet projectId={project.id} schedule={place.schedule || []} refetch={refetch} />
             </Paper>
           )}
 

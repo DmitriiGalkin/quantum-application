@@ -9,6 +9,7 @@ export interface Place {
   providerId: number | null;
   phone: string | null;
   priceFrom: number | null;
+  image?: string | null;
 }
 
 export type CreatePlaceInput = {
