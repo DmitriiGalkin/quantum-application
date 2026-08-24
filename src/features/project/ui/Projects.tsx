@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack';
-import type { ProjectDto, ProjectFullDto } from 'dto';
+import type { ProjectDto } from 'dto';
 import Filter from '../../idea/ui/Filter.tsx';
 import ProjectGrids from './ProjectGrids.tsx';
 import type { FilterProps } from '../../idea/hooks/useFilters.ts';
@@ -37,7 +37,7 @@ function Projects({ title, filter, projects, refetch, withoutIdea }: Props) {
 
       {filter.filters.view === 'module' && !!projects.length && <ProjectGrids projects={projects} refetch={refetch} withoutIdea={withoutIdea} />}
 
-      {filter.filters.view === 'group' && <ProjectGroups projects={projects as ProjectFullDto[]} refetch={refetch} />}
+      {filter.filters.view === 'group' && <ProjectGroups projects={projects as ProjectDto[]} refetch={refetch} />}
     </Stack>
   );
 }

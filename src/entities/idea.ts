@@ -1,5 +1,5 @@
 import type{ User } from './user.js';
-import type { ProjectFullDto, Sort } from 'dto';
+import type { ProjectDto, Sort } from 'dto';
 
 export interface Idea {
   id: number;
@@ -49,6 +49,6 @@ export interface IdeaExtendedEntity extends Idea {
 export interface IdeaFullEntity extends Idea {
   isLiked?: boolean;
   user: User | null;
-  projects: ProjectFullDto[];
+  projects: ProjectDto[];
 }
 

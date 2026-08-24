@@ -1,4 +1,4 @@
-import type { ProjectDto, ProjectFullDto } from './project.dto.ts';
+import type { ProjectDto } from './project.dto.ts';
 
 export type Target = 'idea' | 'project' | 'meet';
 
@@ -134,7 +134,7 @@ export interface ContextDto {
   place?: PlaceDto;
   meet?: MeetExtendedDto;
   ideas?: IdeaFullDto[];
-  project?: ProjectFullDto;
+  project?: ProjectDto;
   idea?: IdeaFullDto;
   passport?: PassportDto;
 }
@@ -440,4 +440,4 @@ export interface CreateLocation {
   title: string;
 }
 
-export type { ProjectDto, ProjectFullDto };
+export type { ProjectDto };

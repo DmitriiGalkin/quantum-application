@@ -29,7 +29,6 @@ import {
   type PlaceDashboardDto,
   type PlaceFullDto,
   type ProjectDto,
-  type ProjectFullDto,
   type StartConversationResponse,
   type TeacherDashboardDto,
   type TeacherDto,
@@ -55,11 +54,11 @@ export const fetchCreateChat = (params: CreateChatBody) => post<number>('/chat',
 export const fetchCreateChatMessages = (chatId: number, messages: CreateMessageDto[]) =>
   post<ChatMessagesResult>(`/chat/${chatId}/messages`, messages);
 
-export const fetchProject = (id: string) => get<ProjectFullDto>(`/project/${id}`);
+export const fetchProject = (id: string) => get<ProjectDto>(`/project/${id}`);
 export const fetchCreateProject = (params: CreateProject) => post<number>('/project', params);
 export const fetchUpdateProject = (id: number, params: CreateProject) => post<number>(`/project/${id}/update`, params);
-export const fetchUserProjects = () => get<ProjectFullDto[]>(`/user/projects`);
-export const fetchPassportProjects = () => get<ProjectFullDto[]>('/passport/projects');
+export const fetchUserProjects = () => get<ProjectDto[]>(`/user/projects`);
+export const fetchPassportProjects = () => get<ProjectDto[]>('/passport/projects');
 export const fetchCreateProjectUser = (params: CreateProjectUser) => post<void>('/projectUser', params);
 export const fetchProjectLeave = (id: number) => del<void>(`/project/${id}/leave`);
 
@@ -82,7 +81,7 @@ export const fetchAddTeacher2 = (params: { passportId: number; placeId: number }
 export const fetchCreateLocation = (params: CreateLocation) => post<number>('/place/location', params);
 export const fetchPlaceDashboard = () => get<PlaceDashboardDto>(`/place/dashboard`);
 export const fetchPlaceTeachers = () => get<TeacherDto[]>(`/place/teachers`);
-export const fetchPlaceProjects = () => get<ProjectFullDto[]>(`/place/projects`);
+export const fetchPlaceProjects = () => get<ProjectDto[]>(`/place/projects`);
 export const fetchPlaceMeets = () => get<MeetExtendedDto[]>(`/place/meets`);
 export const fetchPlaceUsers = () => get<UserDto[]>(`/place/users`);
 export const fetchPlaceLocations = () => get<LocationDto[]>(`/place/locations`);

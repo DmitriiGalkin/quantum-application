@@ -7,9 +7,6 @@ export interface ProjectDto extends Omit<Project, 'passportId' | 'placeId' | 'id
   meets: MeetExtendedDto[];
   users: UserDto[];
   idea: IdeaDto | null;
-}
-
-export interface ProjectFullDto extends ProjectDto {
   feeds?: FeedItem[];
   isPaid?: boolean;
 }

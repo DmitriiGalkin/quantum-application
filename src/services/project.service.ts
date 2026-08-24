@@ -11,7 +11,7 @@ import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import type { ProjectUser } from '../entities/project-user.js';
 import type { Place } from '../entities/place.js';
-import type { CreateProject, ProjectFullDto } from 'dto';
+import type { CreateProject, ProjectDto } from 'dto';
 import PaymentRepository from '../repositories/payment.repository.js';
 import { MeetService } from './meet.service.js';
 import type { Viewer } from '../router.js';
@@ -47,7 +47,7 @@ export class ProjectService {
     await ProjectRepository.delete(projectId);
   }
 
-  static async findAll(params: FindAllProjectInput): Promise<ProjectFullDto[]> {
+  static async findAll(params: FindAllProjectInput): Promise<ProjectDto[]> {
     const projects = await ProjectRepository.findAll(params);
 
     const [ideas, usersArr, passportsArr, placeArr, meetsArr] = await Promise.all([
@@ -68,7 +68,7 @@ export class ProjectService {
     }));
   }
 
-  static async findById(projectId: number, viewer?: Viewer): Promise<ProjectFullDto> {
+  static async findById(projectId: number, viewer?: Viewer): Promise<ProjectDto> {
     const project = await ProjectRepository.findById(projectId);
     if (!project) throw new Error('NOT_FOUND');
 
