@@ -12,8 +12,8 @@ import {
   type DeleteMeetUser,
   type GetIdeasQuery,
   type GetProjectsQuery,
-  type IdeaExtendedDto,
-  type IdeaFullDto,
+  type IdeaDto,
+  type IdeaDashboard,
   type LocationDto,
   type MeetDto,
   type MeetStatus,
@@ -36,12 +36,12 @@ import {
 import { del, get, post, put, toQuery } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 
-export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas${toQuery(params)}`);
+export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaDto[]>(`/ideas${toQuery(params)}`);
 export const fetchProjects = (params: GetProjectsQuery) => get<ProjectDto[]>(`/projects${toQuery(params)}`);
-export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaFullDto>(`/idea/${id}${toQuery(params)}`);
+export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaDashboard>(`/idea/${id}${toQuery(params)}`);
 export const fetchCreateIdea = (params: CreateIdea) => post<number>('/idea', params);
-export const fetchUserIdeas = () => get<IdeaExtendedDto[]>(`/user/ideas`);
-export const fetchTeacherIdeas = () => get<IdeaExtendedDto[]>('/teacher/ideas');
+export const fetchUserIdeas = () => get<IdeaDto[]>(`/user/ideas`);
+export const fetchTeacherIdeas = () => get<IdeaDto[]>('/teacher/ideas');
 export const generateImage = (ideaId: number) => post<void>(`/idea/${ideaId}/generateImage`, {});
 export const fetchLike = (params: CreateIdeaUser) => post<void>('/ideaUser', params);
 export const fetchUnlike = (params: DeleteIdeaUser) => del<void>(`/ideaUser?userId=${params.userId}&ideaId=${params.ideaId}`);

@@ -1,7 +1,7 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { toIdeaExtendedDto, toIdeaFullDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
-import type { CreateIdea, GetIdeasQuery, IdeaDto, IdeaExtendedDto, PageMeta } from 'entities';
+import type { CreateIdea, GetIdeasQuery, IdeaDto, PageMeta } from 'entities';
 
 const create: ControllerWithAuth<number, CreateIdea> = async (req, res) => {
   try {
@@ -12,12 +12,12 @@ const create: ControllerWithAuth<number, CreateIdea> = async (req, res) => {
   }
 };
 
-const findAllPublic: Controller<IdeaExtendedDto[]> = async (req, res) => {
+const findAllPublic: Controller<IdeaDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll(req.query as GetIdeasQuery);
   ok(res, ideas.map(toIdeaExtendedDto));
 };
 
-const findByUserId: ControllerWithAuth<IdeaExtendedDto[]> = async (req, res) => {
+const findByUserId: ControllerWithAuth<IdeaDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll({
     userId: Number(req.viewer?.userId),
   });
@@ -27,7 +27,7 @@ const findByUserId: ControllerWithAuth<IdeaExtendedDto[]> = async (req, res) => 
 
 const findById: Controller<IdeaDto> = async (req, res) => {
   try {
-    const idea = await IdeaService.findById(Number(req.params.id));
+    const idea = await IdeaService.findByIdDashboard(Number(req.params.id));
 
     if (!idea) {
       return fail(res, 'Идея не найдена', 404);

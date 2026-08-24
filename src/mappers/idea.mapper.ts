@@ -1,4 +1,4 @@
-import type { IdeaExtendedDto, IdeaFullDto, Idea, IdeaExtendedEntity, IdeaFullEntity, IdeaWithLike, IdeaRow, IdeaWithLikeRow } from 'entities';
+import type { IdeaDto, IdeaDashboard, Idea, IdeaWithLike, IdeaRow, IdeaWithLikeRow } from 'entities';
 
 export function mapIdeaRow(row: IdeaRow): Idea {
   return {
@@ -21,7 +21,7 @@ export function mapIdeaWithLikeRow(row: IdeaWithLikeRow): IdeaWithLike {
   };
 }
 
-export const toIdeaExtendedDto = (idea: IdeaExtendedEntity): IdeaExtendedDto => {
+export const toIdeaExtendedDto = (idea: IdeaDto): IdeaDto => {
   return {
     id: idea.id,
     title: idea.title,
@@ -40,7 +40,7 @@ export const toIdeaExtendedDto = (idea: IdeaExtendedEntity): IdeaExtendedDto => 
   };
 };
 
-export const toIdeaFullDto = (idea: IdeaFullEntity): IdeaFullDto => {
+export const toIdeaFullDto = (idea: IdeaDashboard): IdeaDashboard => {
   return {
     id: idea.id,
     title: idea.title,

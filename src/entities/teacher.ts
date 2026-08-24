@@ -1,4 +1,4 @@
-import type { ProjectDto, MeetDto, PassportDto, IdeaExtendedDto, PlaceDto } from 'entities';
+import type { ProjectDto, MeetDto, PassportDto, IdeaDto, PlaceDto } from 'entities';
 
 export type TeacherDto = {
   id: number;
@@ -19,7 +19,7 @@ export interface TeacherDashboardDto {
 export interface TeacherPublicDto {
   passport: PassportDto;
   projects: ProjectDto[];
-  ideas: IdeaExtendedDto[];
+  ideas: IdeaDto[];
 
   meets: number;
   students: number;

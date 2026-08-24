@@ -2,14 +2,14 @@ import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
-import type { Passport, FindAllProjectInput, Project, Idea, ProjectUser, Place, CreateProject, ProjectDto } from 'entities';
+import type { Passport, FindAllProjectInput, Project, ProjectUser, Place, CreateProject, ProjectDto } from 'entities';
 import PlaceRepository from '../repositories/place.repository.js';
-import IdeaRepository from '../repositories/idea.repository.js';
 import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import PaymentRepository from '../repositories/payment.repository.js';
 import { MeetService } from './meet.service.js';
 import type { Viewer } from '../router.js';
+import { IdeaService } from './idea.service.ts';
 
 export class ProjectService {
   static async create(passport: Passport, data: CreateProject) {
@@ -46,7 +46,7 @@ export class ProjectService {
     const projects = await ProjectRepository.findAll(params);
 
     const [ideas, usersArr, passportsArr, placeArr, meetsArr] = await Promise.all([
-      Promise.all(projects.map(p => (p.ideaId ? (IdeaRepository.findById(p.ideaId) as Promise<Idea>) : null))),
+      Promise.all(projects.map(p => (p.ideaId ? (IdeaService.findById(p.ideaId)) : null))),
       Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
       Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),
       Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<Place>)),
@@ -72,7 +72,7 @@ export class ProjectService {
       UserRepository.findByProjectId(projectId),
       MeetRepository.findByProjectId(projectId, viewer?.role === 'teacher'),
       PlaceRepository.findById(project.placeId) as Promise<Place>,
-      project.ideaId ? (IdeaRepository.findById(project.ideaId) as Promise<Idea>) : null,
+      project.ideaId ? (IdeaService.findById(project.ideaId)) : null,
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
     ]);
 
@@ -82,9 +82,7 @@ export class ProjectService {
 
     const meetIds = meets.map(m => m.id);
 
-    console.log(viewer, 'viewer');
     const paymentIds = viewer?.userId && meetIds.length ? await PaymentRepository.findPaidMeetIdsByUser(viewer.userId, meetIds) : [];
-    console.log(paymentIds, 'paymentIds');
 
     const meetExtendeds = meets.map((m, i) => ({
       ...m,

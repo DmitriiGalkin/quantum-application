@@ -1,5 +1,5 @@
 import type { RowDataPacket } from 'mysql2/promise';
-import type { User, UserDto } from './user.js';
+import type { UserDto } from './user.js';
 import type { ProjectDto, Sort } from 'entities';
 
 export interface IdeaRow extends RowDataPacket {
@@ -18,25 +18,6 @@ export interface IdeaWithLikeRow extends IdeaRow {
   isLiked: 0 | 1; // MySQL boolean
 }
 
-export interface IdeaDto {
-  id: number;
-  title: string;
-  description: string | null;
-  image: string | null;
-  userCount: number;
-  isLiked?: boolean;
-  createdAt: string;
-}
-
-export interface IdeaExtendedDto extends IdeaDto {
-  user: UserDto | null;
-}
-
-export interface IdeaFullDto extends IdeaDto {
-  user: UserDto | null;
-  projects: ProjectDto[];
-}
-
 export interface Idea {
   id: number;
   userId: number;
@@ -47,6 +28,18 @@ export interface Idea {
   userCount: number;
   today: boolean;
   createdAt: string;
+}
+
+export interface IdeaDto {
+  id: number;
+  title: string;
+  description: string | null;
+  image: string | null;
+  userCount: number;
+  isLiked?: boolean;
+  createdAt: string;
+  user: UserDto | null;
+  //projects: ProjectDto[] | null;
 }
 
 export interface IdeaWithLike extends Idea {
@@ -77,17 +70,6 @@ export interface FindAllIdeaInput {
   longitude?: number;
 }
 
-export interface IdeaExtendedEntity extends Idea {
-  isLiked?: boolean;
-  user: User;
-}
-
-export interface IdeaFullEntity extends Idea {
-  isLiked?: boolean;
-  user: User | null;
-  projects: ProjectDto[];
-}
-
 export interface CreateIdea {
   title: string;
   description: string;
@@ -99,4 +81,9 @@ export interface GetIdeasQuery {
   when?: 'today' | 'tomorrow';
   latitude?: number;
   longitude?: number;
+}
+
+
+export interface IdeaDashboard extends IdeaDto {
+  projects: ProjectDto[];
 }

@@ -1,7 +1,14 @@
 import UserRepository from '../repositories/user.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
 import { generateIdeaImage, uploadImage } from './assistant/assistants/image.assistant.js';
-import type { User, IdeaExtendedEntity, IdeaFullEntity, Passport, CreateIdea, GetIdeasQuery, PageMeta } from 'entities';
+import type {
+  User,
+  Passport,
+  CreateIdea,
+  GetIdeasQuery,
+  PageMeta,
+  IdeaDto, IdeaDashboard,
+} from 'entities';
 import { ProjectService } from './project.service.js';
 
 export class IdeaService {
@@ -16,7 +23,7 @@ export class IdeaService {
     });
   }
 
-  static async findAll(params: GetIdeasQuery): Promise<IdeaExtendedEntity[]> {
+  static async findAll(params: GetIdeasQuery): Promise<IdeaDto[]> {
     if (params.sort === 'nearby') {
       if (!params.latitude || !params.longitude) {
         throw new Error('Missing coordinates for nearby sort');
@@ -33,11 +40,23 @@ export class IdeaService {
     }));
   }
 
-  static async findById(id: number): Promise<IdeaFullEntity | null> {
+  static async findById(id: number): Promise<IdeaDto | null> {
     const idea = await IdeaRepository.findById(id);
     if (!idea) return null;
 
-    const [user, projects] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectService.findAll({ideaId: idea.id})]);
+    const [user] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectService.findAll({ ideaId: idea.id })]);
+
+    return {
+      ...idea,
+      user,
+    };
+  }
+
+  static async findByIdDashboard(id: number): Promise<IdeaDashboard | null> {
+    const idea = await IdeaRepository.findById(id);
+    if (!idea) return null;
+
+    const [user, projects] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectService.findAll({ ideaId: idea.id })]);
 
     return {
       ...idea,
