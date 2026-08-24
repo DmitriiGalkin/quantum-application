@@ -17,7 +17,6 @@ import project from './controllers/project.controller.js';
 import idea from './controllers/idea.controller.js';
 import ideaUser from './controllers/idea-user.controller.js';
 import projectUser from './controllers/project-user.controller.js';
-import chat from './controllers/chat.controller.js';
 import strategies from './utils/strategies.js';
 import type { ControllerWithAuth } from './controllers/helper.js';
 import placeTeacherController from './controllers/placeTeacher.controller.js';
@@ -26,8 +25,7 @@ import paymentController from './controllers/payment.controller.js';
 import teacherController from './controllers/teacher.controller.js';
 import conversationController from './controllers/conversation.controller.js';
 import message2Controller from './controllers/message2.controller.js';
-import type { Passport } from './entities/passport.js';
-import type { ActiveRole } from 'entities';
+import type { ActiveRole, Passport } from 'entities';
 import UserRepository from './repositories/user.repository.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -149,10 +147,6 @@ privateRouter.get('/teacher/meets', withAuth(meet.findPassportAll));
 privateRouter.get('/teacher/users', withAuth(teacherUser.findByTeacher));
 privateRouter.get('/teacher/ideas', withAuth(teacherIdeaController.findByTeacher));
 publicRouter.get('/teachers/:id', teacherController.getTeacher);
-
-publicRouter.get('/chat/:id', chat.findMessages);
-privateRouter.post('/chat', withAuth(chat.create));
-privateRouter.post('/chat/:id/messages', withAuth(chat.createMessages));
 
 publicRouter.get('/meets', meet.findAll);
 publicRouter.get('/meet/:id', meet.findById);
