@@ -1,4 +1,20 @@
 import type { ProjectDto } from './project.dto.ts';
+import type { MeetDto } from './meet.dto.ts';
+import type { PlaceDto } from './place.dto.ts';
+import type { UserDto } from './user.dto.ts';
+import type { IdeaExtendedDto, IdeaFullDto, IdeaDto } from 'dto/idea.dto.ts';
+import type { ChatDto } from './chat.dto.ts';
+import type { MessageDto } from './message.dto.ts';
+import type { PassportDto, PassportExtendedDto } from './passport.dto.ts';
+import type { ContextDto } from './context.dto.ts';
+import type { TeacherDto } from './teacher.dto.ts';
+import type {
+  PaymentTargetType,
+  PaymentCreateDto,
+  PaymentStatus,
+  PaymentDto,
+  PaymentCreateResponseDto,
+} from './payment.dto.ts';
 
 export type Target = 'idea' | 'project' | 'meet';
 
@@ -14,65 +30,8 @@ export type When = 'today' | 'tomorrow' | undefined;
 
 export type View = 'module' | 'map' | 'group';
 
-export type MeetingStatus = 'today' | 'upcoming' | 'completed' | 'cancelled';
-
-export interface ChatDto {
-  id: number;
-  passportId: number;
-  target: Target;
-  context?: ContextDto;
-  messages?: MessageDto[];
-}
-
-export interface IdeaDto {
-  id: number;
-  title: string;
-  description: string | null;
-  image: string | null;
-  userCount: number;
-  isLiked?: boolean;
-  createdAt: string;
-}
-
-export interface IdeaExtendedDto extends IdeaDto {
-  user: UserDto | null;
-}
-
-export interface IdeaFullDto extends IdeaDto {
-  user: UserDto | null;
-  projects: ProjectDto[];
-}
 
 export type MeetStatus = 'pending' | 'published' | 'cancelled';
-
-export interface MeetDto {
-  id: number;
-  projectId: number;
-  startedAt: string;
-  deletedAt: string | null;
-  duration: number | null;
-  price: number | null;
-  status: MeetStatus;
-}
-
-export interface MeetExtendedDto extends MeetDto {
-  users: UserDto[];
-  place: PlaceDto;
-  passport: PassportDto;
-
-  projectTitle?: string;
-  isPaid?: boolean;
-  // Общее количество участников проекта
-  capacity: number;
-}
-
-export type MessageDto = {
-  id: number;
-  chatId: number;
-  passportId: number | null;
-  role: Role;
-  content: string;
-};
 
 export interface PageMeta {
   title: string;
@@ -87,56 +46,6 @@ export interface PageMeta {
   ogType: string;
   // Название сайта/бренда (Показывается мелким текстом. Не всегда отображается во всех платформах)
   ogSiteName?: string;
-}
-
-export interface PassportDto {
-  id: number;
-  title: string;
-  description: string | null;
-  image?: string | null;
-}
-
-export interface PassportExtendedDto extends PassportDto {
-  users: UserDto[];
-  places: PlaceDto[];
-  isTeacher: boolean;
-}
-
-export interface PlaceDto {
-  id: number;
-  title: string | null;
-  description: string | null;
-  address: string;
-  latitude: number;
-  longitude: number;
-  priceFrom: number | null;
-
-  image?: string | null;
-}
-
-export interface PlaceFullDto extends PlaceDto {
-  meets: MeetDto[];
-  schedule: PlaceScheduleDayDto[];
-}
-
-
-
-export interface UserDto {
-  id: number;
-  title: string;
-  description?: string | null;
-  age: number | null;
-  image: string | null;
-}
-
-export interface ContextDto {
-  ui?: Ui;
-  place?: PlaceDto;
-  meet?: MeetExtendedDto;
-  ideas?: IdeaFullDto[];
-  project?: ProjectDto;
-  idea?: IdeaFullDto;
-  passport?: PassportDto;
 }
 
 // Контракты
@@ -198,10 +107,6 @@ export interface CreateProjectUser {
   projectId: number;
   userId: number;
 }
-// export interface DeleteProjectUser {
-//   projectId: number;
-//   userId: number;
-// }
 
 export interface CreateMeetUser {
   meetId: number;
@@ -252,7 +157,7 @@ interface BaseFeed {
 
 export interface FeedMeet extends BaseFeed {
   type: 'meet';
-  meet: MeetExtendedDto;
+  meet: MeetDto;
 }
 
 export interface FeedComment extends BaseFeed {
@@ -284,51 +189,13 @@ export interface CreatePlace {
   image?: string;
   address: string;
 }
-export type TeacherDto = {
-  id: number;
-  title: string;
-  image?: string;
-  projectCount?: number;
-};
-
-export type PaymentTargetType = 'project' | 'meet' | 'subscription' | 'other';
-
-export interface PaymentCreateDto {
-  userId: number;
-
-  targetType: PaymentTargetType;
-  targetId: number;
-}
-
-export type PaymentStatus = 'created' | 'pending' | 'paid' | 'failed' | 'cancelled';
-
-export interface PaymentDto {
-  id: number;
-
-  passportId: number;
-  userId: number | null;
-
-  targetType: PaymentTargetType;
-  targetId: number | null;
-
-  amount: number;
-  status: PaymentStatus;
-
-  meet: MeetDto | null;
-}
-
-export interface PaymentCreateResponseDto {
-  paymentId: number;
-  paymentUrl: string;
-}
-
 export interface TeacherDashboardDto {
   projects: number;
   meets: number;
   students: number;
   debit: number;
 
-  bmeets: MeetExtendedDto[];
+  bmeets: MeetDto[];
 }
 
 export interface TeacherPublicDto {
@@ -383,13 +250,6 @@ export interface Message {
   conversationId: number;
 }
 
-export interface Chat {
-  id: number;
-  name: string;
-  avatarUrl?: string;
-  lastMessage?: Message;
-}
-
 export interface StartConversationRequest {
   passportId: number;
   targetPassportId?: number;
@@ -398,12 +258,6 @@ export interface StartConversationRequest {
 export interface StartConversationResponse {
   exists: boolean;
   conversation: Conversation;
-}
-
-export interface StartChatResponse {
-  exists: boolean;
-  chatId: number;
-  messages?: Message[];
 }
 
 export interface CreateMessageRequest {
@@ -428,8 +282,6 @@ export interface PlaceDashboardDto {
     pendingPlaceCount: number;
     incoming: number;
   };
-  // meets: MeetDto[];
-  //projects: ProjectExtendedDto[];
 }
 
 export interface LocationDto {
@@ -440,4 +292,22 @@ export interface CreateLocation {
   title: string;
 }
 
-export type { ProjectDto };
+export type {
+  ProjectDto,
+  MeetDto,
+  PlaceDto,
+  UserDto,
+  IdeaDto,
+  IdeaExtendedDto,
+  ChatDto,
+  MessageDto,
+  PassportDto,
+  PassportExtendedDto,
+  ContextDto,
+  TeacherDto,
+  PaymentTargetType,
+  PaymentCreateDto,
+  PaymentStatus,
+  PaymentDto,
+  PaymentCreateResponseDto,
+};

@@ -7,7 +7,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { type MeetExtendedDto } from 'dto';
+import { type MeetDto } from 'dto';
 import WeekCalendar from './WeekCalendar/WeekCalendar.tsx';
 import { groupMeets } from './groupMeets.ts';
 import MeetGroupGrids from './MeetGroupGrids.tsx';
@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 
 type Props = {
   title: string;
-  meets: MeetExtendedDto[];
+  meets: MeetDto[];
   refetch?: any;
 };
 

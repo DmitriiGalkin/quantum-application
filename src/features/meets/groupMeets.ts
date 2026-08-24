@@ -1,7 +1,7 @@
-import type { MeetExtendedDto } from 'dto';
+import type { MeetDto } from 'dto';
 
-export function groupMeets(meets: MeetExtendedDto[]) {
-  const groups: Map<number, MeetExtendedDto[]> = new Map; // Используем Date как ключ
+export function groupMeets(meets: MeetDto[]) {
+  const groups: Map<number, MeetDto[]> = new Map; // Используем Date как ключ
 
   const now = new Date();
   now.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня

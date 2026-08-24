@@ -1,10 +1,10 @@
-import { type MeetExtendedDto } from 'dto';
+import { type MeetDto } from 'dto';
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
 import MeetGrids from './MeetGrids.tsx'; // Добавлен импорт
 
 type Props = {
-  meets: MeetExtendedDto[];
+  meets: MeetDto[];
   title?: string;
   refetch?: any;
 };

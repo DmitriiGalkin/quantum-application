@@ -46,7 +46,7 @@ export function MeetMap({ lat, lng, zoom }: Props) {
       markersRef.current.clearLayers();
 
       places.forEach(place => {
-        const meetsList = place.meets
+        const meetsList = (place.meets || [])
           .map(
             meet => `
               <li>
@@ -64,7 +64,7 @@ export function MeetMap({ lat, lng, zoom }: Props) {
           .join('');
 
         const marker = L.marker([Number(place.latitude), Number(place.longitude)], {
-          icon: getPlaceIcon(place.meets.length),
+          icon: getPlaceIcon(place.meets?.length || 0),
         }).bindPopup(`
           <div class="place-popup">
             <h4>

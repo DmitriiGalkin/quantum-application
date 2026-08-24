@@ -1,5 +1,5 @@
 import type { Passport } from '../entities/passport.js';
-import type { CreateMeet, GetMeetsQuery, MeetExtendedDto, MeetStatus } from 'dto';
+import type { CreateMeet, GetMeetsQuery, MeetDto, MeetStatus } from 'dto';
 import type { UpdateMeetInput } from '../entities/meet.types.js';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
@@ -62,7 +62,7 @@ export class MeetService {
     return MeetRepository.delete(id);
   }
 
-  static async findById(id: number): Promise<MeetExtendedDto | null> {
+  static async findById(id: number): Promise<MeetDto | null> {
     const meet = await MeetRepository.findById(id);
     if (!meet) return null;
 
@@ -76,7 +76,7 @@ export class MeetService {
     return { ...meet, place, users, passport, capacity: projectUsers.length };
   }
 
-  static async findAll(data: GetMeetsQuery): Promise<MeetExtendedDto[]> {
+  static async findAll(data: GetMeetsQuery): Promise<MeetDto[]> {
     const meets = await MeetRepository.findAll(data);
     const places = await Promise.all(meets.map(i => PlaceRepository.findById(i.placeId) as Promise<Place>));
     const users = await Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)));

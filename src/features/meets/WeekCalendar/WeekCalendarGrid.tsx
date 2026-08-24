@@ -4,18 +4,18 @@ import { Box, Typography } from '@mui/material';
 import { isSameDay } from 'date-fns';
 
 import WeekCalendarMeet from './WeekCalendarMeet.tsx';
-import type { MeetExtendedDto } from 'dto';
+import type { MeetDto } from 'dto';
 
 const HOUR_HEIGHT = 72;
 
 interface Props {
   days: number[];
-  meets: MeetExtendedDto[];
+  meets: MeetDto[];
 
   startHour: number;
   endHour: number;
 
-  onMeetClick?(meet: MeetExtendedDto): void;
+  onMeetClick?(meet: MeetDto): void;
   onCellClick?(date: Date): void;
 }
 

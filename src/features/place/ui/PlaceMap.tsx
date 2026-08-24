@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import '../BaseMap.css';
-import type { PlaceFullDto } from 'dto';
+import type { PlaceDto } from 'dto';
 
 interface Props {
   lat: number;
   lng: number;
   zoom: number;
-  places: PlaceFullDto[];
+  places: PlaceDto[];
 }
 
 export function PlaceMap({ lat, lng, zoom, places }: Props) {

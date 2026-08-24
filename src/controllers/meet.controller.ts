@@ -1,5 +1,5 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
-import type { CreateMeet, GetMeetsQuery, MeetExtendedDto } from 'dto';
+import type { CreateMeet, GetMeetsQuery, MeetDto } from 'dto';
 import { MeetService } from '../services/meet.service.js';
 
 const create: ControllerWithAuth<number, CreateMeet> = async (req, res) => {
@@ -36,7 +36,7 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
 };
 
 
-const findAll: Controller<MeetExtendedDto[]> = async (req, res) => {
+const findAll: Controller<MeetDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,
@@ -48,7 +48,7 @@ const findAll: Controller<MeetExtendedDto[]> = async (req, res) => {
   }
 };
 
-const findByUserId: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => {
+const findByUserId: ControllerWithAuth<MeetDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({ userId: req.viewer?.userId });
 
@@ -58,7 +58,7 @@ const findByUserId: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => 
   }
 };
 
-const findPassportAll: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => {
+const findPassportAll: ControllerWithAuth<MeetDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,
@@ -71,7 +71,7 @@ const findPassportAll: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) 
   }
 };
 
-const findById: Controller<MeetExtendedDto> = async (req, res) => {
+const findById: Controller<MeetDto> = async (req, res) => {
   try {
     const meet = await MeetService.findById(Number(req.params.id));
 
@@ -95,7 +95,7 @@ const updateStatus: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
-const getPlaceMeets: ControllerWithAuth<MeetExtendedDto[]> = async (req, res) => {
+const getPlaceMeets: ControllerWithAuth<MeetDto[]> = async (req, res) => {
   try {
     const meets = await MeetService.findAll({
       ...req.query,

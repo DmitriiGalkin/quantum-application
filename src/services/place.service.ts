@@ -1,7 +1,8 @@
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
-import type { CreatePlace, PlaceDashboardDto, PlaceFullDto, PlaceUpdateDto } from 'dto';
+import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'dto';
 import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
+import { MeetService } from './meet.service.ts';
 
 export class PlaceService {
   static async findAll() {
@@ -38,11 +39,11 @@ export class PlaceService {
     return PlaceRepository.findById(data.id);
   }
 
-  static async findById(id: number): Promise<PlaceFullDto | null> {
+  static async findById(id: number): Promise<PlaceDto | null> {
     const place = await PlaceRepository.findById(id);
     if (!place) return null;
 
-    const meets = await MeetRepository.findAll({ placeId: id });
+    const meets = await MeetService.findAll({ placeId: id });
 
     const schedule = await PlaceScheduleRepository.findByPlaceId(id);
 

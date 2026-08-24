@@ -1,6 +1,6 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import type { CreatePlace,  MeetExtendedDto, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'dto';
+import type { CreatePlace,  MeetDto, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'dto';
 
 const findAll: Controller<PlaceDto[]> = async (_req, res) => {
   try {
@@ -33,7 +33,7 @@ const update: ControllerWithAuth<void, PlaceUpdateDto> = async (req, res) => {
   }
 };
 
-const findById: Controller<MeetExtendedDto> = async (req, res) => {
+const findById: Controller<MeetDto> = async (req, res) => {
   try {
     const place = await PlaceService.findById(Number(req.params.id));
 

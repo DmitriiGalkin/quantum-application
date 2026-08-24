@@ -19,7 +19,6 @@ import {
   type IdeaExtendedDto,
   type IdeaFullDto, type LocationDto,
   type MeetDto,
-  type MeetExtendedDto,
   type MeetStatus,
   type Message,
   type PassportExtendedDto,
@@ -27,7 +26,7 @@ import {
   type PaymentCreateResponseDto,
   type PaymentDto,
   type PlaceDashboardDto,
-  type PlaceFullDto,
+  type PlaceDto,
   type ProjectDto,
   type StartConversationResponse,
   type TeacherDashboardDto,
@@ -62,18 +61,17 @@ export const fetchPassportProjects = () => get<ProjectDto[]>('/passport/projects
 export const fetchCreateProjectUser = (params: CreateProjectUser) => post<void>('/projectUser', params);
 export const fetchProjectLeave = (id: number) => del<void>(`/project/${id}/leave`);
 
-export const fetchMeets = () => get<MeetExtendedDto[]>(`/user/meets`);
-export const fetchMeet = (id: number) => get<MeetDto>(`/meet/${id}`);
+export const fetchMeets = () => get<MeetDto[]>(`/user/meets`);
 export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);
 export const fetchUpdateMeetStatus = (id: number, params: { status: MeetStatus }) => put<void>(`/meet/${id}/status`, params);
 export const fetchDeleteMeet = (id: number) => del<void>(`/meet/${id}`);
 export const fetchCreateMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', params);
 export const fetchDeleteMeetUser = ({ userId, meetId }: DeleteMeetUser) => del<void>(`/meetUser?userId=${userId}&meetId=${meetId}`);
-export const fetchTeacherMeets = () => get<MeetExtendedDto[]>('/teacher/meets');
+export const fetchTeacherMeets = () => get<MeetDto[]>('/teacher/meets');
 
-export const fetchPlace = (id: number) => get<PlaceFullDto>(`/place/${id}`);
-export const fetchPlaces = () => get<PlaceFullDto[]>('/places');
+export const fetchPlace = (id: number) => get<PlaceDto>(`/place/${id}`);
+export const fetchPlaces = () => get<PlaceDto[]>('/places');
 export const fetchCreatePlace = (params: CreatePlace) => post<number>('/place', params);
 export const fetchUpdatePlace = (params: PlaceFormValues) => put<void>(`/place`, params);
 export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { passportId });
@@ -82,7 +80,7 @@ export const fetchCreateLocation = (params: CreateLocation) => post<number>('/pl
 export const fetchPlaceDashboard = () => get<PlaceDashboardDto>(`/place/dashboard`);
 export const fetchPlaceTeachers = () => get<TeacherDto[]>(`/place/teachers`);
 export const fetchPlaceProjects = () => get<ProjectDto[]>(`/place/projects`);
-export const fetchPlaceMeets = () => get<MeetExtendedDto[]>(`/place/meets`);
+export const fetchPlaceMeets = () => get<MeetDto[]>(`/place/meets`);
 export const fetchPlaceUsers = () => get<UserDto[]>(`/place/users`);
 export const fetchPlaceLocations = () => get<LocationDto[]>(`/place/locations`);
 export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<void>(`/place/${placeId}/teacher/${passportId}`);

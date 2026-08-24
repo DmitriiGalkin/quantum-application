@@ -1,14 +1,14 @@
 import type { User } from '../entities/user.js';
 
 import type { ProjectUser } from '../entities/project-user.js';
-import type { FeedItem, MeetExtendedDto } from 'dto';
+import type { FeedItem, MeetDto } from 'dto';
 
 interface Join extends ProjectUser {
   user: User
 }
 
 interface MergeFeed {
-  meets: MeetExtendedDto[];
+  meets: MeetDto[];
   comments: any[];
   joins: Join[];
 }

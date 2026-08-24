@@ -1,4 +1,4 @@
-import type { MeetExtendedDto, MeetStatus } from 'dto';
+import type { MeetDto, MeetStatus } from 'dto';
 import { useAuth } from '../../providers/AuthProvider.tsx';
 import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
 import MenuButton from '../../components/MenuButton.tsx';
@@ -26,7 +26,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { EditMeetDialog } from './EditMeetDialog.tsx';
 
 interface Props {
-  meet: MeetExtendedDto;
+  meet: MeetDto;
   refetch?: () => void;
 }
 

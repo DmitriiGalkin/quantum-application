@@ -4,6 +4,7 @@ import MeetRepository from '../repositories/meet.repository.js';
 import RobokassaService from './robokassa.service.js';
 import { getPassportUserIds } from './project-user.service.js';
 import type { PaymentDto, PaymentTargetType } from 'dto';
+import { MeetService } from './meet.service.ts';
 
 interface CreatePaymentDto {
   passportId: number;
@@ -98,7 +99,7 @@ export class PaymentService {
       throw new Error('Payment not found.');
     }
 
-    const meet = (payment.targetType === 'meet' && payment.targetId) ? await MeetRepository.findById(payment.targetId) : null;
+    const meet = (payment.targetType === 'meet' && payment.targetId) ? await MeetService.findById(payment.targetId) : null;
 
     return { ...payment, meet };
   }

@@ -2,10 +2,10 @@ import { Box, Paper } from '@mui/material';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import WeekCalendarGrid from './WeekCalendarGrid.tsx';
 import WeekCalendarHeader from './WeekCalendarHeader.tsx';
-import type { MeetExtendedDto } from 'dto';
+import type { MeetDto } from 'dto';
 
 export interface WeekCalendarProps {
-  meets: MeetExtendedDto[];
+  meets: MeetDto[];
 
   weekStartsOn?: 0 | 1;
 
@@ -13,7 +13,7 @@ export interface WeekCalendarProps {
 
   endHour?: number;
 
-  onMeetClick?(meet: MeetExtendedDto): void;
+  onMeetClick?(meet: MeetDto): void;
 
   onCellClick?(date: Date): void;
   single?: boolean;
