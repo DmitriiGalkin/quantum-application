@@ -46,6 +46,7 @@ export class TeacherService {
       place: placeArr[i],
       meets: meetsArr[i],
       users: usersArr[i],
+      idea: null
     }));
 
     const ideaExtendeds = ideas.map((idea, i) => ({

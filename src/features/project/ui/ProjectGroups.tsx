@@ -1,12 +1,11 @@
-import Box from '@mui/material/Box';
-import { type IdeaDto, type ProjectFullDto } from 'dto';
-import ProjectGrids from "./ProjectGrids";
-import { Button, Card, CardContent, CardMedia, Grid, Stack, Typography } from '@mui/material';
+import { type IdeaDto, type ProjectDto, type ProjectFullDto } from 'dto';
+import ProjectGrids from './ProjectGrids';
+import { Grid, Stack } from '@mui/material';
 import { groupProjectsByIdea } from '../../../utils/helper.ts';
 import IdeaCard from '../../idea/ui/IdeaCard.tsx';
 
 type Props = {
-  projects: ProjectFullDto[];
+  projects: ProjectDto[];
   withoutIdea?: boolean;
   refetch?: any;
 };

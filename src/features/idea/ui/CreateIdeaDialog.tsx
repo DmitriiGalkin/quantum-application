@@ -1,8 +1,8 @@
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import IdeaForm from "./IdeaForm.tsx";
-import {useCreateIdea} from "../hooks/useCreateIdea.ts";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IdeaForm from './IdeaForm.tsx';
+import { useCreateIdea } from '../hooks/useCreateIdea.ts';
 
 interface Props {
   open: boolean;

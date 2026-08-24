@@ -28,7 +28,7 @@ import {
   type PaymentDto,
   type PlaceDashboardDto,
   type PlaceFullDto,
-  type ProjectExtendedDto,
+  type ProjectDto,
   type ProjectFullDto,
   type StartConversationResponse,
   type TeacherDashboardDto,
@@ -41,7 +41,7 @@ import { del, get, post, put, toQuery } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 
 export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaExtendedDto[]>(`/ideas${toQuery(params)}`);
-export const fetchProjects = (params: GetProjectsQuery) => get<ProjectExtendedDto[]>(`/projects${toQuery(params)}`);
+export const fetchProjects = (params: GetProjectsQuery) => get<ProjectDto[]>(`/projects${toQuery(params)}`);
 export const fetchIdea = (id: string, params: GetIdeasQuery) => get<IdeaFullDto>(`/idea/${id}${toQuery(params)}`);
 export const fetchCreateIdea = (params: CreateIdea) => post<number>('/idea', params);
 export const fetchUserIdeas = () => get<IdeaExtendedDto[]>(`/user/ideas`);

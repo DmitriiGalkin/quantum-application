@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack';
-import type  { ProjectExtendedDto, ProjectFullDto } from 'dto';
+import type { ProjectDto, ProjectFullDto } from 'dto';
 import Filter from '../../idea/ui/Filter.tsx';
 import ProjectGrids from './ProjectGrids.tsx';
 import type { FilterProps } from '../../idea/hooks/useFilters.ts';
@@ -9,7 +9,7 @@ import ProjectGroups from './ProjectGroups.tsx'; // Добавлен импор�
 type Props = {
   title?: string;
   filter: FilterProps;
-  projects: ProjectExtendedDto[];
+  projects: ProjectDto[];
   withoutIdea?: boolean;
   refetch?: any;
 };

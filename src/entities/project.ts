@@ -1,8 +1,4 @@
-import type { User } from './user.js';
-import type { Passport } from './passport.js';
-import type { Place } from './place.js';
-import type { Idea } from './idea.js';
-import type { FeedItem, MeetExtendedDto, Sort } from 'dto';
+import type { Sort } from 'dto';
 
 export interface Project {
   id: number;
@@ -25,13 +21,4 @@ export interface FindAllProjectInput {
   sort?: Sort;
   latitude?: number;
   longitude?: number;
-}
-
-export interface ProjectFullEntity extends Project {
-  users: User[];
-  passport: Passport;
-  place: Place;
-  meets: MeetExtendedDto[];
-  idea: Idea | null;
-  feeds?: FeedItem[];
 }

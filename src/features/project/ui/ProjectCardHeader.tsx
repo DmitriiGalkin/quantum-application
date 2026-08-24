@@ -1,4 +1,4 @@
-import type { PlaceDto, ProjectExtendedDto } from 'dto';
+import type { PlaceDto, ProjectDto } from 'dto';
 import { Avatar, CardHeader, Stack } from '@mui/material';
 import MenuButton from '../../../components/MenuButton.tsx';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ import ProjectForm, { type ProjectFormValues } from './ProjectForm.tsx';
 import { Link } from 'react-router-dom';
 
 type Props = {
-  project: ProjectExtendedDto;
+  project: ProjectDto;
   place: PlaceDto;
   refetch?: () => void;
   onMessageTeacher?: () => void; // Добавлен обработчик

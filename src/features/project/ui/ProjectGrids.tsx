@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
-import {type ProjectExtendedDto} from 'dto';
-import ProjectCard from "./ProjectCard.tsx"; // Добавлен импорт
+import { type ProjectDto } from 'dto';
+import ProjectCard from './ProjectCard.tsx'; // Добавлен импорт
 
 type Props = {
-  projects: ProjectExtendedDto[];
+  projects: ProjectDto[];
   withoutIdea?: boolean;
   refetch?: any;
 };

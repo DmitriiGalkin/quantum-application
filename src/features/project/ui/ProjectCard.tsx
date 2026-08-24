@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button, Card, CardActionArea, CardContent, Chip, IconButton, Stack } from '@mui/material';
-import { type ProjectExtendedDto } from 'dto';
+import { type ProjectDto } from 'dto';
 import AvatarGroupUsers from 'components/AvatarGroupUsers.tsx';
 import { useAuth } from '../../../providers/AuthProvider.tsx';
 import { useMutation } from '@tanstack/react-query';
@@ -24,7 +24,7 @@ import ChatDialog from '../../../components/ChatDialog.tsx'; // Добавлен
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 
 type Props = {
-  project: ProjectExtendedDto;
+  project: ProjectDto;
   withoutIdea?: boolean;
   refetch?: any;
 };
@@ -152,7 +152,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
                   size="small"
                   onClick={e => {
                     e.stopPropagation(); // важно: чтобы не триггерить Card click
-                    navigate(`/idea/${project.ideaId}`);
+                    navigate(`/idea/${project.idea?.id || 0}`);
                   }}
                   sx={{
                     opacity: 0.5,

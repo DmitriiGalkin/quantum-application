@@ -1,3 +1,5 @@
+import type { ProjectDto, ProjectFullDto } from './project.dto.ts';
+
 export type Target = 'idea' | 'project' | 'meet';
 
 export type ActiveRole = 'user' | 'teacher' | 'place' | 'guest';
@@ -38,14 +40,9 @@ export interface IdeaExtendedDto extends IdeaDto {
 
 export interface IdeaFullDto extends IdeaDto {
   user: UserDto | null;
-  projects: ProjectExtendedDto[];
+  projects: ProjectDto[];
 }
-//
-// export enum MeetStatus {
-//   Pending = 'pending',
-//   Published = 'published',
-//   Cancelled = 'cancelled',
-// }
+
 export type MeetStatus = 'pending' | 'published' | 'cancelled';
 
 export interface MeetDto {
@@ -122,30 +119,7 @@ export interface PlaceFullDto extends PlaceDto {
   schedule: PlaceScheduleDayDto[];
 }
 
-export interface ProjectDto {
-  id: number;
-  title: string;
-  description: string | null;
-  image: string | null;
-  ideaId: number | null;
-}
 
-export interface ProjectExtendedDto extends ProjectDto {
-  passport: PassportDto;
-  place: PlaceDto;
-  meets: MeetExtendedDto[];
-  users: UserDto[];
-}
-
-export interface ProjectFullDto extends ProjectDto {
-  idea: IdeaDto | null;
-  passport: PassportDto;
-  place: PlaceDto;
-  meets: MeetExtendedDto[];
-  users: UserDto[];
-  feeds?: FeedItem[];
-  isPaid?: boolean;
-}
 
 export interface UserDto {
   id: number;
@@ -359,7 +333,7 @@ export interface TeacherDashboardDto {
 
 export interface TeacherPublicDto {
   passport: PassportDto;
-  projects: ProjectExtendedDto[];
+  projects: ProjectDto[];
   ideas: IdeaExtendedDto[];
 
   meets: number;
@@ -441,7 +415,7 @@ export interface UpdateMessageRequest {
 }
 
 export interface UserDashboardDto {
-  projects: ProjectExtendedDto[];
+  projects: ProjectDto[];
 }
 
 export interface PlaceDashboardDto {
@@ -465,3 +439,5 @@ export interface LocationDto {
 export interface CreateLocation {
   title: string;
 }
+
+export type { ProjectDto, ProjectFullDto };

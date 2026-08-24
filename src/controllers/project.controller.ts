@@ -1,6 +1,6 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectService } from '../services/project.service.js';
-import type { CreateProject, PageMeta, ProjectDto, ProjectFullDto } from 'dto';
+import type { CreateProject, PageMeta, ProjectFullDto } from 'dto';
 import type { Project } from '../entities/project.js';
 
 const create: ControllerWithAuth<number, CreateProject> = async (req, res) => {
@@ -30,7 +30,7 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
-const findAll: Controller<ProjectDto[]> = async (req, res) => {
+const findAll: Controller<ProjectFullDto[]> = async (req, res) => {
   try {
     const data = await ProjectService.findAll(req.query);
 
@@ -49,18 +49,16 @@ const findByUserId: ControllerWithAuth<ProjectFullDto[]> = async (req, res) => {
   ok(res, projects);
 };
 
-const findByPassportId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
+const findByPassportId: ControllerWithAuth<ProjectFullDto[]> = async (req, res) => {
   const projects = await ProjectService.findAll({
     ...req.query,
     passportId: req.passport.id,
   });
 
-
   ok(res, projects);
 };
 
-const findByPlaceId: ControllerWithAuth<ProjectDto[]> = async (req, res) => {
-
+const findByPlaceId: ControllerWithAuth<ProjectFullDto[]> = async (req, res) => {
   const projects = await ProjectService.findAll({
     ...req.query,
     placeId: Number(req.viewer?.placeId),

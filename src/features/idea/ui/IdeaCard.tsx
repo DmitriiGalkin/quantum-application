@@ -2,12 +2,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-//import CardActions from '@mui/material/CardActions';
-import type { IdeaDto, IdeaExtendedDto } from 'dto';
+import type { IdeaDto } from 'dto';
 import { CardActionArea } from '@mui/material';
-//import Like from './Like.tsx';
 import { useNavigate } from 'react-router-dom';
-//import { Author } from 'components/Author.tsx';
 
 type IdeaCardProps = {
   idea: IdeaDto;
