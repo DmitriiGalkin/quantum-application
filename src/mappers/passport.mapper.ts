@@ -1,5 +1,4 @@
-import type { Passport } from 'entities/passport.js';
-import type { PassportRow } from 'entities/passport.db.js';
+import type { Passport, PassportRow } from 'entities';
 
 export function toPassport(row: PassportRow): Passport {
   return {

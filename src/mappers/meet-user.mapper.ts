@@ -1,6 +1,4 @@
-import type { MeetUser, MeetUserWithMeet } from 'entities/meet-user.js';
-import type { MeetUserFullRow, MeetUserRow, MeetUserWithMeetRow } from 'entities/meet-user.db.js';
-import type { MeetUserFull } from 'entities/meet-user.view.js';
+import type { MeetUser, MeetUserWithMeet, MeetUserFullRow, MeetUserRow, MeetUserWithMeetRow, MeetUserFull } from 'entities';
 
 export function mapMeetUserRow(row: MeetUserRow): MeetUser {
   return {

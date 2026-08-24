@@ -1,5 +1,4 @@
-import type { ConversationRow } from 'entities/conversation.db.js';
-import type { Conversation } from 'entities';
+import type { Conversation, ConversationRow } from 'entities';
 
 export function mapConversationRow(row: ConversationRow): Conversation {
   return {

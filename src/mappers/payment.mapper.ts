@@ -1,5 +1,4 @@
-import type { PaymentRow } from 'entities/payment.db.js';
-import type { Payment } from 'entities/payment.types.js';
+import type { PaymentRow, Payment } from 'entities';
 
 export const toPayment = (row: PaymentRow): Payment => ({
   ...row,

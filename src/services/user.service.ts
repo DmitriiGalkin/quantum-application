@@ -1,10 +1,7 @@
 import UserRepository from '../repositories/user.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 
-import type { User } from 'entities/user.js';
-import type { Passport } from 'entities/passport.js';
-import type { CreateUserInput, UpdateUserInput } from 'entities/user.types.js';
-import type { UserDashboardDto } from 'entities';
+import type { UserDashboardDto, User, Passport, CreateUserInput, UpdateUserInput } from 'entities';
 import { ProjectService } from './project.service.js';
 
 export class UserService {

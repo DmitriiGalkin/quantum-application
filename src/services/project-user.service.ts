@@ -1,7 +1,7 @@
 import ProjectRepository from '../repositories/project.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
-import type { Passport } from 'entities/passport.js';
+import type { Passport } from 'entities';
 
 export function getPassportUserIds(passportId: number) {
   // если у тебя раньше был req.users — лучше заменить на нормальный сервис/запрос

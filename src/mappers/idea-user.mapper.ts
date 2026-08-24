@@ -1,5 +1,4 @@
-import type { IdeaUser } from 'entities/idea-user.js';
-import type { IdeaUserRow } from 'entities/idea-user.db.js';
+import type { IdeaUser, IdeaUserRow } from 'entities';
 
 export function mapIdeaUserRow(row: IdeaUserRow): IdeaUser {
   return {

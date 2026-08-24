@@ -1,6 +1,5 @@
 import {
   type Conversation,
-  type ConversationWithMessage,
   type CreateIdea,
   type CreateIdeaUser,
   type CreateLocation,
@@ -95,7 +94,7 @@ export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/da
 // Conversation methods
 export const fetchConversations = () => get<Conversation[]>('/conversation');
 export const fetchStartChat = (passportId: number) => post<StartConversationResponse>('/conversation/start', { passportId });
-export const fetchConversation = (id: number) => get<ConversationWithMessage>(`/conversation/${id}`);
+export const fetchConversation = (id: number) => get<Conversation>(`/conversation/${id}`);
 
 // Message methods
 export const fetchCreateMessage = (conversationId: number, content: string) => post<Message>(`/conversation/${conversationId}/messages`, { content });

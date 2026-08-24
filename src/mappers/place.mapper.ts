@@ -1,6 +1,4 @@
-import type { Place } from 'entities/place.js';
-
-import type { PlaceRow } from 'entities/place.db.js';
+import type { Place, PlaceRow } from 'entities';
 
 export function toPlace(row: PlaceRow): Place {
   return {
@@ -16,17 +14,3 @@ export function toPlace(row: PlaceRow): Place {
     priceFrom: row.priceFrom,
   };
 }
-
-// export function toPlaceDto(place: Place): PlaceDto {
-//   return {
-//     id: place.id,
-//     title: place.title,
-//     description: place.description,
-//     address: place.address,
-//     latitude: place.latitude,
-//     longitude: place.longitude,
-//     priceFrom: place.priceFrom,
-//
-//     meets: [], // подтягивается отдельно
-//   };
-// }

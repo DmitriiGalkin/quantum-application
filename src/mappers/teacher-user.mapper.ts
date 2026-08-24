@@ -1,5 +1,4 @@
-import type { TeacherUserRow } from 'entities/teacher-user.db.js';
-import type { TeacherUser } from 'entities/teacher-user.js';
+import type { TeacherUserRow, TeacherUser } from 'entities';
 
 export function toTeacherUser(row: TeacherUserRow): TeacherUser {
   return {

@@ -1,5 +1,4 @@
-import type { Meet, MeetWithProjectTitle } from 'entities/meet.js';
-import type { MeetRow, MeetWithProjectTitleRow } from 'entities/meet.db.js';
+import type { Meet, MeetWithProjectTitle, MeetRow, MeetWithProjectTitleRow } from 'entities';
 
 export function toMeet(row: MeetRow): Meet {
   return {

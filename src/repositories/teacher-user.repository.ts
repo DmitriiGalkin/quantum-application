@@ -1,7 +1,6 @@
 import { db } from '../utils/dbNext.js';
 import { toTeacherUser } from '../mappers/teacher-user.mapper.js';
-import type { TeacherUser } from 'entities/teacher-user.js';
-import type { TeacherUserRow } from 'entities/teacher-user.db.js';
+import type { TeacherUser, TeacherUserRow } from 'entities';
 
 class TeacherUserRepository {
 

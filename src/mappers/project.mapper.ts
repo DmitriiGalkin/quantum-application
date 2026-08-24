@@ -1,5 +1,4 @@
-import type { Project } from 'entities/project.js';
-import type { ProjectRow } from 'entities/project.db.js';
+import type { Project, ProjectRow } from 'entities';
 
 export function toProject(row: ProjectRow): Project {
   return {

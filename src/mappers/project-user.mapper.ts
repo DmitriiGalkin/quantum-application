@@ -1,5 +1,4 @@
-import type { ProjectUser } from 'entities/project-user.js';
-import type { ProjectUserRow } from 'entities/project-user.db.js';
+import type { ProjectUser, ProjectUserRow } from 'entities';
 
 export function mapProjectUserRow(row: ProjectUserRow): ProjectUser {
   return {

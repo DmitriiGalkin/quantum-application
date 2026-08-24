@@ -1,5 +1,41 @@
-import type { User } from './user.js';
+import type { RowDataPacket } from 'mysql2/promise';
+import type { User, UserDto } from './user.js';
 import type { ProjectDto, Sort } from 'entities';
+
+export interface IdeaRow extends RowDataPacket {
+  id: number;
+  userId: number;
+  passportId: number;
+  title: string;
+  description: string;
+  image: string | null;
+  userCount: number;
+  createdAt: string;
+  deletedAt: string | null;
+}
+
+export interface IdeaWithLikeRow extends IdeaRow {
+  isLiked: 0 | 1; // MySQL boolean
+}
+
+export interface IdeaDto {
+  id: number;
+  title: string;
+  description: string | null;
+  image: string | null;
+  userCount: number;
+  isLiked?: boolean;
+  createdAt: string;
+}
+
+export interface IdeaExtendedDto extends IdeaDto {
+  user: UserDto | null;
+}
+
+export interface IdeaFullDto extends IdeaDto {
+  user: UserDto | null;
+  projects: ProjectDto[];
+}
 
 export interface Idea {
   id: number;
@@ -52,3 +88,15 @@ export interface IdeaFullEntity extends Idea {
   projects: ProjectDto[];
 }
 
+export interface CreateIdea {
+  title: string;
+  description: string;
+}
+
+export interface GetIdeasQuery {
+  userId?: number;
+  sort?: Sort;
+  when?: 'today' | 'tomorrow';
+  latitude?: number;
+  longitude?: number;
+}

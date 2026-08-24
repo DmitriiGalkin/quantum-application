@@ -1,6 +1,5 @@
 import { db } from '../utils/dbNext.js';
-import type { PlaceSchedule } from 'entities/place-schedule.db.js';
-import type { PlaceScheduleDayDto } from 'entities';
+import type { PlaceSchedule, PlaceScheduleDayDto } from 'entities';
 
 export default class PlaceScheduleRepository {
   static async findByPlaceId(placeId: number): Promise<PlaceSchedule[]> {

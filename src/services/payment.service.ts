@@ -1,9 +1,8 @@
 import PaymentRepository from '../repositories/payment.repository.js';
-import type { PaymentProvider } from 'entities/payment.types.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import RobokassaService from './robokassa.service.js';
 import { getPassportUserIds } from './project-user.service.js';
-import type { PaymentDto, PaymentTargetType } from 'entities';
+import type { PaymentDto, PaymentTargetType, PaymentProvider } from 'entities';
 import { MeetService } from './meet.service.js';
 
 interface CreatePaymentDto {
