@@ -2,7 +2,7 @@ import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'entities';
 import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
-import { MeetService } from './meet.service.ts';
+import { MeetService } from './meet.service.js';
 
 export class PlaceService {
   static async findAll() {
@@ -16,7 +16,7 @@ export class PlaceService {
     }));
   }
 
-  static async create(passportId: number, data: CreatePlace) {
+  static async create(_passportId: number, data: CreatePlace) {
     if (!data || Object.keys(data).length === 0) {
       throw new Error('EMPTY_PLACE');
     }

@@ -4,7 +4,7 @@ import MeetRepository from '../repositories/meet.repository.js';
 import RobokassaService from './robokassa.service.js';
 import { getPassportUserIds } from './project-user.service.js';
 import type { PaymentDto, PaymentTargetType } from 'entities';
-import { MeetService } from './meet.service.ts';
+import { MeetService } from './meet.service.js';
 
 interface CreatePaymentDto {
   passportId: number;

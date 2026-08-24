@@ -3,7 +3,6 @@ import type { MeetDto } from './meet.dto.ts';
 import type { PlaceDto } from './place.dto.ts';
 import type { UserDto } from './user.dto.ts';
 import type { IdeaDto, IdeaExtendedDto, IdeaFullDto } from './idea.dto.ts';
-import type { ChatDto } from './chat.dto.ts';
 import type { MessageDto } from './message.dto.ts';
 import type { PassportDto, PassportExtendedDto } from './passport.dto.ts';
 import type { ContextDto } from './context.dto.ts';
@@ -296,7 +295,6 @@ export type {
   IdeaDto,
   IdeaExtendedDto,
   IdeaFullDto,
-  ChatDto,
   MessageDto,
   PassportDto,
   PassportExtendedDto,
@@ -307,10 +305,6 @@ export type {
   PaymentDto,
   PaymentCreateResponseDto,
 };
-
-// Chat
-export type { ChatRow, ChatWithLastMessageRow } from './chat.db.js';
-export type { Chat, ChatWithLastMessage, CreateChatInput, UpdateChat } from './chat.js';
 
 // Conversation
 export type { ConversationPassportRow } from './conversation-passport.db.js';

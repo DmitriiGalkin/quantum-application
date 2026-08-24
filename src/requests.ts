@@ -1,15 +1,11 @@
 import {
-  type ChatDto,
-  type ChatMessagesResult,
   type Conversation,
   type ConversationWithMessage,
-  type CreateChatBody,
   type CreateIdea,
   type CreateIdeaUser,
   type CreateLocation,
   type CreateMeet,
   type CreateMeetUser,
-  type CreateMessageDto,
   type CreatePlace,
   type CreateProject,
   type CreateProjectUser,
@@ -50,11 +46,6 @@ export const fetchTeacherIdeas = () => get<IdeaExtendedDto[]>('/teacher/ideas');
 export const generateImage = (ideaId: number) => post<void>(`/idea/${ideaId}/generateImage`, {});
 export const fetchLike = (params: CreateIdeaUser) => post<void>('/ideaUser', params);
 export const fetchUnlike = (params: DeleteIdeaUser) => del<void>(`/ideaUser?userId=${params.userId}&ideaId=${params.ideaId}`);
-
-export const fetchChat = (chatId: number) => get<ChatDto>(`/chat/${chatId}`);
-export const fetchCreateChat = (params: CreateChatBody) => post<number>('/chat', params);
-export const fetchCreateChatMessages = (chatId: number, messages: CreateMessageDto[]) =>
-  post<ChatMessagesResult>(`/chat/${chatId}/messages`, messages);
 
 export const fetchProject = (id: string) => get<ProjectDto>(`/project/${id}`);
 export const fetchCreateProject = (params: CreateProject) => post<number>('/project', params);

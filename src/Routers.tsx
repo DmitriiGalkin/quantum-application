@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout.tsx';
 
 import IdeasPage from './pages/IdeasPage.tsx';
-import ChatPageOld from './pages/ChatPageOld.tsx';
 import IdeaPage from './pages/IdeaPage.tsx';
 import ProjectPage from './pages/ProjectPage.tsx';
 import ProjectsPage from './pages/ProjectsPage.tsx';
@@ -41,8 +40,6 @@ function Routers() {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<IdeasPage />} />
-        <Route path="chat" element={<ChatPageOld />} />
-        <Route path="chatOld/:id" element={<ChatPageOld />} />
         <Route path="users/:id" element={<div>UserPage</div>} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="projects" element={<ProjectsPage />} />

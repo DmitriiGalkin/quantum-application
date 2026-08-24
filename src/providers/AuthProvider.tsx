@@ -8,7 +8,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import { MESSAGE_AFTER_LOGIN_STORAGE_KEY } from '../features/chat/model/useChatEffects.ts';
 import { useLocation } from 'react-router-dom';
 import { AUTH_401_EVENT } from '../utils/api.ts';
 import {
@@ -223,7 +222,7 @@ export const AuthProvider = ({ children }: Props) => {
                     key={strategy.title}
                     sx={{ minWidth: 120 }}
                     onClick={() => {
-                      localStorage.setItem(MESSAGE_AFTER_LOGIN_STORAGE_KEY, strategy.title);
+
                     }}
                   >
                     <Box component="span" sx={{ mr: 1, fontWeight: 900 }}>
