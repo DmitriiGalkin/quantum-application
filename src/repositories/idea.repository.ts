@@ -1,7 +1,7 @@
 import { db } from '../utils/dbNext.js';
 import type { ResultSetHeader } from 'mysql2/promise';
-import type { IdeaRow, IdeaWithLikeRow, CreateIdeaInput, FindAllIdeaInput, Idea, IdeaWithLike, UpdateIdeaInput } from 'entities';
-import { mapIdeaRow, mapIdeaWithLikeRow } from '../mappers/idea.mapper.js';
+import type { IdeaRow, CreateIdeaInput, FindAllIdeaInput, Idea, UpdateIdeaInput } from 'entities';
+import { mapIdeaRow } from '../mappers/idea.mapper.js';
 
 class IdeaRepository {
   // ✅ CREATE
@@ -36,7 +36,7 @@ class IdeaRepository {
   }
 
   // ✅ FIND ALL
-  static async findAll(params?: FindAllIdeaInput): Promise<(Idea | IdeaWithLike)[]> {
+  static async findAll(params?: FindAllIdeaInput): Promise<Idea[]> {
     const select: string[] = ['idea.*'];
     const values: (string | number)[] = [];
 
@@ -136,8 +136,8 @@ class IdeaRepository {
     }
 
     if (withLike) {
-      const rows = await db.query<IdeaWithLikeRow>(sql, values);
-      return rows.map(mapIdeaWithLikeRow);
+      const rows = await db.query<IdeaRow>(sql, values);
+      return rows.map(mapIdeaRow);
     }
 
     const rows = await db.query<IdeaRow>(sql, values);

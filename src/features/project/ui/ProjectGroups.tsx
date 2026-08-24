@@ -1,4 +1,4 @@
-import { type IdeaDto, type ProjectDto } from 'entities';
+import { type ProjectDto } from 'entities';
 import ProjectGrids from './ProjectGrids';
 import { Grid, Stack } from '@mui/material';
 import { groupProjectsByIdea } from '../../../utils/helper.ts';
@@ -11,7 +11,7 @@ type Props = {
 };
 
 function ProjectGroups({ projects, refetch, withoutIdea }: Props) {
-  const projectsWithIdeas = projects.filter((project): project is ProjectDto & { idea: IdeaDto } => project.idea !== null);
+  const projectsWithIdeas = projects.filter((project) => project.idea !== null);
   const groupes = groupProjectsByIdea(projectsWithIdeas);
 
   if (!groupes.length) return null;

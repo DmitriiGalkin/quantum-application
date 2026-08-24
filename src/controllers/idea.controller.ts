@@ -1,5 +1,4 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
-import { toIdeaExtendedDto, toIdeaFullDto } from '../mappers/idea.mapper.js';
 import { IdeaService } from '../services/idea.service.js';
 import type { CreateIdea, GetIdeasQuery, IdeaDto, PageMeta } from 'entities';
 
@@ -14,7 +13,7 @@ const create: ControllerWithAuth<number, CreateIdea> = async (req, res) => {
 
 const findAllPublic: Controller<IdeaDto[]> = async (req, res) => {
   const ideas = await IdeaService.findAll(req.query as GetIdeasQuery);
-  ok(res, ideas.map(toIdeaExtendedDto));
+  ok(res, ideas);
 };
 
 const findByUserId: ControllerWithAuth<IdeaDto[]> = async (req, res) => {
@@ -22,7 +21,7 @@ const findByUserId: ControllerWithAuth<IdeaDto[]> = async (req, res) => {
     userId: Number(req.viewer?.userId),
   });
 
-  ok(res, ideas.map(toIdeaExtendedDto));
+  ok(res, ideas);
 };
 
 const findById: Controller<IdeaDto> = async (req, res) => {
@@ -33,7 +32,7 @@ const findById: Controller<IdeaDto> = async (req, res) => {
       return fail(res, 'Идея не найдена', 404);
     }
 
-    ok(res, toIdeaFullDto(idea));
+    ok(res, idea);
   } catch (err) {
     fail(res, err instanceof Error ? err.message : 'Не удалось получить идею');
   }

@@ -1,13 +1,15 @@
+import type { IdeaDto, ProjectDto } from 'entities';
 
-export function groupProjectsByIdea<T extends { idea: { id: number } }>(projects: T[]): { idea: T['idea']; projects: T[] }[] {
-  const map = new Map<number, { idea: T['idea']; projects: T[] }>();
+export function groupProjectsByIdea(projects: ProjectDto[]): { idea: IdeaDto; projects: ProjectDto[] }[] {
+  const map = new Map<number, { idea: IdeaDto; projects: ProjectDto[] }>();
 
-  for (const project of projects) {
-    const ideaId = project.idea.id;
+  for (let i=0; i< projects.length; i++) {
+    const project = projects[i];
+    const ideaId = project.idea?.id || 0;
 
     if (!map.has(ideaId)) {
       map.set(ideaId, {
-        idea: project.idea,
+        idea: project.idea as IdeaDto,
         projects: [],
       });
     }

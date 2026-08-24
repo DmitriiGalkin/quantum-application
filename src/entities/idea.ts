@@ -12,38 +12,15 @@ export interface IdeaRow extends RowDataPacket {
   userCount: number;
   createdAt: string;
   deletedAt: string | null;
+  isLiked: 0 | 1;
 }
 
-export interface IdeaWithLikeRow extends IdeaRow {
-  isLiked: 0 | 1; // MySQL boolean
-}
-
-export interface Idea {
-  id: number;
-  userId: number;
-  passportId: number | null;
-  title: string;
-  description: string | null;
-  image: string | null;
-  userCount: number;
+export interface Idea extends Omit<IdeaRow, 'deletedAt'> {
   today: boolean;
-  createdAt: string;
 }
 
-export interface IdeaDto {
-  id: number;
-  title: string;
-  description: string | null;
-  image: string | null;
-  userCount: number;
-  isLiked?: boolean;
-  createdAt: string;
+export interface IdeaDto extends Idea {
   user: UserDto | null;
-  //projects: ProjectDto[] | null;
-}
-
-export interface IdeaWithLike extends Idea {
-  isLiked: boolean;
 }
 
 export type CreateIdeaInput = {
