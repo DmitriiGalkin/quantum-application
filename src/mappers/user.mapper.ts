@@ -1,5 +1,4 @@
-import type { User, UserWithMeet } from 'entities/user.js';
-import type { UserRow, UserWithMeetRow } from 'entities/user.db.js';
+import type { UserRow, UserWithMeetRow, User, UserWithMeet } from 'entities';
 
 export function mapUserRow(row: UserRow): User {
   return {
@@ -18,11 +17,3 @@ export function mapUserWithMeetRow(row: UserWithMeetRow): UserWithMeet {
     meetUserId: row.meetUserId,
   };
 }
-
-// export const toUser = (row: User): UserDto => ({
-//   id: row.id,
-//   title: row.title,
-//   description: row.description,
-//   age: row.age,
-//   image: row.image,
-// });

@@ -1,4 +1,5 @@
 import type { RowDataPacket } from 'mysql2/promise';
+import type { ProjectDto } from 'entities/project.ts';
 
 export interface UserRow extends RowDataPacket {
   id: number;

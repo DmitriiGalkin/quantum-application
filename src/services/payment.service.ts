@@ -2,22 +2,9 @@ import PaymentRepository from '../repositories/payment.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import RobokassaService from './robokassa.service.js';
 import { getPassportUserIds } from './project-user.service.js';
-import type { PaymentDto, PaymentTargetType, PaymentProvider } from 'entities';
+import type { CreatePaymentDto, PaymentDto } from 'entities';
 import { MeetService } from './meet.service.js';
 
-interface CreatePaymentDto {
-  passportId: number;
-  userId: number;
-
-  provider: PaymentProvider;
-
-  targetType: PaymentTargetType;
-  targetId: number;
-
-  currency?: string;
-
-  metadata?: unknown;
-}
 
 export class PaymentService {
   static async createForPassport(passportId: number, data: Omit<CreatePaymentDto, 'passportId'>) {

@@ -1,8 +1,9 @@
 import type { RowDataPacket } from 'mysql2/promise';
-import type { PaymentTargetType, PaymentStatus } from 'entities';
+import type { PaymentStatus } from 'entities';
 import type { MeetDto } from './meet.js';
 
 export type PaymentProvider = 'yookassa' | 'cloudpayments' | 'tbank' | 'stripe' | 'paypal' | 'robokassa';
+export type PaymentTargetType = 'project' | 'meet' | 'subscription' | 'other';
 
 export interface PaymentRow extends RowDataPacket {
   id: number;
@@ -97,4 +98,18 @@ export interface CreatePaymentInput {
   targetId: number;
 
   description?: string;
+}
+
+export interface CreatePaymentDto {
+  passportId: number;
+  userId: number;
+
+  provider: PaymentProvider;
+
+  targetType: PaymentTargetType;
+  targetId: number;
+
+  currency?: string;
+
+  metadata?: unknown;
 }
