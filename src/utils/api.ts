@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN_STORAGE_KEY, getActiveContext } from '../providers/helper.ts';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://192.168.0.114:4000';
 
 export const AUTH_401_EVENT = 'auth:401';
 

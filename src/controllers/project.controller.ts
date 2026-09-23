@@ -1,6 +1,6 @@
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { ProjectService } from '../services/project.service.js';
-import type { CreateProject, PageMeta, ProjectDto, Project } from 'entities';
+import type { CreateProject, PageMeta, ProjectDto, Project, GetProjectsQuery } from 'entities';
 
 const create: ControllerWithAuth<number, CreateProject> = async (req, res) => {
   try {
@@ -29,7 +29,7 @@ const remove: ControllerWithAuth<void> = async (req, res) => {
   }
 };
 
-const findAll: Controller<ProjectDto[]> = async (req, res) => {
+const findAll: Controller<ProjectDto[], GetProjectsQuery> = async (req, res) => {
   try {
     const data = await ProjectService.findAll(req.query);
 

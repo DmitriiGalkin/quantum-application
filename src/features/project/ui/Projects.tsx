@@ -15,6 +15,8 @@ type Props = {
 };
 
 function Projects({ title, filter, projects, refetch, withoutIdea }: Props) {
+  const sortedProjects = projects.sort((a, b) => b.meets.length - a.meets.length);
+
   return (
     <Stack spacing={2}>
       <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
@@ -22,22 +24,15 @@ function Projects({ title, filter, projects, refetch, withoutIdea }: Props) {
 
         {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
         {!(filter.filters.when === undefined && !projects.length) && (
-            <Filter
-              withOutLocation
-              withOutWhen
-              filters={filter.filters}
-              setView={filter.setView}
-              setSort={filter.setSort}
-              setWhen={filter.setWhen}
-            />
+          <Filter withOutLocation withOutWhen filters={filter.filters} setView={filter.setView} setSort={filter.setSort} setWhen={filter.setWhen} />
         )}
       </Stack>
 
       {filter.filters.view === 'map' && <div>Карта</div>}
 
-      {filter.filters.view === 'module' && !!projects.length && <ProjectGrids projects={projects} refetch={refetch} withoutIdea={withoutIdea} />}
+      {filter.filters.view === 'module' && !!projects.length && <ProjectGrids projects={sortedProjects} refetch={refetch} />}
 
-      {filter.filters.view === 'group' && <ProjectGroups projects={projects as ProjectDto[]} refetch={refetch} />}
+      {filter.filters.view === 'group' && <ProjectGroups projects={sortedProjects} refetch={refetch} withoutIdea={withoutIdea} />}
     </Stack>
   );
 }

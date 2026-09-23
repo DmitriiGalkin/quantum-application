@@ -5,7 +5,6 @@ import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 //import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate } from 'react-router-dom';
 import KeyIcon from '@mui/icons-material/Key';
 import { useAuth } from 'providers/AuthProvider.tsx';
@@ -16,10 +15,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import BusinessIcon from '@mui/icons-material/Business';
 import Drawer from '@mui/material/Drawer';
 import MenuLeft from './Menu.tsx';
-//import Menu2 from './Menu2.tsx';
 import { Avatar, Divider, Fade, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-
-//const ACTIVE_CHAT_ID_STORAGE_KEY = 'active_chat_id';
+import type { ActiveRole } from 'entities';
 
 function Header() {
   const navigate = useNavigate();
@@ -37,8 +34,17 @@ function Header() {
     setAccountMenuAnchor(null);
   };
 
-  console.log(role, 'role');
-  console.log(userId, 'userId');
+  const getRoleIcon = (role: ActiveRole) =>{
+    switch (role){
+      case 'user':
+        return <PersonIcon />;
+      case 'teacher':
+        return <SchoolIcon/>;
+      case 'place':
+        return <BusinessIcon/>;
+    }
+  };
+
   return (
     <>
       <AppBar
@@ -87,7 +93,7 @@ function Header() {
                   sx={{ color: 'white' }}
                   onClick={handleAccountMenuOpen}
                 >
-                  <AccountCircleIcon />
+                  {getRoleIcon(role)}
                 </IconButton>
 
                 <Menu

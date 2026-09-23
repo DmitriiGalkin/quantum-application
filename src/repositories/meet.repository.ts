@@ -40,7 +40,6 @@ class MeetRepository {
   // ✅ FIND ALL
   static async findAll(data: GetMeetsQuery): Promise<Meet[]> {
     const params: unknown[] = [];
-
     let sql = `
       SELECT meet.*
       FROM meet
@@ -50,52 +49,37 @@ class MeetRepository {
     const needUserJoin = !!data.userId;
 
     if (needProjectJoin) {
-      sql += `
-      INNER JOIN project ON project.id = meet.projectId
-    `;
+      sql += ` INNER JOIN project ON project.id = meet.projectId `;
     }
 
     if (needUserJoin) {
-      sql += `
-      INNER JOIN meetUser ON meetUser.meetId = meet.id
-    `;
+      sql += ` INNER JOIN meetUser ON meetUser.meetId = meet.id `;
     }
 
-    sql += `
-    WHERE meet.deletedAt IS NULL
-  `;
+    // Добавлено условие: только будущие и неудаленные встречи
+    sql += ` WHERE meet.deletedAt IS NULL AND meet.startedAt > NOW() `;
 
     if (data.passportId) {
-      sql += `
-      AND meet.passportId = ?
-    `;
+      sql += ` AND meet.passportId = ? `;
       params.push(data.passportId);
     }
 
     if (data.projectId) {
-      sql += `
-      AND meet.projectId = ?
-    `;
+      sql += ` AND meet.projectId = ? `;
       params.push(data.projectId);
     }
 
     if (data.userId) {
-      sql += `
-      AND meetUser.userId = ?
-    `;
+      sql += ` AND meetUser.userId = ? `;
       params.push(data.userId);
     }
 
     if (data.placeId) {
-      sql += `
-      AND meet.placeId = ?
-    `;
+      sql += ` AND meet.placeId = ? `;
       params.push(data.placeId);
     }
 
-    sql += `
-    ORDER BY meet.startedAt
-  `;
+    sql += ` ORDER BY meet.startedAt `;
 
     const rows = await db.query(sql, params);
     return rows.map(toMeet);

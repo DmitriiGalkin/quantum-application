@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherIdeas } from '../../requests.ts';
 import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
 import { useState } from 'react';
 import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
+import Title from 'components/Title.tsx';
 
 export default function TeacherIdeasPage() {
   const { data: ideas = [], isLoading } = useQuery({
@@ -23,7 +23,7 @@ export default function TeacherIdeasPage() {
   return (
     <Stack spacing={2}>
       <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h4">Мои идеи проектов</Typography>
+        <Title text="Мои идеи проектов" />
         <Button variant="contained" onClick={() => setOpenCreateIdea(true)}>
           Создать идею
         </Button>

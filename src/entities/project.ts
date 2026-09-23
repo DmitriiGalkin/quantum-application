@@ -28,7 +28,7 @@ export interface Project {
   passportId: number;
 }
 
-export interface FindAllProjectInput {
+export interface GetProjectsQuery {
   userId?: string | number;
   ideaId?: number;
   placeId?: number;
@@ -66,12 +66,4 @@ export interface CreateProject {
   image: string;
   ideaId?: number;
   placeId: number;
-}
-
-export interface GetProjectsQuery {
-  userId?: number;
-  sort?: Sort;
-  when?: 'today' | 'tomorrow';
-  latitude?: number;
-  longitude?: number;
 }

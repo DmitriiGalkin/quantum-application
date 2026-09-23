@@ -34,6 +34,7 @@ import ChatPage from './pages/ChatPage.tsx';
 import UserHomePage from './pages/user/UserHomePage.tsx';
 import PlaceUsersPage from './pages/place/PlaceUsersPage.tsx';
 import PlaceLocationsPage from './pages/place/PlaceLocationsPage.tsx';
+import PlacesPage from "./pages/PlacesPage.tsx";
 
 function Routers() {
   return (
@@ -45,7 +46,7 @@ function Routers() {
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="teachers/:id" element={<TeachersPage />} />
-        <Route path="places/:id" element={<div />} />
+        <Route path="places/:id" element={<PlacesPage />} />
         <Route path="chats" element={<ChatPage />} />
 
         <Route path="user">

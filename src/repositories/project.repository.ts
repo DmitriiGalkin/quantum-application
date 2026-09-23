@@ -1,5 +1,5 @@
 import type { ResultSetHeader } from 'mysql2/promise';
-import type { ProjectRow, FindAllProjectInput, Project, CreateProjectInput, FindAllIdeaInput } from 'entities';
+import type { ProjectRow, GetProjectsQuery, Project, CreateProjectInput, FindAllIdeaInput } from 'entities';
 import { toProject } from '../mappers/project.mapper.js';
 import { db } from '../utils/dbNext.js';
 
@@ -34,7 +34,7 @@ class ProjectRepository {
   }
 
   // ✅ FIND ALL
-  static async findAll(params: FindAllProjectInput = {}): Promise<Project[]> {
+  static async findAll(params: GetProjectsQuery = {}): Promise<Project[]> {
     const select: string[] = ['project.*'];
     const values: (string | number)[] = [];
 

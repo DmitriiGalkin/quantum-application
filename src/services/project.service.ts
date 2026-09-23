@@ -2,7 +2,7 @@ import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
-import type { Passport, FindAllProjectInput, Project, ProjectUser, Place, CreateProject, ProjectDto } from 'entities';
+import type { Passport, GetProjectsQuery, Project, ProjectUser, Place, CreateProject, ProjectDto } from 'entities';
 import PlaceRepository from '../repositories/place.repository.js';
 import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
@@ -42,18 +42,18 @@ export class ProjectService {
     await ProjectRepository.delete(projectId);
   }
 
-  static async findAll(params: FindAllProjectInput): Promise<ProjectDto[]> {
+  static async findAll(params: GetProjectsQuery): Promise<ProjectDto[]> {
     const projects = await ProjectRepository.findAll(params);
 
     const [ideas, usersArr, passportsArr, placeArr, meetsArr] = await Promise.all([
-      Promise.all(projects.map(p => (p.ideaId ? (IdeaService.findById(p.ideaId)) : null))),
+      Promise.all(projects.map(p => (p.ideaId ? IdeaService.findById(p.ideaId) : null))),
       Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
       Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),
       Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<Place>)),
       Promise.all(projects.map(p => MeetService.findAll({ projectId: p.id }))),
     ]);
 
-    return projects.map((project, i) => ({
+    return projects.map(({ ideaId, placeId, passportId, ...project }, i) => ({
       ...project,
       idea: ideas[i],
       users: usersArr[i],
@@ -72,7 +72,7 @@ export class ProjectService {
       UserRepository.findByProjectId(projectId),
       MeetRepository.findByProjectId(projectId, viewer?.role === 'teacher'),
       PlaceRepository.findById(project.placeId) as Promise<Place>,
-      project.ideaId ? (IdeaService.findById(project.ideaId)) : null,
+      project.ideaId ? IdeaService.findById(project.ideaId) : null,
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
     ]);
 

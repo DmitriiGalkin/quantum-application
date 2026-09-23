@@ -44,7 +44,7 @@ export class IdeaService {
     const idea = await IdeaRepository.findById(id);
     if (!idea) return null;
 
-    const [user] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectService.findAll({ ideaId: idea.id })]);
+    const [user] = await Promise.all([UserRepository.findById(idea.userId || 0)]);
 
     return {
       ...idea,
@@ -55,9 +55,7 @@ export class IdeaService {
   static async findByIdDashboard(id: number): Promise<IdeaDashboard | null> {
     const idea = await IdeaRepository.findById(id);
     if (!idea) return null;
-
     const [user, projects] = await Promise.all([UserRepository.findById(idea.userId || 0), ProjectService.findAll({ ideaId: idea.id })]);
-
     return {
       ...idea,
       user,
