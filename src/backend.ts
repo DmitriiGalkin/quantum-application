@@ -19,6 +19,7 @@ const app = express();
 
 // Настройки приложения
 app.disable('etag');
+app.get('/healthz', (_req, res) => res.status(200).json({ status: 'ok' }));
 app.use(cors({ origin: '*' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

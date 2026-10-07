@@ -44,7 +44,6 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
 
   const isMember = userId && project.users?.map(user => user.id).includes(userId);
   const sortedMeets = [...project.meets].sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
-  const now = new Date();
 
   const firstMeet = sortedMeets.find(m => m.startedAt); //new Date(m.startedAt) > now
 

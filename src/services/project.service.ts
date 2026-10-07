@@ -9,7 +9,7 @@ import ProjectUserRepository from '../repositories/project-user.repository.js';
 import PaymentRepository from '../repositories/payment.repository.js';
 import { MeetService } from './meet.service.js';
 import type { Viewer } from '../router.js';
-import { IdeaService } from './idea.service.ts';
+import { IdeaService } from './idea.service.js';
 
 export class ProjectService {
   static async create(passport: Passport, data: CreateProject) {

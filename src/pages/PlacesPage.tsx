@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlace, fetchProjects } from '../requests.ts';
 import Projects from '../features/project/ui/Projects.tsx';

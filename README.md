@@ -52,6 +52,8 @@ http://localhost:3000
 
 ## 🧪 Статус
 
+Настройка GitHub Actions и деплоя на Ubuntu: [deploy/README.md](deploy/README.md).
+
 MVP (pet-project)
 
 ## 📌 Планы
