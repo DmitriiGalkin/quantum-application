@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const apps = [
   {
     name: 'ssr',
-    script: path.join(__dirname, 'dist/server.js'),
+    script: path.join(__dirname, 'dist/ssr.js'),
     out_file: '/dev/stdout',
     error_file: '/dev/stderr',
     merge_logs: true,
@@ -15,7 +15,7 @@ export const apps = [
   },
   {
     name: 'backend',
-    script: path.join(__dirname, 'dist/index.js'),
+    script: path.join(__dirname, 'dist/backend.js'),
     env: {
       NODE_ENV: 'node',
     },
