@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { validateIdeaCard, validateIdeaCatalog } from './idea-card.validation.js';
+import { validateCatalogItem, validateIdeaCatalog } from './idea.validation.js';
 
 const source: unknown = JSON.parse(readFileSync('toy-catalog.json', 'utf8'));
 
@@ -15,7 +15,7 @@ describe('idea catalog validation', () => {
   });
   it('retains unknown fields and distinguishes absent values from null', () => {
     const card = { ...validateIdeaCatalog(source).items[0], futureField: { confirmed: null } };
-    expect(validateIdeaCard(card)).toEqual(card);
+    expect(validateCatalogItem(card)).toEqual(card);
     expect(Object.hasOwn(validateIdeaCatalog(source).items[1], 'manufacturingNotes')).toBe(false);
   });
   it('rejects duplicate stable IDs across the entire import', () => {
@@ -28,11 +28,11 @@ describe('idea catalog validation', () => {
   it('rejects malformed photos, multiple covers, reserved fields and unsupported versions', () => {
     const card = structuredClone(validateIdeaCatalog(source).items[0]);
     card.photos[0].url = 'javascript:alert(1)';
-    expect(() => validateIdeaCard(card)).toThrow('HTTP(S)');
+    expect(() => validateCatalogItem(card)).toThrow('HTTP(S)');
     card.photos[0].url = 'https://example.com/image';
     card.photos[1].isCover = true;
-    expect(() => validateIdeaCard(card)).toThrow('one cover');
-    expect(() => validateIdeaCard({ ...card, photos: [], ideaId: 1 })).toThrow('read-only');
+    expect(() => validateCatalogItem(card)).toThrow('one cover');
+    expect(() => validateCatalogItem({ ...card, photos: [], ideaId: 1 })).toThrow('read-only');
     expect(() => validateIdeaCatalog({ schemaVersion: 2, items: [] })).toThrow('Unsupported');
   });
 });

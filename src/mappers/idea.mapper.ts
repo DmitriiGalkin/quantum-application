@@ -10,6 +10,8 @@ export function mapIdeaRow(row: IdeaRow): Idea {
     image: row.image,
     catalogId: row.catalogId ?? null,
     cardData: row.cardData ?? null,
+    catalogMetadata: row.catalogMetadata ?? null,
+    photos: [],
     userCount: row.userCount,
     today: row.today,
     createdAt: row.createdAt,

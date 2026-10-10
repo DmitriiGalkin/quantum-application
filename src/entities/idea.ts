@@ -10,7 +10,8 @@ export interface IdeaRow extends RowDataPacket {
   description: string;
   image: string | null;
   catalogId?: string | null;
-  cardData?: import('./idea-card.js').IdeaCardModel['cardData'] | null;
+  cardData?: Record<string, JsonValue> | null;
+  catalogMetadata?: Record<string, JsonValue> | null;
   userCount: number;
   createdAt: string;
   deletedAt: string | null;
@@ -19,6 +20,7 @@ export interface IdeaRow extends RowDataPacket {
 
 export interface Idea extends Omit<IdeaRow, 'deletedAt'> {
   today: boolean;
+  photos: IdeaPhoto[];
 }
 
 export interface IdeaDto extends Idea {
@@ -30,12 +32,18 @@ export type CreateIdeaInput = {
   description: string | null;
   userId: number | null;
   passportId: number | null;
+  catalogId?: string | null;
+  cardData?: Record<string, JsonValue> | null;
+  catalogMetadata?: Record<string, JsonValue> | null;
+  image?: string | null;
 };
 
 export type UpdateIdeaInput = Partial<{
   title: string | null;
   description: string | null;
   image: string | null;
+  cardData: Record<string, JsonValue> | null;
+  catalogMetadata: Record<string, JsonValue> | null;
 }>;
 
 export interface FindAllIdeaInput {
@@ -52,6 +60,9 @@ export interface FindAllIdeaInput {
 export interface CreateIdea {
   title: string;
   description: string;
+  catalogId?: string;
+  cardData?: Record<string, JsonValue> | null;
+  photos?: IdeaPhoto[];
 }
 
 export interface GetIdeasQuery {
@@ -65,4 +76,28 @@ export interface GetIdeasQuery {
 
 export interface IdeaDashboard extends IdeaDto {
   projects: ProjectDto[];
+}
+
+export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
+
+/** Original catalog fields remain intact, including unknown fields and explicit nulls. */
+export interface IdeaPhoto extends Record<string, JsonValue> {
+  id: string;
+  fileName: string;
+  driveFileId: string;
+  url: string;
+  isCover: boolean;
+}
+
+
+/** File format only; imported items become the existing Idea entity. */
+export interface IdeaCatalog extends Record<string, JsonValue> {
+  schemaVersion: number;
+  items: (Record<string, JsonValue> & { id: string; name: string; description: string; photos: IdeaPhoto[] })[];
+}
+
+export interface IdeaPhotoRow extends RowDataPacket {
+  id: string;
+  ideaId: number;
+  photoData: IdeaPhoto | string;
 }

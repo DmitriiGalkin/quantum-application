@@ -13,7 +13,6 @@ export type MeetStatus = 'pending' | 'published' | 'cancelled';
 export type * from './conversation.js';
 export type * from './conversation-passport.js';
 export type * from './idea.js';
-export type * from './idea-card.js';
 export type * from './idea-user.js';
 export type * from './location.js';
 export type * from './meet.js';

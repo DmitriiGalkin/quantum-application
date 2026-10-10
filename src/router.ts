@@ -15,7 +15,6 @@ import image from './controllers/image.controller.js';
 import place from './controllers/place.controller.js';
 import project from './controllers/project.controller.js';
 import idea from './controllers/idea.controller.js';
-import ideaCard from './controllers/idea-card.controller.js';
 import ideaUser from './controllers/idea-user.controller.js';
 import projectUser from './controllers/project-user.controller.js';
 import strategies from './utils/strategies.js';
@@ -117,15 +116,12 @@ const registerOAuth = (provider: 'yandex') => {
 ['yandex' as const].forEach(registerOAuth);
 
 publicRouter.get('/ideas', idea.findAllPublic);
-publicRouter.get('/idea-cards', ideaCard.findAll);
-publicRouter.get('/idea-cards/:id', ideaCard.findById);
-privateRouter.post('/idea-cards/import', withAuth(ideaCard.importCatalog));
-privateRouter.post('/idea-cards', withAuth(ideaCard.create));
-privateRouter.put('/idea-cards/:id', withAuth(ideaCard.update));
 publicRouter.get('/idea/:id', idea.findById);
 publicRouter.get('/idea/:id/projects', idea.findById);
 publicRouter.get('/idea/:id/meta', idea.meta);
 privateRouter.post('/idea', withAuth(idea.create));
+privateRouter.put('/idea/:id', withAuth(idea.update));
+privateRouter.post('/ideas/import', withAuth(idea.importCatalog));
 privateRouter.post('/idea/:id/generateImage', withAuth(idea.generateImage));
 privateRouter.post('/ideaUser', withAuth(ideaUser.create));
 privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));

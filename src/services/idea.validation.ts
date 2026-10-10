@@ -1,6 +1,6 @@
-import type { IdeaCardInput, IdeaCatalog, JsonValue } from '../entities/idea-card.js';
+import type { CreateIdea, IdeaCatalog, JsonValue } from '../entities/idea.js';
 
-export class IdeaCardError extends Error {
+export class IdeaError extends Error {
   readonly status: number;
   constructor(message: string, status: number) {
     super(message);
@@ -8,7 +8,7 @@ export class IdeaCardError extends Error {
   }
 }
 
-function invalid(message: string): never { throw new IdeaCardError(message, 400); }
+function invalid(message: string): never { throw new IdeaError(message, 400); }
 
 function object(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -25,7 +25,7 @@ function id(value: unknown): void {
   if (typeof value !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(value)) invalid('Invalid stable ID');
 }
 
-export function validateIdeaCard(value: unknown): IdeaCardInput {
+export function validateCatalogItem(value: unknown): IdeaCatalog['items'][number] {
   if (!object(value) || !json(value)) invalid('Expected a JSON object');
   id(value.id);
   if (typeof value.name !== 'string' || !value.name.trim() || value.name.length > 255) invalid('Invalid name');
@@ -52,7 +52,7 @@ export function validateIdeaCard(value: unknown): IdeaCardInput {
   const cover = value.photos.find(photo => object(photo) && photo.isCover) as Record<string, unknown> | undefined;
   if (cover && (cover.url as string).length > 255) invalid('Cover URL exceeds image column capacity');
   if (Object.hasOwn(value, 'ideaId')) invalid('ideaId is read-only');
-  return value as unknown as IdeaCardInput;
+  return value as unknown as IdeaCatalog['items'][number];
 }
 
 export function validateIdeaCatalog(value: unknown): IdeaCatalog {
@@ -60,7 +60,7 @@ export function validateIdeaCatalog(value: unknown): IdeaCatalog {
   const ids = new Set<string>();
   const photoIds = new Set<string>();
   for (const item of value.items) {
-    const card = validateIdeaCard(item);
+    const card = validateCatalogItem(item);
     if (ids.has(card.id)) invalid('Duplicate idea ID');
     ids.add(card.id);
     for (const photo of card.photos) {
@@ -69,4 +69,15 @@ export function validateIdeaCatalog(value: unknown): IdeaCatalog {
     }
   }
   return value as unknown as IdeaCatalog;
+}
+
+export function validateIdea(value: unknown): CreateIdea {
+  if (!object(value) || !json(value)) invalid('Expected a JSON object');
+  if (typeof value.title !== 'string' || typeof value.description !== 'string') invalid('title and description are required');
+  if (value.catalogId !== undefined) id(value.catalogId);
+  if (value.cardData !== undefined && value.cardData !== null && !object(value.cardData)) invalid('cardData must be an object or null');
+  const fields = new Set(['title', 'description', 'catalogId', 'cardData', 'photos']);
+  if (Object.keys(value).some(key => !fields.has(key))) invalid('Put catalog details in cardData; system fields are read-only');
+  validateCatalogItem({ id: value.catalogId ?? 'validation', name: value.title, description: value.description, photos: value.photos ?? [] });
+  return value as unknown as CreateIdea;
 }

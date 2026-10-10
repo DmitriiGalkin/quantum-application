@@ -1,38 +1,35 @@
 import { db } from '../utils/dbNext.js';
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 import type { IdeaRow, CreateIdeaInput, FindAllIdeaInput, Idea, UpdateIdeaInput } from 'entities';
 import { mapIdeaRow } from '../mappers/idea.mapper.js';
 
 class IdeaRepository {
-  // ✅ CREATE
-  static async create(data: CreateIdeaInput): Promise<number> {
-    console.log(data, 'data');
-    const result = await db.execute<ResultSetHeader>(
-      `INSERT INTO idea (title, description, userId, passportId)
-       VALUES (?, ?, ?, ?)`,
-      [data.title, data.description, data.userId, data.passportId],
-    );
-
+  static async create(data: CreateIdeaInput, conn?: PoolConnection): Promise<number> {
+    const sql = 'INSERT INTO idea (title, description, userId, passportId, catalogId, cardData, catalogMetadata, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const values = [data.title, data.description, data.userId, data.passportId, data.catalogId ?? null,
+      data.cardData == null ? null : JSON.stringify(data.cardData),
+      data.catalogMetadata == null ? null : JSON.stringify(data.catalogMetadata), data.image ?? null];
+    const result = conn ? (await conn.execute<ResultSetHeader>(sql, values))[0] : await db.execute<ResultSetHeader>(sql, values);
     return result.insertId;
   }
 
-  // ✅ UPDATE
-  static async update(id: number, data: UpdateIdeaInput): Promise<boolean> {
-    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
-
-    if (entries.length === 0) return false;
-
-    const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-    const values = entries.map(([, v]) => v);
-
-    const result = await db.execute<ResultSetHeader>(`UPDATE idea SET ${fields} WHERE id = ?`, [...values, id]);
-
+  static async update(id: number, data: UpdateIdeaInput, conn?: PoolConnection): Promise<boolean> {
+    const keys = ['title', 'description', 'image', 'cardData', 'catalogMetadata'] as const;
+    const entries = keys.filter(key => data[key] !== undefined);
+    if (!entries.length) return false;
+    const fields = entries.map(key => key + ' = ?').join(', ');
+    const values = entries.map(key => {
+      const value = data[key];
+      return value == null ? null : typeof value === 'object' ? JSON.stringify(value) : value;
+    });
+    const sql = 'UPDATE idea SET ' + fields + ' WHERE id = ?';
+    const result = conn ? (await conn.execute<ResultSetHeader>(sql, [...values, id]))[0]
+      : await db.execute<ResultSetHeader>(sql, [...values, id]);
     return result.affectedRows > 0;
   }
 
-  // ✅ DELETE (soft)
   static async delete(id: number): Promise<void> {
-    await db.execute(`UPDATE idea SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
+    await db.execute('UPDATE idea SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?', [id]);
   }
 
   // ✅ FIND ALL
@@ -52,7 +49,7 @@ class IdeaRepository {
         ) AS isLiked
       `);
 
-      values.push(params?.currentUserId!);
+      if (params?.currentUserId !== undefined) values.push(params.currentUserId);
     }
 
     if (params?.sort === 'nearby' && params.latitude && params.longitude) {
@@ -145,12 +142,12 @@ class IdeaRepository {
   }
 
   // ✅ FIND BY ID
-  static async findById(id: number): Promise<Idea | null> {
-    const rows = await db.query<IdeaRow>(`SELECT * FROM idea WHERE id = ?`, [id]);
-
-    if (!rows[0]) return null;
-
-    return mapIdeaRow(rows[0]);
+  static async findById(id: number | string, conn?: PoolConnection): Promise<Idea | null> {
+    const sql = typeof id === 'number'
+      ? 'SELECT * FROM idea WHERE id = ? AND deletedAt IS NULL'
+      : 'SELECT * FROM idea WHERE catalogId = ? AND deletedAt IS NULL';
+    const rows = conn ? (await conn.execute<IdeaRow[]>(sql + ' FOR UPDATE', [id]))[0] : await db.query<IdeaRow>(sql, [id]);
+    return rows[0] ? mapIdeaRow(rows[0]) : null;
   }
 
   static async findByTeacherId(passportId: number): Promise<Idea[]> {

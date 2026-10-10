@@ -1,5 +1,5 @@
 import type { PoolConnection } from 'mysql2/promise';
-import type { IdeaPhoto, IdeaPhotoRow } from '../entities/idea-card.js';
+import type { IdeaPhoto, IdeaPhotoRow } from '../entities/idea.js';
 import { db } from '../utils/dbNext.js';
 
 export class IdeaPhotoRepository {
