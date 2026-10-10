@@ -88,13 +88,17 @@ class PaymentRepository {
   }
 
   static async setPaid(id: number): Promise<void> {
-    await db.execute(
+    const result = await db.execute<ResultSetHeader>(
       `UPDATE payment
           SET status = 'paid',
               paidAt = NOW()
-        WHERE id = ?`,
+        WHERE id = ? AND status = 'pending'`,
       [id],
     );
+    if (!result.affectedRows) {
+      const payment = await this.getById(id);
+      if (payment?.status !== 'paid') throw new Error('Payment could not be confirmed');
+    }
   }
 
   static async setStatus(id: number, status: Payment['status']): Promise<void> {

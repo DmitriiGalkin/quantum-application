@@ -1,6 +1,6 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-10T16:53:25.881Z
+Дата выгрузки: 2026-10-10T20:05:44.928Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
@@ -428,7 +428,7 @@ CREATE TABLE `passport_session` (
 | --- | --- | --- | --- | --- | --- | --- |
 | id | bigint unsigned | NO | NULL | PRI | auto_increment |  |
 | passportId | int | NO | NULL | MUL |  |  |
-| provider | enum('yookassa','cloudpayments','tbank','stripe','paypal') | NO | NULL | MUL |  |  |
+| provider | enum('yookassa','cloudpayments','tbank','stripe','paypal','robokassa') | NO | NULL | MUL |  |  |
 | providerPaymentId | varchar(255) | YES | NULL |  |  |  |
 | status | enum('pending','paid','failed','canceled','refunded') | NO | pending | MUL |  |  |
 | amount | int unsigned | NO | NULL |  |  | Стоимость в минимальных единицах (копейки, центы) |
@@ -466,7 +466,7 @@ CREATE TABLE `passport_session` (
 CREATE TABLE `payment` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `passportId` int NOT NULL,
-  `provider` enum('yookassa','cloudpayments','tbank','stripe','paypal') NOT NULL,
+  `provider` enum('yookassa','cloudpayments','tbank','stripe','paypal','robokassa') NOT NULL,
   `providerPaymentId` varchar(255) DEFAULT NULL,
   `status` enum('pending','paid','failed','canceled','refunded') NOT NULL DEFAULT 'pending',
   `amount` int unsigned NOT NULL COMMENT 'Стоимость в минимальных единицах (копейки, центы)',

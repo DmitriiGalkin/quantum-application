@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ru } from 'date-fns/locale';
 
 import type { PlaceScheduleDayDto } from 'entities';
 
@@ -15,20 +18,22 @@ export default function MeetDateField({ value, schedule, onChange }: Props) {
   const workingDays = useMemo(() => new Set(schedule.filter(day => day.enabled).map(day => day.weekday)), [schedule]);
 
   return (
-    <DateCalendar
-      disablePast
-      value={value ? new Date(value) : null}
-      onChange={date => {
-        if (!date) return;
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
+      <DateCalendar
+        disablePast
+        value={value ? new Date(value) : null}
+        onChange={date => {
+          if (!date) return;
 
-        onChange(format(date, 'yyyy-MM-dd'));
-      }}
-      shouldDisableDate={date => {
-        // JS: 0 = воскресенье ... 6 = суббота
-        const weekday = date.getDay() === 0 ? 7 : date.getDay();
+          onChange(format(date, 'yyyy-MM-dd'));
+        }}
+        shouldDisableDate={date => {
+          // JS: 0 = воскресенье ... 6 = суббота
+          const weekday = date.getDay() === 0 ? 7 : date.getDay();
 
-        return !workingDays.has(weekday);
-      }}
-    />
+          return !workingDays.has(weekday);
+        }}
+      />
+    </LocalizationProvider>
   );
 }

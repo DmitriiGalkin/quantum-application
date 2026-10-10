@@ -2,6 +2,14 @@ import { db } from '../utils/dbNext.js';
 import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 
 class PlacePassportRepository {
+  static async countTeachers(placeId: number): Promise<number> {
+    const [row] = await db.query<{ count: number }>(
+      "SELECT COUNT(DISTINCT passportId) AS count FROM placePassport WHERE placeId = ? AND role = 'teacher'",
+      [placeId],
+    );
+    return Number(row.count);
+  }
+
   static async findMembership(passportId: number, placeId: number): Promise<{ id: number; role: 'admin' | 'teacher' } | null> {
     const rows = await db.query<{ id: number; role: 'admin' | 'teacher' }>(
       "SELECT id, role FROM placePassport WHERE passportId = ? AND placeId = ? ORDER BY role = 'admin' DESC LIMIT 1", [passportId, placeId],

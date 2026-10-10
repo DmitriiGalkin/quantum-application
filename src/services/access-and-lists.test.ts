@@ -43,6 +43,12 @@ beforeEach(() => {
 });
 
 describe('ownership checks', () => {
+  it('returns a meeting to approval when only its duration changes', async () => {
+    vi.mocked(MeetRepository.findById).mockResolvedValue({ ...meet, duration: 60, status: 'published' });
+    await MeetService.update({ id: meet.id, duration: 90 }, meet.passportId);
+    expect(MeetRepository.update).toHaveBeenCalledWith(meet.id, expect.objectContaining({ duration: 90, status: 'pending' }));
+  });
+
   it('rejects changes to another teacher’s project before writing', async () => {
     vi.mocked(ProjectRepository.findById).mockResolvedValue(project);
     await expect(ProjectService.update(1, { title: 'Changed', description: '', image: '', placeId: 3 }, 99)).rejects.toMatchObject({ status: 403 });

@@ -1,40 +1,42 @@
 import { Route, Routes } from 'react-router-dom';
+import { lazy } from 'react';
 
 import { AppLayout } from './components/AppLayout.tsx';
 
-import IdeasPage from './pages/IdeasPage.tsx';
-import IdeaPage from './pages/IdeaPage.tsx';
-import ProjectPage from './pages/ProjectPage.tsx';
-import ProjectsPage from './pages/ProjectsPage.tsx';
-import TeacherProjectsPage from './pages/teacher/TeacherProjectsPage.tsx';
-import UserIdeasPage from './pages/user/UserIdeasPage.tsx';
-import UserProjectsPage from './pages/user/UserProjectsPage.tsx';
 import NotFound from './components/NotFound.tsx';
-import TeacherMeetsPage from './pages/teacher/TeacherMeetsPage.tsx';
-import TeacherIdeasPage from './pages/teacher/TeacherIdeasPage.tsx';
-import UserMeetsPage from './pages/user/UserMeetsPage.tsx';
-import PlaceTeachersPage from './pages/place/PlaceTeachersPage.tsx';
-import PlaceProjectsPage from './pages/place/PlaceProjectsPage.tsx';
-import PlaceMeetsPage from './pages/place/PlaceMeetsPage.tsx';
-import PlaceDashboardPage from './pages/place/PlaceDashboardPage.tsx';
-import TeacherDashboardPage from './pages/teacher/TeacherDashboardPage.tsx';
-import MissionPage from './pages/MissionPage.tsx';
-import AboutPage from './pages/AboutPage.tsx';
-import PrivacyPage from './pages/PrivacyPage.tsx';
-import TermsPage from './pages/TermsPage.tsx';
-import { LandingPlacePage } from './pages/landing/LandingPlacePage.tsx';
-import { LandingTeacherPage } from './pages/landing/LandingTeacherPage.tsx';
-import PaymentSuccessPage from './pages/payment/PaymentSuccessPage.tsx';
-import PaymentFailPage from './pages/payment/PaymentFailPage.tsx';
-import { LandingParentPage } from './pages/landing/LandingParentPage.tsx';
-import PlaceInvitePage from './pages/place/PlaceInvitePage.tsx';
-import TeacherUserIdeasPage from './pages/teacher/TeacherUserIdeasPage.tsx';
-import TeachersPage from './pages/TeachersPage.tsx';
-import ChatPage from './pages/ChatPage.tsx';
-import UserHomePage from './pages/user/UserHomePage.tsx';
-import PlaceUsersPage from './pages/place/PlaceUsersPage.tsx';
-import PlaceLocationsPage from './pages/place/PlaceLocationsPage.tsx';
-import PlacesPage from "./pages/PlacesPage.tsx";
+
+const IdeasPage = lazy(() => import('./pages/IdeasPage.tsx'));
+const IdeaPage = lazy(() => import('./pages/IdeaPage.tsx'));
+const ProjectPage = lazy(() => import('./pages/ProjectPage.tsx'));
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage.tsx'));
+const TeacherProjectsPage = lazy(() => import('./pages/teacher/TeacherProjectsPage.tsx'));
+const UserIdeasPage = lazy(() => import('./pages/user/UserIdeasPage.tsx'));
+const UserProjectsPage = lazy(() => import('./pages/user/UserProjectsPage.tsx'));
+const TeacherMeetsPage = lazy(() => import('./pages/teacher/TeacherMeetsPage.tsx'));
+const TeacherIdeasPage = lazy(() => import('./pages/teacher/TeacherIdeasPage.tsx'));
+const UserMeetsPage = lazy(() => import('./pages/user/UserMeetsPage.tsx'));
+const PlaceTeachersPage = lazy(() => import('./pages/place/PlaceTeachersPage.tsx'));
+const PlaceProjectsPage = lazy(() => import('./pages/place/PlaceProjectsPage.tsx'));
+const PlaceMeetsPage = lazy(() => import('./pages/place/PlaceMeetsPage.tsx'));
+const PlaceDashboardPage = lazy(() => import('./pages/place/PlaceDashboardPage.tsx'));
+const TeacherDashboardPage = lazy(() => import('./pages/teacher/TeacherDashboardPage.tsx'));
+const MissionPage = lazy(() => import('./pages/MissionPage.tsx'));
+const AboutPage = lazy(() => import('./pages/AboutPage.tsx'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage.tsx'));
+const TermsPage = lazy(() => import('./pages/TermsPage.tsx'));
+const LandingPlacePage = lazy(() => import('./pages/landing/LandingPlacePage.tsx').then(module => ({ default: module.LandingPlacePage })));
+const LandingTeacherPage = lazy(() => import('./pages/landing/LandingTeacherPage.tsx').then(module => ({ default: module.LandingTeacherPage })));
+const PaymentSuccessPage = lazy(() => import('./pages/payment/PaymentSuccessPage.tsx'));
+const PaymentFailPage = lazy(() => import('./pages/payment/PaymentFailPage.tsx'));
+const LandingParentPage = lazy(() => import('./pages/landing/LandingParentPage.tsx').then(module => ({ default: module.LandingParentPage })));
+const PlaceInvitePage = lazy(() => import('./pages/place/PlaceInvitePage.tsx'));
+const TeacherUserIdeasPage = lazy(() => import('./pages/teacher/TeacherUserIdeasPage.tsx'));
+const TeachersPage = lazy(() => import('./pages/TeachersPage.tsx'));
+const ChatPage = lazy(() => import('./pages/ChatPage.tsx'));
+const UserHomePage = lazy(() => import('./pages/user/UserHomePage.tsx'));
+const PlaceUsersPage = lazy(() => import('./pages/place/PlaceUsersPage.tsx'));
+const PlaceLocationsPage = lazy(() => import('./pages/place/PlaceLocationsPage.tsx'));
+const PlacesPage = lazy(() => import('./pages/PlacesPage.tsx'));
 
 function Routers() {
   return (

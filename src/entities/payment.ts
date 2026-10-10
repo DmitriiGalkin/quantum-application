@@ -54,7 +54,7 @@ export interface PaymentDto {
 }
 
 export interface PaymentCreateResponseDto {
-  paymentId: number;
+  payment: Payment;
   paymentUrl: string;
 }
 
@@ -70,6 +70,7 @@ export interface Payment {
   provider: PaymentProvider;
 
   amount: number;
+  currency: string;
 
   description: string | null;
   metadata: string;

@@ -31,11 +31,19 @@ export default function PlaceDashboardPage() {
   const [draft, setDraft] = useState<{ placeId: number; values: PlaceFormValues } | null>(null);
   const place = data?.place;
 
-  const values: PlaceFormValues | null = !place ? null : draft?.placeId === place.id ? draft.values : {
-    title: place.title || '', description: place.description || '', image: place.image || '',
-    address: place.address, latitude: place.latitude, longitude: place.longitude,
-    schedule: place.schedule ?? DEFAULT_PLACE_SCHEDULE,
-  };
+  const values: PlaceFormValues | null = !place
+    ? null
+    : draft?.placeId === place.id
+      ? draft.values
+      : {
+          title: place.title || '',
+          description: place.description || '',
+          image: place.image || '',
+          address: place.address,
+          latitude: place.latitude,
+          longitude: place.longitude,
+          schedule: place.schedule ?? DEFAULT_PLACE_SCHEDULE,
+        };
 
   const updatePlace = useMutation({
     mutationFn: () => fetchUpdatePlace(values!),
@@ -45,10 +53,6 @@ export default function PlaceDashboardPage() {
       setIsPlaceModalOpen(false);
     },
   });
-
-
-
-
 
   if (!place || !data || !values) return null;
   const stats = data.stats;
@@ -89,7 +93,7 @@ export default function PlaceDashboardPage() {
             <CardContent>
               <Typography variant="h4">{stats.meets}</Typography>
 
-              <Typography color="text.secondary">Встреч на неделе</Typography>
+              <Typography color="text.secondary">Встреч на этой неделе</Typography>
               {!!stats.pendingPlaceCount && (
                 <Stack sx={{ mt: 1 }}>
                   <Chip icon={<PendingActionsIcon />} label={`${stats.pendingPlaceCount} заявки на бронирование`} size="small" color="warning" />
@@ -109,15 +113,17 @@ export default function PlaceDashboardPage() {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 6, md: 3 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h4">{formatMoney(stats.incoming)}</Typography>
+        {stats.incoming !== null && (
+          <Grid size={{ xs: 6, md: 3 }}>
+            <Card>
+              <CardContent>
+                <Typography variant="h4">{formatMoney(stats.incoming)}</Typography>
 
-              <Typography color="text.secondary">Приход от проектов</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+                <Typography color="text.secondary">Оплачено за встречи (RUB)</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
       </Grid>
 
       <Typography variant="h5">Быстрые действия</Typography>

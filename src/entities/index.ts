@@ -1,4 +1,4 @@
-export type PaymentStatus = 'created' | 'pending' | 'paid' | 'failed' | 'cancelled';
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'canceled' | 'refunded';
 
 export type ActiveRole = 'user' | 'teacher' | 'place' | 'guest';
 

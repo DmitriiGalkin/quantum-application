@@ -4,6 +4,27 @@ import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class MeetRepository {
+  static async findIdsByPlaceId(placeId: number): Promise<number[]> {
+    const rows = await db.query<{ id: number }>(
+      "SELECT id FROM meet WHERE placeId = ? AND deletedAt IS NULL AND status <> 'cancelled'",
+      [placeId],
+    );
+    return rows.map(row => row.id);
+  }
+
+  static async getPlaceStats(placeId: number): Promise<{ meets: number; pendingPlaceCount: number }> {
+    const [row] = await db.query<{ meets: number | null; pendingPlaceCount: number | null }>(
+      `SELECT
+         SUM(status <> 'cancelled'
+             AND startedAt >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+             AND startedAt < DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) + INTERVAL 7 DAY) AS meets,
+         SUM(status = 'pending' AND startedAt > NOW()) AS pendingPlaceCount
+       FROM meet WHERE placeId = ? AND deletedAt IS NULL`,
+      [placeId],
+    );
+    return { meets: Number(row.meets ?? 0), pendingPlaceCount: Number(row.pendingPlaceCount ?? 0) };
+  }
+
   static async findByProjectIds(ids: number[], futureOnly = false): Promise<Meet[]> {
     if (!ids.length) return [];
     const rows = await db.query<MeetRow>(

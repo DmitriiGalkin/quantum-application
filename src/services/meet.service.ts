@@ -7,6 +7,7 @@ import ProjectUserRepository from '../repositories/project-user.repository.js';
 import { ParticipantsService } from './participants.service.js';
 import { HttpError } from '../utils/http-error.js';
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
+import PaymentRepository from '../repositories/payment.repository.js';
 
 export class MeetService {
   static async create(passport: Passport, data: CreateMeet) {
@@ -34,11 +35,11 @@ export class MeetService {
 
     const updateData: UpdateMeetInput = { startedAt: fields.startedAt, duration: fields.duration, price: fields.price };
 
-    if (fields.startedAt !== undefined) {
+    if (fields.startedAt !== undefined || fields.duration !== undefined) {
       const existingTime = new Date(existingMeet.startedAt).getTime();
-      const newTime = new Date(fields.startedAt).getTime();
+      const newTime = fields.startedAt === undefined ? existingTime : new Date(fields.startedAt).getTime();
 
-      if (existingTime !== newTime || existingMeet.duration !== fields.duration) {
+      if (existingTime !== newTime || (fields.duration !== undefined && existingMeet.duration !== fields.duration)) {
         updateData.status = 'pending';
       }
     }
@@ -66,7 +67,10 @@ export class MeetService {
   }
 
   static async findAll(data: GetMeetsQuery): Promise<MeetDto[]> {
-    return this.hydrateAll(await MeetRepository.findAll(data));
+    const meets = await this.hydrateAll(await MeetRepository.findAll(data));
+    if (!data.userId || !meets.length) return meets;
+    const paidIds = new Set(await PaymentRepository.findPaidMeetIdsByUser(data.userId, meets.map(meet => meet.id)));
+    return meets.map(meet => ({ ...meet, isPaid: paidIds.has(meet.id) }));
   }
 
   static async hydrateAll(meets: Meet[]): Promise<MeetDto[]> {

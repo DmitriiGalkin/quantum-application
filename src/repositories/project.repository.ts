@@ -4,6 +4,14 @@ import { toProject } from '../mappers/project.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class ProjectRepository {
+  static async findIdsByPlaceId(placeId: number): Promise<number[]> {
+    const rows = await db.query<{ id: number }>(
+      'SELECT id FROM project WHERE placeId = ? AND deletedAt IS NULL',
+      [placeId],
+    );
+    return rows.map(row => row.id);
+  }
+
   // ✅ CREATE
   static async create(data: CreateProjectInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(

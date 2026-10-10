@@ -22,6 +22,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:migrate:ideas": "node scripts/migrate-idea-catalog.mjs",
+    "db:migrate:payments": "node scripts/migrate-payment-provider.mjs",
     "db:import:ideas": "tsx scripts/import-idea-catalog.ts",
     "db:upload:idea-photos": "tsx scripts/upload-idea-photos.ts"
   },

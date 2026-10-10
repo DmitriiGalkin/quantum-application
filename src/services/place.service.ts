@@ -6,6 +6,10 @@ import PlaceScheduleRepository from '../repositories/place-schedule.repository.j
 import { MeetService } from './meet.service.js';
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
 import { db } from '../utils/dbNext.js';
+import ProjectRepository from '../repositories/project.repository.js';
+import ProjectUserRepository from '../repositories/project-user.repository.js';
+import MeetUserRepository from '../repositories/meet-user.repository.js';
+import UserRepository from '../repositories/user.repository.js';
 
 export class PlaceService {
   static async findAll() {
@@ -57,17 +61,28 @@ export class PlaceService {
     const place = await PlaceRepository.findById(id);
     if (!place) throw new HttpError('Центр не найден', 404);
 
-    const meets = await MeetRepository.findAll({ placeId: id });
+    const [projectIds, meetIds, teachers, meetStats, schedule] = await Promise.all([
+      ProjectRepository.findIdsByPlaceId(id),
+      MeetRepository.findIdsByPlaceId(id),
+      PlacePassportRepository.countTeachers(id),
+      MeetRepository.getPlaceStats(id),
+      PlaceScheduleRepository.findByPlaceId(id),
+    ]);
+    const [projectUsers, meetUsers] = await Promise.all([
+      ProjectUserRepository.findByProjectIds(projectIds),
+      MeetUserRepository.findByMeetIds(meetIds),
+    ]);
+    const userIds = [...new Set([...projectUsers, ...meetUsers].map(join => join.userId))];
+    const users = await UserRepository.findByIds(userIds, true);
 
     return {
-      place: { ...place, schedule: await PlaceScheduleRepository.findByPlaceId(id) },
+      place: { ...place, schedule },
       stats: {
-        teachers: 5,
-        projects: 12,
-        users: 86,
-        meets: 7,
-        pendingPlaceCount: meets.filter(meet => meet.status === 'pending').length,
-        incoming: 210000,
+        teachers,
+        projects: projectIds.length,
+        users: users.length,
+        ...meetStats,
+        incoming: null,
       },
     };
   }

@@ -5,7 +5,7 @@ import { getPassportUserIds } from './project-user.service.js';
 import type { CreatePaymentDto, PaymentDto } from 'entities';
 import { MeetService } from './meet.service.js';
 import { HttpError } from '../utils/http-error.js';
-
+import { requireId } from '../utils/validation.js';
 
 export class PaymentService {
   static async createForPassport(passportId: number, data: Omit<CreatePaymentDto, 'passportId'>) {
@@ -22,14 +22,21 @@ export class PaymentService {
   }
 
   static async create({ passportId, provider, targetType, targetId, currency = 'RUB', userId }: CreatePaymentDto) {
+    if (targetType !== 'meet' || provider !== 'robokassa' || currency !== 'RUB') {
+      throw new HttpError('Поддерживается только оплата встреч через Robokassa в RUB', 400);
+    }
+    requireId(targetId);
+    RobokassaService.requireConfiguration();
     let amount = 0;
     let description = '';
     switch (targetType) {
       case 'meet': {
         const meet = await MeetRepository.findById(targetId);
 
-        if (!meet) throw new HttpError('Встреча не найдена', 404);
-        if (!meet.price) throw new HttpError('Встреча то бесплатная', 400);
+        if (!meet || meet.deletedAt) throw new HttpError('Встреча не найдена', 404);
+        if (meet.status === 'cancelled') throw new HttpError('Встреча отменена', 409);
+        if (typeof meet.price !== 'number' || !Number.isSafeInteger(meet.price) || meet.price <= 0)
+          throw new HttpError('Встреча бесплатная или цена некорректна', 400);
 
         description = `Оплата встречи «${meet.id}»`;
         amount = meet.price;
@@ -71,7 +78,7 @@ export class PaymentService {
     }
     if (payment.passportId !== passportId) throw new HttpError('Нет доступа к платежу', 403);
 
-    const meet = (payment.targetType === 'meet' && payment.targetId) ? await MeetService.findById(payment.targetId) : null;
+    const meet = payment.targetType === 'meet' && payment.targetId ? await MeetService.findById(payment.targetId) : null;
 
     return { ...payment, meet };
   }
@@ -89,23 +96,33 @@ export class PaymentService {
   // }
 
   static async confirmResult({ OutSum, InvId, SignatureValue }: { OutSum: string; InvId: string; SignatureValue: string }) {
+    if (
+      typeof OutSum !== 'string' ||
+      !/^\d+(?:\.\d{1,6})?$/.test(OutSum) ||
+      !Number.isFinite(Number(OutSum)) ||
+      Number(OutSum) <= 0 ||
+      typeof SignatureValue !== 'string'
+    )
+      throw new HttpError('Некорректные параметры оплаты', 400);
+    const id = requireId(InvId);
     const isValid = RobokassaService.verifyResultSignature(OutSum, InvId, SignatureValue);
 
     if (!isValid) {
       throw new HttpError('Неверная подпись', 400);
     }
 
-    const payment = await PaymentRepository.getById(Number(InvId));
+    const payment = await PaymentRepository.getById(id);
 
     if (!payment) {
       throw new HttpError('Платеж не обнаружен', 404);
     }
 
-    if (payment.status !== 'paid') {
-      if (Number(payment.amount) !== Number(OutSum)) {
-        throw new HttpError('Стоимость не совпадает', 400);
-      }
+    if (Number(payment.amount) !== Number(OutSum)) {
+      throw new HttpError('Стоимость не совпадает', 400);
+    }
 
+    if (payment.status !== 'paid') {
+      if (payment.status !== 'pending') throw new HttpError('Платёж уже закрыт', 409);
       await PaymentService.markPaid(payment.id);
     }
 
@@ -113,7 +130,7 @@ export class PaymentService {
   }
 
   static async markPaid(paymentId: number) {
-    await PaymentRepository.setStatus(paymentId, 'paid');
+    await PaymentRepository.setPaid(paymentId);
   }
 
   static async markFailed(paymentId: number) {
@@ -121,7 +138,7 @@ export class PaymentService {
   }
 
   static async markCancelled(paymentId: number) {
-    await PaymentRepository.setStatus(paymentId, 'cancelled');
+    await PaymentRepository.setStatus(paymentId, 'canceled');
   }
 
   static async markPending(paymentId: number) {

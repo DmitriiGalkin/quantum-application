@@ -7,7 +7,7 @@ import type { PaymentCreateDto, PaymentCreateResponseDto, PaymentDto } from 'ent
 
 const create: ControllerWithAuth<PaymentCreateResponseDto, PaymentCreateDto> = async (req, res) => {
   const payment = await PaymentService.createForPassport(req.passport!.id, {
-    provider: 'yookassa',
+    provider: 'robokassa',
     targetType: req.body.targetType,
     targetId: req.body.targetId,
     userId: req.body.userId,
@@ -21,7 +21,7 @@ const result: Controller<string, { OutSum: string; InvId: string; SignatureValue
 
   const response = await PaymentService.confirmResult({ OutSum, InvId, SignatureValue });
 
-  ok(res, response);
+  res.type('text/plain').send(response);
 };
 
 const findById: ControllerWithAuth<PaymentDto> = async (req, res) => {

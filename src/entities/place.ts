@@ -65,7 +65,7 @@ export interface PlaceDashboardDto {
     users: number;
     meets: number;
     pendingPlaceCount: number;
-    incoming: number;
+    incoming: number | null;
   };
 }
 

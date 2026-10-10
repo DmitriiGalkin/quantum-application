@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { HttpError } from '../utils/http-error.js';
 
 class RobokassaService {
   private readonly merchantLogin = process.env.ROBOKASSA_LOGIN!;
@@ -11,11 +12,16 @@ class RobokassaService {
 
   private readonly baseUrl = 'https://auth.robokassa.ru/Merchant/Index.aspx';
 
+  requireConfiguration(): void {
+    if (!this.merchantLogin || !this.password1 || !this.password2) throw new HttpError('Оплата временно недоступна', 503);
+  }
+
   private md5(value: string): string {
     return crypto.createHash('md5').update(value).digest('hex');
   }
 
   createPaymentUrl(paymentId: number, amount: number, description: string): string {
+    this.requireConfiguration();
     const signature = this.md5(`${this.merchantLogin}:${amount}:${paymentId}:${this.password1}`);
 
     const params = new URLSearchParams({
@@ -34,9 +40,11 @@ class RobokassaService {
   }
 
   verifyResultSignature(amount: string, paymentId: string, signature: string): boolean {
+    this.requireConfiguration();
     const expected = this.md5(`${amount}:${paymentId}:${this.password2}`);
 
-    return expected.toUpperCase() === signature.toUpperCase();
+    if (!/^[a-fA-F0-9]{32}$/.test(signature)) return false;
+    return crypto.timingSafeEqual(Buffer.from(expected, 'hex'), Buffer.from(signature, 'hex'));
   }
 
   verifySuccessSignature(amount: string, paymentId: string, signature: string): boolean {

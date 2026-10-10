@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderHtml } from './utils/render-html.js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Routers from './Routers.tsx';
 import { StaticRouter } from 'react-router-dom';
@@ -86,7 +86,7 @@ export async function render(url: string) {
   const meta = await getMetaByUrl(url);
   const queryClient = new QueryClient();
 
-  const html = renderToString(
+  const html = await renderHtml(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <StaticRouter location={url}>
