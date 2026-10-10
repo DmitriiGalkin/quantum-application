@@ -19,7 +19,12 @@ try {
       const ids: { id: string; ideaId: number }[] = [];
       for (const item of catalog.items) {
         const idea = await IdeaService.findById(item.id);
-        if (!idea || !isDeepStrictEqual({ ...idea.cardData, photos: idea.photos }, item)) throw new Error('Imported idea differs from source');
+        const photos = idea?.photos.map(photo => {
+          if (typeof photo.sourceUrl !== 'string') return photo;
+          const { sourceUrl, ...original } = photo;
+          return { ...original, url: sourceUrl };
+        });
+        if (!idea || !isDeepStrictEqual({ ...idea.cardData, photos }, item)) throw new Error('Imported idea differs from source');
         ids.push({ id: item.id, ideaId: idea.id });
       }
       return ids;

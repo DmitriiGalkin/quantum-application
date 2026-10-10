@@ -22,7 +22,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:migrate:ideas": "node scripts/migrate-idea-catalog.mjs",
-    "db:import:ideas": "tsx scripts/import-idea-catalog.ts"
+    "db:import:ideas": "tsx scripts/import-idea-catalog.ts",
+    "db:upload:idea-photos": "tsx scripts/upload-idea-photos.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.312.0",

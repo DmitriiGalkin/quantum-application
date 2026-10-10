@@ -9,7 +9,8 @@ import type {
   IdeaDto, IdeaDashboard,
 } from 'entities';
 import type { PoolConnection } from 'mysql2/promise';
-import type { CreateIdeaInput, Idea, JsonValue } from '../entities/idea.js';
+import type { CreateIdeaInput, Idea, IdeaPhoto, JsonValue } from '../entities/idea.js';
+import { FileService } from './file.service.js';
 import { IdeaPhotoRepository } from '../repositories/idea-photo.repository.js';
 import { db } from '../utils/dbNext.js';
 import { IdeaError, validateIdea, validateIdeaCatalog } from './idea.validation.js';
@@ -38,16 +39,25 @@ export class IdeaService {
     if (existing && existing.passportId !== null && existing.passportId !== passportId) throw new IdeaError('Only the owner can update this idea', 403);
     if (existing && data.catalogId !== undefined && existing.catalogId !== data.catalogId) throw new IdeaError('Stable ID cannot change', 400);
     const cardData = data.cardData === undefined ? existing?.cardData ?? null : data.cardData;
+    let photos = data.photos;
+    if (mode === 'import' && existing && photos) {
+      const storedPhotos = await IdeaPhotoRepository.findByIdeaId(existing.id, conn);
+      photos = photos.map(photo => {
+        const stored = storedPhotos.find(old => old.id === photo.id && old.driveFileId === photo.driveFileId
+          && old.sourceUrl === photo.url && FileService.isStorageUrl(old.url));
+        return stored ? { ...photo, url: stored.url, sourceUrl: photo.url } : photo;
+      });
+    }
     const values: CreateIdeaInput = {
       title: data.title, description: data.description, passportId, userId: userId ?? null,
       catalogId: data.catalogId ?? existing?.catalogId ?? null,
       cardData: cardData === null ? null : { ...cardData, name: data.title, description: data.description },
       catalogMetadata: metadata ?? existing?.catalogMetadata ?? null,
-      image: data.photos === undefined ? existing?.image ?? null : data.photos.find(photo => photo.isCover)?.url ?? null,
+      image: photos === undefined ? existing?.image ?? null : photos.find(photo => photo.isCover)?.url ?? null,
     };
     const ideaId = existing?.id ?? await IdeaRepository.create(values, conn);
     if (existing) await IdeaRepository.update(ideaId, values, conn);
-    if (data.photos !== undefined) await IdeaPhotoRepository.replace(ideaId, data.photos, conn);
+    if (photos !== undefined) await IdeaPhotoRepository.replace(ideaId, photos, conn);
     return ideaId;
   }
 
@@ -69,6 +79,33 @@ export class IdeaService {
       IdeaPhotoRepository.findByIdeaId(idea.id),
     ]);
     return { ...idea, user, photos };
+  }
+
+  /** Operator migration; no unauthenticated HTTP endpoint is exposed. */
+  static async uploadCatalogPhotos(catalogId: string, readPhoto: (photo: IdeaPhoto) => Promise<Buffer>): Promise<number> {
+    const idea = await this.findById(catalogId);
+    if (!idea) throw new IdeaError('Idea not found', 404);
+    if (idea.passportId !== null) throw new IdeaError('Operator migration only handles shared catalog ideas', 403);
+    let uploaded = 0;
+    const photos: IdeaPhoto[] = [];
+    for (const photo of idea.photos) {
+      if (FileService.isStorageUrl(photo.url)) { photos.push(photo); continue; }
+      const buffer = await readPhoto(photo);
+      const key = `ideas/${encodeURIComponent(catalogId)}/${encodeURIComponent(photo.id)}-${encodeURIComponent(photo.driveFileId)}.jpg`;
+      const url = await FileService.uploadBuffer(buffer, photo.fileName, 'image/jpeg', key);
+      photos.push({ ...photo, sourceUrl: photo.url, url });
+      uploaded++;
+    }
+    await db.transaction(async conn => {
+      const current = await IdeaRepository.findById(idea.id, conn);
+      const currentPhotos = await IdeaPhotoRepository.findByIdeaId(idea.id, conn);
+      if (!current || current.passportId !== null || JSON.stringify(currentPhotos) !== JSON.stringify(idea.photos)) {
+        throw new IdeaError('Idea changed during photo upload; retry the migration', 409);
+      }
+      await IdeaPhotoRepository.replace(idea.id, photos, conn);
+      await IdeaRepository.update(idea.id, { image: photos.find(photo => photo.isCover)?.url ?? null }, conn);
+    });
+    return uploaded;
   }
 
   static async findAll(params: GetIdeasQuery): Promise<IdeaDto[]> {

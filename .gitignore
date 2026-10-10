@@ -43,3 +43,6 @@ coverage/
 
 #sonar
 .scannerwork/
+
+# Temporary originals and expiring Drive download references
+.cache/idea-catalog/

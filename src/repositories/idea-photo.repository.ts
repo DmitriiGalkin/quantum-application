@@ -3,8 +3,10 @@ import type { IdeaPhoto, IdeaPhotoRow } from '../entities/idea.js';
 import { db } from '../utils/dbNext.js';
 
 export class IdeaPhotoRepository {
-  static async findByIdeaId(ideaId: number): Promise<IdeaPhoto[]> {
-    const rows = await db.query<IdeaPhotoRow>('SELECT * FROM ideaPhoto WHERE ideaId = ? ORDER BY position, id', [ideaId]);
+  static async findByIdeaId(ideaId: number, conn?: PoolConnection): Promise<IdeaPhoto[]> {
+    const sql = 'SELECT * FROM ideaPhoto WHERE ideaId = ? ORDER BY position, id';
+    const rows = conn ? (await conn.execute<IdeaPhotoRow[]>(sql + ' FOR UPDATE', [ideaId]))[0]
+      : await db.query<IdeaPhotoRow>(sql, [ideaId]);
     return rows.map(row => typeof row.photoData === 'string' ? JSON.parse(row.photoData) as IdeaPhoto : row.photoData);
   }
 
