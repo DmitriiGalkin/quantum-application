@@ -1,13 +1,15 @@
 import Stack from '@mui/material/Stack';
-import { MenuItem, TextField } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import type { Sort, View } from 'entities';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import MapIcon from '@mui/icons-material/Map';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import type { FilterProps } from '../hooks/useFilters.ts';
 
-function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWhen }: any) {
+function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWhen }: FilterProps & { withOutLocation?: boolean; withOutWhen?: boolean }) {
   const sortOptions = [
     ...(withOutLocation ? [] : [{ value: 'nearby', label: 'Поблизости' }]),
     { value: 'popular', label: 'Популярные' },
@@ -25,7 +27,7 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
 
   return (
     <Stack direction="row" sx={{ justifyContent: 'space-between' }} spacing={1}>
-      {filters.view === 'module2' && (
+      {filters.view === 'module' && (
         <TextField
           select
           size="small"
@@ -81,13 +83,13 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
         <ToggleButtonGroup
           value={filters.view}
           exclusive
-          onChange={(_, nextView: string) => {
-            setView(nextView as View);
+          onChange={(_, nextView: View | null) => {
+            if (nextView) setView(nextView);
           }}
           size="small"
         >
           {viewOptions.map(opt => (
-            <ToggleButton value={opt.value} aria-label={opt.value}>
+            <ToggleButton key={opt.value} value={opt.value} aria-label={opt.value}>
               {opt.icon}
             </ToggleButton>
           ))}

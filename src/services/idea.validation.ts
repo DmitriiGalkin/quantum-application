@@ -1,12 +1,7 @@
 import type { CreateIdea, IdeaCatalog, JsonValue } from '../entities/idea.js';
+import { HttpError } from '../utils/http-error.js';
 
-export class IdeaError extends Error {
-  readonly status: number;
-  constructor(message: string, status: number) {
-    super(message);
-    this.status = status;
-  }
-}
+export class IdeaError extends HttpError {}
 
 function invalid(message: string): never { throw new IdeaError(message, 400); }
 

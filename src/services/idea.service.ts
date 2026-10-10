@@ -1,6 +1,7 @@
+import { HttpError } from '../utils/http-error.js';
 import UserRepository from '../repositories/user.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
-import { generateIdeaImage, uploadImage } from './assistant/assistants/image.assistant.js';
+import { generateIdeaImage } from './assistant/assistants/image.assistant.js';
 import type {
   Passport,
   CreateIdea,
@@ -73,6 +74,25 @@ export class IdeaService {
     return { ideas: items.length, photos: items.reduce((count, item) => count + item.photos.length, 0) };
   }
 
+  private static async hydrateAll(ideas: Idea[]): Promise<IdeaDto[]> {
+    const [users, rows] = await Promise.all([
+      UserRepository.findByIds(ideas.flatMap(idea => idea.userId ? [idea.userId] : [])),
+      IdeaPhotoRepository.findByIdeaIds(ideas.map(idea => idea.id)),
+    ]);
+    const userById = new Map(users.map(user => [user.id, user]));
+    const photosByIdea = new Map<number, IdeaPhoto[]>();
+    for (const row of rows) {
+      const group = photosByIdea.get(row.ideaId) ?? [];
+      group.push(typeof row.photoData === 'string' ? JSON.parse(row.photoData) as IdeaPhoto : row.photoData);
+      photosByIdea.set(row.ideaId, group);
+    }
+    return ideas.map(idea => ({ ...idea, user: userById.get(idea.userId) ?? null, photos: photosByIdea.get(idea.id) ?? [] }));
+  }
+
+  static async findByIds(ids: number[]): Promise<IdeaDto[]> {
+    return this.hydrateAll(await IdeaRepository.findByIds(ids));
+  }
+
   private static async hydrate(idea: Idea): Promise<IdeaDto> {
     const [user, photos] = await Promise.all([
       idea.userId ? UserRepository.findById(idea.userId) : null,
@@ -110,14 +130,17 @@ export class IdeaService {
 
   static async findAll(params: GetIdeasQuery): Promise<IdeaDto[]> {
     if (params.sort === 'nearby') {
-      if (!params.latitude || !params.longitude) {
-        throw new Error('Missing coordinates for nearby sort');
+      const latitude = Number(params.latitude);
+      const longitude = Number(params.longitude);
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
+        throw new IdeaError('Некорректные координаты', 400);
       }
+      params = { ...params, latitude, longitude };
     }
 
     const ideas = await IdeaRepository.findAll(params);
 
-    return Promise.all(ideas.map(idea => this.hydrate(idea)));
+    return this.hydrateAll(ideas);
   }
 
   static async findById(id: number | string): Promise<IdeaDto | null> {
@@ -139,8 +162,12 @@ export class IdeaService {
     const idea = await IdeaRepository.findById(projectId);
     if (!idea) return null;
 
-    const imageBinary = await generateIdeaImage(idea);
-    const image = await uploadImage(imageBinary);
+    const imageBinary: unknown = await generateIdeaImage(idea);
+    if (!(typeof imageBinary === 'string' || imageBinary instanceof Uint8Array)) {
+      throw new IdeaError('Генератор не вернул изображение', 502);
+    }
+    const buffer = typeof imageBinary === 'string' ? Buffer.from(imageBinary, 'binary') : Buffer.from(imageBinary);
+    const image = await FileService.uploadBuffer(buffer, 'idea.jpg', 'image/jpeg');
 
     await IdeaRepository.update(projectId, { image });
 
@@ -149,7 +176,7 @@ export class IdeaService {
 
   static async meta(id: number | string) {
     const idea = await IdeaRepository.findById(id);
-    if (!idea) throw new Error('idea.service meta: не найдена идея');
+    if (!idea) throw new HttpError('idea.service meta: не найдена идея', 404);
 
     return {
       title: idea.title,

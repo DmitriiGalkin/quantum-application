@@ -3,7 +3,7 @@ import https from 'node:https';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import { createServer } from 'vite';
+import { createServer, type ViteDevServer } from 'vite';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
 
@@ -34,7 +34,7 @@ async function ssr() {
   app.use(compression());
   app.get('/healthz', (_req, res) => res.status(200).json({ status: 'ok' }));
 
-  let vite: any;
+  let vite: ViteDevServer | undefined;
 
   if (!isProd) {
     vite = await createServer({
@@ -74,14 +74,14 @@ async function ssr() {
         meta: PageMeta;
       }>;
 
-      if (!isProd) {
+      if (vite) {
         template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
         template = await vite.transformIndexHtml(url, template);
         render = (await vite.ssrLoadModule('/src/ssr-application.tsx')).render;
       } else {
         template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
-        // @ts-ignore
-        render = (await import('./server/ssr-application.js')).render;
+        const rendererPath = './server/ssr-application.js';
+        render = (await import(rendererPath)).render;
       }
 
       const { html, meta } = await render(url);
@@ -99,7 +99,7 @@ async function ssr() {
       res.status(200).set({ 'Content-Type': 'text/html' }).end(appHtml);
     } catch (e) {
       if (!isProd && vite) {
-        vite.ssrFixStacktrace(e);
+        if (e instanceof Error) vite.ssrFixStacktrace(e);
       }
 
       console.error(e);

@@ -8,7 +8,6 @@ import { usePassport } from './middlewares/auth.middleware.js';
 import meet from './controllers/meet.controller.js';
 import meetUser from './controllers/meet-user.controller.js';
 import teacherUser from './controllers/teacher-user.controller.js';
-import teacherUserController from './controllers/teacher-user.controller.js';
 import teacherIdeaController from './controllers/teacher-idea.controller.js';
 
 import image from './controllers/image.controller.js';
@@ -18,7 +17,8 @@ import idea from './controllers/idea.controller.js';
 import ideaUser from './controllers/idea-user.controller.js';
 import projectUser from './controllers/project-user.controller.js';
 import strategies from './utils/strategies.js';
-import type { ControllerWithAuth } from './controllers/helper.js';
+import type { ControllerWithAuth, RequestWithPassport, TypedResponse } from './controllers/helper.js';
+import { HttpError } from './utils/http-error.js';
 import placeTeacherController from './controllers/placeTeacher.controller.js';
 import placeLocation from './controllers/placeLocation.controller.js';
 import paymentController from './controllers/payment.controller.js';
@@ -26,7 +26,7 @@ import teacherController from './controllers/teacher.controller.js';
 import conversationController from './controllers/conversation.controller.js';
 import message2Controller from './controllers/message2.controller.js';
 import type { ActiveRole, Passport } from 'entities';
-import UserRepository from './repositories/user.repository.js';
+import { ParticipantsService } from './services/participants.service.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -35,10 +35,11 @@ const privateRouter = express.Router();
 const publicRouter = express.Router();
 
 const withAuth =
-  (controller: ControllerWithAuth<any, any>): RequestHandler =>
+  <TResponse, TBody, TQuery>(controller: ControllerWithAuth<TResponse, TBody, TQuery>): RequestHandler =>
   async (req, res, next) => {
     try {
-      await controller(req as any, res as any);
+      if (!req.passport) throw new HttpError('Необходима авторизация', 401);
+      await controller(req as RequestWithPassport<TBody, TQuery>, res as TypedResponse<TResponse>);
     } catch (err) {
       next(err);
     }
@@ -51,31 +52,21 @@ export interface Viewer {
   placeId?: number;
 };
 
-declare global {
-  namespace Express {
-    interface Request {
-      passport?: Passport;
-      viewer?: Viewer;
-    }
+declare module 'express-serve-static-core' {
+  interface Request {
+    passport?: Passport;
+    viewer?: Viewer;
   }
 }
 privateRouter.use(usePassport);
 
-export const verifyChild = async (req: Request, res: Response, next: NextFunction) => {
+export const verifyChild = async (req: Request, _res: Response, next: NextFunction) => {
   if (!req.viewer?.userId) {
     return next();
   }
 
-  const child = await UserRepository.findById(req.viewer.userId);
-
-  if (!child) {
-    return res.sendStatus(404);
-  }
-
-  if (child.passportId !== req.viewer.passport!.id) {
-    return res.sendStatus(403);
-  }
-
+  if (!req.passport) throw new HttpError('Необходима авторизация', 401);
+  await ParticipantsService.requireOwnUser(req.passport.id, req.viewer.userId);
   next();
 };
 
@@ -100,7 +91,7 @@ const registerOAuth = (provider: 'yandex') => {
   });
 
   publicRouter.get(`/oauth2/redirect/${provider}`, (req, res, next) => {
-    passport.authenticate(provider, (err: any, user: any) => {
+    passport.authenticate(provider, (err: unknown, user: Passport | false | null) => {
       if (err || !user) {
         return res.redirect('/login');
       }
@@ -127,7 +118,7 @@ privateRouter.post('/ideaUser', withAuth(ideaUser.create));
 privateRouter.delete('/ideaUser', withAuth(ideaUser.delete));
 
 publicRouter.get('/projects', project.findAll);
-privateRouter.get('/project/:id', withAuth(project.findById));
+publicRouter.get('/project/:id', project.findById);
 publicRouter.get('/project/:id/meta', project.meta);
 privateRouter.post('/project', withAuth(project.create));
 privateRouter.post('/project/:id/update', withAuth(project.update));
@@ -161,7 +152,7 @@ privateRouter.delete('/meetUser', withAuth(meetUser.delete));
 
 privateRouter.get('/place/dashboard', withAuth(place.dashboard));
 privateRouter.get('/place/projects', withAuth(project.findByPlaceId));
-privateRouter.get('/place/users', withAuth(teacherUserController.getPlaceUsers));
+privateRouter.get('/place/users', withAuth(teacherUser.getPlaceUsers));
 privateRouter.get('/place/teachers', withAuth(placeTeacherController.findAll));
 privateRouter.get('/place/meets', withAuth(meet.getPlaceMeets));
 privateRouter.get('/place/locations', withAuth(placeLocation.findAll));
@@ -196,7 +187,7 @@ privateRouter.post('/image', upload.single('image'), withAuth(image.upload));
 
 privateRouter.post('/payments', withAuth(paymentController.create));
 privateRouter.get('/payment/:id', withAuth(paymentController.findById));
-privateRouter.post('/payment/robokassa/result', paymentController.result);
+publicRouter.post('/payment/robokassa/result', paymentController.result);
 
 
 router.use(privateRouter);

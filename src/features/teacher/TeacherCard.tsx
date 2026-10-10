@@ -1,10 +1,12 @@
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import type { TeacherDto } from 'entities';
-import { Avatar, CardHeader, Stack } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import CardHeader from '@mui/material/CardHeader';
+import Stack from '@mui/material/Stack';
 import MenuButton from '../../components/MenuButton';
 import PlaceIcon from '@mui/icons-material/Place';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { fetchLeavePlace, fetchRemoveTeacher } from '../../requests.ts';
 import { useMutation } from '@tanstack/react-query';

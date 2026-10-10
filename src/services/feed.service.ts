@@ -6,7 +6,7 @@ interface Join extends ProjectUser {
 
 interface MergeFeed {
   meets: MeetDto[];
-  comments: any[];
+  comments: { id: number; text: string; createdAt: string }[];
   joins: Join[];
 }
 

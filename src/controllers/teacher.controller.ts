@@ -1,26 +1,18 @@
-import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
+import { type Controller, type ControllerWithAuth, ok } from './helper.js';
 import type { TeacherDashboardDto, TeacherPublicDto } from 'entities';
 import { TeacherService } from '../services/teacher.service.js';
 
 const dashboard: ControllerWithAuth<TeacherDashboardDto> = async (req, res) => {
-  try {
-    const dashboard = await TeacherService.getDashboard(req.passport.id!);
+  const dashboard = await TeacherService.getDashboard(req.passport.id!);
 
-    ok(res, dashboard);
-  } catch (err) {
-    fail(res, 'Ошибка получения полной информации');
-  }
+  ok(res, dashboard);
 };
 
 const getTeacher: Controller<TeacherPublicDto> = async (req, res) => {
-  try {
-    const teacherId = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id);
-    const teacher = await TeacherService.findById(teacherId);
+  const teacherId = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id);
+  const teacher = await TeacherService.findById(teacherId);
 
-    ok(res, teacher);
-  } catch (err) {
-    fail(res, 'Ошибка получения информации о учителе');
-  }
+  ok(res, teacher);
 };
 
 export default {

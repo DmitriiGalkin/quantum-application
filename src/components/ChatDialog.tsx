@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  TextField,
-  Typography,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchConversation, fetchCreateMessage, fetchStartChat } from '../requests';
+import type { ConversationHistory } from 'entities';
 
 type Props = {
   open: boolean;
@@ -56,18 +55,19 @@ const ChatDialog: React.FC<Props> = ({ open, teacherId, onClose }) => {
       
       const previousMessages = queryClient.getQueryData(['messages', chat?.conversation.id]);
       
-      queryClient.setQueryData(['messages', chat?.conversation.id], (old: any) => ({
+      queryClient.setQueryData<ConversationHistory>(['messages', chat?.conversation.id], old => old ? ({
         ...old,
         messages: [
           ...(old?.messages || []),
           {
             id: Date.now(), // временный ID
             text: content,
-            createdAt: new Date().toISOString(),
-            senderId: 0, // текущий пользователь
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            conversationId: old.conversation.id,
           },
         ],
-      }));
+      }) : old);
       
       return { previousMessages };
     },

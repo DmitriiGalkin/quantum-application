@@ -5,7 +5,7 @@ import MeetCard from './MeetCard.tsx'; // Добавлен импорт
 type Props = {
   meets: MeetDto[];
   withoutIdea?: boolean;
-  refetch?: any;
+  refetch?: () => void;
 };
 
 function MeetGrids({ meets, refetch }: Props) {

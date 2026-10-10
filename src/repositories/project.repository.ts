@@ -1,4 +1,4 @@
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 import type { ProjectRow, GetProjectsQuery, Project, CreateProjectInput, FindAllIdeaInput } from 'entities';
 import { toProject } from '../mappers/project.mapper.js';
 import { db } from '../utils/dbNext.js';
@@ -15,13 +15,14 @@ class ProjectRepository {
     return result.insertId;
   }
 
-  static async update(id: number, data: Project): Promise<boolean> {
-    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+  static async update(id: number, data: Partial<CreateProjectInput>): Promise<boolean> {
+    const keys = ['title', 'description', 'image', 'placeId', 'ideaId'] as const;
+    const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;
 
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-    const values = entries.map(([, v]) => v);
+    const values = entries.map(([, v]) => v ?? null);
 
     const result = await db.execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
 
@@ -29,8 +30,8 @@ class ProjectRepository {
   }
 
   // ✅ DELETE (soft)
-  static async delete(id: number): Promise<void> {
-    await db.execute(`UPDATE project SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
+  static async delete(id: number, conn?: PoolConnection): Promise<void> {
+    await (conn ?? db).execute(`UPDATE project SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
   }
 
   // ✅ FIND ALL
@@ -157,89 +158,7 @@ class ProjectRepository {
 
   // ✅ FIND BY IDEA
   static async findByIdeaId(ideaId: number, params?: FindAllIdeaInput): Promise<Project[]> {
-    const values: (string | number)[] = [];
-
-    const lat = Number(params?.latitude);
-    const lng = Number(params?.longitude);
-
-    const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
-
-    const select: string[] = ['project.*'];
-
-    // =========================
-    // 📍 DISTANCE (через project.placeId)
-    if (params?.sort === 'nearby' && hasCoords) {
-      select.push(`
-      (
-        6371 * ACOS(
-          COS(RADIANS(?)) *
-          COS(RADIANS(pl.latitude)) *
-          COS(RADIANS(pl.longitude) - RADIANS(?)) +
-          SIN(RADIANS(?)) *
-          SIN(RADIANS(pl.latitude))
-        )
-      ) AS distance
-    `);
-
-      values.push(params.latitude!, params.longitude!, params.latitude!);
-    }
-
-    let sql = `
-      SELECT ${select.join(', ')}
-      FROM project
-             LEFT JOIN place pl ON pl.id = project.placeId
-      WHERE project.ideaId = ?
-        AND project.deletedAt IS NULL
-    `;
-
-    // =========================
-    // 📅 FILTER: when (оставляем через meet)
-    if (params?.when) {
-      switch (params.when) {
-        case 'today':
-          sql += `
-          AND EXISTS (
-            SELECT 1
-            FROM meet m
-            WHERE m.projectId = project.id
-              AND m.startedAt >= CURDATE()
-              AND m.startedAt < CURDATE() + INTERVAL 1 DAY
-          )
-        `;
-          break;
-
-        case 'tomorrow':
-          sql += `
-          AND EXISTS (
-            SELECT 1
-            FROM meet m
-            WHERE m.projectId = project.id
-              AND m.startedAt >= CURDATE() + INTERVAL 1 DAY
-              AND m.startedAt < CURDATE() + INTERVAL 2 DAY
-          )
-        `;
-          break;
-      }
-    }
-
-    // =========================
-    // 📍 FILTER + SORT: nearby
-    if (params?.sort === 'nearby' && hasCoords) {
-      sql += `
-      AND pl.latitude IS NOT NULL
-      AND pl.longitude IS NOT NULL
-    `;
-
-      sql += ` ORDER BY distance ASC`;
-    } else if (params?.sort === 'new') {
-      sql += ` ORDER BY project.createdAt DESC`;
-    }
-
-    values.push(ideaId);
-
-    const rows = await db.query<ProjectRow>(sql, values);
-
-    return rows.map(toProject);
+    return this.findAll({ ...params, ideaId });
   }
 }
 

@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreatePlace } from '../../../requests.ts';
 import { useNavigate } from 'react-router-dom';
-import { DEFAULT_PLACE_SCHEDULE } from '../../../pages/place/PlaceDashboardPage.tsx';
+import { DEFAULT_PLACE_SCHEDULE } from '../default-schedule.ts';
 import type { PlaceFormValues } from '../PlaceForm.tsx';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../../providers/auth-context.ts';
 
 export function useCreatePlace() {
   const navigate = useNavigate();
-  const {switchPlace} = useAuth()
+  const { switchPlace, refetch } = useAuth();
   const [form, setForm] = useState<PlaceFormValues>({
     title: '',
     description: '',
@@ -22,7 +22,8 @@ export function useCreatePlace() {
   const createPlace = useMutation({
     mutationFn: fetchCreatePlace,
 
-    onSuccess: placeId => {
+    onSuccess: async placeId => {
+      await refetch();
       switchPlace(placeId);
       navigate(`/place`);
     },

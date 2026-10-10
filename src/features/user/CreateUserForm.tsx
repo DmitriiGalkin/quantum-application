@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Button, Stack, TextField } from '@mui/material';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 
 interface Props {
   onSubmit: (data: CreateUser) => void;

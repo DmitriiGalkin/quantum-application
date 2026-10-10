@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateLocation } from '../../../requests.ts';
-import { DEFAULT_PLACE_SCHEDULE } from '../../../pages/place/PlaceDashboardPage.tsx';
+import { DEFAULT_PLACE_SCHEDULE } from '../default-schedule.ts';
 import type { LocationFormValues } from '../LocationForm.tsx';
 
 export function useCreateLocation() {

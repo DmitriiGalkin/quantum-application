@@ -1,68 +1,51 @@
+import { requireId } from '../utils/validation.js';
 import PlaceTeacherService from '../services/placeTeacher.service.js';
-import { type ControllerWithAuth, fail, ok } from './helper.js';
+import { type ControllerWithAuth, ok } from './helper.js';
 
 type AddTeacherBody = {
   passportId: number;
 };
 
 const addTeacher: ControllerWithAuth<number, AddTeacherBody> = async (req, res) => {
-  try {
-    const placeId = await PlaceTeacherService.resolveAdminPlace(req.passport.id!);
+  const placeId = await PlaceTeacherService.resolveAdminPlace(req.passport.id!);
 
-    const id = await PlaceTeacherService.addTeacher(placeId, req.body.passportId);
+  const id = await PlaceTeacherService.addTeacher(placeId, req.body.passportId);
 
-    ok(res, id);
-  } catch (err) {
-    fail(res, 'Не удалось добавить учителя');
-  }
+  ok(res, id);
 };
 
 const create: ControllerWithAuth<number, AddTeacherBody> = async (req, res) => {
-  try {
-    const placeId = Number(req.params.id);
-    const id = await PlaceTeacherService.addTeacher(placeId, req.body.passportId);
+  const placeId = requireId(req.params.id);
+  await PlaceTeacherService.requireAdmin(req.passport.id, placeId);
+  const id = await PlaceTeacherService.addTeacher(placeId, req.body.passportId);
 
-    ok(res, id);
-  } catch (err) {
-    fail(res, 'Не удалось добавить учителя');
-  }
+  ok(res, id);
 };
 
 const findAll: ControllerWithAuth<number> = async (req, res) => {
-  try {
-    const data = await PlaceTeacherService.findAll(Number(req.viewer?.placeId!));
+  const data = await PlaceTeacherService.findAll(requireId(req.viewer?.placeId));
 
-    ok(res, data);
-  } catch (err) {
-    fail(res, 'Не удалось получить учителей');
-  }
+  ok(res, data);
 };
 
 const remove: ControllerWithAuth<number> = async (req, res) => {
-  try {
-    const placeId = Number(req.params.id!);
-    const passportId = Number(req.params.passportId);
+  const placeId = requireId(req.params.id);
+  const passportId = requireId(req.params.passportId);
+  await PlaceTeacherService.requireAdmin(req.passport.id, placeId);
 
-    await PlaceTeacherService.remove(placeId, passportId);
+  await PlaceTeacherService.remove(placeId, passportId);
 
-    ok(res, true);
-  } catch (err) {
-    fail(res, 'Не удалось удалить учителя');
-  }
+  ok(res, true);
 };
 
 
 const leave: ControllerWithAuth<number> = async (req, res) => {
-  try {
-    const placeId = Number(req.params.id);
-    const passport = req.passport;
+  const placeId = requireId(req.params.id);
+  const passport = req.passport;
 
-    await PlaceTeacherService.leave(placeId, passport.id);
+  await PlaceTeacherService.leave(placeId, passport.id);
 
-    ok(res, true);
-  } catch (err) {
-    fail(res, 'Не удалось учителю покинуть центр');
-  }
+  ok(res, true);
 };
 
 export default {

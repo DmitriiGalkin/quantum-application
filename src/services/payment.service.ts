@@ -4,6 +4,7 @@ import RobokassaService from './robokassa.service.js';
 import { getPassportUserIds } from './project-user.service.js';
 import type { CreatePaymentDto, PaymentDto } from 'entities';
 import { MeetService } from './meet.service.js';
+import { HttpError } from '../utils/http-error.js';
 
 
 export class PaymentService {
@@ -11,7 +12,7 @@ export class PaymentService {
     const allowedIds = await getPassportUserIds(passportId);
 
     if (!allowedIds.includes(data.userId)) {
-      throw new Error('Нельзя добавлять участника не из своего пасспорта');
+      throw new HttpError('Нельзя добавлять участника не из своего пасспорта', 403);
     }
 
     return PaymentService.create({
@@ -27,8 +28,8 @@ export class PaymentService {
       case 'meet': {
         const meet = await MeetRepository.findById(targetId);
 
-        if (!meet) throw new Error('Встреча не найдена');
-        if (!meet.price) throw new Error('Встреча то бесплатная');
+        if (!meet) throw new HttpError('Встреча не найдена', 404);
+        if (!meet.price) throw new HttpError('Встреча то бесплатная', 400);
 
         description = `Оплата встречи «${meet.id}»`;
         amount = meet.price;
@@ -62,12 +63,13 @@ export class PaymentService {
     };
   }
 
-  static async getById(id: number): Promise<PaymentDto> {
+  static async getById(id: number, passportId: number): Promise<PaymentDto> {
     const payment = await PaymentRepository.getById(id);
 
     if (!payment) {
-      throw new Error('Payment not found.');
+      throw new HttpError('Платеж не найден', 404);
     }
+    if (payment.passportId !== passportId) throw new HttpError('Нет доступа к платежу', 403);
 
     const meet = (payment.targetType === 'meet' && payment.targetId) ? await MeetService.findById(payment.targetId) : null;
 
@@ -90,18 +92,18 @@ export class PaymentService {
     const isValid = RobokassaService.verifyResultSignature(OutSum, InvId, SignatureValue);
 
     if (!isValid) {
-      throw new Error('Наверная подпись');
+      throw new HttpError('Неверная подпись', 400);
     }
 
     const payment = await PaymentRepository.getById(Number(InvId));
 
     if (!payment) {
-      throw new Error('Платеж не обнаружен');
+      throw new HttpError('Платеж не обнаружен', 404);
     }
 
     if (payment.status !== 'paid') {
       if (Number(payment.amount) !== Number(OutSum)) {
-        throw new Error('Стоимость не совпадает');
+        throw new HttpError('Стоимость не совпадает', 400);
       }
 
       await PaymentService.markPaid(payment.id);

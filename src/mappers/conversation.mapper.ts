@@ -1,9 +1,9 @@
 import type { Conversation, ConversationRow } from 'entities';
 
-export function mapConversationRow(row: ConversationRow): Conversation {
+export function mapConversationRow(row: ConversationRow, passportId: number): Conversation {
   return {
     id: row.id,
-    passportId: row.passportId, // This might need adjustment based on actual row structure
+    passportId,
     createdAt: row.createdAt,
   };
 }

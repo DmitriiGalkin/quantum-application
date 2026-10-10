@@ -40,6 +40,7 @@ export type CreatePlaceInput = {
 };
 
 export type UpdatePlaceInput = Partial<{
+  image: string | null;
   title: string;
   description: string | null;
   latitude: number | null;
@@ -91,4 +92,7 @@ export interface CreatePlace {
   description?: string;
   image?: string;
   address: string;
+  latitude: number;
+  longitude: number;
+  schedule?: PlaceScheduleDayDto[];
 }

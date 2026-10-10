@@ -5,7 +5,7 @@ import ProjectCard from './ProjectCard.tsx'; // Добавлен импорт
 type Props = {
   projects: ProjectDto[];
   withoutIdea?: boolean;
-  refetch?: any;
+  refetch?: () => void;
 };
 
 function ProjectGrids({ projects, refetch, withoutIdea }: Props) {

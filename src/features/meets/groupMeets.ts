@@ -10,7 +10,7 @@ export function groupMeets(meets: MeetDto[]) {
     const date = new Date(meet.startedAt);
     date.setHours(0, 0, 0, 0); // Обнуляем время для точности до дня
 
-    let key: number = date.getTime();
+    const key = date.getTime();
 
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key)?.push(meet);

@@ -1,4 +1,6 @@
-import { CardContent, Stack, Typography } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherIdeas } from '../../requests.ts';

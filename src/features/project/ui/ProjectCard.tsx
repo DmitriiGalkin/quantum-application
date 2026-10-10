@@ -1,9 +1,17 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Avatar, Button, Card, CardActionArea, CardContent, CardHeader, Chip, IconButton, Stack } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import type { ProjectDto } from 'entities';
 import AvatarGroupUsers from 'components/AvatarGroupUsers.tsx';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../../providers/auth-context.ts';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateProjectUser, fetchCreateUser, fetchProjectLeave, fetchUpdateProject } from '../../../requests.ts';
 import { Link, useNavigate } from 'react-router-dom';
@@ -31,7 +39,7 @@ const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 type Props = {
   project: ProjectDto;
   withoutIdea?: boolean;
-  refetch?: any;
+  refetch?: () => void;
 };
 
 function ProjectCard({ project, refetch, withoutIdea }: Props) {
@@ -83,7 +91,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
   });
 
   useRunPostAuthAction(passport, action => {
-    if (action.type === CREATE_PROJECT_USER_TYPE && action.payload.projectId === project.id) {
+    if (action.type === CREATE_PROJECT_USER_TYPE && action.payload?.projectId === project.id) {
       setUserModalOpen(true);
     }
   });

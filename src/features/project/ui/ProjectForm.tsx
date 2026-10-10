@@ -1,4 +1,10 @@
-import { Alert, Button, Stack, TextField } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import { useQuery } from '@tanstack/react-query';
+import { fetchPlaces } from '../../../requests.ts';
 
 export interface ProjectFormValues {
   title: string;
@@ -18,8 +24,12 @@ interface ProjectFormProps {
 }
 
 export default function ProjectForm({ values, loading = false, error = false, submitLabel = 'Сохранить', onChange, onSubmit }: ProjectFormProps) {
+  const { data: places = [] } = useQuery({ queryKey: ['places'], queryFn: fetchPlaces });
   return (
     <Stack spacing={3}>
+      <TextField select label="Центр" value={values.placeId || ''} required fullWidth onChange={e => onChange({ ...values, placeId: Number(e.target.value) })}>
+        {places.map(place => <MenuItem key={place.id} value={place.id}>{place.title || place.address}</MenuItem>)}
+      </TextField>
       <TextField
         label="Название"
         value={values.title}
@@ -62,7 +72,7 @@ export default function ProjectForm({ values, loading = false, error = false, su
 
       {error && <Alert severity="error">Не удалось сохранить проект</Alert>}
 
-      <Button variant="contained" size="large" onClick={onSubmit} disabled={loading || !values.title.trim() || !values.description.trim()}>
+      <Button variant="contained" size="large" onClick={onSubmit} disabled={loading || !values.placeId || !values.title.trim() || !values.description.trim()}>
         {loading ? 'Сохранение...' : submitLabel}
       </Button>
     </Stack>

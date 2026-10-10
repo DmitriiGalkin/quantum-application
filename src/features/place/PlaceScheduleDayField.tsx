@@ -1,4 +1,9 @@
-import { Checkbox, FormControlLabel, Paper, Stack, TextField, Typography } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 export type PlaceScheduleDayValue = {
   weekday: number;

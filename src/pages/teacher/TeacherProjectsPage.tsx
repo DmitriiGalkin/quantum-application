@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -15,8 +14,6 @@ import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function TeacherProjectsPage() {
   const filter = useFilters();
-  const { id } = useParams();
-  const userId = id ? Number(id) : undefined;
   const [isCreateProjectDialogOpen, setIsCreateProjectDialogOpen] = useState(false);
 
   const {
@@ -24,7 +21,7 @@ function TeacherProjectsPage() {
     isError: isProjectsError,
       refetch,
   } = useQuery({
-    queryKey: ['projects', userId],
+    queryKey: ['projects', 'passport'],
     queryFn: () => fetchPassportProjects(),
   });
 

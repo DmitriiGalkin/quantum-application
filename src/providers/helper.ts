@@ -1,6 +1,7 @@
 import type { PassportExtendedDto } from 'entities';
+import { getBrowser } from '../shared/lib/browser.ts';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
+export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 export const ACCESS_TOKEN_STORAGE_KEY = 'access_token';
 export const ACTIVE_CONTEXT_STORAGE_KEY = 'active_context';
 
@@ -13,20 +14,37 @@ export const STRATEGIES = [
 ];
 
 export const getActiveContext = (): ActiveContext => {
-  if (typeof window !== 'undefined') {
-    const value = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
+  return parseActiveContext(getBrowser()?.localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY) ?? null) ?? { role: 'guest' };
+};
 
-    if (value) {
-      try {
-        return JSON.parse(value);
-      } catch {}
+export function parseActiveContext(value: string | null): ActiveContext | null {
+  if (value) {
+    try {
+      const context: unknown = JSON.parse(value);
+      if (typeof context !== 'object' || context === null || !('role' in context)) return null;
+      if (context.role === 'guest' || context.role === 'teacher') return { role: context.role };
+      if (
+        context.role === 'user' &&
+        'userId' in context &&
+        typeof context.userId === 'number' &&
+        Number.isSafeInteger(context.userId) &&
+        context.userId > 0
+      )
+        return { role: 'user', userId: context.userId };
+      if (
+        context.role === 'place' &&
+        'placeId' in context &&
+        typeof context.placeId === 'number' &&
+        Number.isSafeInteger(context.placeId) &&
+        context.placeId > 0
+      )
+        return { role: 'place', placeId: context.placeId };
+    } catch {
+      return null;
     }
   }
-
-  return {
-    role: 'guest',
-  };
-};
+  return null;
+}
 
 export type ActiveContext =
   | {
@@ -45,7 +63,7 @@ export type ActiveContext =
     };
 
 export const getContext = (data: PassportExtendedDto): ActiveContext => {
-  if (Boolean(data.users.length)) {
+  if (data.users.length) {
     return {
       role: 'user',
       userId: data.users?.[0]?.id || 0,
@@ -58,7 +76,7 @@ export const getContext = (data: PassportExtendedDto): ActiveContext => {
     };
   }
 
-  if (!!data.places.length) {
+  if (data.places.length) {
     return {
       role: 'place',
       placeId: data.places?.[0]?.id,
@@ -71,17 +89,18 @@ export const getContext = (data: PassportExtendedDto): ActiveContext => {
 };
 
 export const getTokenFromUrl = () => {
-  if (typeof window === 'undefined') {
+  const browser = getBrowser();
+  if (!browser) {
     return null;
   }
 
-  const url = new URL(window.location.href);
+  const url = new URL(browser.location.href);
   const token = url.searchParams.get('access_token');
 
   if (!token) return null;
 
   url.searchParams.delete('access_token');
-  window.history.replaceState({}, document.title, url.toString());
+  browser.history.replaceState({}, browser.document.title, url.toString());
 
   return token;
 };

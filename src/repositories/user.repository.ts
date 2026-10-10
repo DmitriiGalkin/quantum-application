@@ -1,9 +1,18 @@
 import { db } from '../utils/dbNext.js';
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 import type { UserRow, UserWithMeetRow, User, UserWithMeet, CreateUserInput, UpdateUserInput } from 'entities';
 import { mapUserRow, mapUserWithMeetRow } from '../mappers/user.mapper.js';
 
 class UserRepository {
+  static async findByIds(ids: number[], activeOnly = false): Promise<User[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<UserRow>(
+      'SELECT * FROM user WHERE id IN (?)' + (activeOnly ? ' AND deletedAt IS NULL' : ''),
+      [[...new Set(ids)]],
+    );
+    return rows.map(mapUserRow);
+  }
+
   // ✅ CREATE
   static async create(data: CreateUserInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
@@ -17,12 +26,13 @@ class UserRepository {
 
   // ✅ UPDATE (partial)
   static async update(id: number, data: UpdateUserInput): Promise<boolean> {
-    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+    const keys = ['title', 'age', 'image'] as const;
+    const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;
 
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-    const values = entries.map(([, v]) => v);
+    const values = entries.map(([, v]) => v ?? null);
 
     const result = await db.execute<ResultSetHeader>(`UPDATE user SET ${fields} WHERE id = ?`, [...values, id]);
 
@@ -30,8 +40,8 @@ class UserRepository {
   }
 
   // ✅ DELETE
-  static async delete(id: number): Promise<void> {
-    await db.execute(`UPDATE user SET deletedAt = NOW() WHERE id = ?`, [id]);
+  static async delete(id: number, conn?: PoolConnection): Promise<void> {
+    await (conn ?? db).execute(`UPDATE user SET deletedAt = NOW() WHERE id = ?`, [id]);
   }
 
   // ✅ FIND BY ID
@@ -56,7 +66,7 @@ class UserRepository {
 
   // ✅ FIND BY PROJECT
   static async findByProjectId(projectId: number): Promise<User[]> {
-    const rows = await db.query(
+    const rows = await db.query<UserRow>(
       `SELECT user.*
        FROM user
               LEFT JOIN projectUser ON user.id = projectUser.userId

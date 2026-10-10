@@ -1,7 +1,6 @@
-import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { type ReactNode, useCallback, useEffect, useState, useSyncExternalStore } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchPassport } from '../requests.ts';
-import { type ActiveRole, type PassportExtendedDto } from 'entities';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,166 +9,70 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
 import { AUTH_401_EVENT } from '../utils/api.ts';
-import {
-  ACCESS_TOKEN_STORAGE_KEY,
-  ACTIVE_CONTEXT_STORAGE_KEY,
-  type ActiveContext,
-  getContext,
-  getTokenFromUrl,
-  STRATEGIES,
-} from './helper.ts';
+import { type ActiveContext, getContext, getTokenFromUrl, parseActiveContext, STRATEGIES } from './helper.ts';
+import { AuthContext } from './auth-context.ts';
+import { getServerAuthSnapshot, getStoredContext, getStoredToken, storeAuth, subscribeAuth } from './auth-store.ts';
+import { getBrowser } from '../shared/lib/browser.ts';
 
-
-type ContextType = {
-  token: string | null;
-  login: (token: string) => void;
-  logout: () => void;
-  authHandler: (next2?: string) => void;
-  refetch: () => void;
-
-  passport: PassportExtendedDto | null;
-
-  role: ActiveRole;
-  userId?: number;
-  placeId?: number;
-
-  switchUser: (userId: number) => void;
-  switchTeacher: () => void;
-  switchPlace: (placeId: number) => void;
-
-  isPending: boolean;
-};
-
-const AuthContext = createContext<ContextType>(null!);
-
-type Props = {
-  children: ReactNode;
-};
-
-export const AuthProvider = ({ children }: Props) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
-  const [token, setToken] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const token = useSyncExternalStore(subscribeAuth, getStoredToken, getServerAuthSnapshot);
+  const contextSnapshot = useSyncExternalStore(subscribeAuth, getStoredContext, getServerAuthSnapshot);
   const [open, setOpen] = useState(false);
-
-  const [activeContext, setActiveContext] = useState<ActiveContext>({
-    role: 'guest',
-  });
-
-  const [isContextInitialized, setIsContextInitialized] = useState(false);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
-
-    if (stored) {
-      try {
-        setActiveContext(JSON.parse(stored) as ActiveContext);
-      } catch {
-        localStorage.removeItem(ACTIVE_CONTEXT_STORAGE_KEY);
-      }
-    }
-
-    setIsContextInitialized(true);
-  }, []);
-
-  const [passport, setPassport] = useState<PassportExtendedDto | null>(null);
-  const [redirect, setRedirect] = useState('');
-
+  const redirect = location.pathname + location.search;
   const { data, refetch, isPending } = useQuery({
-    queryKey: ['passport'],
+    queryKey: ['passport', token],
     queryFn: fetchPassport,
     enabled: Boolean(token),
   });
+  const passport = token ? (data ?? null) : null;
+  const storedContext = parseActiveContext(contextSnapshot);
+  const validContext =
+    storedContext &&
+    passport &&
+    (storedContext.role === 'guest' ||
+      (storedContext.role === 'teacher' && passport.isTeacher) ||
+      (storedContext.role === 'user' && passport.users.some(user => user.id === storedContext.userId)) ||
+      (storedContext.role === 'place' && passport.places.some(place => place.id === storedContext.placeId)));
+  const activeContext: ActiveContext = validContext ? storedContext : passport ? getContext(passport) : { role: 'guest' };
+  const contextJson = JSON.stringify(activeContext);
 
   useEffect(() => {
-    const tokenFromUrl = getTokenFromUrl();
-    const storedToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
-
-    const finalToken = tokenFromUrl || storedToken;
-
-    if (finalToken) {
-      setToken(finalToken);
-      localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, finalToken);
-    }
+    const fromUrl = getTokenFromUrl();
+    if (fromUrl) storeAuth(fromUrl);
   }, []);
 
   useEffect(() => {
-    setRedirect(window.location.pathname + window.location.search);
-  }, [location]);
+    if (token && passport && contextSnapshot !== contextJson) storeAuth(token, JSON.parse(contextJson) as ActiveContext);
+  }, [token, passport, contextSnapshot, contextJson]);
 
   useEffect(() => {
-    if (!data || !isContextInitialized) return;
+    let previousToken = getStoredToken();
+    let previousContext = getStoredContext();
+    return subscribeAuth(() => {
+      const nextToken = getStoredToken();
+      const nextContext = getStoredContext();
+      if (nextToken === previousToken && nextContext === previousContext) return;
+      previousToken = nextToken;
+      previousContext = nextContext;
+      void queryClient.cancelQueries().then(() => queryClient.resetQueries());
+    });
+  }, [queryClient]);
 
-    setPassport(data);
-
-    const stored = localStorage.getItem(ACTIVE_CONTEXT_STORAGE_KEY);
-
-    if (!stored) {
-      const defaultContext = getContext(data);
-
-      setActiveContext(defaultContext);
-
-      localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(defaultContext));
-    }
-  }, [data, isContextInitialized]);
-
+  const login = useCallback((value: string) => storeAuth(value), []);
+  const logout = useCallback(() => storeAuth(null), []);
   useEffect(() => {
-    const handler = () => {
-      logout();
-    };
+    const browser = getBrowser();
+    browser?.addEventListener(AUTH_401_EVENT, logout);
+    return () => browser?.removeEventListener(AUTH_401_EVENT, logout);
+  }, [logout]);
 
-    window.addEventListener(AUTH_401_EVENT, handler);
-
-    return () => {
-      window.removeEventListener(AUTH_401_EVENT, handler);
-    };
-  }, []);
-
-  const login = (token: string) => {
-    localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
-    setToken(token);
-  };
-
-  const logout = () => {
-    localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-    localStorage.removeItem(ACTIVE_CONTEXT_STORAGE_KEY);
-
-    setActiveContext({
-      role: 'guest',
-    });
-
-    setToken(null);
-    setPassport(null);
-  };
-
-  const authHandler = () => {
-    setOpen(true);
-  };
-
-  const switchUser = (userId: number) => {
-    setActiveRole({
-      role: 'user',
-      userId,
-    });
-  };
-
-  const switchTeacher = () => {
-    setActiveRole({
-      role: 'teacher',
-    });
-  };
-
-  const switchPlace = (placeId: number) => {
-    setActiveRole({
-      role: 'place',
-      placeId,
-    });
-  };
-
-  const setActiveRole = (context: ActiveContext) => {
-    setActiveContext(context);
-
-    localStorage.setItem(ACTIVE_CONTEXT_STORAGE_KEY, JSON.stringify(context));
-  };
+  const setActiveRole = (context: ActiveContext) => storeAuth(token, context);
+  const switchUser = (userId: number) => setActiveRole({ role: 'user', userId });
+  const switchTeacher = () => setActiveRole({ role: 'teacher' });
+  const switchPlace = (placeId: number) => setActiveRole({ role: 'place', placeId });
+  const authHandler = () => setOpen(true);
 
   return (
     <AuthContext.Provider
@@ -221,9 +124,6 @@ export const AuthProvider = ({ children }: Props) => {
                     href={`${strategy.href}?redirect=${encodeURIComponent(redirect)}`}
                     key={strategy.title}
                     sx={{ minWidth: 120 }}
-                    onClick={() => {
-
-                    }}
                   >
                     <Box component="span" sx={{ mr: 1, fontWeight: 900 }}>
                       {strategy.icon}
@@ -239,5 +139,3 @@ export const AuthProvider = ({ children }: Props) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);

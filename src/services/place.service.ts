@@ -1,8 +1,11 @@
+import { HttpError } from '../utils/http-error.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'entities';
 import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
 import { MeetService } from './meet.service.js';
+import PlacePassportRepository from '../repositories/place-passport.repository.js';
+import { db } from '../utils/dbNext.js';
 
 export class PlaceService {
   static async findAll() {
@@ -16,23 +19,25 @@ export class PlaceService {
     }));
   }
 
-  static async create(_passportId: number, data: CreatePlace) {
+  static async create(passportId: number, data: CreatePlace) {
     if (!data || Object.keys(data).length === 0) {
-      throw new Error('EMPTY_PLACE');
+      throw new HttpError('EMPTY_PLACE', 400);
     }
 
-    const placeId = await PlaceRepository.create({ ...data });
-
-    return placeId;
+    return db.transaction(async conn => {
+      const placeId = await PlaceRepository.create(data, conn);
+      await PlacePassportRepository.create({ placeId, passportId, role: 'admin' }, conn);
+      if (data.schedule) await PlaceScheduleRepository.replace(placeId, data.schedule, conn);
+      return placeId;
+    });
   }
 
   static async update(data: PlaceUpdateDto) {
     const { schedule, ...place } = data;
-    await PlaceRepository.update(data.id, place);
-
-    if (schedule) {
-      await PlaceScheduleRepository.replace(data.id, schedule);
-    }
+    await db.transaction(async conn => {
+      await PlaceRepository.update(data.id, place, conn);
+      if (schedule) await PlaceScheduleRepository.replace(data.id, schedule, conn);
+    });
 
     return PlaceRepository.findById(data.id);
   }
@@ -50,12 +55,12 @@ export class PlaceService {
 
   static async getDashboard(id: number): Promise<PlaceDashboardDto> {
     const place = await PlaceRepository.findById(id);
-    if (!place) throw Error('Нет такого места');
+    if (!place) throw new HttpError('Центр не найден', 404);
 
     const meets = await MeetRepository.findAll({ placeId: id });
 
     return {
-      place,
+      place: { ...place, schedule: await PlaceScheduleRepository.findByPlaceId(id) },
       stats: {
         teachers: 5,
         projects: 12,

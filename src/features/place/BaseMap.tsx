@@ -1,12 +1,13 @@
 import { useLeafletMap } from './useLeafletMap.ts';
 import './BaseMap.css';
 import 'leaflet/dist/leaflet.css';
+import type { ReactNode } from 'react';
 
 interface BaseMapProps {
   lat: number;
   lng: number;
   zoom: number;
-  useLayer: (ctx: MapContext) => void;
+  children: (ctx: MapContext) => ReactNode;
 }
 
 export type MapContext = {
@@ -15,14 +16,8 @@ export type MapContext = {
   isReady: boolean;
 };
 
-export function BaseMap({ lat, lng, zoom, useLayer }: BaseMapProps) {
+export function BaseMap({ lat, lng, zoom, children }: BaseMapProps) {
   const { mapRef, mapInstance, leafletRef, isReady } = useLeafletMap(lat, lng, zoom);
-
-  useLayer({
-    mapInstance,
-    leafletRef,
-    isReady,
-  });
 
   return (
     <div
@@ -32,6 +27,8 @@ export function BaseMap({ lat, lng, zoom, useLayer }: BaseMapProps) {
         height: '75vh',
         borderRadius: '1rem',
       }}
-    />
+    >
+      {children({ mapInstance, leafletRef, isReady })}
+    </div>
   );
 }

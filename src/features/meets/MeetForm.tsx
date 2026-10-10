@@ -1,4 +1,7 @@
-import {Button, MenuItem, Stack, TextField} from '@mui/material';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 
 import MeetDateField from './MeetDateField.tsx';
 import MeetTimeField from './MeetTimeField.tsx';

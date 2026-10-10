@@ -9,7 +9,6 @@ import { toPayment } from '../mappers/payment.mapper.js';
 class PaymentRepository {
   // ✅ CREATE
   static async create(data: CreatePaymentInput): Promise<number> {
-    console.log('create payment', data);
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO payment
         (
@@ -33,10 +32,9 @@ class PaymentRepository {
         data.currency,
         data.targetType,
         data.targetId,
-        data.description
+        data.description ?? null
       ],
     );
-    console.log('create payment result', result);
 
     return result.insertId;
   }

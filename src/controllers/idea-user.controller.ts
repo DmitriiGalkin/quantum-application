@@ -1,25 +1,18 @@
-import { type ControllerWithAuth, fail, ok } from './helper.js';
+import { requireId } from '../utils/validation.js';
+import { type ControllerWithAuth, ok } from './helper.js';
 import { IdeaUserService } from '../services/idea-user.service.js';
-import type { CreateIdeaUser, DeleteIdeaUser } from 'entities';
+import type { CreateIdeaUser } from 'entities';
 
 const create: ControllerWithAuth<void, CreateIdeaUser> = async (req, res) => {
-  try {
-    await IdeaUserService.create(req.passport.id!, req.body);
+  await IdeaUserService.create(req.passport.id!, req.body);
 
-    ok(res, { message: 'Лайк' });
-  } catch (err) {
-    fail(res, err instanceof Error ? err.message : 'Не удалось создать участие');
-  }
+  ok(res, { message: 'Лайк' });
 };
 
 const remove: ControllerWithAuth<void> = async (req, res) => {
-  try {
-    await IdeaUserService.remove(req.passport.id!, req.query as unknown as DeleteIdeaUser);
+  await IdeaUserService.remove(req.passport.id!, { ideaId: requireId(req.query.ideaId), userId: requireId(req.query.userId) });
 
-    ok(res, { message: 'Дизлайк' });
-  } catch (err) {
-    fail(res, err instanceof Error ? err.message : 'Не удалось удалить участие');
-  }
+  ok(res, { message: 'Дизлайк' });
 };
 
 export default {

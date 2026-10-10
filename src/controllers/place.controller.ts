@@ -1,64 +1,45 @@
+import { requireId } from '../utils/validation.js';
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import type { CreatePlace, MeetDto, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'entities';
+import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'entities';
 
 const findAll: Controller<PlaceDto[]> = async (_req, res) => {
-  try {
-    const places = await PlaceService.findAll();
-    ok(res, places);
-  } catch (err) {
-    fail(res, 'Не удалось получить список мест');
-  }
+  const places = await PlaceService.findAll();
+  ok(res, places);
 };
 
 const create: ControllerWithAuth<number, CreatePlace> = async (req, res) => {
-  try {
-    const id = await PlaceService.create(req.passport.id!, req.body);
-    ok(res, id);
-  } catch (err) {
-    fail(res, 'Не удалось создать место');
-  }
+  const id = await PlaceService.create(req.passport.id!, req.body);
+  ok(res, id);
 };
 
 const update: ControllerWithAuth<void, PlaceUpdateDto> = async (req, res) => {
-  try {
-    await PlaceService.update({
-      ...req.body,
-      id: req.viewer?.placeId!,
-    });
+  await PlaceService.update({
+    ...req.body,
+    id: requireId(req.viewer?.placeId),
+  });
 
-    ok(res, { message: 'Центр обновлен' });
-  } catch (err) {
-    fail(res, 'Не удалось обновить центр');
-  }
+  ok(res, { message: 'Центр обновлен' });
 };
 
-const findById: Controller<MeetDto> = async (req, res) => {
-  try {
-    const place = await PlaceService.findById(Number(req.params.id));
+const findById: Controller<PlaceDto> = async (req, res) => {
+  const place = await PlaceService.findById(requireId(req.params.id));
 
-    if (!place) {
-      fail(res, 'Место не найдено', 404);
-    }
-
-    ok(res, place);
-  } catch (err) {
-    fail(res, 'Ошибка при получении места');
+  if (!place) {
+    fail('Место не найдено', 404);
   }
+
+  ok(res, place);
 };
 
 const dashboard: ControllerWithAuth<PlaceDashboardDto> = async (req, res) => {
-  try {
-    const place = await PlaceService.getDashboard(Number(req.viewer?.placeId!));
+  const place = await PlaceService.getDashboard(requireId(req.viewer?.placeId));
 
-    if (!place) {
-      fail(res, 'Место не найдено', 404);
-    }
-
-    ok(res, place);
-  } catch (err) {
-    fail(res, 'Ошибка при получении dashboard');
+  if (!place) {
+    fail('Место не найдено', 404);
   }
+
+  ok(res, place);
 };
 
 export default {

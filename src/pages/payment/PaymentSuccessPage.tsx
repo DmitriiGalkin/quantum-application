@@ -1,5 +1,6 @@
+import { getBrowser } from '../../shared/lib/browser.ts';
 import Container from '@mui/material/Container';
-import { Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPayment } from '../../requests.ts';
@@ -23,7 +24,7 @@ export default function PaymentSuccessPage() {
   useEffect(() => {
     if(payment) {
       if (payment.targetType === 'meet' && payment.meet) {
-        window.location.href = `/project/${payment.meet.projectId}#meet-${payment.meet.id}`;
+        getBrowser()!.location.href = `/project/${payment.meet.projectId}#meet-${payment.meet.id}`;
       }
     }
   }, [payment]);

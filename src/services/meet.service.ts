@@ -1,20 +1,20 @@
-import type { Passport, CreateMeet, GetMeetsQuery, MeetDto, MeetStatus, UpdateMeetInput, Place } from 'entities';
+import type { Passport, CreateMeet, GetMeetsQuery, MeetDto, MeetStatus, UpdateMeetInput, Meet } from 'entities';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
-import UserRepository from '../repositories/user.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
+import { ParticipantsService } from './participants.service.js';
+import { HttpError } from '../utils/http-error.js';
+import PlacePassportRepository from '../repositories/place-passport.repository.js';
 
 export class MeetService {
   static async create(passport: Passport, data: CreateMeet) {
-    console.log(data, 'data');
-    if (!passport) throw new Error('UNAUTHORIZED');
+    if (!passport) throw new HttpError('UNAUTHORIZED', 401);
     const project = await ProjectRepository.findById(data.projectId);
-    console.log(project, 'project');
 
-    if (!project) throw new Error('MeetService project не существуйет');
-    console.log('3');
+    if (!project) throw new HttpError('Проект не найден', 404);
+    if (project.passportId !== passport.id) throw new HttpError('Нет доступа к проекту', 403);
 
     return MeetRepository.create({
       ...data,
@@ -23,15 +23,16 @@ export class MeetService {
     });
   }
 
-  static async update(data: { id: number } & UpdateMeetInput) {
+  static async update(data: { id: number } & UpdateMeetInput, passportId: number) {
     const { id, ...fields } = data;
 
     const existingMeet = await MeetRepository.findById(id);
     if (!existingMeet) {
-      throw new Error('MEET_NOT_FOUND');
+      throw new HttpError('Встреча не найдена', 404);
     }
+    if (existingMeet.passportId !== passportId) throw new HttpError('Нет доступа к встрече', 403);
 
-    const updateData: UpdateMeetInput = { ...fields };
+    const updateData: UpdateMeetInput = { startedAt: fields.startedAt, duration: fields.duration, price: fields.price };
 
     if (fields.startedAt !== undefined) {
       const existingTime = new Date(existingMeet.startedAt).getTime();
@@ -49,11 +50,11 @@ export class MeetService {
     const meet = await MeetRepository.findById(id);
 
     if (!meet) {
-      throw new Error('MEET_NOT_FOUND');
+      throw new HttpError('Встреча не найдена', 404);
     }
 
     if (meet.passportId !== passportId) {
-      throw new Error('FORBIDDEN');
+      throw new HttpError('Нет доступа к встрече', 403);
     }
 
     return MeetRepository.delete(id);
@@ -61,35 +62,38 @@ export class MeetService {
 
   static async findById(id: number): Promise<MeetDto | null> {
     const meet = await MeetRepository.findById(id);
-    if (!meet) return null;
-
-    const [place, users, passport, projectUsers] = await Promise.all([
-      PlaceRepository.findById(meet.placeId) as Promise<Place>,
-      UserRepository.findByMeetId(meet.id),
-      PassportRepository.findById(meet.passportId) as Promise<Passport>,
-      ProjectUserRepository.findByProjectId(meet.projectId),
-    ]);
-
-    return { ...meet, place, users, passport, capacity: projectUsers.length };
+    return meet ? (await this.hydrateAll([meet]))[0] : null;
   }
 
   static async findAll(data: GetMeetsQuery): Promise<MeetDto[]> {
-    const meets = await MeetRepository.findAll(data);
-    const places = await Promise.all(meets.map(i => PlaceRepository.findById(i.placeId) as Promise<Place>));
-    const users = await Promise.all(meets.map(meet => UserRepository.findByMeetId(meet.id)));
-    const passports = await Promise.all(meets.map(meet => PassportRepository.findById(meet.passportId) as Promise<Passport>));
-    const projectUsers = await Promise.all(meets.map(meet => ProjectUserRepository.findByProjectId(meet.projectId)));
-
-    return meets.map((meet, i) => ({
-      ...meet,
-      place: places[i],
-      users: users[i],
-      passport: passports[i],
-      capacity: projectUsers[i].length,
-    }));
+    return this.hydrateAll(await MeetRepository.findAll(data));
   }
 
-  static async updateStatus(id: number, status: MeetStatus) {
+  static async hydrateAll(meets: Meet[]): Promise<MeetDto[]> {
+    const [places, passports, users, projectUsers] = await Promise.all([
+      PlaceRepository.findByIds(meets.map(meet => meet.placeId)),
+      PassportRepository.findByIds(meets.map(meet => meet.passportId)),
+      ParticipantsService.forMeets(meets.map(meet => meet.id)),
+      ProjectUserRepository.findByProjectIds(meets.map(meet => meet.projectId)),
+    ]);
+    const placeById = new Map(places.map(place => [place.id, place]));
+    const passportById = new Map(passports.map(passport => [passport.id, passport]));
+    const capacities = new Map<number, number>();
+    for (const join of projectUsers) capacities.set(join.projectId, (capacities.get(join.projectId) ?? 0) + 1);
+    return meets.map(meet => {
+      const place = placeById.get(meet.placeId);
+      const passport = passportById.get(meet.passportId);
+      if (!place || !passport) throw new HttpError('Не найдены связанные данные встречи', 500);
+      return { ...meet, place, passport, users: users.get(meet.id) ?? [], capacity: capacities.get(meet.projectId) ?? 0 };
+    });
+  }
+
+  static async updateStatus(id: number, status: MeetStatus, passportId: number) {
+    const meet = await MeetRepository.findById(id);
+    if (!meet) throw new HttpError('Встреча не найдена', 404);
+    if (!['pending', 'published', 'cancelled'].includes(status)) throw new HttpError('Некорректный статус встречи', 400);
+    const membership = await PlacePassportRepository.findMembership(passportId, meet.placeId);
+    if (meet.passportId !== passportId && membership?.role !== 'admin') throw new HttpError('Нет доступа к встрече', 403);
     return MeetRepository.updateStatus(id, status);
   }
 }

@@ -1,3 +1,4 @@
+import { HttpError } from '../utils/http-error.js';
 import formidable, { type Files } from 'formidable';
 import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
@@ -28,7 +29,7 @@ export class FileService {
     const file = Array.isArray(files.file) ? files.file[0] : files.file;
 
     if (!file || !file.filepath) {
-      throw new Error('FILE_NOT_FOUND');
+      throw new HttpError('FILE_NOT_FOUND', 400);
     }
 
     return this.uploadBuffer(await readFile(file.filepath), file.originalFilename ?? '', file.mimetype ?? undefined);
@@ -36,7 +37,7 @@ export class FileService {
 
   /** Shared S3 implementation for HTTP uploads and catalog originals. */
   static async uploadBuffer(buffer: Buffer, originalFilename: string, mimetype?: string, key?: string): Promise<string> {
-    if (!buffer.length) throw new Error('EMPTY_FILE');
+    if (!buffer.length) throw new HttpError('EMPTY_FILE', 400);
     const filename = key ?? `${randomUUID()}${path.extname(originalFilename)}`;
 
     const params = {

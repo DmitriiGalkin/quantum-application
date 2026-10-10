@@ -1,8 +1,15 @@
+import { getBrowser } from '../../shared/lib/browser.ts';
 import type { MeetDto, MeetStatus } from 'entities';
-import { useAuth } from '../../providers/AuthProvider.tsx';
-import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
+import { useAuth } from '../../providers/auth-context.ts';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import MenuButton from '../../components/MenuButton.tsx';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { invalidateMeetQueries } from './hooks/queries.ts';
 import {
   fetchCreateMeetUser,
   fetchCreatePayment,
@@ -31,6 +38,11 @@ interface Props {
 }
 
 export default function MeetCard({ meet, refetch }: Props) {
+  const queryClient = useQueryClient();
+  const refreshMeets = async () => {
+    await invalidateMeetQueries(queryClient, meet.projectId);
+    refetch?.();
+  };
   const { authHandler, passport, role, userId } = useAuth();
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -42,39 +54,30 @@ export default function MeetCard({ meet, refetch }: Props) {
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateMeetUser,
-    onSuccess: () => {
-      refetch?.();
-    },
+    onSuccess: refreshMeets,
   });
 
   const mutationUnlike = useMutation({
     mutationFn: fetchDeleteMeetUser,
-    onSuccess: () => {
-      refetch?.();
-    },
+    onSuccess: refreshMeets,
   });
 
   const mutationDeleteMeet = useMutation({
     mutationFn: fetchDeleteMeet,
-    onSuccess: () => {
-      refetch?.();
-    },
+    onSuccess: refreshMeets,
   });
 
   const createPayment = useMutation({
     mutationFn: fetchCreatePayment,
     onSuccess: payment => {
-      console.log('payment', payment);
-      window.location.href = payment.paymentUrl;
+      getBrowser()!.location.href = payment.paymentUrl;
       return;
     },
   });
 
   const updateStatus = useMutation({
     mutationFn: (status: MeetStatus) => fetchUpdateMeetStatus(meet.id, { status }),
-    onSuccess: () => {
-      refetch?.();
-    },
+    onSuccess: refreshMeets,
   });
 
   const onPay = () => {
@@ -189,7 +192,7 @@ export default function MeetCard({ meet, refetch }: Props) {
           boxShadow: 4,
           borderColor: 'primary.main',
         },
-        opacity: Boolean(meet.deletedAt) ? 0.5 : 1,
+        opacity: meet.deletedAt ? 0.5 : 1,
       }}
     >
       <Stack spacing={2}>

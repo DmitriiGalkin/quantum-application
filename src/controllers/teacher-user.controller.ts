@@ -1,25 +1,18 @@
-import { type ControllerWithAuth, fail, ok } from './helper.js';
+import { requireId } from '../utils/validation.js';
+import { type ControllerWithAuth, ok } from './helper.js';
 import { TeacherUserService } from '../services/teacher-user.service.js';
 import type { User } from 'entities';
 
 const findByTeacher: ControllerWithAuth<User[]> = async (req, res) => {
-  try {
-    const rows = await TeacherUserService.findByTeacherId(Number(req.passport.id!));
+  const rows = await TeacherUserService.findByTeacherId(Number(req.passport.id!));
 
-    ok(res, rows);
-  } catch (err) {
-    fail(res, 'Не удалось получить посещения');
-  }
+  ok(res, rows);
 };
 
 const getPlaceUsers: ControllerWithAuth<User[]> = async (req, res) => {
-  try {
-    const rows = await TeacherUserService.findByPlaceId(Number(req.passport.id!), req.viewer?.placeId!);
+  const rows = await TeacherUserService.findByPlaceId(Number(req.passport.id!), requireId(req.viewer?.placeId));
 
-    ok(res, rows);
-  } catch (err) {
-    fail(res, 'Не удалось получить учеников центра');
-  }
+  ok(res, rows);
 };
 
 export default {

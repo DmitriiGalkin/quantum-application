@@ -1,6 +1,11 @@
+import { getBrowser } from '../../shared/lib/browser.ts';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { fetchAddTeacher, fetchPlaceTeachers } from '../../requests.ts';
 import TeacherCard from '../../features/teacher/TeacherCard.tsx';
 import ShareIcon from '@mui/icons-material/Share';
@@ -10,7 +15,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 
 export default function PlaceTeachersPage() {
   const { placeId } = useAuth();
@@ -31,7 +36,7 @@ export default function PlaceTeachersPage() {
     },
   });
 
-  const inviteUrl = `${window.location.origin}/place/${placeId}/invite`;
+  const inviteUrl = `${getBrowser()!.location.origin}/place/${placeId}/invite`;
 
   async function handleCopy() {
     await navigator.clipboard.writeText(inviteUrl);

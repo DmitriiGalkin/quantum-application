@@ -8,6 +8,15 @@ import { db } from '../utils/dbNext.js';
 import type { DeleteMeetUser } from 'entities';
 
 class MeetUserRepository {
+  static async findByMeetIds(ids: number[]): Promise<MeetUser[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<MeetUserRow>(
+      'SELECT * FROM meetUser WHERE meetId IN (?)',
+      [[...new Set(ids)]],
+    );
+    return rows.map(mapMeetUserRow);
+  }
+
   // ✅ CREATE
   static async create(data: { userId: number; meetId: number }): Promise<number> {
     const result = await db.execute<ResultSetHeader>(

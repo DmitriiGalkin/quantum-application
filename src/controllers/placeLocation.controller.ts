@@ -1,38 +1,27 @@
-import { type ControllerWithAuth, fail, ok } from './helper.js';
+import { requireId } from '../utils/validation.js';
+import { type ControllerWithAuth, ok } from './helper.js';
 import PlaceLocationService from '../services/placeLocation.service.js';
 import type { CreateLocation, LocationDto } from 'entities';
 
 const create: ControllerWithAuth<number, CreateLocation> = async (req, res) => {
-  try {
-    const placeId = Number(req.viewer?.placeId);
-    const id = await PlaceLocationService.create(placeId, req.body);
+  const placeId = requireId(req.viewer?.placeId);
+  const id = await PlaceLocationService.create(placeId, req.body);
 
-    ok(res, id);
-  } catch (err) {
-    fail(res, 'Не удалось добавить учителя');
-  }
+  ok(res, id);
 };
 
 const findAll: ControllerWithAuth<LocationDto> = async (req, res) => {
-  try {
-    const data = await PlaceLocationService.findAll(Number(req.viewer?.placeId!));
+  const data = await PlaceLocationService.findAll(requireId(req.viewer?.placeId));
 
-    ok(res, data);
-  } catch (err) {
-    fail(res, 'Не удалось получить кабинеты центра');
-  }
+  ok(res, data);
 };
 
 const remove: ControllerWithAuth<number> = async (req, res) => {
-  try {
-    const locationId = Number(req.params.id!);
+  const locationId = requireId(req.params.id);
 
-    await PlaceLocationService.delete(locationId);
+  await PlaceLocationService.delete(locationId);
 
-    ok(res, true);
-  } catch (err) {
-    fail(res, 'Не удалось удалить учителя');
-  }
+  ok(res, true);
 };
 
 export default {

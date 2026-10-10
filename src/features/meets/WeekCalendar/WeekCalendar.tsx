@@ -1,4 +1,5 @@
-import { Box, Paper } from '@mui/material';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import WeekCalendarGrid from './WeekCalendarGrid.tsx';
 import WeekCalendarHeader from './WeekCalendarHeader.tsx';

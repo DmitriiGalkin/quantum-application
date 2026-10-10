@@ -1,8 +1,10 @@
+import { HttpError } from '../utils/http-error.js';
 import UserRepository from '../repositories/user.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 
 import type { UserDashboardDto, User, Passport, CreateUserInput, UpdateUserInput } from 'entities';
 import { ProjectService } from './project.service.js';
+import { db } from '../utils/dbNext.js';
 
 export class UserService {
   // ✅ CREATE
@@ -20,11 +22,11 @@ export class UserService {
     const user = await UserRepository.findById(userId);
 
     if (!user) {
-      throw new Error('Участник не найден');
+      throw new HttpError('Участник не найден', 404);
     }
 
     if (user.passportId !== passport.id) {
-      throw new Error('Нет прав на изменение');
+      throw new HttpError('Нет прав на изменение', 403);
     }
 
     await UserRepository.update(userId, body);
@@ -35,15 +37,17 @@ export class UserService {
     const user = await UserRepository.findById(userId);
 
     if (!user) {
-      throw new Error('Участник не найден');
+      throw new HttpError('Участник не найден', 404);
     }
 
     if (user.passportId !== passport.id) {
-      throw new Error('Нет прав на удаление этого участника');
+      throw new HttpError('Нет прав на удаление этого участника', 403);
     }
 
-    await ProjectUserRepository.deleteByUserId(userId);
-    await UserRepository.delete(userId);
+    await db.transaction(async conn => {
+      await ProjectUserRepository.deleteByUserId(userId, conn);
+      await UserRepository.delete(userId, conn);
+    });
   }
 
   // ✅ FIND

@@ -1,9 +1,18 @@
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 import type {GetMeetsQuery, MeetStatus, MeetRow, MeetWithProjectTitleRow, CreateMeetInput, UpdateMeetInput, Meet, MeetWithProjectTitle } from 'entities';
 import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class MeetRepository {
+  static async findByProjectIds(ids: number[], futureOnly = false): Promise<Meet[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<MeetRow>(
+      'SELECT * FROM meet WHERE projectId IN (?)' + (futureOnly ? ' AND deletedAt IS NULL AND startedAt > NOW()' : '') + ' ORDER BY startedAt',
+      [[...new Set(ids)]],
+    );
+    return rows.map(toMeet);
+  }
+
   static async create(data: CreateMeetInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId)
@@ -16,12 +25,13 @@ class MeetRepository {
 
   // ✅ UPDATE (нормальный partial)
   static async update(id: number, data: UpdateMeetInput): Promise<boolean> {
-    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+    const keys = ['startedAt', 'duration', 'price', 'status'] as const;
+    const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;
 
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-    const values = entries.map(([, v]) => v);
+    const values = entries.map(([, v]) => v ?? null);
 
     const result = await db.execute<ResultSetHeader>(`UPDATE meet SET ${fields} WHERE id = ?`, [...values, id]);
 
@@ -33,8 +43,8 @@ class MeetRepository {
     await db.execute(`UPDATE meet SET deletedAt = NOW() WHERE id = ?`, [id]);
   }
 
-  static async deleteByProjectId(projectId: number): Promise<void> {
-    await db.execute(`UPDATE meet SET deletedAt = NOW() WHERE projectId = ?`, [projectId]);
+  static async deleteByProjectId(projectId: number, conn?: PoolConnection): Promise<void> {
+    await (conn ?? db).execute(`UPDATE meet SET deletedAt = NOW() WHERE projectId = ?`, [projectId]);
   }
 
   // ✅ FIND ALL
@@ -81,7 +91,7 @@ class MeetRepository {
 
     sql += ` ORDER BY meet.startedAt `;
 
-    const rows = await db.query(sql, params);
+    const rows = await db.query<MeetRow>(sql, params);
     return rows.map(toMeet);
   }
 

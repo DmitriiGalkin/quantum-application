@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import type { PlaceDto } from 'entities';
+import { useEffect } from 'react';
 import { BaseMap, type MapContext } from './BaseMap.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaces } from '../../requests.ts';
@@ -16,39 +17,40 @@ export function MeetMap({ lat, lng, zoom }: Props) {
     queryFn: fetchPlaces,
   });
 
-  function useMeetLayer({ mapInstance, leafletRef, isReady }: MapContext) {
-    const markersRef = useRef<L.LayerGroup | null>(null);
+  return (
+    <BaseMap lat={lat} lng={lng} zoom={zoom}>
+      {context => <MeetLayer {...context} places={places} />}
+    </BaseMap>
+  );
+}
 
-    useEffect(() => {
-      if (!isReady || !mapInstance.current || !leafletRef.current) {
-        return;
-      }
+function MeetLayer({ mapInstance, leafletRef, isReady, places }: MapContext & { places: PlaceDto[] }) {
+  useEffect(() => {
+    if (!isReady || !mapInstance.current || !leafletRef.current) {
+      return;
+    }
 
-      const L = leafletRef.current;
-      const map = mapInstance.current;
+    const L = leafletRef.current;
+    const map = mapInstance.current;
 
-      if (!markersRef.current) {
-        markersRef.current = L.layerGroup().addTo(map);
-      }
+    const markers = L.layerGroup().addTo(map);
 
-      const getPlaceIcon = (count: number) =>
-        L.divIcon({
-          className: 'custom-map-marker',
-          html: `
+    const getPlaceIcon = (count: number) =>
+      L.divIcon({
+        className: 'custom-map-marker',
+        html: `
             <div class="marker-pin${!count ? ' marker-pin-empty' : ''}"></div>
             <div class="marker-text">
               ${count || ''}
             </div>
           `,
-          iconSize: [30, 42],
-        });
+        iconSize: [30, 42],
+      });
 
-      markersRef.current.clearLayers();
-
-      places.forEach(place => {
-        const meetsList = (place.meets || [])
-          .map(
-            meet => `
+    places.forEach(place => {
+      const meetsList = (place.meets || [])
+        .map(
+          meet => `
               <li>
                 <span>
                   ${extractTime(meet.startedAt)}
@@ -60,12 +62,12 @@ export function MeetMap({ lat, lng, zoom }: Props) {
                 </a>
               </li>
             `,
-          )
-          .join('');
+        )
+        .join('');
 
-        const marker = L.marker([Number(place.latitude), Number(place.longitude)], {
-          icon: getPlaceIcon(place.meets?.length || 0),
-        }).bindPopup(`
+      const marker = L.marker([Number(place.latitude), Number(place.longitude)], {
+        icon: getPlaceIcon(place.meets?.length || 0),
+      }).bindPopup(`
           <div class="place-popup">
             <h4>
               <b>${place.title}</b>
@@ -81,14 +83,12 @@ export function MeetMap({ lat, lng, zoom }: Props) {
           </div>
         `);
 
-        marker.addTo(markersRef.current!);
-      });
+      marker.addTo(markers);
+    });
 
-      return () => {
-        markersRef.current?.clearLayers();
-      };
-    }, [places, isReady, mapInstance, leafletRef]);
-  }
-
-  return <BaseMap lat={lat} lng={lng} zoom={zoom} useLayer={useMeetLayer} />;
+    return () => {
+      markers.remove();
+    };
+  }, [places, isReady, mapInstance, leafletRef]);
+  return null;
 }

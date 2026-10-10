@@ -1,11 +1,7 @@
-import mysql, { type Pool, PoolConnection, type QueryResult, type ResultSetHeader } from 'mysql2/promise';
+import mysql, { type Pool, PoolConnection, type QueryResult, type ResultSetHeader, type RowDataPacket } from 'mysql2/promise';
+import type { ExecuteValues } from 'mysql2';
 
-const RETRY_ERRORS = [
-    'PROTOCOL_CONNECTION_LOST',
-    'ECONNRESET',
-    'ETIMEDOUT',
-    'EPIPE',
-];
+const RETRY_ERRORS = ['PROTOCOL_CONNECTION_LOST', 'ECONNRESET', 'ETIMEDOUT', 'EPIPE'];
 
 export class DatabaseService {
   private pool: Pool;
@@ -25,12 +21,12 @@ export class DatabaseService {
     });
   }
 
-  // 🔥 Универсальный retry wrapper
+  // Retry reads only: a disconnected write may already have been committed.
   private async retry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
     try {
       return await fn();
-    } catch (err: any) {
-      const shouldRetry = RETRY_ERRORS.includes(err.code);
+    } catch (err: unknown) {
+      const shouldRetry = err instanceof Error && 'code' in err && typeof err.code === 'string' && RETRY_ERRORS.includes(err.code);
 
       this.logError(err, { retriesLeft: retries });
 
@@ -44,32 +40,25 @@ export class DatabaseService {
   }
 
   // ✅ SELECT
-  async query<T = any>(sql: string, params?: any): Promise<T[]> {
-    return this.retry(async () => {
-      const start = Date.now();
-
+  async query<T = RowDataPacket>(sql: string, params?: unknown[]): Promise<T[]> {
+    const read = async () => {
       const [rows] = await this.pool.query(sql, params);
-
-      this.logQuery(sql, params, Date.now() - start);
-
       return rows as T[];
-    });
+    };
+    return /^\s*SELECT\b/i.test(sql) ? this.retry(read) : read();
   }
 
   // ✅ INSERT / UPDATE / DELETE
-  async execute<T extends QueryResult = ResultSetHeader>(sql: string, params?: any): Promise<T> {
-    return this.retry(async () => {
-      const start = Date.now();
-
+  async execute<T extends QueryResult = ResultSetHeader>(sql: string, params?: ExecuteValues[]): Promise<T> {
+    try {
       const [result] = await this.pool.execute<T>(sql, params);
-
-      this.logQuery(sql, params, Date.now() - start);
-
       return result;
-    });
+    } catch (error) {
+      this.logError(error, { type: 'write' });
+      throw error;
+    }
   }
 
-  // 🔥 Транзакции
   async close(): Promise<void> {
     await this.pool.end();
   }
@@ -86,7 +75,11 @@ export class DatabaseService {
 
       return result;
     } catch (err) {
-      await connection.rollback();
+      try {
+        await connection.rollback();
+      } catch (rollbackError) {
+        this.logError(rollbackError, { type: 'rollback' });
+      }
       this.logError(err, { type: 'transaction' });
       throw err;
     } finally {
@@ -94,23 +87,14 @@ export class DatabaseService {
     }
   }
 
-  // 🧠 delay для retry
   private delay(ms: number) {
     return new Promise(res => setTimeout(res, ms));
   }
 
-  // 📊 логирование запросов
-  private logQuery(_sql: string, _params: any, _duration: number) {
-    //console.log('🟢 SQL:', sql);
-    //if (params) console.log('📦 params:', params);
-    //console.log('⏱ duration:', duration, 'ms');
-  }
-
-  // ❌ логирование ошибок
-  private logError(err: any, context?: any) {
+  private logError(err: unknown, context?: Record<string, unknown>) {
     console.error('🔴 DB ERROR:', {
-      message: err.message,
-      code: err.code,
+      message: err instanceof Error ? err.message : String(err),
+      code: err instanceof Error && 'code' in err ? err.code : undefined,
       context,
     });
   }

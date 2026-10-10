@@ -1,7 +1,8 @@
-import { Stack, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaceUsers } from '../../requests.ts';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 import UserCard from '../../features/user/UserCard.tsx';
 
 export default function PlaceUsersPage() {

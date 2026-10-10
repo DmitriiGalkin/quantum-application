@@ -1,4 +1,8 @@
-import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 import { PlaceScheduleRow } from './PlaceScheduleRow';
 import type { PlaceScheduleDayDto } from 'entities';
 

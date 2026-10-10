@@ -1,4 +1,4 @@
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 
 import type { ProjectUserRow, CreateProjectUserInput, ProjectUser } from 'entities';
 import { mapProjectUserRow } from '../mappers/project-user.mapper.js';
@@ -6,6 +6,15 @@ import { mapProjectUserRow } from '../mappers/project-user.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class ProjectUserRepository {
+  static async findByProjectIds(ids: number[]): Promise<ProjectUser[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<ProjectUserRow>(
+      'SELECT * FROM projectUser WHERE projectId IN (?)' + ' ORDER BY createdAt DESC',
+      [[...new Set(ids)]],
+    );
+    return rows.map(mapProjectUserRow);
+  }
+
   // ✅ CREATE
   static async create(data: CreateProjectUserInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
@@ -25,8 +34,8 @@ class ProjectUserRepository {
   }
 
   // ✅ DELETE BY USER
-  static async deleteByUserId(userId: number): Promise<void> {
-    await db.execute(`DELETE FROM projectUser WHERE userId = ?`, [userId]);
+  static async deleteByUserId(userId: number, conn?: PoolConnection): Promise<void> {
+    await (conn ?? db).execute(`DELETE FROM projectUser WHERE userId = ?`, [userId]);
   }
 
   // ✅ FIND BY ID

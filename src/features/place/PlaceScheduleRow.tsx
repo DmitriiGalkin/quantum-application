@@ -1,4 +1,8 @@
-import { Checkbox, FormControlLabel, Stack, TextField, Typography } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import type { PlaceScheduleDayDto } from 'entities';
 
 type Props = {

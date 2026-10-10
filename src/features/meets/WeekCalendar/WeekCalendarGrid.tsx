@@ -1,6 +1,7 @@
 // components/meet/WeekCalendarGrid.tsx
 
-import { Box, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { isSameDay } from 'date-fns';
 
 import WeekCalendarMeet from './WeekCalendarMeet.tsx';

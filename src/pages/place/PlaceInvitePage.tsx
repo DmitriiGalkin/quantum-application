@@ -1,8 +1,14 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Typography from '@mui/material/Typography';
 import { fetchAddTeacher2, fetchPlace } from '../../requests.ts';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 
 export default function PlaceInvitePage() {
   const { id } = useParams();

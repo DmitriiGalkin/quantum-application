@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import ShareIcon from '@mui/icons-material/Share';
 import MessageIcon from '@mui/icons-material/Message';
 import { useQuery } from '@tanstack/react-query';

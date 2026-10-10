@@ -8,10 +8,11 @@ import { AuthProvider } from './providers/AuthProvider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme/theme';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 const FRONTEND_SERVER = import.meta.env.FRONTEND_SERVER ?? 'http://localhost:4000';
 
 async function getMetaByUrl(url: string): Promise<PageMeta> {
+  url = new URL(url, 'http://localhost').pathname;
   if (url === '/') {
     return {
       title: 'Quantum Evolution',
@@ -52,43 +53,22 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
     };
   }
 
-  const projectMatch = url.match(/^\/project\/([^/]+)/);
-
-  if (projectMatch) {
-    console.log(projectMatch, 'projectMatch');
-    const projectId = projectMatch[1];
-    const response = await fetch(`${API_URL}/project/${projectId}/meta`);
-    const projectMeta = await response.json();
-
-    console.log(projectMeta, 'projectMeta');
-
-    return {
-      title: projectMeta.title,
-      description: projectMeta.description,
-      ogTitle: projectMeta.ogTitle,
-      ogDescription: projectMeta.ogDescription,
-      ogImage: projectMeta.ogImage,
-      ogType: projectMeta.ogType ?? 'article',
-      ogSiteName: projectMeta.ogSiteName ?? 'Quantum',
-    };
-  }
-
-  const ideaMatch = url.match(/^\/project\/([^/]+)/);
-
-  if (ideaMatch) {
-    const ideaId = ideaMatch[1];
-    const response = await fetch(`${API_URL}/idea/${ideaId}/meta`);
-    const meta = await response.json();
-
-    return {
-      title: meta.title,
-      description: meta.description,
-      ogTitle: meta.ogTitle,
-      ogDescription: meta.ogDescription,
-      ogImage: meta.ogImage,
-      ogType: meta.ogType ?? 'article',
-      ogSiteName: meta.ogSiteName ?? 'Quantum',
-    };
+  const entityMatch = url.match(/^\/(project|idea)\/([^/]+)$/);
+  if (entityMatch) {
+    const [, entity, id] = entityMatch;
+    const response = await fetch(API_URL + '/' + entity + '/' + id + '/meta');
+    if (response.ok) {
+      const meta = (await response.json()) as Partial<PageMeta>;
+      return {
+        title: meta.title ?? 'Quantum',
+        description: meta.description ?? 'Quantum',
+        ogTitle: meta.ogTitle ?? meta.title ?? 'Quantum',
+        ogDescription: meta.ogDescription ?? meta.description ?? 'Quantum',
+        ogImage: meta.ogImage ?? FRONTEND_SERVER + '/forIndex.png',
+        ogType: meta.ogType ?? 'article',
+        ogSiteName: meta.ogSiteName ?? 'Quantum',
+      };
+    }
   }
 
   return {
@@ -111,10 +91,10 @@ export async function render(url: string) {
       <QueryClientProvider client={queryClient}>
         <StaticRouter location={url}>
           <ThemeProvider theme={theme}>
-          <AuthProvider>
-            <Routers />
-          </AuthProvider>
-            </ThemeProvider>
+            <AuthProvider>
+              <Routers />
+            </AuthProvider>
+          </ThemeProvider>
         </StaticRouter>
       </QueryClientProvider>
     </React.StrictMode>,

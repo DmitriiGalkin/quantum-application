@@ -1,6 +1,8 @@
 // components/meet/WeekCalendarMeet.tsx
 
-import { Box, Stack, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { format } from 'date-fns';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,6 +12,7 @@ import { CSS } from '@dnd-kit/utilities';
 import type { MeetDto, MeetStatus } from 'entities';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchUpdateMeetStatus } from '../../../requests.ts';
+import { invalidateMeetQueries } from '../hooks/queries.ts';
 
 interface Props {
   meet: MeetDto;
@@ -36,11 +39,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
 
   const updateStatus = useMutation({
     mutationFn: (status: MeetStatus) => fetchUpdateMeetStatus(meet.id, { status }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['meets', meet.place.id],
-      });
-    },
+    onSuccess: () => invalidateMeetQueries(queryClient, meet.projectId),
   });
 
   return (

@@ -1,12 +1,12 @@
 import { type MeetDto } from 'entities';
 import Stack from '@mui/material/Stack';
-import { Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import MeetGrids from './MeetGrids.tsx'; // Добавлен импорт
 
 type Props = {
   meets: MeetDto[];
   title?: string;
-  refetch?: any;
+  refetch?: () => void;
 };
 
 function MeetGroupGrids({ meets, title, refetch }: Props) {

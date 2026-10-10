@@ -11,11 +11,11 @@ type Props = {
   filter: FilterProps;
   projects: ProjectDto[];
   withoutIdea?: boolean;
-  refetch?: any;
+  refetch?: () => void;
 };
 
 function Projects({ title, filter, projects, refetch, withoutIdea }: Props) {
-  const sortedProjects = projects.sort((a, b) => b.meets.length - a.meets.length);
+  const sortedProjects = [...projects].sort((a, b) => b.meets.length - a.meets.length);
 
   return (
     <Stack spacing={2}>

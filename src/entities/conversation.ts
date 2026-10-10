@@ -32,3 +32,8 @@ export interface StartConversationResponse {
   exists: boolean;
   conversation: Conversation;
 }
+
+export interface ConversationHistory {
+  conversation: Conversation;
+  messages: Message[];
+}

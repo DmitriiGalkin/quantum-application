@@ -1,9 +1,13 @@
-import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { Feed } from '../features/feed/Feed.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlace, fetchProject } from '../requests.ts';
 import { useParams } from 'react-router-dom';
-import { useAuth } from 'providers/AuthProvider.tsx';
+import { useAuth } from 'providers/auth-context.ts';
 import ProjectCard from '../features/project/ui/ProjectCard.tsx';
 import Paper from '@mui/material/Paper';
 import UserCard from '../features/user/UserCard.tsx';

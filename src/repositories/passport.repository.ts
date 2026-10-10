@@ -1,17 +1,29 @@
 import { db } from '../utils/dbNext.js';
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 
 import type { PassportRow, Passport, CreatePassportInput, UpdatePassportInput } from 'entities';
 import { toPassport } from '../mappers/passport.mapper.js';
 
 class PassportRepository {
+  static async lockByIds(ids: number[], conn: PoolConnection): Promise<void> {
+    await conn.query('SELECT id FROM passport WHERE id IN (?) ORDER BY id FOR UPDATE', [ids]);
+  }
+  static async findByIds(ids: number[]): Promise<Passport[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<PassportRow>(
+      'SELECT * FROM passport WHERE id IN (?)',
+      [[...new Set(ids)]],
+    );
+    return rows.map(toPassport);
+  }
+
   // ✅ CREATE
   static async create(data: CreatePassportInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
       `INSERT INTO passport
          (providerId, provider, accessToken, title, email, image)
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [data.providerId, data.provider, data.accessToken, data.title, data.email, data.image],
+      [data.providerId, data.provider, data.accessToken, data.title ?? null, data.email, data.image],
     );
 
     return result.insertId;
@@ -19,12 +31,13 @@ class PassportRepository {
 
   // ✅ UPDATE
   static async update(id: number, data: UpdatePassportInput): Promise<boolean> {
-    const entries = Object.entries(data).filter(([, v]) => v !== undefined);
+    const keys = ['title', 'description'] as const;
+    const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;
 
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-    const values = entries.map(([, v]) => v);
+    const values = entries.map(([, v]) => v ?? null);
 
     const result = await db.execute<ResultSetHeader>(`UPDATE passport SET ${fields} WHERE id = ?`, [...values, id]);
 

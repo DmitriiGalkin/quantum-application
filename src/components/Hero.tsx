@@ -1,7 +1,9 @@
-import { Container, Stack } from '@mui/material';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import type { ReactNode } from 'react';
 
-export default function Hero({ children, chip }: any) {
+export default function Hero({ children, chip }: { children: ReactNode; chip?: ReactNode }) {
   return (
     <Box
       sx={{

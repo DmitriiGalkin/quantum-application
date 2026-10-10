@@ -1,3 +1,4 @@
+import { getBrowser } from '../shared/lib/browser.ts';
 import ShareIcon from '@mui/icons-material/Share';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -9,7 +10,7 @@ type ShareProps = {
 
 export default function Share({ title, description }: ShareProps) {
   const handleShare = async () => {
-    const url = window.location.href;
+    const url = getBrowser()!.location.href;
 
     if (navigator.share) {
       await navigator.share({

@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { type PostAuthAction, usePostAuthAction } from './usePostAuthAction.ts';
+import type { PassportExtendedDto } from 'entities';
 
-export const useRunPostAuthAction = (passport: any, handler: (action: PostAuthAction) => void) => {
+export const useRunPostAuthAction = (passport: PassportExtendedDto | null, handler: (action: PostAuthAction) => void) => {
   const { getAction, clearAction } = usePostAuthAction();
 
   useEffect(() => {
@@ -10,7 +11,7 @@ export const useRunPostAuthAction = (passport: any, handler: (action: PostAuthAc
     const action = getAction();
     if (!action) return;
 
-    handler(action);
     clearAction();
-  }, [passport]);
+    handler(action);
+  }, [passport, clearAction, getAction, handler]);
 };

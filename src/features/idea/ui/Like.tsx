@@ -5,9 +5,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../../providers/auth-context.ts';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 
 type ChatBubbleProps = {
   isLiked?: boolean;
@@ -47,7 +47,7 @@ export default function Like({ isLiked, ideaId, likesCount }: ChatBubbleProps) {
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
       <Tooltip title="В избранное">
         <IconButton
-          onClick={_ => {
+          onClick={() => {
             handleLike();
           }}
         >

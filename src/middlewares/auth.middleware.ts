@@ -1,6 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
 import { AuthService } from '../services/auth.service.js';
 import type { ActiveRole } from 'entities';
+import { requireId } from '../utils/validation.js';
+import { HttpError } from '../utils/http-error.js';
+import PlacePassportRepository from '../repositories/place-passport.repository.js';
 
 /**
  * Middleware для проверки токена доступа
@@ -34,15 +37,20 @@ export const usePassport = async (req: Request, res: Response, next: NextFunctio
     req.viewer = {
       role,
       passport,
-      userId: userId ? Number(userId) : undefined,
-      placeId: placeId ? Number(placeId) : undefined,
+      userId: userId ? requireId(userId, 'участника') : undefined,
+      placeId: placeId ? requireId(placeId, 'центра') : undefined,
     };
 
+    if (!['guest', 'user', 'teacher', 'place'].includes(role)) throw new HttpError('Некорректная роль', 400);
+    if (role === 'place') {
+      const membership = await PlacePassportRepository.findMembership(passport.id, requireId(req.viewer.placeId, 'центра'));
+      if (membership?.role !== 'admin') throw new HttpError('Нет доступа к управлению центром', 403);
+    }
     req.passport = passport;
 
     next(); // Передаем управление следующему обработчику
   } catch (err) {
     console.error('Auth middleware error:', err);
-    return res.status(401).json({ error: true, message: 'Ошибка авторизации' });
+    next(err);
   }
 };

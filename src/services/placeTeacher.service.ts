@@ -1,10 +1,14 @@
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
+import { HttpError } from '../utils/http-error.js';
 
 class PlaceTeacherService {
+  static async requireAdmin(passportId: number, placeId: number): Promise<void> {
+    const membership = await PlacePassportRepository.findMembership(passportId, placeId);
+    if (membership?.role !== 'admin') throw new HttpError('Нет доступа к управлению центром', 403);
+  }
   static async addTeacher(placeId: number, teacherPassportId: number) {
     const exists = await PlacePassportRepository.exists(teacherPassportId, placeId);
 
-    console.log('exists', exists, teacherPassportId, placeId);
 
     if (exists) {
       return exists as number;
@@ -18,12 +22,10 @@ class PlaceTeacherService {
   }
 
   static async findAll(placeId: number) {
-    // TODO: проверить доступ к place
     return PlacePassportRepository.findTeachers(placeId);
   }
 
   static async remove(placeId: number, teacherPassportId: number) {
-    // TODO: проверить доступ
     return PlacePassportRepository.removeTeacher(placeId, teacherPassportId);
   }
 
@@ -35,7 +37,7 @@ class PlaceTeacherService {
     const placeId = await PlacePassportRepository.findAdminPlace(passportId);
 
     if (!placeId) {
-      throw new Error('PLACE_NOT_FOUND');
+      throw new HttpError('PLACE_NOT_FOUND', 404);
     }
 
     return placeId;

@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 //import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { Link, useNavigate } from 'react-router-dom';
 import KeyIcon from '@mui/icons-material/Key';
-import { useAuth } from 'providers/AuthProvider.tsx';
+import { useAuth } from 'providers/auth-context.ts';
 import MenuIcon from '@mui/icons-material/Menu';
 import SchoolIcon from '@mui/icons-material/School';
 import PersonIcon from '@mui/icons-material/Person';
@@ -15,7 +15,13 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import BusinessIcon from '@mui/icons-material/Business';
 import Drawer from '@mui/material/Drawer';
 import MenuLeft from './Menu.tsx';
-import { Avatar, Divider, Fade, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import Fade from '@mui/material/Fade';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import type { ActiveRole } from 'entities';
 
 function Header() {

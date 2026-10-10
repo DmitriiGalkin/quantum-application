@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'; // Добавлен импорт
+import Typography from '@mui/material/Typography'; // Добавлен импорт
 
 type Props = {
   text?: string

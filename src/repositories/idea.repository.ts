@@ -4,6 +4,15 @@ import type { IdeaRow, CreateIdeaInput, FindAllIdeaInput, Idea, UpdateIdeaInput 
 import { mapIdeaRow } from '../mappers/idea.mapper.js';
 
 class IdeaRepository {
+  static async findByIds(ids: number[]): Promise<Idea[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<IdeaRow>(
+      'SELECT * FROM idea WHERE id IN (?) AND deletedAt IS NULL',
+      [[...new Set(ids)]],
+    );
+    return rows.map(mapIdeaRow);
+  }
+
   static async create(data: CreateIdeaInput, conn?: PoolConnection): Promise<number> {
     const sql = 'INSERT INTO idea (title, description, userId, passportId, catalogId, cardData, catalogMetadata, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     const values = [data.title, data.description, data.userId, data.passportId, data.catalogId ?? null,
@@ -52,7 +61,7 @@ class IdeaRepository {
       if (params?.currentUserId !== undefined) values.push(params.currentUserId);
     }
 
-    if (params?.sort === 'nearby' && params.latitude && params.longitude) {
+    if (params?.sort === 'nearby' && params.latitude !== undefined && params.longitude !== undefined) {
       select.push(`
     (
       SELECT MIN(
@@ -132,11 +141,6 @@ class IdeaRepository {
         break;
     }
 
-    if (withLike) {
-      const rows = await db.query<IdeaRow>(sql, values);
-      return rows.map(mapIdeaRow);
-    }
-
     const rows = await db.query<IdeaRow>(sql, values);
     return rows.map(mapIdeaRow);
   }
@@ -151,7 +155,7 @@ class IdeaRepository {
   }
 
   static async findByTeacherId(passportId: number): Promise<Idea[]> {
-    const rows = await db.query(
+    const rows = await db.query<IdeaRow>(
       `
     SELECT *
     FROM idea

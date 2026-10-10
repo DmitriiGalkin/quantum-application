@@ -2,7 +2,7 @@ import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
-import type { Passport, GetProjectsQuery, Project, ProjectUser, Place, CreateProject, ProjectDto } from 'entities';
+import type { Passport, GetProjectsQuery, ProjectUser, Place, CreateProject, ProjectDto } from 'entities';
 import PlaceRepository from '../repositories/place.repository.js';
 import { FeedService } from './feed.service.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
@@ -10,10 +10,16 @@ import PaymentRepository from '../repositories/payment.repository.js';
 import { MeetService } from './meet.service.js';
 import type { Viewer } from '../router.js';
 import { IdeaService } from './idea.service.js';
+import { ParticipantsService } from './participants.service.js';
+import { HttpError } from '../utils/http-error.js';
+import { db } from '../utils/dbNext.js';
+import { requireId } from '../utils/validation.js';
 
 export class ProjectService {
   static async create(passport: Passport, data: CreateProject) {
-    if (!passport) throw new Error('UNAUTHORIZED');
+    if (!passport) throw new HttpError('UNAUTHORIZED', 401);
+    const placeId = requireId(data.placeId, 'центра');
+    if (!await PlaceRepository.findById(placeId)) throw new HttpError('Центр не найден', 404);
 
     return ProjectRepository.create({
       ...data,
@@ -21,51 +27,65 @@ export class ProjectService {
     });
   }
 
-  static async update(projectId: number, data: Project) {
-    if (!projectId) throw new Error('нет идентификатора проекта');
-
-    return ProjectRepository.update(projectId, data);
+  static async update(projectId: number, data: CreateProject, passportId: number) {
+    const project = await ProjectRepository.findById(projectId);
+    if (!project) throw new HttpError('Проект не найден', 404);
+    if (project.passportId !== passportId) throw new HttpError('Нет доступа к проекту', 403);
+    return ProjectRepository.update(projectId, {
+      title: data.title, description: data.description, image: data.image,
+      placeId: data.placeId, ideaId: data.ideaId,
+    });
   }
 
   static async remove(projectId: number, passport: Passport) {
     const project = await ProjectRepository.findById(projectId);
 
-    if (!project) throw new Error('NOT_FOUND');
+    if (!project) throw new HttpError('NOT_FOUND', 404);
 
     if (project.passportId !== passport.id) {
-      throw new Error('FORBIDDEN');
+      throw new HttpError('FORBIDDEN', 403);
     }
 
-    const meets = await MeetRepository.findByProjectId(projectId);
-    await Promise.all(meets.map(m => MeetRepository.delete(m.id)));
-
-    await ProjectRepository.delete(projectId);
+    await db.transaction(async conn => {
+      await MeetRepository.deleteByProjectId(projectId, conn);
+      await ProjectRepository.delete(projectId, conn);
+    });
   }
 
   static async findAll(params: GetProjectsQuery): Promise<ProjectDto[]> {
     const projects = await ProjectRepository.findAll(params);
-
-    const [ideas, usersArr, passportsArr, placeArr, meetsArr] = await Promise.all([
-      Promise.all(projects.map(p => (p.ideaId ? IdeaService.findById(p.ideaId) : null))),
-      Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
-      Promise.all(projects.map(p => PassportRepository.findById(p.passportId) as Promise<Passport>)),
-      Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<Place>)),
-      Promise.all(projects.map(p => MeetService.findAll({ projectId: p.id }))),
+    const [ideas, users, passports, places, meetRows] = await Promise.all([
+      IdeaService.findByIds(projects.flatMap(project => project.ideaId ? [project.ideaId] : [])),
+      ParticipantsService.forProjects(projects.map(project => project.id)),
+      PassportRepository.findByIds(projects.map(project => project.passportId)),
+      PlaceRepository.findByIds(projects.map(project => project.placeId)),
+      MeetRepository.findByProjectIds(projects.map(project => project.id), true),
     ]);
-
-    return projects.map(({ ideaId, placeId, passportId, ...project }, i) => ({
-      ...project,
-      idea: ideas[i],
-      users: usersArr[i],
-      passport: passportsArr[i],
-      place: placeArr[i],
-      meets: meetsArr[i],
-    }));
+    const meets = await MeetService.hydrateAll(meetRows);
+    const ideaById = new Map(ideas.map(idea => [idea.id, idea]));
+    const passportById = new Map(passports.map(passport => [passport.id, passport]));
+    const placeById = new Map(places.map(place => [place.id, place]));
+    const meetsByProject = new Map<number, typeof meets>();
+    for (const meet of meets) {
+      const group = meetsByProject.get(meet.projectId) ?? [];
+      group.push(meet);
+      meetsByProject.set(meet.projectId, group);
+    }
+    return projects.map(project => {
+      const passport = passportById.get(project.passportId);
+      const place = placeById.get(project.placeId);
+      if (!passport || !place) throw new HttpError('Не найдены связанные данные проекта', 500);
+      return {
+        id: project.id, title: project.title, description: project.description, image: project.image,
+        idea: project.ideaId ? ideaById.get(project.ideaId) ?? null : null,
+        users: users.get(project.id) ?? [], passport, place, meets: meetsByProject.get(project.id) ?? [],
+      };
+    });
   }
 
   static async findById(projectId: number, viewer?: Viewer): Promise<ProjectDto> {
     const project = await ProjectRepository.findById(projectId);
-    if (!project) throw new Error('NOT_FOUND');
+    if (!project) throw new HttpError('NOT_FOUND', 404);
 
     const [passport, users, meets, place, idea, joins] = await Promise.all([
       PassportRepository.findById(project.passportId as number) as Promise<Passport>,
@@ -76,31 +96,20 @@ export class ProjectService {
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
     ]);
 
-    const placesForMeets = await Promise.all(meets.map(m => PlaceRepository.findById(m.placeId) as Promise<Place>));
-    const usersForMeets = await Promise.all(meets.map(m => UserRepository.findByMeetId(m.id)));
-    const passportsForMeets = await Promise.all(meets.map(m => PassportRepository.findById(m.passportId) as Promise<Passport>));
-
-    const meetIds = meets.map(m => m.id);
-
-    const paymentIds = viewer?.userId && meetIds.length ? await PaymentRepository.findPaidMeetIdsByUser(viewer.userId, meetIds) : [];
-
-    const meetExtendeds = meets.map((m, i) => ({
-      ...m,
-      projectTitle: project.title,
-      place: placesForMeets[i],
-      users: usersForMeets[i],
-      isPaid: paymentIds.includes(m.id),
-      passport: passportsForMeets[i],
-      capacity: users.length,
+    const meetIds = meets.map(meet => meet.id);
+    const paidMeetIds = new Set(viewer?.userId && meetIds.length ? await PaymentRepository.findPaidMeetIdsByUser(viewer.userId, meetIds) : []);
+    const meetExtendeds = (await MeetService.hydrateAll(meets)).map(meet => ({
+      ...meet, projectTitle: project.title, isPaid: paidMeetIds.has(meet.id),
     }));
+    const userById = new Map(users.map(user => [user.id, user]));
 
     const feeds = FeedService.merge({
       meets: meetExtendeds,
       comments: [],
-      joins: joins.map((u, i) => ({
-        ...u,
-        user: users[i],
-      })),
+      joins: joins.flatMap(join => {
+        const user = userById.get(join.userId);
+        return user ? [{ ...join, user }] : [];
+      }),
     });
 
     return {
@@ -116,7 +125,7 @@ export class ProjectService {
 
   static async meta(id: number) {
     const project = await ProjectRepository.findById(id);
-    if (!project) throw new Error('NOT_FOUND');
+    if (!project) throw new HttpError('NOT_FOUND', 404);
 
     return {
       title: `Quantum`,

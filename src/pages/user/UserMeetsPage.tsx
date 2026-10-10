@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeets } from '../../requests.ts';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 import Meets from '../../features/meets/Meets.tsx';
 
 export default function UserMeetsPage() {
   const { userId } = useAuth();
   const { data: meets, refetch } = useQuery({
-    queryKey: ['meets', userId],
+    queryKey: ['meets', 'user', userId],
     queryFn: fetchMeets,
   });
 

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import type { ProjectFormValues } from '../ui/ProjectForm.tsx';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchCreateProject } from '../../../requests.ts';
 import { useNavigate } from 'react-router-dom';
 
 export function useCreateProject() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [form, setForm] = useState<ProjectFormValues>({
@@ -15,12 +16,15 @@ export function useCreateProject() {
   });
 
   const createProject = useMutation({
-    mutationFn: (data: ProjectFormValues) =>
-      fetchCreateProject({
-        ...data,
-        placeId: 1,
-      }),
-    onSuccess: projectId => navigate(`/project/${projectId}`),
+    mutationFn: (data: ProjectFormValues) => fetchCreateProject(data),
+    onSuccess: async projectId => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['projects'] }),
+        queryClient.invalidateQueries({ queryKey: ['passport'] }),
+        queryClient.invalidateQueries({ queryKey: ['teacher-dashboard'] }),
+      ]);
+      navigate(`/project/${projectId}`);
+    },
   });
 
   return {

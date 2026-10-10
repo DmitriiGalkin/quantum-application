@@ -1,38 +1,41 @@
-import { Card, CardActionArea, CardContent, Chip, Grid, IconButton, Stack, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchPlaceDashboard, fetchUpdatePlace } from '../../requests.ts';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.tsx';
 import EditIcon from '@mui/icons-material/Edit';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
-import type { PlaceScheduleDayDto } from 'entities';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { DEFAULT_PLACE_SCHEDULE } from '../../features/place/default-schedule.ts';
+import { useAuth } from '../../providers/auth-context.ts';
 import { formatMoney } from '../../utils/time.ts';
-
-export const DEFAULT_PLACE_SCHEDULE: PlaceScheduleDayDto[] = [
-  { weekday: 1, enabled: true, startTime: '09:00', endTime: '21:00' },
-  { weekday: 2, enabled: true, startTime: '09:00', endTime: '21:00' },
-  { weekday: 3, enabled: true, startTime: '09:00', endTime: '21:00' },
-  { weekday: 4, enabled: true, startTime: '09:00', endTime: '21:00' },
-  { weekday: 5, enabled: true, startTime: '09:00', endTime: '21:00' },
-  { weekday: 6, enabled: true, startTime: '10:00', endTime: '18:00' },
-  { weekday: 0, enabled: false, startTime: '09:00', endTime: '21:00' },
-];
 
 export default function PlaceDashboardPage() {
   const { placeId } = useAuth();
   const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
 
   const { data, refetch } = useQuery({
-    queryKey: ['place', placeId],
+    queryKey: ['place-dashboard', placeId],
     queryFn: fetchPlaceDashboard,
   });
-  const [values, setValues] = useState<PlaceFormValues | null>(null);
+  const [draft, setDraft] = useState<{ placeId: number; values: PlaceFormValues } | null>(null);
   const place = data?.place;
+
+  const values: PlaceFormValues | null = !place ? null : draft?.placeId === place.id ? draft.values : {
+    title: place.title || '', description: place.description || '', image: place.image || '',
+    address: place.address, latitude: place.latitude, longitude: place.longitude,
+    schedule: place.schedule ?? DEFAULT_PLACE_SCHEDULE,
+  };
 
   const updatePlace = useMutation({
     mutationFn: () => fetchUpdatePlace(values!),
@@ -47,23 +50,7 @@ export default function PlaceDashboardPage() {
 
 
 
-  useEffect(() => {
-    if (place && !values) {
-      setValues({
-        title: place.title || '',
-        description: place.description || '',
-        image: place.image || '',
-        address: place.address,
-        latitude: place.latitude,
-        longitude: place.longitude,
-
-        schedule: DEFAULT_PLACE_SCHEDULE,
-      });
-    }
-  }, [place, values]);
-
-  if (!place || !values || !data) return null;
-
+  if (!place || !data || !values) return null;
   const stats = data.stats;
 
   return (
@@ -178,7 +165,7 @@ export default function PlaceDashboardPage() {
         <DialogContent>
           <PlaceForm
             values={values}
-            onChange={setValues}
+            onChange={values => setDraft({ placeId: place.id, values })}
             onSubmit={() => updatePlace.mutate()}
             loading={updatePlace.isPending}
             error={updatePlace.isError}

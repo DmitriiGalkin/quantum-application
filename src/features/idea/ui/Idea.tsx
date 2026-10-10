@@ -9,12 +9,13 @@ import { fetchCreateProject, generateImage } from '../../../requests.ts';
 import IconButton from '@mui/material/IconButton';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import Like from './Like.tsx';
-import { Button, CardActions } from '@mui/material';
+import Button from '@mui/material/Button';
+import CardActions from '@mui/material/CardActions';
 import Share from 'components/Share.tsx';
 import { Author } from 'components/Author.tsx';
-import { useAuth } from '../../../providers/AuthProvider.tsx';
+import { useAuth } from '../../../providers/auth-context.ts';
 import { useNavigate } from 'react-router-dom';
-import type { PlaceDto } from 'entities';
+import type { PlaceDto, IdeaDto } from 'entities';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -57,7 +58,7 @@ const mockPlaces: PlaceDto[] = [
 
 const CREATE_PROJECT_TYPE = 'create-project-type';
 
-function Idea({ idea }: { idea: any }) {
+function Idea({ idea }: { idea: IdeaDto }) {
   const queryClient = useQueryClient();
   const { passport, authHandler, role } = useAuth();
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ function Idea({ idea }: { idea: any }) {
   const [isPlaceModalOpen, setPlaceModalOpen] = useState(false);
 
   useRunPostAuthAction(passport, action => {
-    if (action.type === CREATE_PROJECT_TYPE && action.payload.ideaId === idea.id) {
+    if (action.type === CREATE_PROJECT_TYPE && action.payload?.ideaId === idea.id) {
       setPlaceModalOpen(true);
     }
   });
@@ -77,7 +78,9 @@ function Idea({ idea }: { idea: any }) {
   const generateImageMutation = useMutation({
     mutationFn: generateImage,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['idea', idea.id] });
+      void queryClient.invalidateQueries({ queryKey: ['idea'] });
+      void queryClient.invalidateQueries({ queryKey: ['ideas'] });
+      void queryClient.invalidateQueries({ queryKey: ['teacher-ideas'] });
     },
   });
 

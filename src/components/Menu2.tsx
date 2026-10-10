@@ -8,8 +8,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import KeyOffIcon from '@mui/icons-material/KeyOff';
 //import '../../App.css';
-import { useAuth } from '../providers/AuthProvider.tsx';
-import { ListItemAvatar, Tab, Tabs } from '@mui/material';
+import { useAuth } from '../providers/auth-context.ts';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import { type SyntheticEvent, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import type { ActiveRole } from 'entities';
@@ -63,7 +65,7 @@ function Menu2({ setIsMenuOpen }: MenuProps) {
             }}
           />
         )}
-        {true && (
+        {passport?.isTeacher && (
           <Tab
             value="teacher"
             label="Учитель"

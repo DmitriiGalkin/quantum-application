@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserIdeas } from '../../requests.ts';
 import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useState } from 'react';

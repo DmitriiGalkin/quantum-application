@@ -6,7 +6,9 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 import { type MeetDto } from 'entities';
 import WeekCalendar from './WeekCalendar/WeekCalendar.tsx';
 import { groupMeets } from './groupMeets.ts';
@@ -17,7 +19,7 @@ import Box from '@mui/material/Box';
 type Props = {
   title: string;
   meets: MeetDto[];
-  refetch?: any;
+  refetch?: () => void;
 };
 
 function Meets({ title, meets, refetch }: Props) {

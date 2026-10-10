@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchUpdateMeet } from '../../../requests.ts';
 import type { MeetFormValues } from '../MeetForm.tsx';
 import type { MeetDto } from 'entities';
+import { invalidateMeetQueries } from './queries.ts';
 
 export function useEditMeet(meet: MeetDto, onClose: () => void) {
+  const queryClient = useQueryClient();
   const [form, setForm] = useState<MeetFormValues>({
     projectId: meet.projectId,
     date: new Date(meet.startedAt).toISOString().slice(0, 10), // YYYY-MM-DD
@@ -16,10 +18,11 @@ export function useEditMeet(meet: MeetDto, onClose: () => void) {
   const updateMeet = useMutation({
     mutationFn: (form: MeetFormValues) => {
       const { date, time, ...data } = form;
-      return fetchUpdateMeet(meet.id, { ...data, startedAt: `${form.date}T${form.time}:00` });
+      return fetchUpdateMeet(meet.id, { ...data, startedAt: `${date}T${time}:00` });
     },
 
-    onSuccess: () => {
+    onSuccess: async () => {
+      await invalidateMeetQueries(queryClient, meet.projectId);
       onClose();
       // refetch?.();
     },

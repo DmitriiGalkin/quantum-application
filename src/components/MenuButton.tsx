@@ -1,4 +1,7 @@
-import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import type { MouseEvent } from 'react';
 import { useState } from 'react';

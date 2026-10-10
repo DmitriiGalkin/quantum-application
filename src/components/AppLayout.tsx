@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 import { Outlet } from 'react-router-dom';
 import Header from 'components/Header.tsx';
 import { Footer } from 'components/Footer2.tsx';

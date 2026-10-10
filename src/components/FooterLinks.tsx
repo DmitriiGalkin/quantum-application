@@ -1,4 +1,5 @@
-import { Link, Stack } from '@mui/material';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
 
 export function FooterLinks({
   links,

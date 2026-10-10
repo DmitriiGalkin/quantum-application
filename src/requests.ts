@@ -1,5 +1,6 @@
 import {
   type Conversation,
+  type ConversationHistory,
   type CreateIdea,
   type CreateIdeaUser,
   type CreateLocation,
@@ -33,7 +34,7 @@ import {
   type UserDashboardDto,
   type UserDto,
 } from 'entities';
-import { del, get, post, put, toQuery } from './utils/api.ts';
+import { del, get, post, put, patch, toQuery } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 
 export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaDto[]>(`/ideas${toQuery(params)}`);
@@ -67,7 +68,7 @@ export const fetchPlace = (id: number) => get<PlaceDto>(`/place/${id}`);
 export const fetchPlaces = () => get<PlaceDto[]>('/places');
 export const fetchCreatePlace = (params: CreatePlace) => post<number>('/place', params);
 export const fetchUpdatePlace = (params: PlaceFormValues) => put<void>(`/place`, params);
-export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { passportId });
+export const fetchAddTeacher = (passportId: number) => post<void>('/place/teachers', { targetPassportId: passportId });
 export const fetchAddTeacher2 = (params: { passportId: number; placeId: number }) => post<number>(`/place/${params.placeId}/teacher`, params);
 export const fetchCreateLocation = (params: CreateLocation) => post<number>('/place/location', params);
 export const fetchPlaceDashboard = () => get<PlaceDashboardDto>(`/place/dashboard`);
@@ -85,7 +86,7 @@ export const fetchCreateUser = (params: { title: string; description?: string })
 export const fetchPayment = (id: number) => get<PaymentDto>(`/payment/${id}`);
 export const fetchCreatePayment = (params: PaymentCreateDto) => post<PaymentCreateResponseDto>('/payments', params);
 
-export const fetchUser = (id: number) => get<any>(`/user/${id}`);
+export const fetchUser = (id: number) => get<UserDto>(`/users/${id}`);
 export const fetchUserDashboard = () => get<UserDashboardDto>(`/user/dashboard`);
 
 export const fetchTeacher = (id: number) => get<TeacherPublicDto>(`/teachers/${id}`);
@@ -93,10 +94,10 @@ export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/da
 
 // Conversation methods
 export const fetchConversations = () => get<Conversation[]>('/conversation');
-export const fetchStartChat = (passportId: number) => post<StartConversationResponse>('/conversation/start', { passportId });
-export const fetchConversation = (id: number) => get<Conversation>(`/conversation/${id}`);
+export const fetchStartChat = (passportId: number) => post<StartConversationResponse>('/conversation/start', { targetPassportId: passportId });
+export const fetchConversation = (id: number) => get<ConversationHistory>(`/conversation/${id}`);
 
 // Message methods
 export const fetchCreateMessage = (conversationId: number, content: string) => post<Message>(`/conversation/${conversationId}/messages`, { content });
-export const fetchUpdateMessage = (id: number, content: string) => put<void>(`/message2s/${id}`, { content });
+export const fetchUpdateMessage = (id: number, content: string) => patch<void>(`/message2s/${id}`, { content });
 export const fetchDeleteMessage = (id: number) => del<void>(`/message2s/${id}`);

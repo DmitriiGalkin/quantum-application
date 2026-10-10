@@ -1,4 +1,5 @@
-import { Link, Typography } from '@mui/material';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 import type { UserDto } from 'entities';
 
 export const Author = ({ user }: { user: UserDto }) => {

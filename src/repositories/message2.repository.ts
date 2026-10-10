@@ -1,8 +1,12 @@
 ﻿import type { ResultSetHeader } from 'mysql2/promise';
-import type { Message, UpdateMessageRequest } from 'entities';
+import type { Message, Message2Row, UpdateMessageRequest } from 'entities';
 import { db } from '../utils/dbNext.js';
 
 class Message2Repository {
+  static async findById(id: number): Promise<Message2Row | null> {
+    const rows = await db.query<Message2Row>('SELECT * FROM message2 WHERE id = ? AND deletedAt IS NULL', [id]);
+    return rows[0] ?? null;
+  }
   // Create a new message
   static async create(conversationId: number, senderPassportId: number, text: string): Promise<Message> {
     const result = await db.execute<ResultSetHeader>(

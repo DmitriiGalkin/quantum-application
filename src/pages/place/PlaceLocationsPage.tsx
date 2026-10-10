@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { fetchPlaceLocations } from '../../requests.ts';
 import IconButton from '@mui/material/IconButton';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 import LocationCard from '../../features/place/LocationCard.tsx';
 import { CreateLocationDialog } from '../../features/place/CreateLocationDialog.tsx';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';

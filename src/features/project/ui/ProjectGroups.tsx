@@ -1,13 +1,14 @@
 import { type ProjectDto } from 'entities';
 import ProjectGrids from './ProjectGrids';
-import { Grid, Stack } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 import { groupProjectsByIdea } from '../../../utils/helper.ts';
 import IdeaCard from '../../idea/ui/IdeaCard.tsx';
 
 type Props = {
   projects: ProjectDto[];
   withoutIdea?: boolean;
-  refetch?: any;
+  refetch?: () => void;
 };
 
 function ProjectGroups({ projects, refetch, withoutIdea }: Props) {

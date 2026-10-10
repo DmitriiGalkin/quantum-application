@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import '../BaseMap.css';
+import { useEffect, useRef } from 'react';
+import { BaseMap, type MapContext } from '../BaseMap.tsx';
 import type { PlaceDto } from 'entities';
 
 interface Props {
@@ -9,94 +9,45 @@ interface Props {
   places: PlaceDto[];
 }
 
-export function PlaceMap({ lat, lng, zoom, places }: Props) {
-  const [isMapReady, setIsMapReady] = useState(false);
-
-  const mapRef = useRef<HTMLDivElement | null>(null);
-  const mapInstance = useRef<L.Map | null>(null);
-  const markersGroupRef = useRef<L.LayerGroup | null>(null); // Группа для маркеров
-  const leafletRef = useRef<typeof import('leaflet') | null>(null);
-
-  // Эффект №1: Создание карты (один раз)
+function Markers({ mapInstance, leafletRef, isReady, places }: MapContext & { places: PlaceDto[] }) {
+  const group = useRef<L.LayerGroup | null>(null);
   useEffect(() => {
-    async function createMap() {
-      const L = await import('leaflet');
-      leafletRef.current = L;
-
-      const map = L.map(mapRef.current!, {
-        center: [lat, lng],
-        zoom: zoom,
-        scrollWheelZoom: false, // Опционально
-        attributionControl: false,
-      });
-
-      L.control
-        .attribution({
-          prefix: false,
-        })
-        .addTo(map);
-
-      map.attributionControl.addAttribution('© OpenStreetMap');
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-      mapInstance.current = map;
-      markersGroupRef.current = L.layerGroup().addTo(map);
-      setIsMapReady(true);
-    }
-
-    if (!mapInstance.current && mapRef.current) {
-      void createMap(); // Ждем завершения загрузки Leaflet
-    }
-
-    return () => {
-      if (mapInstance.current) {
-        mapInstance.current.remove(); // ✅ Правильный метод уничтожения карты
-      }
-    };
-  }, []);
-
-  // Эффект №2: Обновление данных и камеры
-  useEffect(() => {
-    if (!isMapReady) return;
-    if (!mapInstance.current || !markersGroupRef.current || !leafletRef.current) return;
-
-    const L = leafletRef.current;
-
-    const getPlaceIcon = (count: number) =>
-      L.divIcon({
+    const map = mapInstance.current;
+    const leaflet = leafletRef.current;
+    if (!isReady || !map || !leaflet) return;
+    const markers = leaflet.layerGroup().addTo(map);
+    group.current = markers;
+    for (const place of places) {
+      const count = place.meets?.length ?? 0;
+      const icon = leaflet.divIcon({
         className: 'custom-map-marker',
-        html: `<div class="marker-pin${!count ? ' marker-pin-empty' : ''}"></div><div class="marker-text">${count || ''}</div>`,
+        html: '<div class="marker-pin' + (!count ? ' marker-pin-empty' : '') + '"></div><div class="marker-text">' + (count || '') + '</div>',
         iconSize: [30, 42],
       });
+      const popup = globalThis.document.createElement('div');
+      popup.className = 'place-popup';
+      const title = globalThis.document.createElement('h4');
+      title.textContent = place.title;
+      const address = globalThis.document.createElement('p');
+      address.textContent = 'Адрес: ' + place.address;
+      popup.append(title, address);
+      leaflet
+        .marker([Number(place.latitude), Number(place.longitude)], { icon })
+        .bindPopup(popup)
+        .addTo(markers);
+    }
+    return () => {
+      markers.remove();
+      group.current = null;
+    };
+  }, [places, isReady, mapInstance, leafletRef]);
+  return null;
+}
 
-    // Удаляем старые маркеры
-    markersGroupRef.current.clearLayers();
-
-    // Ставим новые
-    places.forEach(place => {
-      const marker = L.marker([Number(place.latitude), Number(place.longitude)], { icon: getPlaceIcon(place.meets?.length || 0) })
-        .bindPopup(`<div class="place-popup">
-                  <h4><b>${place.title}</b></h4>
-                  <p>Адрес: ${place.address}</p>
-              </div>`);
-
-      marker.addTo(markersGroupRef.current as any);
-    });
-
-    // Перемещаемся плавно
-    mapInstance.current.flyTo([lat, lng], zoom, { animate: true });
-  }, [lat, lng, zoom, places]);
-
+export function PlaceMap({ lat, lng, zoom, places }: Props) {
   return (
-    <div
-      ref={mapRef}
-      style={{
-        width: '100%',
-        height: '75vh',
-        borderRadius: '1rem',
-        overflow: 'hidden',
-      }}
-    />
+    <BaseMap lat={lat} lng={lng} zoom={zoom}>
+      {context => <Markers {...context} places={places} />}
+    </BaseMap>
   );
 }

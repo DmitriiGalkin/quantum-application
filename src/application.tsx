@@ -7,14 +7,14 @@ import 'normalize.css';
 import { AuthProvider } from './providers/AuthProvider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme/theme';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { ru } from 'date-fns/locale';
 
 const queryClient = new QueryClient();
 
 hydrateRoot(
-  document.getElementById('root') as HTMLElement,
+  globalThis.document.getElementById('root') as HTMLElement,
   // <StrictMode>
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
@@ -31,7 +31,7 @@ hydrateRoot(
 );
 
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+  globalThis.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(error => {
       console.error('Service Worker registration failed:', error);
     });

@@ -1,73 +1,32 @@
-import { Strategy as YandexStrategy } from 'passport-yandex'; // Импорт с алиасом
-import Passport from '../repositories/passport.repository.js'; // Обновляем расширение на .js
+import { Strategy as YandexStrategy, type Profile } from 'passport-yandex';
+import PassportRepository from '../repositories/passport.repository.js';
+import type { Passport } from 'entities';
 
-const API_URL = process.env.VITE_API_URL || process.env.BACKEND_SERVER;
-
-/**
- * Основная функция для поиска или создания пользователя.
- * Теперь она async и использует try/catch для обработки ошибок.
- */
-async function findOrCreate(accessToken: string, _refreshToken: string, profile: any, done: any) {
-  try {
-    const email =
-      profile.emails && profile.emails.length
-        ? profile.emails[0].value
-        : `${profile.username}@${profile.provider}.com`;
-
-    const image = profile.photos && profile.photos.length ? profile.photos[0].value : null;
-
-    const existingUser = await Passport.findByEmail(email);
-
-    if (existingUser) {
-      await Passport.updateTokenById(accessToken, existingUser.id);
-      // Возвращаем объект, который будет сериализован в сессию
-      return done(null, { accessToken });
-    }
-
-    const newUserData = {
-      provider: profile.provider,
-      providerId: profile.id,
-      accessToken,
-      title: profile.displayName,
-      email,
-      image,
-    };
-
-    const createdUserId = await Passport.create(newUserData);
-    const newUser = await Passport.findById(createdUserId);
-
-    return done(null, newUser);
-  } catch (err) {
-    console.error('Ошибка в стратегии Passport:', err);
-    return done(err);
+async function findOrCreate(accessToken: string, profile: Profile): Promise<Passport | null> {
+  const email = profile.emails?.[0]?.value ?? (profile.username && profile.provider ? `${profile.username}@${profile.provider}.com` : '');
+  if (!email) throw new Error('Провайдер не вернул адрес пользователя');
+  const existing = await PassportRepository.findByEmail(email);
+  if (existing) {
+    await PassportRepository.updateTokenById(accessToken, existing.id);
+    return { ...existing, accessToken };
   }
+  const id = await PassportRepository.create({
+    provider: profile.provider, providerId: profile.id, accessToken,
+    title: profile.displayName, email, image: profile.photos?.[0]?.value ?? null,
+  });
+  return PassportRepository.findById(id);
 }
 
-/**
- * Функция для создания экземпляра стратегии.
- * Логика остается прежней, так как она синхронная.
- */
-function createStrategy(Strategy: any, provider: any, options = {}) {
-  return new Strategy(
-    {
-      clientID: process.env[`${provider}_STRATEGY_CLIENT_ID`],
-      clientSecret: process.env[`${provider}_STRATEGY_CLIENT_SECRET`],
-      callbackURL: `${API_URL}/oauth2/redirect/${provider.toLowerCase()}`,
-      ...options,
-    },
-    // ВАЖНО: Асинхронные функции в стратегиях Passport требуют особого подхода.
-    // Мы оборачиваем нашу async-функцию в функцию, которая принимает `done`.
-    (accessToken: string, refreshToken: string, profile: any, done: any) => {
-      findOrCreate(accessToken, refreshToken, profile, done).catch(done);
-    },
-  );
-}
-
-// Экспорт по умолчанию с готовыми стратегиями
+const apiUrl = process.env.VITE_API_URL || process.env.BACKEND_SERVER;
 export default {
-  // google: createStrategy(GoogleStrategy, 'GOOGLE', {
-  //   scope: ['profile', 'email'],
-  //   state: false,
-  // }),
-  yandex: createStrategy(YandexStrategy, 'YANDEX'),
+  yandex: new YandexStrategy<Passport | null>({
+    clientID: process.env.YANDEX_STRATEGY_CLIENT_ID ?? '',
+    clientSecret: process.env.YANDEX_STRATEGY_CLIENT_SECRET ?? '',
+    callbackURL: apiUrl + '/oauth2/redirect/yandex',
+  }, (accessToken, _refreshToken, profile, done) => {
+    void findOrCreate(accessToken, profile).then(user => done(null, user)).catch(error => {
+      console.error('Ошибка в стратегии Passport:', error);
+      done(error instanceof Error ? error.message : 'Ошибка авторизации', null);
+    });
+  }),
 };

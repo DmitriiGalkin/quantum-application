@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchCreateMeet } from '../../../requests.ts';
 import type { MeetFormValues } from '../MeetForm.tsx';
+import { invalidateMeetQueries } from './queries.ts';
 
 export function useCreateMeet(projectId: number, refetch: ()=>void) {
+  const queryClient = useQueryClient();
   const [form, setForm] = useState<MeetFormValues>({
     date: '',
     time: '',
@@ -25,7 +27,8 @@ export function useCreateMeet(projectId: number, refetch: ()=>void) {
     setForm,
     onSubmit: () =>
       createMeetMutation.mutate(form, {
-        onSuccess: () => {
+        onSuccess: async () => {
+          await invalidateMeetQueries(queryClient, projectId);
           refetch();
         },
       }),

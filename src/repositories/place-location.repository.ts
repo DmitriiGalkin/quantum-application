@@ -11,8 +11,8 @@ class PlaceLocationRepository {
     return result.insertId;
   }
 
-  static async findLocations(placeId: number): Promise<any[]> {
-    const rows = await db.query(
+  static async findLocations(placeId: number): Promise<{ id: number; title: string; placeId: number; deletedAt: string | null }[]> {
+    const rows = await db.query<{ id: number; title: string; placeId: number; deletedAt: string | null }>(
       `SELECT *
        FROM placeLocation
        WHERE placeLocation.placeId = ?`,

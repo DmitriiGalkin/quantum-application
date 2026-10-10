@@ -1,35 +1,24 @@
-import { type ControllerWithAuth, fail, ok } from './helper.js';
+import { requireId } from '../utils/validation.js';
+import { type ControllerWithAuth, ok } from './helper.js';
 import { MeetUserService } from '../services/meet-user.service.js';
-import type { CreateMeetUser, DeleteMeetUser, MeetUserFull } from 'entities';
+import type { CreateMeetUser, MeetUserFull } from 'entities';
 
 const create: ControllerWithAuth<void, CreateMeetUser> = async (req, res) => {
-  try {
-    await MeetUserService.create(req.passport.id!, req.body);
+  await MeetUserService.create(req.passport.id!, req.body);
 
-    ok(res, { message: 'Участие создано' });
-  } catch (err) {
-    fail(res, err instanceof Error ? err.message : 'Не удалось создать участие');
-  }
+  ok(res, { message: 'Участие создано' });
 };
 
 const remove: ControllerWithAuth<void> = async (req, res) => {
-  try {
-    await MeetUserService.remove(req.passport.id!, req.query as unknown as DeleteMeetUser);
+  await MeetUserService.remove(req.passport.id!, { meetId: requireId(req.query.meetId), userId: requireId(req.query.userId) });
 
-    ok(res, { message: 'Участник удален из встречи' });
-  } catch (err) {
-    fail(res, err instanceof Error ? err.message : 'Не удалось удалить участие');
-  }
+  ok(res, { message: 'Участник удален из встречи' });
 };
 
 const findAll: ControllerWithAuth<MeetUserFull[]> = async (req, res) => {
-  try {
-    const rows = await MeetUserService.findAll(Number(req.query.userId));
+  const rows = await MeetUserService.findAll(Number(req.query.userId));
 
-    ok(res, rows);
-  } catch (err) {
-    fail(res, 'Не удалось получить посещения');
-  }
+  ok(res, rows);
 };
 
 export default {

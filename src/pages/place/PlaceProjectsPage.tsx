@@ -1,7 +1,8 @@
-import { Stack, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaceProjects } from '../../requests.ts';
-import { useAuth } from '../../providers/AuthProvider.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 import Projects from '../../features/project/ui/Projects.tsx';
 import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 

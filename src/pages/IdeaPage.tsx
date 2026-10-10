@@ -1,10 +1,12 @@
+import { getBrowser } from '../shared/lib/browser.ts';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchIdea } from '../requests.ts';
-import { Button, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import { useFilters } from '../features/idea/hooks/useFilters.ts';
 import Idea from '../features/idea/ui/Idea.tsx';
 import Projects from '../features/project/ui/Projects.tsx';
@@ -26,7 +28,7 @@ function IdeaPage() {
 
   useEffect(() => {
     if (idea?.title) {
-      document.title = idea?.title;
+      getBrowser()!.document.title = idea?.title;
     }
   }, [idea?.title]);
 
@@ -51,7 +53,7 @@ function IdeaPage() {
             Попробуйте обновить страницу
           </Typography>
 
-          <Button sx={{ mt: 2 }} variant="contained" onClick={() => window.location.reload()}>
+          <Button sx={{ mt: 2 }} variant="contained" onClick={() => getBrowser()!.location.reload()}>
             Обновить
           </Button>
         </Box>

@@ -1,4 +1,7 @@
-import {Alert, Button, Stack, TextField} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import {PlaceScheduleField} from './PlaceScheduleField.tsx';
 
 import type { PlaceScheduleDayDto } from 'entities';

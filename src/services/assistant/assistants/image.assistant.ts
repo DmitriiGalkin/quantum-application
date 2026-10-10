@@ -1,9 +1,4 @@
-// @ts-ignore
 import { detectImage } from 'gigachat';
-import S3 from '../../../utils/s3.js';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
-// @ts-ignore
-import { v4 as uuid } from 'uuid';
 import assistant from '../../../utils/assistant.js';
 import type { Idea } from 'entities';
 
@@ -18,8 +13,6 @@ function buildProjectImagePrompt(project: Idea) {
 }
 
 export async function generateIdeaImage(project: Idea) {
-  // --- Блок генерации изображения (пример использования GigaChat) ---
-  // Этот блок можно вынести в отдельную функцию или сервис, если он нужен постоянно.
   try {
     const payload = {
       messages: [
@@ -43,25 +36,6 @@ export async function generateIdeaImage(project: Idea) {
     }
   } catch (err) {
     console.error('Ошибка при генерации картинки:', err);
-  }
-}
-
-export async function uploadImage(imageBinary: any) {
-  try {
-    const buffer = Buffer.from(imageBinary, 'binary');
-    const name = uuid() + '.jpg';
-
-    await S3.send(
-      new PutObjectCommand({
-        Bucket: 'quantum-education',
-        Key: name,
-        Body: buffer,
-        ContentType: 'image/jpeg',
-      }),
-    );
-
-    return 'https://storage.yandexcloud.net/quantum-education/' + name
-  } catch (err) {
-    console.error('Ошибка при отправки картинки на S3:', err);
+    throw err;
   }
 }
