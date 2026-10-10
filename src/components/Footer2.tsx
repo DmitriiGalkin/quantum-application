@@ -99,6 +99,9 @@ export function Footer() {
 
           <Typography variant="caption" color="text.secondary">
             © {new Date().getFullYear()} Квантум
+            <Box component="span" sx={{ ml: 1, color: 'grey.500' }} title="Версия коммита">
+              {import.meta.env.VITE_COMMIT_HASH}
+            </Box>
           </Typography>
         </Box>
       </Container>
