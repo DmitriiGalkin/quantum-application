@@ -1,10 +1,10 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-06T14:07:04.993Z
+Дата выгрузки: 2026-10-10T16:53:25.881Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
-Таблицы и представления: 18.
+Таблицы и представления: 19.
 
 ## Объекты
 
@@ -13,6 +13,7 @@
 | conversation | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | conversationPassport | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | idea | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| ideaPhoto | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | ideaUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | meet | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | meetUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
@@ -109,19 +110,23 @@ CREATE TABLE `conversationPassport` (
 | --- | --- | --- | --- | --- | --- | --- |
 | id | int | NO | NULL | PRI | auto_increment |  |
 | userId | int | YES | NULL |  |  |  |
-| passportId | int | NO | NULL |  |  |  |
+| passportId | int | YES | NULL |  |  |  |
 | title | varchar(255) | NO | NULL |  |  |  |
 | description | text | NO | NULL |  |  |  |
 | image | varchar(255) | YES | NULL |  |  |  |
 | deletedAt | timestamp | YES | NULL |  |  |  |
 | userCount | int | NO | 0 |  |  |  |
 | createdAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+| catalogId | varchar(128) | YES | NULL | UNI |  |  |
+| cardData | json | YES | NULL |  |  |  |
+| catalogMetadata | json | YES | NULL |  |  |  |
 
 ### Индексы
 
 | Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
 | --- | --- | --- | --- | --- | --- |
 | PRIMARY | Да | 1 | id | NULL | BTREE |
+| uq_idea_catalogId | Да | 1 | catalogId | NULL | BTREE |
 
 ### DDL
 
@@ -129,15 +134,57 @@ CREATE TABLE `conversationPassport` (
 CREATE TABLE `idea` (
   `id` int NOT NULL AUTO_INCREMENT,
   `userId` int DEFAULT NULL,
-  `passportId` int NOT NULL,
+  `passportId` int DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `deletedAt` timestamp NULL DEFAULT NULL,
   `userCount` int NOT NULL DEFAULT '0',
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+  `catalogId` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `cardData` json DEFAULT NULL,
+  `catalogMetadata` json DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_idea_catalogId` (`catalogId`)
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## ideaPhoto
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | varchar(128) | NO | NULL | PRI |  |  |
+| ideaId | int | NO | NULL | MUL |  |  |
+| position | int unsigned | NO | NULL |  |  |  |
+| photoData | json | NO | NULL |  |  |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| ix_ideaPhoto_ideaId | Нет | 1 | ideaId | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_ideaPhoto_idea | ideaId | idea | id | NO ACTION | CASCADE |
+
+### DDL
+
+```sql
+CREATE TABLE `ideaPhoto` (
+  `id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `ideaId` int NOT NULL,
+  `position` int unsigned NOT NULL,
+  `photoData` json NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_ideaPhoto_ideaId` (`ideaId`),
+  CONSTRAINT `fk_ideaPhoto_idea` FOREIGN KEY (`ideaId`) REFERENCES `idea` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## ideaUser

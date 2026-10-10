@@ -70,7 +70,7 @@ export class IdeaService {
     const imageBinary = await generateIdeaImage(idea);
     const image = await uploadImage(imageBinary);
 
-    await IdeaRepository.update(projectId, { ...idea, image });
+    await IdeaRepository.update(projectId, { image });
 
     return idea;
   }

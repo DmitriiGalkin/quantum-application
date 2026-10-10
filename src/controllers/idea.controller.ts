@@ -39,6 +39,19 @@ const findById: Controller<IdeaDto> = async (req, res) => {
 };
 
 const generateImage: ControllerWithAuth<{ message: string }> = async (req, res) => {
+  if (!req.passport) {
+    res.status(401).json({ error: true, message: 'Необходима авторизация' });
+    return;
+  }
+  const existing = await IdeaService.findById(Number(req.params.id));
+  if (!existing) {
+    res.status(404).json({ error: true, message: 'Идея не найдена' });
+    return;
+  }
+  if (existing.passportId !== null && existing.passportId !== req.passport.id) {
+    res.status(403).json({ error: true, message: 'Изменять идею может только автор' });
+    return;
+  }
   try {
     const idea = await IdeaService.generateIdeaImage(Number(req.params.id));
 

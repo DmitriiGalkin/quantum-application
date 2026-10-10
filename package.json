@@ -20,7 +20,9 @@
     "check": "npm run lint && npm run typecheck && npm run build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "db:migrate:ideas": "node scripts/migrate-idea-catalog.mjs",
+    "db:import:ideas": "tsx scripts/import-idea-catalog.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.312.0",

@@ -8,6 +8,8 @@ export function mapIdeaRow(row: IdeaRow): Idea {
     title: row.title,
     description: row.description,
     image: row.image,
+    catalogId: row.catalogId ?? null,
+    cardData: row.cardData ?? null,
     userCount: row.userCount,
     today: row.today,
     createdAt: row.createdAt,

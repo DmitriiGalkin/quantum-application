@@ -16,6 +16,8 @@ export class DatabaseService {
       user: process.env.DB_USER ?? 'root',
       password: process.env.DB_PASSWORD ?? 'password',
       database: process.env.DB_DATABASE ?? 'my_database',
+      port: Number(process.env.DB_PORT || 3306),
+      connectTimeout: 45000,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
@@ -68,6 +70,10 @@ export class DatabaseService {
   }
 
   // 🔥 Транзакции
+  async close(): Promise<void> {
+    await this.pool.end();
+  }
+
   async transaction<T>(fn: (conn: PoolConnection) => Promise<T>): Promise<T> {
     const connection = await this.pool.getConnection();
 

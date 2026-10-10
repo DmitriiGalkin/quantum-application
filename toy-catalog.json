@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "title": "Фабрика игрушек — каталог изделий",
+  "sourceFolderUrl": "https://drive.google.com/drive/folders/1vsgEvnpL7OpXVtRZHe-3VfRCr1Mn1Upz",
+  "updatedAt": "2026-10-10",
+  "items": [
+    {
+      "id": "toy-001",
+      "name": "Деревянный робот",
+      "nameStatus": "предложено по фото",
+      "category": "Игрушки / фигурки",
+      "status": "купленный образец; возможность самостоятельного изготовления не установлена",
+      "description": "Деревянная фигурка робота с подвижными руками и ногами, глазами синего цвета и петлёй над головой.",
+      "observations": [
+        "Голова и туловище из деревянных деталей со скруглёнными краями.",
+        "Руки и ноги состоят из нескольких деталей.",
+        "Между деталями виден шнур.",
+        "Над головой видна петля со шнуром и узлом.",
+        "На фотографиях показаны общий вид, боковые стороны, спина и положение согнутой ноги."
+      ],
+      "materialsConfirmed": [],
+      "materialsSuggested": [
+        "Бук — предположение пользователя",
+        "Шнур; материал не установлен"
+      ],
+      "tools": null,
+      "dimensions": null,
+      "age": null,
+      "durationMinutes": null,
+      "difficulty": null,
+      "childTasks": null,
+      "adultTasks": null,
+      "manufacturingSteps": null,
+      "questions": [],
+      "photos": [
+        {
+          "id": "toy-001-photo-01",
+          "fileName": "IMG_20261010_125031.jpg",
+          "driveFileId": "1j1Nly9XiLw2X-LbhGV86FA5dW-oGw1jJ",
+          "url": "https://drive.google.com/file/d/1j1Nly9XiLw2X-LbhGV86FA5dW-oGw1jJ/view",
+          "isCover": true
+        },
+        {
+          "id": "toy-001-photo-02",
+          "fileName": "IMG_20261010_125038.jpg",
+          "driveFileId": "1k0jBAgd9KNlvmWRv56GGk5G80zftzoKf",
+          "url": "https://drive.google.com/file/d/1k0jBAgd9KNlvmWRv56GGk5G80zftzoKf/view",
+          "isCover": false
+        },
+        {
+          "id": "toy-001-photo-03",
+          "fileName": "IMG_20261010_125046.jpg",
+          "driveFileId": "1_fz1uRmP1zrrh6rgwiVE2DjH57EYP8zs",
+          "url": "https://drive.google.com/file/d/1_fz1uRmP1zrrh6rgwiVE2DjH57EYP8zs/view",
+          "isCover": false
+        },
+        {
+          "id": "toy-001-photo-04",
+          "fileName": "IMG_20261010_125051.jpg",
+          "driveFileId": "1cN0AMx6qHa26xwMgRhw6JiSt1FRJIxe8",
+          "url": "https://drive.google.com/file/d/1cN0AMx6qHa26xwMgRhw6JiSt1FRJIxe8/view",
+          "isCover": false
+        },
+        {
+          "id": "toy-001-photo-05",
+          "fileName": "IMG_20261010_125104.jpg",
+          "driveFileId": "14fnfd1oLxL4idGwYV8bnS7-gGfZUS6C1",
+          "url": "https://drive.google.com/file/d/14fnfd1oLxL4idGwYV8bnS7-gGfZUS6C1/view",
+          "isCover": false
+        },
+        {
+          "id": "toy-001-photo-06",
+          "fileName": "IMG_20261010_125111.jpg",
+          "driveFileId": "1xR_43aDvaJaCv_q6lyVPU54Vj8IFBNS5",
+          "url": "https://drive.google.com/file/d/1xR_43aDvaJaCv_q6lyVPU54Vj8IFBNS5/view",
+          "isCover": false
+        },
+        {
+          "id": "toy-001-photo-07",
+          "fileName": "IMG_20261010_125111_1.jpg",
+          "driveFileId": "1cJSLkmg0PzWF8ucQHPFtGj5Msg0oOAkz",
+          "url": "https://drive.google.com/file/d/1cJSLkmg0PzWF8ucQHPFtGj5Msg0oOAkz/view",
+          "isCover": false
+        },
+        {
+          "id": "toy-001-photo-08",
+          "fileName": "IMG_20261010_125120.jpg",
+          "driveFileId": "1dQBfw1a3kRab-YgnaucUKNaoTW-JG9Nr",
+          "url": "https://drive.google.com/file/d/1dQBfw1a3kRab-YgnaucUKNaoTW-JG9Nr/view",
+          "isCover": false
+        }
+      ],
+      "origin": "куплен",
+      "canMakeWithChildren": null,
+      "manufacturingNotes": [
+        {
+          "text": "Обработан на фрезерном станке",
+          "source": "со слов пользователя"
+        }
+      ],
+      "notes": "Пользователь мало знает об изделии; подробное заполнение отложено."
+    },
+    {
+      "id": "toy-002",
+      "name": "Гимнаст на перекладине",
+      "nameStatus": "предложено по фото; требует подтверждения",
+      "category": "Игрушки / механические",
+      "status": "сфотографирован готовый экземпляр; происхождение и возможность изготовления с детьми не установлены",
+      "origin": null,
+      "canMakeWithChildren": null,
+      "description": "Деревянная фигурка с подвижными конечностями между двумя стойками из веток; у верхней части видны нити, внизу — поперечина.",
+      "observations": [
+        "Две длинные стойки с частично сохранённой корой.",
+        "Деревянная фигурка с подвижными соединениями.",
+        "Видны нити и металлические крепления."
+      ],
+      "materialsConfirmed": [],
+      "materialsSuggested": [
+        "Дерево и ветки; породы не установлены",
+        "Нити",
+        "Металлические крепления"
+      ],
+      "tools": null,
+      "dimensions": null,
+      "age": null,
+      "durationMinutes": null,
+      "difficulty": null,
+      "childTasks": null,
+      "adultTasks": null,
+      "manufacturingSteps": null,
+      "questions": [
+        "Это гимнаст, который крутится при сжатии стоек?",
+        "Это твоё изделие или образец? Что известно об изготовлении?"
+      ],
+      "photos": [
+        {
+          "id": "toy-002-photo-01",
+          "fileName": "IMG_20260827_161149.jpg",
+          "driveFileId": "1dPm957Jzkt-wbsrmn-Lk0P7yMCMTqjTJ",
+          "url": "https://drive.google.com/file/d/1dPm957Jzkt-wbsrmn-Lk0P7yMCMTqjTJ/view",
+          "isCover": true
+        }
+      ]
+    },
+    {
+      "id": "toy-003",
+      "name": "Деревянный игрушечный нож",
+      "nameStatus": "предложено по фото; требует подтверждения",
+      "category": "Игрушки / предметы для сюжетной игры",
+      "status": "сфотографирован готовый экземпляр; происхождение и возможность изготовления с детьми не установлены",
+      "origin": null,
+      "canMakeWithChildren": null,
+      "description": "Плоское деревянное изделие с рукоятью и широкой частью, по форме напоминающее нож. Снимок размытый; назначение требует подтверждения.",
+      "observations": [
+        "Плоская деревянная форма с узкой рукоятью и более широкой частью.",
+        "Часть изделия находится за границей кадра.",
+        "Фотография размыта."
+      ],
+      "materialsConfirmed": [],
+      "materialsSuggested": [
+        "Дерево; порода не установлена"
+      ],
+      "tools": null,
+      "dimensions": null,
+      "age": null,
+      "durationMinutes": null,
+      "difficulty": null,
+      "childTasks": null,
+      "adultTasks": null,
+      "manufacturingSteps": null,
+      "questions": [
+        "На втором снимке деревянный нож или другое изделие?",
+        "Это твоё изделие или образец? Что известно об изготовлении?"
+      ],
+      "photos": [
+        {
+          "id": "toy-003-photo-01",
+          "fileName": "IMG_20260827_152558.jpg",
+          "driveFileId": "1_ykKfgExqBdod82Rk7aUrtt0-vEchDYU",
+          "url": "https://drive.google.com/file/d/1_ykKfgExqBdod82Rk7aUrtt0-vEchDYU/view",
+          "isCover": true
+        }
+      ]
+    },
+    {
+      "id": "toy-004",
+      "name": "Бильбоке — поймай шарик",
+      "nameStatus": "предложено по фото; требует подтверждения",
+      "category": "Игрушки / ловкость",
+      "status": "сфотографирован готовый экземпляр; происхождение и возможность изготовления с детьми не установлены",
+      "origin": null,
+      "canMakeWithChildren": null,
+      "description": "Деревянная рукоять с чашеобразным верхом и деревянным шаром на шнуре. По виду напоминает игрушку для ловли шарика.",
+      "observations": [
+        "Деревянная рукоять с расширением и углублением наверху.",
+        "Деревянный шар.",
+        "Шнур между шаром и рукоятью."
+      ],
+      "materialsConfirmed": [],
+      "materialsSuggested": [
+        "Дерево; порода не установлена",
+        "Шнур; материал не установлен"
+      ],
+      "tools": null,
+      "dimensions": null,
+      "age": null,
+      "durationMinutes": null,
+      "difficulty": null,
+      "childTasks": null,
+      "adultTasks": null,
+      "manufacturingSteps": null,
+      "questions": [
+        "Это игрушка для ловли шарика в чашу? Как ты её называешь?",
+        "Это твоё изделие или образец? Что известно об изготовлении?"
+      ],
+      "photos": [
+        {
+          "id": "toy-004-photo-01",
+          "fileName": "IMG_20260827_152544.jpg",
+          "driveFileId": "1qlGvfc1VDkSH4uqIAIRGLpLOuL7O1_Vz",
+          "url": "https://drive.google.com/file/d/1qlGvfc1VDkSH4uqIAIRGLpLOuL7O1_Vz/view",
+          "isCover": true
+        }
+      ]
+    }
+  ]
+}

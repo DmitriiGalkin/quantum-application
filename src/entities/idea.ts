@@ -5,10 +5,12 @@ import type { ProjectDto, Sort } from 'entities';
 export interface IdeaRow extends RowDataPacket {
   id: number;
   userId: number;
-  passportId: number;
+  passportId: number | null;
   title: string;
   description: string;
   image: string | null;
+  catalogId?: string | null;
+  cardData?: import('./idea-card.js').IdeaCardModel['cardData'] | null;
   userCount: number;
   createdAt: string;
   deletedAt: string | null;
