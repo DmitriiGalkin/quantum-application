@@ -1,6 +1,6 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-10T21:10:59.756Z
+Дата выгрузки: 2026-10-11T18:07:20.662Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
@@ -181,7 +181,7 @@ CREATE TABLE `idea` (
   `catalogMetadata` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_idea_catalogId` (`catalogId`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## ideaPhoto
@@ -285,7 +285,7 @@ CREATE TABLE `meet` (
   `deletedAt` timestamp NULL DEFAULT NULL,
   `placeId` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## meetUser
@@ -312,7 +312,7 @@ CREATE TABLE `meetUser` (
   `userId` int NOT NULL,
   `meetId` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=425 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## message2
@@ -400,7 +400,7 @@ CREATE TABLE `passport` (
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `accessToken` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## passport_session
@@ -566,7 +566,7 @@ CREATE TABLE `place` (
   `priceFrom` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `place_provider_unique` (`provider`,`providerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=593 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=598 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeLocation
@@ -595,7 +595,7 @@ CREATE TABLE `placeLocation` (
   `deletedAt` timestamp NULL DEFAULT NULL,
   `placeId` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placePassport
@@ -626,7 +626,7 @@ CREATE TABLE `placePassport` (
   `role` enum('admin','teacher') NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeSchedule
@@ -673,7 +673,7 @@ CREATE TABLE `placeSchedule` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_placeSchedule` (`placeId`,`weekday`),
   CONSTRAINT `fk_placeSchedule_place` FOREIGN KEY (`placeId`) REFERENCES `place` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## project
@@ -691,12 +691,20 @@ CREATE TABLE `placeSchedule` (
 | title | varchar(255) | NO | NULL |  |  |  |
 | description | text | NO | NULL |  |  |  |
 | image | varchar(255) | YES | NULL |  |  |  |
+| locationId | int | YES | NULL | MUL |  |  |
 
 ### Индексы
 
 | Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
 | --- | --- | --- | --- | --- | --- |
+| idx_project_location | Нет | 1 | locationId | NULL | BTREE |
 | PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_project_location | locationId | placeLocation | id | NO ACTION | NO ACTION |
 
 ### DDL
 
@@ -711,8 +719,11 @@ CREATE TABLE `project` (
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+  `locationId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_project_location` (`locationId`),
+  CONSTRAINT `fk_project_location` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## projectUser
@@ -741,7 +752,7 @@ CREATE TABLE `projectUser` (
   `userId` int NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=352 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## teacherUser
@@ -810,7 +821,7 @@ CREATE TABLE `user` (
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deletedAt` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## Триггеры

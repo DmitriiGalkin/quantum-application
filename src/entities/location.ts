@@ -1,4 +1,5 @@
 export interface LocationDto {
+  id: number;
   title: string;
 }
 

@@ -8,6 +8,7 @@ export function toProject(row: ProjectRow): Project {
     image: row.image,
     ideaId: row.ideaId,
     placeId: row.placeId,
+    locationId: row.locationId ?? null,
     passportId: row.passportId,
   };
 }

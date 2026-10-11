@@ -89,6 +89,19 @@ vi.mock('./repositories/place.repository.js', () => ({
     findByIds: async (ids: number[]) => (ids.includes(state.place.id) ? [state.place] : []),
   },
 }));
+vi.mock('./repositories/place-location.repository.js', () => ({
+  default: {
+    findLocations: async (placeId: number) => [
+      { id: 5, title: 'Workshop', placeId: 3, deletedAt: null },
+      { id: 7, title: 'Deleted hall', placeId: 3, deletedAt: '2026-10-11' },
+    ].filter(location => location.placeId === placeId),
+    findByIds: async (ids: number[]) => [
+      { id: 5, title: 'Workshop', placeId: 3, deletedAt: null },
+      { id: 6, title: 'Other center hall', placeId: 4, deletedAt: null },
+      { id: 7, title: 'Deleted hall', placeId: 3, deletedAt: '2026-10-11' },
+    ].filter(location => ids.includes(location.id)),
+  },
+}));
 vi.mock('./repositories/place-passport.repository.js', () => ({
   default: {
     findMembership: async (passportId: number, placeId: number) => (passportId === 30 && placeId === 3 ? { id: 1, role: 'admin' } : null),
@@ -194,6 +207,21 @@ function request(path: string, passportId: number, body?: unknown, method = 'POS
 }
 
 describe('project lifecycle through HTTP', () => {
+  it('returns the selected hall and rejects halls from another center or deleted halls', async () => {
+    const body = { placeId: 3, title: 'Workshop', description: 'Making a toy', image: '', locationId: 5 };
+    const response = await request('/project', 20, body);
+    expect(response.status).toBe(200);
+    const id: number = await response.json();
+    const project = await (await request(`/project/${id}`, 20, undefined, 'GET')).json();
+    expect(project.locationId).toBe(5);
+    expect(project.location).toEqual({ id: 5, title: 'Workshop' });
+    for (const locationId of [6, 7, 99, -1]) {
+      expect((await request('/project', 20, { ...body, locationId })).status).toBe(400);
+    }
+    expect(state.projects.size).toBe(1);
+    const locations = await (await fetch(url + '/place/3/locations')).json();
+    expect(locations).toEqual([{ id: 5, title: 'Workshop' }]);
+  });
   it('creates an idea, project and meeting, enrols a child, confirms payment and shows the paid meeting', async () => {
     const ideaResponse = await request('/idea', 10, { title: 'Wooden toy', description: 'Build together' }, 'POST', {
       'X-Role': 'user',

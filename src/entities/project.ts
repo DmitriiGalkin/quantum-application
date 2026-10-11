@@ -5,8 +5,10 @@ import type { PlaceDto } from './place.js';
 import type { UserDto } from './user.js';
 import type { MeetDto } from './meet.js';
 import type { IdeaDto } from './idea.js';
+import type { LocationDto } from './location.js';
 
 export interface ProjectRow extends RowDataPacket {
+  locationId: number | null;
   id: number;
   title: string;
   description: string;
@@ -19,6 +21,7 @@ export interface ProjectRow extends RowDataPacket {
 }
 
 export interface Project {
+  locationId?: number | null;
   id: number;
   title: string;
   description: string | null;
@@ -42,6 +45,7 @@ export interface GetProjectsQuery {
 }
 
 export interface ProjectDto extends Omit<Project, 'passportId' | 'placeId' | 'ideaId'> {
+  location?: LocationDto | null;
   passport: PassportDto;
   place: PlaceDto;
   meets: MeetDto[];
@@ -52,6 +56,7 @@ export interface ProjectDto extends Omit<Project, 'passportId' | 'placeId' | 'id
 }
 
 export type CreateProjectInput = {
+  locationId?: number | null;
   placeId: number;
   title: string;
   description: string;
@@ -61,6 +66,7 @@ export type CreateProjectInput = {
 };
 
 export interface CreateProject {
+  locationId?: number | null;
   title: string;
   description: string;
   image: string;

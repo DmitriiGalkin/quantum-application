@@ -14,15 +14,29 @@ import { ParticipantsService } from './participants.service.js';
 import { HttpError } from '../utils/http-error.js';
 import { db } from '../utils/dbNext.js';
 import { requireId } from '../utils/validation.js';
+import PlaceLocationRepository from '../repositories/place-location.repository.js';
 
 export class ProjectService {
+  private static async validateLocation(placeId: number, value: unknown): Promise<number | null> {
+    if (value == null) return null;
+    const id = requireId(value, 'зала');
+    const [location] = await PlaceLocationRepository.findByIds([id]);
+    if (!location || location.deletedAt || location.placeId !== placeId) {
+      throw new HttpError('Зал не найден в выбранном центре', 400);
+    }
+    return id;
+  }
+
   static async create(passport: Passport, data: CreateProject) {
     if (!passport) throw new HttpError('UNAUTHORIZED', 401);
     const placeId = requireId(data.placeId, 'центра');
     if (!await PlaceRepository.findById(placeId)) throw new HttpError('Центр не найден', 404);
+    const locationId = await this.validateLocation(placeId, data.locationId);
 
     return ProjectRepository.create({
       ...data,
+      placeId,
+      locationId,
       passportId: passport.id,
     });
   }
@@ -31,9 +45,13 @@ export class ProjectService {
     const project = await ProjectRepository.findById(projectId);
     if (!project) throw new HttpError('Проект не найден', 404);
     if (project.passportId !== passportId) throw new HttpError('Нет доступа к проекту', 403);
+    const placeId = requireId(data.placeId, 'центра');
+    if (!await PlaceRepository.findById(placeId)) throw new HttpError('Центр не найден', 404);
+    const locationId = await this.validateLocation(placeId,
+      data.locationId === undefined && placeId === project.placeId ? project.locationId : data.locationId);
     return ProjectRepository.update(projectId, {
       title: data.title, description: data.description, image: data.image,
-      placeId: data.placeId, ideaId: data.ideaId,
+      placeId, locationId, ideaId: data.ideaId,
     });
   }
 
@@ -54,17 +72,19 @@ export class ProjectService {
 
   static async findAll(params: GetProjectsQuery): Promise<ProjectDto[]> {
     const projects = await ProjectRepository.findAll(params);
-    const [ideas, users, passports, places, meetRows] = await Promise.all([
+    const [ideas, users, passports, places, meetRows, locations] = await Promise.all([
       IdeaService.findByIds(projects.flatMap(project => project.ideaId ? [project.ideaId] : [])),
       ParticipantsService.forProjects(projects.map(project => project.id)),
       PassportRepository.findByIds(projects.map(project => project.passportId)),
       PlaceRepository.findByIds(projects.map(project => project.placeId)),
       MeetRepository.findByProjectIds(projects.map(project => project.id), true),
+      PlaceLocationRepository.findByIds(projects.flatMap(project => project.locationId ? [project.locationId] : [])),
     ]);
     const meets = await MeetService.hydrateAll(meetRows);
     const ideaById = new Map(ideas.map(idea => [idea.id, idea]));
     const passportById = new Map(passports.map(passport => [passport.id, passport]));
     const placeById = new Map(places.map(place => [place.id, place]));
+    const locationById = new Map(locations.map(location => [location.id, location]));
     const meetsByProject = new Map<number, typeof meets>();
     for (const meet of meets) {
       const group = meetsByProject.get(meet.projectId) ?? [];
@@ -75,8 +95,11 @@ export class ProjectService {
       const passport = passportById.get(project.passportId);
       const place = placeById.get(project.placeId);
       if (!passport || !place) throw new HttpError('Не найдены связанные данные проекта', 500);
+      const location = project.locationId ? locationById.get(project.locationId) : undefined;
       return {
         id: project.id, title: project.title, description: project.description, image: project.image,
+        locationId: project.locationId ?? null,
+        location: location?.placeId === place.id ? { id: location.id, title: location.title } : null,
         idea: project.ideaId ? ideaById.get(project.ideaId) ?? null : null,
         users: users.get(project.id) ?? [], passport, place, meets: meetsByProject.get(project.id) ?? [],
       };
@@ -87,13 +110,14 @@ export class ProjectService {
     const project = await ProjectRepository.findById(projectId);
     if (!project) throw new HttpError('NOT_FOUND', 404);
 
-    const [passport, users, meets, place, idea, joins] = await Promise.all([
+    const [passport, users, meets, place, idea, joins, locations] = await Promise.all([
       PassportRepository.findById(project.passportId as number) as Promise<Passport>,
       UserRepository.findByProjectId(projectId),
       MeetRepository.findByProjectId(projectId, viewer?.role === 'teacher'),
       PlaceRepository.findById(project.placeId) as Promise<Place>,
       project.ideaId ? IdeaService.findById(project.ideaId) : null,
       ProjectUserRepository.findByProjectId(project.id) as Promise<ProjectUser[]>,
+      PlaceLocationRepository.findByIds(project.locationId ? [project.locationId] : []),
     ]);
 
     const meetIds = meets.map(meet => meet.id);
@@ -118,6 +142,7 @@ export class ProjectService {
       users,
       meets: meetExtendeds,
       place,
+      location: locations[0]?.placeId === project.placeId ? { id: locations[0].id, title: locations[0].title } : null,
       idea,
       feeds,
     };

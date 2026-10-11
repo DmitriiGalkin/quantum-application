@@ -1,5 +1,5 @@
 import { requireId } from '../utils/validation.js';
-import { type ControllerWithAuth, ok } from './helper.js';
+import { type Controller, type ControllerWithAuth, ok } from './helper.js';
 import PlaceLocationService from '../services/placeLocation.service.js';
 import type { CreateLocation, LocationDto } from 'entities';
 
@@ -16,6 +16,11 @@ const findAll: ControllerWithAuth<LocationDto> = async (req, res) => {
   ok(res, data);
 };
 
+const findByPlace: Controller<LocationDto[]> = async (req, res) => {
+  const locations = await PlaceLocationService.findAll(requireId(req.params.id, 'центра'));
+  ok(res, locations.filter(location => !location.deletedAt).map(({ id, title }) => ({ id, title })));
+};
+
 const remove: ControllerWithAuth<number> = async (req, res) => {
   const locationId = requireId(req.params.id);
 
@@ -27,5 +32,6 @@ const remove: ControllerWithAuth<number> = async (req, res) => {
 export default {
   create,
   findAll,
+  findByPlace,
   remove,
 };

@@ -63,6 +63,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
     description: project.description || '',
     image: project.image ?? '',
     placeId: project.place.id,
+    locationId: project.locationId ?? null,
   });
 
   const updateProject = useMutation({
@@ -175,7 +176,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
       {!withoutIdea && <>
         <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}>
           <CardMedia component="img" image={project.image || '/bg.jpeg'} alt={project.title || 'Проект'}
-            sx={{ height: { xs: 280, sm: 320 }, objectFit: 'contain', display: 'block', bgcolor: 'background.default', p: 1, boxSizing: 'border-box' }} />
+            sx={{ height: { xs: 280, sm: 320 }, objectFit: 'cover', display: 'block', bgcolor: 'background.default', boxSizing: 'border-box' }} />
           <CardContent>
             <Typography component="h2" variant="h6" sx={{ fontWeight: 600 }}>{project.title}</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
@@ -197,7 +198,10 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
         <Stack direction="row" spacing={1} sx={{ px: 2, pb: 2, alignItems: 'flex-start' }}>
           <PlaceIcon fontSize="small" color="action" />
           <Box sx={{ minWidth: 0 }}>
-            <Typography variant="body2" sx={{ fontWeight: 600 }}>{project.place.title}</Typography>
+            <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>
+              {project.place.title}
+              {project.location?.title?.trim() && <Box component="span" sx={{ color: 'text.secondary', fontWeight: 400 }}>{' · '}{project.location.title}</Box>}
+            </Typography>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', overflowWrap: 'anywhere' }}>{project.place.address}</Typography>
           </Box>
         </Stack>

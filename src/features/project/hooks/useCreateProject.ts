@@ -13,6 +13,7 @@ export function useCreateProject() {
     description: '',
     image: '',
     placeId: 0,
+    locationId: null,
   });
 
   const createProject = useMutation({

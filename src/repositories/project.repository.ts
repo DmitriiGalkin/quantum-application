@@ -27,16 +27,16 @@ class ProjectRepository {
   // ✅ CREATE
   static async create(data: CreateProjectInput, conn?: PoolConnection): Promise<number> {
     const result = await (conn ?? db).execute<ResultSetHeader>(
-      `INSERT INTO project (ideaId, passportId, placeId, title, description, image)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [data.ideaId || null, data.passportId, data.placeId, data.title, data.description, data.image],
+      `INSERT INTO project (ideaId, passportId, placeId, title, description, image, locationId)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [data.ideaId || null, data.passportId, data.placeId, data.title, data.description, data.image, data.locationId ?? null],
     );
 
     return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
   static async update(id: number, data: Partial<CreateProjectInput>, conn?: PoolConnection): Promise<boolean> {
-    const keys = ['title', 'description', 'image', 'placeId', 'ideaId'] as const;
+    const keys = ['title', 'description', 'image', 'placeId', 'ideaId', 'locationId'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;

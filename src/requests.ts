@@ -83,6 +83,7 @@ export const fetchPlaceProjects = () => get<ProjectDto[]>(`/place/projects`);
 export const fetchPlaceMeets = () => get<MeetDto[]>(`/place/meets`);
 export const fetchPlaceUsers = () => get<UserDto[]>(`/place/users`);
 export const fetchPlaceLocations = () => get<LocationDto[]>(`/place/locations`);
+export const fetchLocationsByPlace = (placeId: number) => get<LocationDto[]>(`/place/${placeId}/locations`);
 export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<void>(`/place/${placeId}/teacher/${passportId}`);
 export const fetchLeavePlace = (id: number) => del<void>(`/place/${id}/leave`);
 

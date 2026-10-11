@@ -13,12 +13,12 @@ import { fetchCreateProjectUser } from '../../../requests.ts';
 import ProjectCard from './ProjectCard.tsx';
 
 function Location() { return <output>{useLocation().pathname}</output>; }
-it('hydrates a card with separate picture, master and center; join does not navigate, picture does', async () => {
+it.each([null, { id: 5, title: 'мастерская' }])('hydrates a card with hall %j; join does not navigate, picture does', async location => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   const project: ProjectDto = { id: 100, title: 'Robot workshop', description: 'A detailed workshop description', image: '/catalog/toy-001-generated-cover-v1.png',
     passport: { id: 42, title: 'Master', description: null },
     place: { id: 575, title: 'Center', address: 'Address', description: null, latitude: 55.75, longitude: 37.62, priceFrom: null },
-    meets: [], users: [], idea: { id: 54, title: 'Robot', user: null, today: false, image: null, photos: [] } };
+    location, meets: [], users: [], idea: { id: 54, title: 'Robot', user: null, today: false, image: null, photos: [] } };
   const queryClient = new QueryClient();
   const render = () => <QueryClientProvider client={queryClient}><MemoryRouter><ProjectCard project={project} /><Location /></MemoryRouter></QueryClientProvider>;
   const host = globalThis.document.createElement('div'); globalThis.document.body.append(host);
@@ -32,6 +32,8 @@ it('hydrates a card with separate picture, master and center; join does not navi
     expect(pictureAction.querySelector('img')).not.toBeNull();
     expect(pictureAction.querySelector('a')).toBeNull();
     expect(host.textContent).toContain('Master'); expect(host.textContent).toContain('Center'); expect(host.textContent).toContain('Address');
+    if (location) expect(host.textContent).toContain(`Center · ${location.title}`);
+    else expect(host.textContent).not.toContain('Center ·');
     const join = [...host.querySelectorAll('button')].find(button => button.textContent === 'Вступить')!;
     await act(async () => { join.click(); });
     expect(fetchCreateProjectUser).toHaveBeenCalledWith({ userId: 7, projectId: 100 }, expect.anything());

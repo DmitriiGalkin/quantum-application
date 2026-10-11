@@ -160,6 +160,7 @@ privateRouter.post('/place', withAuth(place.create));
 privateRouter.post('/place/location', withAuth(placeLocation.create));
 privateRouter.put('/place', withAuth(place.update));
 publicRouter.get('/place/:id', place.findById);
+publicRouter.get('/place/:id/locations', placeLocation.findByPlace);
 
 privateRouter.post('/place/:id/teacher', withAuth(placeTeacherController.create));
 privateRouter.post('/place/teachers', withAuth(placeTeacherController.addTeacher));

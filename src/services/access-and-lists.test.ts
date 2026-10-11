@@ -6,6 +6,7 @@ vi.mock('../repositories/project.repository.js', () => ({ default: { findAll: vi
 vi.mock('../repositories/meet.repository.js', () => ({ default: { findAll: vi.fn(), findById: vi.fn(), findByProjectIds: vi.fn(), findByProjectId: vi.fn(), update: vi.fn(), updateStatus: vi.fn() } }));
 vi.mock('../repositories/passport.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn() } }));
 vi.mock('../repositories/place.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn(), findByPassportId: vi.fn() } }));
+vi.mock('../repositories/place-location.repository.js', () => ({ default: { findByIds: vi.fn() } }));
 vi.mock('../repositories/idea.repository.js', () => ({ default: { findByTeacherId: vi.fn() } }));
 vi.mock('../repositories/user.repository.js', () => ({ default: { findByIds: vi.fn(), findByProjectId: vi.fn() } }));
 vi.mock('../repositories/project-user.repository.js', () => ({ default: { findByProjectIds: vi.fn(), findByProjectId: vi.fn() } }));
@@ -20,6 +21,7 @@ import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
+import PlaceLocationRepository from '../repositories/place-location.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import MeetUserRepository from '../repositories/meet-user.repository.js';
@@ -39,6 +41,8 @@ beforeEach(() => {
   vi.resetAllMocks();
   vi.mocked(PassportRepository.findByIds).mockResolvedValue([passport]);
   vi.mocked(PlaceRepository.findByIds).mockResolvedValue([place]);
+  vi.mocked(PlaceRepository.findById).mockResolvedValue(place);
+  vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([]);
   vi.mocked(UserRepository.findByIds).mockResolvedValue(users);
   vi.mocked(ProjectUserRepository.findByProjectIds).mockResolvedValue(joins);
   vi.mocked(MeetUserRepository.findByMeetIds).mockResolvedValue([]);
@@ -76,7 +80,28 @@ describe('ownership checks', () => {
   it('ignores service fields supplied with a project update', async () => {
     vi.mocked(ProjectRepository.findById).mockResolvedValue(project);
     await ProjectService.update(1, { title: 'Changed', description: '', image: '', placeId: 3, passportId: 99 } as Parameters<typeof ProjectService.update>[1], 10);
-    expect(ProjectRepository.update).toHaveBeenCalledWith(1, { title: 'Changed', description: '', image: '', placeId: 3, ideaId: undefined });
+    expect(ProjectRepository.update).toHaveBeenCalledWith(1, { title: 'Changed', description: '', image: '', placeId: 3, locationId: null, ideaId: undefined });
+  });
+
+  it('preserves a selected hall on an older client update and supports clearing it', async () => {
+    vi.mocked(ProjectRepository.findById).mockResolvedValue({ ...project, locationId: 5 });
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null }]);
+    const data = { title: 'Changed', description: '', image: '', placeId: 3 };
+    await ProjectService.update(1, data, 10);
+    expect(ProjectRepository.update).toHaveBeenLastCalledWith(1, expect.objectContaining({ locationId: 5 }));
+    await ProjectService.update(1, { ...data, locationId: null }, 10);
+    expect(ProjectRepository.update).toHaveBeenLastCalledWith(1, expect.objectContaining({ locationId: null }));
+  });
+
+  it('clears the hall when changing centers and rejects assigning a hall from another center', async () => {
+    vi.mocked(ProjectRepository.findById).mockResolvedValue({ ...project, locationId: 5 });
+    vi.mocked(PlaceRepository.findById).mockResolvedValue({ ...place, id: 4 });
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null }]);
+    const data = { title: 'Changed', description: '', image: '', placeId: 4 };
+    await ProjectService.update(1, data, 10);
+    expect(ProjectRepository.update).toHaveBeenCalledExactlyOnceWith(1, expect.objectContaining({ placeId: 4, locationId: null }));
+    await expect(ProjectService.update(1, { ...data, locationId: 5 }, 10)).rejects.toMatchObject({ status: 400 });
+    expect(ProjectRepository.update).toHaveBeenCalledTimes(1);
   });
 });
 
