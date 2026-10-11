@@ -26,7 +26,7 @@ function IdeaCard({ idea }: IdeaCardProps) {
       }}
     >
       <CardActionArea onClick={() => navigate(`/idea/${idea.id}`)}>
-        <CardMedia component="img" height="120" image={idea.image || `/bg.jpeg`} sx={{ objectFit: 'cover' }} />
+        <CardMedia component="img" alt={idea.title} image={idea.image || `/bg.jpeg`} sx={{ height: { xs: 240, sm: 280 }, objectFit: 'cover' }} />
 
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom noWrap>

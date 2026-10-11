@@ -110,6 +110,7 @@ export class IdeaService {
     const photos: IdeaPhoto[] = [];
     for (const photo of idea.photos) {
       if (FileService.isStorageUrl(photo.url)) { photos.push(photo); continue; }
+      if (typeof photo.driveFileId !== 'string') throw new IdeaError('Catalog photo has no Drive ID', 400);
       const buffer = await readPhoto(photo);
       const key = `ideas/${encodeURIComponent(catalogId)}/${encodeURIComponent(photo.id)}-${encodeURIComponent(photo.driveFileId)}.jpg`;
       const url = await FileService.uploadBuffer(buffer, photo.fileName, 'image/jpeg', key);

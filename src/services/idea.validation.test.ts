@@ -1,8 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { validateCatalogItem, validateIdeaCatalog } from './idea.validation.js';
+import { validateCatalogItem, validateIdeaCatalog, validateIdea } from './idea.validation.js';
 
 const source: unknown = JSON.parse(readFileSync('toy-catalog.json', 'utf8'));
+
+describe('user photo validation', () => {
+  const photo = { id: 'local-photo', fileName: 'robot.png', url: 'https://example.com/robot.png', isCover: true };
+  it('accepts local photos without Drive metadata while retaining strict catalog validation', () => {
+    expect(validateIdea({ title: 'Robot', description: '', photos: [photo] }).photos).toEqual([photo]);
+    expect(() => validateCatalogItem({ id: 'robot', name: 'Robot', description: '', photos: [photo] })).toThrow('driveFileId');
+  });
+  it('requires one cover for a nonempty user gallery, permits clearing and rejects duplicate IDs', () => {
+    expect(() => validateIdea({ title: 'Robot', description: '', photos: [{ ...photo, isCover: false }] })).toThrow('cover');
+    expect(validateIdea({ title: 'Robot', description: '', photos: [] }).photos).toEqual([]);
+    expect(() => validateIdea({ title: 'Robot', description: '', photos: [photo, { ...photo, isCover: false }] })).toThrow('Duplicate');
+  });
+});
 
 describe('idea catalog validation', () => {
   it('preserves every source field, explicit null and assumption', () => {

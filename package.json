@@ -25,6 +25,8 @@
     "db:migrate:payments": "node scripts/migrate-payment-provider.mjs",
     "db:import:ideas": "tsx scripts/import-idea-catalog.ts",
     "db:upload:idea-photos": "tsx scripts/upload-idea-photos.ts",
+    "db:update:robot-description": "node scripts/update-robot-description.mjs",
+    "test:idea-photos:db": "npm run build:backend && node scripts/test-idea-photos.mjs",
     "db:migrate:demo": "node scripts/migrate-demo-seed.mjs",
     "db:upload:demo-images": "tsx scripts/upload-demo-images.ts",
     "db:seed:demo": "tsx scripts/seed-demo.ts",

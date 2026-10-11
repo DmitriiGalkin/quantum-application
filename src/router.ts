@@ -1,6 +1,6 @@
 import express, { type NextFunction, type Request, type RequestHandler, type Response } from 'express';
 import passport from 'passport';
-import multer from 'multer';
+import { imageUpload } from './middlewares/image-upload.middleware.js';
 
 import user from './controllers/user.controller.js';
 import passportController from './controllers/passport.controller.js';
@@ -27,8 +27,6 @@ import conversationController from './controllers/conversation.controller.js';
 import message2Controller from './controllers/message2.controller.js';
 import type { ActiveRole, Passport } from 'entities';
 import { ParticipantsService } from './services/participants.service.js';
-
-const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
 const privateRouter = express.Router();
@@ -183,7 +181,7 @@ privateRouter.get('/passport/projects', withAuth(project.findByPassportId));
 privateRouter.get('/passport', withAuth(passportController.all));
 privateRouter.put('/passport', withAuth(passportController.update));
 
-privateRouter.post('/image', upload.single('image'), withAuth(image.upload));
+privateRouter.post('/image', imageUpload, withAuth(image.upload));
 
 privateRouter.post('/payments', withAuth(paymentController.create));
 privateRouter.get('/payment/:id', withAuth(paymentController.findById));

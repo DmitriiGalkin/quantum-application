@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import IdeaGallery from './IdeaGallery.tsx';
+import EditIdeaDialog from './EditIdeaDialog.tsx';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -64,6 +65,7 @@ function Idea({ idea }: { idea: IdeaDto }) {
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const [isPlaceModalOpen, setPlaceModalOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   useRunPostAuthAction(passport, action => {
     if (action.type === CREATE_PROJECT_TYPE && action.payload?.ideaId === idea.id) {
@@ -113,24 +115,12 @@ function Idea({ idea }: { idea: IdeaDto }) {
   return (
     <Card sx={{ mb: 3, borderRadius: 3 }}>
       <Box sx={{ position: 'relative', width: '100%' }}>
-        <CardMedia
-          component="img"
-          height="360"
-          image={idea.image || `/bg.jpeg`}
-          alt={idea.title || 'Проект'}
-          sx={{
-            objectFit: 'cover',
-            height: {
-              xs: 220,
-              sm: 360,
-            },
-          }}
-        />
+        <IdeaGallery key={idea.id} idea={idea} />
         {/* Блок с кнопкой генерации */}
         <Box
           sx={{
             position: 'absolute',
-            bottom: 28,
+            top: 8,
             right: 8,
             backgroundColor: 'rgba(255, 255, 255, 0.8)',
             '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
@@ -169,6 +159,7 @@ function Idea({ idea }: { idea: IdeaDto }) {
               mt: { xs: 1.5, sm: 2 },
               fontSize: { xs: '0.9rem', sm: '1rem' },
               color: 'text.secondary',
+              whiteSpace: 'pre-line',
             }}
           >
             {idea.description}
@@ -177,6 +168,10 @@ function Idea({ idea }: { idea: IdeaDto }) {
           {idea.user && <Author user={idea.user} />}
         </Stack>
       </CardContent>
+      {passport && (idea.passportId === null || idea.passportId === passport.id) && (
+        <CardActions sx={{ p: 2 }}><Button onClick={() => setEditing(true)}>Редактировать идею</Button></CardActions>
+      )}
+      {editing && <EditIdeaDialog idea={idea} onClose={() => setEditing(false)} />}
 
       {role === 'teacher' && (
         <>

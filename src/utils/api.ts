@@ -54,6 +54,7 @@ const get = <T>(url: string) => api<T>(url);
 const post = json('POST');
 const put = json('PUT');
 const patch = json('PATCH');
+const postMultipart = <T>(url: string, body: FormData) => api<T>(url, { method: 'POST', body });
 async function del<T>(url: string): Promise<T> {
   return api<T>(url, {
     method: 'DELETE',
@@ -74,4 +75,4 @@ function toQuery<T extends object>(params?: T) {
   return search.size ? '?' + search.toString() : '';
 }
 
-export { get, post, put, patch, del, toQuery };
+export { get, post, put, patch, del, toQuery, postMultipart };

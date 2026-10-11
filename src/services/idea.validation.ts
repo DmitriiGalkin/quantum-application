@@ -20,7 +20,7 @@ function id(value: unknown): void {
   if (typeof value !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(value)) invalid('Invalid stable ID');
 }
 
-export function validateCatalogItem(value: unknown): IdeaCatalog['items'][number] {
+export function validateCatalogItem(value: unknown, requireDriveId = true): IdeaCatalog['items'][number] {
   if (!object(value) || !json(value)) invalid('Expected a JSON object');
   id(value.id);
   if (typeof value.name !== 'string' || !value.name.trim() || value.name.length > 255) invalid('Invalid name');
@@ -32,7 +32,7 @@ export function validateCatalogItem(value: unknown): IdeaCatalog['items'][number
   for (const photo of value.photos) {
     if (!object(photo)) invalid('Invalid photo');
     id(photo.id);
-    for (const field of ['fileName', 'driveFileId', 'url']) {
+    for (const field of requireDriveId ? ['fileName', 'driveFileId', 'url'] : ['fileName', 'url']) {
       if (typeof photo[field] !== 'string' || !photo[field]) invalid(`Invalid photo ${field}`);
     }
     let url: URL;
@@ -73,6 +73,9 @@ export function validateIdea(value: unknown): CreateIdea {
   if (value.cardData !== undefined && value.cardData !== null && !object(value.cardData)) invalid('cardData must be an object or null');
   const fields = new Set(['title', 'description', 'catalogId', 'cardData', 'photos']);
   if (Object.keys(value).some(key => !fields.has(key))) invalid('Put catalog details in cardData; system fields are read-only');
-  validateCatalogItem({ id: value.catalogId ?? 'validation', name: value.title, description: value.description, photos: value.photos ?? [] });
+  validateCatalogItem({ id: value.catalogId ?? 'validation', name: value.title, description: value.description, photos: value.photos ?? [] }, false);
+  if (Array.isArray(value.photos) && value.photos.length && !value.photos.some(photo => object(photo) && photo.isCover)) {
+    invalid('Choose a cover photo');
+  }
   return value as unknown as CreateIdea;
 }

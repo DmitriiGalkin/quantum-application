@@ -84,7 +84,7 @@ export type JsonValue = null | boolean | number | string | JsonValue[] | { [key:
 export interface IdeaPhoto extends Record<string, JsonValue> {
   id: string;
   fileName: string;
-  driveFileId: string;
+  // driveFileId is retained as catalog metadata; local uploads do not have one.
   url: string;
   isCover: boolean;
 }

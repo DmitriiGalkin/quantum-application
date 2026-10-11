@@ -23,6 +23,18 @@ vi.mock('./assistant/assistants/image.assistant.js', () => ({ generateIdeaImage:
 beforeEach(() => { vi.restoreAllMocks(); vi.clearAllMocks(); });
 
 describe('idea card ownership and identity', () => {
+  it('saves local photos in order with the selected cover and clears it when the gallery is emptied', async () => {
+    const photos = [
+      { id: 'local-1', fileName: 'one.jpg', url: 'https://example.com/one.jpg', isCover: false },
+      { id: 'local-2', fileName: 'two.png', url: 'https://example.com/two.png', isCover: true },
+    ];
+    vi.mocked(IdeaRepository.findById).mockResolvedValue({ ...idea, passportId: 20 });
+    await IdeaService.update(passport, 1, { title: 'Test', description: '', photos });
+    expect(IdeaPhotoRepository.replace).toHaveBeenLastCalledWith(1, photos, expect.anything());
+    expect(IdeaRepository.update).toHaveBeenLastCalledWith(1, expect.objectContaining({ image: photos[1].url }), expect.anything());
+    await IdeaService.update(passport, 1, { title: 'Test', description: '', photos: [] });
+    expect(IdeaRepository.update).toHaveBeenLastCalledWith(1, expect.objectContaining({ image: null }), expect.anything());
+  });
   it('reads catalog details and photos through the existing Idea entity', async () => {
     const data = { ...idea, userId: 0, cardData: { origin: null, notes: 'Предположение' } };
     const photo = { id: 'photo-test', fileName: 'test.jpg', driveFileId: 'drive-test', url: 'https://example.com/test.jpg', isCover: true };

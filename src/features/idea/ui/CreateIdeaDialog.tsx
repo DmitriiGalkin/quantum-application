@@ -10,14 +10,14 @@ interface Props {
 }
 
 export function CreateIdeaDialog({ open, onClose }: Props) {
-    const { form, setForm, onSubmit, loading } = useCreateIdea();
+    const { form, setForm, onSubmit, loading, error } = useCreateIdea();
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+    <Dialog open={open} onClose={loading ? undefined : onClose} fullWidth maxWidth="md">
       <DialogTitle>Создать идею</DialogTitle>
 
       <DialogContent sx={{ pt: 2 }}>
-        <IdeaForm values={form} onChange={setForm} onSubmit={onSubmit} loading={loading} submitLabel="Создать идею" />
+        <IdeaForm values={form} onChange={setForm} onSubmit={onSubmit} loading={loading} error={error} submitLabel="Создать идею" />
       </DialogContent>
     </Dialog>
   );

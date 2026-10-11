@@ -6,7 +6,7 @@ const upload: ControllerWithAuth<{ url: string }> = async (req, res) => {
     res.status(401).json({ error: true, message: 'Необходима авторизация' });
     return;
   }
-  const url = await FileService.upload(req);
+  const url = await FileService.uploadImage(req.file);
 
   ok(res, { url });
 };
