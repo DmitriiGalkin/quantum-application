@@ -2,8 +2,8 @@
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { format, isToday } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import { moscowDay, moscowFormat } from '../moscow-time.ts';
+
 
 interface Props {
   days: number[];
@@ -39,7 +39,7 @@ export default function WeekCalendarHeader({ days }: Props) {
             textAlign: 'center',
             borderRight: 1,
             borderColor: 'divider',
-            bgcolor: isToday(day) ? 'primary.50' : 'inherit',
+            bgcolor: moscowDay(new Date()) === day ? 'primary.50' : 'inherit',
           }}
         >
           <Typography
@@ -49,19 +49,15 @@ export default function WeekCalendarHeader({ days }: Props) {
               textTransform: 'capitalize',
             }}
           >
-            {format(day, 'EEEE', {
-              locale: ru,
-            })}
+            {moscowFormat(day, { weekday: 'long' })}
           </Typography>
 
           <Typography variant="h6">
-            {format(day, 'd')}
+            {moscowFormat(day, { day: 'numeric' })}
           </Typography>
 
           <Typography variant="caption" color="text.secondary">
-            {format(day, 'MMMM', {
-              locale: ru,
-            })}
+            {moscowFormat(day, { month: 'long' })}
           </Typography>
         </Box>
       ))}

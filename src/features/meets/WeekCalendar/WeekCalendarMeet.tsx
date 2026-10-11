@@ -3,7 +3,9 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { format } from 'date-fns';
+import { moscowFormat } from '../moscow-time.ts';
+import { useAuth } from '../../../providers/auth-context.ts';
+import IconButton from '@mui/material/IconButton';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDraggable } from '@dnd-kit/core';
@@ -26,6 +28,7 @@ interface Props {
 
 export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) {
   const started = new Date(meet.startedAt);
+  const { role } = useAuth();
   const queryClient = useQueryClient();
   
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -83,12 +86,12 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
             lineHeight: 1.2,
           }}
         >
-          {format(started, 'HH:mm')} – {'HH:mm'}
-        </Typography>{' '}
-        <Stack direction="row" spacing={0.5} sx={{ justifyContent: 'flex-end' }}>
-          <CheckIcon color="success" fontSize="small" sx={{ cursor: 'pointer' }} onClick={() => updateStatus.mutate('published')} />
-          <CloseIcon color="error" fontSize="small" sx={{ cursor: 'pointer' }} onClick={() => updateStatus.mutate('cancelled')} />
-        </Stack>{' '}
+          {moscowFormat(started, { hour: '2-digit', minute: '2-digit' })} — {moscowFormat(started.getTime() + (meet.duration ?? 60) * 60000, { hour: '2-digit', minute: '2-digit' })}
+        </Typography>
+        {role === 'place' && meet.status === 'pending' && <Stack direction="row">
+          <IconButton size="small" aria-label="Подтвердить" disabled={updateStatus.isPending} onPointerDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('published'); }}><CheckIcon color="success" fontSize="small" /></IconButton>
+          <IconButton size="small" aria-label="Отменить" disabled={updateStatus.isPending} onPointerDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('cancelled'); }}><CloseIcon color="error" fontSize="small" /></IconButton>
+        </Stack>}
       </Stack>
 
       <Typography
@@ -105,6 +108,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
         Приятная встреча
       </Typography>
 
+      {meet.status === 'pending' && <Typography variant="caption">Ожидает подтверждения центра</Typography>}
       {height > 70 && (
         <>
           <Typography

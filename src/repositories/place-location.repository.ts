@@ -1,4 +1,4 @@
-import type { PoolConnection, RowDataPacket } from 'mysql2/promise';
+import type { PoolConnection, RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 import { db } from '../utils/dbNext.js';
 
 class PlaceLocationRepository {
@@ -7,14 +7,14 @@ class PlaceLocationRepository {
     return rows;
   }
 
-  static async create(data: { placeId: number; title: string }): Promise<number> {
-    const result = await db.execute(
+  static async create(data: { placeId: number; title: string }, conn?: PoolConnection): Promise<number> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO placeLocation (placeId, title)
        VALUES (?, ?)`,
       [data.placeId, data.title],
     );
 
-    return result.insertId;
+    return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
   static async findLocations(placeId: number): Promise<{ id: number; title: string; placeId: number; deletedAt: string | null }[]> {

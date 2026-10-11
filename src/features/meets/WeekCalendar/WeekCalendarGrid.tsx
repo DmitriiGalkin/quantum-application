@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { isSameDay } from 'date-fns';
+import { moscowDay } from '../moscow-time.ts';
 
 import WeekCalendarMeet from './WeekCalendarMeet.tsx';
 import type { MeetDto } from 'entities';
@@ -69,9 +69,9 @@ export default function WeekCalendarGrid({ days, meets, startHour, endHour, onMe
         >
           {/* сетка */}
           {hours.map(hour => {
-            const date = new Date(day);
+            const date = new Date(day + hour * 3600000);
 
-            date.setHours(hour, 0, 0, 0);
+
 
             return (
               <Box
@@ -93,13 +93,13 @@ export default function WeekCalendarGrid({ days, meets, startHour, endHour, onMe
 
           {/* встречи */}
           {meets
-            .filter(meet => isSameDay(new Date(meet.startedAt), day))
+            .filter(meet => moscowDay(meet.startedAt) === day)
             .map(meet => {
               const started = new Date(meet.startedAt);
 
-              const top = ((started.getHours() - startHour) * 60 + started.getMinutes()) * (HOUR_HEIGHT / 60);
+              const top = ((started.getTime() - day) / 60000 - startHour * 60) * (HOUR_HEIGHT / 60);
 
-              const height = Number(meet.duration) * (HOUR_HEIGHT / 60);
+              const height = (meet.duration ?? 60) * (HOUR_HEIGHT / 60);
 
               return <WeekCalendarMeet key={meet.id} meet={meet} top={top} height={height} onClick={() => onMeetClick?.(meet)} />;
             })}

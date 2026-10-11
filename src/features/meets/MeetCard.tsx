@@ -327,9 +327,10 @@ export default function MeetCard({ meet, refetch }: Props) {
         )}
 
         {role === 'place' && meet.status === 'pending' && (
-          <Stack direction="row" spacing={1}>
+          <Stack spacing={1}>
+            <Typography variant="body2" color="warning.main">Ожидает подтверждения центра</Typography>
             <Button color="success" variant="contained" onClick={() => updateStatus.mutate('published')}>
-              Опубликовать
+              Подтвердить
             </Button>
 
             <Button color="error" variant="outlined" onClick={() => updateStatus.mutate('cancelled')}>
