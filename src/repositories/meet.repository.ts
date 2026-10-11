@@ -54,9 +54,9 @@ class MeetRepository {
 
   static async create(data: CreateMeetInput, conn?: PoolConnection): Promise<number> {
     const result = await (conn ?? db).execute<ResultSetHeader>(
-      `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [data.passportId, data.projectId, data.price, data.duration, data.startedAt, data.placeId],
+      `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId, locationId, maxParticipants)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [data.passportId, data.projectId, data.price, data.duration, data.startedAt, data.placeId, data.locationId ?? null, data.maxParticipants ?? null],
     );
 
     return (Array.isArray(result) ? result[0] : result).insertId;
@@ -64,7 +64,7 @@ class MeetRepository {
 
   // ✅ UPDATE (нормальный partial)
   static async update(id: number, data: UpdateMeetInput, conn?: PoolConnection): Promise<boolean> {
-    const keys = ['startedAt', 'duration', 'price', 'status'] as const;
+    const keys = ['startedAt', 'duration', 'price', 'status', 'locationId', 'maxParticipants'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;
@@ -135,9 +135,23 @@ class MeetRepository {
   }
 
   // ✅ FIND BY ID
-  static async findById(id: number): Promise<Meet | null> {
-    const rows = await db.query<MeetRow>(`SELECT * FROM meet WHERE id = ?`, [id]);
+  static async findById(id: number, conn?: PoolConnection, lock = true): Promise<Meet | null> {
+    const rows = conn
+      ? (await conn.query<MeetRow[]>('SELECT * FROM meet WHERE id = ?' + (lock ? ' FOR UPDATE' : ''), [id]))[0]
+      : await db.query<MeetRow>('SELECT * FROM meet WHERE id = ?', [id]);
 
+    return rows[0] ? toMeet(rows[0]) : null;
+  }
+
+  static async findConflict(meet: Pick<Meet, 'id' | 'passportId' | 'locationId' | 'startedAt' | 'duration'>, conn: PoolConnection): Promise<Meet | null> {
+    const [rows] = await conn.query<MeetRow[]>(
+      `SELECT * FROM meet WHERE id <> ? AND deletedAt IS NULL AND status IN ('pending', 'published')
+       AND (passportId = ? OR (? IS NOT NULL AND locationId = ?))
+       AND startedAt < DATE_ADD(?, INTERVAL ? MINUTE)
+       AND DATE_ADD(startedAt, INTERVAL COALESCE(duration, 60) MINUTE) > ?
+       ORDER BY id LIMIT 1`,
+      [meet.id, meet.passportId, meet.locationId, meet.locationId, meet.startedAt, meet.duration ?? 60, meet.startedAt],
+    );
     return rows[0] ? toMeet(rows[0]) : null;
   }
 

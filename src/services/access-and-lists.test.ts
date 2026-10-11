@@ -1,12 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Idea, Meet, Passport, Place, Project, ProjectUser, User } from 'entities';
 
-vi.mock('../utils/dbNext.js', () => ({ db: {} }));
-vi.mock('../repositories/project.repository.js', () => ({ default: { findAll: vi.fn(), findById: vi.fn(), update: vi.fn() } }));
-vi.mock('../repositories/meet.repository.js', () => ({ default: { findAll: vi.fn(), findById: vi.fn(), findByProjectIds: vi.fn(), findByProjectId: vi.fn(), update: vi.fn(), updateStatus: vi.fn() } }));
-vi.mock('../repositories/passport.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn() } }));
+vi.mock('../utils/dbNext.js', () => ({ db: { transaction: async (fn: (conn: unknown) => Promise<unknown>) => fn({}) } }));
+vi.mock('../repositories/project.repository.js', () => ({ default: { findAll: vi.fn(), findByIds: vi.fn(), findById: vi.fn(), update: vi.fn() } }));
+vi.mock('../repositories/meet.repository.js', () => ({ default: { findAll: vi.fn(), findById: vi.fn(), findConflict: vi.fn(), findByProjectIds: vi.fn(), findByProjectId: vi.fn(), update: vi.fn(), updateStatus: vi.fn() } }));
+vi.mock('../repositories/passport.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn(), lockByIds: vi.fn() } }));
 vi.mock('../repositories/place.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn(), findByPassportId: vi.fn() } }));
-vi.mock('../repositories/place-location.repository.js', () => ({ default: { findByIds: vi.fn() } }));
+vi.mock('../repositories/place-location.repository.js', () => ({ default: { findByIds: vi.fn(), lockByIds: vi.fn() } }));
+vi.mock('../repositories/place-schedule.repository.js', () => ({ default: { findByPlaceId: vi.fn() } }));
 vi.mock('../repositories/idea.repository.js', () => ({ default: { findByTeacherId: vi.fn() } }));
 vi.mock('../repositories/user.repository.js', () => ({ default: { findByIds: vi.fn(), findByProjectId: vi.fn() } }));
 vi.mock('../repositories/project-user.repository.js', () => ({ default: { findByProjectIds: vi.fn(), findByProjectId: vi.fn() } }));
@@ -29,11 +30,12 @@ import PlacePassportRepository from '../repositories/place-passport.repository.j
 import { IdeaService } from './idea.service.js';
 import { TeacherService } from './teacher.service.js';
 import IdeaRepository from '../repositories/idea.repository.js';
+import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
 
 const passport: Passport = { id: 10, title: 'Teacher', provider: 'test', providerId: '10', accessToken: '', description: null, image: null, email: '' };
 const place: Place = { id: 3, title: 'School', description: null, latitude: 0, longitude: 0, address: '', provider: null, providerId: null, phone: null, priceFrom: null };
 const project: Project = { id: 1, passportId: 10, placeId: 3, ideaId: null, title: 'Project', description: '', image: null };
-const meet: Meet = { id: 20, projectId: 1, passportId: 10, placeId: 3, price: 100, duration: 60, startedAt: '2030-01-01T10:00:00', deletedAt: null, status: 'published' };
+const meet: Meet = { id: 20, projectId: 1, passportId: 10, placeId: 3, price: 100, duration: 60, startedAt: '2030-01-01T10:00:00+03:00', deletedAt: null, status: 'published', locationId: null, maxParticipants: null };
 const users: User[] = [1, 2].map(id => ({ id, passportId: 7, title: `User ${id}`, description: '', age: null, image: null }));
 const joins: ProjectUser[] = users.map(user => ({ id: user.id, userId: user.id, projectId: 1, createdAt: '2030-01-01' }));
 
@@ -47,13 +49,16 @@ beforeEach(() => {
   vi.mocked(ProjectUserRepository.findByProjectIds).mockResolvedValue(joins);
   vi.mocked(MeetUserRepository.findByMeetIds).mockResolvedValue([]);
   vi.mocked(IdeaService.findByIds).mockResolvedValue([]);
+  vi.mocked(ProjectRepository.findByIds).mockResolvedValue([project]);
+  vi.mocked(MeetRepository.findConflict).mockResolvedValue(null);
+  vi.mocked(PlaceScheduleRepository.findByPlaceId).mockResolvedValue(Array.from({ length: 7 }, (_, i) => ({ id: i + 1, placeId: 3, weekday: i + 1, enabled: true, startTime: '08:00', endTime: '20:00' })));
 });
 
 describe('ownership checks', () => {
   it('returns a meeting to approval when only its duration changes', async () => {
     vi.mocked(MeetRepository.findById).mockResolvedValue({ ...meet, duration: 60, status: 'published' });
     await MeetService.update({ id: meet.id, duration: 90 }, meet.passportId);
-    expect(MeetRepository.update).toHaveBeenCalledWith(meet.id, expect.objectContaining({ duration: 90, status: 'pending' }));
+    expect(MeetRepository.update).toHaveBeenCalledWith(meet.id, expect.objectContaining({ duration: 90, status: 'pending' }), expect.anything());
   });
 
   it('rejects changes to another teacher’s project before writing', async () => {
@@ -71,10 +76,10 @@ describe('ownership checks', () => {
   it('allows the centre administrator to approve a meeting, but rejects an unrelated teacher', async () => {
     vi.mocked(MeetRepository.findById).mockResolvedValue(meet);
     vi.mocked(PlacePassportRepository.findMembership).mockResolvedValueOnce({ id: 1, role: 'admin' }).mockResolvedValueOnce({ id: 2, role: 'teacher' });
-    await MeetService.updateStatus(20, 'published', 99);
-    expect(MeetRepository.updateStatus).toHaveBeenCalledWith(20, 'published');
-    await expect(MeetService.updateStatus(20, 'cancelled', 98)).rejects.toMatchObject({ status: 403 });
-    expect(MeetRepository.updateStatus).toHaveBeenCalledTimes(1);
+    await MeetService.updateStatus(20, 'published', 99, 3);
+    expect(MeetRepository.update).toHaveBeenCalledWith(20, { status: 'published' }, expect.anything());
+    await expect(MeetService.updateStatus(20, 'cancelled', 98, 3)).rejects.toMatchObject({ status: 403 });
+    expect(MeetRepository.update).toHaveBeenCalledTimes(1);
   });
 
   it('ignores service fields supplied with a project update', async () => {
@@ -106,6 +111,21 @@ describe('ownership checks', () => {
 });
 
 describe('list composition', () => {
+  it('hydrates project media and meeting halls in batches and counts registrations with unavailable student profiles', async () => {
+    vi.mocked(ProjectRepository.findByIds).mockResolvedValue([project, { ...project, id: 2, title: 'Art', image: 'art.jpg' }]);
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null }]);
+    vi.mocked(MeetUserRepository.findByMeetIds).mockResolvedValue([
+      { id: 1, meetId: 20, userId: 1 }, { id: 2, meetId: 20, userId: 2 }, { id: 3, meetId: 20, userId: 999 },
+    ]);
+    const result = await MeetService.hydrateAll([meet, { ...meet, id: 21, projectId: 2, locationId: 5 }]);
+    expect(result[0]).toMatchObject({ projectTitle: 'Project', projectImage: null, location: null, participantCount: 3, capacity: 2 });
+    expect(result[0].users).toHaveLength(2);
+    expect(result[1]).toMatchObject({ projectTitle: 'Art', projectImage: 'art.jpg', location: { id: 5, title: 'Workshop' }, participantCount: 0, capacity: 0 });
+    expect(ProjectRepository.findByIds).toHaveBeenCalledExactlyOnceWith([1, 2]);
+    expect(PlaceLocationRepository.findByIds).toHaveBeenCalledExactlyOnceWith([5]);
+    expect(MeetUserRepository.findByMeetIds).toHaveBeenCalledOnce();
+  });
+
   it.each([1, 50])('loads a teacher dashboard with %i projects without repeating meeting queries', async count => {
     vi.mocked(ProjectRepository.findAll).mockResolvedValue(Array.from({ length: count }, (_, i) => ({ ...project, id: i + 1 })));
     vi.mocked(MeetRepository.findAll).mockResolvedValue([meet]);

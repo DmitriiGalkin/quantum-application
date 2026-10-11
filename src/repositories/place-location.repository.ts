@@ -2,8 +2,16 @@ import type { PoolConnection, RowDataPacket, ResultSetHeader } from 'mysql2/prom
 import { db } from '../utils/dbNext.js';
 
 class PlaceLocationRepository {
-  static async findByIds(ids: number[]): Promise<{ id: number; title: string; placeId: number; deletedAt: string | null }[]> {
+  static async lockByIds(ids: number[], conn: PoolConnection): Promise<void> {
+    for (const id of [...new Set(ids)].sort((a, b) => a - b)) {
+      await conn.query('SELECT id FROM placeLocation WHERE id = ? FOR UPDATE', [id]);
+    }
+  }
+  static async findByIds(ids: number[], conn?: PoolConnection): Promise<{ id: number; title: string; placeId: number; deletedAt: string | null }[]> {
     if (!ids.length) return [];
+    if (conn) return (await conn.query<(RowDataPacket & { id: number; title: string; placeId: number; deletedAt: string | null })[]>(
+      'SELECT * FROM placeLocation WHERE id IN (?)', [[...new Set(ids)]],
+    ))[0];
     return db.query('SELECT * FROM placeLocation WHERE id IN (?)', [[...new Set(ids)]]);
   }
 

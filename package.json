@@ -29,6 +29,8 @@
     "test:idea-photos:db": "npm run build:backend && node scripts/test-idea-photos.mjs",
     "db:migrate:demo": "node scripts/migrate-demo-seed.mjs",
     "db:migrate:project-location": "npm run build:demo-cli && node .cache/demo/cli/scripts/migrate-project-location.js",
+    "db:migrate:meet-scheduling": "npm run build:demo-cli && node .cache/demo/cli/scripts/migrate-meet-location-capacity.js",
+    "test:meet-scheduling:db": "npm run build:demo-cli && node .cache/demo/cli/scripts/test-meet-scheduling.js",
     "db:upload:demo-images": "tsx scripts/upload-demo-images.ts",
     "db:seed:demo": "tsx scripts/seed-demo.ts",
     "db:seed:demo:verify": "tsx scripts/seed-demo.ts --verify",

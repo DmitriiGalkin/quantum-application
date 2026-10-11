@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
-  query: vi.fn(), execute: vi.fn(), getConnection: vi.fn(), end: vi.fn(),
+  query: vi.fn(), execute: vi.fn(), getConnection: vi.fn(), end: vi.fn(), on: vi.fn(),
 }));
 vi.mock('mysql2/promise', () => ({ default: { createPool: () => mocks } }));
 import { DatabaseService } from './dbNext.js';

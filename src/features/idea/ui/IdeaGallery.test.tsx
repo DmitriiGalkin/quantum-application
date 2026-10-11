@@ -40,8 +40,9 @@ it('hydrates all eight imported photos and supports thumbnails, full view and ke
     expect(dialog.textContent).toContain('8 / 8');
     await act(async () => { dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });
     expect(dialog.textContent).toContain('1 / 8');
-    await act(async () => { dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-      await new Promise(resolve => setTimeout(resolve, 250)); });
+    await act(async () => { dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); });
+    // Start the exit transition before waiting for its timer.
+    await act(async () => { await new Promise(resolve => setTimeout(resolve, 250)); });
     expect(globalThis.document.querySelector('[role="dialog"]')).toBeNull();
   } finally { await act(async () => root.unmount()); host.remove(); }
 });

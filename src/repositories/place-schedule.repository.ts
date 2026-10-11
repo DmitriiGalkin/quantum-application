@@ -21,7 +21,8 @@ export default class PlaceScheduleRepository {
     if (ids.length) await conn.query('DELETE FROM placeSchedule WHERE id IN (?)', [ids]);
   }
 
-  static async findByPlaceId(placeId: number): Promise<PlaceSchedule[]> {
+  static async findByPlaceId(placeId: number, conn?: PoolConnection): Promise<PlaceSchedule[]> {
+    if (conn) return (await conn.query<(PlaceSchedule & RowDataPacket)[]>('SELECT * FROM placeSchedule WHERE placeId = ? ORDER BY weekday', [placeId]))[0];
     return db.query<PlaceSchedule>(
       `
             SELECT *

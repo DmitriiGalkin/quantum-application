@@ -2,12 +2,14 @@ import type { Meet, MeetWithProjectTitle, MeetRow, MeetWithProjectTitleRow } fro
 
 export function toMeet(row: MeetRow): Meet {
   return {
+    locationId: row.locationId ?? null,
+    maxParticipants: row.maxParticipants ?? null,
     id: row.id,
     projectId: row.projectId,
     passportId: row.passportId,
     price: row.price,
     duration: row.duration,
-    startedAt: row.startedAt,
+    startedAt: new Date(row.startedAt).toISOString(),
     deletedAt: row.deletedAt,
     placeId: row.placeId,
     status: row.status,

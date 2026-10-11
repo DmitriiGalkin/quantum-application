@@ -40,7 +40,7 @@ describe('place persistence', () => {
     }));
     const meet: Meet = {
       id: 20, projectId: 1, passportId: 10, placeId: count, price: 100, duration: 60,
-      startedAt: '2030-01-01', deletedAt: null, status: 'published',
+      startedAt: '2030-01-01', deletedAt: null, status: 'published', locationId: null, maxParticipants: null,
     };
     vi.mocked(PlaceRepository.findAll).mockResolvedValue(places);
     vi.mocked(MeetRepository.findByPlaceIds).mockResolvedValue([meet]);

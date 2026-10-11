@@ -65,16 +65,20 @@ vi.mock('./repositories/project.repository.js', () => ({
       return id;
     },
     findById: async (id: number) => state.projects.get(id) ?? null,
+    findByIds: async (ids: number[]) => [...state.projects.values()].filter(p => ids.includes(p.id)),
   },
 }));
 vi.mock('./repositories/meet.repository.js', () => ({
   default: {
     create: async (data: CreateMeetInput) => {
       const id = state.meets.size + 1;
-      state.meets.set(id, { ...data, id, status: 'pending', deletedAt: null });
+      state.meets.set(id, { ...data, locationId: data.locationId ?? null, maxParticipants: data.maxParticipants ?? null,
+        startedAt: data.startedAt.replace(' ', 'T') + '+03:00', id, status: 'pending', deletedAt: null });
       return id;
     },
     findById: async (id: number) => state.meets.get(id) ?? null,
+    findConflict: async () => null,
+    update: async (id: number, data: Partial<Meet>) => { Object.assign(state.meets.get(id)!, data); return true; },
     findByProjectId: async (projectId: number) => [...state.meets.values()].filter(meet => meet.projectId === projectId),
     findAll: async (data: { userId?: number }) =>
       [...state.meets.values()].filter(meet => !data.userId || state.meetUsers.some(join => join.userId === data.userId && join.meetId === meet.id)),
@@ -91,6 +95,7 @@ vi.mock('./repositories/place.repository.js', () => ({
 }));
 vi.mock('./repositories/place-location.repository.js', () => ({
   default: {
+    lockByIds: async () => undefined,
     findLocations: async (placeId: number) => [
       { id: 5, title: 'Workshop', placeId: 3, deletedAt: null },
       { id: 7, title: 'Deleted hall', placeId: 3, deletedAt: '2026-10-11' },
@@ -109,6 +114,7 @@ vi.mock('./repositories/place-passport.repository.js', () => ({
 }));
 vi.mock('./repositories/passport.repository.js', () => ({
   default: {
+    lockByIds: async () => undefined,
     findById: async (id: number) => ({ id, title: 'Teacher' }) as Passport,
     findByIds: async (ids: number[]) => [...new Set(ids)].map(id => ({ id, title: 'Teacher' }) as Passport),
   },
@@ -144,6 +150,7 @@ vi.mock('./repositories/meet-user.repository.js', () => ({
     findByUserAndMeetIds: async (userId: number, meetId: number) =>
       state.meetUsers.find(join => join.userId === userId && join.meetId === meetId) ?? null,
     findByMeetIds: async (ids: number[]) => state.meetUsers.filter(join => ids.includes(join.meetId)),
+    findParticipants: async (meetId: number) => state.meetUsers.filter(join => join.meetId === meetId),
   },
 }));
 vi.mock('./repositories/payment.repository.js', () => ({
@@ -176,6 +183,8 @@ vi.mock('./repositories/payment.repository.js', () => ({
 }));
 
 import app from './app.js';
+vi.mock('./repositories/place-schedule.repository.js', () => ({ default: { findByPlaceId: async () =>
+  Array.from({ length: 7 }, (_, index) => ({ weekday: index + 1, enabled: true, startTime: '08:00', endTime: '20:00' })) } }));
 import PaymentRepository from './repositories/payment.repository.js';
 let server: Server;
 let url: string;
@@ -232,7 +241,7 @@ describe('project lifecycle through HTTP', () => {
     const projectResponse = await request('/project', 20, { ideaId, placeId: 3, title: 'Workshop', description: 'Making a toy', image: '' });
     expect(projectResponse.status).toBe(200);
     const projectId: number = await projectResponse.json();
-    const meetResponse = await request('/meet', 20, { projectId, price: 1000, duration: 60, startedAt: '2099-01-05T10:00:00.000Z' });
+    const meetResponse = await request('/meet', 20, { projectId, price: 1000, duration: 60, maxParticipants: 12, startedAt: '2099-01-05T10:00:00.000Z' });
     expect(meetResponse.status).toBe(200);
     const meetId: number = await meetResponse.json();
     const approval = await request(`/meet/${meetId}/status`, 30, { status: 'published' }, 'PUT', { 'X-Role': 'place', 'X-Place-Id': '3' });

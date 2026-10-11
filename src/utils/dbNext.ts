@@ -18,6 +18,10 @@ export class DatabaseService {
       connectionLimit: 10,
       queueLimit: 0,
       namedPlaceholders: true,
+      timezone: '+03:00',
+    });
+    this.pool.on('connection', connection => {
+      connection.query("SET time_zone = '+03:00'");
     });
   }
 
@@ -63,10 +67,11 @@ export class DatabaseService {
     await this.pool.end();
   }
 
-  async transaction<T>(fn: (conn: PoolConnection) => Promise<T>): Promise<T> {
+  async transaction<T>(fn: (conn: PoolConnection) => Promise<T>, readCommitted = false): Promise<T> {
     const connection = await this.pool.getConnection();
 
     try {
+      if (readCommitted) await connection.query('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');
       await connection.beginTransaction();
 
       const result = await fn(connection);

@@ -19,5 +19,5 @@ export default function PlaceMeetsPage() {
   if (error) return <Alert severity="error" action={<Button onClick={() => refetch()}>Повторить</Button>}>Не удалось загрузить расписание: {error.message}</Alert>;
   if (!meets) return null;
 
-  return <Meets title="Расписание центра" meets={meets} refetch={refetch}/>;
+  return <Meets title="Расписание центра" meets={meets} refetch={refetch} management={{ placeId }}/>;
 }

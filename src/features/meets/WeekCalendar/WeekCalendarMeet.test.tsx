@@ -17,9 +17,9 @@ it('confirms a pending meeting, refreshes center queries, and does not trigger t
   const onClick = vi.fn();
   const host = globalThis.document.createElement('div'); globalThis.document.body.append(host);
   const root = createRoot(host);
-  const meet = { id: 120, projectId: 160, startedAt: '2026-10-12T13:00:00Z', duration: 60, status: 'pending' } as MeetDto;
+  const meet = { id: 120, projectId: 160, startedAt: '2026-10-12T13:00:00Z', duration: 60, status: 'pending', place: { id: 3 } } as MeetDto;
   try {
-    await act(async () => root.render(<QueryClientProvider client={queryClient}><WeekCalendarMeet meet={meet} top={0} height={72} onClick={onClick} /></QueryClientProvider>));
+    await act(async () => root.render(<QueryClientProvider client={queryClient}><WeekCalendarMeet meet={meet} top={0} height={72} onClick={onClick} management={{ placeId: 3 }} /></QueryClientProvider>));
     expect(host.textContent).toContain('16:00 — 17:00');
     expect(host.textContent).toContain('Ожидает подтверждения центра');
     await act(async () => { host.querySelector<HTMLButtonElement>('[aria-label="Подтвердить"]')!.click(); });

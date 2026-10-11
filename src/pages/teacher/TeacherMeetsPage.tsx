@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherMeets } from '../../requests.ts';
 import Meets from '../../features/meets/Meets.tsx';
+import { useAuth } from '../../providers/auth-context.ts';
 
 function TeacherMeetsPage() {
+  const { passport } = useAuth();
   const { data: meets = [], isLoading, refetch } = useQuery({
     queryKey: ['teacher-meets'],
     queryFn: fetchTeacherMeets,
@@ -12,7 +14,7 @@ function TeacherMeetsPage() {
     return <>Загрузка...</>;
   }
 
-  return <Meets title="Мои встречи" meets={meets} refetch={refetch} />;
+  return <Meets title="Мои встречи" meets={meets} refetch={refetch} management={{ teacherId: passport?.id }} />;
 }
 
 export default TeacherMeetsPage;

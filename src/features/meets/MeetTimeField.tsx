@@ -26,7 +26,7 @@ function minutesToTime(minutes: number) {
 }
 
 function getWeekday(date: string) {
-  const day = new Date(date).getDay();
+  const day = new Date(`${date}T00:00:00Z`).getUTCDay();
 
   // JS:
   // 0 воскресенье
@@ -39,7 +39,7 @@ function getWeekday(date: string) {
 function buildSlots(schedule: PlaceScheduleDayDto[], date: string, duration: number, step = 15) {
   const weekday = getWeekday(date);
 
-  const intervals = schedule.filter(interval => interval.weekday === weekday);
+  const intervals = schedule.filter(interval => interval.enabled && interval.weekday === weekday);
 
   const slots: string[] = [];
 

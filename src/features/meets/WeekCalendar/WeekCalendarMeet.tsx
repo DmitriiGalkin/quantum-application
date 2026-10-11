@@ -15,6 +15,7 @@ import type { MeetDto, MeetStatus } from 'entities';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchUpdateMeetStatus } from '../../../requests.ts';
 import { invalidateMeetQueries } from '../hooks/queries.ts';
+import type { MeetManagement } from '../management.ts';
 
 interface Props {
   meet: MeetDto;
@@ -24,9 +25,13 @@ interface Props {
   height: number;
 
   onClick?(): void;
+  draggable?: boolean;
+  saving?: boolean;
+  management?: MeetManagement;
+  onError?(message: string): void;
 }
 
-export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) {
+export default function WeekCalendarMeet({ meet, top, height, onClick, draggable = false, saving, management, onError }: Props) {
   const started = new Date(meet.startedAt);
   const { role } = useAuth();
   const queryClient = useQueryClient();
@@ -34,6 +39,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: meet.id,
     data: { meet },
+    disabled: !draggable,
   });
 
   const style = {
@@ -43,13 +49,21 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
   const updateStatus = useMutation({
     mutationFn: (status: MeetStatus) => fetchUpdateMeetStatus(meet.id, { status }),
     onSuccess: () => invalidateMeetQueries(queryClient, meet.projectId),
+    onError: error => onError?.(error.message),
   });
 
   return (
     <Box
       ref={setNodeRef}
-      {...listeners}
-      {...attributes}
+      {...(draggable ? listeners : {})}
+      {...(draggable ? attributes : {})}
+      role="button"
+      tabIndex={0}
+      aria-label={`${meet.projectTitle || 'Встреча'}${draggable ? ', перенос: пробел, стрелки, пробел; отмена: Escape' : ', открыть сведения'}`}
+      onKeyDown={event => {
+        if (draggable) listeners?.onKeyDown?.(event);
+        else if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onClick?.(); }
+      }}
       onClick={event => {
         event.stopPropagation();
         onClick?.();
@@ -67,12 +81,14 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
         color: 'primary.contrastText',
         p: 0.75,
         overflow: 'hidden',
-        cursor: 'grab',
+        cursor: draggable ? 'grab' : 'pointer',
+        touchAction: draggable ? 'none' : 'auto',
+        zIndex: transform ? 2 : 1,
+        opacity: saving ? 0.5 : 1,
         boxShadow: 2,
-        transition: '.15s',
+        transition: 'box-shadow .15s',
 
         '&:hover': {
-          transform: 'scale(1.02)',
           boxShadow: 4,
         },
       }}
@@ -88,9 +104,9 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
         >
           {moscowFormat(started, { hour: '2-digit', minute: '2-digit' })} — {moscowFormat(started.getTime() + (meet.duration ?? 60) * 60000, { hour: '2-digit', minute: '2-digit' })}
         </Typography>
-        {role === 'place' && meet.status === 'pending' && <Stack direction="row">
-          <IconButton size="small" aria-label="Подтвердить" disabled={updateStatus.isPending} onPointerDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('published'); }}><CheckIcon color="success" fontSize="small" /></IconButton>
-          <IconButton size="small" aria-label="Отменить" disabled={updateStatus.isPending} onPointerDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('cancelled'); }}><CloseIcon color="error" fontSize="small" /></IconButton>
+        {role === 'place' && management?.placeId === meet.place?.id && meet.status === 'pending' && <Stack direction="row">
+          <IconButton size="small" aria-label="Подтвердить" disabled={updateStatus.isPending} onMouseDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('published'); }}><CheckIcon color="success" fontSize="small" /></IconButton>
+          <IconButton size="small" aria-label="Отклонить" disabled={updateStatus.isPending} onMouseDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('cancelled'); }}><CloseIcon color="error" fontSize="small" /></IconButton>
         </Stack>}
       </Stack>
 
@@ -105,10 +121,12 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
           WebkitBoxOrient: 'vertical',
         }}
       >
-        Приятная встреча
+        {meet.projectTitle || 'Название проекта не указано'}
       </Typography>
 
       {meet.status === 'pending' && <Typography variant="caption">Ожидает подтверждения центра</Typography>}
+      {meet.status === 'cancelled' && <Typography variant="caption">Отклонена</Typography>}
+      {saving && <Typography variant="caption">Сохранение…</Typography>}
       {height > 70 && (
         <>
           <Typography
@@ -119,7 +137,8 @@ export default function WeekCalendarMeet({ meet, top, height, onClick }: Props) 
               mt: 0.5,
             }}
           >
-            Название
+            {meet.place?.title || 'Центр не указан'} · {meet.location?.title || 'Зал не выбран'}
+            {' · '}Записано {meet.participantCount ?? meet.users?.length ?? 0}{meet.maxParticipants != null ? ` из ${meet.maxParticipants}` : ' · Лимит мест не задан'}
           </Typography>
         </>
       )}

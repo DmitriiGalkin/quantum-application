@@ -6,6 +6,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { ru } from 'date-fns/locale';
 
 import type { PlaceScheduleDayDto } from 'entities';
+import { moscowInput } from '../../shared/lib/meet-time.ts';
 
 interface Props {
   value: string;
@@ -20,8 +21,8 @@ export default function MeetDateField({ value, schedule, onChange }: Props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
       <DateCalendar
-        disablePast
-        value={value ? new Date(value) : null}
+        referenceDate={new Date(`${moscowInput(new Date()).date}T12:00:00`)}
+        value={value ? new Date(`${value}T00:00:00`) : null}
         onChange={date => {
           if (!date) return;
 
@@ -31,7 +32,7 @@ export default function MeetDateField({ value, schedule, onChange }: Props) {
           // JS: 0 = воскресенье ... 6 = суббота
           const weekday = date.getDay() === 0 ? 7 : date.getDay();
 
-          return !workingDays.has(weekday);
+          return format(date, 'yyyy-MM-dd') < moscowInput(new Date()).date || !workingDays.has(weekday);
         }}
       />
     </LocalizationProvider>

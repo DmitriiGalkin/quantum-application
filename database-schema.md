@@ -1,10 +1,10 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-11T18:07:20.662Z
+Дата выгрузки: 2026-10-11T19:31:49.206Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
-Таблицы и представления: 20.
+Таблицы и представления: 21.
 
 ## Объекты
 
@@ -28,6 +28,7 @@
 | placeSchedule | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | project | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | projectUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| quantumMigration | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | teacherUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | user | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 
@@ -257,19 +258,31 @@ CREATE TABLE `ideaUser` (
 | --- | --- | --- | --- | --- | --- | --- |
 | id | int | NO | NULL | PRI | auto_increment |  |
 | projectId | int | NO | NULL |  |  |  |
-| passportId | int | NO | NULL |  |  |  |
+| passportId | int | NO | NULL | MUL |  |  |
 | price | int | YES | NULL |  |  |  |
 | duration | int | YES | NULL |  |  |  |
 | status | enum('pending','published','cancelled') | NO | pending |  |  |  |
 | startedAt | timestamp | YES | NULL |  |  |  |
 | deletedAt | timestamp | YES | NULL |  |  |  |
 | placeId | int | NO | NULL |  |  |  |
+| locationId | int | YES | NULL | MUL |  |  |
+| maxParticipants | int | YES | NULL |  |  |  |
 
 ### Индексы
 
 | Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
 | --- | --- | --- | --- | --- | --- |
+| idx_meet_location_time | Нет | 1 | locationId | NULL | BTREE |
+| idx_meet_location_time | Нет | 2 | startedAt | NULL | BTREE |
+| idx_meet_teacher_time | Нет | 1 | passportId | NULL | BTREE |
+| idx_meet_teacher_time | Нет | 2 | startedAt | NULL | BTREE |
 | PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_meet_location | locationId | placeLocation | id | NO ACTION | SET NULL |
 
 ### DDL
 
@@ -284,7 +297,13 @@ CREATE TABLE `meet` (
   `startedAt` timestamp NULL DEFAULT NULL,
   `deletedAt` timestamp NULL DEFAULT NULL,
   `placeId` int NOT NULL,
-  PRIMARY KEY (`id`)
+  `locationId` int DEFAULT NULL,
+  `maxParticipants` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_meet_teacher_time` (`passportId`,`startedAt`),
+  KEY `idx_meet_location_time` (`locationId`,`startedAt`),
+  CONSTRAINT `fk_meet_location` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `chk_meet_max_participants` CHECK (((`maxParticipants` is null) or (`maxParticipants` > 0)))
 ) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
@@ -753,6 +772,31 @@ CREATE TABLE `projectUser` (
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=352 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## quantumMigration
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| name | varchar(100) | NO | NULL | PRI |  |  |
+| appliedAt | timestamp | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| PRIMARY | Да | 1 | name | NULL | BTREE |
+
+### DDL
+
+```sql
+CREATE TABLE `quantumMigration` (
+  `name` varchar(100) NOT NULL,
+  `appliedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## teacherUser

@@ -3,8 +3,11 @@ import type { MeetStatus } from 'entities';
 import type { UserDto } from './user.js';
 import type { PassportDto } from './passport.js';
 import type { PlaceDto } from './place.js';
+import type { LocationDto } from './location.js';
 
 export interface MeetRow extends RowDataPacket {
+  locationId: number | null;
+  maxParticipants: number | null;
   id: number;
   projectId: number;
   passportId: number;
@@ -21,6 +24,8 @@ export interface MeetWithProjectTitleRow extends MeetRow {
 }
 
 export interface Meet {
+  locationId: number | null;
+  maxParticipants: number | null;
   id: number;
   projectId: number;
   passportId: number;
@@ -38,16 +43,21 @@ export interface MeetWithProjectTitle extends Meet {
 
 export interface MeetDto extends Omit<Meet, 'passportId' | 'placeId'> {
   users: UserDto[] | null;
+  participantCount: number;
   place: PlaceDto;
   passport: PassportDto;
 
-  projectTitle?: string;
+  projectTitle: string | null;
+  projectImage: string | null;
+  location: LocationDto | null;
   isPaid?: boolean;
   // Общее количество участников проекта
   capacity: number;
 }
 
 export type CreateMeetInput = {
+  locationId?: number | null;
+  maxParticipants?: number | null;
   passportId: number;
   projectId: number;
   placeId: number;
@@ -57,6 +67,8 @@ export type CreateMeetInput = {
 };
 
 export type UpdateMeetInput = Partial<{
+  locationId: number | null;
+  maxParticipants: number | null;
   startedAt: string;
   duration: number | null;
   price: number | null;
@@ -64,18 +76,15 @@ export type UpdateMeetInput = Partial<{
 }>;
 
 export interface CreateMeet {
+  locationId?: number | null;
+  maxParticipants: number;
   projectId: number;
   price: number | null;
   duration: number | null;
   startedAt: string;
 }
 
-export interface UpdateMeet {
-  price: number | null;
-  duration: number | null;
-  startedAt: string;
-  projectId: number;
-}
+export type UpdateMeet = Omit<UpdateMeetInput, 'status'>;
 
 export interface GetMeetsQuery {
   userId?: number;

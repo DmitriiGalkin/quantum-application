@@ -2,7 +2,7 @@ import UserRepository from '../repositories/user.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import MeetUserRepository from '../repositories/meet-user.repository.js';
 import { HttpError } from '../utils/http-error.js';
-import type { User, UserWithMeet } from 'entities';
+import type { MeetUser, User, UserWithMeet } from 'entities';
 
 export class ParticipantsService {
   static async forProjects(projectIds: number[]): Promise<Map<number, User[]>> {
@@ -19,8 +19,8 @@ export class ParticipantsService {
     return groups;
   }
 
-  static async forMeets(meetIds: number[]): Promise<Map<number, UserWithMeet[]>> {
-    const joins = await MeetUserRepository.findByMeetIds(meetIds);
+  static async forMeets(meetIds: number[], preloadedJoins?: MeetUser[]): Promise<Map<number, UserWithMeet[]>> {
+    const joins = preloadedJoins ?? await MeetUserRepository.findByMeetIds(meetIds);
     const users = new Map(
       (
         await UserRepository.findByIds(

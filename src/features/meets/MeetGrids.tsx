@@ -1,14 +1,16 @@
 import Box from '@mui/material/Box';
 import { type MeetDto } from 'entities';
 import MeetCard from './MeetCard.tsx'; // Добавлен импорт
+import type { MeetManagement } from './management.ts';
 
 type Props = {
   meets: MeetDto[];
   withoutIdea?: boolean;
   refetch?: () => void;
+  management?: MeetManagement;
 };
 
-function MeetGrids({ meets, refetch }: Props) {
+function MeetGrids({ meets, refetch, management }: Props) {
   return (
     <Box
       sx={{
@@ -23,7 +25,7 @@ function MeetGrids({ meets, refetch }: Props) {
       }}
     >
       {meets?.map(meet => (
-        <MeetCard key={meet.id} meet={meet} refetch={refetch} />
+        <MeetCard key={meet.id} meet={meet} refetch={refetch} management={management} />
       ))}
     </Box>
   );

@@ -16,7 +16,7 @@ describe('meetings for multiple centres', () => {
   it('binds unique centre IDs and preserves past and deleted meetings in the existing centre list', async () => {
     const row: Meet = {
       id: 1, projectId: 2, passportId: 3, placeId: 4, price: null, duration: null,
-      startedAt: '2020-01-01', deletedAt: '2020-01-02', status: 'cancelled',
+      startedAt: '2020-01-01T00:00:00.000Z', deletedAt: '2020-01-02', status: 'cancelled', locationId: null, maxParticipants: null,
     };
     vi.mocked(db.query).mockResolvedValue([row]);
     expect(await MeetRepository.findByPlaceIds([4, 5, 4])).toEqual([row]);

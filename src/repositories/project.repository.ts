@@ -4,6 +4,11 @@ import { toProject } from '../mappers/project.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class ProjectRepository {
+  static async findByIds(ids: number[]): Promise<Project[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<ProjectRow>('SELECT * FROM project WHERE id IN (?)', [[...new Set(ids)]]);
+    return rows.map(toProject);
+  }
   static async moveSeedIdea(id: number, ideaId: number, conn: PoolConnection): Promise<void> {
     await conn.execute('UPDATE project SET ideaId = ? WHERE id = ?', [ideaId, id]);
   }

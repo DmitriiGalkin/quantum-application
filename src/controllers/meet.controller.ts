@@ -13,7 +13,7 @@ const update: ControllerWithAuth<void, UpdateMeet> = async (req, res) => {
   await MeetService.update({
     ...req.body,
     id: requireId(req.params.id),
-  }, req.passport.id);
+  }, req.passport.id, req.viewer?.role === 'place' ? requireId(req.viewer.placeId) : undefined);
 
   ok(res, { message: 'Встреча обновлена' });
 };
@@ -59,7 +59,8 @@ const findById: Controller<MeetDto> = async (req, res) => {
 };
 
 const updateStatus: ControllerWithAuth<void, { status: MeetStatus }> = async (req, res) => {
-  await MeetService.updateStatus(requireId(req.params.id), req.body.status, req.passport.id);
+  await MeetService.updateStatus(requireId(req.params.id), req.body.status, req.passport.id,
+    req.viewer?.role === 'place' ? requireId(req.viewer.placeId) : undefined);
 
   ok(res, '1');
 };

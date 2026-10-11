@@ -4,21 +4,23 @@ import { fetchUpdateMeet } from '../../../requests.ts';
 import type { MeetFormValues } from '../MeetForm.tsx';
 import type { MeetDto } from 'entities';
 import { invalidateMeetQueries } from './queries.ts';
+import { meetStart, moscowInput } from '../../../shared/lib/meet-time.ts';
 
 export function useEditMeet(meet: MeetDto, onClose: () => void) {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<MeetFormValues>({
     projectId: meet.projectId,
-    date: new Date(meet.startedAt).toISOString().slice(0, 10), // YYYY-MM-DD
-    time: new Date(meet.startedAt).toTimeString().slice(0, 5), // HH:mm
-    duration: meet.duration || 0,
+    ...moscowInput(meet.startedAt),
+    duration: meet.duration ?? 60,
     price: meet.price || 0,
+    locationId: meet.locationId,
+    maxParticipants: meet.maxParticipants ?? '',
   });
 
   const updateMeet = useMutation({
     mutationFn: (form: MeetFormValues) => {
-      const { date, time, ...data } = form;
-      return fetchUpdateMeet(meet.id, { ...data, startedAt: `${date}T${time}:00` });
+      return fetchUpdateMeet(meet.id, { price: form.price, duration: form.duration, locationId: form.locationId,
+        maxParticipants: form.maxParticipants === '' ? null : form.maxParticipants, startedAt: meetStart(form.date, form.time) });
     },
 
     onSuccess: async () => {
@@ -33,5 +35,6 @@ export function useEditMeet(meet: MeetDto, onClose: () => void) {
     setForm,
     onSubmit: () => updateMeet.mutate(form),
     loading: updateMeet.isPending,
+    error: updateMeet.error?.message,
   };
 }
