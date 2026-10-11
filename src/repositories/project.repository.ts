@@ -1,9 +1,21 @@
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import type { ProjectRow, GetProjectsQuery, Project, CreateProjectInput, FindAllIdeaInput } from 'entities';
 import { toProject } from '../mappers/project.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class ProjectRepository {
+  static async moveSeedIdea(id: number, ideaId: number, conn: PoolConnection): Promise<void> {
+    await conn.execute('UPDATE project SET ideaId = ? WHERE id = ?', [ideaId, id]);
+  }
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM project FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM project WHERE id IN (?)', [ids]);
+  }
+
   static async findIdsByPlaceId(placeId: number): Promise<number[]> {
     const rows = await db.query<{ id: number }>(
       'SELECT id FROM project WHERE placeId = ? AND deletedAt IS NULL',
@@ -13,17 +25,17 @@ class ProjectRepository {
   }
 
   // ✅ CREATE
-  static async create(data: CreateProjectInput): Promise<number> {
-    const result = await db.execute<ResultSetHeader>(
+  static async create(data: CreateProjectInput, conn?: PoolConnection): Promise<number> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO project (ideaId, passportId, placeId, title, description, image)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [data.ideaId || null, data.passportId, data.placeId, data.title, data.description, data.image],
     );
 
-    return result.insertId;
+    return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
-  static async update(id: number, data: Partial<CreateProjectInput>): Promise<boolean> {
+  static async update(id: number, data: Partial<CreateProjectInput>, conn?: PoolConnection): Promise<boolean> {
     const keys = ['title', 'description', 'image', 'placeId', 'ideaId'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
@@ -32,9 +44,9 @@ class ProjectRepository {
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
     const values = entries.map(([, v]) => v ?? null);
 
-    const result = await db.execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await (conn ?? db).execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
 
-    return result.affectedRows > 0;
+    return (Array.isArray(result) ? result[0] : result).affectedRows > 0;
   }
 
   // ✅ DELETE (soft)

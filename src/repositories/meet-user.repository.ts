@@ -1,4 +1,4 @@
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 import type { MeetUserFullRow, MeetUserRow, MeetUserWithMeetRow, MeetUser, MeetUserWithMeet, MeetUserFull } from 'entities';
 
@@ -8,6 +8,15 @@ import { db } from '../utils/dbNext.js';
 import type { DeleteMeetUser } from 'entities';
 
 class MeetUserRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM meetUser FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM meetUser WHERE id IN (?)', [ids]);
+  }
+
   static async findByMeetIds(ids: number[]): Promise<MeetUser[]> {
     if (!ids.length) return [];
     const rows = await db.query<MeetUserRow>(
@@ -18,14 +27,14 @@ class MeetUserRepository {
   }
 
   // ✅ CREATE
-  static async create(data: { userId: number; meetId: number }): Promise<number> {
-    const result = await db.execute<ResultSetHeader>(
+  static async create(data: { userId: number; meetId: number }, conn?: PoolConnection): Promise<number> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO meetUser (userId, meetId)
        VALUES (?, ?)`,
       [data.userId, data.meetId],
     );
 
-    return result.insertId;
+    return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
   // ✅ DELETE

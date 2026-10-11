@@ -1,4 +1,4 @@
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 import { db } from '../utils/dbNext.js';
 
@@ -7,6 +7,18 @@ import type { PaymentRow, CreatePaymentInput, Payment } from 'entities';
 import { toPayment } from '../mappers/payment.mapper.js';
 
 class PaymentRepository {
+  static async moveSeedTarget(id: number, ideaId: number, conn: PoolConnection): Promise<void> {
+    await conn.execute("UPDATE payment SET targetId = ? WHERE id = ? AND targetType = 'idea'", [ideaId, id]);
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM payment WHERE id IN (?)', [ids]);
+  }
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM payment FOR UPDATE');
+    return rows;
+  }
+
   // ✅ CREATE
   static async create(data: CreatePaymentInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(

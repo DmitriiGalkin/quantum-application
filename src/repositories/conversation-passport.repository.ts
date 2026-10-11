@@ -1,8 +1,13 @@
-﻿import { db } from '../utils/dbNext.js';
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import { db } from '../utils/dbNext.js';
 import type { ConversationPassportRow } from 'entities';
 
 class ConversationPassportRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM conversationPassport FOR UPDATE');
+    return rows;
+  }
+
   static async findByPassportIds(passportIds: number[], conn?: PoolConnection): Promise<ConversationPassportRow[]> {
     const sql = 'SELECT * FROM conversationPassport WHERE passportId IN (?)';
     return conn ? (await conn.query<ConversationPassportRow[]>(sql, [passportIds]))[0] : db.query<ConversationPassportRow>(sql, [passportIds]);

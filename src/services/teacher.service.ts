@@ -1,25 +1,28 @@
 import UserRepository from '../repositories/user.repository.js';
-import type { TeacherDashboardDto, TeacherPublicDto, Place } from 'entities';
+import type { TeacherDashboardDto, TeacherPublicDto, MeetDto } from 'entities';
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import { MeetService } from './meet.service.js';
 import PassportRepository from '../repositories/passport.repository.js';
 import IdeaRepository from '../repositories/idea.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
+import { ParticipantsService } from './participants.service.js';
+import { HttpError } from '../utils/http-error.js';
 
 export class TeacherService {
   static async getDashboard(passportId: number): Promise<TeacherDashboardDto> {
-    const projects = await ProjectRepository.findAll({ passportId });
-    const meets = await MeetRepository.findAll({ passportId });
-    const users = await Promise.all(projects.map(project => UserRepository.findByProjectId(project.id)));
-    const uniqueUsers = [...new Map(users.flat().map(item => [item.id, item])).values()];
-    const bmeets = await MeetService.findAll({ passportId });
+    const [projects, bmeets] = await Promise.all([
+      ProjectRepository.findAll({ passportId }),
+      MeetService.findAll({ passportId }),
+    ]);
+    const users = await ParticipantsService.forProjects(projects.map(project => project.id));
+    const studentIds = new Set([...users.values()].flat().map(user => user.id));
 
     return {
       projects: projects.length,
-      meets: meets.length,
-      students: uniqueUsers.length,
-      debit: 35600,
+      meets: bmeets.length,
+      students: studentIds.size,
+      debit: null,
 
       bmeets,
     };
@@ -29,40 +32,53 @@ export class TeacherService {
     const passport = await PassportRepository.findById(id);
     if (!passport) return null;
 
-    const projects = await ProjectRepository.findAll({ passportId: id });
-    const ideas = await IdeaRepository.findByTeacherId(id);
-
-    const [usersArr, placeArr, meetsArr, ideaUsers, centers] = await Promise.all([
-      Promise.all(projects.map(p => UserRepository.findByProjectId(p.id))),
-      Promise.all(projects.map(p => PlaceRepository.findById(p.placeId) as Promise<Place>)),
-      Promise.all(projects.map(p => MeetService.findAll({ projectId: p.id }))),
-      Promise.all(ideas.map(i => UserRepository.findById(i.userId))),
-      PlaceRepository.findByPassportId(id), // Fetch centers where teacher works
+    const [projects, ideas, centers] = await Promise.all([
+      ProjectRepository.findAll({ passportId: id }),
+      IdeaRepository.findByTeacherId(id),
+      PlaceRepository.findByPassportId(id),
     ]);
 
-    const projectExtendeds = projects.map((project, i) => ({
-      ...project,
-      passport,
-      place: placeArr[i],
-      meets: meetsArr[i],
-      users: usersArr[i],
-      idea: null
-    }));
+    const [usersByProject, places, meetRows, ideaUsers] = await Promise.all([
+      ParticipantsService.forProjects(projects.map(project => project.id)),
+      PlaceRepository.findByIds(projects.map(project => project.placeId)),
+      MeetRepository.findByProjectIds(projects.map(project => project.id), true),
+      UserRepository.findByIds(ideas.flatMap(idea => idea.userId ? [idea.userId] : [])),
+    ]);
+    const meets = await MeetService.hydrateAll(meetRows);
+    const placeById = new Map(places.map(place => [place.id, place]));
+    const userById = new Map(ideaUsers.map(user => [user.id, user]));
+    const meetsByProject = new Map<number, MeetDto[]>();
+    for (const meet of meets) {
+      const group = meetsByProject.get(meet.projectId) ?? [];
+      group.push(meet);
+      meetsByProject.set(meet.projectId, group);
+    }
 
-    const ideaExtendeds = ideas.map((idea, i) => ({
+    const projectExtendeds = projects.map(project => {
+      const place = placeById.get(project.placeId);
+      if (!place) throw new HttpError('Не найдены связанные данные проекта', 500);
+      return {
+        ...project,
+        passport,
+        place,
+        meets: meetsByProject.get(project.id) ?? [],
+        users: usersByProject.get(project.id) ?? [],
+        idea: null,
+      };
+    });
+
+    const ideaExtendeds = ideas.map(idea => ({
       ...idea,
-      user: ideaUsers[i] || null,
+      user: userById.get(idea.userId) ?? null,
     }));
 
-    // Calculate statistics
-    const students = [...new Set(usersArr.flat().map(u => u.id))].length;
-    const meets = meetsArr.flat().length;
+    const students = new Set([...usersByProject.values()].flat().map(user => user.id)).size;
 
     return {
       passport,
       projects: projectExtendeds,
       ideas: ideaExtendeds,
-      meets,
+      meets: meets.length,
       students,
       centersCount: centers.length,
       centers,

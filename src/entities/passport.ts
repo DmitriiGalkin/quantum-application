@@ -45,6 +45,7 @@ export interface PassportExtendedEntity extends Passport {
 }
 
 export type CreatePassportInput = {
+  description?: string | null;
   providerId: string;
   provider: string;
   accessToken: string;
@@ -54,6 +55,7 @@ export type CreatePassportInput = {
 };
 
 export type UpdatePassportInput = Partial<{
+  image: string | null;
   title: string | null;
   description: string | null;
 }>;

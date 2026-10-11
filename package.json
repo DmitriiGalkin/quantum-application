@@ -16,7 +16,7 @@
     "start": "node src",
     "parser": "tsx src/parser2.ts",
     "lint": "eslint .",
-    "typecheck": "tsc --build",
+    "typecheck": "tsc --build && tsc -p tsconfig.demo.json",
     "check": "npm run lint && npm run typecheck && npm run build",
     "preview": "vite preview",
     "test": "vitest run",
@@ -24,7 +24,18 @@
     "db:migrate:ideas": "node scripts/migrate-idea-catalog.mjs",
     "db:migrate:payments": "node scripts/migrate-payment-provider.mjs",
     "db:import:ideas": "tsx scripts/import-idea-catalog.ts",
-    "db:upload:idea-photos": "tsx scripts/upload-idea-photos.ts"
+    "db:upload:idea-photos": "tsx scripts/upload-idea-photos.ts",
+    "db:migrate:demo": "node scripts/migrate-demo-seed.mjs",
+    "db:upload:demo-images": "tsx scripts/upload-demo-images.ts",
+    "db:seed:demo": "tsx scripts/seed-demo.ts",
+    "db:seed:demo:verify": "tsx scripts/seed-demo.ts --verify",
+    "test:demo:db": "tsx scripts/test-demo-seed.ts",
+    "db:seed:demo:remove": "tsx scripts/seed-demo.ts --remove",
+    "build:demo-cli": "tsc -p tsconfig.demo.json --noEmit false --outDir .cache/demo/cli",
+    "db:cleanup:demo": "npm run build:demo-cli && node .cache/demo/cli/scripts/cleanup-demo.js",
+    "db:merge:demo-ideas": "npm run build:demo-cli && node .cache/demo/cli/scripts/cleanup-demo.js --merge",
+    "db:extend:demo": "npm run build:demo-cli && node .cache/demo/cli/scripts/extend-demo.js",
+    "db:seed:dmitry": "npm run build:demo-cli && node .cache/demo/cli/scripts/seed-dmitry.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.312.0",

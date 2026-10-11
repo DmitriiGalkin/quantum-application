@@ -1,9 +1,21 @@
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { db } from '../utils/dbNext.js';
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 import type { IdeaRow, CreateIdeaInput, FindAllIdeaInput, Idea, UpdateIdeaInput } from 'entities';
 import { mapIdeaRow } from '../mappers/idea.mapper.js';
 
 class IdeaRepository {
+  static async recountLikes(id: number, count: number, conn: PoolConnection): Promise<void> {
+    await conn.execute('UPDATE idea SET userCount = ? WHERE id = ?', [count, id]);
+  }
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM idea FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM idea WHERE id IN (?)', [ids]);
+  }
+
   static async findByIds(ids: number[]): Promise<Idea[]> {
     if (!ids.length) return [];
     const rows = await db.query<IdeaRow>(
@@ -65,13 +77,13 @@ class IdeaRepository {
       select.push(`
     (
       SELECT MIN(
-        6371 * ACOS(
+        6371 * ACOS(LEAST(1, GREATEST(-1,
           COS(RADIANS(?)) *
           COS(RADIANS(pl.latitude)) *
           COS(RADIANS(pl.longitude) - RADIANS(?)) +
           SIN(RADIANS(?)) *
           SIN(RADIANS(pl.latitude))
-        )
+        )))
       )
       FROM project p2
       JOIN meet m2 ON m2.projectId = p2.id
@@ -131,13 +143,16 @@ class IdeaRepository {
 
     switch (params?.sort) {
       case 'nearby':
-        sql += ' ORDER BY distance IS NULL, distance ASC';
+        sql += params?.latitude !== undefined && params.longitude !== undefined
+          ? ' ORDER BY distance IS NULL, distance ASC, idea.createdAt DESC, idea.id DESC'
+          : ' ORDER BY idea.createdAt DESC, idea.id DESC';
         break;
       case 'new':
-        sql += ' ORDER BY idea.createdAt DESC';
+      default:
+        sql += ' ORDER BY idea.createdAt DESC, idea.id DESC';
         break;
       case 'popular':
-        sql += ' ORDER BY idea.userCount DESC';
+        sql += ' ORDER BY idea.userCount DESC, idea.createdAt DESC, idea.id DESC';
         break;
     }
 

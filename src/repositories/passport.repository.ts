@@ -1,10 +1,19 @@
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { db } from '../utils/dbNext.js';
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 
 import type { PassportRow, Passport, CreatePassportInput, UpdatePassportInput } from 'entities';
 import { toPassport } from '../mappers/passport.mapper.js';
 
 class PassportRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM passport FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM passport WHERE id IN (?)', [ids]);
+  }
+
   static async lockByIds(ids: number[], conn: PoolConnection): Promise<void> {
     await conn.query('SELECT id FROM passport WHERE id IN (?) ORDER BY id FOR UPDATE', [ids]);
   }
@@ -18,20 +27,20 @@ class PassportRepository {
   }
 
   // ✅ CREATE
-  static async create(data: CreatePassportInput): Promise<number> {
-    const result = await db.execute<ResultSetHeader>(
+  static async create(data: CreatePassportInput, conn?: PoolConnection): Promise<number> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO passport
-         (providerId, provider, accessToken, title, email, image)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [data.providerId, data.provider, data.accessToken, data.title ?? null, data.email, data.image],
+         (providerId, provider, accessToken, title, email, image, description)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [data.providerId, data.provider, data.accessToken, data.title ?? null, data.email, data.image, data.description ?? null],
     );
 
-    return result.insertId;
+    return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
   // ✅ UPDATE
-  static async update(id: number, data: UpdatePassportInput): Promise<boolean> {
-    const keys = ['title', 'description'] as const;
+  static async update(id: number, data: UpdatePassportInput, conn?: PoolConnection): Promise<boolean> {
+    const keys = ['title', 'description', 'image'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;
@@ -39,9 +48,9 @@ class PassportRepository {
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
     const values = entries.map(([, v]) => v ?? null);
 
-    const result = await db.execute<ResultSetHeader>(`UPDATE passport SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await (conn ?? db).execute<ResultSetHeader>(`UPDATE passport SET ${fields} WHERE id = ?`, [...values, id]);
 
-    return result.affectedRows > 0;
+    return (Array.isArray(result) ? result[0] : result).affectedRows > 0;
   }
 
   // ✅ UPDATE TOKEN (оставляем отдельно — это нормально)

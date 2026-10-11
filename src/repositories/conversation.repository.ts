@@ -1,8 +1,13 @@
-﻿import { db } from '../utils/dbNext.js';
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import { db } from '../utils/dbNext.js';
 import type { ConversationRow } from 'entities';
 
 class ConversationRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM conversation FOR UPDATE');
+    return rows;
+  }
+
   static async findByIds(ids: number[], conn?: PoolConnection): Promise<ConversationRow[]> {
     if (!ids.length) return [];
     const sql = "SELECT * FROM conversation WHERE id IN (?) AND deletedAt IS NULL AND type = 'direct'";

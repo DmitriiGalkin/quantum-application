@@ -1,9 +1,18 @@
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { db } from '../utils/dbNext.js';
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 import type { UserRow, UserWithMeetRow, User, UserWithMeet, CreateUserInput, UpdateUserInput } from 'entities';
 import { mapUserRow, mapUserWithMeetRow } from '../mappers/user.mapper.js';
 
 class UserRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM user FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM user WHERE id IN (?)', [ids]);
+  }
+
   static async findByIds(ids: number[], activeOnly = false): Promise<User[]> {
     if (!ids.length) return [];
     const rows = await db.query<UserRow>(
@@ -14,18 +23,18 @@ class UserRepository {
   }
 
   // ✅ CREATE
-  static async create(data: CreateUserInput): Promise<number> {
-    const result = await db.execute<ResultSetHeader>(
+  static async create(data: CreateUserInput, conn?: PoolConnection): Promise<number> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO user (passportId, title, description, age)
        VALUES (?, ?, ?, ?)`,
       [data.passportId, data.title, data.description ?? null, data.age ?? null],
     );
 
-    return result.insertId;
+    return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
   // ✅ UPDATE (partial)
-  static async update(id: number, data: UpdateUserInput): Promise<boolean> {
+  static async update(id: number, data: UpdateUserInput, conn?: PoolConnection): Promise<boolean> {
     const keys = ['title', 'age', 'image'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
@@ -34,9 +43,9 @@ class UserRepository {
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
     const values = entries.map(([, v]) => v ?? null);
 
-    const result = await db.execute<ResultSetHeader>(`UPDATE user SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await (conn ?? db).execute<ResultSetHeader>(`UPDATE user SET ${fields} WHERE id = ?`, [...values, id]);
 
-    return result.affectedRows > 0;
+    return (Array.isArray(result) ? result[0] : result).affectedRows > 0;
   }
 
   // ✅ DELETE

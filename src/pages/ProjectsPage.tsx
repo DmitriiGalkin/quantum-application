@@ -26,7 +26,7 @@ function ProjectsPage() {
             }
           : {}),
       }),
-    enabled: filters.sort !== 'nearby' || location.status === 'success',
+    enabled: filters.sort !== 'nearby' || location.status === 'success' || location.status === 'error',
   });
 
   return (
@@ -47,7 +47,7 @@ function ProjectsPage() {
       )}
 
       {filters.sort === 'nearby' && location.status === 'error' && (
-        <Typography sx={{ color: 'text.secondary' }}>Не удалось определить местоположение</Typography>
+        <Typography sx={{ color: 'text.secondary' }}>Местоположение недоступно. Показываем все проекты.</Typography>
       )}
 
       {filters.view === 'module' && <ProjectGrids projects={projects} />}

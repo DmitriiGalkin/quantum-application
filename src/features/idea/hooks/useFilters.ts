@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { type Sort, type View, type When } from 'entities';
 
 export interface FilterProps {
@@ -9,17 +9,24 @@ export interface FilterProps {
 }
 
 export function useFilters(): FilterProps {
-  const [filters, setFilters] = useState({
-    view: 'module' as View,
-    sort: 'nearby' as Sort,
-    when: undefined as When,
+  const [params, setParams] = useSearchParams();
+  const sort = params.get('sort');
+  const when = params.get('when');
+  const view = params.get('view');
+  const filters = {
+    view: (view === 'map' || view === 'group' ? view : 'module') as View,
+    sort: (sort === 'popular' || sort === 'nearby' ? sort : 'new') as Sort,
+    when: (when === 'today' || when === 'tomorrow' ? when : undefined) as When,
+  };
+  const setFilter = (key: string, value?: string) => setParams(previous => {
+    const next = new URLSearchParams(previous);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    return next;
   });
-
-  const setView = (view: View) => setFilters(f => ({ ...f, view }));
-
-  const setSort = (sort: Sort) => setFilters(f => ({ ...f, sort }));
-
-  const setWhen = (when?: When) => setFilters(f => ({ ...f, when }));
+  const setView = (view: View) => setFilter('view', view);
+  const setSort = (sort: Sort) => setFilter('sort', sort);
+  const setWhen = (when?: When) => setFilter('when', when);
 
   return {
     filters,

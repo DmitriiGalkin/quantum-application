@@ -1,8 +1,26 @@
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { db } from '../utils/dbNext.js';
 import type { PlaceSchedule, PlaceScheduleDayDto } from 'entities';
-import type { PoolConnection } from 'mysql2/promise';
 
 export default class PlaceScheduleRepository {
+  static async saveSeedDay(id: number | undefined, placeId: number, day: PlaceScheduleDayDto, conn: PoolConnection): Promise<number> {
+    const values = [placeId, day.weekday, day.enabled, day.startTime, day.endTime];
+    if (id !== undefined) {
+      await conn.execute('UPDATE placeSchedule SET placeId = ?, weekday = ?, enabled = ?, startTime = ?, endTime = ? WHERE id = ?', [...values, id]);
+      return id;
+    }
+    const [result] = await conn.execute<ResultSetHeader>('INSERT INTO placeSchedule (placeId, weekday, enabled, startTime, endTime) VALUES (?, ?, ?, ?, ?)', values);
+    return result.insertId;
+  }
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM placeSchedule FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM placeSchedule WHERE id IN (?)', [ids]);
+  }
+
   static async findByPlaceId(placeId: number): Promise<PlaceSchedule[]> {
     return db.query<PlaceSchedule>(
       `

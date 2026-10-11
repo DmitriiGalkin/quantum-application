@@ -1,8 +1,20 @@
-import type { PoolConnection } from 'mysql2/promise';
+import type { PoolConnection, RowDataPacket } from 'mysql2/promise';
 import type { IdeaPhoto, IdeaPhotoRow } from '../entities/idea.js';
 import { db } from '../utils/dbNext.js';
 
 export class IdeaPhotoRepository {
+  static async moveSeedPhoto(id: string, ideaId: number, position: number, conn: PoolConnection): Promise<void> {
+    await conn.execute('UPDATE ideaPhoto SET ideaId = ?, position = ? WHERE id = ?', [ideaId, position, id]);
+  }
+
+  static async removeSeedRows(ids: string[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM ideaPhoto WHERE id IN (?)', [ids]);
+  }
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM ideaPhoto FOR UPDATE');
+    return rows;
+  }
+
   static async findByIdeaIds(ideaIds: number[]): Promise<IdeaPhotoRow[]> {
     if (!ideaIds.length) return [];
     return db.query<IdeaPhotoRow>('SELECT * FROM ideaPhoto WHERE ideaId IN (?) ORDER BY position, id', [ideaIds]);

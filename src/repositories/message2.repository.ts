@@ -1,8 +1,13 @@
-﻿import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import type { Message, Message2Row, UpdateMessageRequest } from 'entities';
 import { db } from '../utils/dbNext.js';
 
 class Message2Repository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM message2 FOR UPDATE');
+    return rows;
+  }
+
   static async findById(id: number): Promise<Message2Row | null> {
     const rows = await db.query<Message2Row>('SELECT * FROM message2 WHERE id = ? AND deletedAt IS NULL', [id]);
     return rows[0] ?? null;

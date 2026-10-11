@@ -1,10 +1,10 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-10T20:05:44.928Z
+Дата выгрузки: 2026-10-10T21:10:59.756Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
-Таблицы и представления: 19.
+Таблицы и представления: 20.
 
 ## Объекты
 
@@ -12,6 +12,7 @@
 | --- | --- | --- | --- | --- |
 | conversation | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | conversationPassport | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| demoSeedRecord | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | idea | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | ideaPhoto | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | ideaUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
@@ -99,6 +100,40 @@ CREATE TABLE `conversationPassport` (
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`conversationId`,`passportId`),
   CONSTRAINT `fk_conversationPassport_conversation` FOREIGN KEY (`conversationId`) REFERENCES `conversation` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## demoSeedRecord
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| seedKey | varchar(64) | NO | NULL | PRI |  |  |
+| entityType | varchar(32) | NO | NULL | PRI |  |  |
+| entityKey | varchar(128) | NO | NULL | PRI |  |  |
+| recordId | int | NO | NULL |  |  |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| demo_record_unique | Да | 1 | entityType | NULL | BTREE |
+| demo_record_unique | Да | 2 | recordId | NULL | BTREE |
+| PRIMARY | Да | 1 | seedKey | NULL | BTREE |
+| PRIMARY | Да | 2 | entityType | NULL | BTREE |
+| PRIMARY | Да | 3 | entityKey | NULL | BTREE |
+
+### DDL
+
+```sql
+CREATE TABLE `demoSeedRecord` (
+  `seedKey` varchar(64) NOT NULL,
+  `entityType` varchar(32) NOT NULL,
+  `entityKey` varchar(128) NOT NULL,
+  `recordId` int NOT NULL,
+  PRIMARY KEY (`seedKey`,`entityType`,`entityKey`),
+  UNIQUE KEY `demo_record_unique` (`entityType`,`recordId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 

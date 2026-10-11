@@ -11,7 +11,7 @@ export interface TeacherDashboardDto {
   projects: number;
   meets: number;
   students: number;
-  debit: number;
+  debit: number | null;
 
   bmeets: MeetDto[];
 }

@@ -1,11 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { Meet, Passport, Place, Project, ProjectUser, User } from 'entities';
+import type { Idea, Meet, Passport, Place, Project, ProjectUser, User } from 'entities';
 
 vi.mock('../utils/dbNext.js', () => ({ db: {} }));
 vi.mock('../repositories/project.repository.js', () => ({ default: { findAll: vi.fn(), findById: vi.fn(), update: vi.fn() } }));
-vi.mock('../repositories/meet.repository.js', () => ({ default: { findById: vi.fn(), findByProjectIds: vi.fn(), findByProjectId: vi.fn(), update: vi.fn(), updateStatus: vi.fn() } }));
+vi.mock('../repositories/meet.repository.js', () => ({ default: { findAll: vi.fn(), findById: vi.fn(), findByProjectIds: vi.fn(), findByProjectId: vi.fn(), update: vi.fn(), updateStatus: vi.fn() } }));
 vi.mock('../repositories/passport.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn() } }));
-vi.mock('../repositories/place.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn() } }));
+vi.mock('../repositories/place.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn(), findByPassportId: vi.fn() } }));
+vi.mock('../repositories/idea.repository.js', () => ({ default: { findByTeacherId: vi.fn() } }));
 vi.mock('../repositories/user.repository.js', () => ({ default: { findByIds: vi.fn(), findByProjectId: vi.fn() } }));
 vi.mock('../repositories/project-user.repository.js', () => ({ default: { findByProjectIds: vi.fn(), findByProjectId: vi.fn() } }));
 vi.mock('../repositories/meet-user.repository.js', () => ({ default: { findByMeetIds: vi.fn() } }));
@@ -24,6 +25,8 @@ import ProjectUserRepository from '../repositories/project-user.repository.js';
 import MeetUserRepository from '../repositories/meet-user.repository.js';
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
 import { IdeaService } from './idea.service.js';
+import { TeacherService } from './teacher.service.js';
+import IdeaRepository from '../repositories/idea.repository.js';
 
 const passport: Passport = { id: 10, title: 'Teacher', provider: 'test', providerId: '10', accessToken: '', description: null, image: null, email: '' };
 const place: Place = { id: 3, title: 'School', description: null, latitude: 0, longitude: 0, address: '', provider: null, providerId: null, phone: null, priceFrom: null };
@@ -78,6 +81,65 @@ describe('ownership checks', () => {
 });
 
 describe('list composition', () => {
+  it.each([1, 50])('loads a teacher dashboard with %i projects without repeating meeting queries', async count => {
+    vi.mocked(ProjectRepository.findAll).mockResolvedValue(Array.from({ length: count }, (_, i) => ({ ...project, id: i + 1 })));
+    vi.mocked(MeetRepository.findAll).mockResolvedValue([meet]);
+    vi.mocked(ProjectUserRepository.findByProjectIds).mockResolvedValue([
+      ...joins,
+      { ...joins[0], id: 3, projectId: count },
+    ]);
+
+    const result = await TeacherService.getDashboard(passport.id);
+
+    expect(result).toMatchObject({ projects: count, meets: 1, students: 2, debit: null });
+    expect(result.bmeets).toHaveLength(1);
+    expect(MeetRepository.findAll).toHaveBeenCalledExactlyOnceWith({ passportId: passport.id });
+    expect(ProjectUserRepository.findByProjectIds).toHaveBeenCalledTimes(2);
+    expect(UserRepository.findByIds).toHaveBeenCalledTimes(2);
+    expect(UserRepository.findByProjectId).not.toHaveBeenCalled();
+  });
+
+  it('returns zero counts and no income for an empty teacher dashboard', async () => {
+    vi.mocked(ProjectRepository.findAll).mockResolvedValue([]);
+    vi.mocked(MeetRepository.findAll).mockResolvedValue([]);
+    vi.mocked(ProjectUserRepository.findByProjectIds).mockResolvedValue([]);
+    const result = await TeacherService.getDashboard(passport.id);
+    expect(result).toEqual({ projects: 0, meets: 0, students: 0, debit: null, bmeets: [] });
+  });
+
+  it.each([1, 50])('assembles a teacher profile with %i projects using batches and matches related records by ID', async count => {
+    const projects = Array.from({ length: count }, (_, i) => ({ ...project, id: i + 1 }));
+    const idea: Idea = {
+      id: 9, userId: users[0].id, passportId: null, title: 'Idea', description: '', image: null,
+      userCount: 0, createdAt: '2030-01-01', isLiked: 0, today: false, photos: [],
+    };
+    vi.mocked(PassportRepository.findById).mockResolvedValue(passport);
+    vi.mocked(ProjectRepository.findAll).mockResolvedValue(projects);
+    vi.mocked(IdeaRepository.findByTeacherId).mockResolvedValue([idea, { ...idea, id: 10, userId: 999 }]);
+    vi.mocked(PlaceRepository.findByPassportId).mockResolvedValue([place]);
+    vi.mocked(MeetRepository.findByProjectIds).mockResolvedValue([{ ...meet, projectId: count }]);
+    vi.mocked(UserRepository.findByIds).mockResolvedValue([...users].reverse());
+
+    const result = await TeacherService.findById(passport.id);
+
+    expect(result).toMatchObject({ students: 2, meets: 1, centersCount: 1 });
+    expect(result?.projects).toHaveLength(count);
+    expect(result?.projects[count - 1].meets[0].id).toBe(meet.id);
+    expect(result?.ideas.map(item => item.user?.id ?? null)).toEqual([users[0].id, null]);
+    expect(result?.projects[0].users.map(user => user.id)).toEqual([1, 2]);
+    expect(MeetRepository.findByProjectIds).toHaveBeenCalledExactlyOnceWith(projects.map(project => project.id), true);
+    expect(PlaceRepository.findByIds).toHaveBeenCalledTimes(2);
+    expect(UserRepository.findByIds).toHaveBeenCalledTimes(3);
+    expect(UserRepository.findByProjectId).not.toHaveBeenCalled();
+    expect(MeetRepository.findAll).not.toHaveBeenCalled();
+  });
+
+  it('does not load a profile for a missing teacher', async () => {
+    vi.mocked(PassportRepository.findById).mockResolvedValue(null);
+    expect(await TeacherService.findById(999)).toBeNull();
+    expect(ProjectRepository.findAll).not.toHaveBeenCalled();
+  });
+
   it.each([1, 50])('loads %i projects with the same number of repository calls', async count => {
     const projects = Array.from({ length: count }, (_, i) => ({ ...project, id: i + 1 }));
     vi.mocked(ProjectRepository.findAll).mockResolvedValue(projects);

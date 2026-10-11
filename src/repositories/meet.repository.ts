@@ -1,9 +1,27 @@
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import type {GetMeetsQuery, MeetStatus, MeetRow, MeetWithProjectTitleRow, CreateMeetInput, UpdateMeetInput, Meet, MeetWithProjectTitle } from 'entities';
 import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class MeetRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM meet FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM meet WHERE id IN (?)', [ids]);
+  }
+
+  static async findByPlaceIds(ids: number[]): Promise<Meet[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<MeetRow>(
+      'SELECT * FROM meet WHERE placeId IN (?)',
+      [[...new Set(ids)]],
+    );
+    return rows.map(toMeet);
+  }
+
   static async findIdsByPlaceId(placeId: number): Promise<number[]> {
     const rows = await db.query<{ id: number }>(
       "SELECT id FROM meet WHERE placeId = ? AND deletedAt IS NULL AND status <> 'cancelled'",
@@ -34,18 +52,18 @@ class MeetRepository {
     return rows.map(toMeet);
   }
 
-  static async create(data: CreateMeetInput): Promise<number> {
-    const result = await db.execute<ResultSetHeader>(
+  static async create(data: CreateMeetInput, conn?: PoolConnection): Promise<number> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [data.passportId, data.projectId, data.price, data.duration, data.startedAt, data.placeId],
     );
 
-    return result.insertId;
+    return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
   // ✅ UPDATE (нормальный partial)
-  static async update(id: number, data: UpdateMeetInput): Promise<boolean> {
+  static async update(id: number, data: UpdateMeetInput, conn?: PoolConnection): Promise<boolean> {
     const keys = ['startedAt', 'duration', 'price', 'status'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
@@ -54,9 +72,9 @@ class MeetRepository {
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
     const values = entries.map(([, v]) => v ?? null);
 
-    const result = await db.execute<ResultSetHeader>(`UPDATE meet SET ${fields} WHERE id = ?`, [...values, id]);
+    const result = await (conn ?? db).execute<ResultSetHeader>(`UPDATE meet SET ${fields} WHERE id = ?`, [...values, id]);
 
-    return result.affectedRows > 0;
+    return (Array.isArray(result) ? result[0] : result).affectedRows > 0;
   }
 
   // ✅ DELETE (soft)

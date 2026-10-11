@@ -1,7 +1,16 @@
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { db } from '../utils/dbNext.js';
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
 
 class PlacePassportRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM placePassport FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM placePassport WHERE id IN (?)', [ids]);
+  }
+
   static async countTeachers(placeId: number): Promise<number> {
     const [row] = await db.query<{ count: number }>(
       "SELECT COUNT(DISTINCT passportId) AS count FROM placePassport WHERE placeId = ? AND role = 'teacher'",

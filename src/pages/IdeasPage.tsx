@@ -15,20 +15,17 @@ import IdeaGrids from '../features/idea/ui/IdeaGrids.tsx';
 function IdeasPage() {
   const { filters, setView, setSort, setWhen } = useFilters();
   const location = useLocation(filters.sort === 'nearby');
+  const query = {
+    sort: filters.sort,
+    when: filters.when,
+    ...(filters.sort === 'nearby' && location.status === 'success'
+      ? { latitude: location.lat, longitude: location.lng }
+      : {}),
+  };
 
   const { data: ideas = [], isLoading } = useQuery({
-    queryKey: ['ideas', filters, location],
-    queryFn: () =>
-      fetchIdeas({
-        ...filters,
-        ...(filters.sort === 'nearby' && location.status === 'success'
-          ? {
-              latitude: location.lat,
-              longitude: location.lng,
-            }
-          : {}),
-      }),
-    enabled: filters.sort !== 'nearby' || location.status === 'success',
+    queryKey: ['ideas', query],
+    queryFn: () => fetchIdeas(query),
   });
 
   return (
@@ -49,7 +46,7 @@ function IdeasPage() {
         </Box>
       )}
       {filters.sort === 'nearby' && location.status === 'error' && (
-        <Typography sx={{ color: 'text.secondary' }}>Не удалось определить местоположение</Typography>
+        <Typography sx={{ color: 'text.secondary' }}>Местоположение недоступно. Показываем все идеи.</Typography>
       )}
       {filters.view === 'map' && (
         <Paper

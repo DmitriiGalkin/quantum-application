@@ -28,6 +28,7 @@ export type * from './project-user.js';
 export type * from './teacher.js';
 export type * from './teacher-user.js';
 export type * from './user.js';
+export type * from './demo-seed.js';
 
 
 export interface PageMeta {

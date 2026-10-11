@@ -39,7 +39,7 @@ export default function TeacherDashboardPage() {
             <CardContent>
               <Typography variant="h4">{data.meets}</Typography>
 
-              <Typography color="text.secondary">Встреч на неделе</Typography>
+              <Typography color="text.secondary">Предстоящих встреч</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -54,15 +54,17 @@ export default function TeacherDashboardPage() {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 6, md: 3 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h4">{data.debit} рублей</Typography>
+        {data.debit !== null && (
+          <Grid size={{ xs: 6, md: 3 }}>
+            <Card>
+              <CardContent>
+                <Typography variant="h4">{data.debit} рублей</Typography>
 
-              <Typography color="text.secondary">Доход</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+                <Typography color="text.secondary">Доход</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
       </Grid>
 
       <Typography variant="h5">Быстрые действия</Typography>

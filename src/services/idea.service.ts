@@ -130,12 +130,16 @@ export class IdeaService {
 
   static async findAll(params: GetIdeasQuery): Promise<IdeaDto[]> {
     if (params.sort === 'nearby') {
-      const latitude = Number(params.latitude);
-      const longitude = Number(params.longitude);
-      if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
-        throw new IdeaError('Некорректные координаты', 400);
+      if (params.latitude === undefined || params.longitude === undefined) {
+        params = { ...params, sort: 'new', latitude: undefined, longitude: undefined };
+      } else {
+        const latitude = Number(params.latitude);
+        const longitude = Number(params.longitude);
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
+          throw new IdeaError('Некорректные координаты', 400);
+        }
+        params = { ...params, latitude, longitude };
       }
-      params = { ...params, latitude, longitude };
     }
 
     const ideas = await IdeaRepository.findAll(params);

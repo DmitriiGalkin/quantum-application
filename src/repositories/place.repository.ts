@@ -1,10 +1,19 @@
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 import { toPlace } from '../mappers/place.mapper.js';
 import type { CreatePlaceInput, Place, UpdatePlaceInput, PlaceRow } from 'entities';
 import { db } from '../utils/dbNext.js';
 
 class PlaceRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM place FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM place WHERE id IN (?)', [ids]);
+  }
+
   static async findByIds(ids: number[]): Promise<Place[]> {
     if (!ids.length) return [];
     const rows = await db.query<PlaceRow>(

@@ -15,11 +15,17 @@ export class PlaceService {
   static async findAll() {
     const places = await PlaceRepository.findAll();
 
-    const meetsForPlaces = await Promise.all(places.map(place => MeetRepository.findByPlaceId(place.id)));
+    const meets = await MeetRepository.findByPlaceIds(places.map(place => place.id));
+    const meetsByPlace = new Map<number, typeof meets>();
+    for (const meet of meets) {
+      const group = meetsByPlace.get(meet.placeId) ?? [];
+      group.push(meet);
+      meetsByPlace.set(meet.placeId, group);
+    }
 
-    return places.map((place, idx) => ({
+    return places.map(place => ({
       ...place,
-      meets: meetsForPlaces[idx],
+      meets: meetsByPlace.get(place.id) ?? [],
     }));
   }
 

@@ -1,6 +1,12 @@
+import type { PoolConnection, RowDataPacket } from 'mysql2/promise';
 import { db } from '../utils/dbNext.js';
 
 class PlaceLocationRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM placeLocation FOR UPDATE');
+    return rows;
+  }
+
   static async create(data: { placeId: number; title: string }): Promise<number> {
     const result = await db.execute(
       `INSERT INTO placeLocation (placeId, title)

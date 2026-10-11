@@ -1,4 +1,4 @@
-import type { PoolConnection, ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 import type { ProjectUserRow, CreateProjectUserInput, ProjectUser } from 'entities';
 import { mapProjectUserRow } from '../mappers/project-user.mapper.js';
@@ -6,6 +6,15 @@ import { mapProjectUserRow } from '../mappers/project-user.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class ProjectUserRepository {
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM projectUser FOR UPDATE');
+    return rows;
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM projectUser WHERE id IN (?)', [ids]);
+  }
+
   static async findByProjectIds(ids: number[]): Promise<ProjectUser[]> {
     if (!ids.length) return [];
     const rows = await db.query<ProjectUserRow>(
@@ -16,14 +25,14 @@ class ProjectUserRepository {
   }
 
   // ✅ CREATE
-  static async create(data: CreateProjectUserInput): Promise<number> {
-    const result = await db.execute<ResultSetHeader>(
+  static async create(data: CreateProjectUserInput, conn?: PoolConnection): Promise<number> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO projectUser (projectId, userId)
        VALUES (?, ?)`,
       [data.projectId, data.userId],
     );
 
-    return result.insertId;
+    return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
   // ✅ DELETE BY ID

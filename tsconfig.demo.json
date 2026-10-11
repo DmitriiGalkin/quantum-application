@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.backend.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "types": ["node", "multer"],
+    "noEmit": true
+  },
+  "include": ["scripts/*.ts", "src/services/demo-*.ts", "src/types/**/*.d.ts"]
+}

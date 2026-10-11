@@ -1,10 +1,22 @@
-import type { ResultSetHeader } from 'mysql2/promise';
+import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 import type { IdeaUserRow, IdeaUser, CreateIdeaUserInput } from 'entities';
 import { mapIdeaUserRow } from '../mappers/idea-user.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class IdeaUserRepository {
+  static async moveSeedLike(id: number, ideaId: number, conn: PoolConnection): Promise<void> {
+    await conn.execute('UPDATE ideaUser SET ideaId = ? WHERE id = ?', [ideaId, id]);
+  }
+
+  static async removeSeedRows(ids: number[], conn: PoolConnection): Promise<void> {
+    if (ids.length) await conn.query('DELETE FROM ideaUser WHERE id IN (?)', [ids]);
+  }
+  static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
+    const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM ideaUser FOR UPDATE');
+    return rows;
+  }
+
   // ✅ CREATE
   static async create(data: CreateIdeaUserInput): Promise<number> {
     const result = await db.execute<ResultSetHeader>(
