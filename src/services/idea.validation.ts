@@ -32,12 +32,17 @@ export function validateCatalogItem(value: unknown, requireDriveId = true): Idea
   for (const photo of value.photos) {
     if (!object(photo)) invalid('Invalid photo');
     id(photo.id);
-    for (const field of requireDriveId ? ['fileName', 'driveFileId', 'url'] : ['fileName', 'url']) {
+    for (const field of ['fileName', 'url']) {
       if (typeof photo[field] !== 'string' || !photo[field]) invalid(`Invalid photo ${field}`);
     }
     let url: URL;
     try { url = new URL(photo.url as string); } catch { invalid('Invalid photo URL'); }
     if (!['https:', 'http:'].includes(url.protocol)) invalid('Photo URL must use HTTP(S)');
+    if (requireDriveId && photo.origin === 'generated') {
+      if (url.protocol !== 'https:' || url.hostname !== 'storage.yandexcloud.net' || !url.pathname.startsWith('/quantum-education/')) invalid('Generated catalog photos must use Quantum S3');
+      if (photo.generatedBy !== 'imagegen' || !Array.isArray(photo.sourcePhotoIds) || !photo.sourcePhotoIds.length
+        || !photo.sourcePhotoIds.every(source => typeof source === 'string') || typeof photo.promptFile !== 'string' || !photo.promptFile) invalid('Generated photo provenance is required');
+    } else if (requireDriveId && (typeof photo.driveFileId !== 'string' || !photo.driveFileId)) invalid('Invalid photo driveFileId');
     if (typeof photo.isCover !== 'boolean') invalid('isCover must be boolean');
     if (photo.isCover) covers++;
     if (ids.has(photo.id as string)) invalid('Duplicate photo ID');

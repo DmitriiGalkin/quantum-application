@@ -76,6 +76,17 @@ describe('idea card ownership and identity', () => {
     expect(IdeaPhotoRepository.replace).toHaveBeenCalledWith(1, [stored], expect.anything());
     expect(IdeaRepository.update).toHaveBeenCalledWith(1, expect.objectContaining({ image: stored.url }), expect.anything());
   });
+  it('keeps the generated cover and original S3 gallery across repeated catalog imports', async () => {
+    const original = { id: 'original', fileName: 'original.jpg', driveFileId: 'drive-original', url: 'https://drive.google.com/file/d/original/view', isCover: false };
+    const generated = { id: 'generated', fileName: 'cover.png', url: FileService.publicUrl + 'cover.png', isCover: true,
+      origin: 'generated', generatedBy: 'imagegen', sourcePhotoIds: ['original'], promptFile: 'cover.prompt.md' };
+    const stored = { ...original, sourceUrl: original.url, url: FileService.publicUrl + 'original.jpg' };
+    vi.mocked(IdeaRepository.findById).mockResolvedValue({ ...idea, passportId: null });
+    vi.mocked(IdeaPhotoRepository.findByIdeaId).mockResolvedValue([generated, stored]);
+    for (let i = 0; i < 2; i++) await IdeaService.importCatalog({ schemaVersion: 1, items: [{ id: card.catalogId, name: card.title, description: '', photos: [generated, original] }] }, null);
+    expect(IdeaPhotoRepository.replace).toHaveBeenLastCalledWith(1, [generated, stored], expect.anything());
+    expect(IdeaRepository.update).toHaveBeenLastCalledWith(1, expect.objectContaining({ image: generated.url }), expect.anything());
+  });
   it('uploads a catalog original using FileService and saves the S3 cover with its source URL', async () => {
     const photo = { id: 'photo-test', fileName: 'test.jpg', driveFileId: 'drive-test', url: 'https://drive.google.com/file/d/drive-test/view', isCover: true };
     const url = FileService.publicUrl + 'ideas/photo-test.jpg';

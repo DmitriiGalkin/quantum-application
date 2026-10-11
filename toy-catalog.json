@@ -34,11 +34,30 @@
       "questions": [],
       "photos": [
         {
+          "id": "toy-001-generated-cover-v1",
+          "fileName": "toy-001-generated-cover-v1.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-001-generated-cover-v1.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "toy-001-photo-01",
+            "toy-001-photo-02",
+            "toy-001-photo-03",
+            "toy-001-photo-04",
+            "toy-001-photo-05",
+            "toy-001-photo-06",
+            "toy-001-photo-07",
+            "toy-001-photo-08"
+          ],
+          "promptFile": "public/catalog/toy-001-generated-cover-v1.prompt.md"
+        },
+        {
           "id": "toy-001-photo-01",
           "fileName": "IMG_20261010_125031.jpg",
           "driveFileId": "1j1Nly9XiLw2X-LbhGV86FA5dW-oGw1jJ",
           "url": "https://drive.google.com/file/d/1j1Nly9XiLw2X-LbhGV86FA5dW-oGw1jJ/view",
-          "isCover": true
+          "isCover": false
         },
         {
           "id": "toy-001-photo-02",

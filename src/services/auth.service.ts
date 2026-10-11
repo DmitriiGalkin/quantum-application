@@ -8,7 +8,8 @@ import ProjectRepository from '../repositories/project.repository.js';
 
 export class AuthService {
   static async authenticateByToken(token: string): Promise<Passport | null> {
-    return PassportRepository.findByAccessToken(token);
+    const passport = await PassportRepository.findByAccessToken(token);
+    return passport?.provider === 'quantum-directory' ? null : passport;
   }
 
   static async updateProfile(passport: Passport, data: UpdatePassportInput) {
@@ -20,6 +21,7 @@ export class AuthService {
   }
 
   static async login(passport: Passport) {
+    if (passport.provider === 'quantum-directory') throw new HttpError('Directory profiles cannot sign in', 403);
     const token = jwt.sign({ id: passport.id }, process.env.JWT_SECRET || 'shhhhh', { expiresIn: '1h' });
 
     await PassportRepository.updateTokenById(token, passport.id);

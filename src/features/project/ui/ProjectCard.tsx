@@ -23,7 +23,8 @@ import { CreateUserForm } from '../../user/CreateUserForm.tsx';
 import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
-import { getMeetStatus, statusConfig } from '../../meets/helper.ts';
+import { statusConfig } from '../../meets/helper.ts';
+import { nextProjectMeet, moscowMeetStatus } from './project-card-meeting.ts';
 import CardMedia from '@mui/material/CardMedia';
 import LinkIcon from '@mui/icons-material/Link';
 import ChatDialog from '../../../components/ChatDialog.tsx'; // Добавлен импорт
@@ -51,24 +52,14 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const isMember = userId && project.users?.map(user => user.id).includes(userId);
-  const sortedMeets = [...project.meets].sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
-
-  const firstMeet = sortedMeets.find(m => m.startedAt); //new Date(m.startedAt) > now
-
-  const status = firstMeet ? statusConfig[getMeetStatus(firstMeet)] : undefined;
-  const startedAt = new Date(firstMeet?.startedAt || new Date());
-  const date = startedAt.toLocaleDateString('ru-RU', {
-    day: '2-digit',
-    month: 'long',
-  });
-
-  const time = startedAt.toLocaleTimeString('ru-RU', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const firstMeet = nextProjectMeet(project.meets);
+  const status = firstMeet ? statusConfig[moscowMeetStatus(firstMeet)] : undefined;
+  const startedAt = firstMeet ? new Date(firstMeet.startedAt) : undefined;
+  const date = startedAt?.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', timeZone: 'Europe/Moscow' });
+  const time = startedAt?.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' });
 
   const [form, setForm] = useState<ProjectFormValues>({
-    title: project.passport?.title || '',
+    title: project.title || '',
     description: project.description || '',
     image: project.image ?? '',
     placeId: project.place.id,
@@ -181,175 +172,49 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
 
   return (
     <Card sx={{ borderRadius: 3 }}>
-      <CardActionArea
-        sx={{
-          '&:hover': {
-            bgcolor: 'rgba(255,160,40,.05)',
-          },
-        }}
-        onClick={() => navigate(`/project/${project.id}`)}
-      >
-        {!withoutIdea && (
-          <Box sx={{ position: 'relative', overflow: 'hidden' }}>
-            <CardHeader
-              avatar={
-                <Link to={`/teachers/${project.passport?.id}`} style={{ textDecoration: 'none' }}>
-                  <Avatar alt={project.passport?.title} src={project.passport?.image || ''} variant="rounded">
-                    R
-                  </Avatar>
-                </Link>
-              }
-              action={<MenuButton menuItems={menuItems} />}
-              title={
-                <Typography variant="subtitle1" component="span">
-                  {project.passport?.title}
-                </Typography>
-              }
-              subheader={
-                <Stack
-                  direction="row"
-                  spacing={0.5}
-                  sx={{
-                    alignItems: 'center',
-                    minWidth: 0,
-                  }}
-                >
-                  <PlaceIcon sx={{ fontSize: 12, opacity: 0.6, flexShrink: 0 }} />
-
-                  <Typography
-                    variant="subtitle2"
-                    noWrap
-                    sx={{
-                      minWidth: 0,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    {project.place.address}
-                  </Typography>
-                </Stack>
-              }
-              sx={{
-                backgroundColor: project.passport?.id === passport?.id ? 'rgba(255,160,40,.1)' : 'rgba(255,255,255,.7)',
-                boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.1)',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-
-                // Самое важное
-                '& .MuiCardHeader-content': {
-                  minWidth: 0,
-                },
-
-                '& .MuiCardHeader-action': {
-                  flexShrink: 0,
-                },
-              }}
-            />
-
-            <CardMedia
-              component="img"
-              height="300"
-              image={project.image || `/bg.jpeg`}
-              alt={project.title || 'Проект'}
-              sx={{
-                objectFit: 'cover',
-                display: 'block',
-              }}
-            />
-
-            <CardContent
-              sx={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                background: 'linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.65) 65%, rgba(255,255,255,0) 100%)',
-                color: 'text.primary', // Темный цвет текста по умолчанию из темы MUI
-                padding: '16px',
-                pt: '32px', // Дополнительный верхний отступ, чтобы текст не залезал на прозрачную часть градиента
-                '&:last-child': { paddingBottom: '16px' },
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography component="h1" variant="h6" gutterBottom sx={{ color: 'text.primary', margin: 0, fontWeight: 600 }}>
-                  {project.title}
-                </Typography>
-                <IconButton
-                  size="small"
-                  onClick={e => {
-                    e.stopPropagation(); // важно: чтобы не триггерить Card click
-                    navigate(`/idea/${project.idea?.id || 0}`);
-                  }}
-                  sx={{
-                    color: 'text.primary', // Темная иконка
-                    opacity: 0.6,
-                    '&:hover': {
-                      opacity: 1,
-                    },
-                  }}
-                >
-                  <LinkIcon fontSize="small" />
-                </IconButton>
-              </Box>
-
-              <Typography sx={{ color: 'text.secondary', mt: 0.5, fontSize: '0.875rem' }}>{project.description}</Typography>
-            </CardContent>
-          </Box>
-        )}
-
-        {firstMeet && status ? (
-          <CardContent sx={{ backgroundColor: 'rgba(255,160,40,.1)' }}>
-            <Box sx={{ position: 'relative' }}>
-              <Chip label={status.label} color={status.color} size="small" sx={{ position: 'absolute', top: -30, left: '50%', transform: 'translateX(-50%)' }} />
-              <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }} spacing={0.5}>
-                  <Typography variant="body2" color="text.secondary">
-                    <b>{date}</b>,
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {time}
-                  </Typography>
-                </Stack>
-
-                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                  <ScheduleOutlinedIcon fontSize="small" color="disabled" />
-                  <Typography variant="body2">{firstMeet.duration} минут</Typography>
-                </Stack>
-              </Stack>
-            </Box>
+      {!withoutIdea && <>
+        <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}>
+          <CardMedia component="img" image={project.image || '/bg.jpeg'} alt={project.title || 'Проект'}
+            sx={{ height: { xs: 280, sm: 320 }, objectFit: 'contain', display: 'block', bgcolor: 'background.default', p: 1, boxSizing: 'border-box' }} />
+          <CardContent>
+            <Typography component="h2" variant="h6" sx={{ fontWeight: 600 }}>{project.title}</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+              {project.description}
+            </Typography>
           </CardContent>
-        ) : (
-          <>
-            {role === 'teacher' && project.passport.id === passport?.id ? (
-              <CardContent sx={{ height: 24, backgroundColor: 'rgba(0,0,0,.1)', alignItems: 'center' }}>
-                <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Встреч пока нет
-                  </Typography>
-                  <Button size="small" variant="contained">
-                    Создать встречу
-                  </Button>
-                </Stack>
-              </CardContent>
-            ) : (
-              <CardContent
-                sx={{
-                  height: 24,
-                  bgcolor: 'rgba(0,0,0,.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Ближайшая встреча не назначена
-                </Typography>
-              </CardContent>
-            )}
-          </>
-        )}
+        </CardActionArea>
+        <CardHeader
+          avatar={<Avatar component={Link} to={`/teachers/${project.passport.id}`} alt={project.passport.title}
+            src={project.passport.image || ''} variant="rounded">{project.passport.title?.[0]}</Avatar>}
+          title={<Typography component={Link} to={`/teachers/${project.passport.id}`} variant="subtitle2"
+            sx={{ color: 'text.primary', textDecoration: 'none' }}>{project.passport.title}</Typography>}
+          subheader="Мастер проекта"
+          action={<Stack direction="row">
+            {project.idea?.id && <IconButton component={Link} to={`/idea/${project.idea.id}`} aria-label="Исходная идея" size="small"><LinkIcon fontSize="small" /></IconButton>}
+            <MenuButton menuItems={menuItems} />
+          </Stack>}
+          sx={{ borderTop: 1, borderColor: 'divider', '& .MuiCardHeader-content': { minWidth: 0 } }} />
+        <Stack direction="row" spacing={1} sx={{ px: 2, pb: 2, alignItems: 'flex-start' }}>
+          <PlaceIcon fontSize="small" color="action" />
+          <Box sx={{ minWidth: 0 }}>
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>{project.place.title}</Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', overflowWrap: 'anywhere' }}>{project.place.address}</Typography>
+          </Box>
+        </Stack>
+      </>}
+      {withoutIdea && menuItems.length > 0 && <Box sx={{ display: 'flex', justifyContent: 'flex-end', px: 1 }}><MenuButton menuItems={menuItems} /></Box>}
+      <CardContent sx={{ bgcolor: 'action.hover', borderTop: 1, borderColor: 'divider' }}>
+        {firstMeet && status ? <Stack spacing={1}>
+          <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>{date}, {time} МСК</Typography>
+            <Chip label={status.label} color={status.color} size="small" />
+          </Stack>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <ScheduleOutlinedIcon fontSize="small" color="action" />
+            <Typography variant="body2" color="text.secondary">{firstMeet.duration ?? 60} минут</Typography>
+          </Stack>
+        </Stack> : <Typography variant="body2" color="text.secondary">Ближайшая встреча не назначена</Typography>}
+      </CardContent>
 
         {(Boolean(project.users.length) || role === 'user') && (
           <CardContent>
@@ -384,7 +249,6 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
             </Stack>
           </CardContent>
         )}
-      </CardActionArea>
 
       <Dialog open={isUserModalOpen} onClose={() => setUserModalOpen(false)}>
         <DialogTitle>Создать ребенка</DialogTitle>

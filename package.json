@@ -37,7 +37,9 @@
     "db:cleanup:demo": "npm run build:demo-cli && node .cache/demo/cli/scripts/cleanup-demo.js",
     "db:merge:demo-ideas": "npm run build:demo-cli && node .cache/demo/cli/scripts/cleanup-demo.js --merge",
     "db:extend:demo": "npm run build:demo-cli && node .cache/demo/cli/scripts/extend-demo.js",
-    "db:seed:dmitry": "npm run build:demo-cli && node .cache/demo/cli/scripts/seed-dmitry.js"
+    "db:seed:dmitry": "npm run build:demo-cli && node .cache/demo/cli/scripts/seed-dmitry.js",
+    "db:setup:wschool": "npm run build:demo-cli && node .cache/demo/cli/scripts/setup-wschool.js",
+    "test:wschool:db": "npm run build:demo-cli && node .cache/demo/cli/scripts/test-wschool.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.312.0",

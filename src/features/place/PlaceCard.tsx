@@ -15,6 +15,7 @@ function PlaceCard({ place }: Props) {
       <CardContent>
         <Typography variant="h6">{place.title}</Typography>
         <Typography variant="body2">{place.address}</Typography>
+        {place.description && <Typography variant="body2" color="text.secondary" sx={{ mt: 1, whiteSpace: 'pre-line', overflowWrap: 'anywhere' }}>{place.description}</Typography>}
       </CardContent>
     </Card>
   );

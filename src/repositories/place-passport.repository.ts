@@ -13,7 +13,7 @@ class PlacePassportRepository {
 
   static async countTeachers(placeId: number): Promise<number> {
     const [row] = await db.query<{ count: number }>(
-      "SELECT COUNT(DISTINCT passportId) AS count FROM placePassport WHERE placeId = ? AND role = 'teacher'",
+      "SELECT COUNT(DISTINCT passportId) AS count FROM placePassport WHERE placeId = ?",
       [placeId],
     );
     return Number(row.count);
@@ -37,7 +37,7 @@ class PlacePassportRepository {
 
   static async findTeachers(placeId: number): Promise<{ id: number, title: string }[]> {
     const rows = await db.query<{ id: number; title: string }>(
-      `SELECT passport.id, passport.title
+      `SELECT DISTINCT passport.id, passport.title
        FROM placePassport
        JOIN passport ON passport.id = placePassport.passportId
        WHERE placePassport.placeId = ?

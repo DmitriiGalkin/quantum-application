@@ -30,6 +30,7 @@ export default function IdeaGallery({ idea }: { idea: IdeaDto }) {
       sx={{ width: '100%', border: 0, p: 0, bgcolor: 'background.default', cursor: 'zoom-in' }}>
       <GalleryImage key={url} url={url} title={title} />
     </Box>
+    {active?.origin === 'generated' && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', px: 1 }}>Иллюстрация создана с помощью ИИ по фотографиям изделия</Typography>}
     {photos.length > 1 && <Stack direction="row" spacing={1} sx={{ overflowX: 'auto', p: 1 }}>
       {photos.map((photo, i) => <Box key={photo.id} component="button" type="button" aria-label={`Фотография ${i + 1}`}
         aria-pressed={photo.id === active?.id} onClick={() => setSelectedId(photo.id)}
@@ -44,7 +45,9 @@ export default function IdeaGallery({ idea }: { idea: IdeaDto }) {
           event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1);
         }
       }}>
-      <DialogContent><GalleryImage key={url} url={url} title={title} full /></DialogContent>
+      <DialogContent><GalleryImage key={url} url={url} title={title} full />
+        {active?.origin === 'generated' && <Typography variant="caption">Иллюстрация создана с помощью ИИ по фотографиям изделия</Typography>}
+      </DialogContent>
       <DialogActions>
         {photos.length > 1 && <Button onClick={() => step(-1)}>Назад</Button>}
         <Typography>{index + 1} / {Math.max(1, photos.length)}</Typography>

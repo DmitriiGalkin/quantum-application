@@ -10,9 +10,9 @@ export default class DemoSchemaRepository {
       'SELECT EVENT_OBJECT_TABLE AS tableName FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = DATABASE()');
     return { references, tables, triggers };
   }
-  static async columns(conn: PoolConnection): Promise<{ tableName: string; columnName: string; columnType: string }[]> {
-    const [rows] = await conn.query<(RowDataPacket & { tableName: string; columnName: string; columnType: string })[]>(
-      'SELECT TABLE_NAME AS tableName, COLUMN_NAME AS columnName, COLUMN_TYPE AS columnType FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()',
+  static async columns(conn: PoolConnection): Promise<{ tableName: string; columnName: string; columnType: string; nullable: string }[]> {
+    const [rows] = await conn.query<(RowDataPacket & { tableName: string; columnName: string; columnType: string; nullable: string })[]>(
+      'SELECT TABLE_NAME AS tableName, COLUMN_NAME AS columnName, COLUMN_TYPE AS columnType, IS_NULLABLE AS nullable FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()',
     );
     return rows;
   }

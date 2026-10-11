@@ -18,11 +18,25 @@ describe('user photo validation', () => {
 });
 
 describe('idea catalog validation', () => {
+  it('accepts a generated S3 cover with provenance while retaining Drive requirements for originals', () => {
+    const card = structuredClone(validateIdeaCatalog(source).items[0]);
+    expect(card.photos[0].origin).toBe('generated');
+    expect(card.photos[0].sourcePhotoIds).toHaveLength(8);
+    expect(card.photos.filter(photo => photo.isCover)).toHaveLength(1);
+    card.photos[0].url = 'https://example.com/generated.png';
+    expect(() => validateCatalogItem(card)).toThrow('Quantum S3');
+    card.photos[0].url = validateIdeaCatalog(source).items[0].photos[0].url;
+    delete card.photos[0].promptFile;
+    expect(() => validateCatalogItem(card)).toThrow('provenance');
+    const original = structuredClone(validateIdeaCatalog(source).items[0]);
+    delete original.photos[1].driveFileId;
+    expect(() => validateCatalogItem(original)).toThrow('driveFileId');
+  });
   it('preserves every source field, explicit null and assumption', () => {
     const catalog = validateIdeaCatalog(source);
     expect(catalog).toEqual(source);
     expect(catalog.items).toHaveLength(4);
-    expect(catalog.items.flatMap(item => item.photos)).toHaveLength(11);
+    expect(catalog.items.flatMap(item => item.photos)).toHaveLength(12);
     expect(catalog.items[0].canMakeWithChildren).toBeNull();
     expect(catalog.items[0].manufacturingNotes).toEqual([{ text: 'Обработан на фрезерном станке', source: 'со слов пользователя' }]);
   });
@@ -42,7 +56,7 @@ describe('idea catalog validation', () => {
     const card = structuredClone(validateIdeaCatalog(source).items[0]);
     card.photos[0].url = 'javascript:alert(1)';
     expect(() => validateCatalogItem(card)).toThrow('HTTP(S)');
-    card.photos[0].url = 'https://example.com/image';
+    card.photos[0].url = validateIdeaCatalog(source).items[0].photos[0].url;
     card.photos[1].isCover = true;
     expect(() => validateCatalogItem(card)).toThrow('one cover');
     expect(() => validateCatalogItem({ ...card, photos: [], ideaId: 1 })).toThrow('read-only');

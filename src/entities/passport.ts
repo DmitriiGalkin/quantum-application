@@ -6,10 +6,10 @@ export interface PassportRow extends RowDataPacket {
   id: number;
   providerId: string;
   provider: string;
-  accessToken: string;
+  accessToken: string | null;
   title: string;
   description: string | null;
-  email: string;
+  email: string | null;
   image: string | null;
   createdAt: string;
   updatedAt: string | null;
@@ -33,10 +33,10 @@ export interface Passport {
   providerId: string;
   provider: string;
   description: string | null;
-  accessToken: string;
+  accessToken: string | null;
   title: string;
   image: string | null;
-  email: string;
+  email: string | null;
 }
 
 export interface PassportExtendedEntity extends Passport {
@@ -48,9 +48,9 @@ export type CreatePassportInput = {
   description?: string | null;
   providerId: string;
   provider: string;
-  accessToken: string;
+  accessToken: string | null;
   title?: string | null;
-  email: string;
+  email: string | null;
   image: string | null;
 };
 
