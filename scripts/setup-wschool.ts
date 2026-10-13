@@ -12,6 +12,9 @@ async function main() {
   const catalog = validateIdeaCatalog(JSON.parse(await readFile(resolve('toy-catalog.json'), 'utf8')));
   const cover = catalog.items.find(item => item.id === 'toy-001')?.photos.find(photo => photo.id === 'toy-001-generated-cover-v1');
   if (!cover || !cover.isCover || cover.origin !== 'generated') throw new Error('Generated cover missing from catalog');
+  if (!FileService.isStorageUrl(cover.url)) throw new Error('Cover must already be uploaded to S3');
+  const response = await fetch(cover.url, { method: 'HEAD', signal: AbortSignal.timeout(30000) });
+  if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error(`S3 cover unavailable: HTTP ${response.status}`);
   await withDemoConnection(async conn => {
     await conn.beginTransaction();
     const snapshot = await WschoolSetupService.inspect(conn);
@@ -35,13 +38,6 @@ async function main() {
       };
       await writeFile(resolve(directory, 'backup.json'), JSON.stringify(backup, null, 2));
       console.log(`Backup: ${directory}`);
-    }
-    if (!plan.currentCover) {
-      const file = await readFile(resolve('public/catalog', cover.fileName));
-      const url = await FileService.uploadBuffer(file, cover.fileName, 'image/png', `idea-catalog/${cover.fileName}`);
-      if (url !== cover.url) throw new Error('Unexpected S3 cover URL');
-      const response = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(30000) });
-      if (!response.ok) throw new Error(`Cover unavailable: HTTP ${response.status}`);
     }
     const result = await WschoolSetupService.apply(conn, snapshot, cover);
     const after = await WschoolSetupService.inspect(conn);

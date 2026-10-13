@@ -16,7 +16,7 @@ import ProjectCard from './ProjectCard.tsx';
 function Location() { return <output>{useLocation().pathname}</output>; }
 it.each([null, { id: 5, title: 'мастерская' }])('hydrates a card with hall %j; join does not navigate, picture does', async location => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
-  const project: ProjectDto = { id: 100, title: 'Robot workshop', description: 'A detailed workshop description', image: '/catalog/toy-001-generated-cover-v1.png',
+  const project: ProjectDto = { id: 100, title: 'Robot workshop', description: 'A detailed workshop description', image: 'https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-001-generated-cover-v1.png',
     passport: { id: 42, title: 'Master', description: null },
     place: { id: 575, title: 'Center', address: 'Address', description: null, latitude: 55.75, longitude: 37.62, priceFrom: null },
     location, meets: [], users: [], idea: { id: 54, title: 'Robot', user: null, today: false, image: null, photos: [] } };

@@ -15,6 +15,8 @@ package-lock.json
 # Build outputs
 dist/
 *.local
+.cache
+docs/image-prompts/
 
 # IDE / Editor
 .idea/
@@ -48,3 +50,8 @@ coverage/
 .cache/idea-catalog/
 .cache/demo/
 .cache/meet-migration/
+.cache/toy-photo-review/
+.cache/school-program/
+.cache/idea-150-cover/
+public/catalog/
+.cache/light-covers-2026-10-13/

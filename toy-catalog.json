@@ -50,7 +50,7 @@
             "toy-001-photo-07",
             "toy-001-photo-08"
           ],
-          "promptFile": "public/catalog/toy-001-generated-cover-v1.prompt.md"
+          "promptFile": "docs/image-prompts/catalog/toy-001-generated-cover-v1.prompt.md"
         },
         {
           "id": "toy-001-photo-01",
