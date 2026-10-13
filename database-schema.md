@@ -1,10 +1,10 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-11T19:31:49.206Z
+Дата выгрузки: 2026-10-13T18:53:54.430Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
-Таблицы и представления: 21.
+Таблицы и представления: 23.
 
 ## Объекты
 
@@ -24,7 +24,9 @@
 | payment | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | place | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placeLocation | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| placeLocationPhoto | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placePassport | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| placeRental | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placeSchedule | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | project | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | projectUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
@@ -182,7 +184,7 @@ CREATE TABLE `idea` (
   `catalogMetadata` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_idea_catalogId` (`catalogId`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## ideaPhoto
@@ -598,6 +600,10 @@ CREATE TABLE `place` (
 | title | varchar(255) | NO | NULL |  |  |  |
 | deletedAt | timestamp | YES | NULL |  |  |  |
 | placeId | int | NO | NULL |  |  |  |
+| description | text | YES | NULL |  |  |  |
+| capacity | int | YES | NULL |  |  |  |
+| hourlyRate | decimal(10,2) | YES | NULL |  |  |  |
+| rentalEnabled | tinyint(1) | NO | 0 |  |  |  |
 
 ### Индексы
 
@@ -613,8 +619,53 @@ CREATE TABLE `placeLocation` (
   `title` varchar(255) NOT NULL,
   `deletedAt` timestamp NULL DEFAULT NULL,
   `placeId` int NOT NULL,
-  PRIMARY KEY (`id`)
+  `description` text,
+  `capacity` int DEFAULT NULL,
+  `hourlyRate` decimal(10,2) DEFAULT NULL,
+  `rentalEnabled` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  CONSTRAINT `chk_room_capacity` CHECK (((`capacity` is null) or (`capacity` > 0))),
+  CONSTRAINT `chk_room_rate` CHECK (((`hourlyRate` is null) or (`hourlyRate` >= 0)))
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## placeLocationPhoto
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | int | NO | NULL | PRI | auto_increment |  |
+| locationId | int | NO | NULL | MUL |  |  |
+| url | varchar(2048) | NO | NULL |  |  |  |
+| position | int | NO | NULL |  |  |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| ix_room_photo | Нет | 1 | locationId | NULL | BTREE |
+| ix_room_photo | Нет | 2 | position | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_room_photo | locationId | placeLocation | id | NO ACTION | CASCADE |
+
+### DDL
+
+```sql
+CREATE TABLE `placeLocationPhoto` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `locationId` int NOT NULL,
+  `url` varchar(2048) NOT NULL,
+  `position` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_room_photo` (`locationId`,`position`),
+  CONSTRAINT `fk_room_photo` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placePassport
@@ -646,6 +697,77 @@ CREATE TABLE `placePassport` (
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## placeRental
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | int | NO | NULL | PRI | auto_increment |  |
+| placeId | int | NO | NULL | MUL |  |  |
+| locationId | int | NO | NULL | MUL |  |  |
+| passportId | int | NO | NULL | MUL |  |  |
+| startedAt | datetime | NO | NULL |  |  |  |
+| endedAt | datetime | NO | NULL |  |  |  |
+| participants | int | NO | NULL |  |  |  |
+| comment | text | NO | NULL |  |  |  |
+| status | enum('pending','confirmed','rejected','cancelled') | NO | pending |  |  |  |
+| rejectionReason | text | YES | NULL |  |  |  |
+| hourlyRate | decimal(10,2) | YES | NULL |  |  |  |
+| estimatedTotal | decimal(12,2) | YES | NULL |  |  |  |
+| createdAt | timestamp | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| ix_rental_applicant | Нет | 1 | passportId | NULL | BTREE |
+| ix_rental_applicant | Нет | 2 | startedAt | NULL | BTREE |
+| ix_rental_place | Нет | 1 | placeId | NULL | BTREE |
+| ix_rental_place | Нет | 2 | startedAt | NULL | BTREE |
+| ix_rental_room_slot | Нет | 1 | locationId | NULL | BTREE |
+| ix_rental_room_slot | Нет | 2 | status | NULL | BTREE |
+| ix_rental_room_slot | Нет | 3 | startedAt | NULL | BTREE |
+| ix_rental_room_slot | Нет | 4 | endedAt | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_rental_applicant | passportId | passport | id | NO ACTION | NO ACTION |
+| fk_rental_place | placeId | place | id | NO ACTION | NO ACTION |
+| fk_rental_room | locationId | placeLocation | id | NO ACTION | NO ACTION |
+
+### DDL
+
+```sql
+CREATE TABLE `placeRental` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `placeId` int NOT NULL,
+  `locationId` int NOT NULL,
+  `passportId` int NOT NULL,
+  `startedAt` datetime NOT NULL,
+  `endedAt` datetime NOT NULL,
+  `participants` int NOT NULL,
+  `comment` text NOT NULL,
+  `status` enum('pending','confirmed','rejected','cancelled') NOT NULL DEFAULT 'pending',
+  `rejectionReason` text,
+  `hourlyRate` decimal(10,2) DEFAULT NULL,
+  `estimatedTotal` decimal(12,2) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `ix_rental_room_slot` (`locationId`,`status`,`startedAt`,`endedAt`),
+  KEY `ix_rental_applicant` (`passportId`,`startedAt`),
+  KEY `ix_rental_place` (`placeId`,`startedAt`),
+  CONSTRAINT `fk_rental_applicant` FOREIGN KEY (`passportId`) REFERENCES `passport` (`id`),
+  CONSTRAINT `fk_rental_place` FOREIGN KEY (`placeId`) REFERENCES `place` (`id`),
+  CONSTRAINT `fk_rental_room` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`),
+  CONSTRAINT `chk_rental_interval` CHECK (((`endedAt` > `startedAt`) and (`endedAt` <= (`startedAt` + interval 24 hour)))),
+  CONSTRAINT `chk_rental_participants` CHECK ((`participants` > 0))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeSchedule
