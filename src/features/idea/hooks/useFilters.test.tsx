@@ -6,6 +6,12 @@ import { createMemoryRouter, RouterProvider, MemoryRouter, useLocation, useNavig
 import { describe, expect, it } from 'vitest';
 import { useFilters } from './useFilters';
 
+function ProjectProbe({ projects = true }: { projects?: boolean }) {
+  const filter = useFilters({ projects, defaultView: 'table' });
+  const location = useLocation();
+  return <><output>{filter.filters.view}|{location.search}</output><button onClick={() => filter.setView('table')}>table</button><button onClick={() => filter.setView('module')}>module</button></>;
+}
+
 function Probe() {
   const { filters, setView, setSort, setWhen } = useFilters();
   const location = useLocation();
@@ -48,5 +54,23 @@ describe('idea filters in router history', () => {
   });
   it('reads URL filters during server rendering without browser globals', () => {
     expect(renderToString(<MemoryRouter initialEntries={['/?sort=nearby&view=map&when=today']}><Probe /></MemoryRouter>)).toContain('&quot;sort&quot;:&quot;nearby&quot;');
+  });
+  it('defaults project pages to table, respects explicit views, and rejects table for ideas', () => {
+    const html = (search: string, projects = true) => renderToString(<MemoryRouter initialEntries={['/' + search]}><ProjectProbe projects={projects} /></MemoryRouter>).replaceAll('<!-- -->', '');
+    expect(html('')).toContain('table|');
+    expect(html('?view=module')).toContain('module|');
+    expect(html('?view=table', false)).toContain('module|');
+  });
+  it('switches table without losing any project filters', async () => {
+    Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
+    const host = globalThis.document.createElement('div');
+    const root = createRoot(host);
+    try {
+      await act(async () => root.render(<MemoryRouter initialEntries={['/?view=module&sort=popular&when=tomorrow&placeId=9']}><ProjectProbe /></MemoryRouter>));
+      await act(async () => host.querySelector<HTMLButtonElement>('button')!.click());
+      const output = host.querySelector('output')!.textContent!;
+      expect(output).toContain('table|');
+      for (const param of ['sort=popular', 'when=tomorrow', 'placeId=9', 'view=table']) expect(output).toContain(param);
+    } finally { await act(async () => root.unmount()); }
   });
 });

@@ -13,7 +13,7 @@ import Projects from '../../features/project/ui/Projects.tsx';
 import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function TeacherProjectsPage() {
-  const filter = useFilters();
+  const filter = useFilters({ projects: true });
   const [isCreateProjectDialogOpen, setIsCreateProjectDialogOpen] = useState(false);
 
   const {

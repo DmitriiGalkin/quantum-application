@@ -5,6 +5,7 @@ export function toPlace(row: PlaceRow): Place {
     id: row.id,
     title: row.title,
     description: row.description,
+    image: row.image,
     latitude: row.latitude,
     longitude: row.longitude,
     address: row.address,

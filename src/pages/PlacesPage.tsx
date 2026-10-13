@@ -8,7 +8,7 @@ import Projects from '../features/project/ui/Projects.tsx';
 import { useFilters } from '../features/idea/hooks/useFilters.ts';
 
 const PlacesPage: React.FC = () => {
-  const filter = useFilters();
+  const filter = useFilters({ projects: true });
   const { id } = useParams<{ id: string }>();
 
   const { data: place } = useQuery({

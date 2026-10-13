@@ -36,7 +36,7 @@ export default function IdeaGallery({ idea }: { idea: IdeaDto }) {
         aria-pressed={photo.id === active?.id} onClick={() => setSelectedId(photo.id)}
         sx={{ p: 0, flexShrink: 0, border: 2, borderColor: photo.id === active?.id ? 'primary.main' : 'transparent', cursor: 'pointer' }}>
         <Box component="img" loading="lazy" src={photo.url} alt={`${idea.title}, фотография ${i + 1}`}
-          sx={{ width: 64, height: 64, objectFit: 'cover', display: 'block' }} />
+          sx={{ width: 96, height: 96, objectFit: 'cover', display: 'block' }} />
       </Box>)}
     </Stack>}
     <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="lg" aria-label={idea.title}

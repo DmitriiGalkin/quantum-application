@@ -7,7 +7,7 @@ import Projects from '../../features/project/ui/Projects.tsx';
 import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 export default function PlaceProjectsPage() {
-  const filter = useFilters();
+  const filter = useFilters({ projects: true });
   const { placeId } = useAuth();
 
   const { data: projects = [], refetch } = useQuery({

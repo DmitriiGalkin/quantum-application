@@ -8,13 +8,14 @@ export interface FilterProps {
   setWhen: (when?: When) => void;
 }
 
-export function useFilters(): FilterProps {
+export function useFilters(options: { projects?: boolean; defaultView?: View } = {}): FilterProps {
   const [params, setParams] = useSearchParams();
   const sort = params.get('sort');
   const when = params.get('when');
   const view = params.get('view');
   const filters = {
-    view: (view === 'map' || view === 'group' ? view : 'module') as View,
+    view: (view === 'module' || view === 'map' || view === 'group' || (options.projects && view === 'table')
+      ? view : options.projects ? options.defaultView ?? 'module' : 'module') as View,
     sort: (sort === 'popular' || sort === 'nearby' ? sort : 'new') as Sort,
     when: (when === 'today' || when === 'tomorrow' ? when : undefined) as When,
   };
@@ -24,7 +25,7 @@ export function useFilters(): FilterProps {
     else next.delete(key);
     return next;
   });
-  const setView = (view: View) => setFilter('view', view);
+  const setView = (view: View) => { if (view !== 'table' || options.projects) setFilter('view', view); };
   const setSort = (sort: Sort) => setFilter('sort', sort);
   const setWhen = (when?: When) => setFilter('when', when);
 

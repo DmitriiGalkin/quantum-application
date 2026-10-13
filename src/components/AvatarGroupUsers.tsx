@@ -2,19 +2,20 @@ import Stack from '@mui/material/Stack';
 import type { UserDto } from 'entities';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import Avatar from '@mui/material/Avatar';
-import { getImage } from 'utils/helper.ts';
 
 
 type Props = {
   users: UserDto[];
+  limit?: number;
 };
 
-function AvatarGroupUsers({ users }: Props) {
+function AvatarGroupUsers({ users, limit }: Props) {
   return (
-    <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+    <Stack direction="row" spacing={2} sx={{ alignItems: 'center', maxWidth: '100%' }}>
       <AvatarGroup
-        max={5}
+        max={limit ? limit + (users.length > limit ? 1 : 0) : 5}
         sx={{
+          flexWrap: 'wrap',
           '& .MuiAvatar-root': {
             width: 24,
             height: 24,
@@ -28,7 +29,7 @@ function AvatarGroupUsers({ users }: Props) {
         }}
       >
         {users.map(user => (
-          <Avatar src={getImage(user.id) || user.image || ''} alt="Участник" key={user.id} sx={{ width: 24, height: 24 }} />
+          <Avatar src={user.image || ''} alt={user.title || 'Участник'} title={user.title || 'Участник'} key={user.id} sx={{ width: 24, height: 24 }} />
         ))}
       </AvatarGroup>
     </Stack>

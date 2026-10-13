@@ -6,9 +6,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserDashboard } from '../../requests.ts';
-import ProjectGrids from '../../features/project/ui/ProjectGrids.tsx';
+import Projects from '../../features/project/ui/Projects.tsx';
+import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 const UserHomePage: React.FC = () => {
+  const filter = useFilters({ projects: true });
   // Запрос активных проектов текущего пользователя
   const {
     data: user,
@@ -70,7 +72,7 @@ const UserHomePage: React.FC = () => {
           ) : isError ? (
             <Alert severity="error">Ошибка при загрузке проектов</Alert>
           ) : user.projects && user.projects.length > 0 ? (
-            <ProjectGrids projects={user.projects} refetch={refetch} />
+            <Projects filter={filter} projects={user.projects} refetch={refetch} preserveOrder />
           ) : (
             <Typography variant="body1">У вас пока нет активных проектов</Typography>
           )}

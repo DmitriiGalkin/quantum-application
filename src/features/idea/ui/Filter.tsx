@@ -7,9 +7,10 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import MapIcon from '@mui/icons-material/Map';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import TableRowsIcon from '@mui/icons-material/TableRows';
 import type { FilterProps } from '../hooks/useFilters.ts';
 
-function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWhen }: FilterProps & { withOutLocation?: boolean; withOutWhen?: boolean }) {
+function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWhen, projects }: FilterProps & { withOutLocation?: boolean; withOutWhen?: boolean; projects?: boolean }) {
   const sortOptions = [
     ...(withOutLocation ? [] : [{ value: 'nearby', label: 'Поблизости' }]),
     { value: 'popular', label: 'Популярные' },
@@ -23,11 +24,12 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
     { value: 'module', icon: <ViewModuleIcon /> },
     ...(withOutLocation ? [] : [{ value: 'map', icon: <MapIcon /> }]),
     { value: 'group', icon: <LightbulbIcon /> },
+    ...(projects ? [{ value: 'table', icon: <TableRowsIcon /> }] : []),
   ];
 
   return (
-    <Stack direction="row" sx={{ justifyContent: 'space-between' }} spacing={1}>
-      {filters.view === 'module' && (
+    <Stack direction="row" sx={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 1 }}>
+      {(filters.view === 'module' || filters.view === 'table') && (
         <TextField
           select
           size="small"
@@ -70,7 +72,7 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
         </TextField>
       )}
 
-      <Stack direction="row" spacing={1}>
+      <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1 }}>
         {!withOutWhen && (
           <ToggleButtonGroup value={filters.when} exclusive onChange={(_, val) => setWhen(val)} size="small">
             {whenOptions.map(opt => (
@@ -89,7 +91,7 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
           size="small"
         >
           {viewOptions.map(opt => (
-            <ToggleButton key={opt.value} value={opt.value} aria-label={opt.value}>
+            <ToggleButton key={opt.value} value={opt.value} aria-label={opt.value === 'table' ? 'Таблица' : opt.value} title={opt.value === 'table' ? 'Таблица' : undefined}>
               {opt.icon}
             </ToggleButton>
           ))}

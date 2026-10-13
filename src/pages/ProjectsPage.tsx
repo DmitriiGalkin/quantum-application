@@ -5,13 +5,12 @@ import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProjects } from '../requests.ts';
 import { useFilters } from '../features/idea/hooks/useFilters.ts';
-import Filter from '../features/idea/ui/Filter.tsx';
-import ProjectGrids from '../features/project/ui/ProjectGrids.tsx';
+import Projects from '../features/project/ui/Projects.tsx';
 import { useLocation } from '../shared/lib/useLocation.ts';
-import ProjectGroups from '../features/project/ui/ProjectGroups.tsx';
 
 function ProjectsPage() {
-  const { filters, setView, setSort, setWhen } = useFilters();
+  const filter = useFilters({ projects: true });
+  const { filters } = filter;
   const location = useLocation(filters.sort === 'nearby');
 
   const { data: projects = [], isLoading } = useQuery({
@@ -31,7 +30,6 @@ function ProjectsPage() {
 
   return (
     <Stack spacing={2}>
-      <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
 
       {(isLoading || (filters.sort === 'nearby' && location.status === 'loading')) && (
         <Box
@@ -50,9 +48,7 @@ function ProjectsPage() {
         <Typography sx={{ color: 'text.secondary' }}>Местоположение недоступно. Показываем все проекты.</Typography>
       )}
 
-      {filters.view === 'module' && <ProjectGrids projects={projects} />}
-
-      {filters.view === 'group' && <ProjectGroups projects={projects} withoutIdea />}
+      <Projects filter={filter} projects={projects} catalog preserveOrder withoutIdea />
     </Stack>
   );
 }

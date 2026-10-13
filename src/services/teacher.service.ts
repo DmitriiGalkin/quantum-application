@@ -8,6 +8,7 @@ import IdeaRepository from '../repositories/idea.repository.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import { ParticipantsService } from './participants.service.js';
 import { HttpError } from '../utils/http-error.js';
+import { IdeaService } from './idea.service.js';
 
 export class TeacherService {
   static async getDashboard(passportId: number): Promise<TeacherDashboardDto> {
@@ -38,15 +39,17 @@ export class TeacherService {
       PlaceRepository.findByPassportId(id),
     ]);
 
-    const [usersByProject, places, meetRows, ideaUsers] = await Promise.all([
+    const [usersByProject, places, meetRows, ideaUsers, projectIdeas] = await Promise.all([
       ParticipantsService.forProjects(projects.map(project => project.id)),
       PlaceRepository.findByIds(projects.map(project => project.placeId)),
       MeetRepository.findByProjectIds(projects.map(project => project.id), true),
       UserRepository.findByIds(ideas.flatMap(idea => idea.userId ? [idea.userId] : [])),
+      IdeaService.findByIds(projects.flatMap(project => project.ideaId ? [project.ideaId] : [])),
     ]);
     const meets = await MeetService.hydrateAll(meetRows);
     const placeById = new Map(places.map(place => [place.id, place]));
     const userById = new Map(ideaUsers.map(user => [user.id, user]));
+    const ideaById = new Map(projectIdeas.map(idea => [idea.id, idea]));
     const meetsByProject = new Map<number, MeetDto[]>();
     for (const meet of meets) {
       const group = meetsByProject.get(meet.projectId) ?? [];
@@ -63,7 +66,7 @@ export class TeacherService {
         place,
         meets: meetsByProject.get(project.id) ?? [],
         users: usersByProject.get(project.id) ?? [],
-        idea: null,
+        idea: project.ideaId ? ideaById.get(project.ideaId) ?? null : null,
       };
     });
 

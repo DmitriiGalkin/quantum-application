@@ -15,7 +15,7 @@ function ProjectGroups({ projects, refetch, withoutIdea }: Props) {
   const projectsWithIdeas = projects.filter((project) => project.idea !== null);
   const groupes = groupProjectsByIdea(projectsWithIdeas);
 
-  if (!groupes.length) return null;
+  const withoutIdeas = projects.filter(project => !project.idea);
 
   return (
     <Stack spacing={2}>
@@ -23,7 +23,7 @@ function ProjectGroups({ projects, refetch, withoutIdea }: Props) {
         if (!idea) return null;
 
         return (
-          <Grid container spacing={2}>
+          <Grid key={idea.id} container spacing={2}>
             <Grid size={{ xs: 12, sm: 3 }}>
               <IdeaCard idea={idea} />
             </Grid>
@@ -34,6 +34,7 @@ function ProjectGroups({ projects, refetch, withoutIdea }: Props) {
           </Grid>
         );
       })}
+      {!!withoutIdeas.length && <ProjectGrids projects={withoutIdeas} refetch={refetch} />}
     </Stack>
   );
 }

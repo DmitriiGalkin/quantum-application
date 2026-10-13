@@ -71,7 +71,7 @@ function Idea({ idea }: { idea: IdeaDto }) {
     if (action.type === CREATE_PROJECT_TYPE && action.payload?.ideaId === idea.id) {
       setPlaceModalOpen(true);
     }
-  });
+  }, action => action.type === CREATE_PROJECT_TYPE && action.payload?.ideaId === idea.id);
 
   const createProject = useMutation({
     mutationFn: fetchCreateProject,
@@ -113,7 +113,7 @@ function Idea({ idea }: { idea: IdeaDto }) {
   };
 
   return (
-    <Card sx={{ mb: 3, borderRadius: 3 }}>
+    <Card sx={{ mb: 3, borderRadius: 3, display: 'grid', gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) minmax(0, 1fr)' }, '& > *': { minWidth: 0 } }}>
       <Box sx={{ position: 'relative', width: '100%' }}>
         <IdeaGallery key={idea.id} idea={idea} />
         {/* Блок с кнопкой генерации */}
@@ -148,9 +148,9 @@ function Idea({ idea }: { idea: IdeaDto }) {
           </IconButton>
         </Box>
       </Box>
-      <CardContent>
+      <CardContent sx={{ gridColumn: { md: 2 }, gridRow: { md: 1 } }}>
         <Stack spacing={1}>
-          <Typography component="h1" variant="h6">
+          <Typography component="h1" variant="h4">
             {idea.title}
           </Typography>
 

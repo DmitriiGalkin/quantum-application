@@ -9,7 +9,7 @@ import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function UserProjectsPage() {
   const { userId } = useAuth();
-  const filter = useFilters();
+  const filter = useFilters({ projects: true });
 
   const {
     data: projects = [],

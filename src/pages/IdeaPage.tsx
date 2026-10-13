@@ -6,13 +6,13 @@ import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { fetchIdea } from '../requests.ts';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 import { useFilters } from '../features/idea/hooks/useFilters.ts';
 import Idea from '../features/idea/ui/Idea.tsx';
 import Projects from '../features/project/ui/Projects.tsx';
 
 function IdeaPage() {
-  const filter = useFilters();
+  const filter = useFilters({ projects: true, defaultView: 'table' });
 
   const { id } = useParams<{ id: string }>();
 
@@ -35,7 +35,7 @@ function IdeaPage() {
   if (!id) {
     return (
         <Box sx={{ py: 6, textAlign: 'center' }}>
-          <Typography variant="h6">Проект не найден</Typography>
+          <Typography variant="h6">Идея не найдена</Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Некорректная ссылка
@@ -53,25 +53,20 @@ function IdeaPage() {
             Попробуйте обновить страницу
           </Typography>
 
-          <Button sx={{ mt: 2 }} variant="contained" onClick={() => getBrowser()!.location.reload()}>
+          <Button sx={{ mt: 2 }} variant="contained" onClick={() => void refetch()}>
             Обновить
           </Button>
         </Box>
     );
   }
 
-  if(!idea) return null;
+  if(!idea) return <Typography role="status">Загрузка идеи…</Typography>;
 
   return (
-    <Grid container spacing={2}>
-      <Grid size={{ xs: 12, md: 3 }}>
-        <Idea idea={idea} />
-      </Grid>
-
-      <Grid size={{ xs: 12, md: 9 }}>
-        <Projects filter={filter} projects={idea.projects} refetch={refetch} withoutIdea />
-      </Grid>
-    </Grid>
+    <Stack spacing={3}>
+      <Idea idea={idea} />
+      <Projects title="Проекты по этой идее" filter={filter} projects={idea.projects} refetch={refetch} withoutIdea />
+    </Stack>
   );
 }
 

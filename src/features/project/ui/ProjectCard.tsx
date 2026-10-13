@@ -24,7 +24,7 @@ import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 import { statusConfig } from '../../meets/helper.ts';
-import { nextProjectMeet, moscowMeetStatus } from './project-card-meeting.ts';
+import { upcomingPublishedMeets, moscowMeetStatus } from './project-card-meeting.ts';
 import CardMedia from '@mui/material/CardMedia';
 import LinkIcon from '@mui/icons-material/Link';
 import ChatDialog from '../../../components/ChatDialog.tsx'; // Добавлен импорт
@@ -34,6 +34,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PlaceIcon from '@mui/icons-material/Place';
 import EditIcon from '@mui/icons-material/Edit';
 import ChatIcon from '@mui/icons-material/Chat'; // Добавлен ChatIcon
+import Tooltip from '@mui/material/Tooltip';
 
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 
@@ -43,7 +44,7 @@ type Props = {
   refetch?: () => void;
 };
 
-function ProjectCard({ project, refetch, withoutIdea }: Props) {
+function ProjectCard({ project, refetch }: Props) {
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const { passport, authHandler, refetch: refetchPassport, userId, role } = useAuth();
@@ -52,7 +53,7 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const isMember = userId && project.users?.map(user => user.id).includes(userId);
-  const firstMeet = nextProjectMeet(project.meets);
+  const firstMeet = upcomingPublishedMeets(project.meets)[0];
   const status = firstMeet ? statusConfig[moscowMeetStatus(firstMeet)] : undefined;
   const startedAt = firstMeet ? new Date(firstMeet.startedAt) : undefined;
   const date = startedAt?.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', timeZone: 'Europe/Moscow' });
@@ -86,7 +87,17 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
     if (action.type === CREATE_PROJECT_USER_TYPE && action.payload?.projectId === project.id) {
       setUserModalOpen(true);
     }
-  });
+    if (action.type === 'project-chat' && action.payload?.projectId === project.id) setIsChatOpen(true);
+  }, action => action.payload?.projectId === project.id
+    && (action.type === CREATE_PROJECT_USER_TYPE || action.type === 'project-chat'));
+
+  const openChat = () => {
+    if (!passport) {
+      setAction({ type: 'project-chat', payload: { projectId: project.id } });
+      return authHandler();
+    }
+    setIsChatOpen(true);
+  };
 
   const mutationLike = useMutation({
     mutationFn: fetchCreateProjectUser,
@@ -154,14 +165,6 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
       onClick: () => setEditModalOpen(true),
     });
   }
-  if (role === 'user') {
-    menuItems.push({
-      key: 'message',
-      label: 'Написать учителю',
-      icon: <ChatIcon fontSize="small" />,
-      onClick: () => setIsChatOpen(true),
-    });
-  }
   if (isMember && role === 'user') {
     menuItems.push({
       key: 'exit',
@@ -173,25 +176,36 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
 
   return (
     <Card sx={{ borderRadius: 3 }}>
-      {!withoutIdea && <>
+      <>
         <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}>
           <CardMedia component="img" image={project.image || '/bg.jpeg'} alt={project.title || 'Проект'}
             sx={{ height: { xs: 280, sm: 320 }, objectFit: 'cover', display: 'block', bgcolor: 'background.default', boxSizing: 'border-box' }} />
-          <CardContent>
-            <Typography component="h2" variant="h6" sx={{ fontWeight: 600 }}>{project.title}</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-              {project.description}
-            </Typography>
-          </CardContent>
         </CardActionArea>
+        <CardContent>
+          <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+            <Typography component="h2" variant="h6" sx={{ flex: '1 1 140px', minWidth: 0, fontWeight: 600, overflowWrap: 'anywhere' }}>
+              <Box component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', textDecoration: 'none' }}>{project.title}</Box>
+            </Typography>
+            {project.idea?.id && <Tooltip title="Посмотреть исходную идею проекта">
+            <Button component={Link} to={`/idea/${project.idea.id}`} aria-label="Исходная идея" size="small" startIcon={<LinkIcon fontSize="small" />}>
+              Исходная идея
+            </Button>
+            </Tooltip>}
+          </Stack>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'anywhere' }}>
+            {project.description}
+          </Typography>
+        </CardContent>
         <CardHeader
           avatar={<Avatar component={Link} to={`/teachers/${project.passport.id}`} alt={project.passport.title}
             src={project.passport.image || ''} variant="rounded">{project.passport.title?.[0]}</Avatar>}
           title={<Typography component={Link} to={`/teachers/${project.passport.id}`} variant="subtitle2"
-            sx={{ color: 'text.primary', textDecoration: 'none' }}>{project.passport.title}</Typography>}
+            sx={{ color: 'text.primary', textDecoration: 'none', overflowWrap: 'anywhere' }}>{project.passport.title}</Typography>}
           subheader="Мастер проекта"
           action={<Stack direction="row">
-            {project.idea?.id && <IconButton component={Link} to={`/idea/${project.idea.id}`} aria-label="Исходная идея" size="small"><LinkIcon fontSize="small" /></IconButton>}
+            {project.passport.id !== passport?.id && <Tooltip title="Написать учителю">
+              <IconButton onClick={openChat} aria-label="Написать учителю" size="small"><ChatIcon fontSize="small" /></IconButton>
+            </Tooltip>}
             <MenuButton menuItems={menuItems} />
           </Stack>}
           sx={{ borderTop: 1, borderColor: 'divider', '& .MuiCardHeader-content': { minWidth: 0 } }} />
@@ -199,36 +213,36 @@ function ProjectCard({ project, refetch, withoutIdea }: Props) {
           <PlaceIcon fontSize="small" color="action" />
           <Box sx={{ minWidth: 0 }}>
             <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>
-              {project.place.title}
+              <Box component={Link} to={`/places/${project.place.id}`} sx={{ color: 'inherit' }}>{project.place.title}</Box>
               {project.location?.title?.trim() && <Box component="span" sx={{ color: 'text.secondary', fontWeight: 400 }}>{' · '}{project.location.title}</Box>}
             </Typography>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', overflowWrap: 'anywhere' }}>{project.place.address}</Typography>
           </Box>
         </Stack>
-      </>}
-      {withoutIdea && menuItems.length > 0 && <Box sx={{ display: 'flex', justifyContent: 'flex-end', px: 1 }}><MenuButton menuItems={menuItems} /></Box>}
+      </>
       <CardContent sx={{ bgcolor: 'action.hover', borderTop: 1, borderColor: 'divider' }}>
         {firstMeet && status ? <Stack spacing={1}>
           <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
-            <Typography variant="body2" sx={{ fontWeight: 600 }}>{date}, {time} МСК</Typography>
+            <Typography component={Link} to={`/project/${project.id}#meet-${firstMeet.id}`} variant="body2" sx={{ fontWeight: 600, color: 'inherit' }}>{date}, {time} МСК</Typography>
             <Chip label={status.label} color={status.color} size="small" />
           </Stack>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
             <ScheduleOutlinedIcon fontSize="small" color="action" />
             <Typography variant="body2" color="text.secondary">{firstMeet.duration ?? 60} минут</Typography>
+            {firstMeet.price != null && <Typography variant="body2">{firstMeet.price} ₽</Typography>}
           </Stack>
         </Stack> : <Typography variant="body2" color="text.secondary">Ближайшая встреча не назначена</Typography>}
       </CardContent>
 
         {(Boolean(project.users.length) || role === 'user') && (
           <CardContent>
-            <Stack spacing={2} direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+            <Stack direction="row" sx={{ gap: 2, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
               {Boolean(project.users.length) && (
-                <Box>
+                <Box sx={{ maxWidth: '100%' }}>
                   <Typography component="div" variant="caption" sx={{ color: 'text.secondary', mb: 0.5 }}>
                     Участники проекта
                   </Typography>
-                  <AvatarGroupUsers users={project.users || []} />
+                  <AvatarGroupUsers users={project.users || []} limit={10} />
                 </Box>
               )}
 
