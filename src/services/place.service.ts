@@ -43,6 +43,7 @@ export class PlaceService {
   }
 
   static async update(data: PlaceUpdateDto) {
+    if (data.phone !== undefined && data.phone !== null && (typeof data.phone !== 'string' || data.phone.length > 255)) throw new HttpError('Телефон: до 255 символов', 400);
     const { schedule, ...place } = data;
     await db.transaction(async conn => {
       await PlaceRepository.update(data.id, place, conn);

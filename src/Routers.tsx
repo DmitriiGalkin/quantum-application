@@ -37,6 +37,7 @@ const UserHomePage = lazy(() => import('./pages/user/UserHomePage.tsx'));
 const PlaceUsersPage = lazy(() => import('./pages/place/PlaceUsersPage.tsx'));
 const PlaceLocationsPage = lazy(() => import('./pages/place/PlaceLocationsPage.tsx'));
 const PlacesPage = lazy(() => import('./pages/PlacesPage.tsx'));
+const RentalsPage = lazy(() => import('./pages/RentalsPage.tsx'));
 
 function Routers() {
   return (
@@ -62,6 +63,7 @@ function Routers() {
           <Route index element={<TeacherDashboardPage />} />
           <Route path="projects" element={<TeacherProjectsPage />} />
           <Route path="meets" element={<TeacherMeetsPage />} />
+          <Route path="rentals" element={<RentalsPage />} />
           <Route path="ideas" element={<TeacherIdeasPage />} />
           <Route path="userIdeas" element={<TeacherUserIdeasPage />} />
         </Route>
@@ -70,6 +72,7 @@ function Routers() {
           <Route index element={<PlaceDashboardPage />} />
           <Route path="teachers" element={<PlaceTeachersPage />} />
           <Route path="locations" element={<PlaceLocationsPage />} />
+          <Route path="rentals" element={<RentalsPage centre />} />
           <Route path="projects" element={<PlaceProjectsPage />} />
           <Route path="users" element={<PlaceUsersPage />} />
           <Route path="meets" element={<PlaceMeetsPage />} />

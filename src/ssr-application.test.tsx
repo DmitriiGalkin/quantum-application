@@ -5,6 +5,13 @@ import { render } from './ssr-application.tsx';
 
 afterEach(() => vi.unstubAllGlobals());
 describe('SSR metadata', () => {
+  it('loads public centre metadata through the place API', async () => {
+    const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ title: 'School', description: 'Bio', ogImage: 'https://example.com/logo.png' }), { status: 200 }));
+    vi.stubGlobal('fetch', fetch);
+    const result = await render('/places/1?rental=resume');
+    expect(fetch.mock.calls[0][0]).toMatch(/\/place\/1\/meta$/);
+    expect(result.meta.ogImage).toBe('https://example.com/logo.png');
+  });
   it.each(['idea/toy-001', 'project/1'])('loads metadata for /%s without including query parameters', async path => {
     const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ title: 'Card', description: 'Description', ogTitle: 'Card' }), { status: 200 }));
     vi.stubGlobal('fetch', fetch);

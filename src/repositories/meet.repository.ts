@@ -4,6 +4,19 @@ import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class MeetRepository {
+  static async roomBusy(locationId: number, startedAt: string, endedAt: string, conn?: PoolConnection): Promise<import('entities').BusyInterval[]> {
+    const sql = `SELECT startedAt, DATE_ADD(startedAt, INTERVAL COALESCE(duration, 60) MINUTE) AS endedAt
+      FROM meet WHERE locationId = ? AND deletedAt IS NULL AND status IN ('pending', 'published')
+      AND startedAt < ? AND DATE_ADD(startedAt, INTERVAL COALESCE(duration, 60) MINUTE) > ? ORDER BY startedAt`;
+    const params = [locationId, new Date(endedAt), new Date(startedAt)];
+    const rows = conn ? (await conn.query<(RowDataPacket & import('entities').BusyInterval)[]>(sql, params))[0]
+      : await db.query<import('entities').BusyInterval>(sql, params);
+    return rows.map(row => ({ startedAt: new Date(row.startedAt).toISOString(), endedAt: new Date(row.endedAt).toISOString() }));
+  }
+
+  static async publicUpcoming(placeId: number): Promise<Meet[]> {
+    return (await db.query<MeetRow>("SELECT * FROM meet WHERE placeId = ? AND status = 'published' AND deletedAt IS NULL AND startedAt > NOW() ORDER BY startedAt", [placeId])).map(toMeet);
+  }
   static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
     const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM meet FOR UPDATE');
     return rows;

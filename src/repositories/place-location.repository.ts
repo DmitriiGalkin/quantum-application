@@ -1,5 +1,10 @@
 import type { PoolConnection, RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 import { db } from '../utils/dbNext.js';
+import type { PlaceLocation, UpdateLocation } from 'entities';
+
+const room = (row: PlaceLocation): PlaceLocation => ({ ...row, description: row.description ?? null,
+  capacity: row.capacity == null ? null : Number(row.capacity),
+  hourlyRate: row.hourlyRate == null ? null : Number(row.hourlyRate), rentalEnabled: Boolean(row.rentalEnabled) });
 
 class PlaceLocationRepository {
   static async lockByIds(ids: number[], conn: PoolConnection): Promise<void> {
@@ -7,12 +12,12 @@ class PlaceLocationRepository {
       await conn.query('SELECT id FROM placeLocation WHERE id = ? FOR UPDATE', [id]);
     }
   }
-  static async findByIds(ids: number[], conn?: PoolConnection): Promise<{ id: number; title: string; placeId: number; deletedAt: string | null }[]> {
+  static async findByIds(ids: number[], conn?: PoolConnection): Promise<PlaceLocation[]> {
     if (!ids.length) return [];
-    if (conn) return (await conn.query<(RowDataPacket & { id: number; title: string; placeId: number; deletedAt: string | null })[]>(
+    if (conn) return (await conn.query<(RowDataPacket & PlaceLocation)[]>(
       'SELECT * FROM placeLocation WHERE id IN (?)', [[...new Set(ids)]],
-    ))[0];
-    return db.query('SELECT * FROM placeLocation WHERE id IN (?)', [[...new Set(ids)]]);
+    ))[0].map(room);
+    return (await db.query<PlaceLocation>('SELECT * FROM placeLocation WHERE id IN (?)', [[...new Set(ids)]])).map(room);
   }
 
   static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
@@ -30,20 +35,25 @@ class PlaceLocationRepository {
     return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
-  static async findLocations(placeId: number): Promise<{ id: number; title: string; placeId: number; deletedAt: string | null }[]> {
-    const rows = await db.query<{ id: number; title: string; placeId: number; deletedAt: string | null }>(
+  static async findLocations(placeId: number): Promise<PlaceLocation[]> {
+    const rows = await db.query<PlaceLocation>(
       `SELECT *
        FROM placeLocation
-       WHERE placeLocation.placeId = ?`,
+       WHERE placeLocation.placeId = ? AND deletedAt IS NULL ORDER BY id`,
       [placeId],
     );
 
-    return rows;
+    return rows.map(room);
+  }
+
+  static async update(id: number, data: Omit<UpdateLocation, 'photoUrls'>, conn: PoolConnection): Promise<void> {
+    await conn.execute('UPDATE placeLocation SET title = ?, description = ?, capacity = ?, hourlyRate = ?, rentalEnabled = ? WHERE id = ?',
+      [data.title, data.description, data.capacity, data.hourlyRate, data.rentalEnabled, id]);
   }
 
   // ✅ DELETE (soft)
-  static async delete(id: number): Promise<void> {
-    await db.execute(`UPDATE placeLocation SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
+  static async delete(id: number, conn?: PoolConnection): Promise<void> {
+    await (conn ?? db).execute(`UPDATE placeLocation SET deletedAt = CURRENT_TIMESTAMP() WHERE id = ?`, [id]);
   }
 }
 export default PlaceLocationRepository;

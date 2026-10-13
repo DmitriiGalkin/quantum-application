@@ -1,0 +1,2262 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "imagegen",
+  "reviewedAt": "2026-10-12T21:15:31.171Z",
+  "sourceDocument": "craft-school-program.md",
+  "assets": [
+    {
+      "key": "toy-010",
+      "version": 1,
+      "localPath": "public/catalog/toy-010-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-010-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-010. Subject: a small round branch cross-section wooden pendant with bark edge, growth rings, one drilled hole and a cord loop. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, шлифовальный брусок and a few малый спил, шнур, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-f5e2a759-d228-45d9-a4f3-8744522bd5f7",
+      "sha256": "435790187b788bff204d09beef03ed02b7728b1e7f4168f5ae47251e076a5725",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Спил с кольцами, одно отверстие и подвес; целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-010-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-011",
+      "version": 1,
+      "localPath": "public/catalog/toy-011-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-011-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-011. Subject: one simple flat round wooden log-slice coaster with growth rings and natural bark edge. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate шлифовальный брусок, линейка and a few спил, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-fc8efde1-958a-4b2d-ae8e-c31f4b50aeeb",
+      "sha256": "bb30c1fb01d5b2e665ff506f45850b31491415d6a60937819b19f4d603f71bd7",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Один плоский спил с кольцами и корой; целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-011-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-012",
+      "version": 1,
+      "localPath": "public/catalog/toy-012-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-012-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-012. Subject: a short smooth branch cylinder photo holder with a narrow slot across its top, holding one blank cream card. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, зажим, шлифовальный брусок and a few отрезок ветки, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-30ff78e2-af9a-4185-8b8e-631cd5cefe2c",
+      "sha256": "6de5460dcf90d80356456b965bfd8faecc2577bb50bac1879c55c92f2e11fea5",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Паз в отрезке ветки удерживает пустой лист; целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-012-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-013",
+      "version": 1,
+      "localPath": "public/catalog/toy-013-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-013-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-013. Subject: a flat clustered wooden trivet made from seven small round branch slices connected by visible natural cord. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate ручная дрель, зажим, шлифовальный брусок and a few малые спилы, шнур, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-ae769900-f1c1-47d6-9c33-b917120c1b78",
+      "sha256": "7e3f152e7f405cfe8a525da61d6d5daf9dd36ec8eed56b8c77cf1be5357cd05c",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Семь малых спилов соединены шнуром в плоскую группу; целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-013-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-014",
+      "version": 1,
+      "localPath": "public/catalog/toy-014-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-014-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-014. Subject: a tiny gnome playhouse made from a short hollowed log with rounded doorway and a natural bark roof, no figures. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, стамеска, зажим, абразив and a few полено, кора, деревянные детали, клей beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-30ff4067-9c72-4d5e-9db2-05b0a7bbe02f",
+      "sha256": "63d8bb5da20a673c9b0573b4261cc9c3012d4a1f4d2970e0aa7a6f8b7cfb84c7",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Игровой домик с входом и крышей из коры; на изображении есть предложенный декор, не сведения программы.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-014-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-015",
+      "version": 1,
+      "localPath": "public/catalog/toy-015-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-015-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-015. Subject: a miniature doll table made from a round log slice top and three short branch legs, no dolls. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate ручная дрель, пила, зажим, абразив and a few спил, ветки, деревянные штифты, клей beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-dbc888ff-7b9c-4b4d-9791-f572e6f81f8e",
+      "sha256": "58701014f8a34a79598d9a5fdcb8bc3a1c7fde3548897f922a7e7aa1a031e547",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Миниатюрный стол из спила на трёх ножках из веток, все опоры видны.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-015-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-016",
+      "version": 1,
+      "localPath": "public/catalog/toy-016-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-016-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-016. Subject: one small round wooden log-slice Christmas ornament with a cord loop and a simple muted red painted star, no text. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate ручная дрель, кисть, шлифовальный брусок and a few малые спилы, шнур, краска по выбору, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-3e806744-7d94-4f0f-b678-14bc4a961414",
+      "sha256": "818f418646787db9f5d4d3d6632391b8fdcd73d1b344e44ea2470283c95299c1",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Подвесная игрушка из спила со звездой и отверстием.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-016-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-017",
+      "version": 1,
+      "localPath": "public/catalog/toy-017-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-017-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-017. Subject: a single handmade wooden crochet hook carved from a branch, rounded hook tip, beside a small ball of yarn. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, рашпиль, зажим and a few ветка без дефектов, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-67441af0-f8d2-4ee6-83e7-3051c6759f0e",
+      "sha256": "bc10a34fa79a238d04cda317ee6b57231019fe9b0e375663271142064437004d",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Крючок из ветки с выемкой и гладкой рабочей головкой; целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-017-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-018",
+      "version": 1,
+      "localPath": "public/catalog/toy-018-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-018-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-018. Subject: a small bark-hull sailboat with one twig mast and a plain cream paper sail. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate ножницы, ручное сверло, шлифовальный брусок and a few кора, тонкая веточка, бумага, нить beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-4a4d5826-2a98-435b-afeb-c10b6fafe3c0",
+      "sha256": "6ea56a6a8c597ff51fe1afba6c246ab7236fcb5112a97fb967a589909e316a04",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Кора, мачта из веточки и бумажный парус; корпус и парус целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-018-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-019",
+      "version": 2,
+      "localPath": "public/catalog/toy-019-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-019-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-019. Subject: a small preschool wooden building set of smooth natural log slices and short branch cylinders, some stacked into a low tower. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, зажим, шлифовальный брусок and a few спилы, цилиндры из веток, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-100adbfe-b296-4d72-8d45-6aeaca84baf1",
+      "sha256": "0a97364c3ff1a731b8c0704787b456bba0709923f0053c9bad63b69e635ce84b",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": false,
+      "visualReview": "Отклонено: невозможные элементы башни; заменено простой конструкцией.",
+      "storageUrl": null
+    },
+    {
+      "key": "toy-019",
+      "version": 2,
+      "localPath": "public/catalog/toy-019-generated-cover-v2.png",
+      "promptFile": "docs/image-prompts/catalog/toy-019-generated-cover-v2.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-019. Subject: a very simple stable tower of exactly three stacked broad flat natural wooden cylinders, all physically resting on each other, with four separate wood slices and blocks lying on the table; no stairs, bridges, cantilevers, towers beyond these three pieces. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, зажим, шлифовальный брусок and a few спилы, цилиндры из веток, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-279fbbc1-1355-424a-8bc9-9980bcd3ba5b",
+      "sha256": "1914c2f59541afa6f2d4759d45eaa8e4b83c114126eb720cc0e0b672095ac5c5",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято v2: три опирающихся цилиндра и свободные детали конструктора; невозможные лестницы удалены.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-019-generated-cover-v2.png"
+    },
+    {
+      "key": "toy-020",
+      "version": 1,
+      "localPath": "public/catalog/toy-020-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-020-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-020. Subject: a rustic wooden stacking pyramid of five decreasing log slices with central holes on one blunt wooden peg and a wide round base. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, пила, зажим and a few спилы, деревянный стержень, основание, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-bb4398b2-e0c2-4483-875d-7b82314ac4b2",
+      "sha256": "c276db2901412ff518668f6918977c9efbaf1c747b53bbf191a7a495f2cdd1ac",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Уменьшающиеся спилы на стержне с широким основанием; целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-020-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-021",
+      "version": 1,
+      "localPath": "public/catalog/toy-021-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-021-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-021. Subject: a single natural forked-branch coat hook mounted on a small flat wooden backing plate, resting on table. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, зажим, абразив and a few развилка ветки, основание, крепёж по проекту beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-c038369b-1d9b-4961-9a8c-08edcf27babf",
+      "sha256": "ba849241a2f21c855b9d1c60fb082cf2323a6267db0ab54c17c37c1d6bbfe4b4",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Развилка ветки на деревянной пластине, виден крепёж.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-021-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-022",
+      "version": 1,
+      "localPath": "public/catalog/toy-022-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-022-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-022. Subject: a hanging beam balance with a simple wooden crossbeam, central cord suspension from outside the top frame, two equal shallow bowls hanging at equal heights, no stand. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, линейка, абразив and a few деревянная рейка, шнур, две одинаковые чаши beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-a6b1108a-f785-481f-aab3-f124e6809eb2",
+      "sha256": "b5b2e861422482d0e9adc3e275ee59fffe4bdeb5d050c42e276ee641f9ee8e69",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Подвесные весы: коромысло, центральный подвес и две чаши на одинаковых нитях.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-022-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-023",
+      "version": 1,
+      "localPath": "public/catalog/toy-023-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-023-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-023. Subject: the LEFT tabletop wooden beam balance in the subject photo: flat oval wooden base, broad organic upright, gently curved wooden beam pivoting on one dark central pin, two dark half-shell bowls suspended by three cords each. Show one scale only, preserve construction, no red drapery. Input image 1 is the SUBJECT reference: preserve the left scale construction and its wooden shapes, pivot and dark suspended bowls. Input image 2 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, стамеска, зажим, абразив and a few дерево для основания, стойки и коромысла, ось, нить, две чаши beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-53d47ab5-5ea9-43a4-b204-cbf4d67a4056",
+      "sha256": "9dbe66e2b5c36d5306f15edd599bbf4151cd12750d42fb54e339d89d45ca12d4",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "toy-023-photo-01"
+      ],
+      "referencePhotoIds": [
+        "toy-023-photo-01"
+      ],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "toy-023-photo-01"
+      ],
+      "submittedReferencePaths": [
+        ".cache/school-program/references/-5344059809227024303_121.jpg",
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "По оригиналу сохранены овальное основание, органическая стойка и коромысло, центральная ось и две тёмные чаши на нитях.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-023-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-024",
+      "version": 1,
+      "localPath": "public/catalog/toy-024-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-024-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-024. Subject: a handmade wooden Hanukkah lamp teaching model, eight identical unlit cream candles in a straight row on one level, plus exactly one ninth unlit candle on a raised central holder, nine total, no flames. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, линейка, зажим and a few деревянная основа, вставки для держателей по проекту, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-c123f1ad-b162-4818-b591-31409bc96bcd",
+      "sha256": "52f9400e31222292cc82015572d23ce3887bfff22a24dee49020b53843b9c963",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Ровно девять незажжённых свечей: восемь на одной высоте, девятая выше. Учебный деревянный макет.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-024-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-025",
+      "version": 1,
+      "localPath": "public/catalog/toy-025-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-025-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-025. Subject: one four-sided handmade wooden dreidel spinning top with a short top stem and tapered bottom point, resting on its side, blank faces, no letters. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, рашпиль, зажим and a few деревянная заготовка, абразив, краска по выбору beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-82c0e65d-b89a-4d30-92a1-81dd3fbffdbf",
+      "sha256": "520887830500d10a28b7b8bce0e40a3e312288edaf0633d7e109caf0760389b7",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Четырёхгранный волчок с ручкой и нижним остриём, без надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-025-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-026",
+      "version": 1,
+      "localPath": "public/catalog/toy-026-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-026-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-026. Subject: a handmade wooden bread peel with a broad flat rounded paddle and a long narrow handle, full length in frame. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, рубанок, рашпиль, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-72d1a689-dd09-4d9f-91c7-2f187e9c9b39",
+      "sha256": "06769412d5d173501977ed1043b36c7ade1cbd836f4a1454642ad413b7447483",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Широкая плоская рабочая часть и длинная рукоять хлебной лопаты целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-026-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-027",
+      "version": 1,
+      "localPath": "public/catalog/toy-027-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-027-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-027. Subject: a simple handmade all-wood garden rake, wooden crosshead with evenly spaced short wooden tines and one long wooden handle. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, зажим, абразив and a few деревянные рейки и рукоять, заготовки зубьев, клей по проекту beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-6690c5cd-0969-42ed-bc50-274a226a0551",
+      "sha256": "113947f3edc1fe2ccbdcdfa3e0f289405b80fd1800993e1848cd4a7426792a92",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Деревянные грабли с поперечной головкой, зубьями и длинной рукоятью.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-027-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-028",
+      "version": 1,
+      "localPath": "public/catalog/toy-028-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-028-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-028. Subject: a handmade snow shovel with a broad slightly curved plywood scoop, wooden rear support and a long wooden handle, fully visible. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, зажим, абразив and a few фанера, дерево для стенки и рукояти, крепёж beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-773b6433-fea2-4ccd-a9b0-7893256f43ae",
+      "sha256": "e562a68ad40de37c8e7b2aa81f6bbddc7d0de094fe738e3fa4360abb58cd529e",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Фанерный ковш и деревянная рукоять снежной лопаты целиком, опора видна.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-028-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-029",
+      "version": 1,
+      "localPath": "public/catalog/toy-029-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-029-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-029. Subject: a handmade rectangular wooden mallet with a broad wooden head and fitted wooden handle. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, стамеска, рашпиль, зажим and a few деревянные заготовки головки и рукояти beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-af7ce722-dc54-4b09-aaba-c0b0bb7669e1",
+      "sha256": "d2d7fcd3c2555bcc3b544386b0cb6936abd8736c4cdef637035f7ba12e253229",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Прямоугольная деревянная головка киянки и вставленная рукоять.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-029-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-030",
+      "version": 1,
+      "localPath": "public/catalog/toy-030-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-030-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-030. Subject: a handmade rectangular wooden frame loom with evenly spaced notches at top and bottom and parallel warp threads, beside a simple wooden shuttle. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, напильник, линейка, зажим and a few деревянные рейки, клей или крепёж, нить основы beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-cee17199-2419-4f49-8af5-e83044e2b998",
+      "sha256": "357aabb4cd921f9c3e9923e677e9cb4a03eca63425d6d43b041f292f40d787c3",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Рамочный станок с пазами, нитями основы и челноком; показано пробное полотно.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-030-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-031",
+      "version": 1,
+      "localPath": "public/catalog/toy-031-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-031-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-031. Subject: a small handmade wooden wheelbarrow with one front wheel, two long wooden handles, a shallow wooden box body and two rear support legs, on workshop floor. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, линейка, зажим, абразив and a few деревянные детали, колесо, ось, крепёж beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-71899810-6535-4ceb-a3da-63c0feed4346",
+      "sha256": "d24f1f845c4f9052f425afba9a27f21e7cdb8550630535d8da115369c540fac6",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Кузов тачки, одно колесо, две ручки и две опоры.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-031-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-032",
+      "version": 1,
+      "localPath": "public/catalog/toy-032-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-032-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-032. Subject: a rustic birdhouse hollowed from one vertical bark-covered log, round entrance hole, separate simple sloping wooden roof, no perch added. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate стамеска, киянка, дрель, пила, зажим and a few полено, дерево для дна и крыши, крепёж по проекту beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-eeb599b3-6fa6-4c6f-9c24-ff103d99d908",
+      "sha256": "1fef229407cb7f1c833fa691e3db4d71d17e183ba3b299e3ed6d99ae9e9c1695",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Полено с круглым летком и отдельной крышей; не сборка стенок из досок.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-032-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-033",
+      "version": 1,
+      "localPath": "public/catalog/toy-033-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-033-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-033. Subject: two short wooden log-cylinder walking stilts, each with a securely threaded long rope loop, placed on workshop floor. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, пила, зажим, абразив and a few два деревянных цилиндра, прочная верёвка по проекту beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-43a24740-2895-490e-b621-867ee2cf3a6b",
+      "sha256": "95f23c739fd8d54d7489fffe800860fc58d5dbefd2d185f947a44dbab0a20d8a",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Две деревянные опоры и две закреплённые верёвочные петли, всё изделие целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-033-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-034",
+      "version": 1,
+      "localPath": "public/catalog/toy-034-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-034-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-034. Subject: a natural branch-section pencil holder with several drilled vertical holes holding a few plain wooden pencils. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, зажим, шлифовальный брусок and a few отрезок полена, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-8dc0fe57-b77e-46fb-af53-1f1473f1ce7e",
+      "sha256": "b49ee59d27613d336a2de96ff93461468f8e0743971224e92f15ddd0c4f20b8d",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: деревянная подставка для карандашей с отверстиями; изделие показано целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-034-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-035",
+      "version": 2,
+      "localPath": "public/catalog/toy-035-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-035-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-035. Subject: a small neat pile of smooth unpainted plywood cutout clock numeral pieces shown edge-on and overlapped so no legible writing appears, beside a fretsaw and plywood offcuts. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate лобзик, дрель, зажим, напильник and a few фанера, абразив, покрытие по выбору beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-2c911c7a-3947-4c24-b21f-d30f95bbb852",
+      "sha256": "0809c8978f8001f3a0f9124492c8ff03f2e3ae067111d831ff575d8ef9fc1d82",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": false,
+      "visualReview": "Отклонено: вместо набора выпиленных цифр изображены готовые часы и читаемые надписи.",
+      "storageUrl": null
+    },
+    {
+      "key": "toy-035",
+      "version": 2,
+      "localPath": "public/catalog/toy-035-generated-cover-v2.png",
+      "promptFile": "docs/image-prompts/catalog/toy-035-generated-cover-v2.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-035. Subject: a single overlapping pile of thin plywood cutout clock numeral pieces, photographed from a low angle with their narrow edges facing the camera; recognizable as fret-sawn clock craft parts but no numeral face legible; no clock, dial, clock hands, backing board or printed markings. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate лобзик, дрель, зажим, напильник and a few фанера, абразив, покрытие по выбору beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-97be7126-5ade-4709-b3ba-297864f44204",
+      "sha256": "0b9c52dca7d47f285d108738a84f51abc72db5d579ab56d0d622711f30c3c6cf",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято v2: именно выпиленные фанерные цифры, без циферблата и стрелок. Цифры — форма изделия, печатных надписей нет.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-035-generated-cover-v2.png"
+    },
+    {
+      "key": "toy-036",
+      "version": 1,
+      "localPath": "public/catalog/toy-036-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-036-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-036. Subject: one handmade plywood Christmas star ornament with a cord loop, plain natural wood. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate лобзик, дрель, зажим, напильник and a few фанера, шнур, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-2be73519-83ac-4139-8a64-115cde9180f0",
+      "sha256": "36818f78d1576af6aae4a024b69390581c30bd7f90c4397fc0f80dc5a7227188",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: выпиленная фанерная звезда с подвесом; предложенный декоративный вариант.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-036-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-037",
+      "version": 2,
+      "localPath": "public/catalog/toy-037-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-037-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-037. Subject: a handmade small wooden boat cut from a flat board, raised sides formed by a row of short nail posts with jute cord threaded around the perimeter, no mast. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, молоток, зажим, абразив and a few деревянная доска, небольшие гвозди, джутовый шнур beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-c9d6b55f-7978-458f-add3-4c3a1fba3648",
+      "sha256": "25fe8f3876bd7a13115d79850cfd214aeb09d42fd234dd0e5d92364809b48c06",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": false,
+      "visualReview": "Отклонено: добавлены деревянные борта и скамьи; требуются только бортики из гвоздей и шпагата.",
+      "storageUrl": null
+    },
+    {
+      "key": "toy-037",
+      "version": 2,
+      "localPath": "public/catalog/toy-037-generated-cover-v2.png",
+      "promptFile": "docs/image-prompts/catalog/toy-037-generated-cover-v2.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-037. Subject: one toy boat hull cut as a flat boat-shaped solid wooden board, with a tapered bow; upright metal nails around its perimeter connected by two horizontal runs of jute cord form its ONLY sides; NO wooden side walls, no benches, no hollowed interior, no mast, no sail. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, молоток, зажим, абразив and a few деревянная доска, небольшие гвозди, джутовый шнур beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-a8399cf1-2d0b-4162-bf3d-b3f5d55c3b56",
+      "sha256": "f2acfd4d243a8430fe3797b5da1fb5ac5dd029ac16ae24433362f0cccf61b1b6",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято v2: плоский корпус из доски, борта исключительно из гвоздей и джутовой верёвки.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-037-generated-cover-v2.png"
+    },
+    {
+      "key": "toy-038",
+      "version": 1,
+      "localPath": "public/catalog/toy-038-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-038-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-038. Subject: a handmade wooden wind chime, circular wooden top, five hollow wooden tubes suspended on cords and one central wooden striker, fully hanging in frame. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, пила, зажим, абразив and a few деревянный верх, деревянные трубки, нить, деревянный ударник beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-59ee2dc1-0cbd-4243-bc49-85457cb02101",
+      "sha256": "3ad1bf1b055e60cc073bee3756ef99b615f29252dea6ddc5d9c76b8eca1077d3",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: подвесные деревянные элементы и центральный ударник; предложенная конструкция.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-038-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-039",
+      "version": 1,
+      "localPath": "public/catalog/toy-039-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-039-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-039. Subject: traditional chizhik game equipment: one short wooden spindle stick tapered at BOTH ends and one longer smooth wooden bat, lying separately on table, no bird figurine. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, рашпиль, зажим and a few деревянные заготовки, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-28531fa9-98fe-44af-a0b2-ea64d33e5f67",
+      "sha256": "f360f8daa09dfb0d7b32e7e26100e4f4cf6ec2447cdc47d9474900667bc5cb02",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: заострённый чиж и игровая палка.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-039-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-040",
+      "version": 1,
+      "localPath": "public/catalog/toy-040-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-040-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-040. Subject: a small tabletop ring-toss game, smooth wooden cross-shaped base with one short blunt vertical peg and three rope rings. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, пила, зажим, абразив and a few деревянное основание, штырь, кольца из шнура beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-582687c9-b2b9-4958-858f-5f7be7eef708",
+      "sha256": "0e59cb637c6445ccb1e99c2889f9c90bda161b445e2622eacb86572a50433385",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: настольный кольцеброс с кольцами.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-040-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-041",
+      "version": 1,
+      "localPath": "public/catalog/toy-041-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-041-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-041. Subject: a large floor-standing ring-toss game with a broad heavy wooden cross base, tall blunt wooden peg and three large rope rings, on cream workshop floor. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, зажим, абразив and a few деревянные детали основания, штырь, большие кольца из шнура beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-99d2bfc8-9132-41fb-b59d-5e6ae8607bd0",
+      "sha256": "fef0094b555ee9a746dc4b90b7c2663ee3cb0304e7c25c9872651412a909eeac",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: напольный кольцеброс с кольцами.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-041-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-042",
+      "version": 1,
+      "localPath": "public/catalog/toy-042-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-042-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-042. Subject: one handmade wooden bowling skittle with a broad stable base, slender neck and round top, visible hand-shaped wood texture. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate рашпиль, нож для резьбы, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-aee16141-03f4-4e00-a87d-d373efb408de",
+      "sha256": "9eb3b9e656bf74be4e11454d3b102f44f14cb445103e09cedf15515bddf02ae2",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие соответствует предложенной конструкции; кремовая мастерская, инструменты рядом, предмет целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-042-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-043",
+      "version": 1,
+      "localPath": "public/catalog/toy-043-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-043-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-043. Subject: a handmade wooden xylophone with eight graduated natural wood bars supported on two soft cords over a simple rectangular wooden frame, two wooden mallets beside it. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, линейка, зажим, абразив and a few деревянные пластины, рама, мягкий шнур, две палочки beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-b60151c6-f489-4e32-8d24-3d1f7852881d",
+      "sha256": "a60eb3bf10c1a36fb1604eaaf704ab4c342d106b7f3cf98030dbd1a08e049ec0",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие соответствует предложенной конструкции; кремовая мастерская, инструменты рядом, предмет целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-043-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-044",
+      "version": 1,
+      "localPath": "public/catalog/toy-044-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-044-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-044. Subject: one plain handmade wooden rainstick tube with securely fitted wooden end caps, lying on table, a few loose grains and wood offcuts nearby, no decorative text. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, зажим, абразив and a few деревянная трубка, заглушки, внутренние перегородки, сухие зёрна beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-84eabfd4-9466-45bc-92db-0d7b83593f60",
+      "sha256": "819a57e67f013839f0bd951f39a336e8d86218ad863f263f9ae63199240d919a",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие соответствует предложенной конструкции; кремовая мастерская, инструменты рядом, предмет целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-044-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-045",
+      "version": 1,
+      "localPath": "public/catalog/toy-045-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-045-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-045. Subject: a small rustic dugout toy boat carved from one lengthwise split half-log, hollowed interior and tapered bow, no mast or nails. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, стамеска, киянка, рашпиль, зажим and a few половина полена, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-cb82dc5e-d261-4733-bf0b-c72606de1615",
+      "sha256": "dd18007a298127fadf3c3f627f8ab6bc35e84272e2acd0d9045a9d55be4de9a5",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие соответствует предложенной конструкции; кремовая мастерская, инструменты рядом, предмет целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-045-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-046",
+      "version": 1,
+      "localPath": "public/catalog/toy-046-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-046-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-046. Subject: a handmade wooden checkers board with exactly eight by eight alternating cream and brown squares and round wooden checkers in two colours, no letters or numbers. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, линейка, кисть, зажим, абразив and a few деревянная доска, деревянные круги, краска или отделка по выбору beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-a1f4e877-7e36-4928-b735-6407340f3ac3",
+      "sha256": "e54a599fdf474b178f03acc83f1f67822f513855ae4ac2e2d41f249c61ebecf6",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие соответствует предложенной конструкции; кремовая мастерская, инструменты рядом, предмет целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-046-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-047",
+      "version": 1,
+      "localPath": "public/catalog/toy-047-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-047-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-047. Subject: one simple hand-carved bird figurine from a natural branch, rounded body, short beak and tail, some bark retained. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, зажим and a few ветка без дефектов, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-49a8d5d3-8a41-46a3-8840-4dcf8d531a26",
+      "sha256": "0a9e51ae4eae4cf98ab81dc85470f959c38c0b2daa2fc22a504a80d2c9ff2f0a",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие соответствует предложенной конструкции; кремовая мастерская, инструменты рядом, предмет целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-047-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-048",
+      "version": 1,
+      "localPath": "public/catalog/toy-048-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-048-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-048. Subject: one small hand-carved wooden mouse figurine, rounded body, two small integral ears and a short carved tail, no hedgehog. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, резец, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-9744a119-8097-44d8-9430-8a8f2ac714a0",
+      "sha256": "e79b19e44cb09bc146e33d1a6ac571783acaec621f10521104fc6dec3ddb86f3",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие соответствует предложенной конструкции; кремовая мастерская, инструменты рядом, предмет целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-048-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-049",
+      "version": 2,
+      "localPath": "public/catalog/toy-049-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-049-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-049. Subject: a handmade wooden kitchen spatula carved from a branch using a knife, narrow handle, broad flat rounded paddle and visible subtle carving marks. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, зажим and a few ветка или расколотая заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-a1a92430-658a-4b37-af97-5dc022d897b9",
+      "sha256": "0e33bae1766f7c4b547400b16d569866c3398799930a89983b7a27eabe0d61ac",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": false,
+      "visualReview": "Отклонено: лопатка выглядит как ложка с углублением; нужна плоская рабочая часть.",
+      "storageUrl": null
+    },
+    {
+      "key": "toy-049",
+      "version": 2,
+      "localPath": "public/catalog/toy-049-generated-cover-v2.png",
+      "promptFile": "docs/image-prompts/catalog/toy-049-generated-cover-v2.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-049. Subject: one hand-carved wooden kitchen spatula made from a branch, narrow rounded handle, broad entirely FLAT paddle with a straight gently rounded tip, visible carving facets; NO hollow, recess, concavity, spoon bowl or scoop. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, зажим and a few ветка или расколотая заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-5dec015e-3476-4b4c-a013-ff39b06ada10",
+      "sha256": "165ec94c81eda60a14fdf61061f1c80e4ae2d20c77f9db4ac37eeccb3e81b5e6",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято v2: плоская лопатка с узкой рукоятью и следами ножа, без ложечной чаши.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-049-generated-cover-v2.png"
+    },
+    {
+      "key": "toy-050",
+      "version": 1,
+      "localPath": "public/catalog/toy-050-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-050-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-050. Subject: one smooth handmade wooden egg with natural grain, height to diameter ratio seven to five, beside a wood rasp. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate рашпиль, зажим, шаблон, линейка and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-0da244da-f081-4a32-bd61-df1ae9748021",
+      "sha256": "1f024c0200c0e9687414931419d75b350fe805ab62670b0e758b566cb8774763",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: форма и материалы соответствуют предложенному изделию, предмет целиком, без людей и надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-050-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-051",
+      "version": 1,
+      "localPath": "public/catalog/toy-051-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-051-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-051. Subject: one large forearm-length abstract hand-carved wooden human figurine, integral head torso arms and legs, visible gouge facets, beside a carving chisel, no real people. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate резец, зажим and a few деревянная заготовка, приспособление для фиксации beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-31f6508a-891a-471b-9447-de0df0a2e1af",
+      "sha256": "db4b28362358099fe29044a616df68005fd66260ee3112fa6ee670c9cb5b3319",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: форма и материалы соответствуют предложенному изделию, предмет целиком, без людей и надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-051-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-052",
+      "version": 1,
+      "localPath": "public/catalog/toy-052-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-052-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-052. Subject: one handmade two-bladed wooden propeller, symmetric carved blades with opposing twists and one central shaft hole, lying on table. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, рашпиль, дрель, зажим and a few деревянная заготовка, ось для ручного испытания beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-a016aeb6-992a-4e09-a1d9-a3831d6acc9f",
+      "sha256": "ee59ec3ce30be9d71a7bbf49bab4f7f5b2fa61948b57ce27c42b4dd15e400b84",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: форма и материалы соответствуют предложенному изделию, предмет целиком, без людей и надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-052-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-053",
+      "version": 1,
+      "localPath": "public/catalog/toy-053-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-053-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-053. Subject: a long handmade wooden kitchen spatula shaped with a rasp, broad flat paddle about one quarter of total length in width, long narrow rounded handle, no forked tip. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate рашпиль, линейка, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-dc4d8b51-8e07-4c34-b6c2-88af21c7eb5d",
+      "sha256": "0004d056fd5f8d0ec925a69edafd6f9cc4bccd3381384a3cf2159d787626963c",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: форма и материалы соответствуют предложенному изделию, предмет целиком, без людей и надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-053-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-054",
+      "version": 1,
+      "localPath": "public/catalog/toy-054-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-054-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-054. Subject: a handmade long wooden stirring paddle with slender rounded handle and a modest flattened oval stirring end, no spoon bowl. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate нож для резьбы, рашпиль, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-3d34ca29-b3f3-4d80-8632-466dbc80b550",
+      "sha256": "fd165c54552be435ab1e9e2124112bb2b05663e39d913e20b44f0db7afb4ea57",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: форма и материалы соответствуют предложенному изделию, предмет целиком, без людей и надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-054-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-055",
+      "version": 1,
+      "localPath": "public/catalog/toy-055-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-055-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-055. Subject: one handmade wooden grain scoop with a deep hollow bowl open at the front and one integral handle at the rear. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate полукруглая стамеска, киянка, рашпиль, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-d2521236-0476-4639-9abe-371ae47b1c69",
+      "sha256": "7a78c3911f3143f329c74ad68f3e92decdfa9b0fde15d493542e1f84913b33ca",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: форма и материалы соответствуют предложенному изделию, предмет целиком, без людей и надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-055-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-056",
+      "version": 1,
+      "localPath": "public/catalog/toy-056-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-056-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-056. Subject: one handmade wooden spoon with a shallow oval bowl and a slender gently curved integral handle, no food. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate ложкорез, нож для резьбы, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-e923511b-15c9-4903-ae33-2d1258777cf0",
+      "sha256": "96b7ff81fef274ef5f525bf89e0d8590cad98d4d4fad0e5dc0495cd103c1195d",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: форма и материалы соответствуют предложенному изделию, предмет целиком, без людей и надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-056-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-057",
+      "version": 1,
+      "localPath": "public/catalog/toy-057-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-057-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-057. Subject: one handmade all-wood rolling pin with a broad smooth cylindrical central body and two integral narrower handles, no pestle. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate рашпиль, нож для резьбы, зажим, шаблон and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-a7f2c129-6aba-442f-85e2-ef3bb67c8192",
+      "sha256": "42ab4e98dcb85c13cbea20cd27459cbc9b85da1a75e9127fc76a6f61fe638149",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: форма и материалы соответствуют предложенному изделию, предмет целиком, без людей и надписей.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-057-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-058",
+      "version": 1,
+      "localPath": "public/catalog/toy-058-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-058-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-058. Subject: a wide handmade shallow wooden bread bowl with a gently concave interior, broad low rim and organic oval outline, no bread. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate полукруглая стамеска, рашпиль, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-3619e531-a949-4d44-b234-3be725d272e8",
+      "sha256": "18103a3f66beb20b34a5a0e2ddb35fee7fe95aa6f8320f725cb4229d7d4dff27",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: предмет целиком, конструкция соответствует предложению карточки; без людей, надписей и лишних вариантов.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-058-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-059",
+      "version": 2,
+      "localPath": "public/catalog/toy-059-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-059-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-059. Subject: four smooth flat wooden geometric tangram-like T-puzzle pieces scattered separately on table, no assembled letter, no writing. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate лобзик, линейка, зажим, напильник and a few тонкая деревянная доска или фанера, шаблон, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-de999e9a-f5cd-4459-90ce-06e57935a66c",
+      "sha256": "d5df21de00dd80c712ca77356624ca72fc1e8e8a14fb27ecb94d2c06bbe7f10e",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": false,
+      "visualReview": "Отклонено: изображены отдельные L- и T-фигуры вместо деталей одной Т-головоломки.",
+      "storageUrl": null
+    },
+    {
+      "key": "toy-059",
+      "version": 2,
+      "localPath": "public/catalog/toy-059-generated-cover-v2.png",
+      "promptFile": "docs/image-prompts/catalog/toy-059-generated-cover-v2.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-059. Subject: one handmade natural plywood T-shaped dissection puzzle assembled on table: horizontal bar is three equal squares wide, the central vertical stem is one square wide and extends two squares below the bar. Exactly FOUR flush pieces form this T: two equal square wings at the left and right of the bar, and two long right triangles forming the central rectangle split diagonally. Show the three cut seams clearly. The T is the physical shape of one product, not printed lettering. No L-shaped parts or coloured paint. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate лобзик, линейка, зажим, напильник and a few тонкая деревянная доска или фанера, шаблон, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-c5bf698d-be64-46ab-8237-75381e517a90",
+      "sha256": "14d6678ecbf5916ec8255c5e70192df700750b8051c053ae5b83430cb954d9cd",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято v2: четыре детали образуют Т; два квадратных крыла и два треугольника центральной части. Это предложенная простая схема, не исторический чертёж.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-059-generated-cover-v2.png"
+    },
+    {
+      "key": "toy-060",
+      "version": 1,
+      "localPath": "public/catalog/toy-060-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-060-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-060. Subject: a handmade wooden book stand, sloping rectangular back panel, narrow lower ledge and two triangular side supports, holding one plain closed cream book with no writing. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, линейка, зажим, абразив and a few деревянные детали, клей или крепёж beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-610686ae-cae3-4ddc-842a-9026658ef66f",
+      "sha256": "75f9a3bbeee8ffba287532c7239cd47e8c3e575c0e747b951a40de6e9abf5df4",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: предмет целиком, конструкция соответствует предложению карточки; без людей, надписей и лишних вариантов.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-060-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-061",
+      "version": 1,
+      "localPath": "public/catalog/toy-061-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-061-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-061. Subject: one deep hand-carved wooden bowl with organic round outline, smooth continuous rim and a stable flat base, no food. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate полукруглая стамеска, киянка, рашпиль, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-da84538b-7646-4c07-a235-533fae480c90",
+      "sha256": "b1dafdd811a67b082c7344857da4283bf0cd06175580ae13227514e28b450c78",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: предмет целиком, конструкция соответствует предложению карточки; без людей, надписей и лишних вариантов.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-061-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-062",
+      "version": 1,
+      "localPath": "public/catalog/toy-062-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-062-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-062. Subject: a handmade wooden desk organizer with one shallow tray and several drilled pen holes, a few plain pencils, no writing. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate дрель, стамеска, зажим, линейка and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-31c76e65-f7ee-43ec-8f13-158d3fd82fb8",
+      "sha256": "352dec1373a5098e7d15b02d73f38d3bb39f99d5284b324f5f8318d3e730141c",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: предмет целиком, конструкция соответствует предложению карточки; без людей, надписей и лишних вариантов.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-062-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-063",
+      "version": 1,
+      "localPath": "public/catalog/toy-063-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-063-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-063. Subject: a compact hand-carved wooden egg stand with a raised central egg cup holding one wooden dummy egg, lower small recess for shell pieces and a narrow spoon groove, no food. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate полукруглая стамеска, нож для резьбы, зажим and a few деревянная заготовка, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-f18e3705-ec38-4f5f-bf59-2f1ef1de301a",
+      "sha256": "e697dab7977710ce539e0355d9aa20c0a9cced1ce5e7f53fc9ef5a8e9be2774e",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: предмет целиком, конструкция соответствует предложению карточки; без людей, надписей и лишних вариантов.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-063-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-064",
+      "version": 1,
+      "localPath": "public/catalog/toy-064-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-064-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-064. Subject: a handmade wooden globe stand with a broad flat base and two upright side supports holding a plain unmarked wooden sphere on an axle, no map or text. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, линейка, зажим and a few деревянные детали, ось по проекту, крепёж beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-75d4a913-9c56-4bac-b35b-1c3302e1101b",
+      "sha256": "fc4635b7cb0903cd4b86cd8f552211a3110cacd9ec9aef94ea6e74f95c3f2c1e",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-1"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-1"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: предмет целиком, конструкция соответствует предложению карточки; без людей, надписей и лишних вариантов.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-064-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-065",
+      "version": 1,
+      "localPath": "public/catalog/toy-065-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-065-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-065. Subject: one small handmade wooden salt cellar with a round hollow body and matching separate wooden lid placed beside it, no salt. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate полукруглая стамеска, нож для резьбы, зажим and a few деревянная заготовка, заготовка крышки, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-ed75af47-52fc-493d-94c9-def02aa694ec",
+      "sha256": "2d7c28a36ddd04bfe65610099dd1fdc3df83a99383c375fb8becd79943943a75",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: предмет целиком, конструкция соответствует предложению карточки; без людей, надписей и лишних вариантов.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-065-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-066",
+      "version": 1,
+      "localPath": "public/catalog/toy-066-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-066-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-066. Subject: a vertical hand-carved wooden candle holder with an organic bone-like narrowing waist and broad stable foot, one unlit cream candle in a small metal cup on top, no flame. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate инструменты для лепки, резцы, зажим and a few глина для модели, деревянная заготовка, держатель по проекту beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-abcbfae4-5028-456a-bc1e-c2814de9b979",
+      "sha256": "f9ed1a7dbcba7e2f2e97f7d732ace2924cff193f99ad08734cf2b36dd6b75b1f",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие целиком, предложенная конструкция и стиль соблюдены. Число струн лиры — иллюстративное, программа его не задаёт.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-066-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-067",
+      "version": 1,
+      "localPath": "public/catalog/toy-067-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-067-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-067. Subject: one simple smooth blank wooden classroom sign plaque with two small mounting holes, no writing, beside paintbrush and wood offcuts. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, дрель, кисть, зажим and a few деревянная доска, покрытие, крепёж по проекту beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-38b059b8-14f7-4b3d-aac7-09bc7ebcd2f2",
+      "sha256": "dafa5f6f1ac46b9ffdecb696864a8abb97dc99797d70f23ad4d9ddea360b7129",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие целиком, предложенная конструкция и стиль соблюдены. Число струн лиры — иллюстративное, программа его не задаёт.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-067-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-068",
+      "version": 1,
+      "localPath": "public/catalog/toy-068-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-068-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-068. Subject: a handmade picture frame carved from one continuous solid piece of wood, organic carved outer border and rectangular central opening, empty with no photograph. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate лобзик, резцы, зажим and a few цельная деревянная заготовка, задник и держатели по проекту, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-3d41ea0f-eff6-448d-b1a1-c741f0377abf",
+      "sha256": "f80cfaa252f999f224cdd56caf8ac29e306aa69edd9017b22223cae66a2f7c5d",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие целиком, предложенная конструкция и стиль соблюдены. Число струн лиры — иллюстративное, программа его не задаёт.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-068-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-069",
+      "version": 1,
+      "localPath": "public/catalog/toy-069-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-069-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-069. Subject: a handmade open wooden wall shelf with one horizontal shelf board and two short upright side panels, visible simple mortise and tenon corner joints, resting on table, no brackets invented. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, стамеска, угольник, зажим and a few деревянные доски, клей по проекту, крепления к стене по проекту beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-07d746ed-c91b-4c79-b461-78d7f91b0cb5",
+      "sha256": "0f3fb415748217d8c2f6793fd545f0aa024277f2e385dbe11377cdf60e99f3d8",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие целиком, предложенная конструкция и стиль соблюдены. Число струн лиры — иллюстративное, программа его не задаёт.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-069-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-070",
+      "version": 1,
+      "localPath": "public/catalog/toy-070-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-070-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-070. Subject: a handmade rectangular wooden jewellery box with fitted corner joints and a hinged lid partly open, empty interior, no jewellery. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, стамеска, дрель, угольник, зажим and a few деревянные детали, петли, клей, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-b59f4fc5-c338-460a-8625-2ae2047a5d13",
+      "sha256": "d84527673ed62d15187c8c498c830e0301083ab98ee89f5aaf440a7b4117fd96",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие целиком, предложенная конструкция и стиль соблюдены. Число струн лиры — иллюстративное, программа его не задаёт.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-070-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-071",
+      "version": 3,
+      "localPath": "public/catalog/toy-071-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-071-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-071. Subject: a handmade open wooden A4 document tray with visible dovetail corner joints and fitted wooden bottom, a few plain blank cream sheets inside, no writing. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, стамеска, угольник, зажим and a few деревянные доски, дно, клей, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-86896502-0d75-41ea-b8b7-f2c5e2a09a1f",
+      "sha256": "3cc256934a285f2f33030bb9779dd9e764c84787dc3d6917bfc544170e41ce3d",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": false,
+      "visualReview": "Отклонено: прямоугольные ящичные шипы вместо ласточкиного хвоста.",
+      "storageUrl": null,
+      "subjectReferenceChain": [
+        "toy-071-generated-cover-v2",
+        "demo-boardgame"
+      ],
+      "editReferenceIds": [
+        "toy-071-generated-cover-v2"
+      ]
+    },
+    {
+      "key": "toy-071",
+      "version": 3,
+      "localPath": "public/catalog/toy-071-generated-cover-v2.png",
+      "promptFile": "docs/image-prompts/catalog/toy-071-generated-cover-v2.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-071. Subject: one handmade open wooden A4 document box with FOUR thick walls and fitted wooden bottom, clearly visible traditional THROUGH DOVETAIL joints at the front two corners: large alternating TRAPEZOIDAL flared tails and narrower pins, sloping diagonal edges, never square finger joints. Three blank cream A4 sheets fit inside. Focus on unmistakable dovetail corner geometry, entire box visible. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, стамеска, угольник, зажим and a few деревянные доски, дно, клей, абразив beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-7fd59b3f-a222-4d37-a353-89a53052feaa",
+      "sha256": "3901e1dd89d51d29149bb781aacaa19bcbb8a38b4971088d8cefb6885cde2efd",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": false,
+      "visualReview": "Отклонено: повторены прямоугольные шипы; нужна отдельная коррекция углов.",
+      "storageUrl": null
+    },
+    {
+      "key": "toy-071",
+      "version": 3,
+      "localPath": "public/catalog/toy-071-generated-cover-v3.png",
+      "promptFile": "docs/image-prompts/catalog/toy-071-generated-cover-v3.prompt.md",
+      "exactPrompt": "Edit the reference product photo. Preserve the open wooden A4 document box, blank paper, tools, cream workshop, light, camera angle, 1536x1024 landscape 3:2 and every other detail. Change ONLY the visible wooden joints at the two FRONT corners. Replace every square rectangular finger joint with an unmistakable traditional THROUGH DOVETAIL joint: the dark end-grain shapes must be wide flared TRAPEZOIDS with angled sloping sides, narrower at their neck, interlocked with small tapered pins. Each visible corner should have three large flared trapezoid tails. This is dovetail joinery, NOT box finger joints. Make these trapezoid silhouettes obvious from the camera view. No added words, labels, people, hands or logos.",
+      "generationResultId": "exec-0c06a982-fc87-4704-b6a8-c87a0ed7f8a6",
+      "sha256": "c679f2dde20e80125f520a2d26e439687d8b517d2c12d1752a20bc46b89efefa",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/toy-071-generated-cover-v2.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято v3: видимые углы исправлены на трапециевидные ласточкины хвосты; остальные детали сохранены.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-071-generated-cover-v3.png"
+    },
+    {
+      "key": "toy-072",
+      "version": 1,
+      "localPath": "public/catalog/toy-072-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-072-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-072. Subject: a small handmade wooden lyre with rounded solid body, two curved side arms, a top crossbar and seven taut parallel strings with tuning pins, natural wood, no notation. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, стамеска, дрель, зажим, абразив and a few деревянная заготовка, колки, струны по проекту мастера beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-c777ff36-684d-4ee2-8ec0-ba3ac3456111",
+      "sha256": "70dfb86d02b1a7cec19b8b988e8aae20dd0683ad9030822d83aa36c049a7be11",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие целиком, предложенная конструкция и стиль соблюдены. Число струн лиры — иллюстративное, программа его не задаёт.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-072-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-073",
+      "version": 1,
+      "localPath": "public/catalog/toy-073-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-073-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft catalog cover for toy-073. Subject: a tall handmade wooden armchair with a high back, armrests, four legs and visible precise traditional joinery, organic yet functional shape, on workshop floor, full chair in frame. Input image 1 demo-boardgame is a STYLE reference ONLY: copy warm creamy workshop environment, oak craft table, soft window daylight, gentle beige tones, blurred small plant, realistic wood texture, not its game. Realistic product photograph, horizontal 3:2, 1536x1024. One finished project, large and complete in frame, all supports and handles visible. Place appropriate пила, рубанок, стамески, угольник, зажимы and a few деревянные доски и бруски, клей и крепёж по чертежу beside it, lying separately and secondary. Use workshop floor for furniture, oak table for smaller objects. For suspended objects show all cords and a plausible suspension above. No people, hands, readable text, letters, labels, logos, watermark, collage or lit flame. This image illustrates a proposed teaching construction, not a proven manufactured specimen. For a programme item with alternatives show only the FIRST named variant.",
+      "generationResultId": "exec-0e64b199-a591-47b1-91d7-383fa4c4cd94",
+      "sha256": "26977d48ca813d040e19a6445c8a01c49edbe9f03d3de610f7a0319d766e6ffd",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "program-page-2"
+      ],
+      "referencePhotoIds": [],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "program-page-2"
+      ],
+      "submittedReferencePaths": [
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Принято: изделие целиком, предложенная конструкция и стиль соблюдены. Число струн лиры — иллюстративное, программа его не задаёт.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-073-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-001",
+      "version": 2,
+      "localPath": "public/catalog/toy-001-generated-cover-v2.png",
+      "promptFile": "docs/image-prompts/catalog/toy-001-generated-cover-v2.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum craft catalog cover. Style: realistic warm natural product photograph, landscape 3:2, 1536x1024. Light creamy educational workshop, soft daylight from a window, oak craft table, small softly blurred plant, visible handmade wood grain. Main finished object large and entirely in frame including handles, supports and mechanisms. Appropriate wood offcuts, sanding block and hand tools lie separately nearby, secondary to the object. No people, hands, text, logo, watermark or collage. Subject reference images define the object's actual shape, colour, proportions, joints and mechanism. The LAST reference image demo-boardgame defines lighting, environment and composition ONLY: do not copy the board game. The wooden articulated robot from the photographs, brown natural wood, rectangular head with two dark blue round eyes and a horizontal mouth groove, hanging cord loop at top, broad rounded block torso, short cylindrical arms ending in wooden fingers, two segmented legs with cylindrical parts and block feet. Preserve the cord joints and wooden discs, no metal joints, no futuristic redesign. Place it lying flat on the table so all articulated limbs and fingers are clear.",
+      "generationResultId": "exec-63c2ad46-35de-4110-b3b6-8e4fa08e2138",
+      "sha256": "0646327e8621a911ad9a0f2bb3278365e9f9534b4870ee3a46bb82e5c81df77e",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "toy-001-photo-01",
+        "toy-001-photo-02",
+        "toy-001-photo-03",
+        "toy-001-photo-04",
+        "toy-001-photo-05",
+        "toy-001-photo-06",
+        "toy-001-photo-07",
+        "toy-001-photo-08"
+      ],
+      "referencePhotoIds": [
+        "toy-001-photo-01",
+        "toy-001-photo-05",
+        "toy-001-photo-08"
+      ],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "toy-001-photo-01",
+        "toy-001-photo-02",
+        "toy-001-photo-03",
+        "toy-001-photo-04",
+        "toy-001-photo-05",
+        "toy-001-photo-06",
+        "toy-001-photo-07",
+        "toy-001-photo-08"
+      ],
+      "submittedReferencePaths": [
+        ".cache/school-program/references/IMG_20261010_125031.jpg",
+        ".cache/school-program/references/IMG_20261010_125104.jpg",
+        ".cache/school-program/references/IMG_20261010_125120.jpg",
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Сохранены прямоугольная голова с синими глазами, шнуровая петля, диски и сегменты конечностей; изделие целиком.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-001-generated-cover-v2.png"
+    },
+    {
+      "key": "toy-002",
+      "version": 1,
+      "localPath": "public/catalog/toy-002-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-002-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum craft catalog cover. Style: realistic warm natural product photograph, landscape 3:2, 1536x1024. Light creamy educational workshop, soft daylight from a window, oak craft table, small softly blurred plant, visible handmade wood grain. Main finished object large and entirely in frame including handles, supports and mechanisms. Appropriate wood offcuts, sanding block and hand tools lie separately nearby, secondary to the object. No people, hands, text, logo, watermark or collage. Subject reference images define the object's actual shape, colour, proportions, joints and mechanism. The LAST reference image demo-boardgame defines lighting, environment and composition ONLY: do not copy the board game. The actual handmade gymnast toy in the subject photo. Two long parallel dark reddish bark-covered branch uprights, a low transverse wooden brace, a pale slender articulated wooden gymnast suspended by cords near the tops. Its long arms point upward, visible nail pivots at hips and shoulders, split narrow wooden legs. Show the whole assembly lying on the table with the cords attached; do not invent a pedestal or conventional horizontal gym bar. Retain uneven branch texture and pale carved exposed wood at branch tips.",
+      "generationResultId": "exec-09807810-b262-447e-bce7-e2872dd7887f",
+      "sha256": "94f85fa10dfb98f1ba854265071f2a47577be714daffd2791b9184a7b6d102bb",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "toy-002-photo-01"
+      ],
+      "referencePhotoIds": [
+        "toy-002-photo-01"
+      ],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "toy-002-photo-01"
+      ],
+      "submittedReferencePaths": [
+        ".cache/school-program/references/IMG_20260827_161149.jpg",
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Сохранены две стойки из веток с корой, нижняя поперечина, фигурка с шарнирами и подвесные нити; добавленной подставки нет.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-002-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-003",
+      "version": 1,
+      "localPath": "public/catalog/toy-003-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-003-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum craft catalog cover. Style: realistic warm natural product photograph, landscape 3:2, 1536x1024. Light creamy educational workshop, soft daylight from a window, oak craft table, small softly blurred plant, visible handmade wood grain. Main finished object large and entirely in frame including handles, supports and mechanisms. Appropriate wood offcuts, sanding block and hand tools lie separately nearby, secondary to the object. No people, hands, text, logo, watermark or collage. Subject reference images define the object's actual shape, colour, proportions, joints and mechanism. The LAST reference image demo-boardgame defines lighting, environment and composition ONLY: do not copy the board game. The handmade wooden butter knife in the subject photo. A single flat warm brown wooden piece, slender handle with rounded end transitioning into a broad short rectangular spreading blade with rounded corners. The blade is unsharpened, slightly tapered. Preserve the silhouette from the photo. Place the complete knife flat on the table. Do not depict a kitchen spatula or metal knife, no food.",
+      "generationResultId": "exec-92052118-fafe-41b0-a63d-f7c8a4fe0348",
+      "sha256": "f72ff149f53186f8d7c2ca9bad684510c8523e943fad5a2218ec2829bfceeaf4",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "toy-003-photo-01"
+      ],
+      "referencePhotoIds": [
+        "toy-003-photo-01"
+      ],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "toy-003-photo-01"
+      ],
+      "submittedReferencePaths": [
+        ".cache/school-program/references/IMG_20260827_152558.jpg",
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Плоский деревянный нож с узкой рукоятью и расширенной рабочей частью; оригинал размыт и частично обрезан, мелкие пропорции не подтверждаются.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-003-generated-cover-v1.png"
+    },
+    {
+      "key": "toy-004",
+      "version": 1,
+      "localPath": "public/catalog/toy-004-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/toy-004-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum craft catalog cover. Style: realistic warm natural product photograph, landscape 3:2, 1536x1024. Light creamy educational workshop, soft daylight from a window, oak craft table, small softly blurred plant, visible handmade wood grain. Main finished object large and entirely in frame including handles, supports and mechanisms. Appropriate wood offcuts, sanding block and hand tools lie separately nearby, secondary to the object. No people, hands, text, logo, watermark or collage. Subject reference images define the object's actual shape, colour, proportions, joints and mechanism. The LAST reference image demo-boardgame defines lighting, environment and composition ONLY: do not copy the board game. The bilboquet from the subject photo: one tall cylindrical wooden handle with a shallow cup at its broad top, narrowing in middle and straight lower grip, a roughly carved wooden sphere resting in the cup, connected to lower grip by thin pale cord. Preserve uneven hand-carved texture, natural pale wood and visibly connected cord. Show toy lying slightly obliquely on table with ball beside cup so the cup and cord are visible; no extra spike, stand or base.",
+      "generationResultId": "exec-30aac223-7f87-4e27-9dad-6d0f1d9b14ce",
+      "sha256": "ce5a68c9763db4ba5b08757d51abf81ceea4aac5fb1d66bba62e80d1f873740d",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "toy-004-photo-01"
+      ],
+      "referencePhotoIds": [
+        "toy-004-photo-01"
+      ],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "toy-004-photo-01"
+      ],
+      "submittedReferencePaths": [
+        ".cache/school-program/references/IMG_20260827_152544.jpg",
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Рукоять с чашечкой и шар на шнуре, без дополнительной подставки; сохранена ручная фактура.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-004-generated-cover-v1.png"
+    },
+    {
+      "key": "idea-049",
+      "version": 1,
+      "localPath": "public/catalog/idea-049-generated-cover-v1.png",
+      "promptFile": "docs/image-prompts/catalog/idea-049-generated-cover-v1.prompt.md",
+      "exactPrompt": "Use case: product-mockup. Asset type: Quantum educational craft idea cover for idea 49, cutting board. Create a warm natural realistic product photograph, horizontal 3:2, 1536x1024. Subject: a complete simple handmade wooden sandwich cutting board with softly rounded corners, flat smooth surface, visible wood grain, no invented decoration. This is a proposed teaching design, since the old image shows sanding a board rather than a documented finished object. Input image 1 is the previous board image: use only the wooden material and broad simple board shape, remove people and hands. Input image 2 demo-boardgame is a STYLE reference only: use its creamy educational workshop, oak craft table, soft window daylight, restrained warm beige palette, blurred small plant, realistic wood texture. Do not include the board game. Show the finished cutting board large and entirely within the frame, on an oak table. Beside it, separate and secondary, place a small wooden blank, sanding block and a wood chisel lying flat. No people, hands, letters, logos, watermark, collage, food, or claim of food-safe coating.",
+      "generationResultId": "exec-ef34d319-1e7b-4d88-89e2-d0e310d5f737",
+      "sha256": "bc89a3a46fa2f0c8579d78a48054561c11d9a12168d8f646996483331496527d",
+      "width": 1536,
+      "height": 1024,
+      "sourcePhotoIds": [
+        "idea-49-previous-cover"
+      ],
+      "referencePhotoIds": [
+        "idea-49-previous-cover"
+      ],
+      "styleReferenceIds": [
+        "demo-boardgame"
+      ],
+      "allViewedSourcePhotoIds": [
+        "idea-49-previous-cover"
+      ],
+      "submittedReferencePaths": [
+        ".cache/school-program/references/idea-49-previous-cover.jpg",
+        "public/catalog/style-references/demo-boardgame.png"
+      ],
+      "accepted": true,
+      "visualReview": "Простая плоская доска показана целиком; люди отсутствуют, тёплый свет и инструменты соответствуют стилю. Предложенная форма, не восстановленный оригинал.",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/idea-049-generated-cover-v1.png"
+    }
+  ],
+  "references": [
+    {
+      "id": "toy-023-photo-01",
+      "fileName": "-5344059809227024303_121.jpg",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-023/toy-023-photo-01-15xw9xkuzNjJ0P4gIctIKc3up6miJsWCf.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/15xw9xkuzNjJ0P4gIctIKc3up6miJsWCf/view",
+      "driveFileId": "15xw9xkuzNjJ0P4gIctIKc3up6miJsWCf",
+      "isCover": false,
+      "sha256": "c43d888834c29fb46f659e3093d9137ffd87c43f8964f64c4176e96ef9337177",
+      "localPath": ".cache/school-program/references/-5344059809227024303_121.jpg",
+      "role": "subject"
+    },
+    {
+      "id": "toy-001-photo-01",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-01-1j1Nly9XiLw2X-LbhGV86FA5dW-oGw1jJ.jpg",
+      "isCover": false,
+      "fileName": "IMG_20261010_125031.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1j1Nly9XiLw2X-LbhGV86FA5dW-oGw1jJ/view",
+      "driveFileId": "1j1Nly9XiLw2X-LbhGV86FA5dW-oGw1jJ",
+      "role": "subject",
+      "sha256": "b257166d895b5a4c23e87deccf4f1c16421389dcd00a678f56a963499a42941f"
+    },
+    {
+      "id": "toy-001-photo-02",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-02-1k0jBAgd9KNlvmWRv56GGk5G80zftzoKf.jpg",
+      "isCover": false,
+      "fileName": "IMG_20261010_125038.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1k0jBAgd9KNlvmWRv56GGk5G80zftzoKf/view",
+      "driveFileId": "1k0jBAgd9KNlvmWRv56GGk5G80zftzoKf",
+      "role": "subject",
+      "sha256": "de5a358da9a6984e70801f121f18b64662cffef2aa952d26f44ced187b81fd24"
+    },
+    {
+      "id": "toy-001-photo-03",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-03-1_fz1uRmP1zrrh6rgwiVE2DjH57EYP8zs.jpg",
+      "isCover": false,
+      "fileName": "IMG_20261010_125046.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1_fz1uRmP1zrrh6rgwiVE2DjH57EYP8zs/view",
+      "driveFileId": "1_fz1uRmP1zrrh6rgwiVE2DjH57EYP8zs",
+      "role": "subject",
+      "sha256": "c7a14bf7281ca1560d1551c07e83e813ca53c6e2a84e5451f139d404536e2faa"
+    },
+    {
+      "id": "toy-001-photo-04",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-04-1cN0AMx6qHa26xwMgRhw6JiSt1FRJIxe8.jpg",
+      "isCover": false,
+      "fileName": "IMG_20261010_125051.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1cN0AMx6qHa26xwMgRhw6JiSt1FRJIxe8/view",
+      "driveFileId": "1cN0AMx6qHa26xwMgRhw6JiSt1FRJIxe8",
+      "role": "subject",
+      "sha256": "615a7b4220f58a42a22337ec77d74dea3cdacabc991cdf11e0d2e222a96cada5"
+    },
+    {
+      "id": "toy-001-photo-05",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-05-14fnfd1oLxL4idGwYV8bnS7-gGfZUS6C1.jpg",
+      "isCover": false,
+      "fileName": "IMG_20261010_125104.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/14fnfd1oLxL4idGwYV8bnS7-gGfZUS6C1/view",
+      "driveFileId": "14fnfd1oLxL4idGwYV8bnS7-gGfZUS6C1",
+      "role": "subject",
+      "sha256": "e820f8d201caec4b00f33b9b69c2764ac46740155da9e9581a092d6863ea2968"
+    },
+    {
+      "id": "toy-001-photo-06",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-06-1xR_43aDvaJaCv_q6lyVPU54Vj8IFBNS5.jpg",
+      "isCover": false,
+      "fileName": "IMG_20261010_125111.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1xR_43aDvaJaCv_q6lyVPU54Vj8IFBNS5/view",
+      "driveFileId": "1xR_43aDvaJaCv_q6lyVPU54Vj8IFBNS5",
+      "role": "subject",
+      "sha256": "65ae3d05d5936cd8636dde42522c369d9612cad228b43c6bd5ff9e52da94631c"
+    },
+    {
+      "id": "toy-001-photo-07",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-07-1cJSLkmg0PzWF8ucQHPFtGj5Msg0oOAkz.jpg",
+      "isCover": false,
+      "fileName": "IMG_20261010_125111_1.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1cJSLkmg0PzWF8ucQHPFtGj5Msg0oOAkz/view",
+      "driveFileId": "1cJSLkmg0PzWF8ucQHPFtGj5Msg0oOAkz",
+      "role": "subject",
+      "sha256": "5c3ae0e6e31586d77bdbe95589ba49361d5d3147c63f39db6bb109f282c076de"
+    },
+    {
+      "id": "toy-001-photo-08",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-08-1dQBfw1a3kRab-YgnaucUKNaoTW-JG9Nr.jpg",
+      "isCover": false,
+      "fileName": "IMG_20261010_125120.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1dQBfw1a3kRab-YgnaucUKNaoTW-JG9Nr/view",
+      "driveFileId": "1dQBfw1a3kRab-YgnaucUKNaoTW-JG9Nr",
+      "role": "subject",
+      "sha256": "3a03cd9434836964a75b06d830a4e0f89a48311cff2fab2ef7ad9c153710c201"
+    },
+    {
+      "id": "toy-002-photo-01",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-002/toy-002-photo-01-1dPm957Jzkt-wbsrmn-Lk0P7yMCMTqjTJ.jpg",
+      "isCover": true,
+      "fileName": "IMG_20260827_161149.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1dPm957Jzkt-wbsrmn-Lk0P7yMCMTqjTJ/view",
+      "driveFileId": "1dPm957Jzkt-wbsrmn-Lk0P7yMCMTqjTJ",
+      "role": "subject",
+      "sha256": "1b13c605ef8497714cbb0c63a451b1851da8eb83459cb3e53d3896d4df627c55"
+    },
+    {
+      "id": "toy-003-photo-01",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-003/toy-003-photo-01-1_ykKfgExqBdod82Rk7aUrtt0-vEchDYU.jpg",
+      "isCover": true,
+      "fileName": "IMG_20260827_152558.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1_ykKfgExqBdod82Rk7aUrtt0-vEchDYU/view",
+      "driveFileId": "1_ykKfgExqBdod82Rk7aUrtt0-vEchDYU",
+      "role": "subject",
+      "sha256": "f4de97a33b96ab5def0f2c1a704f2432240383de2fcaadad7ab3c9d9a4a78ebd"
+    },
+    {
+      "id": "toy-004-photo-01",
+      "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-004/toy-004-photo-01-1qlGvfc1VDkSH4uqIAIRGLpLOuL7O1_Vz.jpg",
+      "isCover": true,
+      "fileName": "IMG_20260827_152544.jpg",
+      "sourceUrl": "https://drive.google.com/file/d/1qlGvfc1VDkSH4uqIAIRGLpLOuL7O1_Vz/view",
+      "driveFileId": "1qlGvfc1VDkSH4uqIAIRGLpLOuL7O1_Vz",
+      "role": "subject",
+      "sha256": "d674d6a6b829d74d9504edbdb0c5a796851844676e7b1567ade7c1fd2c6da4b9"
+    },
+    {
+      "id": "idea-49-previous-cover",
+      "url": "https://storage.yandexcloud.net/quantum-education/istockphoto-2164153237-612x612.jpg",
+      "role": "material-only",
+      "sha256": "7f05ca98695cf58d72ef3abf0235ea01672c9cc0019a03a52fbaf4601e647bd6"
+    },
+    {
+      "id": "demo-boardgame",
+      "localPath": "public/catalog/style-references/demo-boardgame.png",
+      "role": "style-only",
+      "generationResultId": "exec-6151b3b6-d8f1-40dc-bf7b-60a0b59ec68c",
+      "sha256": "1466e2edaae28fa888621d0b5560c981c8909ef9b0d7ba89b6e6986360a1b47b"
+    },
+    {
+      "id": "program-page-1",
+      "role": "programme-source-not-subject",
+      "fileName": "IMG_20261012_202852.jpg",
+      "driveFileId": "17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC",
+      "sourceUrl": "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/program/IMG_20261012_202852.jpg",
+      "sha256": "06e84983ccd5f55fc2cb499f8d6dc209ae89116c79dd59dd6cd258c23e0a97b7"
+    },
+    {
+      "id": "program-page-2",
+      "role": "programme-source-not-subject",
+      "fileName": "IMG_20261012_202902.jpg",
+      "driveFileId": "11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4",
+      "sourceUrl": "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/program/IMG_20261012_202902.jpg",
+      "sha256": "34ab225c9830875ea2380f792cad594267d8879f5ff54861d0a3891e006cb48a"
+    }
+  ],
+  "uploadVerification": {
+    "verifiedFiles": 70,
+    "method": "Публичный GET, MIME и SHA-256",
+    "resultFile": ".cache/school-program/upload-result.json"
+  }
+}

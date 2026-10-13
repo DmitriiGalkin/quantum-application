@@ -37,6 +37,7 @@ export default function PlaceDashboardPage() {
       ? draft.values
       : {
           title: place.title || '',
+          phone: place.phone || '',
           description: place.description || '',
           image: place.image || '',
           address: place.address,

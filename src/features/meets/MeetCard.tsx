@@ -189,6 +189,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
 
   return (
     <Paper
+      id={`meet-${meet.id}`}
       elevation={0}
       sx={{
         p: 2,

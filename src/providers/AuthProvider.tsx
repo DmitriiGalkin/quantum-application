@@ -20,7 +20,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const token = useSyncExternalStore(subscribeAuth, getStoredToken, getServerAuthSnapshot);
   const contextSnapshot = useSyncExternalStore(subscribeAuth, getStoredContext, getServerAuthSnapshot);
   const [open, setOpen] = useState(false);
-  const redirect = location.pathname + location.search;
+  const [authRedirect, setAuthRedirect] = useState<string | null>(null);
+  const redirect = authRedirect ?? location.pathname + location.search;
   const { data, refetch, isPending } = useQuery({
     queryKey: ['passport', token],
     queryFn: fetchPassport,
@@ -72,7 +73,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const switchUser = (userId: number) => setActiveRole({ role: 'user', userId });
   const switchTeacher = () => setActiveRole({ role: 'teacher' });
   const switchPlace = (placeId: number) => setActiveRole({ role: 'place', placeId });
-  const authHandler = () => setOpen(true);
+  const authHandler = (next?: string) => {
+    setAuthRedirect(next?.startsWith('/') && !next.startsWith('//') ? next : null);
+    setOpen(true);
+  };
 
   return (
     <AuthContext.Provider

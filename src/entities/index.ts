@@ -15,6 +15,7 @@ export type * from './conversation-passport.js';
 export type * from './idea.js';
 export type * from './idea-user.js';
 export type * from './location.js';
+export type * from './rental.js';
 export type * from './meet.js';
 export type * from './meet-user.js';
 export type * from './message.js';

@@ -13,6 +13,7 @@ vi.mock('../repositories/user.repository.js', () => ({ default: { findByIds: vi.
 vi.mock('../repositories/project-user.repository.js', () => ({ default: { findByProjectIds: vi.fn(), findByProjectId: vi.fn() } }));
 vi.mock('../repositories/meet-user.repository.js', () => ({ default: { findByMeetIds: vi.fn() } }));
 vi.mock('../repositories/place-passport.repository.js', () => ({ default: { findMembership: vi.fn() } }));
+vi.mock('../repositories/rental.repository.js', () => ({ RentalRepository: { conflicts: vi.fn().mockResolvedValue(false) } }));
 vi.mock('../repositories/payment.repository.js', () => ({ default: { findPaidMeetIdsByUser: vi.fn() } }));
 vi.mock('./idea.service.js', () => ({ IdeaService: { findByIds: vi.fn() } }));
 
@@ -90,7 +91,7 @@ describe('ownership checks', () => {
 
   it('preserves a selected hall on an older client update and supports clearing it', async () => {
     vi.mocked(ProjectRepository.findById).mockResolvedValue({ ...project, locationId: 5 });
-    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null }]);
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null, rentalEnabled: false }]);
     const data = { title: 'Changed', description: '', image: '', placeId: 3 };
     await ProjectService.update(1, data, 10);
     expect(ProjectRepository.update).toHaveBeenLastCalledWith(1, expect.objectContaining({ locationId: 5 }));
@@ -101,7 +102,7 @@ describe('ownership checks', () => {
   it('clears the hall when changing centers and rejects assigning a hall from another center', async () => {
     vi.mocked(ProjectRepository.findById).mockResolvedValue({ ...project, locationId: 5 });
     vi.mocked(PlaceRepository.findById).mockResolvedValue({ ...place, id: 4 });
-    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null }]);
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null, rentalEnabled: false }]);
     const data = { title: 'Changed', description: '', image: '', placeId: 4 };
     await ProjectService.update(1, data, 10);
     expect(ProjectRepository.update).toHaveBeenCalledExactlyOnceWith(1, expect.objectContaining({ placeId: 4, locationId: null }));
@@ -113,7 +114,7 @@ describe('ownership checks', () => {
 describe('list composition', () => {
   it('hydrates project media and meeting halls in batches and counts registrations with unavailable student profiles', async () => {
     vi.mocked(ProjectRepository.findByIds).mockResolvedValue([project, { ...project, id: 2, title: 'Art', image: 'art.jpg' }]);
-    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null }]);
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null, rentalEnabled: false }]);
     vi.mocked(MeetUserRepository.findByMeetIds).mockResolvedValue([
       { id: 1, meetId: 20, userId: 1 }, { id: 2, meetId: 20, userId: 2 }, { id: 3, meetId: 20, userId: 999 },
     ]);

@@ -53,10 +53,10 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
     };
   }
 
-  const entityMatch = url.match(/^\/(project|idea)\/([^/]+)$/);
+  const entityMatch = url.match(/^\/(project|idea|places)\/([^/]+)$/);
   if (entityMatch) {
     const [, entity, id] = entityMatch;
-    const response = await fetch(API_URL + '/' + entity + '/' + id + '/meta');
+    const response = await fetch(API_URL + '/' + (entity === 'places' ? 'place' : entity) + '/' + id + '/meta');
     if (response.ok) {
       const meta = (await response.json()) as Partial<PageMeta>;
       return {

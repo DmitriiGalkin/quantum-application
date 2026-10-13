@@ -7,6 +7,7 @@ import {PlaceScheduleField} from './PlaceScheduleField.tsx';
 import type { PlaceScheduleDayDto } from 'entities';
 
 export interface PlaceFormValues {
+  phone?: string;
   title: string;
   description: string;
   image: string;
@@ -30,6 +31,7 @@ interface PlaceFormProps {
 export default function PlaceForm({ values, loading = false, error = false, submitLabel = 'Сохранить', onChange, onSubmit }: PlaceFormProps) {
   return (
     <Stack spacing={3}>
+      <TextField label="Телефон" type="tel" value={values.phone ?? ''} onChange={e => onChange({ ...values, phone: e.target.value })} fullWidth />
       <TextField
         label="Название"
         value={values.title}

@@ -1,7 +1,9 @@
 import { requireId } from '../utils/validation.js';
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto } from 'entities';
+import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto, PlaceProfile, PageMeta } from 'entities';
+import { PlaceProfileService } from '../services/place-profile.service.js';
+import { RentalService } from '../services/rental.service.js';
 
 const findAll: Controller<PlaceDto[]> = async (_req, res) => {
   const places = await PlaceService.findAll();
@@ -14,6 +16,7 @@ const create: ControllerWithAuth<number, CreatePlace> = async (req, res) => {
 };
 
 const update: ControllerWithAuth<void, PlaceUpdateDto> = async (req, res) => {
+  await RentalService.requireAdmin(req.passport.id, requireId(req.viewer?.placeId));
   await PlaceService.update({
     ...req.body,
     id: requireId(req.viewer?.placeId),
@@ -43,6 +46,8 @@ const dashboard: ControllerWithAuth<PlaceDashboardDto> = async (req, res) => {
 };
 
 export default {
+  profile: (async (req, res) => { ok(res, await PlaceProfileService.find(requireId(req.params.id))); }) as Controller<PlaceProfile>,
+  meta: (async (req, res) => { ok(res, await PlaceProfileService.meta(requireId(req.params.id))); }) as Controller<PageMeta>,
   findAll,
   create,
   update,

@@ -57,6 +57,8 @@ vi.mock('./repositories/idea-photo.repository.js', () => ({
     findByIdeaIds: async () => [],
   },
 }));
+vi.mock('./repositories/location-photo.repository.js', () => ({ LocationPhotoRepository: { findByLocationIds: async () => [] } }));
+vi.mock('./repositories/rental.repository.js', () => ({ RentalRepository: { conflicts: async () => false } }));
 vi.mock('./repositories/project.repository.js', () => ({
   default: {
     create: async (data: CreateProjectInput) => {
@@ -229,7 +231,8 @@ describe('project lifecycle through HTTP', () => {
     }
     expect(state.projects.size).toBe(1);
     const locations = await (await fetch(url + '/place/3/locations')).json();
-    expect(locations).toEqual([{ id: 5, title: 'Workshop' }]);
+    expect(locations).toHaveLength(1);
+    expect(locations[0]).toMatchObject({ id: 5, title: 'Workshop', photos: [] });
   });
   it('creates an idea, project and meeting, enrols a child, confirms payment and shows the paid meeting', async () => {
     const ideaResponse = await request('/idea', 10, { title: 'Wooden toy', description: 'Build together' }, 'POST', {

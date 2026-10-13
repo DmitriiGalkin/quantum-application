@@ -27,6 +27,7 @@ import conversationController from './controllers/conversation.controller.js';
 import message2Controller from './controllers/message2.controller.js';
 import type { ActiveRole, Passport } from 'entities';
 import { ParticipantsService } from './services/participants.service.js';
+import rental from './controllers/rental.controller.js';
 
 const router = express.Router();
 const privateRouter = express.Router();
@@ -154,6 +155,15 @@ privateRouter.get('/place/users', withAuth(teacherUser.getPlaceUsers));
 privateRouter.get('/place/teachers', withAuth(placeTeacherController.findAll));
 privateRouter.get('/place/meets', withAuth(meet.getPlaceMeets));
 privateRouter.get('/place/locations', withAuth(placeLocation.findAll));
+privateRouter.put('/place/location/:id', withAuth(placeLocation.update));
+privateRouter.delete('/place/location/:id', withAuth(placeLocation.remove));
+privateRouter.post('/rental', withAuth(rental.create));
+privateRouter.get('/teacher/rentals', withAuth(rental.mine));
+privateRouter.get('/place/rentals', withAuth(rental.centre));
+privateRouter.put('/rental/:id/status', withAuth(rental.status));
+publicRouter.get('/place/location/:id/busy', rental.busy);
+publicRouter.get('/place/:id/profile', place.profile);
+publicRouter.get('/place/:id/meta', place.meta);
 
 publicRouter.get('/places', place.findAll);
 privateRouter.post('/place', withAuth(place.create));

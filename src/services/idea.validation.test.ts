@@ -29,14 +29,16 @@ describe('idea catalog validation', () => {
     delete card.photos[0].promptFile;
     expect(() => validateCatalogItem(card)).toThrow('provenance');
     const original = structuredClone(validateIdeaCatalog(source).items[0]);
-    delete original.photos[1].driveFileId;
+    const drivePhoto = original.photos.find(photo => photo.driveFileId);
+    expect(drivePhoto).toBeDefined();
+    delete drivePhoto!.driveFileId;
     expect(() => validateCatalogItem(original)).toThrow('driveFileId');
   });
   it('preserves every source field, explicit null and assumption', () => {
     const catalog = validateIdeaCatalog(source);
     expect(catalog).toEqual(source);
-    expect(catalog.items).toHaveLength(4);
-    expect(catalog.items.flatMap(item => item.photos)).toHaveLength(12);
+    expect(catalog.items).toHaveLength(73);
+    expect(catalog.items.flatMap(item => item.photos)).toHaveLength(173);
     expect(catalog.items[0].canMakeWithChildren).toBeNull();
     expect(catalog.items[0].manufacturingNotes).toEqual([{ text: 'Обработан на фрезерном станке', source: 'со слов пользователя' }]);
   });

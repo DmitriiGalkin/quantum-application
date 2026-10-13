@@ -1,0 +1,1961 @@
+{
+  "checkedAt": "2026-10-12T21:45:30.604Z",
+  "import": {
+    "committed": true,
+    "backupPath": ".cache/school-program/backups/2026-10-12T21-25-30-393Z-idea-49",
+    "newIdeas": [
+      {
+        "catalogId": "toy-010",
+        "ideaId": 88,
+        "title": "Медальон из поперечного спила",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-011",
+        "ideaId": 89,
+        "title": "Подставка для кружки из спила",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-012",
+        "ideaId": 90,
+        "title": "Деревянная подставка для фотографии",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-013",
+        "ideaId": 91,
+        "title": "Подставка для горячего из маленьких спилов",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-014",
+        "ideaId": 92,
+        "title": "Домик для гнома",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-015",
+        "ideaId": 93,
+        "title": "Кукольная мебель из спилов и веток",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-016",
+        "ideaId": 94,
+        "title": "Ёлочные игрушки из спилов",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-017",
+        "ideaId": 95,
+        "title": "Деревянный крючок для вязания",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-018",
+        "ideaId": 96,
+        "title": "Кораблик из коры",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-019",
+        "ideaId": 97,
+        "title": "Деревянный конструктор из спилов и цилиндров",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-020",
+        "ideaId": 98,
+        "title": "Пирамидка из спилов",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-021",
+        "ideaId": 99,
+        "title": "Крючок для одежды из ветки",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-022",
+        "ideaId": 100,
+        "title": "Подвесные весы",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-023",
+        "ideaId": 101,
+        "title": "Настольные весы",
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-024",
+        "ideaId": 102,
+        "title": "Ханукальный подсвечник из дерева",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-025",
+        "ideaId": 103,
+        "title": "Деревянный дрейдл",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-026",
+        "ideaId": 104,
+        "title": "Деревянная лопата для хлеба",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-027",
+        "ideaId": 105,
+        "title": "Деревянные грабли",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-028",
+        "ideaId": 106,
+        "title": "Деревянная лопата для снега",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-029",
+        "ideaId": 107,
+        "title": "Деревянная киянка",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-030",
+        "ideaId": 108,
+        "title": "Рамочный ткацкий станок",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-031",
+        "ideaId": 109,
+        "title": "Деревянная тачка",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-032",
+        "ideaId": 110,
+        "title": "Скворечник из брёвнышка",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-033",
+        "ideaId": 111,
+        "title": "Ходули с верёвками",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-034",
+        "ideaId": 112,
+        "title": "Подставка для карандашей и ручек",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-035",
+        "ideaId": 113,
+        "title": "Фанерные цифры для часов",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-036",
+        "ideaId": 114,
+        "title": "Ёлочные игрушки из фанеры",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-037",
+        "ideaId": 115,
+        "title": "Кораблик с бортами из гвоздей и джутовой верёвки",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-038",
+        "ideaId": 116,
+        "title": "Шум ветра из дерева",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-039",
+        "ideaId": 117,
+        "title": "Игра «Чижик» из дерева",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-040",
+        "ideaId": 118,
+        "title": "Малый деревянный кольцеброс",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-041",
+        "ideaId": 119,
+        "title": "Большой деревянный кольцеброс",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-042",
+        "ideaId": 120,
+        "title": "Деревянная кегля (пешка)",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-043",
+        "ideaId": 121,
+        "title": "Деревянный ксилофон",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-044",
+        "ideaId": 122,
+        "title": "Шум дождя",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-045",
+        "ideaId": 123,
+        "title": "Кораблик из расколотого брёвнышка",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-046",
+        "ideaId": 124,
+        "title": "Деревянные шашки",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-047",
+        "ideaId": 125,
+        "title": "Птичка из ветки",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-048",
+        "ideaId": 126,
+        "title": "Резное животное: мышка или ёжик",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-049",
+        "ideaId": 127,
+        "title": "Кухонная лопатка из ветки, вырезанная ножом",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-050",
+        "ideaId": 128,
+        "title": "Деревянное яйцо, обработанное рашпилем",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-051",
+        "ideaId": 129,
+        "title": "Резная фигура человека величиной в предплечье",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-052",
+        "ideaId": 130,
+        "title": "Деревянный воздушный винт",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-053",
+        "ideaId": 131,
+        "title": "Кухонная лопатка, обработанная рашпилем",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-054",
+        "ideaId": 132,
+        "title": "Деревянная мешалка",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-055",
+        "ideaId": 133,
+        "title": "Деревянный совок для зерна",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-056",
+        "ideaId": 134,
+        "title": "Резная деревянная ложка",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-057",
+        "ideaId": 135,
+        "title": "Скалка или толокушка из дерева",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-058",
+        "ideaId": 136,
+        "title": "Неглубокая деревянная чаша для хлеба",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-059",
+        "ideaId": 137,
+        "title": "Деревянная головоломка Т или М",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-060",
+        "ideaId": 138,
+        "title": "Деревянная подставка для книги",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-061",
+        "ideaId": 139,
+        "title": "Глубокая деревянная чаша",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-062",
+        "ideaId": 140,
+        "title": "Деревянный письменный прибор",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-063",
+        "ideaId": 141,
+        "title": "Подставка для яйца, скорлупы и ложечки",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-064",
+        "ideaId": 142,
+        "title": "Подставка под самодельный глобус",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-065",
+        "ideaId": 143,
+        "title": "Деревянная солонка с крышкой",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-066",
+        "ideaId": 144,
+        "title": "Вертикальный деревянный подсвечник",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-067",
+        "ideaId": 145,
+        "title": "Деревянные таблички для классов",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-068",
+        "ideaId": 146,
+        "title": "Цельная резная рамка для фото",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-069",
+        "ideaId": 147,
+        "title": "Деревянная полка с шиповыми и угловыми соединениями",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-070",
+        "ideaId": 148,
+        "title": "Деревянная шкатулка для украшений",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-071",
+        "ideaId": 149,
+        "title": "Деревянный ящик для документов А4",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-072",
+        "ideaId": 150,
+        "title": "Деревянная лира",
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "catalogId": "toy-073",
+        "ideaId": 151,
+        "title": "Крупная деревянная мебель: кресло, кровать или стол",
+        "photos": 1,
+        "covers": 1
+      }
+    ],
+    "updatedIdeas": [
+      {
+        "ideaId": 49,
+        "catalogId": null,
+        "title": "Разделочная доска из дерева",
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "ideaId": 54,
+        "catalogId": "toy-001",
+        "title": "Деревянный робот",
+        "photos": 10,
+        "covers": 1
+      },
+      {
+        "ideaId": 55,
+        "catalogId": "toy-002",
+        "title": "Гимнаст на перекладине",
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "ideaId": 56,
+        "catalogId": "toy-003",
+        "title": "Нож для масла",
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "ideaId": 57,
+        "catalogId": "toy-004",
+        "title": "Бильбоке — поймай шарик",
+        "photos": 2,
+        "covers": 1
+      }
+    ],
+    "originalDescriptionsPreserved": true,
+    "originalPhotoIdsPreserved": true,
+    "unchangedIdeas": 27,
+    "totalIdeas": 96,
+    "totalPhotos": 111
+  },
+  "publicApiAndPages": {
+    "checkedAt": "2026-10-12T21:30:15.042Z",
+    "apiBase": "https://q3-dev.ru:4000",
+    "results": [
+      {
+        "ideaId": 88,
+        "catalogId": "toy-010",
+        "title": "Медальон из поперечного спила",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 89,
+        "catalogId": "toy-011",
+        "title": "Подставка для кружки из спила",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 90,
+        "catalogId": "toy-012",
+        "title": "Деревянная подставка для фотографии",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 91,
+        "catalogId": "toy-013",
+        "title": "Подставка для горячего из маленьких спилов",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 92,
+        "catalogId": "toy-014",
+        "title": "Домик для гнома",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 93,
+        "catalogId": "toy-015",
+        "title": "Кукольная мебель из спилов и веток",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 94,
+        "catalogId": "toy-016",
+        "title": "Ёлочные игрушки из спилов",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 95,
+        "catalogId": "toy-017",
+        "title": "Деревянный крючок для вязания",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 96,
+        "catalogId": "toy-018",
+        "title": "Кораблик из коры",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 97,
+        "catalogId": "toy-019",
+        "title": "Деревянный конструктор из спилов и цилиндров",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 98,
+        "catalogId": "toy-020",
+        "title": "Пирамидка из спилов",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 99,
+        "catalogId": "toy-021",
+        "title": "Крючок для одежды из ветки",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 100,
+        "catalogId": "toy-022",
+        "title": "Подвесные весы",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 101,
+        "catalogId": "toy-023",
+        "title": "Настольные весы",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "ideaId": 102,
+        "catalogId": "toy-024",
+        "title": "Ханукальный подсвечник из дерева",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 103,
+        "catalogId": "toy-025",
+        "title": "Деревянный дрейдл",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 104,
+        "catalogId": "toy-026",
+        "title": "Деревянная лопата для хлеба",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 105,
+        "catalogId": "toy-027",
+        "title": "Деревянные грабли",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 106,
+        "catalogId": "toy-028",
+        "title": "Деревянная лопата для снега",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 107,
+        "catalogId": "toy-029",
+        "title": "Деревянная киянка",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 108,
+        "catalogId": "toy-030",
+        "title": "Рамочный ткацкий станок",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 109,
+        "catalogId": "toy-031",
+        "title": "Деревянная тачка",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 110,
+        "catalogId": "toy-032",
+        "title": "Скворечник из брёвнышка",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 111,
+        "catalogId": "toy-033",
+        "title": "Ходули с верёвками",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 112,
+        "catalogId": "toy-034",
+        "title": "Подставка для карандашей и ручек",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 113,
+        "catalogId": "toy-035",
+        "title": "Фанерные цифры для часов",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 114,
+        "catalogId": "toy-036",
+        "title": "Ёлочные игрушки из фанеры",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 115,
+        "catalogId": "toy-037",
+        "title": "Кораблик с бортами из гвоздей и джутовой верёвки",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 116,
+        "catalogId": "toy-038",
+        "title": "Шум ветра из дерева",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 117,
+        "catalogId": "toy-039",
+        "title": "Игра «Чижик» из дерева",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 118,
+        "catalogId": "toy-040",
+        "title": "Малый деревянный кольцеброс",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 119,
+        "catalogId": "toy-041",
+        "title": "Большой деревянный кольцеброс",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 120,
+        "catalogId": "toy-042",
+        "title": "Деревянная кегля (пешка)",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 121,
+        "catalogId": "toy-043",
+        "title": "Деревянный ксилофон",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 122,
+        "catalogId": "toy-044",
+        "title": "Шум дождя",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 123,
+        "catalogId": "toy-045",
+        "title": "Кораблик из расколотого брёвнышка",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 124,
+        "catalogId": "toy-046",
+        "title": "Деревянные шашки",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 125,
+        "catalogId": "toy-047",
+        "title": "Птичка из ветки",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 126,
+        "catalogId": "toy-048",
+        "title": "Резное животное: мышка или ёжик",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 127,
+        "catalogId": "toy-049",
+        "title": "Кухонная лопатка из ветки, вырезанная ножом",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 128,
+        "catalogId": "toy-050",
+        "title": "Деревянное яйцо, обработанное рашпилем",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 129,
+        "catalogId": "toy-051",
+        "title": "Резная фигура человека величиной в предплечье",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 130,
+        "catalogId": "toy-052",
+        "title": "Деревянный воздушный винт",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 131,
+        "catalogId": "toy-053",
+        "title": "Кухонная лопатка, обработанная рашпилем",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 132,
+        "catalogId": "toy-054",
+        "title": "Деревянная мешалка",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 133,
+        "catalogId": "toy-055",
+        "title": "Деревянный совок для зерна",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 134,
+        "catalogId": "toy-056",
+        "title": "Резная деревянная ложка",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 135,
+        "catalogId": "toy-057",
+        "title": "Скалка или толокушка из дерева",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 136,
+        "catalogId": "toy-058",
+        "title": "Неглубокая деревянная чаша для хлеба",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 137,
+        "catalogId": "toy-059",
+        "title": "Деревянная головоломка Т или М",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 138,
+        "catalogId": "toy-060",
+        "title": "Деревянная подставка для книги",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 139,
+        "catalogId": "toy-061",
+        "title": "Глубокая деревянная чаша",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 140,
+        "catalogId": "toy-062",
+        "title": "Деревянный письменный прибор",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 141,
+        "catalogId": "toy-063",
+        "title": "Подставка для яйца, скорлупы и ложечки",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 142,
+        "catalogId": "toy-064",
+        "title": "Подставка под самодельный глобус",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 143,
+        "catalogId": "toy-065",
+        "title": "Деревянная солонка с крышкой",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 144,
+        "catalogId": "toy-066",
+        "title": "Вертикальный деревянный подсвечник",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 145,
+        "catalogId": "toy-067",
+        "title": "Деревянные таблички для классов",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 146,
+        "catalogId": "toy-068",
+        "title": "Цельная резная рамка для фото",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 147,
+        "catalogId": "toy-069",
+        "title": "Деревянная полка с шиповыми и угловыми соединениями",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 148,
+        "catalogId": "toy-070",
+        "title": "Деревянная шкатулка для украшений",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 149,
+        "catalogId": "toy-071",
+        "title": "Деревянный ящик для документов А4",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 150,
+        "catalogId": "toy-072",
+        "title": "Деревянная лира",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 151,
+        "catalogId": "toy-073",
+        "title": "Крупная деревянная мебель: кресло, кровать или стол",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 1,
+        "covers": 1
+      },
+      {
+        "ideaId": 49,
+        "catalogId": null,
+        "title": "Разделочная доска из дерева",
+        "api": true,
+        "stableId": null,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "ideaId": 54,
+        "catalogId": "toy-001",
+        "title": "Деревянный робот",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 10,
+        "covers": 1
+      },
+      {
+        "ideaId": 55,
+        "catalogId": "toy-002",
+        "title": "Гимнаст на перекладине",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "ideaId": 56,
+        "catalogId": "toy-003",
+        "title": "Нож для масла",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "ideaId": 57,
+        "catalogId": "toy-004",
+        "title": "Бильбоке — поймай шарик",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 2,
+        "covers": 1
+      },
+      {
+        "ideaId": 67,
+        "catalogId": "demo-quantum-workshops-v1-mobile",
+        "title": "Мобиль с луной и звёздами",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 0,
+        "covers": 0
+      },
+      {
+        "ideaId": 83,
+        "catalogId": "toy-005",
+        "title": "Табурет с клиновыми соединениями",
+        "api": true,
+        "stableId": true,
+        "meta": true,
+        "pageHttpStatus": 200,
+        "ssrTitle": true,
+        "photos": 6,
+        "covers": 1
+      }
+    ],
+    "browserVisualVerification": false,
+    "browserLimitation": "cua.getState() вернул apps: [], browsers: []; визуальная проверка браузером недоступна.",
+    "failures": [],
+    "listingIncludesNewCards": true
+  },
+  "render": {
+    "checkedAt": "2026-10-12T21:40:22.236Z",
+    "results": [
+      {
+        "ideaId": 88,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 89,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 90,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 91,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 92,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 93,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 94,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 95,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 96,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 97,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 98,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 99,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 100,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 101,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 102,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 103,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 104,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 105,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 106,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 107,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 108,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 109,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 110,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 111,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 112,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 113,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 114,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 115,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 116,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 117,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 118,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 119,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 120,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 121,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 122,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 123,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 124,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 125,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 126,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 127,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 128,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 129,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 130,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 131,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 132,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 133,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 134,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 135,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 136,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 137,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 138,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 139,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 140,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 141,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 142,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 143,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 144,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 145,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 146,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 147,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 148,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 149,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 150,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 151,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 49,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 54,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 55,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 56,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 57,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      },
+      {
+        "ideaId": 67,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": null
+      },
+      {
+        "ideaId": 83,
+        "title": true,
+        "description": true,
+        "gallery": true,
+        "generatedBadge": true
+      }
+    ],
+    "visualBrowserCheck": false
+  },
+  "previousImageVerification": {
+    "verified": 13,
+    "results": [
+      {
+        "photoId": "toy-001-generated-cover-v1",
+        "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-001-generated-cover-v1.png",
+        "sha256": "62f4514c6211be540414a1eb2db53e90c45e0852b9cd5509bda1f5203539ecf2",
+        "verified": true
+      },
+      {
+        "photoId": "toy-001-photo-01",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-01-1j1Nly9XiLw2X-LbhGV86FA5dW-oGw1jJ.jpg",
+        "sha256": "b257166d895b5a4c23e87deccf4f1c16421389dcd00a678f56a963499a42941f",
+        "verified": true
+      },
+      {
+        "photoId": "toy-001-photo-02",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-02-1k0jBAgd9KNlvmWRv56GGk5G80zftzoKf.jpg",
+        "sha256": "de5a358da9a6984e70801f121f18b64662cffef2aa952d26f44ced187b81fd24",
+        "verified": true
+      },
+      {
+        "photoId": "toy-001-photo-03",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-03-1_fz1uRmP1zrrh6rgwiVE2DjH57EYP8zs.jpg",
+        "sha256": "c7a14bf7281ca1560d1551c07e83e813ca53c6e2a84e5451f139d404536e2faa",
+        "verified": true
+      },
+      {
+        "photoId": "toy-001-photo-04",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-04-1cN0AMx6qHa26xwMgRhw6JiSt1FRJIxe8.jpg",
+        "sha256": "615a7b4220f58a42a22337ec77d74dea3cdacabc991cdf11e0d2e222a96cada5",
+        "verified": true
+      },
+      {
+        "photoId": "toy-001-photo-05",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-05-14fnfd1oLxL4idGwYV8bnS7-gGfZUS6C1.jpg",
+        "sha256": "e820f8d201caec4b00f33b9b69c2764ac46740155da9e9581a092d6863ea2968",
+        "verified": true
+      },
+      {
+        "photoId": "toy-001-photo-06",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-06-1xR_43aDvaJaCv_q6lyVPU54Vj8IFBNS5.jpg",
+        "sha256": "65ae3d05d5936cd8636dde42522c369d9612cad228b43c6bd5ff9e52da94631c",
+        "verified": true
+      },
+      {
+        "photoId": "toy-001-photo-07",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-07-1cJSLkmg0PzWF8ucQHPFtGj5Msg0oOAkz.jpg",
+        "sha256": "5c3ae0e6e31586d77bdbe95589ba49361d5d3147c63f39db6bb109f282c076de",
+        "verified": true
+      },
+      {
+        "photoId": "toy-001-photo-08",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-001/toy-001-photo-08-1dQBfw1a3kRab-YgnaucUKNaoTW-JG9Nr.jpg",
+        "sha256": "3a03cd9434836964a75b06d830a4e0f89a48311cff2fab2ef7ad9c153710c201",
+        "verified": true
+      },
+      {
+        "photoId": "toy-002-photo-01",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-002/toy-002-photo-01-1dPm957Jzkt-wbsrmn-Lk0P7yMCMTqjTJ.jpg",
+        "sha256": "1b13c605ef8497714cbb0c63a451b1851da8eb83459cb3e53d3896d4df627c55",
+        "verified": true
+      },
+      {
+        "photoId": "toy-003-photo-01",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-003/toy-003-photo-01-1_ykKfgExqBdod82Rk7aUrtt0-vEchDYU.jpg",
+        "sha256": "f4de97a33b96ab5def0f2c1a704f2432240383de2fcaadad7ab3c9d9a4a78ebd",
+        "verified": true
+      },
+      {
+        "photoId": "toy-004-photo-01",
+        "url": "https://storage.yandexcloud.net/quantum-education/ideas/toy-004/toy-004-photo-01-1qlGvfc1VDkSH4uqIAIRGLpLOuL7O1_Vz.jpg",
+        "sha256": "d674d6a6b829d74d9504edbdb0c5a796851844676e7b1567ade7c1fd2c6da4b9",
+        "verified": true
+      },
+      {
+        "photoId": "idea-49-previous-cover",
+        "url": "https://storage.yandexcloud.net/quantum-education/istockphoto-2164153237-612x612.jpg",
+        "sha256": "7f05ca98695cf58d72ef3abf0235ea01672c9cc0019a03a52fbaf4601e647bd6",
+        "verified": true
+      }
+    ]
+  },
+  "uploads": {
+    "verifiedFiles": 70,
+    "mimeAndSha256": true
+  },
+  "programme": {
+    "links": 70,
+    "textPreserved": true,
+    "excludedByUser": 11,
+    "unresolvedNames": 0
+  },
+  "build": {
+    "command": "npm.cmd run check",
+    "passed": true
+  }
+}

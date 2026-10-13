@@ -6,7 +6,9 @@ import Typography from '@mui/material/Typography';
 import { Feed } from '../features/feed/Feed.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlace, fetchProject } from '../requests.ts';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getBrowser } from '../shared/lib/browser.ts';
 import { useAuth } from 'providers/auth-context.ts';
 import ProjectCard from '../features/project/ui/ProjectCard.tsx';
 import Paper from '@mui/material/Paper';
@@ -16,6 +18,7 @@ import CreateMeet from '../features/meets/CreateMeet.tsx';
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
   const { role, passport } = useAuth();
+  const { hash } = useLocation();
 
   const { data: project, refetch } = useQuery({
     queryKey: ['project', id, role],
@@ -28,6 +31,9 @@ export default function ProjectPage() {
     queryFn: () => fetchPlace(project?.place.id || 0),
     enabled: Boolean(project?.place.id),
   });
+  useEffect(() => {
+    if (project && place && /^#meet-\d+$/.test(hash)) getBrowser()?.document.getElementById(hash.slice(1))?.scrollIntoView({ block: 'center' });
+  }, [project, place, hash]);
 
 
 

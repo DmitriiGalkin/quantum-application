@@ -53,6 +53,7 @@ export type UpdatePlaceInput = Partial<{
 }>;
 
 export interface PlaceDto extends Omit<Place, 'provider' | 'providerId' | 'phone'> {
+  phone?: string | null;
   meets?: MeetDto[];
   schedule?: PlaceScheduleDayDto[];
 }
@@ -77,6 +78,7 @@ export type PlaceScheduleDayDto = {
 };
 
 export interface PlaceUpdateDto {
+  phone?: string | null;
   id: number;
   title: string;
   description: string;

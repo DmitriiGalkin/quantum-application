@@ -4,6 +4,11 @@ import { toProject } from '../mappers/project.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class ProjectRepository {
+  static async hasProjects(passportId: number, conn?: PoolConnection): Promise<boolean> {
+    const sql = 'SELECT id FROM project WHERE passportId = ? AND deletedAt IS NULL LIMIT 1';
+    const rows = conn ? (await conn.query<RowDataPacket[]>(sql, [passportId]))[0] : await db.query(sql, [passportId]);
+    return rows.length > 0;
+  }
   static async findByIds(ids: number[]): Promise<Project[]> {
     if (!ids.length) return [];
     const rows = await db.query<ProjectRow>('SELECT * FROM project WHERE id IN (?)', [[...new Set(ids)]]);

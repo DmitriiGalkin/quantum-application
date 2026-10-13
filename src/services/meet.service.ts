@@ -15,6 +15,7 @@ import { db } from '../utils/dbNext.js';
 import { requireId } from '../utils/validation.js';
 import { withinPlaceHours } from '../shared/lib/meet-time.js';
 import type { PoolConnection } from 'mysql2/promise';
+import { RentalRepository } from '../repositories/rental.repository.js';
 
 export class MeetService {
   private static limit(value: unknown): number {
@@ -58,6 +59,10 @@ export class MeetService {
     const schedule = await PlaceScheduleRepository.findByPlaceId(meet.placeId, conn);
     if (!withinPlaceHours(meet.startedAt, meet.duration, schedule)) throw new HttpError('Весь интервал встречи должен входить в часы работы центра (МСК)', 400);
     if (meet.status === 'cancelled') return;
+    if (meet.locationId !== null && await RentalRepository.conflicts(meet.locationId, meet.startedAt,
+      new Date(Date.parse(meet.startedAt) + (meet.duration ?? 60) * 60000).toISOString(), conn)) {
+      throw new HttpError('Выбранный зал занят подтверждённой арендой', 409);
+    }
     const conflict = await MeetRepository.findConflict({ ...meet, startedAt: this.start(meet.startedAt) }, conn);
     if (conflict) throw new HttpError(conflict.passportId === meet.passportId
       ? 'Преподаватель занят другой встречей в это время'

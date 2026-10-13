@@ -1,0 +1,257 @@
+{
+  "batch": "2026-10-12",
+  "sourceFolderUrl": "https://drive.google.com/drive/folders/1vsgEvnpL7OpXVtRZHe-3VfRCr1Mn1Upz",
+  "total": 25,
+  "programPhotos": 2,
+  "productPhotos": 23,
+  "assignments": [
+    {
+      "fileName": "IMG_20261011_180859.jpg",
+      "driveFileId": "16r9HcSa4IOfvk5ofCaaiLQqrt7oSRmJI",
+      "role": "product",
+      "catalogId": "toy-005",
+      "photoId": "toy-005-photo-01",
+      "sourceUrl": "https://drive.google.com/file/d/16r9HcSa4IOfvk5ofCaaiLQqrt7oSRmJI/view",
+      "sha256": "996e7e3a4d8955e0b381e44938f73c47321543b9e5b40472969eff1f55773670",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-005/toy-005-photo-01-16r9HcSa4IOfvk5ofCaaiLQqrt7oSRmJI.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_180904.jpg",
+      "driveFileId": "1K3yPzfcC3bmejvbGYMGe9-GnMa01NR4f",
+      "role": "product",
+      "catalogId": "toy-005",
+      "photoId": "toy-005-photo-02",
+      "sourceUrl": "https://drive.google.com/file/d/1K3yPzfcC3bmejvbGYMGe9-GnMa01NR4f/view",
+      "sha256": "7a61f3ba5e1f858fd0760e364e4c7b9749c6eb77c4610684ba4d74d69cab40c8",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-005/toy-005-photo-02-1K3yPzfcC3bmejvbGYMGe9-GnMa01NR4f.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_180906.jpg",
+      "driveFileId": "12C0cSEIHSd9vaibNLEsok0sKxHvQqGip",
+      "role": "product",
+      "catalogId": "toy-005",
+      "photoId": "toy-005-photo-03",
+      "sourceUrl": "https://drive.google.com/file/d/12C0cSEIHSd9vaibNLEsok0sKxHvQqGip/view",
+      "sha256": "060306e5b25d698b9d69cce94abc1de5590fe88b6c65392a38c5bd9a3d301803",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-005/toy-005-photo-03-12C0cSEIHSd9vaibNLEsok0sKxHvQqGip.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_180912.jpg",
+      "driveFileId": "1kL5BS2oo0u_PHrrJDbXw_o2UO22SVWqQ",
+      "role": "product",
+      "catalogId": "toy-005",
+      "photoId": "toy-005-photo-04",
+      "sourceUrl": "https://drive.google.com/file/d/1kL5BS2oo0u_PHrrJDbXw_o2UO22SVWqQ/view",
+      "sha256": "af70ca3f7f056e213a9253ecc999bc98e2441c52b52e98a00fe90bb31db03fd1",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-005/toy-005-photo-04-1kL5BS2oo0u_PHrrJDbXw_o2UO22SVWqQ.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_180916.jpg",
+      "driveFileId": "1AOHep5ylQ4jc1fKNxBqA60k_DtDiQ9as",
+      "role": "product",
+      "catalogId": "toy-005",
+      "photoId": "toy-005-photo-05",
+      "sourceUrl": "https://drive.google.com/file/d/1AOHep5ylQ4jc1fKNxBqA60k_DtDiQ9as/view",
+      "sha256": "fcb4572c2d3ef59874983b4b9e86e6e83feda2b0f201a6ec7340f9c84be4adca",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-005/toy-005-photo-05-1AOHep5ylQ4jc1fKNxBqA60k_DtDiQ9as.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181205.jpg",
+      "driveFileId": "1YJ-P6IC8sOGVbOKAWHbHAyUOYkWkGs5Z",
+      "role": "product",
+      "catalogId": "toy-006",
+      "photoId": "toy-006-photo-01",
+      "sourceUrl": "https://drive.google.com/file/d/1YJ-P6IC8sOGVbOKAWHbHAyUOYkWkGs5Z/view",
+      "sha256": "fe585882a9c4c062439b142e511625683bb1f3e1423e95830d4df68e1af67d59",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-006/toy-006-photo-01-1YJ-P6IC8sOGVbOKAWHbHAyUOYkWkGs5Z.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181209.jpg",
+      "driveFileId": "1YdPFavWJpC_rcg-Egf3_DxnF659F2PoI",
+      "role": "product",
+      "catalogId": "toy-006",
+      "photoId": "toy-006-photo-02",
+      "sourceUrl": "https://drive.google.com/file/d/1YdPFavWJpC_rcg-Egf3_DxnF659F2PoI/view",
+      "sha256": "5eff8e0a935cb860f60f8bb79fdb6c71b8115dc42a601ea547af9f0e3f0fac61",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-006/toy-006-photo-02-1YdPFavWJpC_rcg-Egf3_DxnF659F2PoI.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181213.jpg",
+      "driveFileId": "1t9VIPNgBJUOqvdCMfqUWzD5YQNKtOd7d",
+      "role": "product",
+      "catalogId": "toy-006",
+      "photoId": "toy-006-photo-03",
+      "sourceUrl": "https://drive.google.com/file/d/1t9VIPNgBJUOqvdCMfqUWzD5YQNKtOd7d/view",
+      "sha256": "d9662e3c9a4b29bc588d31f98ae5aaf04c68ab88ee9b682f34fd304393f08cbc",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-006/toy-006-photo-03-1t9VIPNgBJUOqvdCMfqUWzD5YQNKtOd7d.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181216.jpg",
+      "driveFileId": "1WrczVBkzYQQa_lmX7HheiuD-VBQnhSnq",
+      "role": "product",
+      "catalogId": "toy-006",
+      "photoId": "toy-006-photo-04",
+      "sourceUrl": "https://drive.google.com/file/d/1WrczVBkzYQQa_lmX7HheiuD-VBQnhSnq/view",
+      "sha256": "8c691243d40c80ea89b7eeea11507c7403e42768d44e4f48416c71035de2e322",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-006/toy-006-photo-04-1WrczVBkzYQQa_lmX7HheiuD-VBQnhSnq.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181221.jpg",
+      "driveFileId": "1aV1Ffcszj_uSefqNQBdDCL1Un_PlllEE",
+      "role": "product",
+      "catalogId": "toy-006",
+      "photoId": "toy-006-photo-05",
+      "sourceUrl": "https://drive.google.com/file/d/1aV1Ffcszj_uSefqNQBdDCL1Un_PlllEE/view",
+      "sha256": "d880750904cd3d7b8d229caaab087a28fed145b6ca01247488ad89c2ad729a2e",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-006/toy-006-photo-05-1aV1Ffcszj_uSefqNQBdDCL1Un_PlllEE.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181229.jpg",
+      "driveFileId": "1HEu6V2Ize_fG5WN2ponv1yVfy8-fDh_1",
+      "role": "product",
+      "catalogId": "toy-006",
+      "photoId": "toy-006-photo-06",
+      "sourceUrl": "https://drive.google.com/file/d/1HEu6V2Ize_fG5WN2ponv1yVfy8-fDh_1/view",
+      "sha256": "47c11b524c6d297bce66feaffb84d8ac6d2182617de6f57b1544a47dba52b130",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-006/toy-006-photo-06-1HEu6V2Ize_fG5WN2ponv1yVfy8-fDh_1.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181236.jpg",
+      "driveFileId": "1SdeJDVOFv55cuG6Ojvoy3pC7BUY_J96-",
+      "role": "product",
+      "catalogId": "toy-006",
+      "photoId": "toy-006-photo-07",
+      "sourceUrl": "https://drive.google.com/file/d/1SdeJDVOFv55cuG6Ojvoy3pC7BUY_J96-/view",
+      "sha256": "5a7a1e5e996600c1a77fffabd4b38b15715d58e7307b427bb185dce48e5a1ac9",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-006/toy-006-photo-07-1SdeJDVOFv55cuG6Ojvoy3pC7BUY_J96-.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181551.jpg",
+      "driveFileId": "1SMUkRMSJbfAG7f1iDyiBIDVNOsIbs1sD",
+      "role": "product",
+      "catalogId": "toy-007",
+      "photoId": "toy-007-photo-01",
+      "sourceUrl": "https://drive.google.com/file/d/1SMUkRMSJbfAG7f1iDyiBIDVNOsIbs1sD/view",
+      "sha256": "278d70b84016bd0d1159d2a6f800942354742fa378786376d8198873d68deb31",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-007/toy-007-photo-01-1SMUkRMSJbfAG7f1iDyiBIDVNOsIbs1sD.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181557.jpg",
+      "driveFileId": "1GRjiyXTlW4OAePE1Z78zraJ70GchptXj",
+      "role": "product",
+      "catalogId": "toy-007",
+      "photoId": "toy-007-photo-02",
+      "sourceUrl": "https://drive.google.com/file/d/1GRjiyXTlW4OAePE1Z78zraJ70GchptXj/view",
+      "sha256": "5aa3ac1023140722ba58965f0052d95bc03e9e4a57dd270fa22e504158cf65f8",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-007/toy-007-photo-02-1GRjiyXTlW4OAePE1Z78zraJ70GchptXj.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181603.jpg",
+      "driveFileId": "1R9QFBXihV4USpSUnpIUMmNJchdFC4OUL",
+      "role": "product",
+      "catalogId": "toy-007",
+      "photoId": "toy-007-photo-03",
+      "sourceUrl": "https://drive.google.com/file/d/1R9QFBXihV4USpSUnpIUMmNJchdFC4OUL/view",
+      "sha256": "8bb316450ab39741078b7e39fc16b5f69bc52ef099163e446e24421bdb86e0eb",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-007/toy-007-photo-03-1R9QFBXihV4USpSUnpIUMmNJchdFC4OUL.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181606.jpg",
+      "driveFileId": "1k4tD5SlbSNgH3_ms1wWYpVvywF6YISeF",
+      "role": "product",
+      "catalogId": "toy-007",
+      "photoId": "toy-007-photo-04",
+      "sourceUrl": "https://drive.google.com/file/d/1k4tD5SlbSNgH3_ms1wWYpVvywF6YISeF/view",
+      "sha256": "9b03c8cf843c4155d439904b9726c31e327402ebb532f5ab7600d67828a8e9a1",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-007/toy-007-photo-04-1k4tD5SlbSNgH3_ms1wWYpVvywF6YISeF.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181657.jpg",
+      "driveFileId": "1xJ8Q1_05Cp25qKtYBnXMyEzs1Rac2BQm",
+      "role": "product",
+      "catalogId": "toy-008",
+      "photoId": "toy-008-photo-01",
+      "sourceUrl": "https://drive.google.com/file/d/1xJ8Q1_05Cp25qKtYBnXMyEzs1Rac2BQm/view",
+      "sha256": "734227ff92ba9e12679571308307b87ed8770c7b17d530dfc3f8cf07a2df0625",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-008/toy-008-photo-01-1xJ8Q1_05Cp25qKtYBnXMyEzs1Rac2BQm.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181722.jpg",
+      "driveFileId": "1NtLh22HpBkYkGM0KadZYWh56kQTPkbkc",
+      "role": "product",
+      "catalogId": "toy-008",
+      "photoId": "toy-008-photo-02",
+      "sourceUrl": "https://drive.google.com/file/d/1NtLh22HpBkYkGM0KadZYWh56kQTPkbkc/view",
+      "sha256": "70dbab8e4209f5da775dd6f27a1a769033268d073a2c63bea26bef0989605afe",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-008/toy-008-photo-02-1NtLh22HpBkYkGM0KadZYWh56kQTPkbkc.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181729.jpg",
+      "driveFileId": "1_B7lG45iEuHZDWp5qrFxwn6ui8A9zWr5",
+      "role": "product",
+      "catalogId": "toy-008",
+      "photoId": "toy-008-photo-03",
+      "sourceUrl": "https://drive.google.com/file/d/1_B7lG45iEuHZDWp5qrFxwn6ui8A9zWr5/view",
+      "sha256": "53360e06c274576a7027d405f81a1a1d7a6f28d40f37658bf63804de64ea3c12",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-008/toy-008-photo-03-1_B7lG45iEuHZDWp5qrFxwn6ui8A9zWr5.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181733.jpg",
+      "driveFileId": "1pFjmprbCTuDvk2OjCQNEoAEOuOBlnp9X",
+      "role": "product",
+      "catalogId": "toy-008",
+      "photoId": "toy-008-photo-04",
+      "sourceUrl": "https://drive.google.com/file/d/1pFjmprbCTuDvk2OjCQNEoAEOuOBlnp9X/view",
+      "sha256": "a478cadb46e1f0d408f91367b6ba597e367f5a57db4022c58befa0c5b97815cc",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-008/toy-008-photo-04-1pFjmprbCTuDvk2OjCQNEoAEOuOBlnp9X.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_181740.jpg",
+      "driveFileId": "11iG5Gdc-qbdVv07oCS8DMacDR4wfqUFw",
+      "role": "product",
+      "catalogId": "toy-008",
+      "photoId": "toy-008-photo-05",
+      "sourceUrl": "https://drive.google.com/file/d/11iG5Gdc-qbdVv07oCS8DMacDR4wfqUFw/view",
+      "sha256": "9b7c29a36441c9e24d9496b6dd82d81adad2a229d6ef5f3242d0cd995dc125d0",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-008/toy-008-photo-05-11iG5Gdc-qbdVv07oCS8DMacDR4wfqUFw.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_182018.jpg",
+      "driveFileId": "1yqBTPpVqUjo9bzT3lYjVUet4ahokCCOX",
+      "role": "product",
+      "catalogId": "toy-009",
+      "photoId": "toy-009-photo-01",
+      "sourceUrl": "https://drive.google.com/file/d/1yqBTPpVqUjo9bzT3lYjVUet4ahokCCOX/view",
+      "sha256": "18ef5d00562e5f21142052ec3a1428c40bf5a76e6f8ac03be93c539a6d212120",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-009/toy-009-photo-01-1yqBTPpVqUjo9bzT3lYjVUet4ahokCCOX.jpg"
+    },
+    {
+      "fileName": "IMG_20261011_182025.jpg",
+      "driveFileId": "1C4k_IJmPYB-78nlPL7Vwz6oS-WzM94Bk",
+      "role": "product",
+      "catalogId": "toy-009",
+      "photoId": "toy-009-photo-02",
+      "sourceUrl": "https://drive.google.com/file/d/1C4k_IJmPYB-78nlPL7Vwz6oS-WzM94Bk/view",
+      "sha256": "f92e8bcc50d5004cafe020ac9cb35db9a5d55054e0c825d18043d6f737615096",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/ideas/toy-009/toy-009-photo-02-1C4k_IJmPYB-78nlPL7Vwz6oS-WzM94Bk.jpg"
+    },
+    {
+      "fileName": "IMG_20261012_202852.jpg",
+      "driveFileId": "17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC",
+      "role": "program",
+      "document": "docs/craft-school-program.md",
+      "sourceUrl": "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view",
+      "sha256": "06e84983ccd5f55fc2cb499f8d6dc209ae89116c79dd59dd6cd258c23e0a97b7",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/program/IMG_20261012_202852.jpg"
+    },
+    {
+      "fileName": "IMG_20261012_202902.jpg",
+      "driveFileId": "11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4",
+      "role": "program",
+      "document": "docs/craft-school-program.md",
+      "sourceUrl": "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view",
+      "sha256": "34ab225c9830875ea2380f792cad594267d8879f5ff54861d0a3891e006cb48a",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/idea-catalog/program/IMG_20261012_202902.jpg"
+    }
+  ]
+}

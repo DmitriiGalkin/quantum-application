@@ -6,3 +6,32 @@ export interface LocationDto {
 export interface CreateLocation {
   title: string;
 }
+
+export interface PlaceLocation extends LocationDto {
+  placeId: number;
+  deletedAt: string | null;
+  description: string | null;
+  capacity: number | null;
+  hourlyRate: number | null;
+  rentalEnabled: boolean;
+}
+
+export interface LocationPhoto {
+  id: number;
+  locationId: number;
+  url: string;
+  position: number;
+}
+
+export interface RoomDto extends PlaceLocation {
+  photos: LocationPhoto[];
+}
+
+export interface UpdateLocation {
+  title: string;
+  description: string | null;
+  capacity: number | null;
+  hourlyRate: number | null;
+  rentalEnabled: boolean;
+  photoUrls: string[];
+}

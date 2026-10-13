@@ -36,6 +36,15 @@ import {
 } from 'entities';
 import { del, get, post, put, patch, toQuery, postMultipart } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
+import type { PlaceProfile, RoomDto, UpdateLocation, BusyInterval, CreateRental, RentalDto, RentalStatus } from 'entities';
+
+export const fetchPlaceProfile = (id: number) => get<PlaceProfile>(`/place/${id}/profile`);
+export const fetchUpdateLocation = (id: number, body: UpdateLocation) => put<void>(`/place/location/${id}`, body);
+export const fetchDeleteLocation = (id: number) => del<void>(`/place/location/${id}`);
+export const fetchRoomBusy = (id: number, date: string) => get<BusyInterval[]>(`/place/location/${id}/busy${toQuery({ date })}`);
+export const fetchCreateRental = (body: CreateRental) => post<number>('/rental', body);
+export const fetchRentals = (centre: boolean) => get<RentalDto[]>(centre ? '/place/rentals' : '/teacher/rentals');
+export const fetchRentalStatus = (id: number, status: RentalStatus, reason?: string) => put<void>(`/rental/${id}/status`, { status, reason });
 
 export const fetchIdeas = (params: GetIdeasQuery) => get<IdeaDto[]>(`/ideas${toQuery(params)}`);
 export const fetchProjects = (params: GetProjectsQuery) => get<ProjectDto[]>(`/projects${toQuery(params)}`);
@@ -82,7 +91,7 @@ export const fetchPlaceTeachers = () => get<TeacherDto[]>(`/place/teachers`);
 export const fetchPlaceProjects = () => get<ProjectDto[]>(`/place/projects`);
 export const fetchPlaceMeets = () => get<MeetDto[]>(`/place/meets`);
 export const fetchPlaceUsers = () => get<UserDto[]>(`/place/users`);
-export const fetchPlaceLocations = () => get<LocationDto[]>(`/place/locations`);
+export const fetchPlaceLocations = () => get<RoomDto[]>(`/place/locations`);
 export const fetchLocationsByPlace = (placeId: number) => get<LocationDto[]>(`/place/${placeId}/locations`);
 export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<void>(`/place/${placeId}/teacher/${passportId}`);
 export const fetchLeavePlace = (id: number) => del<void>(`/place/${id}/leave`);

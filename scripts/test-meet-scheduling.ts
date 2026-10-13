@@ -37,6 +37,11 @@ try {
   await conn.query("INSERT INTO project (id,passportId,placeId,locationId,title,description) VALUES (1,10,1,1,'Workshop',''),(2,20,1,1,'Art',''),(3,10,2,2,'Other project',''),(4,10,1,3,'Old hall',''),(5,10,1,2,'Wrong hall','')");
   await conn.query("INSERT INTO meet (id,projectId,passportId,placeId,startedAt) VALUES (1,1,10,1,'2030-01-07 06:00:00'),(2,4,10,1,'2030-01-07 07:00:00'),(3,5,10,1,'2030-01-07 08:00:00')");
   await runMeetMigration(conn, true);
+  const [roomColumns] = await conn.query<mysql.RowDataPacket[]>('SHOW COLUMNS FROM placeLocation');
+  if (!roomColumns.some(column => column.Field === 'rentalEnabled')) {
+    const rentalMigration = await readFile('migrations/006-place-rentals.sql', 'utf8');
+    for (const statement of rentalMigration.split(';').map(value => value.trim()).filter(Boolean)) await conn.query(statement);
+  }
   const [backfill] = await conn.query<mysql.RowDataPacket[]>('SELECT locationId,maxParticipants FROM meet ORDER BY id');
   assert.deepEqual(backfill.map(row => [row.locationId, row.maxParticipants]), [[1, null], [null, null], [null, null]]);
   await conn.query('UPDATE meet SET deletedAt = NOW()');

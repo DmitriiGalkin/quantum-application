@@ -31,6 +31,8 @@
     "db:migrate:project-location": "npm run build:demo-cli && node .cache/demo/cli/scripts/migrate-project-location.js",
     "db:migrate:meet-scheduling": "npm run build:demo-cli && node .cache/demo/cli/scripts/migrate-meet-location-capacity.js",
     "test:meet-scheduling:db": "npm run build:demo-cli && node .cache/demo/cli/scripts/test-meet-scheduling.js",
+    "db:migrate:place-rentals": "node scripts/migrate-place-rentals.mjs",
+    "test:place-rentals:db": "npm run build:demo-cli && node .cache/demo/cli/scripts/test-place-rentals.js",
     "db:upload:demo-images": "tsx scripts/upload-demo-images.ts",
     "db:seed:demo": "tsx scripts/seed-demo.ts",
     "db:seed:demo:verify": "tsx scripts/seed-demo.ts --verify",

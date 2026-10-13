@@ -1,0 +1,1530 @@
+{
+  "schemaVersion": 1,
+  "readAt": "2026-10-12T19:49:35.088Z",
+  "sourceDocument": "craft-school-program.md",
+  "matchingNotes": [
+    "№59 — скворечник из подготовленных досок, не из брёвнышка.",
+    "№66 — ткачество на готовой рамке, не изготовление станка.",
+    "№58 — корпус парусника не описан как кора, расколотое бревно или доска с гвоздями.",
+    "№63 и №55 — механические игрушки; выбран №55 с оригиналом, новая карточка не нужна.",
+    "Работа с медью в 8 классе не называет конкретного изделия.",
+    "Лопатки 5 и 6 классов сохранены как разные учебные проекты: ножом из ветки и рашпилем по указанным в программе размерам. Ёлочные игрушки из спилов и из фанеры, подвесные и настольные весы, малый и большой кольцеброс также имеют разные конструкции или масштаб."
+  ],
+  "items": [
+    {
+      "key": "1–2:1",
+      "grade": "1–2",
+      "position": "1",
+      "sourceLine": 15,
+      "originalName": "Поперечный спил малый — медальон",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 88,
+      "catalogId": "toy-010",
+      "ideaUrl": "https://q3-dev.ru/idea/88"
+    },
+    {
+      "key": "1–2:2",
+      "grade": "1–2",
+      "position": "2",
+      "sourceLine": 16,
+      "originalName": "Поперечный спил — подставка для кружки",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 89,
+      "catalogId": "toy-011",
+      "ideaUrl": "https://q3-dev.ru/idea/89"
+    },
+    {
+      "key": "1–2:3",
+      "grade": "1–2",
+      "position": "3",
+      "sourceLine": 17,
+      "originalName": "Подставка для фотографии",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 90,
+      "catalogId": "toy-012",
+      "ideaUrl": "https://q3-dev.ru/idea/90"
+    },
+    {
+      "key": "1–2:4",
+      "grade": "1–2",
+      "position": "4",
+      "sourceLine": 18,
+      "originalName": "Подставка для горячего из маленьких спилов",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 91,
+      "catalogId": "toy-013",
+      "ideaUrl": "https://q3-dev.ru/idea/91"
+    },
+    {
+      "key": "1–2:5",
+      "grade": "1–2",
+      "position": "5",
+      "sourceLine": 19,
+      "originalName": "Домик для гнома",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 92,
+      "catalogId": "toy-014",
+      "ideaUrl": "https://q3-dev.ru/idea/92"
+    },
+    {
+      "key": "1–2:6",
+      "grade": "1–2",
+      "position": "6",
+      "sourceLine": 20,
+      "originalName": "Кукольная мебель",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 93,
+      "catalogId": "toy-015",
+      "ideaUrl": "https://q3-dev.ru/idea/93"
+    },
+    {
+      "key": "1–2:7",
+      "grade": "1–2",
+      "position": "7",
+      "sourceLine": 21,
+      "originalName": "Ёлочные игрушки",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 94,
+      "catalogId": "toy-016",
+      "ideaUrl": "https://q3-dev.ru/idea/94"
+    },
+    {
+      "key": "1–2:8",
+      "grade": "1–2",
+      "position": "8",
+      "sourceLine": 22,
+      "originalName": "Крючок для вязания",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 95,
+      "catalogId": "toy-017",
+      "ideaUrl": "https://q3-dev.ru/idea/95"
+    },
+    {
+      "key": "1–2:9",
+      "grade": "1–2",
+      "position": "9",
+      "sourceLine": 23,
+      "originalName": "Кораблик из коры",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 96,
+      "catalogId": "toy-018",
+      "ideaUrl": "https://q3-dev.ru/idea/96"
+    },
+    {
+      "key": "1–2:10",
+      "grade": "1–2",
+      "position": "10",
+      "sourceLine": 24,
+      "originalName": "Конструктор для детского сада (спилы, цилиндры и т.д.)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 97,
+      "catalogId": "toy-019",
+      "ideaUrl": "https://q3-dev.ru/idea/97"
+    },
+    {
+      "key": "1–2:11",
+      "grade": "1–2",
+      "position": "11",
+      "sourceLine": 25,
+      "originalName": "Пирамидка из спилов",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 98,
+      "catalogId": "toy-020",
+      "ideaUrl": "https://q3-dev.ru/idea/98"
+    },
+    {
+      "key": "1–2:12",
+      "grade": "1–2",
+      "position": "12",
+      "sourceLine": 26,
+      "originalName": "Крючок для одежды в раздевалку",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 99,
+      "catalogId": "toy-021",
+      "ideaUrl": "https://q3-dev.ru/idea/99"
+    },
+    {
+      "key": "3:1",
+      "grade": "3",
+      "position": "1",
+      "sourceLine": 30,
+      "originalName": "Весы подвесные к эпохе измерения веса",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 100,
+      "catalogId": "toy-022",
+      "ideaUrl": "https://q3-dev.ru/idea/100"
+    },
+    {
+      "key": "3:2",
+      "grade": "3",
+      "position": "2",
+      "sourceLine": 31,
+      "originalName": "Весы настольные",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 101,
+      "catalogId": "toy-023",
+      "ideaUrl": "https://q3-dev.ru/idea/101"
+    },
+    {
+      "key": "3:3",
+      "grade": "3",
+      "position": "3",
+      "sourceLine": 32,
+      "originalName": "Ханукальный подсвечник",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 102,
+      "catalogId": "toy-024",
+      "ideaUrl": "https://q3-dev.ru/idea/102"
+    },
+    {
+      "key": "3:4",
+      "grade": "3",
+      "position": "4",
+      "sourceLine": 33,
+      "originalName": "Дрейдл (чудо великое было там)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 103,
+      "catalogId": "toy-025",
+      "ideaUrl": "https://q3-dev.ru/idea/103"
+    },
+    {
+      "key": "3:5",
+      "grade": "3",
+      "position": "5",
+      "sourceLine": 34,
+      "originalName": "Лопата для хлеба",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 104,
+      "catalogId": "toy-026",
+      "ideaUrl": "https://q3-dev.ru/idea/104"
+    },
+    {
+      "key": "3:6",
+      "grade": "3",
+      "position": "6",
+      "sourceLine": 35,
+      "originalName": "Грабли",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 105,
+      "catalogId": "toy-027",
+      "ideaUrl": "https://q3-dev.ru/idea/105"
+    },
+    {
+      "key": "3:7",
+      "grade": "3",
+      "position": "7",
+      "sourceLine": 36,
+      "originalName": "Лопата для снега",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 106,
+      "catalogId": "toy-028",
+      "ideaUrl": "https://q3-dev.ru/idea/106"
+    },
+    {
+      "key": "3:8",
+      "grade": "3",
+      "position": "8",
+      "sourceLine": 37,
+      "originalName": "Киянка (деревянный молот)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 107,
+      "catalogId": "toy-029",
+      "ideaUrl": "https://q3-dev.ru/idea/107"
+    },
+    {
+      "key": "3:9",
+      "grade": "3",
+      "position": "9",
+      "sourceLine": 38,
+      "originalName": "Ткацкий станок",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 108,
+      "catalogId": "toy-030",
+      "ideaUrl": "https://q3-dev.ru/idea/108"
+    },
+    {
+      "key": "3:10",
+      "grade": "3",
+      "position": "10",
+      "sourceLine": 39,
+      "originalName": "Тачка",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 109,
+      "catalogId": "toy-031",
+      "ideaUrl": "https://q3-dev.ru/idea/109"
+    },
+    {
+      "key": "3:11",
+      "grade": "3",
+      "position": "11",
+      "sourceLine": 40,
+      "originalName": "Мобиль",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "existing",
+      "ideaId": 67,
+      "catalogId": "demo-quantum-workshops-v1-mobile",
+      "matchEvidence": "подвесная композиция из деревянных форм — назначение и фото совпадают с пунктом «Мобиль»",
+      "ideaUrl": "https://q3-dev.ru/idea/67"
+    },
+    {
+      "key": "3:12",
+      "grade": "3",
+      "position": "12",
+      "sourceLine": 41,
+      "originalName": "Паучёк",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "3:13",
+      "grade": "3",
+      "position": "13",
+      "sourceLine": 42,
+      "originalName": "Скворечник из брёвнышка",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 110,
+      "catalogId": "toy-032",
+      "ideaUrl": "https://q3-dev.ru/idea/110"
+    },
+    {
+      "key": "3:14",
+      "grade": "3",
+      "position": "14",
+      "sourceLine": 43,
+      "originalName": "Дом для руки",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "3:15",
+      "grade": "3",
+      "position": "15",
+      "sourceLine": 44,
+      "originalName": "Шагомер",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "3:16",
+      "grade": "3",
+      "position": "16",
+      "sourceLine": 45,
+      "originalName": "Ходули с верёвками",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 111,
+      "catalogId": "toy-033",
+      "ideaUrl": "https://q3-dev.ru/idea/111"
+    },
+    {
+      "key": "3:17",
+      "grade": "3",
+      "position": "17",
+      "sourceLine": 46,
+      "originalName": "Подставка для карандашей и ручек",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 112,
+      "catalogId": "toy-034",
+      "ideaUrl": "https://q3-dev.ru/idea/112"
+    },
+    {
+      "key": "3:18",
+      "grade": "3",
+      "position": "18",
+      "sourceLine": 47,
+      "originalName": "Цифры для часов (из фанеры лобзиком) к эпохе измерения времени",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 113,
+      "catalogId": "toy-035",
+      "ideaUrl": "https://q3-dev.ru/idea/113"
+    },
+    {
+      "key": "3:19",
+      "grade": "3",
+      "position": "19",
+      "sourceLine": 48,
+      "originalName": "Ёлочные игрушки лобзиком из фанеры",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 114,
+      "catalogId": "toy-036",
+      "ideaUrl": "https://q3-dev.ru/idea/114"
+    },
+    {
+      "key": "3:20",
+      "grade": "3",
+      "position": "20",
+      "sourceLine": 49,
+      "originalName": "Кораблик из доски бортами из гвоздей и джутовой верёвки",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 115,
+      "catalogId": "toy-037",
+      "ideaUrl": "https://q3-dev.ru/idea/115"
+    },
+    {
+      "key": "4:1",
+      "grade": "4",
+      "position": "1",
+      "sourceLine": 57,
+      "originalName": "Шум ветра",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 116,
+      "catalogId": "toy-038",
+      "ideaUrl": "https://q3-dev.ru/idea/116"
+    },
+    {
+      "key": "4:2",
+      "grade": "4",
+      "position": "2",
+      "sourceLine": 58,
+      "originalName": "Птичка",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "4:3",
+      "grade": "4",
+      "position": "3",
+      "sourceLine": 59,
+      "originalName": "Комарик",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "4:4",
+      "grade": "4",
+      "position": "4",
+      "sourceLine": 60,
+      "originalName": "Чижик",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 117,
+      "catalogId": "toy-039",
+      "ideaUrl": "https://q3-dev.ru/idea/117"
+    },
+    {
+      "key": "4:5",
+      "grade": "4",
+      "position": "5",
+      "sourceLine": 61,
+      "originalName": "Кольцеброс малый",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 118,
+      "catalogId": "toy-040",
+      "ideaUrl": "https://q3-dev.ru/idea/118"
+    },
+    {
+      "key": "4:6",
+      "grade": "4",
+      "position": "6",
+      "sourceLine": 62,
+      "originalName": "Кольцеброс большой",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 119,
+      "catalogId": "toy-041",
+      "ideaUrl": "https://q3-dev.ru/idea/119"
+    },
+    {
+      "key": "4:7",
+      "grade": "4",
+      "position": "7",
+      "sourceLine": 63,
+      "originalName": "Бильбоке",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "existing",
+      "ideaId": 57,
+      "catalogId": "toy-004",
+      "matchEvidence": "рукоять с чашечкой, шарик на шнуре — описание и оригинал бильбоке",
+      "ideaUrl": "https://q3-dev.ru/idea/57"
+    },
+    {
+      "key": "4:8",
+      "grade": "4",
+      "position": "8",
+      "sourceLine": 64,
+      "originalName": "Кегля (пешка)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 120,
+      "catalogId": "toy-042",
+      "ideaUrl": "https://q3-dev.ru/idea/120"
+    },
+    {
+      "key": "4:9",
+      "grade": "4",
+      "position": "9",
+      "sourceLine": 65,
+      "originalName": "Вертолётик",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "4:10",
+      "grade": "4",
+      "position": "10",
+      "sourceLine": 66,
+      "originalName": "Лягушка",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "4:11",
+      "grade": "4",
+      "position": "11",
+      "sourceLine": 67,
+      "originalName": "Шестигранный ксилофон",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "4:12",
+      "grade": "4",
+      "position": "12",
+      "sourceLine": 68,
+      "originalName": "Ксилофон",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 121,
+      "catalogId": "toy-043",
+      "ideaUrl": "https://q3-dev.ru/idea/121"
+    },
+    {
+      "key": "4:13",
+      "grade": "4",
+      "position": "13",
+      "sourceLine": 69,
+      "originalName": "Рупель",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "4:14",
+      "grade": "4",
+      "position": "14",
+      "sourceLine": 70,
+      "originalName": "Свиристельки и флейточки",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "4:15",
+      "grade": "4",
+      "position": "15",
+      "sourceLine": 71,
+      "originalName": "Шум дождя",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 122,
+      "catalogId": "toy-044",
+      "ideaUrl": "https://q3-dev.ru/idea/122"
+    },
+    {
+      "key": "4:16",
+      "grade": "4",
+      "position": "16",
+      "sourceLine": 72,
+      "originalName": "Кораблик из расколотого вдоль брёвнышка",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 123,
+      "catalogId": "toy-045",
+      "ideaUrl": "https://q3-dev.ru/idea/123"
+    },
+    {
+      "key": "4:17",
+      "grade": "4",
+      "position": "17",
+      "sourceLine": 73,
+      "originalName": "Игра шашки",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 124,
+      "catalogId": "toy-046",
+      "ideaUrl": "https://q3-dev.ru/idea/124"
+    },
+    {
+      "key": "5:1",
+      "grade": "5",
+      "position": "1",
+      "sourceLine": 79,
+      "originalName": "Птичка из ветки",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 125,
+      "catalogId": "toy-047",
+      "ideaUrl": "https://q3-dev.ru/idea/125"
+    },
+    {
+      "key": "5:2",
+      "grade": "5",
+      "position": "2",
+      "sourceLine": 80,
+      "originalName": "**Животное** (мышка, ёжик)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 126,
+      "catalogId": "toy-048",
+      "ideaUrl": "https://q3-dev.ru/idea/126"
+    },
+    {
+      "key": "5:3",
+      "grade": "5",
+      "position": "3",
+      "sourceLine": 81,
+      "originalName": "Лопатка для кухни ножом из ветки",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 127,
+      "catalogId": "toy-049",
+      "ideaUrl": "https://q3-dev.ru/idea/127"
+    },
+    {
+      "key": "5:4",
+      "grade": "5",
+      "position": "4",
+      "sourceLine": 82,
+      "originalName": "**Яйцо рашпилем** (5 см в диаметре, 7 см в высоту)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 128,
+      "catalogId": "toy-050",
+      "ideaUrl": "https://q3-dev.ru/idea/128"
+    },
+    {
+      "key": "5:5",
+      "grade": "5",
+      "position": "5",
+      "sourceLine": 83,
+      "originalName": "**Фигура человека величиной в предплечье** (только резцом, без рашпиля, пилы и т.д.)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 129,
+      "catalogId": "toy-051",
+      "ideaUrl": "https://q3-dev.ru/idea/129"
+    },
+    {
+      "key": "5:6",
+      "grade": "5",
+      "position": "6",
+      "sourceLine": 84,
+      "originalName": "Воздушный винт",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 130,
+      "catalogId": "toy-052",
+      "ideaUrl": "https://q3-dev.ru/idea/130"
+    },
+    {
+      "key": "6:1",
+      "grade": "6",
+      "position": "1",
+      "sourceLine": 88,
+      "originalName": "**Лопатка для кухни рашпилем** (7–9 × 35–40 см)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 131,
+      "catalogId": "toy-053",
+      "ideaUrl": "https://q3-dev.ru/idea/131"
+    },
+    {
+      "key": "6:2",
+      "grade": "6",
+      "position": "2",
+      "sourceLine": 89,
+      "originalName": "Мешалка",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 132,
+      "catalogId": "toy-054",
+      "ideaUrl": "https://q3-dev.ru/idea/132"
+    },
+    {
+      "key": "6:3",
+      "grade": "6",
+      "position": "3",
+      "sourceLine": 90,
+      "originalName": "**Нож для масла**",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "existing",
+      "ideaId": 56,
+      "catalogId": "toy-003",
+      "matchEvidence": "соответствие подтверждено пользователем",
+      "ideaUrl": "https://q3-dev.ru/idea/56"
+    },
+    {
+      "key": "6:4",
+      "grade": "6",
+      "position": "4",
+      "sourceLine": 91,
+      "originalName": "**Совок для зерна**",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 133,
+      "catalogId": "toy-055",
+      "ideaUrl": "https://q3-dev.ru/idea/133"
+    },
+    {
+      "key": "6:5",
+      "grade": "6",
+      "position": "5",
+      "sourceLine": 92,
+      "originalName": "Ложка",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 134,
+      "catalogId": "toy-056",
+      "ideaUrl": "https://q3-dev.ru/idea/134"
+    },
+    {
+      "key": "6:6",
+      "grade": "6",
+      "position": "6",
+      "sourceLine": 93,
+      "originalName": "Скалка или толокушка",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 135,
+      "catalogId": "toy-057",
+      "ideaUrl": "https://q3-dev.ru/idea/135"
+    },
+    {
+      "key": "6:7",
+      "grade": "6",
+      "position": "7",
+      "sourceLine": 94,
+      "originalName": "Чуть-чуть вогнутая чаша для хлеба",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 136,
+      "catalogId": "toy-058",
+      "ideaUrl": "https://q3-dev.ru/idea/136"
+    },
+    {
+      "key": "6:extra1",
+      "grade": "6",
+      "position": "extra1",
+      "sourceLine": 98,
+      "originalName": "Разделочная доска для бутербродов (стамеской)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "existing",
+      "ideaId": 49,
+      "catalogId": null,
+      "matchEvidence": "соответствие подтверждено пользователем",
+      "ideaUrl": "https://q3-dev.ru/idea/49"
+    },
+    {
+      "key": "6:extra2",
+      "grade": "6",
+      "position": "extra2",
+      "sourceLine": 99,
+      "originalName": "Головоломки (Т или М)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 137,
+      "catalogId": "toy-059",
+      "ideaUrl": "https://q3-dev.ru/idea/137"
+    },
+    {
+      "key": "6:extra3",
+      "grade": "6",
+      "position": "extra3",
+      "sourceLine": 100,
+      "originalName": "Подставка для книги",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 138,
+      "catalogId": "toy-060",
+      "ideaUrl": "https://q3-dev.ru/idea/138"
+    },
+    {
+      "key": "7:1",
+      "grade": "7",
+      "position": "1",
+      "sourceLine": 108,
+      "originalName": "**Глубокая чаша** (симпатия и антипатия)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 139,
+      "catalogId": "toy-061",
+      "ideaUrl": "https://q3-dev.ru/idea/139"
+    },
+    {
+      "key": "7:2",
+      "grade": "7",
+      "position": "2",
+      "sourceLine": 109,
+      "originalName": "**Механическая игрушка** (механизмы П.Л. Чебышёва в помощь)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "existing",
+      "ideaId": 55,
+      "catalogId": "toy-002",
+      "matchEvidence": "деревянная шарнирная фигурка, нити и две стойки — механическая игрушка, оригинал просмотрен",
+      "ideaUrl": "https://q3-dev.ru/idea/55"
+    },
+    {
+      "key": "7:extra1",
+      "grade": "7",
+      "position": "extra1",
+      "sourceLine": 113,
+      "originalName": "Письменный прибор (органайзер для канцелярских принадлежностей)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 140,
+      "catalogId": "toy-062",
+      "ideaUrl": "https://q3-dev.ru/idea/140"
+    },
+    {
+      "key": "7:extra2",
+      "grade": "7",
+      "position": "extra2",
+      "sourceLine": 114,
+      "originalName": "Подставка для яйца (место для яйца возвышенное, ниже место для скорлупы и ложечки, минимальное пространство)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 141,
+      "catalogId": "toy-063",
+      "ideaUrl": "https://q3-dev.ru/idea/141"
+    },
+    {
+      "key": "7:extra3",
+      "grade": "7",
+      "position": "extra3",
+      "sourceLine": 115,
+      "originalName": "Подставка под самодельный глобус",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/17x1WGNLXQYC4-IX9E6e3Pk4OcPCEX9sC/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 142,
+      "catalogId": "toy-064",
+      "ideaUrl": "https://q3-dev.ru/idea/142"
+    },
+    {
+      "key": "8:1",
+      "grade": "8",
+      "position": "1",
+      "sourceLine": 125,
+      "originalName": "**Табурет с соединениями**",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "existing",
+      "ideaId": 83,
+      "catalogId": "toy-005",
+      "matchEvidence": "клеёное сиденье и соединения табурета подтверждены описанием и пятью фотографиями",
+      "ideaUrl": "https://q3-dev.ru/idea/83"
+    },
+    {
+      "key": "8:2",
+      "grade": "8",
+      "position": "2",
+      "sourceLine": 126,
+      "originalName": "Солонка с крышкой",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 143,
+      "catalogId": "toy-065",
+      "ideaUrl": "https://q3-dev.ru/idea/143"
+    },
+    {
+      "key": "8:3",
+      "grade": "8",
+      "position": "3",
+      "sourceLine": 127,
+      "originalName": "Подсвечник вертикальный. Сначала лепить из глины кость (равновесие, устойчивость)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 144,
+      "catalogId": "toy-066",
+      "ideaUrl": "https://q3-dev.ru/idea/144"
+    },
+    {
+      "key": "8:extra1",
+      "grade": "8",
+      "position": "extra1",
+      "sourceLine": 131,
+      "originalName": "Таблички для классов (социальная работа)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 145,
+      "catalogId": "toy-067",
+      "ideaUrl": "https://q3-dev.ru/idea/145"
+    },
+    {
+      "key": "8:extra2",
+      "grade": "8",
+      "position": "extra2",
+      "sourceLine": 132,
+      "originalName": "Цельная резная рамка для фото",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 146,
+      "catalogId": "toy-068",
+      "ideaUrl": "https://q3-dev.ru/idea/146"
+    },
+    {
+      "key": "8:extra3",
+      "grade": "8",
+      "position": "extra3",
+      "sourceLine": 133,
+      "originalName": "Работа с медью",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "skipped-by-user",
+      "ideaId": null,
+      "catalogId": null,
+      "resolution": "Не создавать по указанию пользователя в этой сессии (12–13.10.2026)."
+    },
+    {
+      "key": "9:1",
+      "grade": "9",
+      "position": "1",
+      "sourceLine": 141,
+      "originalName": "**Медная чаша**",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:2",
+      "grade": "9",
+      "position": "2",
+      "sourceLine": 142,
+      "originalName": "Колокольчик",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:3",
+      "grade": "9",
+      "position": "3",
+      "sourceLine": 143,
+      "originalName": "Гасильник для свечей",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:4",
+      "grade": "9",
+      "position": "4",
+      "sourceLine": 144,
+      "originalName": "Ложка для обуви",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:5",
+      "grade": "9",
+      "position": "5",
+      "sourceLine": 148,
+      "originalName": "**Полка** — шиповые и угловые соединения (сначала найти и измерить место для будущей полки)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 147,
+      "catalogId": "toy-069",
+      "ideaUrl": "https://q3-dev.ru/idea/147"
+    },
+    {
+      "key": "9:6",
+      "grade": "9",
+      "position": "6",
+      "sourceLine": 149,
+      "originalName": "Шкатулка для украшений (продумать, как она будет открываться)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 148,
+      "catalogId": "toy-070",
+      "ideaUrl": "https://q3-dev.ru/idea/148"
+    },
+    {
+      "key": "9:7",
+      "grade": "9",
+      "position": "7",
+      "sourceLine": 155,
+      "originalName": "**Нож** из стали с закалкой и отпуском (плюс кожаный чехол на пояс)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:8",
+      "grade": "9",
+      "position": "8",
+      "sourceLine": 156,
+      "originalName": "Кочерга",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:extra1",
+      "grade": "9",
+      "position": "extra1",
+      "sourceLine": 160,
+      "originalName": "Плетение корзин",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:extra2",
+      "grade": "9",
+      "position": "extra2",
+      "sourceLine": 161,
+      "originalName": "Лепка темпераментов, ваз",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:extra3",
+      "grade": "9",
+      "position": "extra3",
+      "sourceLine": 162,
+      "originalName": "Керамический кувшин",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:extra4",
+      "grade": "9",
+      "position": "extra4",
+      "sourceLine": 163,
+      "originalName": "Скульптура из пенобетона",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "9:extra5",
+      "grade": "9",
+      "position": "extra5",
+      "sourceLine": 164,
+      "originalName": "Гипсовый плинт (рельеф)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "10:1",
+      "grade": "10",
+      "position": "1",
+      "sourceLine": 170,
+      "originalName": "**Круглая шкатулка с рельефной крышкой**",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "10:2",
+      "grade": "10",
+      "position": "2",
+      "sourceLine": 171,
+      "originalName": "Стакан",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Не относится к выбранным столярным изделиям начиная с 9 класса."
+    },
+    {
+      "key": "10:3",
+      "grade": "10",
+      "position": "3",
+      "sourceLine": 175,
+      "originalName": "Ящик для документов А4 (соединение ласточкин хвост, шиповые соединения)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 149,
+      "catalogId": "toy-071",
+      "ideaUrl": "https://q3-dev.ru/idea/149"
+    },
+    {
+      "key": "10:4",
+      "grade": "10",
+      "position": "4",
+      "sourceLine": 176,
+      "originalName": "Изготовление лиры",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 150,
+      "catalogId": "toy-072",
+      "ideaUrl": "https://q3-dev.ru/idea/150"
+    },
+    {
+      "key": "10:5",
+      "grade": "10",
+      "position": "5",
+      "sourceLine": 177,
+      "originalName": "Заточка инструмента",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "exclusionReason": "Занятие без конкретного изделия."
+    },
+    {
+      "key": "reference:1",
+      "grade": null,
+      "position": "1",
+      "sourceLine": 215,
+      "originalName": "Штокмаер",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "classification": "bibliographic-reference",
+      "exclusionReason": "Список авторов программ; это не изделие."
+    },
+    {
+      "key": "reference:2",
+      "grade": null,
+      "position": "2",
+      "sourceLine": 216,
+      "originalName": "Хайдебрант",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "classification": "bibliographic-reference",
+      "exclusionReason": "Список авторов программ; это не изделие."
+    },
+    {
+      "key": "reference:3",
+      "grade": null,
+      "position": "3",
+      "sourceLine": 217,
+      "originalName": "Тобиас Рихтер",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "classification": "bibliographic-reference",
+      "exclusionReason": "Список авторов программ; это не изделие."
+    },
+    {
+      "key": "reference:4",
+      "grade": null,
+      "position": "4",
+      "sourceLine": 218,
+      "originalName": "Лекции Рудольфа Штайнера (Английский курс)",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": false,
+      "status": "excluded",
+      "ideaId": null,
+      "catalogId": null,
+      "classification": "bibliographic-reference",
+      "exclusionReason": "Список авторов программ; это не изделие."
+    },
+    {
+      "key": "11:wood",
+      "grade": "11",
+      "position": "wood",
+      "sourceLine": 191,
+      "originalName": "Столярка: Самые сложные соединения. Производственная точность. Изготовление востребованной и продаваемой мебели размером больше человека (кресло, кровать, стол).",
+      "sourceUrls": [
+        "https://drive.google.com/file/d/11Ulkys7eBpZK2Q7LYKLvn9297i6xeSZ4/view"
+      ],
+      "scope": true,
+      "status": "created",
+      "ideaId": 151,
+      "catalogId": "toy-073",
+      "ideaUrl": "https://q3-dev.ru/idea/151"
+    }
+  ],
+  "importVerifiedAt": "2026-10-12T21:26:21.854Z",
+  "coverage": {
+    "created": 64,
+    "existing": 6,
+    "linked": 70,
+    "skippedByUser": 11,
+    "unresolved": 0
+  },
+  "verification": {
+    "checkedAt": "2026-10-12T21:43:48.057Z",
+    "programmeTextPreserved": true,
+    "uniqueIds": true,
+    "newCardsShared": true,
+    "dbReadback": true,
+    "publicApi": true,
+    "livePagesHttpAndMeta": true,
+    "renderedPageContentAndGallery": true,
+    "browserVisualVerification": false,
+    "browserLimitation": "cua.getState() вернул apps: [], browsers: []; визуальная проверка браузером недоступна."
+  }
+}
