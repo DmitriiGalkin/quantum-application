@@ -26,7 +26,7 @@ function page(client: QueryClient, path = '/teachers/42') {
   return <QueryClientProvider client={client}><MemoryRouter initialEntries={[path]}><Routes><Route path="/teachers/:id" element={<TeachersPage />} /></Routes></MemoryRouter></QueryClientProvider>;
 }
 
-it('hydrates teacher sections in order with unique centers, five public meetings and compact statistics', async () => {
+it('hydrates teacher sections in order with unique centers and no redundant meetings section', async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   const client = new QueryClient({ defaultOptions: { queries: { staleTime: Infinity } } });
   client.setQueryData(['teacher', '42'], teacher);
@@ -38,12 +38,12 @@ it('hydrates teacher sections in order with unique centers, five public meetings
     await act(async () => {});
     expect(errors).toEqual([]);
     const text = host.textContent!;
-    const sections = ['Teacher biography', 'Центры работы', 'Ближайшие встречи', 'Проекты учителя', 'Проекты: 1', 'Идеи учителя'];
+    const sections = ['Teacher biography', 'Центры работы', 'Проекты учителя', 'Проекты: 1', 'Идеи учителя'];
     for (let i = 1; i < sections.length; i++) expect(text.indexOf(sections[i])).toBeGreaterThan(text.indexOf(sections[i - 1]));
     expect(text).not.toContain('999'); expect(text).not.toContain('Ученики');
     expect(host.querySelectorAll('section')[0].querySelectorAll('a')).toHaveLength(2);
     expect(host.querySelector('img[src="/center.jpg"]')).not.toBeNull();
-    expect([...host.querySelectorAll('section')[1].querySelectorAll('a')].map(a => a.getAttribute('href'))).toEqual([0, 1, 2, 3, 4].map(id => `/project/100#meet-${id}`));
+    expect(text).not.toContain('Ближайшие встречи');
     expect(host.querySelector('[aria-label="Таблица проектов"]')).not.toBeNull();
     expect(text).toContain('Идей учителя пока нет.');
   } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
@@ -67,7 +67,7 @@ it('shows Russian loading, retry, missing teacher and empty sections', async () 
     await act(async () => client.setQueryData(['teacher', '42'], { ...teacher, projects: [], centers: [], ideas: [] }));
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 30)); });
     expect(host.textContent).toContain('Центры работы пока не указаны.');
-    expect(host.textContent).toContain('Ближайшие встречи не назначены.');
+    expect(host.textContent).not.toContain('Ближайшие встречи');
     expect(host.textContent).toContain('Проектов пока нет.');
   } finally { await act(async () => root.unmount()); client.clear(); }
 });

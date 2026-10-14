@@ -2,7 +2,6 @@
 import { Link, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -15,11 +14,10 @@ import { fetchPlaceProfile, fetchProjects } from '../requests.ts';
 import Projects from '../features/project/ui/Projects.tsx';
 import { useFilters } from '../features/idea/hooks/useFilters.ts';
 import { RoomGallery } from '../features/place/RoomGallery.tsx';
-import { RentalDialog } from '../features/place/RentalDialog.tsx';
-import { useRentalForm } from '../features/place/hooks/useRentalForm.ts';
+import { RoomContactDialog } from '../features/place/RoomContactDialog.tsx';
+import { PlaceGallery } from '../features/place/PlaceGallery.tsx';
 import { PlaceMap } from '../features/place/ui/PlaceMap.tsx';
 import { getBrowser } from '../shared/lib/browser.ts';
-import { moscowFormat } from '../features/meets/moscow-time.ts';
 import { formatMoney } from '../utils/time.ts';
 
 export default function PlacesPage() {
@@ -32,7 +30,7 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
   const [shareMessage, setShareMessage] = useState('');
   const profile = useQuery({ queryKey: ['place-profile', id], queryFn: () => fetchPlaceProfile(Number(id)), enabled: Boolean(id) });
   const projects = useQuery({ queryKey: ['projects', id, filter.filters], queryFn: () => fetchProjects({ ...filter.filters, placeId: Number(id) }), enabled: Boolean(id) });
-  const form = useRentalForm(Number(id), profile.data?.rooms ?? []);
+  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
   const share = async () => {
     const browser = getBrowser();
     if (!browser) return;
@@ -44,36 +42,28 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
   };
   if (profile.isPending) return <Typography role="status">Загрузка центра…</Typography>;
   if (profile.isError) return <Alert severity="error" action={<Button onClick={() => void profile.refetch()}>Повторить</Button>}>{profile.error.message}</Alert>;
-  const { place, rooms, meets, teachers, schedule } = profile.data;
+  const { place, rooms, teachers, schedule } = profile.data;
   const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
   return <Container maxWidth="lg"><Stack spacing={4}>
     <Card><CardContent><Stack spacing={2}>
-      {place.image && <Box component="img" src={place.image} alt={`Логотип ${place.title ?? 'центра'}`} sx={{ width: '100%', maxWidth: 260, height: 160, objectFit: 'contain' }} />}
       <Typography variant="h3" component="h1">{place.title ?? 'Образовательный центр'}</Typography>
+      <Stack spacing={0.5}>
+        <Typography variant="h6" component="h2">Режим работы</Typography>
+        {!schedule.length && <Typography>Расписание пока не указано.</Typography>}
+        {schedule.map(day => <Typography key={day.weekday}>{weekdays[day.weekday - 1]}: {day.enabled ? `${day.startTime.slice(0, 5)}–${day.endTime.slice(0, 5)} (МСК)` : 'Выходной'}</Typography>)}
+      </Stack>
+      <PlaceGallery place={place} rooms={rooms} />
       {place.description && <Typography sx={{ whiteSpace: 'pre-line' }}>{place.description}</Typography>}
       <Typography>{place.address}</Typography>
+      {place.phone ? <Typography component="a" href={`tel:${place.phone}`}>{place.phone}</Typography> : <Typography>Телефон пока не указан.</Typography>}
+      <Typography variant="h6" component="h2">Залы центра</Typography>
+      {rooms.length ? <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap' }}>{rooms.map(room => <Button key={room.id} href={`#room-${room.id}`} variant="outlined">{room.title}</Button>)}</Stack> : <Typography>Залы пока не добавлены.</Typography>}
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
-        <Button variant="contained" href="#upcoming">Ближайшие занятия</Button>
         <Button variant="outlined" href="#rooms">Выбрать зал</Button>
         <Button onClick={() => void share()}>Поделиться</Button>
       </Stack>
       {shareMessage && <Typography role="status">{shareMessage}</Typography>}
     </Stack></CardContent></Card>
-    <Stack id="upcoming" spacing={2} sx={{ scrollMarginTop: 90 }}>
-      <Typography variant="h4" component="h2">Ближайшие занятия</Typography>
-      {!meets.length && <Typography>Будущих опубликованных занятий пока нет.</Typography>}
-      <Grid container spacing={2}>{meets.map(meet => <Grid key={meet.id} size={{ xs: 12, md: 6 }}>
-        <Card><CardContent><Stack spacing={1}>
-          <Typography variant="h6">{meet.projectTitle}</Typography>
-          <Typography>Преподаватель: <Link to={`/teachers/${meet.teacher.id}`}>{meet.teacher.title}</Link></Typography>
-          {meet.locationTitle && <Typography>Зал: {meet.locationTitle}</Typography>}
-          <Typography>{moscowFormat(meet.startedAt, { dateStyle: 'long', timeStyle: 'short' })} (МСК){meet.duration !== null && ` · ${meet.duration} мин.`}</Typography>
-          <Typography>{meet.price === null ? 'Стоимость по согласованию' : formatMoney(meet.price)}</Typography>
-          {meet.availableSeats !== null && <Typography>Свободных мест: {meet.availableSeats}</Typography>}
-          <Button component={Link} to={`/project/${meet.projectId}#meet-${meet.id}`}>Подробнее и запись</Button>
-        </Stack></CardContent></Card>
-      </Grid>)}</Grid>
-    </Stack>
     {projects.isPending ? <Typography role="status">Загрузка проектов…</Typography> : projects.isError
       ? <Alert severity="error" action={<Button onClick={() => void projects.refetch()}>Повторить</Button>}>Не удалось загрузить проекты</Alert>
       : <><Projects title="Проекты центра" filter={filter} projects={projects.data} refetch={() => void projects.refetch()} withoutIdea />{!projects.data.length && <Typography>Проектов центра пока нет.</Typography>}</>}
@@ -90,23 +80,19 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
     <Stack id="rooms" spacing={2} sx={{ scrollMarginTop: 90 }}>
       <Typography variant="h4" component="h2">Залы</Typography>
       {!rooms.length && <Typography>Залы пока не добавлены.</Typography>}
-      <Grid container spacing={2}>{rooms.map(room => <Grid key={room.id} size={{ xs: 12, md: 6 }}><Card><CardContent><Stack spacing={1}>
+      <Grid container spacing={2}>{rooms.map(room => <Grid key={room.id} size={{ xs: 12, md: 6 }}><Card id={`room-${room.id}`} sx={{ height: '100%', borderRadius: 4, overflow: 'hidden', scrollMarginTop: 90, display: 'flex', flexDirection: 'column' }}>
         <RoomGallery title={room.title} photos={room.photos} />
+        <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
         <Typography variant="h6">{room.title}</Typography>
         {room.description && <Typography sx={{ whiteSpace: 'pre-line' }}>{room.description}</Typography>}
         {room.capacity !== null && <Typography>Вместимость: {room.capacity} человек</Typography>}
-        {room.rentalEnabled && <Typography>{room.hourlyRate === null ? 'Цена по согласованию' : `${formatMoney(room.hourlyRate)} / час`}</Typography>}
-        {room.rentalEnabled ? <Button variant="contained" onClick={() => form.choose(room.id)}>Заявка на аренду</Button> : <Typography>Аренда пока недоступна</Typography>}
-      </Stack></CardContent></Card></Grid>)}</Grid>
+        <Typography>{room.hourlyRate === null ? 'Цена по согласованию' : `${formatMoney(room.hourlyRate)} / час`}</Typography>
+        <Button variant="contained" sx={{ mt: 'auto', alignSelf: 'flex-start' }} onClick={() => setSelectedRoomId(room.id)}>Арендовать</Button>
+      </CardContent></Card></Grid>)}</Grid>
     </Stack>
     <Stack spacing={2}><Typography variant="h4" component="h2">Как добраться</Typography><Typography>{place.address}</Typography>
       {Number.isFinite(Number(place.latitude)) && Number.isFinite(Number(place.longitude)) && <PlaceMap lat={Number(place.latitude)} lng={Number(place.longitude)} zoom={15} places={[place]} />}
       <Button component="a" href={`https://yandex.ru/maps/?rtext=~${encodeURIComponent(`${place.latitude},${place.longitude}`)}&rtt=auto`} target="_blank" rel="noopener noreferrer">Построить маршрут</Button>
     </Stack>
-    <Stack spacing={1}><Typography variant="h4" component="h2">Контакты и режим работы</Typography>
-      {place.phone ? <Typography component="a" href={`tel:${place.phone}`}>{place.phone}</Typography> : <Typography>Телефон пока не указан.</Typography>}
-      {!schedule.length && <Typography>Расписание пока не указано.</Typography>}
-      {schedule.map(day => <Typography key={day.weekday}>{weekdays[day.weekday - 1]}: {day.enabled ? `${day.startTime.slice(0, 5)}–${day.endTime.slice(0, 5)} (МСК)` : 'Выходной'}</Typography>)}
-    </Stack>
-  </Stack><RentalDialog form={form} rooms={rooms} /></Container>;
+  </Stack><RoomContactDialog room={rooms.find(room => room.id === selectedRoomId)} place={place} onClose={() => setSelectedRoomId(null)} /></Container>;
 }

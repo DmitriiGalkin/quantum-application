@@ -17,6 +17,10 @@ it('hydrates the main photo and supports keyboard navigation, wrapping and Escap
     await act(async () => {});
     expect(errors).toEqual([]);
     expect(host.querySelector('img')?.getAttribute('src')).toBe(photos[0].url);
+    await act(async () => host.querySelector<HTMLButtonElement>('[aria-label="Следующее фото: Зал"]')!.click());
+    expect(host.querySelector('img')?.getAttribute('src')).toBe(photos[1].url);
+    await act(async () => host.querySelector<HTMLButtonElement>('[aria-label="Следующее фото: Зал"]')!.click());
+    expect(host.querySelector('img')?.getAttribute('src')).toBe(photos[0].url);
     await act(async () => host.querySelector<HTMLButtonElement>('button')!.click());
     const dialog = globalThis.document.querySelector('[role="dialog"]')!;
     expect(dialog.textContent).toContain('1 / 2');
@@ -28,4 +32,11 @@ it('hydrates the main photo and supports keyboard navigation, wrapping and Escap
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 250)); });
     expect(globalThis.document.querySelector('[role="dialog"]')).toBeNull();
   } finally { await act(async () => root.unmount()); host.remove(); }
+});
+
+it('handles no photos and a single photo without carousel controls', () => {
+  expect(renderToString(<RoomGallery title="Зал" photos={[]} />)).toBe('');
+  const html = renderToString(<RoomGallery title="Зал" photos={[{ id: 1, locationId: 1, position: 0, url: '/room.jpg' }]} />);
+  expect(html).toContain('/room.jpg');
+  expect(html).not.toContain('Следующее фото');
 });

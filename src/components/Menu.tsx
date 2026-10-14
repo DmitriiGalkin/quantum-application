@@ -19,22 +19,23 @@ import DomainIcon from '@mui/icons-material/Domain';
 import PersonIcon from '@mui/icons-material/Person';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import Tooltip from '@mui/material/Tooltip';
 
-type MenuItemConfig = {
+interface MenuItemConfig {
   label: string;
   to: string;
   icon?: React.ReactNode;
   disabled?: boolean;
   variant?: 'default' | 'primary';
-};
+}
 
-type MenuSection = {
+interface MenuSection {
   title?: string;
   items: MenuItemConfig[];
-};
+}
 
-function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
-  const { role } = useAuth();
+function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boolean) => void; compact?: boolean }) {
+  const { role, passport } = useAuth();
 
   const MENU: {
     guest: MenuSection[];
@@ -180,24 +181,21 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
   };
 
   const menuSections: MenuSection[] = [
-    { title: 'Платформа', items: [
-      { label: 'Проекты', to: '/', icon: <WorkIcon /> },
-      { label: 'О платформе', to: '/about', icon: <DomainIcon /> },
-    ] },
     ...(role === 'guest' ? [] : MENU[role].map((section, index) => ({ ...section, title: index === 0 ? 'Мой кабинет' : section.title }))),
     ...(role === 'teacher' ? [{ title: 'Вдохновение', items: [{ label: 'Библиотека идей', to: '/ideas', icon: <LightbulbIcon /> }] }] : []),
   ];
 
+  if (!passport) return null;
   return (
-    <Stack sx={{ width: 250, height: '100%' }}>
-      <Toolbar>
+    <Stack component="nav" aria-label="Мой кабинет" sx={{ width: compact ? 72 : 250, height: '100%' }}>
+      {!compact && <Toolbar>
         <Typography variant="h6">Quantum</Typography>
-      </Toolbar>
+      </Toolbar>}
       <Divider />
       <List>
         {menuSections.map((section, sectionIndex) => (
           <Box key={sectionIndex}>
-            {section.title && (
+            {section.title && !compact && (
               <Divider sx={{ my: 1 }}>
                 <Typography variant="caption" color="textDisabled">
                   {section.title}
@@ -206,8 +204,9 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
             )}
 
             {section.items.map(item => (
+              <Tooltip key={item.label} title={compact ? item.label : ''} placement="right">
               <ListItemButton
-                key={item.label}
+                aria-label={item.label}
                 component={item.disabled ? 'div' : NavLink}
                 to={item.disabled ? undefined : item.to}
                 end={!item.disabled}
@@ -218,6 +217,8 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
                   }
                 }}
                 sx={{
+                  justifyContent: compact ? 'center' : undefined,
+                  minHeight: 48,
                   mb: item.variant === 'primary' ? 1 : 0,
 
                   ...(item.variant === 'primary'
@@ -237,15 +238,16 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
               >
                 <ListItemIcon
                   sx={{
-                    minWidth: 40,
+                    minWidth: compact ? 0 : 40,
                     color: item.variant === 'primary' ? 'inherit' : undefined,
                   }}
                 >
                   {item.icon}
                 </ListItemIcon>
 
-                <ListItemText primary={item.label} />
+                {!compact && <ListItemText primary={item.label} />}
               </ListItemButton>
+              </Tooltip>
             ))}
           </Box>
         ))}

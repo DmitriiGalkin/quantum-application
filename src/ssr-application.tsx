@@ -25,6 +25,16 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
     };
   }
 
+  if (url === '/craft-school-program') {
+    return {
+      title: 'Программа вальдорфской школы по ремеслу — Quantum',
+      description: 'Программа ремесла для 1–12 классов: направления работы и идеи изделий.',
+      ogTitle: 'Программа вальдорфской школы по ремеслу',
+      ogDescription: 'Программа ремесла для 1–12 классов: направления работы и идеи изделий.',
+      ogType: 'article', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/forIndex.png`,
+    };
+  }
+
   if (url === '/ideas') {
     return {
       title: 'Quantum — библиотека идей', description: 'Идеи образовательных проектов для детей и преподавателей.',

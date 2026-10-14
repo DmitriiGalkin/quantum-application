@@ -37,7 +37,9 @@ export default function ProjectsPage() {
       <Typography component="h1" variant="h4">Образовательные проекты для детей</Typography>
       <Typography>Выберите проект по интересам ребёнка и присоединяйтесь к встречам с преподавателем.</Typography>
     </Stack>
-    <ProjectSearch key={q} initialQuery={q} example={!q ? projects[0]?.title : undefined} onSearch={search} />
+    <Stack sx={{ alignItems: 'center', width: '100%' }}>
+      <ProjectSearch key={q} initialQuery={q} example={!q ? projects[0]?.title : undefined} onSearch={search} />
+    </Stack>
     {q && <Button onClick={() => search('')} sx={{ alignSelf: 'flex-start' }}>Очистить поиск</Button>}
     <Filter {...filter} projects compactViews />
     {filters.sort === 'nearby' && location.status === 'error' && <Typography>Местоположение недоступно. Показываем все проекты.</Typography>}

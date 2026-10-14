@@ -24,9 +24,13 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import type { ActiveRole } from 'entities';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 function Header() {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const { passport, authHandler, logout, switchPlace, role, userId, placeId, switchUser, switchTeacher } = useAuth();
   const [isMenu2Open, setIsMenu2Open] = useState(false);
@@ -69,15 +73,15 @@ function Header() {
         }}
       >
         <Toolbar sx={{ px: { xs: 1, sm: 2 }, gap: { xs: 0.25, sm: 1 } }}>
-          <IconButton
+          {passport && <IconButton
             size="large"
             edge="start"
             aria-label="Открыть меню"
-            sx={{ color: 'white', flexShrink: 0 }}
+            sx={{ color: 'white', flexShrink: 0, display: { xs: 'inline-flex', md: 'none' } }}
             onClick={() => setIsMenu2Open(currentValue => !currentValue)}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton>}
 
           <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
             <Typography
@@ -227,16 +231,22 @@ function Header() {
         </Toolbar>
       </AppBar>
 
-      <Drawer
-        open={isMenu2Open}
+      {passport && <Drawer
+        open={isMenu2Open && isMobile}
         onClose={() => setIsMenu2Open(false)}
         sx={{
+          display: { xs: 'block', md: 'none' },
           zIndex: theme => theme.zIndex.appBar + 1,
         }}
         anchor="left"
       >
         <MenuLeft setIsMenuOpen={setIsMenu2Open} />
-      </Drawer>
+      </Drawer>}
+      {passport && <Drawer variant="permanent" anchor="left"
+        sx={{ display: { xs: 'none', md: 'block' }, width: 72,
+          '& .MuiDrawer-paper': { width: 72, top: 64, height: 'calc(100% - 64px)', overflowX: 'hidden' } }}>
+        <MenuLeft compact />
+      </Drawer>}
     </>
   );
 }

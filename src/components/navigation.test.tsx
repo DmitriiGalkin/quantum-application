@@ -16,14 +16,18 @@ it('links the active application footer to the showcase and idea library', () =>
   host.innerHTML = renderToString(<Footer />);
   expect(host.querySelector('a[href="/"]')?.textContent).toBe('Проекты');
   expect(host.querySelector('a[href="/ideas"]')?.textContent).toBe('Библиотека идей');
+  expect(host.querySelector('a[href="/craft-school-program"]')?.textContent).toBe('Программа ремесла');
 });
 
-it.each(['guest', 'user', 'teacher', 'place'])('keeps platform navigation available to %s', role => {
+it.each(['guest', 'user', 'teacher', 'place'])('shows account navigation only to authenticated %s', role => {
   auth.role = role;
+  auth.passport = role === 'guest' ? null : { id: 1 };
   const host = globalThis.document.createElement('div');
   host.innerHTML = renderToString(<MemoryRouter><Header /><Menu setIsMenuOpen={() => {}} /></MemoryRouter>);
   expect([...host.querySelectorAll('a[href="/"]')].some(a => a.textContent === 'Проекты')).toBe(true);
-  expect(host.textContent).toContain('Платформа');
+  expect(host.textContent).not.toContain('Платформа');
+  expect(Boolean(host.querySelector('[aria-label="Открыть меню"]'))).toBe(role !== 'guest');
+  expect(Boolean(host.querySelector('[aria-label="Мой кабинет"]'))).toBe(role !== 'guest');
   if (role !== 'guest') expect(host.textContent).toContain('Мой кабинет');
   if (role === 'teacher') expect(host.querySelector('a[href="/ideas"]')).not.toBeNull();
   expect(host.querySelector('[aria-label="Сообщения"]')).not.toBeNull();
@@ -31,12 +35,23 @@ it.each(['guest', 'user', 'teacher', 'place'])('keeps platform navigation availa
 it('asks a guest to log in with the messages return path', async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   auth.role = 'guest';
+  auth.passport = null;
   const host = globalThis.document.createElement('div'); const root = createRoot(host);
   try {
     await act(async () => root.render(<MemoryRouter><Header /></MemoryRouter>));
     await act(async () => host.querySelector<HTMLButtonElement>('[aria-label="Сообщения"]')!.click());
     expect(auth.authHandler).toHaveBeenCalledWith('/chats');
   } finally { await act(async () => root.unmount()); }
+});
+it.each(['user', 'teacher', 'place'])('renders compact navigation with an active dashboard for %s', role => {
+  auth.role = role;
+  auth.passport = { id: 1 };
+  const host = globalThis.document.createElement('div');
+  host.innerHTML = renderToString(<MemoryRouter initialEntries={[`/${role}`]}><Menu compact /></MemoryRouter>);
+  expect(host.querySelector('a[aria-current="page"]')?.getAttribute('href')).toBe(`/${role}`);
+  expect(host.querySelector('.MuiListItemText-root')).toBeNull();
+  expect(host.querySelectorAll('a[aria-label]').length).toBeGreaterThan(3);
+  expect(host.textContent).not.toContain('Платформа');
 });
 it('redirects old project catalog links without losing query or anchor', async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });

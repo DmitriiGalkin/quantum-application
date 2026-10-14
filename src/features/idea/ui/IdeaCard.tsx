@@ -4,16 +4,21 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import type { IdeaDto } from 'entities';
 import CardActionArea from '@mui/material/CardActionArea';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+interface IdeaCardData {
+  id: number;
+  title: string;
+  description: string;
+  image: string | null;
+}
 
 type IdeaCardProps = {
-  idea: IdeaDto;
+  idea: IdeaDto | IdeaCardData;
   onSelect?: () => void;
 };
 
 function IdeaCard({ idea }: IdeaCardProps) {
-  const navigate = useNavigate();
-
   return (
     <Card
       elevation={1}
@@ -25,7 +30,7 @@ function IdeaCard({ idea }: IdeaCardProps) {
         overflow: 'hidden',
       }}
     >
-      <CardActionArea onClick={() => navigate(`/idea/${idea.id}`)}>
+      <CardActionArea component={Link} to={`/idea/${idea.id}`} sx={{ color: 'inherit', textDecoration: 'none' }}>
         <CardMedia component="img" alt={idea.title} image={idea.image || `/bg.jpeg`} sx={{ height: { xs: 240, sm: 280 }, objectFit: 'cover' }} />
 
         <CardContent sx={{ flexGrow: 1 }}>

@@ -39,6 +39,7 @@ const PlaceUsersPage = lazy(() => import('./pages/place/PlaceUsersPage.tsx'));
 const PlaceLocationsPage = lazy(() => import('./pages/place/PlaceLocationsPage.tsx'));
 const PlacesPage = lazy(() => import('./pages/PlacesPage.tsx'));
 const RentalsPage = lazy(() => import('./pages/RentalsPage.tsx'));
+const CraftSchoolProgramPage = lazy(() => import('./pages/CraftSchoolProgramPage.tsx'));
 
 function Routers() {
   return (
@@ -46,6 +47,7 @@ function Routers() {
       <Route element={<AppLayout />}>
         <Route index element={<ProjectsPage />} />
         <Route path="ideas" element={<IdeasPage />} />
+        <Route path="craft-school-program" element={<CraftSchoolProgramPage />} />
         <Route path="users/:id" element={<div>UserPage</div>} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="projects" element={<ProjectsRedirect />} />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -18,7 +18,6 @@ import { useFilters } from '../features/idea/hooks/useFilters.ts';
 import IdeaGrids from '../features/idea/ui/IdeaGrids.tsx';
 import Title from 'components/Title.tsx';
 import PlaceCard from '../features/place/PlaceCard.tsx';
-import { formatMoscowMeet, upcomingPublishedMeets } from '../features/project/ui/project-card-meeting.ts';
 import { useAuth } from '../providers/auth-context.ts';
 import { usePostAuthAction } from '../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../shared/lib/useRunPostAuthAction.ts';
@@ -51,8 +50,6 @@ export default function TeachersPage() {
   if (!teacher) return <Typography>Преподаватель не найден.</Typography>;
 
   const centers = [...new Map(teacher.centers.map(place => [place.id, place])).values()];
-  const projectsById = new Map(teacher.projects.map(project => [project.id, project]));
-  const upcoming = upcomingPublishedMeets(teacher.projects.flatMap(project => project.meets)).slice(0, 5);
 
   return <Stack spacing={3}>
     <Card>
@@ -76,16 +73,6 @@ export default function TeachersPage() {
       {centers.length ? <Grid container spacing={2}>
         {centers.map(place => <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={place.id}><PlaceCard place={place} /></Grid>)}
       </Grid> : <Typography color="text.secondary">Центры работы пока не указаны.</Typography>}
-    </Box>
-
-    <Box component="section">
-      <Title text="Ближайшие встречи" />
-      {upcoming.length ? <Stack spacing={1}>
-        {upcoming.map(meet => <Card key={meet.id}><CardContent>
-          <Typography component={Link} to={'/project/' + meet.projectId + '#meet-' + meet.id} sx={{ color: 'inherit', fontWeight: 600, overflowWrap: 'anywhere' }}>{projectsById.get(meet.projectId)?.title || meet.projectTitle || 'Проект'}</Typography>
-          <Typography variant="body2">{meet.place.title || 'Центр'} · {formatMoscowMeet(meet)}{meet.price != null && ' · ' + meet.price + ' ₽'}</Typography>
-        </CardContent></Card>)}
-      </Stack> : <Typography color="text.secondary">Ближайшие встречи не назначены.</Typography>}
     </Box>
 
     <Projects title="Проекты учителя" filter={filter} projects={teacher.projects} refetch={refetch} withoutIdea />

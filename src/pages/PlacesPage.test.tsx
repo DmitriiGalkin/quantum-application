@@ -33,10 +33,15 @@ it('renders every public section, empty messages, optional room fields and hydra
     await act(async () => {});
     expect(errors).toEqual([]);
     expect(host.querySelector('h1')?.textContent).toBe('Центр');
-    expect(host.querySelector('img')?.getAttribute('alt')).toBe('Логотип Центр');
-    for (const text of ['Ближайшие занятия', 'Проекты центра', 'Преподаватели', 'Залы', 'Как добраться', 'Контакты и режим работы', 'Цена по согласованию', 'Будущих опубликованных занятий пока нет.', 'Проектов центра пока нет.', 'Преподаватели пока не добавлены.', '08:00–20:00 (МСК)']) expect(host.textContent).toContain(text);
+    expect(host.querySelector('img')?.getAttribute('alt')).toBe('Центр');
+    for (const text of ['Проекты центра', 'Преподаватели', 'Залы', 'Как добраться', 'Режим работы', 'Цена по согласованию', 'Проектов центра пока нет.', 'Преподаватели пока не добавлены.', '08:00–20:00 (МСК)']) expect(host.textContent).toContain(text);
+    expect(host.textContent).not.toContain('Ближайшие занятия');
+    expect(host.querySelector('[href="#upcoming"]')).toBeNull();
     expect(host.textContent).not.toContain('Вместимость:');
     expect(host.querySelector('a[href^="tel:"]')?.textContent).toBe('+79990000000');
+    await act(async () => [...host.querySelectorAll('button')].find(button => button.textContent === 'Арендовать')!.click());
+    expect(globalThis.document.querySelector('[role="dialog"]')?.textContent).toContain('Чтобы уточнить доступность');
+    expect(globalThis.document.querySelector('[role="dialog"] a')?.getAttribute('href')).toBe('tel:+79990000000');
   } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
 });
 
