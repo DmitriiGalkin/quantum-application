@@ -1,31 +1,25 @@
+import type { ReactNode } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import type { LocationDto } from 'entities';
+import type { RoomDto } from 'entities';
+import { RoomGallery } from './RoomGallery.tsx';
+import { formatMoney } from '../../utils/time.ts';
 
-type Props = {
-  location: LocationDto;
-};
-
-function LocationCard({ location }: Props) {
-  return (
-    <Card
-      elevation={1}
-      sx={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 4,
-        overflow: 'hidden',
-      }}
-    >
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom noWrap>
-          {location.title}
-        </Typography>
-      </CardContent>
-    </Card>
-  );
+interface LocationCardProps {
+  location: RoomDto;
+  actions?: ReactNode;
 }
 
-export default LocationCard;
+export default function LocationCard({ location, actions }: LocationCardProps) {
+  return <Card id={`room-${location.id}`} sx={{ height: '100%', borderRadius: 4, overflow: 'hidden', scrollMarginTop: 90, display: 'flex', flexDirection: 'column' }}>
+    <RoomGallery title={location.title} photos={location.photos} />
+    <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+      <Typography variant="h6">{location.title}</Typography>
+      {location.description && <Typography sx={{ whiteSpace: 'pre-line' }}>{location.description}</Typography>}
+      {location.capacity !== null && <Typography>Вместимость: {location.capacity} человек</Typography>}
+      <Typography>{location.hourlyRate === null ? 'Цена по согласованию' : `${formatMoney(location.hourlyRate)} / час`}</Typography>
+      {actions}
+    </CardContent>
+  </Card>;
+}

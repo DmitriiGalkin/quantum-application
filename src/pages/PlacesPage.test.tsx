@@ -45,6 +45,20 @@ it('renders every public section, empty messages, optional room fields and hydra
   } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
 });
 
+it('shows the shared teacher card publicly without management actions', () => {
+  const client = new QueryClient({ defaultOptions: { queries: { staleTime: Infinity } } });
+  client.setQueryData(['place-profile', '1'], { ...profile, teachers: [{ id: 44, title: 'Анна', description: 'Ремесло', image: 'https://example.com/teacher.png' }] });
+  client.setQueryData(['projects', '1', { sort: 'new', view: 'module', when: undefined }], []);
+  try {
+    const html = renderToString(<QueryClientProvider client={client}><MemoryRouter initialEntries={['/places/1']}><Routes><Route path="places/:id" element={<PlacesPage />} /></Routes></MemoryRouter></QueryClientProvider>);
+    expect(html).toContain('Ремесло');
+    expect(html).toContain('href="/teachers/44"');
+    expect(html).toContain('https://example.com/teacher.png');
+    expect(html).not.toContain('Удалить из центра');
+    expect(html).not.toContain('Выйти из центра');
+  } finally { client.clear(); }
+});
+
 it('shows centre-not-found with a retry action after a failed request', async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   vi.mocked(fetchPlaceProfile).mockRejectedValue(new Error('Центр не найден'));

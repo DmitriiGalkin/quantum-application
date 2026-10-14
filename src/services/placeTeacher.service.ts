@@ -1,4 +1,6 @@
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
+import PassportRepository from '../repositories/passport.repository.js';
+import type { TeacherDto } from 'entities';
 import { HttpError } from '../utils/http-error.js';
 
 class PlaceTeacherService {
@@ -21,8 +23,10 @@ class PlaceTeacherService {
     });
   }
 
-  static async findAll(placeId: number) {
-    return PlacePassportRepository.findTeachers(placeId);
+  static async findAll(placeId: number): Promise<TeacherDto[]> {
+    const members = await PlacePassportRepository.members(placeId);
+    const passports = await PassportRepository.findByIds([...new Set(members.map(member => member.passportId))]);
+    return passports.map(({ id, title, description, image }) => ({ id, title, description, image }));
   }
 
   static async remove(placeId: number, teacherPassportId: number) {

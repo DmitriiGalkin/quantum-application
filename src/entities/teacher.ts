@@ -3,7 +3,8 @@ import type { ProjectDto, MeetDto, PassportDto, IdeaDto, PlaceDto } from 'entiti
 export type TeacherDto = {
   id: number;
   title: string;
-  image?: string;
+  image?: string | null;
+  description?: string | null;
   projectCount?: number;
 };
 

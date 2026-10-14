@@ -1,7 +1,6 @@
 ﻿import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,12 +12,12 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchPlaceProfile, fetchProjects } from '../requests.ts';
 import Projects from '../features/project/ui/Projects.tsx';
 import { useFilters } from '../features/idea/hooks/useFilters.ts';
-import { RoomGallery } from '../features/place/RoomGallery.tsx';
+import LocationCard from '../features/place/LocationCard.tsx';
+import TeacherCard from '../features/teacher/TeacherCard.tsx';
 import { RoomContactDialog } from '../features/place/RoomContactDialog.tsx';
 import { PlaceGallery } from '../features/place/PlaceGallery.tsx';
 import { PlaceMap } from '../features/place/ui/PlaceMap.tsx';
 import { getBrowser } from '../shared/lib/browser.ts';
-import { formatMoney } from '../utils/time.ts';
 
 export default function PlacesPage() {
   const { id } = useParams<{ id: string }>();
@@ -70,25 +69,16 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
     <Stack spacing={2}>
       <Typography variant="h4" component="h2">Преподаватели</Typography>
       {!teachers.length && <Typography>Преподаватели пока не добавлены.</Typography>}
-      <Grid container spacing={2}>{teachers.map(teacher => <Grid key={teacher.id} size={{ xs: 12, sm: 6, md: 4 }}><Card><CardContent><Stack spacing={1}>
-        <Avatar src={teacher.image ?? undefined} alt={teacher.title} sx={{ width: 72, height: 72 }} />
-        <Typography variant="h6">{teacher.title}</Typography>
-        {teacher.description && <Typography>{teacher.description.slice(0, 240)}</Typography>}
-        <Button component={Link} to={`/teachers/${teacher.id}`}>Профиль преподавателя</Button>
-      </Stack></CardContent></Card></Grid>)}</Grid>
+      <Grid container spacing={2}>{teachers.map(teacher => <Grid key={teacher.id} size={{ xs: 12, sm: 6, md: 4 }}>
+        <TeacherCard teacher={teacher} />
+      </Grid>)}</Grid>
     </Stack>
     <Stack id="rooms" spacing={2} sx={{ scrollMarginTop: 90 }}>
       <Typography variant="h4" component="h2">Залы</Typography>
       {!rooms.length && <Typography>Залы пока не добавлены.</Typography>}
-      <Grid container spacing={2}>{rooms.map(room => <Grid key={room.id} size={{ xs: 12, md: 6 }}><Card id={`room-${room.id}`} sx={{ height: '100%', borderRadius: 4, overflow: 'hidden', scrollMarginTop: 90, display: 'flex', flexDirection: 'column' }}>
-        <RoomGallery title={room.title} photos={room.photos} />
-        <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-        <Typography variant="h6">{room.title}</Typography>
-        {room.description && <Typography sx={{ whiteSpace: 'pre-line' }}>{room.description}</Typography>}
-        {room.capacity !== null && <Typography>Вместимость: {room.capacity} человек</Typography>}
-        <Typography>{room.hourlyRate === null ? 'Цена по согласованию' : `${formatMoney(room.hourlyRate)} / час`}</Typography>
-        <Button variant="contained" sx={{ mt: 'auto', alignSelf: 'flex-start' }} onClick={() => setSelectedRoomId(room.id)}>Арендовать</Button>
-      </CardContent></Card></Grid>)}</Grid>
+      <Grid container spacing={2}>{rooms.map(room => <Grid key={room.id} size={{ xs: 12, md: 6 }}>
+        <LocationCard location={room} actions={<Button variant="contained" sx={{ mt: 'auto', alignSelf: 'flex-start' }} onClick={() => setSelectedRoomId(room.id)}>Арендовать</Button>} />
+      </Grid>)}</Grid>
     </Stack>
     <Stack spacing={2}><Typography variant="h4" component="h2">Как добраться</Typography><Typography>{place.address}</Typography>
       {Number.isFinite(Number(place.latitude)) && Number.isFinite(Number(place.longitude)) && <PlaceMap lat={Number(place.latitude)} lng={Number(place.longitude)} zoom={15} places={[place]} />}

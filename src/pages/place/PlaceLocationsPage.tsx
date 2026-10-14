@@ -43,7 +43,7 @@ export default function PlaceLocationsPage() {
           {error && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>{error.message}</Alert>}
           {locations?.length === 0 && <Typography>Залы пока не добавлены.</Typography>}
           {locations?.map(location => (
-            <Stack key={location.id}><LocationCard location={location} /><Button onClick={() => setEditing(location)}>Редактировать зал</Button></Stack>
+            <LocationCard key={location.id} location={location} actions={<Button sx={{ mt: 'auto', alignSelf: 'flex-start' }} onClick={() => setEditing(location)}>Редактировать зал</Button>} />
           ))}
         </Stack>
       </Stack>
