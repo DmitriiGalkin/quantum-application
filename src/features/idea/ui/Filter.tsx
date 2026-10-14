@@ -10,7 +10,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import type { FilterProps } from '../hooks/useFilters.ts';
 
-function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWhen, projects }: FilterProps & { withOutLocation?: boolean; withOutWhen?: boolean; projects?: boolean }) {
+function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWhen, projects, compactViews }: FilterProps & { withOutLocation?: boolean; withOutWhen?: boolean; projects?: boolean; compactViews?: boolean }) {
   const sortOptions = [
     ...(withOutLocation ? [] : [{ value: 'nearby', label: 'Поблизости' }]),
     { value: 'popular', label: 'Популярные' },
@@ -22,8 +22,8 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
   ];
   const viewOptions = [
     { value: 'module', icon: <ViewModuleIcon /> },
-    ...(withOutLocation ? [] : [{ value: 'map', icon: <MapIcon /> }]),
-    { value: 'group', icon: <LightbulbIcon /> },
+    ...(withOutLocation || compactViews ? [] : [{ value: 'map', icon: <MapIcon /> }]),
+    ...(compactViews ? [] : [{ value: 'group', icon: <LightbulbIcon /> }]),
     ...(projects ? [{ value: 'table', icon: <TableRowsIcon /> }] : []),
   ];
 
@@ -32,6 +32,7 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
       {(filters.view === 'module' || filters.view === 'table') && (
         <TextField
           select
+          label="Сортировка"
           size="small"
           value={filters.sort}
           onChange={e => setSort(e.target.value as Sort)}

@@ -5,6 +5,13 @@ import { render } from './ssr-application.tsx';
 
 afterEach(() => vi.unstubAllGlobals());
 describe('SSR metadata', () => {
+  it.each(['/', '/projects?q=wood'])('describes the project showcase at %s', async url => {
+    const result = await render(url);
+    expect(result.meta.title).toBe('Quantum — образовательные проекты для детей');
+  });
+  it('describes the idea library at its new URL', async () => {
+    expect((await render('/ideas?view=module')).meta.title).toBe('Quantum — библиотека идей');
+  });
   it('loads public centre metadata through the place API', async () => {
     const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ title: 'School', description: 'Bio', ogImage: 'https://example.com/logo.png' }), { status: 200 }));
     vi.stubGlobal('fetch', fetch);

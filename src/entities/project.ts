@@ -32,6 +32,8 @@ export interface Project {
 }
 
 export interface GetProjectsQuery {
+  q?: string;
+  upcomingOnly?: boolean | 'true' | 'false';
   userId?: string | number;
   ideaId?: number;
   placeId?: number;

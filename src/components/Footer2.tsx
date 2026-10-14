@@ -9,6 +9,8 @@ const sections = [
   {
     title: 'Платформа',
     links: [
+      { label: 'Проекты', href: '/' },
+      { label: 'Библиотека идей', href: '/ideas' },
       { label: 'Родителям', href: '/landing/parent' },
       { label: 'Учителям', href: '/landing/teacher' },
       { label: 'Центрам', href: '/landing/place' },
@@ -62,7 +64,7 @@ export function Footer() {
                   mt: 1,
                 }}
               >
-                Образовательная платформа для создания и реализации проектов.
+                Образовательные проекты для детей: выберите интересное дело и присоединяйтесь к встречам.
               </Typography>
             </Box>
 

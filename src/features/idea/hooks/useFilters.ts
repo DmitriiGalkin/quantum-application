@@ -8,11 +8,12 @@ export interface FilterProps {
   setWhen: (when?: When) => void;
 }
 
-export function useFilters(options: { projects?: boolean; defaultView?: View } = {}): FilterProps {
+export function useFilters(options: { projects?: boolean; defaultView?: View; compactViews?: boolean } = {}): FilterProps {
   const [params, setParams] = useSearchParams();
   const sort = params.get('sort');
   const when = params.get('when');
-  const view = params.get('view');
+  const requestedView = params.get('view');
+  const view = options.compactViews && requestedView !== 'table' ? 'module' : requestedView;
   const filters = {
     view: (view === 'module' || view === 'map' || view === 'group' || (options.projects && view === 'table')
       ? view : options.projects ? options.defaultView ?? 'module' : 'module') as View,

@@ -126,7 +126,7 @@ class ProjectRepository {
     }
 
     // 📅 FILTER: when (через meet)
-    if (params.when) {
+    if (params.when && !params.upcomingOnly) {
       switch (params.when) {
         case 'today':
           sql += `
@@ -154,6 +154,10 @@ class ProjectRepository {
       }
     }
 
+    for (const word of (params.q ?? '').trim().split(/\s+/).filter(Boolean)) {
+      sql += ' AND (LOCATE(LOWER(?), LOWER(project.title)) > 0 OR LOCATE(LOWER(?), LOWER(COALESCE(project.description, \'\'))) > 0)';
+      values.push(word, word);
+    }
     sql += params.deleted === 'true' ? ' AND project.deletedAt IS NOT NULL' : ' AND project.deletedAt IS NULL';
 
     // 📍 FILTER + SORT: nearby

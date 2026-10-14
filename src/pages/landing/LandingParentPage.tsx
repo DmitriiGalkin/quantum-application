@@ -13,73 +13,49 @@ import Typography from '@mui/material/Typography';
 import Hero from 'components/Hero.tsx';
 import { FeatureCard } from 'components/FeatureCard.tsx';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../providers/auth-context.ts';
-import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
-import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
 
-const CREATE_TEACHER_TYPE = 'create-teacher';
 
 export function LandingParentPage() {
 
   const navigate = useNavigate();
-  const { authHandler, passport } = useAuth();
-  const { setAction } = usePostAuthAction();
-
-  const onCreate = () => {
-    if (!passport) {
-      setAction({
-        type: CREATE_TEACHER_TYPE,
-        payload: { ideaId: 1 },
-      });
-
-      return authHandler();
-    }
-
-    navigate('/teacher/projects/create');
-  };
-
-  useRunPostAuthAction(passport, action => {
-    if (action.type === CREATE_TEACHER_TYPE) {
-      navigate('/teacher/projects/create');
-    }
-  });
+  const onCreate = () => navigate("/");
 
   return (
     <>
       <Hero chip={<Chip label="Для родителей" color="primary" />}>
         <Typography variant="h2" sx={{ mt: 3, fontWeight: 700 }}>
-          Притвори идею ребенка в жизнь!
+          Найдите интересный проект для ребёнка
         </Typography>
 
         <Typography variant="h6" color="text.secondary" sx={{ mt: 2, maxWidth: 720, mx: 'auto' }}>
-          Создавайте уникальные идеи детских проектов, присоединяйтесь к удивительным проектам единомышленников, участвуйте в живых встречах и
-          развивайте навыки Вашего ребенка.
+          Выберите образовательный проект, познакомьтесь с преподавателем и запишитесь на встречу.
+          Расписание, место и стоимость помогут выбрать подходящий вариант.
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 5, justifyContent: 'center' }}>
           <Button variant="contained" size="large" onClick={onCreate}>
-            Создать идею
+            Выбрать проект
           </Button>
 
-          <Button variant="outlined" size="large">
+          <Button variant="outlined" size="large" href="#how-it-works">
             Подробнее
           </Button>
         </Stack>
       </Hero>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container id="how-it-works" maxWidth="lg" sx={{ py: 8 }}>
         <Stack spacing={10}>
           <Grid container spacing={4}>
             {[
               {
                 icon: <TipsAndUpdatesIcon color="primary" sx={{ fontSize: 42 }} />,
-                title: 'Уникальные идеи проектов',
-                description: 'Создавайте с детьми проекты на основе их интересов и присоединяйтесь к проектам.',
+                title: 'Проекты по интересам',
+                description: 'Посмотрите, что ребёнок сможет сделать и чему научиться на встречах проекта.',
               },
               {
                 icon: <GroupsIcon color="primary" sx={{ fontSize: 42 }} />,
                 title: 'Единомышленники',
-                description: 'Детская проектная дейтельность под руководством подобранных наставников.',
+                description: 'Совместная работа над проектом под руководством преподавателя.',
               },
               {
                 icon: <EventAvailableIcon color="primary" sx={{ fontSize: 42 }} />,
@@ -107,12 +83,9 @@ export function LandingParentPage() {
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 5, justifyContent: 'center' }}>
                 <Button variant="contained" size="large" sx={{ mt: 4 }} onClick={onCreate}>
-                  Создать идею проекта
+                  Выбрать проект
                 </Button>
 
-                <Button variant="outlined" size="large">
-                  Присоединиться к существующим
-                </Button>
               </Stack>
             </CardContent>
           </Card>

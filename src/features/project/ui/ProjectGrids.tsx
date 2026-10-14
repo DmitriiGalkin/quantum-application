@@ -1,14 +1,16 @@
 import Box from '@mui/material/Box';
 import { type ProjectDto } from 'entities';
 import ProjectCard from './ProjectCard.tsx'; // Добавлен импорт
+import ProjectShowcaseCard from './ProjectShowcaseCard.tsx';
 
 type Props = {
   projects: ProjectDto[];
+  catalog?: boolean;
   withoutIdea?: boolean;
   refetch?: () => void;
 };
 
-function ProjectGrids({ projects, refetch, withoutIdea }: Props) {
+function ProjectGrids({ projects, refetch, withoutIdea, catalog }: Props) {
   return (
     <Box
       sx={{
@@ -23,7 +25,7 @@ function ProjectGrids({ projects, refetch, withoutIdea }: Props) {
       }}
     >
       {projects.map(project => (
-        <ProjectCard key={project.id} project={project} refetch={refetch} withoutIdea={withoutIdea} />
+        catalog ? <ProjectShowcaseCard key={project.id} project={project} /> : <ProjectCard key={project.id} project={project} refetch={refetch} withoutIdea={withoutIdea} />
       ))}
     </Box>
   );

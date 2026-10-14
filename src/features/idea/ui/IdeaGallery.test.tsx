@@ -6,7 +6,7 @@ import { expect, it } from 'vitest';
 import type { IdeaDto } from '../../../entities/idea.ts';
 import IdeaGallery from './IdeaGallery.tsx';
 
-it('shows a generated cover with its label and retains all eight original thumbnails', async () => {
+it('shows a generated cover and retains all eight original thumbnails', async () => {
   const originals = Array.from({ length: 8 }, (_, i) => ({ id: `original-${i}`, fileName: `${i}.jpg`, url: `https://example.com/${i}.jpg`, isCover: false }));
   const cover = { id: 'generated', fileName: 'cover.png', url: 'https://example.com/cover.png', isCover: true, origin: 'generated' };
   const idea = { id: 54, title: 'Robot', image: cover.url, photos: [cover, ...originals], user: null, today: false } as IdeaDto;
@@ -14,7 +14,6 @@ it('shows a generated cover with its label and retains all eight original thumbn
   host.innerHTML = renderToString(<IdeaGallery idea={idea} />);
   expect(host.querySelectorAll('button[aria-pressed]')).toHaveLength(9);
   expect(host.querySelector('button img')?.getAttribute('src')).toBe(cover.url);
-  expect(host.textContent).toContain('Иллюстрация создана с помощью ИИ');
 });
 
 it('hydrates all eight imported photos and supports thumbnails, full view and keyboard navigation', async () => {

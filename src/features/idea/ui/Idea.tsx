@@ -113,7 +113,7 @@ function Idea({ idea }: { idea: IdeaDto }) {
   };
 
   return (
-    <Card sx={{ mb: 3, borderRadius: 3, display: 'grid', gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) minmax(0, 1fr)' }, '& > *': { minWidth: 0 } }}>
+    <Card sx={{ mb: 3, borderRadius: 3, display: 'grid', gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) minmax(0, 2fr)' }, '& > *': { minWidth: 0 } }}>
       <Box sx={{ position: 'relative', width: '100%' }}>
         <IdeaGallery key={idea.id} idea={idea} />
         {/* Блок с кнопкой генерации */}

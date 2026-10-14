@@ -23,15 +23,18 @@ export default function Footer() {
               Quantum
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              "Найти и создать детский проект за 10 минут"
+              Образовательные проекты для детей: выберите интересное дело и присоединяйтесь к встречам.
             </Typography>
           </Grid>
 
           {/* Column 2 */}
-          <Grid size={{ xs: 3, sm: 2 }}>
+          <Grid size={{ xs: 6, sm: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
               Платформа
             </Typography>
+            <Link href="/ideas" underline="hover" sx={{ display: 'block' }}>
+              <Typography>Библиотека идей</Typography>
+            </Link>
             <Link href="/landing/parent" underline="hover" sx={{ display: 'block' }}>
               <Typography>Родителям</Typography>
             </Link>
@@ -44,7 +47,7 @@ export default function Footer() {
           </Grid>
 
           {/* Column 3 */}
-          <Grid size={{ xs: 3, sm: 2 }}>
+          <Grid size={{ xs: 6, sm: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
               Компания
             </Typography>

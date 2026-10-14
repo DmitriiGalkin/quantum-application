@@ -15,6 +15,7 @@ import { HttpError } from '../utils/http-error.js';
 import { db } from '../utils/dbNext.js';
 import { requireId } from '../utils/validation.js';
 import PlaceLocationRepository from '../repositories/place-location.repository.js';
+import { selectShowcaseProjects } from './project-showcase.js';
 
 export class ProjectService {
   private static async validateLocation(placeId: number, value: unknown): Promise<number | null> {
@@ -71,6 +72,10 @@ export class ProjectService {
   }
 
   static async findAll(params: GetProjectsQuery): Promise<ProjectDto[]> {
+    if (params.q !== undefined && (typeof params.q !== 'string' || params.q.length > 200)) {
+      throw new HttpError('Поисковый запрос должен быть строкой до 200 символов', 400);
+    }
+    params = { ...params, upcomingOnly: params.upcomingOnly === true || params.upcomingOnly === 'true' };
     const projects = await ProjectRepository.findAll(params);
     const [ideas, users, passports, places, meetRows, locations] = await Promise.all([
       IdeaService.findByIds(projects.flatMap(project => project.ideaId ? [project.ideaId] : [])),
@@ -91,7 +96,7 @@ export class ProjectService {
       group.push(meet);
       meetsByProject.set(meet.projectId, group);
     }
-    return projects.map(project => {
+    return selectShowcaseProjects(projects.map(project => {
       const passport = passportById.get(project.passportId);
       const place = placeById.get(project.placeId);
       if (!passport || !place) throw new HttpError('Не найдены связанные данные проекта', 500);
@@ -103,7 +108,7 @@ export class ProjectService {
         idea: project.ideaId ? ideaById.get(project.ideaId) ?? null : null,
         users: users.get(project.id) ?? [], passport, place, meets: meetsByProject.get(project.id) ?? [],
       };
-    });
+    }), params);
   }
 
   static async findById(projectId: number, viewer?: Viewer): Promise<ProjectDto> {

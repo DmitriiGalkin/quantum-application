@@ -13,7 +13,7 @@ function GalleryImage({ url, title, full = false }: { url: string; title: string
   const [failed, setFailed] = useState(false);
   return failed ? <Box role="img" aria-label={title} sx={{ p: 4 }}>Не удалось загрузить фотографию</Box>
     : <Box component="img" src={url} alt={title} onError={() => setFailed(true)}
-      sx={{ width: '100%', height: full ? '70vh' : { xs: 280, sm: 360 }, objectFit: 'contain', display: 'block' }} />;
+      sx={{ width: '100%', height: full ? '70vh' : 'auto', objectFit: 'contain', display: 'block' }} />;
 }
 
 export default function IdeaGallery({ idea }: { idea: IdeaDto }) {
@@ -27,10 +27,9 @@ export default function IdeaGallery({ idea }: { idea: IdeaDto }) {
   const step = (direction: number) => setSelectedId(photos[(index + direction + photos.length) % photos.length].id);
   return <>
     <Box component="button" type="button" aria-label="Открыть фотографию" onClick={() => setOpen(true)}
-      sx={{ width: '100%', border: 0, p: 0, bgcolor: 'background.default', cursor: 'zoom-in' }}>
+      sx={{ display: 'block', width: '100%', border: 0, p: 0, bgcolor: 'background.default', cursor: 'zoom-in' }}>
       <GalleryImage key={url} url={url} title={title} />
     </Box>
-    {active?.origin === 'generated' && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', px: 1 }}>Иллюстрация создана с помощью ИИ по фотографиям изделия</Typography>}
     {photos.length > 1 && <Stack direction="row" spacing={1} sx={{ overflowX: 'auto', p: 1 }}>
       {photos.map((photo, i) => <Box key={photo.id} component="button" type="button" aria-label={`Фотография ${i + 1}`}
         aria-pressed={photo.id === active?.id} onClick={() => setSelectedId(photo.id)}
@@ -45,9 +44,7 @@ export default function IdeaGallery({ idea }: { idea: IdeaDto }) {
           event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1);
         }
       }}>
-      <DialogContent><GalleryImage key={url} url={url} title={title} full />
-        {active?.origin === 'generated' && <Typography variant="caption">Иллюстрация создана с помощью ИИ по фотографиям изделия</Typography>}
-      </DialogContent>
+      <DialogContent><GalleryImage key={url} url={url} title={title} full /></DialogContent>
       <DialogActions>
         {photos.length > 1 && <Button onClick={() => step(-1)}>Назад</Button>}
         <Typography>{index + 1} / {Math.max(1, photos.length)}</Typography>

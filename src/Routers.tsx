@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import { AppLayout } from './components/AppLayout.tsx';
 
 import NotFound from './components/NotFound.tsx';
+import ProjectsRedirect from './pages/ProjectsRedirect.tsx';
 
 const IdeasPage = lazy(() => import('./pages/IdeasPage.tsx'));
 const IdeaPage = lazy(() => import('./pages/IdeaPage.tsx'));
@@ -43,14 +44,16 @@ function Routers() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
-        <Route index element={<IdeasPage />} />
+        <Route index element={<ProjectsPage />} />
+        <Route path="ideas" element={<IdeasPage />} />
         <Route path="users/:id" element={<div>UserPage</div>} />
         <Route path="idea/:id" element={<IdeaPage />} />
-        <Route path="projects" element={<ProjectsPage />} />
+        <Route path="projects" element={<ProjectsRedirect />} />
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="teachers/:id" element={<TeachersPage />} />
         <Route path="places/:id" element={<PlacesPage />} />
         <Route path="chats" element={<ChatPage />} />
+        <Route path="chats/:id" element={<ChatPage />} />
 
         <Route path="user">
           <Route index element={<UserHomePage />} />

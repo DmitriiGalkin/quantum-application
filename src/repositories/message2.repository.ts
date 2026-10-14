@@ -3,6 +3,14 @@ import type { Message, Message2Row, UpdateMessageRequest } from 'entities';
 import { db } from '../utils/dbNext.js';
 
 class Message2Repository {
+  static async latestByConversations(ids: number[]): Promise<Message[]> {
+    if (!ids.length) return [];
+    return db.query<Message>(`SELECT id, conversationId, senderPassportId, text, createdAt, updatedAt FROM (
+      SELECT id, conversationId, senderPassportId, text, createdAt, updatedAt,
+        ROW_NUMBER() OVER (PARTITION BY conversationId ORDER BY createdAt DESC, id DESC) AS position
+      FROM message2 WHERE conversationId IN (?) AND deletedAt IS NULL
+    ) ranked WHERE position = 1`, [ids]);
+  }
   static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
     const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM message2 FOR UPDATE');
     return rows;
@@ -23,6 +31,7 @@ class Message2Repository {
     return {
       id: result.insertId,
       conversationId,
+      senderPassportId,
       text,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -58,7 +67,7 @@ class Message2Repository {
        FROM message2 
        WHERE conversationId = ? 
          AND deletedAt IS NULL
-       ORDER BY createdAt`,
+       ORDER BY createdAt, id`,
       [conversationId],
     );
   }

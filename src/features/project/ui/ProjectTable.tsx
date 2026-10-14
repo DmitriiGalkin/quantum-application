@@ -6,11 +6,13 @@ import { Link } from 'react-router-dom';
 import type { ProjectDto } from 'entities';
 import AvatarGroupUsers from '../../../components/AvatarGroupUsers.tsx';
 import { formatMoscowMeet, upcomingPublishedMeets } from './project-card-meeting.ts';
+import { meetingPrice } from './meeting-price.ts';
 
-export default function ProjectTable({ projects }: { projects: ProjectDto[] }) {
+export default function ProjectTable({ projects, catalog }: { projects: ProjectDto[]; catalog?: boolean }) {
   return <Stack spacing={1} aria-label="Таблица проектов">
     {projects.map(project => {
       const meet = upcomingPublishedMeets(project.meets)[0];
+      const place = catalog && meet ? meet.place : project.place;
       return <Box key={project.id} component="article" sx={{
         display: 'flex', border: 1, borderColor: 'divider', borderRadius: 2, overflow: 'hidden',
         bgcolor: 'background.paper', overflowWrap: 'anywhere',
@@ -21,28 +23,28 @@ export default function ProjectTable({ projects }: { projects: ProjectDto[] }) {
         </Box>
         <Box sx={{
           flex: 1, minWidth: 0, display: 'grid',
-          gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: 'minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1.4fr) minmax(220px, 1fr)' },
+          gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: catalog ? 'minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1.4fr)' : 'minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1.4fr) minmax(220px, 1fr)' },
           alignItems: 'center', gap: 2, p: 2, '& > *': { minWidth: 0 },
         }}>
           <Box>
-            <Typography component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', fontWeight: 600 }}>{project.title}</Typography>
+            <Typography component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', fontWeight: 600, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{project.title}</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{project.description}</Typography>
           </Box>
           <Typography component={Link} to={`/teachers/${project.passport.id}`} variant="body2" sx={{ color: 'inherit' }}>{project.passport.title || 'Преподаватель'}</Typography>
           <Box>
-            <Typography component={Link} to={`/places/${project.place.id}`} variant="body2" sx={{ color: 'inherit' }}>{project.place.title || 'Центр'}</Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>{project.place.address}</Typography>
+            <Typography component={Link} to={`/places/${place.id}`} variant="body2" sx={{ color: 'inherit' }}>{place.title || 'Центр'}</Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>{place.address}</Typography>
           </Box>
           {meet ? <Box>
             <Typography component={Link} to={`/project/${project.id}#meet-${meet.id}`} variant="body2" sx={{ color: 'inherit' }}>{formatMoscowMeet(meet)}</Typography>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-              {meet.duration != null && `${meet.duration} минут`}{meet.duration != null && meet.price != null && ' · '}{meet.price != null && `${meet.price} ₽`}
+              {catalog ? meetingPrice(meet.price) : <>{meet.duration != null && `${meet.duration} минут`}{meet.duration != null && meet.price != null && ' · '}{meet.price != null && `${meet.price} ₽`}</>}
             </Typography>
           </Box> : <Typography variant="body2" color="text.secondary">Ближайшая встреча не назначена</Typography>}
-          <Box>
+          {!catalog && <Box>
             <Typography variant="caption" color="text.secondary">Участники проекта</Typography>
             {project.users.length ? <AvatarGroupUsers users={project.users} limit={10} /> : <Typography variant="body2" color="text.secondary">Пока нет участников</Typography>}
-          </Box>
+          </Box>}
         </Box>
       </Box>;
     })}

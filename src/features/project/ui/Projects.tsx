@@ -16,9 +16,11 @@ type Props = {
   refetch?: () => void;
   catalog?: boolean;
   preserveOrder?: boolean;
+  emptyText?: string;
+  withoutFilters?: boolean;
 };
 
-function Projects({ title, filter, projects, refetch, withoutIdea, catalog, preserveOrder }: Props) {
+function Projects({ title, filter, projects, refetch, withoutIdea, catalog, preserveOrder, emptyText, withoutFilters }: Props) {
   const sortedProjects = preserveOrder ? projects : [...projects].sort((a, b) => b.meets.length - a.meets.length);
 
   return (
@@ -27,18 +29,18 @@ function Projects({ title, filter, projects, refetch, withoutIdea, catalog, pres
         <Title text={title} />
 
         {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
-        {!(filter.filters.when === undefined && !projects.length) && (
-          <Filter projects withOutLocation={!catalog} withOutWhen={!catalog} filters={filter.filters} setView={filter.setView} setSort={filter.setSort} setWhen={filter.setWhen} />
+        {!withoutFilters && (catalog || !(filter.filters.when === undefined && !projects.length)) && (
+          <Filter projects compactViews={catalog} withOutLocation={!catalog} withOutWhen={!catalog} filters={filter.filters} setView={filter.setView} setSort={filter.setSort} setWhen={filter.setWhen} />
         )}
       </Stack>
 
       {filter.filters.view === 'map' && <div>Карта</div>}
 
-      {filter.filters.view === 'module' && !!projects.length && <ProjectGrids projects={sortedProjects} refetch={refetch} />}
+      {filter.filters.view === 'module' && !!projects.length && <ProjectGrids catalog={catalog} projects={sortedProjects} refetch={refetch} />}
 
       {filter.filters.view === 'group' && <ProjectGroups projects={sortedProjects} refetch={refetch} withoutIdea={withoutIdea} />}
-      {filter.filters.view === 'table' && <ProjectTable projects={sortedProjects} />}
-      {!projects.length && <Typography color="text.secondary">Проектов пока нет.</Typography>}
+      {filter.filters.view === 'table' && <ProjectTable catalog={catalog} projects={sortedProjects} />}
+      {!projects.length && <Typography color="text.secondary">{emptyText ?? 'Проектов пока нет.'}</Typography>}
     </Stack>
   );
 }

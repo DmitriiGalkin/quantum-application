@@ -16,6 +16,7 @@ export interface Message2Row extends RowDataPacket {
 }
 
 export interface Message {
+  senderPassportId: number;
   id: number;
   text: string;
   createdAt: Date;

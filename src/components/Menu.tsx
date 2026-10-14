@@ -179,7 +179,14 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
     ],
   };
 
-  const menuSections = MENU[role];
+  const menuSections: MenuSection[] = [
+    { title: 'Платформа', items: [
+      { label: 'Проекты', to: '/', icon: <WorkIcon /> },
+      { label: 'О платформе', to: '/about', icon: <DomainIcon /> },
+    ] },
+    ...(role === 'guest' ? [] : MENU[role].map((section, index) => ({ ...section, title: index === 0 ? 'Мой кабинет' : section.title }))),
+    ...(role === 'teacher' ? [{ title: 'Вдохновение', items: [{ label: 'Библиотека идей', to: '/ideas', icon: <LightbulbIcon /> }] }] : []),
+  ];
 
   return (
     <Stack sx={{ width: 250, height: '100%' }}>
@@ -190,7 +197,7 @@ function Menu({ setIsMenuOpen }: { setIsMenuOpen: (isOpen: boolean) => void }) {
       <List>
         {menuSections.map((section, sectionIndex) => (
           <Box key={sectionIndex}>
-            {sectionIndex > 0 && (
+            {section.title && (
               <Divider sx={{ my: 1 }}>
                 <Typography variant="caption" color="textDisabled">
                   {section.title}

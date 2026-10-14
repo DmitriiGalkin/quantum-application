@@ -1,5 +1,6 @@
 import type { RowDataPacket } from 'mysql2/promise';
 import type { Message } from './message.js';
+import type { PassportDto } from './passport.js';
 
 export interface ConversationRow extends RowDataPacket {
   id: number;
@@ -13,6 +14,8 @@ export interface ConversationRow extends RowDataPacket {
 }
 
 export interface Conversation {
+  counterpart?: PassportDto | null;
+  lastMessage?: Message | null;
   id: number;
   passportId: number;
   createdAt: string;

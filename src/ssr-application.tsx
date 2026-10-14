@@ -13,26 +13,33 @@ const FRONTEND_SERVER = import.meta.env.FRONTEND_SERVER ?? 'http://localhost:400
 
 async function getMetaByUrl(url: string): Promise<PageMeta> {
   url = new URL(url, 'http://localhost').pathname;
-  if (url === '/') {
+  if (url === '/' || url === '/projects') {
     return {
-      title: 'Quantum Evolution',
-      description: 'Помогаем педагогам и детям находить друг друга, создавать интересные проекты, подбирать места для проведения встреч',
-      ogTitle: 'Интересные проекты и идеи для детей рядом',
-      ogDescription: 'Помогаем педагогам и детям находить друг друга, создавать интересные проекты, подбирать места для проведения встреч',
+      title: 'Quantum — образовательные проекты для детей',
+      description: 'Выберите проект для ребёнка: преподаватели, места, ближайшие встречи и стоимость участия.',
+      ogTitle: 'Образовательные проекты для детей',
+      ogDescription: 'Выберите проект для ребёнка: преподаватели, места, ближайшие встречи и стоимость участия.',
       ogImage: `${FRONTEND_SERVER}/forIndex.png`,
       ogType: 'article',
       ogSiteName: 'Quantum',
     };
   }
 
-  if (url === '/idea') {
+  if (url === '/ideas') {
+    return {
+      title: 'Quantum — библиотека идей', description: 'Идеи образовательных проектов для детей и преподавателей.',
+      ogTitle: 'Библиотека идей', ogDescription: 'Вдохновение для новых образовательных проектов.',
+      ogType: 'website', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/forIndex.png`,
+    };
+  }
+  if (url === '/landing/parent') {
     return {
       title: 'Quantum | Для родителей',
       description:
-        'Помогаем родителям подобрать для ребенка интересный проект: секцию, кружок, мастер класс или предложить идею нового уникального проекта',
-      ogTitle: 'Реализовать идею проекта ребенка',
+        'Выберите образовательный проект для ребёнка и запишитесь на встречу с преподавателем.',
+      ogTitle: 'Найдите интересный проект для ребёнка',
       ogDescription:
-        'Помогаем родителям подобрать для ребенка интересный проект: секцию, кружок, мастер класс или предложить идею нового уникального проекта',
+        'Выберите образовательный проект для ребёнка и запишитесь на встречу с преподавателем.',
       ogImage: `${FRONTEND_SERVER}/forParent.png`,
       ogType: 'article',
       ogSiteName: 'Quantum | Для родителей',

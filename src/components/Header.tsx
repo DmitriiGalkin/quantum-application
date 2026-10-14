@@ -9,6 +9,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import KeyIcon from '@mui/icons-material/Key';
 import { useAuth } from 'providers/auth-context.ts';
 import MenuIcon from '@mui/icons-material/Menu';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutlined';
+import Button from '@mui/material/Button';
 import SchoolIcon from '@mui/icons-material/School';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -17,7 +19,6 @@ import Drawer from '@mui/material/Drawer';
 import MenuLeft from './Menu.tsx';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import Fade from '@mui/material/Fade';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
@@ -27,7 +28,7 @@ import type { ActiveRole } from 'entities';
 function Header() {
   const navigate = useNavigate();
 
-  const { passport, authHandler, isPending, logout, switchPlace, role, userId, placeId, switchUser, switchTeacher } = useAuth();
+  const { passport, authHandler, logout, switchPlace, role, userId, placeId, switchUser, switchTeacher } = useAuth();
   const [isMenu2Open, setIsMenu2Open] = useState(false);
   const [accountMenuAnchor, setAccountMenuAnchor] = useState<null | HTMLElement>(null);
   const isAccountMenuOpen = Boolean(accountMenuAnchor);
@@ -48,6 +49,8 @@ function Header() {
         return <SchoolIcon/>;
       case 'place':
         return <BusinessIcon/>;
+      default:
+        return <PersonIcon />;
     }
   };
 
@@ -65,12 +68,12 @@ function Header() {
           WebkitBackdropFilter: 'blur(10px)',
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ px: { xs: 1, sm: 2 }, gap: { xs: 0.25, sm: 1 } }}>
           <IconButton
             size="large"
             edge="start"
-            aria-label="menu"
-            sx={{ mr: 2, color: 'white' }}
+            aria-label="Открыть меню"
+            sx={{ color: 'white', flexShrink: 0 }}
             onClick={() => setIsMenu2Open(currentValue => !currentValue)}
           >
             <MenuIcon />
@@ -81,14 +84,18 @@ function Header() {
               variant="h6"
               component="div"
               sx={{
-                color: 'white',
+                color: 'white', fontSize: { xs: 16, sm: 20 }, whiteSpace: 'nowrap',
               }}
             >
-              Quantum 2
+              Quantum
             </Typography>
           </Link>
+          <Button component={Link} to="/" sx={{ color: 'white', minWidth: 0, px: 1 }}>Проекты</Button>
+          <IconButton aria-label="Сообщения" title="Сообщения" sx={{ color: 'white' }}
+            onClick={() => passport ? navigate('/chats') : authHandler('/chats')}>
+            <ChatBubbleOutlineIcon />
+          </IconButton>
 
-          <Fade in={!isPending || !passport} timeout={1000}>
             {passport ? (
               <>
                 <IconButton
@@ -133,6 +140,11 @@ function Header() {
                   </MenuItem>
 
                   <Divider />
+
+                  {role !== 'guest' && <MenuItem onClick={() => {
+                    handleAccountMenuClose();
+                    navigate(`/${role}`);
+                  }}>Мой кабинет</MenuItem>}
 
                   {/* Ребёнок */}
                   {passport.users?.map(user => (
@@ -212,7 +224,6 @@ function Header() {
                 <KeyIcon />
               </IconButton>
             )}
-          </Fade>
         </Toolbar>
       </AppBar>
 

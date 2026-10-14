@@ -39,7 +39,23 @@ export class ConversationService {
   static async getConversationList(passportId: number): Promise<Conversation[]> {
     const members = await ConversationPassportRepository.findByPassportIds([passportId]);
     const rows = await ConversationRepository.findByIds(members.map(member => member.conversationId));
-    return rows.map(row => mapConversationRow(row, passportId));
+    const ids = rows.map(row => row.id);
+    const [participants, messages] = await Promise.all([
+      ConversationPassportRepository.findByConversationIds(ids),
+      Message2Repository.latestByConversations(ids),
+    ]);
+    const passports = await PassportRepository.findByIds(participants.filter(member => member.passportId !== passportId).map(member => member.passportId));
+    const passportById = new Map(passports.map(passport => [passport.id, passport]));
+    const messageByConversation = new Map(messages.map(message => [message.conversationId, message]));
+    return rows.map(row => {
+      const member = participants.find(member => member.conversationId === row.id && member.passportId !== passportId);
+      const other = member ? passportById.get(member.passportId) : undefined;
+      return {
+        ...mapConversationRow(row, passportId),
+        counterpart: other ? { id: other.id, title: other.title, image: other.image, description: other.description } : null,
+        lastMessage: messageByConversation.get(row.id) ?? null,
+      };
+    }).sort((a, b) => new Date(b.lastMessage?.createdAt ?? b.createdAt).getTime() - new Date(a.lastMessage?.createdAt ?? a.createdAt).getTime() || b.id - a.id);
   }
 
   static async getConversationHistory(id: number, passportId: number): Promise<ConversationHistory | null> {
@@ -47,6 +63,12 @@ export class ConversationService {
     if (!row) return null;
     await this.requireParticipant(id, passportId);
     const messages = await Message2Repository.getByConversation(id);
-    return { conversation: mapConversationRow(row, passportId), messages };
+    const participants = await ConversationPassportRepository.findPassports(id);
+    const member = participants.find(member => member.passportId !== passportId);
+    const other = member ? await PassportRepository.findById(member.passportId) : null;
+    return { conversation: {
+      ...mapConversationRow(row, passportId),
+      counterpart: other ? { id: other.id, title: other.title, image: other.image, description: other.description } : null,
+    }, messages };
   }
 }

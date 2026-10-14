@@ -3,6 +3,10 @@ import { db } from '../utils/dbNext.js';
 import type { ConversationPassportRow } from 'entities';
 
 class ConversationPassportRepository {
+  static async findByConversationIds(ids: number[]): Promise<ConversationPassportRow[]> {
+    if (!ids.length) return [];
+    return db.query<ConversationPassportRow>('SELECT * FROM conversationPassport WHERE conversationId IN (?)', [ids]);
+  }
   static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
     const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM conversationPassport FOR UPDATE');
     return rows;

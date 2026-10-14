@@ -1,0 +1,50 @@
+import { useState } from 'react';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '../providers/auth-context.ts';
+import { fetchConversation, fetchCreateMessage } from '../requests.ts';
+
+export default function ConversationPanel({ conversationId }: { conversationId: number }) {
+  const { passport } = useAuth();
+  const [text, setText] = useState('');
+  const client = useQueryClient();
+  const key = ['messages', passport?.id, conversationId];
+  const history = useQuery({ queryKey: key, queryFn: () => fetchConversation(conversationId), enabled: !!passport,
+    refetchInterval: 10000, retry: false });
+  const send = useMutation({
+    mutationFn: (content: string) => fetchCreateMessage(conversationId, content),
+    onSuccess: () => {
+      setText('');
+      void client.invalidateQueries({ queryKey: key });
+      void client.invalidateQueries({ queryKey: ['conversations', passport?.id] });
+    },
+  });
+  if (!passport) return null;
+  if (history.isPending) return <Typography>Загрузка сообщений…</Typography>;
+  if (history.isError) return <Alert severity="error" action={<Button onClick={() => void history.refetch()}>Повторить</Button>}>Диалог недоступен или не удалось загрузить сообщения.</Alert>;
+  return <Stack spacing={2} sx={{ minWidth: 0 }}>
+    <Typography component="h2" variant="h6">{history.data.conversation.counterpart?.title || 'Диалог'}</Typography>
+    <Stack component="ol" spacing={1} sx={{ listStyle: 'none', m: 0, p: 1, maxHeight: '50dvh', overflowY: 'auto' }} aria-label="Сообщения диалога">
+      {history.data.messages.map(message => <Box component="li" key={message.id} sx={{
+        alignSelf: message.senderPassportId === passport.id ? 'flex-end' : 'flex-start',
+        maxWidth: '90%', bgcolor: 'action.hover', borderRadius: 2, p: 1.5, overflowWrap: 'anywhere',
+      }}>
+        <Typography variant="caption">{message.senderPassportId === passport.id ? 'Вы' : history.data.conversation.counterpart?.title || 'Собеседник'}</Typography>
+        <Typography sx={{ whiteSpace: 'pre-wrap' }}>{message.text}</Typography>
+        <Typography variant="caption" color="text.secondary">{new Date(message.createdAt).toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })} МСК</Typography>
+      </Box>)}
+    </Stack>
+    {!history.data.messages.length && <Typography color="text.secondary">Сообщений пока нет. Напишите первым.</Typography>}
+    <Box component="form" onSubmit={event => { event.preventDefault(); if (text.trim() && !send.isPending) send.mutate(text.trim()); }}
+      sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
+      <TextField fullWidth multiline maxRows={5} label="Сообщение" value={text} disabled={send.isPending} onChange={event => setText(event.target.value)} />
+      <Button type="submit" variant="contained" disabled={send.isPending || !text.trim()}>Отправить</Button>
+    </Box>
+    {send.isError && <Alert severity="error">Не удалось отправить сообщение. Текст сохранён — попробуйте ещё раз.</Alert>}
+  </Stack>;
+}
