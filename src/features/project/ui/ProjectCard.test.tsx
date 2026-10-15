@@ -13,6 +13,26 @@ vi.mock('../../../components/ChatDialog.tsx', () => ({ default: ({ open, teacher
 import { fetchCreateProjectUser } from '../../../requests.ts';
 import ProjectCard from './ProjectCard.tsx';
 
+it('keeps project exit on details and removes it from listing cards', async () => {
+  Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
+  const project = { id: 10, title: 'Project', description: '', image: null,
+    passport: { id: 42, title: 'Teacher', description: null }, place: { id: 3, title: 'Center', address: 'Full address', description: null, latitude: 0, longitude: 0, priceFrom: null },
+    meets: [], users: [{ id: 7, title: 'Child', age: null, image: null }], idea: null } satisfies ProjectDto;
+  const client = new QueryClient(); const host = globalThis.document.createElement('div'); globalThis.document.body.append(host);
+  const root = createRoot(host);
+  const render = (detailed: boolean) => <QueryClientProvider client={client}><MemoryRouter><ProjectCard project={project} detailed={detailed} /></MemoryRouter></QueryClientProvider>;
+  try {
+    await act(async () => root.render(render(false)));
+    expect(host.querySelector('button[aria-haspopup="menu"]')).toBeNull();
+    await act(async () => root.render(render(true)));
+    const menu = host.querySelector<HTMLButtonElement>('button[aria-haspopup="menu"]');
+    expect(menu).not.toBeNull();
+    await act(async () => menu!.click());
+    expect(globalThis.document.body.textContent).toContain('Выйти из проекта');
+    expect(host.querySelector('[aria-label^="Полный адрес"]')).toBeNull();
+  } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
+});
+
 function Location() { return <output>{useLocation().pathname}</output>; }
 it.each([null, { id: 5, title: 'мастерская' }])('hydrates a card with hall %j; join does not navigate, picture does', async location => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });

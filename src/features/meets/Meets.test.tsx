@@ -30,7 +30,7 @@ it.each([false, true])('shows every future group and hydrates on mobile=%s; cale
   try {
     await act(async () => {});
     expect(errors).toEqual([]);
-    expect([...host.querySelectorAll('section')].map(section => section.textContent)).toEqual(['12 октября 2026 г.120:pending', '19 октября 2026 г.121:published']);
+    expect([...host.querySelectorAll('section')].map(section => section.textContent)).toEqual(['12 октября120:pending', '19 октября121:published']);
     await click('Недельный календарь'); await click('Следующая неделя');
     const next = moscowDay('2026-10-12T13:00:00Z');
     expect(host.querySelector('output')?.textContent).toBe((mobile ? [next] : Array.from({ length: 7 }, (_, i) => next + i * DAY_MS)).join(','));

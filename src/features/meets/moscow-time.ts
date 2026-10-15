@@ -1,4 +1,24 @@
 export const DAY_MS = 86400000;
+export function moscowYear(value: number | Date | string): string {
+  return moscowFormat(value, { year: 'numeric' });
+}
+/** Informational dates; input forms and documents retain their full dates. */
+export function informationDate(value: number | Date | string, options: Intl.DateTimeFormatOptions = {}, now = new Date(), forceYear = false): string {
+  return moscowFormat(value, { day: 'numeric', month: 'long', ...options,
+    year: forceYear || moscowYear(value) !== moscowYear(now) ? 'numeric' : undefined });
+}
+export function informationRange(start: number | Date | string, end: number | Date | string, now = new Date()): string {
+  const crossYear = moscowYear(start) !== moscowYear(end);
+  return `${informationDate(start, { month: 'short' }, now, crossYear)} — ${informationDate(end, { month: 'short' }, now, crossYear)}`;
+}
+export function informationDateTime(value: number | Date | string): string {
+  return `${informationDate(value)}, ${moscowFormat(value, { hour: '2-digit', minute: '2-digit' })}`;
+}
+export function informationDateTimeRange(start: number | Date | string, end: number | Date | string): string {
+  const crossYear = moscowYear(start) !== moscowYear(end);
+  const format = (value: number | Date | string) => `${informationDate(value, {}, new Date(), crossYear)}, ${moscowFormat(value, { hour: '2-digit', minute: '2-digit' })}`;
+  return `${format(start)} — ${format(end)}`;
+}
 export function moscowFormat(value: number | Date | string, options: Intl.DateTimeFormatOptions): string {
   return new Intl.DateTimeFormat('ru-RU', { ...options, timeZone: 'Europe/Moscow' }).format(new Date(value));
 }

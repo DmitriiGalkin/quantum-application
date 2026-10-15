@@ -1,6 +1,5 @@
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 //import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPassportProjects } from '../../requests.ts';
@@ -30,20 +29,14 @@ function TeacherProjectsPage() {
 
   return (
     <Box component="section">
-      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-        <Button variant="contained" onClick={() => setIsCreateProjectDialogOpen(true)}>
-          Создать проект
-        </Button>
-
-        <CreateProjectDialog open={isCreateProjectDialogOpen} onClose={() => setIsCreateProjectDialogOpen(false)} />
-      </Stack>
+      <CreateProjectDialog open={isCreateProjectDialogOpen} onClose={() => setIsCreateProjectDialogOpen(false)} />
 
       {isPending && <Typography role="status">Загрузка проектов…</Typography>}
       {isProjectsError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить проекты.</Alert>}
       <AISelectIdeaBanner />
-      {!isPending && !isProjectsError && !projects.length && <CreateProjectBlock onCreate={() => setIsCreateProjectDialogOpen(true)} />}
-
-      {!isPending && !isProjectsError && <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea />}
+      {!isPending && !isProjectsError && <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea
+        action={projects.length ? <Button variant="contained" sx={{ whiteSpace: 'nowrap' }} onClick={() => setIsCreateProjectDialogOpen(true)}>Создать проект</Button> : undefined}
+        emptyContent={<CreateProjectBlock onCreate={() => setIsCreateProjectDialogOpen(true)} />} />}
     </Box>
   );
 }

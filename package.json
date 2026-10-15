@@ -46,7 +46,9 @@
     "db:setup:wschool": "npm run build:demo-cli && node .cache/demo/cli/scripts/setup-wschool.js",
     "test:wschool:db": "npm run build:demo-cli && node .cache/demo/cli/scripts/test-wschool.js",
     "db:setup:wschool-rooms": "npm run build:demo-cli && node .cache/demo/cli/scripts/setup-wschool-rooms.js",
-    "test:wschool-rooms:db": "npm run build:demo-cli && node .cache/demo/cli/scripts/test-wschool-rooms.js"
+    "test:wschool-rooms:db": "npm run build:demo-cli && node .cache/demo/cli/scripts/test-wschool-rooms.js",
+    "db:import:wschool-schedule": "npm run build:demo-cli && node .cache/demo/cli/scripts/import-wschool-schedule.js",
+    "test:wschool-schedule:db": "npm run build:demo-cli && node .cache/demo/cli/scripts/test-wschool-schedule.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.312.0",

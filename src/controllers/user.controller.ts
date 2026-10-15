@@ -1,3 +1,5 @@
+import { StudentAccessService } from '../services/student-access.service.js';
+import type { StartConversationResponse } from 'entities';
 import { requireId } from '../utils/validation.js';
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { UserService } from '../services/user.service.js';
@@ -39,7 +41,14 @@ const findById: Controller<UserDto> = async (req, res) => {
   ok(res, user);
 };
 
+const parentConversation: ControllerWithAuth<StartConversationResponse> = async (req, res) => {
+  const result = await StudentAccessService.parentConversation(req.passport.id, requireId(req.params.id),
+    req.viewer?.role === 'place' ? requireId(req.viewer.placeId) : undefined);
+  ok(res, result);
+};
+
 export default {
+  parentConversation,
   create,
   update,
   delete: remove,

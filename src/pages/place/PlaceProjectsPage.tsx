@@ -9,7 +9,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 
 export default function PlaceProjectsPage() {
-  const filter = useFilters({ projects: true });
+  const filter = useFilters({ projects: true, compactViews: true });
   const { placeId } = useAuth();
 
   const { data: projects = [], refetch, isPending, isError } = useQuery({
@@ -23,7 +23,7 @@ export default function PlaceProjectsPage() {
 
   return (
     <Stack spacing={3}>
-      <Projects title="Проекты центра" filter={filter} projects={projects} refetch={refetch} withoutIdea emptyText="В центре пока нет проектов." />
+      <Projects title="Проекты центра" filter={filter} projects={projects} refetch={refetch} withoutIdea compactViews emptyText="В центре пока нет проектов." />
     </Stack>
   );
 }

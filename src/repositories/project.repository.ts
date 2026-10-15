@@ -4,6 +4,11 @@ import { toProject } from '../mappers/project.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class ProjectRepository {
+  static async findByIdeaIds(ids: number[]): Promise<Project[]> {
+    if (!ids.length) return [];
+    return (await db.query<ProjectRow>('SELECT * FROM project WHERE ideaId IN (?) AND deletedAt IS NULL', [[...new Set(ids)]])).map(toProject);
+  }
+
   static async hasProjects(passportId: number, conn?: PoolConnection): Promise<boolean> {
     const sql = 'SELECT id FROM project WHERE passportId = ? AND deletedAt IS NULL LIMIT 1';
     const rows = conn ? (await conn.query<RowDataPacket[]>(sql, [passportId]))[0] : await db.query(sql, [passportId]);

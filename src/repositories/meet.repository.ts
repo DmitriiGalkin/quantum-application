@@ -4,6 +4,13 @@ import { mapMeetWithProjectTitle, toMeet } from '../mappers/meet.mapper.js';
 import { db } from '../utils/dbNext.js';
 
 class MeetRepository {
+  static async findPublishedByPlaceId(placeId: number): Promise<Meet[]> {
+    return (await db.query<MeetRow>("SELECT * FROM meet WHERE placeId = ? AND status = 'published' AND deletedAt IS NULL ORDER BY startedAt", [placeId])).map(toMeet);
+  }
+  static async findActiveByTeacherId(passportId: number): Promise<Meet[]> {
+    return (await db.query<MeetRow>("SELECT * FROM meet WHERE passportId = ? AND deletedAt IS NULL AND status <> 'cancelled'", [passportId])).map(toMeet);
+  }
+
   static async roomBusy(locationId: number, startedAt: string, endedAt: string, conn?: PoolConnection): Promise<import('entities').BusyInterval[]> {
     const sql = `SELECT startedAt, DATE_ADD(startedAt, INTERVAL COALESCE(duration, 60) MINUTE) AS endedAt
       FROM meet WHERE locationId = ? AND deletedAt IS NULL AND status IN ('pending', 'published')

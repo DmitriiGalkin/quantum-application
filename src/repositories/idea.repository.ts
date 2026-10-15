@@ -4,6 +4,11 @@ import type { IdeaRow, CreateIdeaInput, FindAllIdeaInput, Idea, UpdateIdeaInput 
 import { mapIdeaRow } from '../mappers/idea.mapper.js';
 
 class IdeaRepository {
+  static async findByUserIds(ids: number[]): Promise<Idea[]> {
+    if (!ids.length) return [];
+    return (await db.query<IdeaRow>('SELECT * FROM idea WHERE userId IN (?) AND deletedAt IS NULL ORDER BY createdAt DESC, id DESC', [[...new Set(ids)]])).map(mapIdeaRow);
+  }
+
   static async recountLikes(id: number, count: number, conn: PoolConnection): Promise<void> {
     await conn.execute('UPDATE idea SET userCount = ? WHERE id = ?', [count, id]);
   }

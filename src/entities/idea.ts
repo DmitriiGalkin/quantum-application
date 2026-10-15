@@ -23,6 +23,17 @@ export interface Idea extends Omit<IdeaRow, 'deletedAt'> {
   photos: IdeaPhoto[];
 }
 
+export interface TeacherStudentIdeaDto {
+  id: number;
+  title: string;
+  description: string;
+  image: string | null;
+  createdAt: string;
+  user: UserDto;
+  projects: { id: number; title: string; enrolledInProject: boolean; enrolledInMeets: boolean }[];
+  canContactParent: boolean;
+}
+
 export interface IdeaDto extends Idea {
   user: UserDto | null;
 }

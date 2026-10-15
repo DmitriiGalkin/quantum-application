@@ -21,7 +21,7 @@ it('confirms a pending meeting, refreshes center queries, and does not trigger t
   try {
     await act(async () => root.render(<QueryClientProvider client={queryClient}><WeekCalendarMeet meet={meet} top={0} height={72} onClick={onClick} management={{ placeId: 3 }} /></QueryClientProvider>));
     expect(host.textContent).toContain('16:00 — 17:00');
-    expect(host.textContent).toContain('Ожидает подтверждения центра');
+    expect(host.textContent).toContain('На подтверждении');
     await act(async () => { host.querySelector<HTMLButtonElement>('[aria-label="Подтвердить"]')!.click(); });
     expect(fetchUpdateMeetStatus).toHaveBeenCalledWith(120, { status: 'published' });
     expect(invalidate).toHaveBeenCalledWith({ queryKey: ['meets'] });

@@ -27,7 +27,7 @@ it('hydrates compact rows with independent links, public meetings, and ten real 
     expect(errors).toEqual([]);
     const row = host.querySelector('article')!;
     expect([...row.querySelectorAll('a')].map(a => a.getAttribute('href'))).toEqual(['/project/1', '/teachers/42', '/places/9', '/project/1#meet-7']);
-    expect(row.textContent).toContain('02 января 2099');
+    expect(row.textContent).toContain('2 января 2099');
     expect(row.textContent).toContain('01:00 МСК');
     expect(row.textContent).toContain('45 минут · 0 ₽');
     expect(row.querySelectorAll('img[src^="/users/"]')).toHaveLength(10);

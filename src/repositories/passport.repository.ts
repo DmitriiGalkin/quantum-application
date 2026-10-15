@@ -5,6 +5,11 @@ import type { PassportRow, Passport, CreatePassportInput, UpdatePassportInput } 
 import { toPassport } from '../mappers/passport.mapper.js';
 
 class PassportRepository {
+  static async inspectDirectory(conn: PoolConnection): Promise<Pick<PassportRow, 'id' | 'title' | 'image' | 'provider' | 'providerId'>[]> {
+    const [rows] = await conn.query<(RowDataPacket & Pick<PassportRow, 'id' | 'title' | 'image' | 'provider' | 'providerId'>)[]>(
+      'SELECT id, title, image, provider, providerId FROM passport FOR UPDATE');
+    return rows;
+  }
   static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
     const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM passport FOR UPDATE');
     return rows;

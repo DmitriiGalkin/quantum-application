@@ -1,4 +1,5 @@
 import { meetingPrice } from './meeting-price.ts';
+import AddressLine from '../../../components/AddressLine.tsx';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -25,7 +26,7 @@ export default function ProjectShowcaseCard({ project }: { project: ProjectDto }
       <Typography component={Link} to={`/teachers/${project.passport.id}`} variant="body2" sx={{ color: 'inherit' }}>{project.passport.title || 'Преподаватель'}</Typography>
       <Box>
         <Typography component={Link} to={`/places/${place.id}`} variant="body2" sx={{ color: 'inherit' }}>{place.title || 'Центр'}</Typography>
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>{place.address}</Typography>
+        <AddressLine address={place.address} />
       </Box>
       {meet ? <Box>
         <Typography component={Link} to={`/project/${project.id}#meet-${meet.id}`} variant="body2" sx={{ color: 'inherit' }}>{formatMoscowMeet(meet)}</Typography>

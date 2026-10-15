@@ -68,19 +68,19 @@ export default function TeachersPage() {
       </CardContent>
     </Card>
 
-    <Box component="section">
+    <Stack component="section" spacing={2}>
       <Title text="Центры работы" />
       {centers.length ? <Grid container spacing={2}>
         {centers.map(place => <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={place.id}><PlaceCard place={place} /></Grid>)}
       </Grid> : <Typography color="text.secondary">Центры работы пока не указаны.</Typography>}
-    </Box>
+    </Stack>
 
     <Projects title="Проекты учителя" filter={filter} projects={teacher.projects} refetch={refetch} withoutIdea />
     <Typography variant="body2" color="text.secondary">Проекты: {teacher.projects.length} · Встречи: {teacher.meets} · Центры: {teacher.centersCount}</Typography>
-    <Box component="section">
+    {!!teacher.ideas.length && <Stack component="section" spacing={2}>
       <Title text="Идеи учителя" />
-      {teacher.ideas.length ? <IdeaGrids ideas={teacher.ideas} /> : <Typography color="text.secondary">Идей учителя пока нет.</Typography>}
-    </Box>
+      <IdeaGrids ideas={teacher.ideas} />
+    </Stack>}
     <ChatDialog open={chatOpen} teacherId={teacher.passport.id} onClose={() => setChatOpen(false)} />
   </Stack>;
 }

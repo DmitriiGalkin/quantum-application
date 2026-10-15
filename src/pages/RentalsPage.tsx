@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import { fetchRentals, fetchRentalStatus } from '../requests.ts';
 import { useAuth } from '../providers/auth-context.ts';
 import type { RentalStatus } from 'entities';
-import { moscowFormat } from '../features/meets/moscow-time.ts';
+import { informationDateTime, informationDateTimeRange } from '../features/meets/moscow-time.ts';
 import { formatMoney } from '../utils/time.ts';
 import ClosableDialogTitle from '../components/ClosableDialogTitle.tsx';
 import type { RentalDto } from 'entities';
@@ -42,7 +42,7 @@ export default function RentalsPage({ centre = false }: { centre?: boolean }) {
     {query.data?.length === 0 && <Typography>Заявок на аренду пока нет.</Typography>}
     {query.data?.map(rental => <Card key={rental.id} sx={{ minWidth: 0, overflowWrap: 'anywhere' }}><CardContent><Stack spacing={1}>
       <Typography variant="h6"><Link to={`/places/${rental.placeId}`}>{rental.placeTitle}</Link> · {rental.locationTitle}</Typography>
-      <Typography>{moscowFormat(rental.startedAt, { dateStyle: 'short', timeStyle: 'short' })} — {moscowFormat(rental.endedAt, { dateStyle: 'short', timeStyle: 'short' })} (МСК)</Typography>
+      <Typography>{informationDateTimeRange(rental.startedAt, rental.endedAt)} (МСК)</Typography>
       <Typography>{statuses[rental.status]} · Участников: {rental.participants}</Typography>
       {centre && <Typography>Заявитель: <Link to={`/teachers/${rental.applicant.id}`}>{rental.applicant.title}</Link></Typography>}
       {rental.comment && <Typography sx={{ whiteSpace: 'pre-line' }}>{rental.comment}</Typography>}
@@ -62,7 +62,7 @@ export default function RentalsPage({ centre = false }: { centre?: boolean }) {
       <ClosableDialogTitle onClose={() => setCancelling(null)} disabled={mutation.isPending}>Отменить заявку на аренду?</ClosableDialogTitle>
       <DialogContent>
         <Typography sx={{ overflowWrap: 'anywhere' }}>{cancelling?.placeTitle} · {cancelling?.locationTitle}</Typography>
-        {cancelling && <Typography>{moscowFormat(cancelling.startedAt, { dateStyle: 'short', timeStyle: 'short' })} (МСК)</Typography>}
+        {cancelling && <Typography>{informationDateTime(cancelling.startedAt)} (МСК)</Typography>}
         {mutation.isError && <Alert severity="error">{mutation.error.message}</Alert>}
       </DialogContent>
       <DialogActions sx={{ flexWrap: 'wrap', gap: 1 }}>

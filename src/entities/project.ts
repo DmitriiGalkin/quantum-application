@@ -62,7 +62,7 @@ export type CreateProjectInput = {
   placeId: number;
   title: string;
   description: string;
-  image: string;
+  image: string | null;
   ideaId?: number;
   passportId: number;
 };

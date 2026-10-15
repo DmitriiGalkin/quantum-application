@@ -38,14 +38,15 @@ it('hydrates teacher sections in order with unique centers and no redundant meet
     await act(async () => {});
     expect(errors).toEqual([]);
     const text = host.textContent!;
-    const sections = ['Teacher biography', 'Центры работы', 'Проекты учителя', 'Проекты: 1', 'Идеи учителя'];
+    const sections = ['Teacher biography', 'Центры работы', 'Проекты учителя', 'Проекты: 1'];
     for (let i = 1; i < sections.length; i++) expect(text.indexOf(sections[i])).toBeGreaterThan(text.indexOf(sections[i - 1]));
     expect(text).not.toContain('999'); expect(text).not.toContain('Ученики');
     expect(host.querySelectorAll('section')[0].querySelectorAll('a')).toHaveLength(2);
     expect(host.querySelector('img[src="/center.jpg"]')).not.toBeNull();
     expect(text).not.toContain('Ближайшие встречи');
     expect(host.querySelector('[aria-label="Таблица проектов"]')).not.toBeNull();
-    expect(text).toContain('Идей учителя пока нет.');
+    expect(text).not.toContain('Идеи учителя');
+    expect(text).not.toContain('Идей учителя пока нет.');
   } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
 });
 

@@ -8,6 +8,8 @@ import { useAuth } from '../../../providers/auth-context.ts';
 import IconButton from '@mui/material/IconButton';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import Chip from '@mui/material/Chip';
+import { getMeetStatus, statusConfig } from '../helper.ts';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -34,6 +36,10 @@ interface Props {
 export default function WeekCalendarMeet({ meet, top, height, onClick, draggable = false, saving, management, onError }: Props) {
   const started = new Date(meet.startedAt);
   const { role } = useAuth();
+  const baseStatus = getMeetStatus(meet);
+  const statusKey = role === 'place' && management?.placeId === meet.place?.id && meet.status === 'published'
+    && baseStatus !== 'completed' && baseStatus !== 'cancelled' ? 'confirmed' : baseStatus;
+  const status = statusKey ? statusConfig[statusKey] : null;
   const queryClient = useQueryClient();
   
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -124,8 +130,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick, draggable
         {meet.projectTitle || 'Название проекта не указано'}
       </Typography>
 
-      {meet.status === 'pending' && <Typography variant="caption">Ожидает подтверждения центра</Typography>}
-      {meet.status === 'cancelled' && <Typography variant="caption">Отклонена</Typography>}
+      {status && <Chip size="small" label={status.label} color={status.color} icon={statusKey === 'confirmed' ? <CheckIcon /> : undefined} />}
       {saving && <Typography variant="caption">Сохранение…</Typography>}
       {height > 70 && (
         <>
@@ -138,7 +143,9 @@ export default function WeekCalendarMeet({ meet, top, height, onClick, draggable
             }}
           >
             {meet.place?.title || 'Центр не указан'} · {meet.location?.title || 'Зал не выбран'}
-            {' · '}Записано {meet.participantCount ?? meet.users?.length ?? 0}{meet.maxParticipants != null ? ` из ${meet.maxParticipants}` : ' · Лимит мест не задан'}
+            {!(role === 'place' && meet.status === 'pending' && !(meet.participantCount ?? meet.users?.length)) && <>
+              {' · '}Записано {meet.participantCount ?? meet.users?.length ?? 0}{meet.maxParticipants != null ? ` из ${meet.maxParticipants}` : ''}
+            </>}
           </Typography>
         </>
       )}

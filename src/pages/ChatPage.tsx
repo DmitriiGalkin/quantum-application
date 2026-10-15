@@ -42,10 +42,11 @@ export default function ChatPage() {
           {conversations.data.map(conversation => <ListItemButton component={Link} to={`/chats/${conversation.id}`} key={conversation.id}>
             <ListItemAvatar><Avatar src={conversation.counterpart?.image || undefined} /></ListItemAvatar>
             <ListItemText primary={conversation.counterpart?.title || 'Собеседник'} sx={{ overflowWrap: 'anywhere' }}
-              secondary={conversation.lastMessage ? `${conversation.lastMessage.text} · ${new Date(conversation.lastMessage.createdAt).toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })} МСК` : 'Сообщений пока нет'}
+              secondary={conversation.lastMessage ? `${conversation.lastMessage.text} · ${informationDateTime(conversation.lastMessage.createdAt)} МСК` : 'Сообщений пока нет'}
               slotProps={{ secondary: { sx: { display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } } }} />
           </ListItemButton>)}
           {!conversations.data.length && <Typography sx={{ p: 2 }}>Диалогов пока нет. Написать преподавателю можно на странице проекта.</Typography>}
         </List></Paper>}
   </Stack>;
 }
+import { informationDateTime } from '../features/meets/moscow-time.ts';

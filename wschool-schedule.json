@@ -1,0 +1,810 @@
+{
+  "source": {
+    "folder": "Живой источник",
+    "file_name": "IMG_20261014_170630.jpg",
+    "file_id": "1McBrI_ojqGE9WRjGxLEecrOpzDGrsxRU",
+    "url": "https://drive.google.com/file/d/1McBrI_ojqGE9WRjGxLEecrOpzDGrsxRU/view",
+    "uploaded_at": "2026-10-15T09:42:13.561Z",
+    "type": "photograph_of_weekly_schedule",
+    "title": "Наши дополнительные занятия",
+    "teacher_photos": "https://wschool.ru/#teachers"
+  },
+  "schedule": {
+    "language": "ru",
+    "time_format": "HH:mm",
+    "weekday_numbering": "ISO 8601: 1 — понедельник, 7 — воскресенье",
+    "timezone": "Europe/Moscow",
+    "valid_from": null,
+    "valid_until": null,
+    "activities": [
+      {
+        "number": 1,
+        "name": "Живопись",
+        "audience": null,
+        "age": null,
+        "sessions": [
+          {
+            "weekday": 2,
+            "start": "15:15",
+            "end": "16:15"
+          },
+          {
+            "weekday": 4,
+            "start": "15:15",
+            "end": "16:15"
+          }
+        ],
+        "schedule_status": "specified",
+        "teacher": {
+          "passportId": 90,
+          "title": "Юлия Коршунова",
+          "image": null,
+          "url": "/teachers/90"
+        },
+        "project": {
+          "id": 161,
+          "url": "/project/161",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-161-b14a9d959d850769.png"
+        }
+      },
+      {
+        "number": 2,
+        "name": "Творчество с нейропсихологом",
+        "audience": null,
+        "age": null,
+        "sessions": [
+          {
+            "weekday": 5,
+            "start": "14:10",
+            "end": "16:00"
+          }
+        ],
+        "schedule_status": "specified",
+        "teacher": {
+          "passportId": 91,
+          "title": "Марина Осипова",
+          "image": null,
+          "url": "/teachers/91"
+        },
+        "project": {
+          "id": 162,
+          "url": "/project/162",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-162-b1fcdeed27939a98.png"
+        }
+      },
+      {
+        "number": 3,
+        "name": "Рок-н-ролл",
+        "audience": "children",
+        "age": {
+          "min": 7,
+          "max": 12,
+          "unit": "years"
+        },
+        "sessions": [
+          {
+            "weekday": 2,
+            "start": "16:00",
+            "end": "17:00"
+          },
+          {
+            "weekday": 4,
+            "start": "16:00",
+            "end": "17:00"
+          }
+        ],
+        "schedule_status": "specified",
+        "teacher": {
+          "passportId": 86,
+          "title": "Вера Владимировна Григорьева",
+          "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/86-8f6f3fbf074e1442.jpg",
+          "url": "/teachers/86"
+        },
+        "project": {
+          "id": 163,
+          "url": "/project/163",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-163-84a078d49f0bef74.png"
+        }
+      },
+      {
+        "number": 4,
+        "name": "Рукоделие",
+        "subtitle": "Фабрика идей",
+        "audience": null,
+        "age": null,
+        "sessions": [
+          {
+            "weekday": 2,
+            "start": "15:00",
+            "end": "16:00"
+          },
+          {
+            "weekday": 4,
+            "start": "15:00",
+            "end": "16:00"
+          }
+        ],
+        "schedule_status": "specified",
+        "teacher": {
+          "passportId": 86,
+          "title": "Вера Владимировна Григорьева",
+          "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/86-8f6f3fbf074e1442.jpg",
+          "url": "/teachers/86"
+        },
+        "project": {
+          "id": 164,
+          "url": "/project/164",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-164-f94addf181ffb2c4.png"
+        }
+      },
+      {
+        "number": 5,
+        "name": "Капоэйра",
+        "audience": "children",
+        "age": null,
+        "sessions": [
+          {
+            "weekday": 2,
+            "start": "15:00",
+            "end": "16:00"
+          },
+          {
+            "weekday": 4,
+            "start": "15:00",
+            "end": "16:00"
+          }
+        ],
+        "schedule_status": "specified",
+        "teacher": {
+          "passportId": 79,
+          "title": "Руслан Александрович Чертов",
+          "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/79-74917d34d424c05e.jpg",
+          "url": "/teachers/79"
+        },
+        "project": {
+          "id": 165,
+          "url": "/project/165",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-165-821fdb13e485694b.png"
+        }
+      },
+      {
+        "number": 6,
+        "name": "Фехтование",
+        "audience": null,
+        "age": null,
+        "sessions": [],
+        "schedule_status": "not_specified",
+        "teacher": null,
+        "project": null
+      },
+      {
+        "number": 7,
+        "name": "Ювелирное дело. Косторезание",
+        "audience": null,
+        "age": null,
+        "sessions": [],
+        "schedule_status": "not_specified",
+        "teacher": null,
+        "project": null
+      },
+      {
+        "number": 8,
+        "name": "Столярка",
+        "audience": null,
+        "age": null,
+        "sessions": [
+          {
+            "weekday": 1,
+            "start": "15:00",
+            "end": "16:00"
+          }
+        ],
+        "schedule_status": "specified",
+        "teacher": {
+          "passportId": 42,
+          "title": "Дмитрий А.",
+          "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/42-5ad72b5627d3bf60.jpg",
+          "url": "/teachers/42"
+        },
+        "project": {
+          "id": 166,
+          "url": "/project/166",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-166-4c1e9fe9745e59e9.png"
+        }
+      },
+      {
+        "number": 9,
+        "name": "Круговые танцы",
+        "audience": null,
+        "age": {
+          "min": 14,
+          "max": null,
+          "unit": "years"
+        },
+        "sessions": [
+          {
+            "weekday": 5,
+            "start": "16:00",
+            "end": "17:00"
+          }
+        ],
+        "schedule_status": "specified",
+        "teacher": null,
+        "project": null
+      },
+      {
+        "number": 10,
+        "name": "Настольный теннис",
+        "audience": null,
+        "age": null,
+        "sessions": [],
+        "schedule_status": "by_agreement",
+        "schedule_note": "По договоренности с тренером",
+        "teacher": {
+          "passportId": 92,
+          "title": "Евгений Зазимко",
+          "image": null,
+          "url": "/teachers/92"
+        },
+        "project": {
+          "id": 167,
+          "url": "/project/167",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-167-b34c249af7d86ee5.png"
+        }
+      },
+      {
+        "number": 11,
+        "name": "Капоэйра",
+        "audience": "adults",
+        "age": null,
+        "sessions": [],
+        "schedule_status": "not_specified",
+        "teacher": {
+          "passportId": 79,
+          "title": "Руслан Александрович Чертов",
+          "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/79-74917d34d424c05e.jpg",
+          "url": "/teachers/79"
+        },
+        "project": {
+          "id": 168,
+          "url": "/project/168",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-168-114ff7befad868be.png"
+        }
+      },
+      {
+        "number": 12,
+        "name": "Dancefit",
+        "audience": "adults",
+        "age": null,
+        "sessions": [
+          {
+            "weekday": 2,
+            "start": "17:30",
+            "end": "18:45"
+          },
+          {
+            "weekday": 4,
+            "start": "17:30",
+            "end": "18:45"
+          }
+        ],
+        "schedule_status": "specified",
+        "teacher": {
+          "passportId": 86,
+          "title": "Вера Владимировна Григорьева",
+          "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/86-8f6f3fbf074e1442.jpg",
+          "url": "/teachers/86"
+        },
+        "project": {
+          "id": 169,
+          "url": "/project/169",
+          "image": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-169-56a0d98abd9f24f1.png"
+        }
+      }
+    ],
+    "placeId": 597
+  },
+  "analysis": {
+    "activity_count": 12,
+    "activities_with_fixed_schedule": 8,
+    "fixed_sessions_per_week": 13,
+    "activities_by_agreement": 1,
+    "activities_without_specified_schedule": 3,
+    "busiest_weekdays": [
+      2,
+      4
+    ],
+    "sessions_on_each_busiest_weekday": 5,
+    "notes": [
+      "Название центра взято из папки; на фотографии оно отдельно не указано.",
+      "Дата в имени файла не подтверждает срок действия расписания.",
+      "Пустая клетка не означает отмену занятия или отсутствие набора.",
+      "Время Dancefit отнесено к строке 12 по границам таблицы, а не к строке взрослой капоэйры.",
+      "Одновременные занятия могут проходить в разных помещениях; сведения о помещениях и преподавателях отсутствуют.",
+      "Цены, адрес, контакты, вместимость и часовой пояс на фотографии не указаны."
+    ],
+    "uncertain_readings": [
+      {
+        "activity_number": 5,
+        "field": "age",
+        "possible_value": "7–14 лет",
+        "requires_confirmation": true
+      },
+      {
+        "activity_number": 6,
+        "field": "age",
+        "possible_value": null,
+        "note": "Возрастная пометка неразборчива.",
+        "requires_confirmation": true
+      }
+    ],
+    "photo_updates": [
+      {
+        "passportId": 42,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/42-5ad72b5627d3bf60.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild3133-3037-4364-b165-663935326362/IMG_4174.jpeg"
+      },
+      {
+        "passportId": 77,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/77-dbcada276cf6fca1.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild3938-3133-4361-b531-653331386133/photo_2024-12-13_11-.jpg"
+      },
+      {
+        "passportId": 78,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/78-fdc4a8db18f4691a.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild3730-6236-4739-b838-333036343962/photo_2022-11-14_11-.jpg"
+      },
+      {
+        "passportId": 79,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/79-74917d34d424c05e.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild6132-3131-4566-b334-383261633733/photo.jpg"
+      },
+      {
+        "passportId": 80,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/80-6371ac96bab020ef.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild3034-6135-4639-b934-366436623530/_.jpg"
+      },
+      {
+        "passportId": 82,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/82-fc99f559ada4ad56.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild3863-3762-4735-b538-633936613631/__.jpg"
+      },
+      {
+        "passportId": 83,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/83-9864ae97fa72e6d8.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild6262-3237-4337-b438-663732623434/IMG_4349.jpeg"
+      },
+      {
+        "passportId": 84,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/84-edb34c88cc64a437.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild3531-6432-4334-a534-363862366634/IMG_4275.jpeg"
+      },
+      {
+        "passportId": 85,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/85-07faf2b5f33d9d5a.png",
+        "sourceUrl": "https://static.tildacdn.com/tild3636-3366-4430-b031-643861636339/_1.png"
+      },
+      {
+        "passportId": 86,
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/86-8f6f3fbf074e1442.jpg",
+        "sourceUrl": "https://static.tildacdn.com/tild3265-3831-4965-a536-663536343762/_2.jpg"
+      }
+    ],
+    "photos_unavailable": [
+      {
+        "passportId": 81,
+        "title": "Ольга Дмитриевна Куницына"
+      },
+      {
+        "passportId": 90,
+        "title": "Юлия Коршунова"
+      },
+      {
+        "passportId": 91,
+        "title": "Марина Осипова"
+      },
+      {
+        "passportId": 92,
+        "title": "Евгений Зазимко"
+      }
+    ],
+    "import_summary": {
+      "projectCount": 9,
+      "meetingCount": 47,
+      "skippedCount": 1,
+      "photosMatched": 10,
+      "status": "pending",
+      "price": null,
+      "locationId": null,
+      "maxParticipants": null
+    },
+    "project_covers": {
+      "appliedAt": "2026-10-15T20:12:28Z",
+      "generatedWith": "built-in imagegen",
+      "manifest": "docs/image-prompts/catalog/wschool-597-project-covers-v1.json",
+      "images": [
+        {
+          "projectId": 161,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-161-b14a9d959d850769.png",
+          "origin": "generated"
+        },
+        {
+          "projectId": 162,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-162-b1fcdeed27939a98.png",
+          "origin": "generated"
+        },
+        {
+          "projectId": 163,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-163-84a078d49f0bef74.png",
+          "origin": "generated"
+        },
+        {
+          "projectId": 164,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-164-f94addf181ffb2c4.png",
+          "origin": "generated"
+        },
+        {
+          "projectId": 165,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-165-821fdb13e485694b.png",
+          "origin": "generated"
+        },
+        {
+          "projectId": 166,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-166-4c1e9fe9745e59e9.png",
+          "origin": "generated"
+        },
+        {
+          "projectId": 167,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-167-b34c249af7d86ee5.png",
+          "origin": "generated"
+        },
+        {
+          "projectId": 168,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-168-114ff7befad868be.png",
+          "origin": "generated"
+        },
+        {
+          "projectId": 169,
+          "url": "https://storage.yandexcloud.net/quantum-education/project-covers/wschool-597/project-169-56a0d98abd9f24f1.png",
+          "origin": "generated"
+        }
+      ]
+    }
+  },
+  "import": {
+    "seedKey": "quantum-wschool-schedule-v1",
+    "windowStart": "2026-10-15T18:35:32.593Z",
+    "windowEnd": "2026-11-12T18:35:32.593Z",
+    "teachers": [
+      {
+        "passportId": 42,
+        "title": "Дмитрий А.",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/42-5ad72b5627d3bf60.jpg",
+        "url": "/teachers/42"
+      },
+      {
+        "passportId": 77,
+        "title": "Татьяна Александровна Хазиева",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/77-dbcada276cf6fca1.jpg",
+        "url": "/teachers/77"
+      },
+      {
+        "passportId": 78,
+        "title": "Мария Михайловна Наумова",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/78-fdc4a8db18f4691a.jpg",
+        "url": "/teachers/78"
+      },
+      {
+        "passportId": 79,
+        "title": "Руслан Александрович Чертов",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/79-74917d34d424c05e.jpg",
+        "url": "/teachers/79"
+      },
+      {
+        "passportId": 80,
+        "title": "Анастасия Олеговна Гламоздина",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/80-6371ac96bab020ef.jpg",
+        "url": "/teachers/80"
+      },
+      {
+        "passportId": 81,
+        "title": "Ольга Дмитриевна Куницына",
+        "image": null,
+        "url": "/teachers/81"
+      },
+      {
+        "passportId": 82,
+        "title": "Кристина Вячеславовна Шипилова",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/82-fc99f559ada4ad56.jpg",
+        "url": "/teachers/82"
+      },
+      {
+        "passportId": 83,
+        "title": "Ирина Ивановна Шестакова",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/83-9864ae97fa72e6d8.jpg",
+        "url": "/teachers/83"
+      },
+      {
+        "passportId": 84,
+        "title": "Роман Николаевич Варнаков",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/84-edb34c88cc64a437.jpg",
+        "url": "/teachers/84"
+      },
+      {
+        "passportId": 85,
+        "title": "Андрей Олегович Тулев",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/85-07faf2b5f33d9d5a.png",
+        "url": "/teachers/85"
+      },
+      {
+        "passportId": 86,
+        "title": "Вера Владимировна Григорьева",
+        "image": "https://storage.yandexcloud.net/quantum-education/teachers/wschool-597/86-8f6f3fbf074e1442.jpg",
+        "url": "/teachers/86"
+      },
+      {
+        "passportId": 90,
+        "title": "Юлия Коршунова",
+        "image": null,
+        "url": "/teachers/90"
+      },
+      {
+        "passportId": 91,
+        "title": "Марина Осипова",
+        "image": null,
+        "url": "/teachers/91"
+      },
+      {
+        "passportId": 92,
+        "title": "Евгений Зазимко",
+        "image": null,
+        "url": "/teachers/92"
+      }
+    ],
+    "meetings": [
+      {
+        "activity": 1,
+        "id": 124,
+        "startedAt": "2026-10-20T15:15:00+03:00"
+      },
+      {
+        "activity": 1,
+        "id": 125,
+        "startedAt": "2026-10-22T15:15:00+03:00"
+      },
+      {
+        "activity": 1,
+        "id": 126,
+        "startedAt": "2026-10-27T15:15:00+03:00"
+      },
+      {
+        "activity": 1,
+        "id": 127,
+        "startedAt": "2026-10-29T15:15:00+03:00"
+      },
+      {
+        "activity": 1,
+        "id": 128,
+        "startedAt": "2026-11-03T15:15:00+03:00"
+      },
+      {
+        "activity": 1,
+        "id": 129,
+        "startedAt": "2026-11-05T15:15:00+03:00"
+      },
+      {
+        "activity": 1,
+        "id": 130,
+        "startedAt": "2026-11-10T15:15:00+03:00"
+      },
+      {
+        "activity": 1,
+        "id": 131,
+        "startedAt": "2026-11-12T15:15:00+03:00"
+      },
+      {
+        "activity": 2,
+        "id": 132,
+        "startedAt": "2026-10-16T14:10:00+03:00"
+      },
+      {
+        "activity": 2,
+        "id": 133,
+        "startedAt": "2026-10-23T14:10:00+03:00"
+      },
+      {
+        "activity": 2,
+        "id": 134,
+        "startedAt": "2026-10-30T14:10:00+03:00"
+      },
+      {
+        "activity": 2,
+        "id": 135,
+        "startedAt": "2026-11-06T14:10:00+03:00"
+      },
+      {
+        "activity": 3,
+        "id": 136,
+        "startedAt": "2026-10-20T16:00:00+03:00"
+      },
+      {
+        "activity": 3,
+        "id": 137,
+        "startedAt": "2026-10-22T16:00:00+03:00"
+      },
+      {
+        "activity": 3,
+        "id": 138,
+        "startedAt": "2026-10-27T16:00:00+03:00"
+      },
+      {
+        "activity": 3,
+        "id": 139,
+        "startedAt": "2026-10-29T16:00:00+03:00"
+      },
+      {
+        "activity": 3,
+        "id": 140,
+        "startedAt": "2026-11-03T16:00:00+03:00"
+      },
+      {
+        "activity": 3,
+        "id": 141,
+        "startedAt": "2026-11-05T16:00:00+03:00"
+      },
+      {
+        "activity": 3,
+        "id": 142,
+        "startedAt": "2026-11-10T16:00:00+03:00"
+      },
+      {
+        "activity": 3,
+        "id": 143,
+        "startedAt": "2026-11-12T16:00:00+03:00"
+      },
+      {
+        "activity": 4,
+        "id": 144,
+        "startedAt": "2026-10-20T15:00:00+03:00"
+      },
+      {
+        "activity": 4,
+        "id": 145,
+        "startedAt": "2026-10-22T15:00:00+03:00"
+      },
+      {
+        "activity": 4,
+        "id": 146,
+        "startedAt": "2026-10-27T15:00:00+03:00"
+      },
+      {
+        "activity": 4,
+        "id": 147,
+        "startedAt": "2026-10-29T15:00:00+03:00"
+      },
+      {
+        "activity": 4,
+        "id": 148,
+        "startedAt": "2026-11-03T15:00:00+03:00"
+      },
+      {
+        "activity": 4,
+        "id": 149,
+        "startedAt": "2026-11-05T15:00:00+03:00"
+      },
+      {
+        "activity": 4,
+        "id": 150,
+        "startedAt": "2026-11-10T15:00:00+03:00"
+      },
+      {
+        "activity": 4,
+        "id": 151,
+        "startedAt": "2026-11-12T15:00:00+03:00"
+      },
+      {
+        "activity": 5,
+        "id": 152,
+        "startedAt": "2026-10-20T15:00:00+03:00"
+      },
+      {
+        "activity": 5,
+        "id": 153,
+        "startedAt": "2026-10-22T15:00:00+03:00"
+      },
+      {
+        "activity": 5,
+        "id": 154,
+        "startedAt": "2026-10-27T15:00:00+03:00"
+      },
+      {
+        "activity": 5,
+        "id": 155,
+        "startedAt": "2026-10-29T15:00:00+03:00"
+      },
+      {
+        "activity": 5,
+        "id": 156,
+        "startedAt": "2026-11-03T15:00:00+03:00"
+      },
+      {
+        "activity": 5,
+        "id": 157,
+        "startedAt": "2026-11-05T15:00:00+03:00"
+      },
+      {
+        "activity": 5,
+        "id": 158,
+        "startedAt": "2026-11-10T15:00:00+03:00"
+      },
+      {
+        "activity": 5,
+        "id": 159,
+        "startedAt": "2026-11-12T15:00:00+03:00"
+      },
+      {
+        "activity": 8,
+        "id": 160,
+        "startedAt": "2026-10-26T15:00:00+03:00"
+      },
+      {
+        "activity": 8,
+        "id": 161,
+        "startedAt": "2026-11-02T15:00:00+03:00"
+      },
+      {
+        "activity": 8,
+        "id": 162,
+        "startedAt": "2026-11-09T15:00:00+03:00"
+      },
+      {
+        "activity": 12,
+        "id": 163,
+        "startedAt": "2026-10-20T17:30:00+03:00"
+      },
+      {
+        "activity": 12,
+        "id": 164,
+        "startedAt": "2026-10-22T17:30:00+03:00"
+      },
+      {
+        "activity": 12,
+        "id": 165,
+        "startedAt": "2026-10-27T17:30:00+03:00"
+      },
+      {
+        "activity": 12,
+        "id": 166,
+        "startedAt": "2026-10-29T17:30:00+03:00"
+      },
+      {
+        "activity": 12,
+        "id": 167,
+        "startedAt": "2026-11-03T17:30:00+03:00"
+      },
+      {
+        "activity": 12,
+        "id": 168,
+        "startedAt": "2026-11-05T17:30:00+03:00"
+      },
+      {
+        "activity": 12,
+        "id": 169,
+        "startedAt": "2026-11-10T17:30:00+03:00"
+      },
+      {
+        "activity": 12,
+        "id": 170,
+        "startedAt": "2026-11-12T17:30:00+03:00"
+      }
+    ],
+    "skipped": [
+      {
+        "activity": 8,
+        "startedAt": "2026-10-19T15:00:00+03:00",
+        "reason": "Teacher conflict with meet 121"
+      }
+    ],
+    "committedAt": "2026-10-15T18:39:08.791Z"
+  }
+}

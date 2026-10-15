@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import type { RoomDto } from 'entities';
 import type { useRentalForm } from './hooks/useRentalForm.ts';
-import { moscowFormat } from '../meets/moscow-time.ts';
+import { informationDateTimeRange } from '../meets/moscow-time.ts';
 import { formatMoney } from '../../utils/time.ts';
 
 export function RentalDialog({ form, rooms }: { form: ReturnType<typeof useRentalForm>; rooms: RoomDto[] }) {
@@ -32,7 +32,7 @@ export function RentalDialog({ form, rooms }: { form: ReturnType<typeof useRenta
         {busy.isPending && <Typography role="status">Загрузка занятости…</Typography>}
         {busy.isError && <Alert severity="error" action={<Button onClick={() => void busy.refetch()}>Повторить</Button>}>Не удалось загрузить занятость</Alert>}
         {busy.data?.length === 0 && <Typography>Занятых интервалов нет</Typography>}
-        {busy.data?.map((slot, index) => <Typography key={index}>{moscowFormat(slot.startedAt, { dateStyle: 'short', timeStyle: 'short' })} — {moscowFormat(slot.endedAt, { dateStyle: 'short', timeStyle: 'short' })} (МСК)</Typography>)}
+        {busy.data?.map((slot, index) => <Typography key={index}>{informationDateTimeRange(slot.startedAt, slot.endedAt)} (МСК)</Typography>)}
       </Stack>}
       {passport && !passport.isTeacher && <Alert severity="info">Для отправки заявки создайте хотя бы один проект.</Alert>}
       {mutation.isError && <Alert severity="error">{mutation.error.message}</Alert>}

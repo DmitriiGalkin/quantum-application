@@ -1,13 +1,11 @@
-import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherIdeas } from '../../requests.ts';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { moscowFormat } from '../../features/meets/moscow-time.ts';
+import StudentIdeaCard from '../../features/idea/ui/StudentIdeaCard.tsx';
 
 export default function TeacherUserIdeasPage() {
   const { data: allIdeas = [], isLoading, isError, refetch } = useQuery({
@@ -23,21 +21,13 @@ export default function TeacherUserIdeasPage() {
   return (
       <Stack spacing={2}>
         <Typography variant="h4">Идеи учеников</Typography>
-        <Typography color="text.secondary">Доступные вам идеи с указанным учеником. Общая библиотека доступна отдельно.</Typography>
+        <Typography color="text.secondary">Идеи ваших учеников. Дата создания не подтверждает актуальность интереса; наличие связанного проекта не означает, что идея выполнена.</Typography>
         {isError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить идеи.</Alert>}
         {!isError && !ideas.length && <Typography>Идей с указанным учеником пока нет.</Typography>}
         <Button component={Link} to="/ideas" sx={{ alignSelf: 'flex-start' }}>Библиотека идей</Button>
 
         {ideas.map(idea => (
-          <Card key={idea.id}>
-            <CardContent>
-              <Typography component={Link} to={`/idea/${idea.id}`} sx={{ overflowWrap: 'anywhere' }}>{idea.title}</Typography>
-
-              <Typography color="text.secondary">
-                {idea.user?.title} · {Number.isFinite(new Date(idea.createdAt).getTime()) ? moscowFormat(idea.createdAt, { dateStyle: 'medium' }) : 'Дата не указана'}
-              </Typography>
-            </CardContent>
-          </Card>
+          <StudentIdeaCard key={idea.id} idea={idea} />
         ))}
       </Stack>
   );

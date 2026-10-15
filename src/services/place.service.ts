@@ -1,3 +1,4 @@
+import { StudentAccessService } from './student-access.service.js';
 import { HttpError } from '../utils/http-error.js';
 import PlaceRepository from '../repositories/place.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
@@ -7,9 +8,6 @@ import { MeetService } from './meet.service.js';
 import PlacePassportRepository from '../repositories/place-passport.repository.js';
 import { db } from '../utils/dbNext.js';
 import ProjectRepository from '../repositories/project.repository.js';
-import ProjectUserRepository from '../repositories/project-user.repository.js';
-import MeetUserRepository from '../repositories/meet-user.repository.js';
-import UserRepository from '../repositories/user.repository.js';
 
 export class PlaceService {
   static async findAll() {
@@ -68,19 +66,13 @@ export class PlaceService {
     const place = await PlaceRepository.findById(id);
     if (!place) throw new HttpError('Центр не найден', 404);
 
-    const [projectIds, meetIds, teachers, meetStats, schedule] = await Promise.all([
+    const [projectIds, users, teachers, meetStats, schedule] = await Promise.all([
       ProjectRepository.findIdsByPlaceId(id),
-      MeetRepository.findIdsByPlaceId(id),
+      StudentAccessService.forPlace(id),
       PlacePassportRepository.countTeachers(id),
       MeetRepository.getPlaceStats(id),
       PlaceScheduleRepository.findByPlaceId(id),
     ]);
-    const [projectUsers, meetUsers] = await Promise.all([
-      ProjectUserRepository.findByProjectIds(projectIds),
-      MeetUserRepository.findByMeetIds(meetIds),
-    ]);
-    const userIds = [...new Set([...projectUsers, ...meetUsers].map(join => join.userId))];
-    const users = await UserRepository.findByIds(userIds, true);
 
     return {
       place: { ...place, schedule },

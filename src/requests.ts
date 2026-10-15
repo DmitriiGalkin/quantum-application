@@ -58,7 +58,7 @@ export const uploadIdeaPhoto = (file: File) => {
   return postMultipart<{ url: string }>('/image', body);
 };
 export const fetchUserIdeas = () => get<IdeaDto[]>(`/user/ideas`);
-export const fetchTeacherIdeas = () => get<IdeaDto[]>('/teacher/ideas');
+export const fetchTeacherIdeas = () => get<import('entities').TeacherStudentIdeaDto[]>('/teacher/ideas');
 export const generateImage = (ideaId: number) => post<void>(`/idea/${ideaId}/generateImage`, {});
 export const fetchLike = (params: CreateIdeaUser) => post<void>('/ideaUser', params);
 export const fetchUnlike = (params: DeleteIdeaUser) => del<void>(`/ideaUser?userId=${params.userId}&ideaId=${params.ideaId}`);
@@ -119,3 +119,5 @@ export const fetchConversation = (id: number) => get<ConversationHistory>(`/conv
 export const fetchCreateMessage = (conversationId: number, content: string) => post<Message>(`/conversation/${conversationId}/messages`, { content });
 export const fetchUpdateMessage = (id: number, content: string) => patch<void>(`/message2s/${id}`, { content });
 export const fetchDeleteMessage = (id: number) => del<void>(`/message2s/${id}`);
+
+export const fetchParentConversation = (userId: number) => post<import('entities').StartConversationResponse>(`/user/${userId}/parent-conversation`, {});

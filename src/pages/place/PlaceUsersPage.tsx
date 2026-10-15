@@ -22,6 +22,7 @@ export default function PlaceUsersPage() {
   return (
     <Stack spacing={3}>
       <Typography component="h1" variant="h4">Ученики центра</Typography>
+      <Typography color="text.secondary">Дети с записью на прошедшие или будущие опубликованные встречи центра. Отдельный учёт явки не ведётся.</Typography>
       {users.length === 0 && <Typography color="text.secondary">В центре пока нет учеников</Typography>}
 
       {users.map(user => (

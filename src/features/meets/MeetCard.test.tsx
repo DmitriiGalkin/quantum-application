@@ -30,6 +30,19 @@ const meet = {
 
 afterEach(() => { auth.role = 'user'; vi.clearAllMocks(); });
 
+it('uses one pending chip without empty attendance or occupancy, and a check chip for approved future meetings', () => {
+  auth.role = 'place';
+  const client = new QueryClient();
+  const html = (status: MeetDto['status']) => renderToString(<QueryClientProvider client={client}><MeetCard meet={{ ...meet, status, users: [], participantCount: 0 }} management={{ placeId: 3 }} /></QueryClientProvider>);
+  const pending = html('pending');
+  expect(pending.match(/На подтверждении/g)).toHaveLength(1);
+  expect(pending).not.toContain('Записано'); expect(pending).not.toContain('progressbar');
+  expect(pending).toContain('Подтвердить'); expect(pending).toContain('Отклонить');
+  const published = html('published');
+  expect(published).toContain('Подтверждена'); expect(published).toContain('CheckIcon');
+  expect(published).not.toContain('Опубликовано'); client.clear();
+});
+
 it('renders real project/centre/hall data, Moscow time and meeting occupancy during SSR without requesting a centre', () => {
   const client = new QueryClient();
   const html = renderToString(<QueryClientProvider client={client}><MeetCard meet={meet} /></QueryClientProvider>);
@@ -46,7 +59,7 @@ it('shows missing hall/limit/image explicitly and omits progress without a limit
   const host = globalThis.document.createElement('div');
   host.innerHTML = renderToString(<QueryClientProvider client={client}><MeetCard meet={{ ...meet, projectImage: null, location: null, maxParticipants: null, users: [] }} /></QueryClientProvider>);
   expect(host.querySelector('img')).toBeNull(); expect(host.querySelector('[role="progressbar"]')).toBeNull();
-  expect(host.textContent).toContain('Зал не выбран'); expect(host.textContent).toContain('Лимит мест не задан');
+  expect(host.textContent).toContain('Зал не выбран'); expect(host.textContent).not.toContain('Лимит мест не задан');
   expect(host.textContent).toContain('Записано 0'); client.clear();
 });
 

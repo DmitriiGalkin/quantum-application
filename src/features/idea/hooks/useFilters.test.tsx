@@ -6,8 +6,8 @@ import { createMemoryRouter, RouterProvider, MemoryRouter, useLocation, useNavig
 import { describe, expect, it } from 'vitest';
 import { useFilters } from './useFilters';
 
-function ProjectProbe({ projects = true }: { projects?: boolean }) {
-  const filter = useFilters({ projects, defaultView: 'table' });
+function ProjectProbe({ projects = true, compactViews = false }: { projects?: boolean; compactViews?: boolean }) {
+  const filter = useFilters({ projects, defaultView: 'table', compactViews });
   const location = useLocation();
   return <><output>{filter.filters.view}|{location.search}</output><button onClick={() => filter.setView('table')}>table</button><button onClick={() => filter.setView('module')}>module</button></>;
 }
@@ -28,6 +28,11 @@ function Probe() {
 }
 
 describe('idea filters in router history', () => {
+  it('opens legacy centre group links as cards while preserving the other URL parameters', () => {
+    const html = renderToString(<MemoryRouter initialEntries={['/?view=group&sort=popular&when=tomorrow&tag=craft']}><ProjectProbe compactViews /></MemoryRouter>).replaceAll('<!-- -->', '');
+    expect(html).toContain('module|');
+    expect(html).toContain('sort=popular'); expect(html).toContain('when=tomorrow'); expect(html).toContain('tag=craft');
+  });
   it('restores each filter on back, forward and reload, preserving unrelated parameters', async () => {
     Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
     const host = globalThis.document.createElement('div');

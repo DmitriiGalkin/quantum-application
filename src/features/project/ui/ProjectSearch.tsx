@@ -28,10 +28,10 @@ export default function ProjectSearch({ initialQuery, example, onSearch }: {
   }, [example, focused, stopped, value]);
   return <Box component="form" role="search" onSubmit={event => { event.preventDefault(); onSearch(value.trim()); }}
     sx={{ display: 'flex', gap: 1, width: '100%', maxWidth: 900, mx: 'auto', bgcolor: 'background.paper', borderRadius: 2, p: 1 }}>
-    <TextField fullWidth label="Поиск проектов" value={value} onChange={event => setValue(event.target.value)}
+    <TextField sx={{ minWidth: 0 }} fullWidth label="Поиск проектов" value={value} onChange={event => setValue(event.target.value)}
       onFocus={() => { setFocused(true); setStopped(true); }} onBlur={() => setFocused(false)}
       placeholder={focused ? 'Что интересно ребёнку?' : (stopped ? example?.slice(0, 60) : hint) || 'Название или описание проекта'}
       slotProps={{ htmlInput: { maxLength: 200 } }} />
-    <Button type="submit" variant="contained">Найти</Button>
+    <Button sx={{ whiteSpace: 'nowrap', flexShrink: 0 }} type="submit" variant="contained">Найти</Button>
   </Box>;
 }

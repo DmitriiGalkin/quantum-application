@@ -25,6 +25,8 @@ import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.t
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 import { statusConfig } from '../../meets/helper.ts';
 import { upcomingPublishedMeets, moscowMeetStatus } from './project-card-meeting.ts';
+import { informationDate } from '../../meets/moscow-time.ts';
+import AddressLine from '../../../components/AddressLine.tsx';
 import ProjectImage from '../../../components/ProjectImage.tsx';
 import LinkIcon from '@mui/icons-material/Link';
 import ChatDialog from '../../../components/ChatDialog.tsx'; // Добавлен импорт
@@ -55,9 +57,10 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
 
   const isMember = userId && project.users?.map(user => user.id).includes(userId);
   const firstMeet = upcomingPublishedMeets(project.meets)[0];
-  const status = firstMeet ? statusConfig[moscowMeetStatus(firstMeet)] : undefined;
+  const temporalStatus = firstMeet ? moscowMeetStatus(firstMeet) : null;
+  const status = temporalStatus ? statusConfig[temporalStatus] : undefined;
   const startedAt = firstMeet ? new Date(firstMeet.startedAt) : undefined;
-  const date = startedAt?.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', timeZone: 'Europe/Moscow' });
+  const date = startedAt ? informationDate(startedAt) : undefined;
   const time = startedAt?.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' });
 
   const [form, setForm] = useState<ProjectFormValues>({
@@ -166,7 +169,7 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
       onClick: () => setEditModalOpen(true),
     });
   }
-  if (isMember && role === 'user') {
+  if (detailed && isMember && role === 'user') {
     menuItems.push({
       key: 'exit',
       label: 'Выйти из проекта',
@@ -216,15 +219,15 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
               <Box component={Link} to={`/places/${project.place.id}`} sx={{ color: 'inherit' }}>{project.place.title}</Box>
               {project.location?.title?.trim() && <Box component="span" sx={{ color: 'text.secondary', fontWeight: 400 }}>{' · '}{project.location.title}</Box>}
             </Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', overflowWrap: 'anywhere' }}>{project.place.address}</Typography>
+            <AddressLine address={project.place.address} full={detailed} />
           </Box>
         </Stack>
       </>
       <CardContent sx={{ bgcolor: 'action.hover', borderTop: 1, borderColor: 'divider' }}>
-        {firstMeet && status ? <Stack spacing={1}>
+        {firstMeet ? <Stack spacing={1}>
           <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
             <Typography component={Link} to={`/project/${project.id}#meet-${firstMeet.id}`} variant="body2" sx={{ fontWeight: 600, color: 'inherit' }}>{date}, {time} МСК</Typography>
-            <Chip label={status.label} color={status.color} size="small" />
+            {status && <Chip label={status.label} color={status.color} size="small" />}
           </Stack>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
             <ScheduleOutlinedIcon fontSize="small" color="action" />

@@ -12,7 +12,7 @@ import type { MeetDto } from 'entities';
 import WeekCalendar from './WeekCalendar/WeekCalendar.tsx';
 import { groupMeets } from './groupMeets.ts';
 import MeetGroupGrids from './MeetGroupGrids.tsx';
-import { DAY_MS, moscowDay, moscowFormat, moscowWeek } from './moscow-time.ts';
+import { DAY_MS, informationDate, informationRange, moscowDay, moscowFormat, moscowWeek } from './moscow-time.ts';
 import type { MeetManagement } from './management.ts';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -49,11 +49,11 @@ export default function Meets({ title, meets, refetch, management }: Props) {
     </Stack>
     {!meets.length && <Typography color="text.secondary">Запланированных встреч нет</Typography>}
     {view === 'module' && [...grouped].map(([day, items]) => <MeetGroupGrids key={day}
-      title={moscowFormat(day, { day: 'numeric', month: 'long', year: 'numeric' })} meets={items} refetch={refetch} management={management} />)}
+      title={informationDate(day)} meets={items} refetch={refetch} management={management} />)}
     {view === 'week' && <>
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
         <Button onClick={() => moveWeek(-1)} aria-label="Предыдущая неделя">←</Button>
-        <Typography>{moscowFormat(days[0], { day: 'numeric', month: 'short' })} — {moscowFormat(days[6], { day: 'numeric', month: 'short', year: 'numeric' })} МСК</Typography>
+        <Typography>{informationRange(days[0], days[6])} МСК</Typography>
         <Button onClick={() => moveWeek(1)} aria-label="Следующая неделя">→</Button>
         <Button onClick={today}>Сегодня</Button>
         {management && <Button variant={editing ? 'contained' : 'outlined'} aria-pressed={editing}

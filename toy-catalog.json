@@ -7491,6 +7491,95 @@
         }
       ],
       "sizeFromSource": "размером больше человека; числовой размер не дан"
+    },
+    {
+      "id": "craft-stool-carry-handle-v1",
+      "name": "Деревянный табурет с ручкой для переноски",
+      "description": "Изготовление деревянного табурета с фигурным отверстием в сиденье для переноски. Результат — готовый табурет с коричневой отделкой и видимой текстурой древесины. На занятиях участники изучают чертежи, размечают детали, обрабатывают и шлифуют древесину, собирают изделие и выполняют отделку под руководством преподавателя. Семь оригинальных снимков из «Фабрики игрушек» показывают изделие, его детали и чертежи. Размеры и способ сборки уточняются по чертежам с преподавателем.",
+      "photos": [
+        {
+          "id": "craft-stool-carry-handle-v1-cover-v1",
+          "fileName": "stool-cover-v1.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-stool-carry-handle-v1/cover-dea4d169f5158c474e4aef4ac106077948168de4f066165eafac9a76c07facc1.png",
+          "isCover": true,
+          "generated": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "craft-stool-carry-handle-v1-1EaaZUluzwyxBQtDJbLbG9_Ae6YoVdJld",
+            "craft-stool-carry-handle-v1-1lzuwiJON9Be4sozATgRCNUlU8_ir9abS",
+            "craft-stool-carry-handle-v1-1QnlpulHrElMyKr4sFCbrLxqsRCMkxHln",
+            "craft-stool-carry-handle-v1-1gmUO20etLZeoDU75uFIgqxTlASwKu_GQ",
+            "craft-stool-carry-handle-v1-1D_IPJltIYNjD1SPDQX_cuoVmA7vIaU_3",
+            "craft-stool-carry-handle-v1-12yjt5rbeY3OhwoKM9xPXXa4fnO-mvZdU",
+            "craft-stool-carry-handle-v1-1C790LbT96mMCRHO7C8o0CzV-aKR85w8b"
+          ],
+          "promptFile": "docs/image-prompts/catalog/stool-carry-handle-v1.md"
+        },
+        {
+          "id": "craft-stool-carry-handle-v1-1EaaZUluzwyxBQtDJbLbG9_Ae6YoVdJld",
+          "fileName": "IMG_20261015_173219.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-stool-carry-handle-v1/9f3caacf5cd6631f723401a0071143a83eab51bac9bac9135a6ba5a52a788699.jpg",
+          "sourceUrl": "https://drive.google.com/file/d/1EaaZUluzwyxBQtDJbLbG9_Ae6YoVdJld/view?usp=drivesdk",
+          "driveFileId": "1EaaZUluzwyxBQtDJbLbG9_Ae6YoVdJld",
+          "sha256": "9f3caacf5cd6631f723401a0071143a83eab51bac9bac9135a6ba5a52a788699",
+          "isCover": false
+        },
+        {
+          "id": "craft-stool-carry-handle-v1-1lzuwiJON9Be4sozATgRCNUlU8_ir9abS",
+          "fileName": "IMG_20261015_173222.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-stool-carry-handle-v1/fa33c6ec7eff954c4dfe3d10b296abbefdbb4d86e75981716e880e79a98fbbfe.jpg",
+          "sourceUrl": "https://drive.google.com/file/d/1lzuwiJON9Be4sozATgRCNUlU8_ir9abS/view?usp=drivesdk",
+          "driveFileId": "1lzuwiJON9Be4sozATgRCNUlU8_ir9abS",
+          "sha256": "fa33c6ec7eff954c4dfe3d10b296abbefdbb4d86e75981716e880e79a98fbbfe",
+          "isCover": false
+        },
+        {
+          "id": "craft-stool-carry-handle-v1-1QnlpulHrElMyKr4sFCbrLxqsRCMkxHln",
+          "fileName": "IMG_20261015_173524.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-stool-carry-handle-v1/ae538bebb96d2576483c3022d04703ce82a576eeeb118b4d51ba77c4d9e5fd8a.jpg",
+          "sourceUrl": "https://drive.google.com/file/d/1QnlpulHrElMyKr4sFCbrLxqsRCMkxHln/view?usp=drivesdk",
+          "driveFileId": "1QnlpulHrElMyKr4sFCbrLxqsRCMkxHln",
+          "sha256": "ae538bebb96d2576483c3022d04703ce82a576eeeb118b4d51ba77c4d9e5fd8a",
+          "isCover": false
+        },
+        {
+          "id": "craft-stool-carry-handle-v1-1gmUO20etLZeoDU75uFIgqxTlASwKu_GQ",
+          "fileName": "IMG_20261015_173528.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-stool-carry-handle-v1/71fe532336487e198bebd74ef7751498f8fa4c0b586ef5c018262571401f428a.jpg",
+          "sourceUrl": "https://drive.google.com/file/d/1gmUO20etLZeoDU75uFIgqxTlASwKu_GQ/view?usp=drivesdk",
+          "driveFileId": "1gmUO20etLZeoDU75uFIgqxTlASwKu_GQ",
+          "sha256": "71fe532336487e198bebd74ef7751498f8fa4c0b586ef5c018262571401f428a",
+          "isCover": false
+        },
+        {
+          "id": "craft-stool-carry-handle-v1-1D_IPJltIYNjD1SPDQX_cuoVmA7vIaU_3",
+          "fileName": "IMG_20261015_173534.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-stool-carry-handle-v1/7d1389d720cfa68704df6f25ab14cfdaaf96398ecc5df2758f49efd40cebdd91.jpg",
+          "sourceUrl": "https://drive.google.com/file/d/1D_IPJltIYNjD1SPDQX_cuoVmA7vIaU_3/view?usp=drivesdk",
+          "driveFileId": "1D_IPJltIYNjD1SPDQX_cuoVmA7vIaU_3",
+          "sha256": "7d1389d720cfa68704df6f25ab14cfdaaf96398ecc5df2758f49efd40cebdd91",
+          "isCover": false
+        },
+        {
+          "id": "craft-stool-carry-handle-v1-12yjt5rbeY3OhwoKM9xPXXa4fnO-mvZdU",
+          "fileName": "IMG_20261015_173537.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-stool-carry-handle-v1/f77de18448699c077eb10a616a549586e9ef6aaa704fa8f3a1b70dcb1767d3dc.jpg",
+          "sourceUrl": "https://drive.google.com/file/d/12yjt5rbeY3OhwoKM9xPXXa4fnO-mvZdU/view?usp=drivesdk",
+          "driveFileId": "12yjt5rbeY3OhwoKM9xPXXa4fnO-mvZdU",
+          "sha256": "f77de18448699c077eb10a616a549586e9ef6aaa704fa8f3a1b70dcb1767d3dc",
+          "isCover": false
+        },
+        {
+          "id": "craft-stool-carry-handle-v1-1C790LbT96mMCRHO7C8o0CzV-aKR85w8b",
+          "fileName": "IMG_20261015_173543.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-stool-carry-handle-v1/542295748c07891b67fc585e9a9f8add1fff55f9c3372e5fd095215c8a930839.jpg",
+          "sourceUrl": "https://drive.google.com/file/d/1C790LbT96mMCRHO7C8o0CzV-aKR85w8b/view?usp=drivesdk",
+          "driveFileId": "1C790LbT96mMCRHO7C8o0CzV-aKR85w8b",
+          "sha256": "542295748c07891b67fc585e9a9f8add1fff55f9c3372e5fd095215c8a930839",
+          "isCover": false
+        }
+      ]
     }
   ],
   "legacyIdeas": [

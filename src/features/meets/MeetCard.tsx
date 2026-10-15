@@ -31,9 +31,10 @@ import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 import PeopleIcon from '@mui/icons-material/People';
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import PersonIcon from '@mui/icons-material/Person';
+import CheckIcon from '@mui/icons-material/Check';
 import { EditMeetDialog } from './EditMeetDialog.tsx';
 import { canManageMeet, type MeetManagement } from './management.ts';
-import { moscowFormat } from './moscow-time.ts';
+import { informationDate, moscowFormat } from './moscow-time.ts';
 import { Link } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -132,10 +133,9 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   const isPaid = paymentStatus === 'paid';
 
   const startedAt = new Date(meet.startedAt);
-  const date = moscowFormat(startedAt, {
+  const date = informationDate(startedAt, {
     day: '2-digit',
     month: 'short',
-    year: 'numeric',
   });
 
   const time = moscowFormat(startedAt, {
@@ -152,7 +152,10 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   const placesLabel = free !== null && free % 10 === 1 && free % 100 !== 11 ? 'место' : free !== null && free % 10 >= 2 && free % 10 <= 4 && (free % 100 < 12 || free % 100 > 14) ? 'места' : 'мест';
   const actionError = updateStatus.error || mutationLike.error || mutationUnlike.error || mutationDeleteMeet.error || createPayment.error;
 
-  const status = statusConfig[getMeetStatus(meet)];
+  const meetStatus = getMeetStatus(meet);
+  const statusKey = canApprove && meet.status === 'published' && meetStatus !== 'completed' && meetStatus !== 'cancelled' ? 'confirmed' : meetStatus;
+  const status = statusKey ? statusConfig[statusKey] : null;
+  const pendingRequest = canApprove && meet.status === 'pending';
 
   const menuItems = [];
 
@@ -212,7 +215,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
     >
       <Stack spacing={2}>
         <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
-          <Chip label={status.label} color={status.color} size="small" />
+          {status && <Chip icon={statusKey === 'confirmed' ? <CheckIcon /> : undefined} label={status.label} color={status.color} size="small" />}
 
           <Typography variant="body2" color="text.secondary">
             {date} • {time} — {endTime} МСК
@@ -282,13 +285,13 @@ export default function MeetCard({ meet, refetch, management }: Props) {
             </Stack>
 
             {/* participants (aggregated) */}
-            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            {!(pendingRequest && count === 0) && <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
               <PeopleIcon fontSize="small" color="disabled" />
 
               <Typography variant="body2">
                 Записано {count}{limit != null ? ` из ${limit}` : ''}
               </Typography>
-            </Stack>
+            </Stack>}
 
             {meet.price ? (
               <Stack direction="row" sx={{ justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
@@ -348,21 +351,11 @@ export default function MeetCard({ meet, refetch, management }: Props) {
             <Button color="error" disabled={mutationUnlike.isPending} onClick={onExit}>Отменить участие</Button>
           </DialogActions>
         </Dialog>}
-        {role === 'place' && meet.status === 'published' && (
-          <Typography variant="body2" color="text.secondary">
-            Опубликовано
-          </Typography>
-        )}
-        {role === 'place' && meet.status === 'cancelled' && (
-          <Typography variant="body2" color="text.secondary">
-            Отклонено
-          </Typography>
-        )}
-        {(
+        {!pendingRequest && limit != null && (
           <Stack spacing={1.5}>
             <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
               <Typography variant="body2" color="text.secondary">
-                {limit == null ? 'Лимит мест не задан' : full ? 'Мест нет' : `Свободно ${free} ${placesLabel}`}
+                {full ? 'Мест нет' : `Свободно ${free} ${placesLabel}`}
               </Typography>
 
               {occupancy !== null && <Chip size="small" label={`${occupancy}%`} color={full ? 'warning' : 'default'} />}
@@ -374,7 +367,6 @@ export default function MeetCard({ meet, refetch, management }: Props) {
         {actionError && <Alert severity="error">{actionError.message}</Alert>}
         {canApprove && meet.status === 'pending' && (
           <Stack spacing={1}>
-            <Typography variant="body2" color="warning.main">Ожидает подтверждения центра</Typography>
             <Button color="success" variant="contained" disabled={updateStatus.isPending} onClick={() => updateStatus.mutate('published')}>
               Подтвердить
             </Button>

@@ -10,7 +10,7 @@ vi.mock('../repositories/place.repository.js', () => ({ default: { create: vi.fn
 vi.mock('../repositories/place-passport.repository.js', () => ({ default: { create: vi.fn(), countTeachers: vi.fn() } }));
 vi.mock('../repositories/place-schedule.repository.js', () => ({ default: { replace: vi.fn(), findByPlaceId: vi.fn() } }));
 vi.mock('../repositories/project.repository.js', () => ({ default: { findIdsByPlaceId: vi.fn() } }));
-vi.mock('../repositories/meet.repository.js', () => ({ default: { findByPlaceIds: vi.fn(), findIdsByPlaceId: vi.fn(), getPlaceStats: vi.fn() } }));
+vi.mock('../repositories/meet.repository.js', () => ({ default: { findByPlaceIds: vi.fn(), findPublishedByPlaceId: vi.fn(), getPlaceStats: vi.fn() } }));
 vi.mock('../repositories/project-user.repository.js', () => ({ default: { findByProjectIds: vi.fn() } }));
 vi.mock('../repositories/meet-user.repository.js', () => ({ default: { findByMeetIds: vi.fn() } }));
 vi.mock('../repositories/user.repository.js', () => ({ default: { findByIds: vi.fn() } }));
@@ -62,7 +62,7 @@ describe('place persistence', () => {
   it('uses actual centre totals and counts an active student once across projects and meetings', async () => {
     vi.mocked(PlaceRepository.findById).mockResolvedValue({ id: 3 } as Place);
     vi.mocked(ProjectRepository.findIdsByPlaceId).mockResolvedValue([1, 2]);
-    vi.mocked(MeetRepository.findIdsByPlaceId).mockResolvedValue([20]);
+    vi.mocked(MeetRepository.findPublishedByPlaceId).mockResolvedValue([{ id: 20 }] as Meet[]);
     vi.mocked(PlacePassportRepository.countTeachers).mockResolvedValue(2);
     vi.mocked(MeetRepository.getPlaceStats).mockResolvedValue({ meets: 4, pendingPlaceCount: 1 });
     const schedule = data.schedule!.map((day, index) => ({ ...day, id: index + 1, placeId: 3 }));
@@ -80,7 +80,7 @@ describe('place persistence', () => {
   it('returns zeros for an empty centre instead of demo statistics', async () => {
     vi.mocked(PlaceRepository.findById).mockResolvedValue({ id: 3 } as Place);
     vi.mocked(ProjectRepository.findIdsByPlaceId).mockResolvedValue([]);
-    vi.mocked(MeetRepository.findIdsByPlaceId).mockResolvedValue([]);
+    vi.mocked(MeetRepository.findPublishedByPlaceId).mockResolvedValue([]);
     vi.mocked(PlacePassportRepository.countTeachers).mockResolvedValue(0);
     vi.mocked(MeetRepository.getPlaceStats).mockResolvedValue({ meets: 0, pendingPlaceCount: 0 });
     vi.mocked(ProjectUserRepository.findByProjectIds).mockResolvedValue([]);

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import Stack from '@mui/material/Stack';
 import type { ProjectDto } from 'entities';
 import Filter from '../../idea/ui/Filter.tsx';
@@ -18,9 +19,12 @@ type Props = {
   preserveOrder?: boolean;
   emptyText?: string;
   withoutFilters?: boolean;
+  compactViews?: boolean;
+  action?: ReactNode;
+  emptyContent?: ReactNode;
 };
 
-function Projects({ title, filter, projects, refetch, withoutIdea, catalog, preserveOrder, emptyText, withoutFilters }: Props) {
+function Projects({ title, filter, projects, refetch, withoutIdea, catalog, preserveOrder, emptyText, withoutFilters, compactViews, action, emptyContent }: Props) {
   const sortedProjects = preserveOrder ? projects : [...projects].sort((a, b) => b.meets.length - a.meets.length);
 
   return (
@@ -30,8 +34,9 @@ function Projects({ title, filter, projects, refetch, withoutIdea, catalog, pres
 
         {/* Если сужающих фильтров нет и проектов нет, то фильты не рисуем */}
         {!withoutFilters && (catalog || !(filter.filters.when === undefined && !projects.length)) && (
-          <Filter projects compactViews={catalog} withOutLocation={!catalog} withOutWhen={!catalog} filters={filter.filters} setView={filter.setView} setSort={filter.setSort} setWhen={filter.setWhen} />
+          <Filter projects compactViews={catalog || compactViews} withOutLocation={!catalog} withOutWhen={!catalog} filters={filter.filters} setView={filter.setView} setSort={filter.setSort} setWhen={filter.setWhen} />
         )}
+        {action}
       </Stack>
 
       {filter.filters.view === 'map' && <div>Карта</div>}
@@ -40,7 +45,7 @@ function Projects({ title, filter, projects, refetch, withoutIdea, catalog, pres
 
       {filter.filters.view === 'group' && <ProjectGroups projects={sortedProjects} refetch={refetch} withoutIdea={withoutIdea} />}
       {filter.filters.view === 'table' && <ProjectTable catalog={catalog} projects={sortedProjects} />}
-      {!projects.length && <Typography color="text.secondary">{emptyText ?? 'Проектов пока нет.'}</Typography>}
+      {!projects.length && (emptyContent ?? <Typography color="text.secondary">{emptyText ?? 'Проектов пока нет.'}</Typography>)}
     </Stack>
   );
 }

@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { moscowDay, moscowFormat } from '../moscow-time.ts';
+import { moscowDay, moscowFormat, moscowYear } from '../moscow-time.ts';
 
 
 interface Props {
@@ -57,7 +57,7 @@ export default function WeekCalendarHeader({ days }: Props) {
           </Typography>
 
           <Typography variant="caption" color="text.secondary">
-            {moscowFormat(day, { month: 'long' })}
+            {moscowFormat(day, { month: 'long', year: moscowYear(day) !== moscowYear(new Date()) || moscowYear(days[0]) !== moscowYear(days[days.length - 1]) ? 'numeric' : undefined })}
           </Typography>
         </Box>
       ))}

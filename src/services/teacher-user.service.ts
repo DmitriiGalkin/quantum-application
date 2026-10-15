@@ -1,6 +1,7 @@
 import UserRepository from '../repositories/user.repository.js';
 import TeacherUserRepository from '../repositories/teacher-user.repository.js';
-import PlacePassportRepository from '../repositories/place-passport.repository.js';
+import { StudentAccessService } from './student-access.service.js';
+import PlaceTeacherService from './placeTeacher.service.js';
 
 export class TeacherUserService {
   static async findByTeacherId(teacherId: number) {
@@ -23,12 +24,7 @@ export class TeacherUserService {
       throw new Error('passportId обязателен для getPlaceUsers');
     }
 
-    const teachers = await PlacePassportRepository.findTeachers(placeId);
-
-    const rows = await Promise.all(teachers.map(row => TeacherUserRepository.findByTeacherId(row.id)));
-
-    const users = await Promise.all(rows.flat().map(row => UserRepository.findById(row.userId)));
-
-    return users;
+    await PlaceTeacherService.requireAdmin(passportId, placeId);
+    return StudentAccessService.forPlace(placeId);
   }
 }

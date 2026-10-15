@@ -1,4 +1,5 @@
 import type { MeetDto } from '../../../entities/meet.ts';
+import { DAY_MS, informationDate, moscowDay, moscowFormat } from '../../meets/moscow-time.ts';
 
 export function upcomingPublishedMeets(meets: MeetDto[], now = new Date()): MeetDto[] {
   return meets.filter(meet => !meet.deletedAt && meet.status === 'published'
@@ -7,9 +8,7 @@ export function upcomingPublishedMeets(meets: MeetDto[], now = new Date()): Meet
 }
 
 export function formatMoscowMeet(meet: MeetDto): string {
-  return `${new Date(meet.startedAt).toLocaleString('ru-RU', {
-    day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow',
-  })} МСК`;
+  return `${informationDate(meet.startedAt)}, ${moscowFormat(meet.startedAt, { hour: '2-digit', minute: '2-digit' })} МСК`;
 }
 
 export function nextProjectMeet(meets: MeetDto[], now = new Date()): MeetDto | undefined {
@@ -18,7 +17,8 @@ export function nextProjectMeet(meets: MeetDto[], now = new Date()): MeetDto | u
     .sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime() || a.id - b.id)[0];
 }
 
-export function moscowMeetStatus(meet: MeetDto, now = new Date()): 'today' | 'upcoming' {
-  const day = (date: Date) => date.toLocaleDateString('en-CA', { timeZone: 'Europe/Moscow' });
-  return day(new Date(meet.startedAt)) === day(now) ? 'today' : 'upcoming';
+export function moscowMeetStatus(meet: MeetDto, now = new Date()): 'today' | 'tomorrow' | null {
+  const day = moscowDay(meet.startedAt);
+  if (day === moscowDay(now)) return 'today';
+  return day === moscowDay(now) + DAY_MS ? 'tomorrow' : null;
 }

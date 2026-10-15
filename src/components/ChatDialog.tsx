@@ -6,18 +6,24 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
-import { fetchStartChat } from '../requests.ts';
+import { fetchParentConversation, fetchStartChat } from '../requests.ts';
 import { useAuth } from '../providers/auth-context.ts';
 import ConversationPanel from './ConversationPanel.tsx';
 
-export default function ChatDialog({ open, teacherId, onClose }: { open: boolean; teacherId: number; onClose: () => void }) {
+type ChatDialogProps = { open: boolean; onClose: () => void } & ({ teacherId: number; parentUserId?: never } | { parentUserId: number; teacherId?: never });
+
+export default function ChatDialog({ open, teacherId, parentUserId, onClose }: ChatDialogProps) {
   const { passport } = useAuth();
-  const chat = useQuery({ queryKey: ['chat', passport?.id, teacherId], queryFn: () => fetchStartChat(teacherId), enabled: open && !!passport, retry: false });
+  const { placeId, role } = useAuth();
+  const parent = parentUserId !== undefined;
+  const chat = useQuery({ queryKey: ['chat', passport?.id, parent ? 'parent' : 'teacher', parentUserId ?? teacherId, role, placeId],
+    queryFn: () => parentUserId !== undefined ? fetchParentConversation(parentUserId) : fetchStartChat(teacherId!),
+    enabled: open && !!passport, retry: false, staleTime: 0 });
   return <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-    <DialogTitle>Чат с преподавателем</DialogTitle>
+    <DialogTitle>{parent ? 'Чат с родителем' : 'Чат с преподавателем'}</DialogTitle>
     <DialogContent>
-      {!passport ? <Typography>Войдите, чтобы написать преподавателю.</Typography>
-        : chat.isPending ? <Typography>Загрузка диалога…</Typography>
+      {!passport ? <Typography>Войдите, чтобы открыть диалог.</Typography>
+        : chat.isPending || (parent && chat.isFetching) ? <Typography>Загрузка диалога…</Typography>
           : chat.isError ? <Alert severity="error" action={<Button onClick={() => void chat.refetch()}>Повторить</Button>}>Не удалось открыть диалог.</Alert>
             : <ConversationPanel key={`${passport.id}:${chat.data.conversation.id}`} conversationId={chat.data.conversation.id} />}
     </DialogContent>

@@ -49,7 +49,7 @@ export class FileService {
   }
 
   /** Shared S3 implementation for HTTP uploads and catalog originals. */
-  static async uploadBuffer(buffer: Buffer, originalFilename: string, mimetype?: string, key?: string): Promise<string> {
+  static async uploadBuffer(buffer: Buffer, originalFilename: string, mimetype?: string, key?: string, signal?: AbortSignal): Promise<string> {
     if (!buffer.length) throw new HttpError('EMPTY_FILE', 400);
     const filename = key ?? `${randomUUID()}${path.extname(originalFilename)}`;
 
@@ -61,7 +61,7 @@ export class FileService {
       CacheControl: 'max-age=' + 3600 * 24 * 365,
     };
 
-    await s3Client.send(new PutObjectCommand(params));
+    await s3Client.send(new PutObjectCommand(params), { abortSignal: signal });
 
     return this.publicUrl + filename;
   }

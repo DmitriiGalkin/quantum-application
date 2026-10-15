@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../providers/auth-context.ts';
 import { fetchConversation, fetchCreateMessage } from '../requests.ts';
+import { informationDateTime } from '../features/meets/moscow-time.ts';
 
 export default function ConversationPanel({ conversationId }: { conversationId: number }) {
   const { passport } = useAuth();
@@ -36,7 +37,7 @@ export default function ConversationPanel({ conversationId }: { conversationId: 
       }}>
         <Typography variant="caption">{message.senderPassportId === passport.id ? 'Вы' : history.data.conversation.counterpart?.title || 'Собеседник'}</Typography>
         <Typography sx={{ whiteSpace: 'pre-wrap' }}>{message.text}</Typography>
-        <Typography variant="caption" color="text.secondary">{new Date(message.createdAt).toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })} МСК</Typography>
+        <Typography variant="caption" color="text.secondary">{informationDateTime(message.createdAt)} МСК</Typography>
       </Box>)}
     </Stack>
     {!history.data.messages.length && <Typography color="text.secondary">Сообщений пока нет. Напишите первым.</Typography>}
