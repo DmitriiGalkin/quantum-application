@@ -15,7 +15,7 @@ interface TeacherCardProps {
 }
 
 export default function TeacherCard({ teacher, actions, highlighted = false }: TeacherCardProps) {
-  return <Card sx={{ height: '100%', bgcolor: highlighted ? 'rgba(255,160,40,.1)' : undefined }}>
+  return <Card sx={{ height: '100%', bgcolor: highlighted ? 'action.selected' : undefined }}>
     <CardContent><Stack spacing={1}>
       <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
         <Avatar src={teacher.image ?? undefined} alt={teacher.title} sx={{ width: 72, height: 72 }} />

@@ -1,5 +1,5 @@
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../../../components/ClosableDialogTitle.tsx';
 import DialogContent from '@mui/material/DialogContent';
 import { useCreateProject } from '../hooks/useCreateProject';
 import ProjectForm from './ProjectForm.tsx';
@@ -10,14 +10,14 @@ interface Props {
 }
 
 export function CreateProjectDialog({ open, onClose }: Props) {
-  const { form, setForm, onSubmit, loading } = useCreateProject();
+  const { form, setForm, onSubmit, loading, error } = useCreateProject();
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Создать проект</DialogTitle>
+      <ClosableDialogTitle onClose={onClose}>Создать проект</ClosableDialogTitle>
 
       <DialogContent sx={{ pt: 2 }}>
-        <ProjectForm values={form} onChange={setForm} onSubmit={onSubmit} loading={loading} submitLabel="Создать проект" />
+        <ProjectForm values={form} onChange={setForm} onSubmit={onSubmit} loading={loading} error={error} submitLabel="Создать проект" />
       </DialogContent>
     </Dialog>
   );

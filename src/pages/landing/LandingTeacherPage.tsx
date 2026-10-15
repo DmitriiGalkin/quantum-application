@@ -15,7 +15,6 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Hero from 'components/Hero.tsx';
 import { FeatureCard } from 'components/FeatureCard.tsx';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../providers/auth-context.ts';
 import { usePostAuthAction } from '../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../shared/lib/useRunPostAuthAction.ts';
@@ -25,7 +24,6 @@ import { CreateProjectDialog } from '../../features/project/ui/CreateProjectDial
 const CREATE_TEACHER_TYPE = 'create-teacher';
 
 export function LandingTeacherPage() {
-  const navigate = useNavigate();
   const { authHandler, passport } = useAuth();
   const { setAction } = usePostAuthAction();
   const [isCreateProjectDialogOpen, setIsCreateProjectDialogOpen] = useState(false);
@@ -34,20 +32,19 @@ export function LandingTeacherPage() {
     if (!passport) {
       setAction({
         type: CREATE_TEACHER_TYPE,
-        payload: { ideaId: 1 },
       });
 
       return authHandler();
     }
 
-    navigate('/teacher/projects/create');
+    setIsCreateProjectDialogOpen(true);
   };
 
   useRunPostAuthAction(passport, action => {
     if (action.type === CREATE_TEACHER_TYPE) {
-      navigate('/teacher/projects/create');
+      setIsCreateProjectDialogOpen(true);
     }
-  });
+  }, action => action.type === CREATE_TEACHER_TYPE);
 
   return (
     <>
@@ -61,19 +58,19 @@ export function LandingTeacherPage() {
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 5, justifyContent: 'center' }}>
-          <Button variant="contained" size="large" onClick={() => setIsCreateProjectDialogOpen(true)}>
+          <Button variant="contained" size="large" onClick={onCreate}>
             Стать преподавателем
           </Button>
 
           <CreateProjectDialog open={isCreateProjectDialogOpen} onClose={() => setIsCreateProjectDialogOpen(false)} />
 
-          <Button variant="outlined" size="large">
+          <Button variant="outlined" size="large" href="#how-it-works">
             Подробнее
           </Button>
         </Stack>
       </Hero>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container id="how-it-works" maxWidth="lg" sx={{ py: 8 }}>
         <Stack spacing={10}>
           <Grid container spacing={4}>
             {[

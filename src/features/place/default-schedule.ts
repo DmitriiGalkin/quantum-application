@@ -7,6 +7,6 @@ export const DEFAULT_PLACE_SCHEDULE: PlaceScheduleDayDto[] = [
   { weekday: 4, enabled: true, startTime: '09:00', endTime: '21:00' },
   { weekday: 5, enabled: true, startTime: '09:00', endTime: '21:00' },
   { weekday: 6, enabled: true, startTime: '10:00', endTime: '18:00' },
-  { weekday: 0, enabled: false, startTime: '09:00', endTime: '21:00' },
+  { weekday: 7, enabled: false, startTime: '09:00', endTime: '21:00' },
 ];
 

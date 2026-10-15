@@ -1,5 +1,5 @@
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../../components/ClosableDialogTitle.tsx';
 import DialogContent from '@mui/material/DialogContent';
 import LocationForm from './LocationForm.tsx';
 import { useCreateLocation } from './hooks/useCreateLocation.ts';
@@ -15,7 +15,7 @@ export function CreateLocationDialog({ open, onClose }: Props) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Добавьте кабинет</DialogTitle>
+      <ClosableDialogTitle onClose={onClose}>Добавьте кабинет</ClosableDialogTitle>
 
       <DialogContent sx={{ pt: 2 }}>
         {error && <Alert severity="error">{error.message}</Alert>}

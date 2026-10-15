@@ -13,9 +13,9 @@ type Props = {
 
 export function PlaceScheduleRow({ label, value, onChange }: Props) {
   return (
-    <Stack direction="row" spacing={2} sx={{alignItems: 'center'}}>
+    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: { xs: 'stretch', sm: 'center' } }}>
       <FormControlLabel
-        sx={{ width: 170, flexShrink: 0 }}
+        sx={{ width: { xs: 'auto', sm: 170 }, flexShrink: 0 }}
         control={
           <Checkbox
             checked={value.enabled}
@@ -33,6 +33,9 @@ export function PlaceScheduleRow({ label, value, onChange }: Props) {
       {value.enabled ? (
         <>
           <TextField
+            label="Начало"
+            slotProps={{ inputLabel: { shrink: true }, htmlInput: { 'aria-label': `${label}: начало работы` } }}
+            sx={{ minWidth: 0, flex: 1 }}
             size="small"
             type="time"
             value={value.startTime}
@@ -42,13 +45,14 @@ export function PlaceScheduleRow({ label, value, onChange }: Props) {
                 startTime: e.target.value,
               })
             }
-            //InputLabelProps={{ shrink: true }}
-            //inputProps={{ step: 300 }}
           />
 
-          <Typography>—</Typography>
+          <Typography aria-hidden sx={{ display: { xs: 'none', sm: 'block' } }}>—</Typography>
 
           <TextField
+            label="Окончание"
+            slotProps={{ inputLabel: { shrink: true }, htmlInput: { 'aria-label': `${label}: окончание работы` } }}
+            sx={{ minWidth: 0, flex: 1 }}
             size="small"
             type="time"
             value={value.endTime}
@@ -58,8 +62,6 @@ export function PlaceScheduleRow({ label, value, onChange }: Props) {
                 endTime: e.target.value,
               })
             }
-            //InputLabelProps={{ shrink: true }}
-            //inputProps={{ step: 300 }}
           />
         </>
       ) : (

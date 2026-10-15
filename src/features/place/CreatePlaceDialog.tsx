@@ -1,5 +1,5 @@
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../../components/ClosableDialogTitle.tsx';
 import DialogContent from '@mui/material/DialogContent';
 import PlaceForm from './PlaceForm.tsx';
 import { useCreatePlace } from './hooks/useCreatePlace.ts';
@@ -10,14 +10,14 @@ interface Props {
 }
 
 export function CreatePlaceDialog({ open, onClose }: Props) {
-  const { form, setForm, onSubmit, loading } = useCreatePlace();
+  const { form, setForm, onSubmit, loading, error } = useCreatePlace();
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Создать учебный центр</DialogTitle>
+      <ClosableDialogTitle onClose={onClose}>Создать учебный центр</ClosableDialogTitle>
 
       <DialogContent>
-        <PlaceForm values={form} onChange={setForm} onSubmit={onSubmit} loading={loading} submitLabel="Создать центр" />
+        <PlaceForm values={form} onChange={setForm} onSubmit={onSubmit} loading={loading} error={error} submitLabel="Создать центр" />
       </DialogContent>
     </Dialog>
   );

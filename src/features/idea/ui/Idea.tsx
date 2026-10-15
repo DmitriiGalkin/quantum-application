@@ -5,8 +5,8 @@ import IdeaGallery from './IdeaGallery.tsx';
 import EditIdeaDialog from './EditIdeaDialog.tsx';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchCreateProject, generateImage } from '../../../requests.ts';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetchCreateProject, fetchPlaces, generateImage } from '../../../requests.ts';
 import IconButton from '@mui/material/IconButton';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import Like from './Like.tsx';
@@ -19,43 +19,14 @@ import { useNavigate } from 'react-router-dom';
 import type { PlaceDto, IdeaDto } from 'entities';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../../../components/ClosableDialogTitle.tsx';
+import Alert from '@mui/material/Alert';
 import DialogContent from '@mui/material/DialogContent';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
-
-const mockPlaces: PlaceDto[] = [
-  {
-    id: 1,
-    title: 'Онлайн',
-    description: 'Проведение занятий через Zoom / Google Meet',
-    address: 'Онлайн',
-    latitude: 0,
-    longitude: 0,
-    priceFrom: 0,
-  },
-  {
-    id: 2,
-    title: 'Школа №123',
-    description: 'Класс с оборудованием для занятий',
-    address: 'г. Москва, ул. Ленина, 10',
-    latitude: 55.75,
-    longitude: 37.61,
-    priceFrom: 500,
-  },
-  {
-    id: 3,
-    title: 'Коворкинг для детей',
-    description: 'Пространство для проектной работы',
-    address: 'г. Москва, ул. Тверская, 5',
-    latitude: 55.76,
-    longitude: 37.62,
-    priceFrom: 800,
-  },
-];
 
 const CREATE_PROJECT_TYPE = 'create-project-type';
 
@@ -66,6 +37,8 @@ function Idea({ idea }: { idea: IdeaDto }) {
   const { setAction } = usePostAuthAction();
   const [isPlaceModalOpen, setPlaceModalOpen] = useState(false);
   const [editing, setEditing] = useState(false);
+  const canEdit = Boolean(passport && (idea.passportId === null || idea.passportId === passport.id));
+  const places = useQuery({ queryKey: ['places'], queryFn: fetchPlaces, enabled: isPlaceModalOpen });
 
   useRunPostAuthAction(passport, action => {
     if (action.type === CREATE_PROJECT_TYPE && action.payload?.ideaId === idea.id) {
@@ -100,12 +73,13 @@ function Idea({ idea }: { idea: IdeaDto }) {
   };
 
   const handlePlaceSelect = (place: PlaceDto) => {
-    setPlaceModalOpen(false);
-
     createProject.mutate(
       { ideaId: idea.id, placeId: place.id, title: idea.title, description: idea.description, image: idea.image },
       {
         onSuccess: projectId => {
+          setPlaceModalOpen(false);
+          void queryClient.invalidateQueries({ queryKey: ['passport'] });
+          void queryClient.invalidateQueries({ queryKey: ['projects'] });
           navigate('/project/' + projectId);
         },
       },
@@ -113,11 +87,11 @@ function Idea({ idea }: { idea: IdeaDto }) {
   };
 
   return (
-    <Card sx={{ mb: 3, borderRadius: 3, display: 'grid', gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) minmax(0, 2fr)' }, '& > *': { minWidth: 0 } }}>
+    <Card sx={{ mb: 3, borderRadius: 3, display: 'grid', gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) minmax(0, 2fr)' }, overflowWrap: 'anywhere', '& > *': { minWidth: 0 } }}>
       <Box sx={{ position: 'relative', width: '100%' }}>
         <IdeaGallery key={idea.id} idea={idea} />
         {/* Блок с кнопкой генерации */}
-        <Box
+        {canEdit && <Box
           sx={{
             position: 'absolute',
             top: 8,
@@ -133,12 +107,13 @@ function Idea({ idea }: { idea: IdeaDto }) {
           }}
         >
           {generateImageMutation.isPending && (
-            <Typography className="blink" sx={{ color: 'text.secondary', paddingLeft: 1 }}>
+            <Typography role="status" className="blink" sx={{ color: 'text.secondary', paddingLeft: 1 }}>
               Генерирую...
             </Typography>
           )}
           <IconButton
             aria-label="Сгенерировать обложку"
+            disabled={generateImageMutation.isPending}
             onClick={e => {
               e.stopPropagation();
               generateImageMutation.mutate(idea.id);
@@ -146,9 +121,10 @@ function Idea({ idea }: { idea: IdeaDto }) {
           >
             <AutoAwesome fontSize="large" />
           </IconButton>
-        </Box>
+        </Box>}
       </Box>
       <CardContent sx={{ gridColumn: { md: 2 }, gridRow: { md: 1 } }}>
+        {generateImageMutation.isError && <Alert severity="error">Не удалось создать обложку. Попробуйте ещё раз.</Alert>}
         <Stack spacing={1}>
           <Typography component="h1" variant="h4">
             {idea.title}
@@ -168,7 +144,7 @@ function Idea({ idea }: { idea: IdeaDto }) {
           {idea.user && <Author user={idea.user} />}
         </Stack>
       </CardContent>
-      {passport && (idea.passportId === null || idea.passportId === passport.id) && (
+      {canEdit && (
         <CardActions sx={{ p: 2 }}><Button onClick={() => setEditing(true)}>Редактировать идею</Button></CardActions>
       )}
       {editing && <EditIdeaDialog idea={idea} onClose={() => setEditing(false)} />}
@@ -185,12 +161,16 @@ function Idea({ idea }: { idea: IdeaDto }) {
               </Button>
             </Stack>
           </CardActions>
-          <Dialog open={isPlaceModalOpen} onClose={() => setPlaceModalOpen(false)}>
-            <DialogTitle>Выберите место</DialogTitle>
+          <Dialog open={isPlaceModalOpen} onClose={createProject.isPending ? undefined : () => setPlaceModalOpen(false)} fullWidth maxWidth="sm">
+            <ClosableDialogTitle onClose={() => setPlaceModalOpen(false)} disabled={createProject.isPending}>Выберите центр</ClosableDialogTitle>
             <DialogContent>
+              {places.isPending && <Typography role="status">Загрузка центров…</Typography>}
+              {places.isError && <Alert severity="error" action={<Button onClick={() => void places.refetch()}>Повторить</Button>}>Не удалось загрузить центры.</Alert>}
+              {places.data?.length === 0 && <Typography>Доступных центров пока нет.</Typography>}
+              {createProject.isError && <Alert severity="error">{createProject.error.message}</Alert>}
               <List>
-                {mockPlaces.map(place => (
-                  <ListItemButton key={place.id} onClick={() => handlePlaceSelect(place)}>
+                {places.data?.map(place => (
+                  <ListItemButton key={place.id} disabled={createProject.isPending} onClick={() => handlePlaceSelect(place)} sx={{ overflowWrap: 'anywhere' }}>
                     <ListItemText
                       primary={place.title || 'Без названия'}
                       secondary={`${place.address}${place.priceFrom ? ` • от ${place.priceFrom} ₽` : ''}`}

@@ -1,84 +1,52 @@
-import React from 'react';
+﻿import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import Alert from '@mui/material/Alert';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { fetchUserDashboard } from '../../requests.ts';
+import { fetchMeets, fetchUserDashboard } from '../../requests.ts';
 import Projects from '../../features/project/ui/Projects.tsx';
+import MeetCard from '../../features/meets/MeetCard.tsx';
 import { useFilters } from '../../features/idea/hooks/useFilters.ts';
+import { useAuth } from '../../providers/auth-context.ts';
+import FamilyAccess from '../../features/user/FamilyAccess.tsx';
+import { userMeetSections } from '../../features/user/user-meet-sections.ts';
 
-const UserHomePage: React.FC = () => {
-  const filter = useFilters({ projects: true });
-  // Запрос активных проектов текущего пользователя
-  const {
-    data: user,
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery({
-    queryKey: ['userProjects'],
-    queryFn: fetchUserDashboard,
-  });
-
-  if(!user) return null;
-
-  return (
+export default function UserHomePage() {
+  const filter = useFilters({ projects: true, compactViews: true });
+  const { passport, userId, role } = useAuth();
+  const enabled = role === 'user' && Boolean(userId);
+  const projects = useQuery({ queryKey: ['user-dashboard', userId], queryFn: fetchUserDashboard, enabled });
+  const meets = useQuery({ queryKey: ['meets', 'user', userId], queryFn: fetchMeets, enabled });
+  const next = userMeetSections(meets.data ?? []).upcoming.find(meet => meet.status === 'published');
+  const child = passport?.users.find(user => user.id === userId);
+  const needsPayment = next && !next.isPaid && next.price !== null && next.price > 0;
+  return <FamilyAccess><Stack spacing={3}>
+    <Typography component="h1" variant="h4">{child?.title ? `Кабинет · ${child.title}` : 'Семейный кабинет'}</Typography>
     <Grid container spacing={3}>
-      {/* Секция: Следующее действие */}
-      <Grid size={{ xs: 12, md: 6 }}>
-        <Box
-          sx={{
-            border: '1px solid #e0e0e0',
-            borderRadius: 2,
-            p: 3,
-            backgroundColor: 'background.paper',
-          }}
-        >
-          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-            Следующее действие
-          </Typography>
-          <Typography variant="body1">Здесь будет отображаться следующее запланированное действие (встреча, сообщение и т.д.)</Typography>
-        </Box>
-      </Grid>
-
-      {/* Секция: Ближайшая встреча */}
-      <Grid size={{ xs: 12, md: 6 }}>
-        <Box
-          sx={{
-            border: '1px solid #e0e0e0',
-            borderRadius: 2,
-            p: 3,
-            backgroundColor: 'background.paper',
-          }}
-        >
-          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-            Ближайшая встреча
-          </Typography>
-          <Typography variant="body1">Информация о ближайшей встрече появится здесь</Typography>
-        </Box>
-      </Grid>
-
-      {/* Секция: Активные проекты */}
-      <Grid size={12}>
-          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-            Мои активные проекты
-          </Typography>
-          {isLoading ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-              <CircularProgress />
-            </Box>
-          ) : isError ? (
-            <Alert severity="error">Ошибка при загрузке проектов</Alert>
-          ) : user.projects && user.projects.length > 0 ? (
-            <Projects filter={filter} projects={user.projects} refetch={refetch} preserveOrder />
-          ) : (
-            <Typography variant="body1">У вас пока нет активных проектов</Typography>
-          )}
-      </Grid>
+      <Grid size={{ xs: 12, md: 7 }}><Stack spacing={2}>
+        <Typography component="h2" variant="h5">Ближайшая встреча</Typography>
+        {meets.isPending ? <Typography role="status">Загрузка встреч…</Typography>
+          : meets.isError ? <Alert severity="error" action={<Button onClick={() => void meets.refetch()}>Повторить</Button>}>Не удалось загрузить встречи.</Alert>
+            : next ? <MeetCard meet={next} refetch={() => void meets.refetch()} />
+              : <Card><CardContent><Stack spacing={2}><Typography>Ближайших подтверждённых встреч пока нет.</Typography><Button component={Link} to="/" variant="contained">Найти проект для ребёнка</Button></Stack></CardContent></Card>}
+      </Stack></Grid>
+      <Grid size={{ xs: 12, md: 5 }}><Card><CardContent><Stack spacing={2}>
+        <Typography component="h2" variant="h5">Следующий шаг</Typography>
+        {meets.isPending ? <Typography role="status">Проверяем расписание…</Typography>
+          : meets.isError ? <Typography>Обновите встречи, чтобы увидеть следующий шаг.</Typography>
+            : next ? <><Typography>{needsPayment ? 'Участие в ближайшей встрече ещё не оплачено. Проверьте сведения и перейдите к оплате.' : 'Проверьте время и адрес ближайшей встречи.'}</Typography><Button component={Link} variant="contained" to={`/project/${next.projectId}#meet-${next.id}`}>{needsPayment ? 'Проверить участие и оплату' : 'Открыть встречу'}</Button></>
+              : <Typography>Выберите проект по интересам ребёнка и запишитесь на подходящую встречу.</Typography>}
+        <Button component={Link} to="/user/meets">Все мои встречи</Button>
+        {userId && <Button component={Link} to={`/users/${userId}`}>Профиль ребёнка</Button>}
+      </Stack></CardContent></Card></Grid>
     </Grid>
-  );
-};
-
-export default UserHomePage;
+    {projects.isPending ? <Typography role="status">Загрузка проектов…</Typography>
+      : projects.isError ? <Alert severity="error" action={<Button onClick={() => void projects.refetch()}>Повторить</Button>}>Не удалось загрузить проекты.</Alert>
+        : <Projects title="Мои проекты" filter={filter} projects={projects.data?.projects ?? []} refetch={() => void projects.refetch()} preserveOrder withoutIdea
+          emptyText="У ребёнка пока нет проектов. Начните с выбора проекта в каталоге." />}
+  </Stack></FamilyAccess>;
+}

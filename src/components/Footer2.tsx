@@ -4,6 +4,7 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { FooterSection } from './FooterSection.tsx';
+import Link from '@mui/material/Link';
 
 const sections = [
   {
@@ -34,7 +35,15 @@ const sections = [
   },
 ];
 
-export function Footer() {
+export function Footer({ compact = false }: { compact?: boolean }) {
+  if (compact) return <Box component="footer" sx={{ mt: 'auto', px: { xs: 2, md: 4 }, py: 3, borderTop: 1, borderColor: 'divider' }}>
+    <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 2, alignItems: 'center' }}>
+      <Typography variant="body2" color="text.secondary">Quantum · учиться, создавая</Typography>
+      <Link href="/terms" variant="body2">Условия</Link>
+      <Link href="/privacy" variant="body2">Конфиденциальность</Link>
+      <Link href="mailto:4757037@google.com" variant="body2">Поддержка</Link>
+    </Stack>
+  </Box>;
   return (
     <Box
       component="footer"

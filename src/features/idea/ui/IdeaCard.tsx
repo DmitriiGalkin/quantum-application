@@ -1,6 +1,6 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import ProjectImage from '../../../components/ProjectImage.tsx';
 import Typography from '@mui/material/Typography';
 import type { IdeaDto } from 'entities';
 import CardActionArea from '@mui/material/CardActionArea';
@@ -31,10 +31,10 @@ function IdeaCard({ idea }: IdeaCardProps) {
       }}
     >
       <CardActionArea component={Link} to={`/idea/${idea.id}`} sx={{ color: 'inherit', textDecoration: 'none' }}>
-        <CardMedia component="img" alt={idea.title} image={idea.image || `/bg.jpeg`} sx={{ height: { xs: 240, sm: 280 }, objectFit: 'cover' }} />
+        <ProjectImage src={idea.image} alt={idea.title} />
 
         <CardContent sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom noWrap>
+          <Typography variant="h6" sx={{ fontWeight: 600, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'anywhere' }} gutterBottom>
             {idea.title}
           </Typography>
 

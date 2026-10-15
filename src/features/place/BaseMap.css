@@ -9,7 +9,7 @@
     width: 25px;
     height: 25px;
     border-radius: 50% 50% 50% 0;
-    background: #FF8F28;
+    background: var(--quantum-primary, #6742B8);
     position: absolute;
     transform: rotate(-45deg);
     left: 0;

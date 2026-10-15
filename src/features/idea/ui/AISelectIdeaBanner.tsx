@@ -6,10 +6,10 @@ export default function AISelectIdeaBanner() {
 
   return (
     <AIBanner
-      title="Найдите идею для проекта за пару минут"
-      description="ИИ подберёт идею под ваши интересы и формат обучения — быстро, точно и без лишнего поиска."
-      buttonText="Подобрать идею"
-      onClick={() => navigate('/ideas/select')}
+      title="Выберите идею для проекта"
+      description="Посмотрите библиотеку идей и найдите основу для следующего проекта."
+      buttonText="Открыть библиотеку"
+      onClick={() => navigate('/ideas')}
     />
   );
 }

@@ -21,6 +21,14 @@ export default function MeetDateField({ value, schedule, onChange }: Props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
       <DateCalendar
+        sx={{
+          width: '100%', maxWidth: 320, minWidth: 0,
+          '& .MuiPickersCalendarHeader-root': { mx: 0, px: 0 },
+          '& .MuiPickersCalendarHeader-labelContainer': { minWidth: 0, mr: 0 },
+          '& .MuiDayCalendar-header, & .MuiDayCalendar-weekContainer': { justifyContent: 'space-between' },
+          '& .MuiDayCalendar-weekDayLabel': { width: 'calc(100% / 7)', mx: 0 },
+          '& .MuiPickerDay-root': { flex: '1 1 0', minWidth: 0, maxWidth: 36, height: 'auto', aspectRatio: '1', mx: 0 },
+        }}
         referenceDate={new Date(`${moscowInput(new Date()).date}T12:00:00`)}
         value={value ? new Date(`${value}T00:00:00`) : null}
         onChange={date => {

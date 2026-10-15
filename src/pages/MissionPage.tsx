@@ -76,11 +76,11 @@ export default function MissionPage() {
 
         {/* Values */}
 
-        <Typography variant="h4" sx={{ fontWeight: 700, color: 'white' }} gutterBottom>
+        <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }} gutterBottom>
           Во что мы верим
         </Typography>
 
-        <Grid container spacing={4} sx={{ mt: 2, color: 'white' }}>
+        <Grid container spacing={4} sx={{ mt: 2, color: 'text.primary' }}>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack spacing={4}>
               <Stack direction="row" spacing={2}>

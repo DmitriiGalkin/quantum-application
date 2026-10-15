@@ -24,17 +24,18 @@ export default function PlaceLocationsPage() {
     queryFn: fetchPlaceLocations,
     enabled: Boolean(placeId),
   });
+  if (!placeId) return <Typography>Выберите центр в меню профиля.</Typography>;
 
   return (
     <>
       <Stack spacing={1}>
         <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h5" sx={{ color: 'white' }}>
+          <Typography variant="h5" sx={{ color: 'text.primary' }}>
             Кабинеты
           </Typography>
 
           <IconButton aria-label="Добавить зал" onClick={() => setOpen(true)}>
-            <DomainAddIcon sx={{ color: 'white' }} />
+            <DomainAddIcon sx={{ color: 'text.primary' }} />
           </IconButton>
         </Stack>
 

@@ -26,6 +26,8 @@ import MenuItem from '@mui/material/MenuItem';
 import type { ActiveRole } from 'entities';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import { colors, headerHeight, sidebarWidth } from '../theme/design-tokens';
 
 function Header() {
   const navigate = useNavigate();
@@ -36,6 +38,11 @@ function Header() {
   const [isMenu2Open, setIsMenu2Open] = useState(false);
   const [accountMenuAnchor, setAccountMenuAnchor] = useState<null | HTMLElement>(null);
   const isAccountMenuOpen = Boolean(accountMenuAnchor);
+  const activeUser = passport?.users?.find(user => user.id === userId);
+  const activePlace = passport?.places?.find(place => place.id === placeId);
+  const roleLabel = role === 'teacher' ? 'Кабинет преподавателя'
+    : role === 'place' ? `Центр · ${activePlace?.title || 'Кабинет центра'}`
+      : role === 'user' ? `Кабинет семьи · ${activeUser?.title || 'Ученик'}` : 'Мой аккаунт';
 
   const handleAccountMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAccountMenuAnchor(event.currentTarget);
@@ -67,35 +74,35 @@ function Header() {
         sx={{
           borderBottom: 1,
           borderColor: 'divider',
-          backgroundColor: 'rgba(255,255,255, 0.1)', // ← вот это важно
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
+          backgroundColor: 'background.paper',
         }}
       >
-        <Toolbar sx={{ px: { xs: 1, sm: 2 }, gap: { xs: 0.25, sm: 1 } }}>
+        <Toolbar sx={{ px: { xs: 1, sm: 3 }, gap: { xs: 0, sm: 1 }, minHeight: `${headerHeight}px !important` }}>
           {passport && <IconButton
             size="large"
             edge="start"
             aria-label="Открыть меню"
-            sx={{ color: 'white', flexShrink: 0, display: { xs: 'inline-flex', md: 'none' } }}
+            sx={{ flexShrink: 0, display: { xs: 'inline-flex', md: 'none' } }}
             onClick={() => setIsMenu2Open(currentValue => !currentValue)}
           >
             <MenuIcon />
           </IconButton>}
 
-          <Link to="/" style={{ textDecoration: 'none', flexGrow: 1 }}>
+          <Link to="/" style={{ textDecoration: 'none', flexGrow: 1, minWidth: 0 }}>
             <Typography
               variant="h6"
               component="div"
               sx={{
-                color: 'white', fontSize: { xs: 16, sm: 20 }, whiteSpace: 'nowrap',
+                color: 'text.primary', fontSize: { xs: 18, sm: 24 }, whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 1,
               }}
             >
+              <Box component="span" aria-hidden="true" sx={{ display: { xs: 'none', sm: 'grid' }, placeItems: 'center', width: 34, height: 34,
+                bgcolor: 'secondary.main', border: '2px solid', borderColor: 'text.primary', borderRadius: '12px 12px 6px 12px', transform: 'rotate(-6deg)', fontSize: 22 }}>q</Box>
               Quantum
             </Typography>
           </Link>
-          <Button component={Link} to="/" sx={{ color: 'white', minWidth: 0, px: 1 }}>Проекты</Button>
-          <IconButton aria-label="Сообщения" title="Сообщения" sx={{ color: 'white' }}
+          <Button component={Link} to="/" sx={{ minWidth: 0, px: 1 }}>Проекты</Button>
+          <IconButton aria-label="Сообщения" title="Сообщения"
             onClick={() => passport ? navigate('/chats') : authHandler('/chats')}>
             <ChatBubbleOutlineIcon />
           </IconButton>
@@ -107,11 +114,14 @@ function Header() {
                   aria-controls={isAccountMenuOpen ? 'account-menu' : undefined}
                   aria-haspopup="true"
                   aria-expanded={isAccountMenuOpen ? 'true' : undefined}
-                  sx={{ color: 'white' }}
+                  title={roleLabel}
                   onClick={handleAccountMenuOpen}
                 >
                   {getRoleIcon(role)}
                 </IconButton>
+                <Typography variant="body2" color="text.secondary" sx={{ display: { xs: 'none', md: 'block' }, maxWidth: 240, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {roleLabel}
+                </Typography>
 
                 <Menu
                   id="account-menu"
@@ -224,11 +234,12 @@ function Header() {
                 </Menu>
               </>
             ) : (
-              <IconButton onClick={() => authHandler()} color="primary" aria-label="Авторизация" sx={{ color: 'white' }}>
+              <IconButton onClick={() => authHandler()} color="primary" aria-label="Авторизация">
                 <KeyIcon />
               </IconButton>
             )}
         </Toolbar>
+        {passport && <Typography variant="body2" color="text.secondary" sx={{ display: { xs: 'block', md: 'none' }, px: 2, pb: 1, overflowWrap: 'anywhere' }}>{roleLabel}</Typography>}
       </AppBar>
 
       {passport && <Drawer
@@ -243,9 +254,9 @@ function Header() {
         <MenuLeft setIsMenuOpen={setIsMenu2Open} />
       </Drawer>}
       {passport && <Drawer variant="permanent" anchor="left"
-        sx={{ display: { xs: 'none', md: 'block' }, width: 72,
-          '& .MuiDrawer-paper': { width: 72, top: 64, height: 'calc(100% - 64px)', overflowX: 'hidden' } }}>
-        <MenuLeft compact />
+        sx={{ display: { xs: 'none', md: 'block' }, width: sidebarWidth,
+          '& .MuiDrawer-paper': { width: sidebarWidth, top: headerHeight, height: `calc(100% - ${headerHeight}px)`, overflowX: 'hidden', bgcolor: '#FFFDF8', borderColor: colors.border } }}>
+        <MenuLeft />
       </Drawer>}
     </>
   );

@@ -33,5 +33,6 @@ export function useCreateProject() {
     setForm,
     onSubmit: () => createProject.mutate(form),
     loading: createProject.isPending,
+    error: createProject.isError,
   };
 }

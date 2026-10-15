@@ -1,10 +1,9 @@
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { FooterLinks } from './FooterLinks.tsx';
 
 type FooterSectionProps = {
@@ -17,35 +16,31 @@ type FooterSectionProps = {
 
 export function FooterSection({ title, links }: FooterSectionProps) {
   const [open, setOpen] = useState(false);
+  const contentId = useId();
 
   return (
     <Box>
-      <Stack
-        direction="row"
+      <Button
+        fullWidth
+        aria-expanded={open}
+        aria-controls={contentId}
+        endIcon={open ? <RemoveIcon /> : <AddIcon />}
         onClick={() => setOpen(value => !value)}
         sx={{
-          minHeight: { xs: 30, md: 'auto' },
-          cursor: { xs: 'pointer', md: 'default' },
-          alignItems: 'center',
+          display: { xs: 'flex', md: 'none' },
           justifyContent: 'space-between',
+          color: 'text.primary', px: 0,
         }}
       >
-        <Typography variant="body2">{title}</Typography>
-
-        <IconButton size="small" sx={{ display: { xs: 'flex', md: 'none' } }}>
-          {open ? <RemoveIcon /> : <AddIcon />}
-        </IconButton>
-      </Stack>
+        {title}
+      </Button>
+      <Typography variant="body2" sx={{ display: { xs: 'none', md: 'block' } }}>{title}</Typography>
 
       <Box
         sx={{
-          display: 'grid',
-          gridTemplateRows: {
-            xs: open ? '1fr' : '0fr',
-            md: '1fr',
-          },
-          transition: 'grid-template-rows 200ms ease',
+          display: { xs: open ? 'block' : 'none', md: 'block' },
         }}
+        id={contentId}
       >
         <Box sx={{ minHeight: 0, overflow: 'hidden' }}>
           <FooterLinks links={links} />

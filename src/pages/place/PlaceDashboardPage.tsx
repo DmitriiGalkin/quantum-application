@@ -8,10 +8,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { fetchPlaceDashboard, fetchUpdatePlace } from '../../requests.ts';
+import { fetchPlaceDashboard, fetchPlaceMeets, fetchUpdatePlace } from '../../requests.ts';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../../components/ClosableDialogTitle.tsx';
 import DialogContent from '@mui/material/DialogContent';
 import PlaceForm, { type PlaceFormValues } from '../../features/place/PlaceForm.tsx';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,15 +19,21 @@ import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import { DEFAULT_PLACE_SCHEDULE } from '../../features/place/default-schedule.ts';
 import { useAuth } from '../../providers/auth-context.ts';
 import { formatMoney } from '../../utils/time.ts';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import MeetCard from '../../features/meets/MeetCard.tsx';
+import { upcomingPublishedMeets } from '../../features/project/ui/project-card-meeting.ts';
 
 export default function PlaceDashboardPage() {
   const { placeId } = useAuth();
   const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
 
-  const { data, refetch } = useQuery({
+  const { data, refetch, isPending, isError } = useQuery({
     queryKey: ['place-dashboard', placeId],
     queryFn: fetchPlaceDashboard,
+    enabled: Boolean(placeId),
   });
+  const meetings = useQuery({ queryKey: ['meets', 'place', placeId], queryFn: fetchPlaceMeets, enabled: Boolean(placeId) });
   const [draft, setDraft] = useState<{ placeId: number; values: PlaceFormValues } | null>(null);
   const place = data?.place;
 
@@ -55,18 +61,30 @@ export default function PlaceDashboardPage() {
     },
   });
 
-  if (!place || !data || !values) return null;
+  if (!placeId) return <Typography>Выберите центр в меню профиля.</Typography>;
+  if (isPending) return <Typography role="status">Загрузка кабинета центра…</Typography>;
+  if (isError) return <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить кабинет центра.</Alert>;
+  if (!place || !data || !values) return <Typography>Сведения о центре недоступны.</Typography>;
   const stats = data.stats;
+  const next = upcomingPublishedMeets(meetings.data ?? [])[0];
 
   return (
     <Stack spacing={3}>
       <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-        <Typography variant="h5" sx={{ color: 'white' }}>
+        <Typography variant="h5" sx={{ color: 'text.primary' }}>
           Кабинет центра
         </Typography>
-        <IconButton onClick={() => setIsPlaceModalOpen(true)}>
-          <EditIcon sx={{ color: 'white' }} />
+        <IconButton aria-label="Редактировать центр" onClick={() => setIsPlaceModalOpen(true)}>
+          <EditIcon sx={{ color: 'text.primary' }} />
         </IconButton>
+      </Stack>
+      {stats.pendingPlaceCount > 0 && <Alert severity="warning" action={<Button component={Link} to="/place/meets">Рассмотреть</Button>}>Ожидают решения: {stats.pendingPlaceCount} встреч.</Alert>}
+      <Stack spacing={2}>
+        <Typography component="h2" variant="h5">Ближайшая встреча в центре</Typography>
+        {meetings.isPending ? <Typography role="status">Загрузка встреч…</Typography>
+          : meetings.isError ? <Alert severity="error" action={<Button onClick={() => void meetings.refetch()}>Повторить</Button>}>Не удалось загрузить встречи центра.</Alert>
+            : next ? <MeetCard meet={next} management={{ placeId }} refetch={() => void meetings.refetch()} />
+              : <Typography>Ближайших подтверждённых встреч нет.</Typography>}
       </Stack>
 
       <Grid container spacing={2}>
@@ -168,7 +186,7 @@ export default function PlaceDashboardPage() {
       </Grid>
 
       <Dialog open={isPlaceModalOpen} onClose={() => setIsPlaceModalOpen(false)}>
-        <DialogTitle>Редактирование центра</DialogTitle>
+        <ClosableDialogTitle onClose={() => setIsPlaceModalOpen(false)}>Редактирование центра</ClosableDialogTitle>
         <DialogContent>
           <PlaceForm
             values={values}

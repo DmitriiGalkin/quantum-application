@@ -29,7 +29,7 @@ export function PlaceScheduleField({ value, onChange }: Props) {
       <CardContent>
         <Stack spacing={2}>
           {value.map((day, index) => (
-            <PlaceScheduleRow key={day.weekday} label={WEEKDAYS[day.weekday]} value={day} onChange={updated => handleChange(index, updated)} />
+            <PlaceScheduleRow key={day.weekday} label={WEEKDAYS[day.weekday % 7]} value={day} onChange={updated => handleChange(index, updated)} />
           ))}
         </Stack>
       </CardContent>

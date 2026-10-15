@@ -1,41 +1,67 @@
 import { createTheme } from '@mui/material/styles';
+import { bodyFont, colors, headingFont } from './design-tokens';
 
 export const theme = createTheme({
   palette: {
     mode: 'light',
-    primary: {
-      main: '#FFB628', // твой оранжевый
-    },
-    secondary: {
-      main: '#7139FF', //'#00a7e1'//'#1E3A8A', // тёмно-синий для контраста // 6B21A8 //
-    },
-    background: {
-      default: '#FFB628',
-      paper: '#ffffff',
-    },
-    text: {
-      primary: '#111827',
-      secondary: '#6b7280',
-    },
+    primary: { main: colors.primary, dark: colors.primaryHover, light: colors.selected, contrastText: colors.onPrimary },
+    secondary: { main: colors.honey, dark: colors.honeyHover, contrastText: colors.onHoney },
+    background: { default: colors.canvas, paper: colors.surface },
+    text: { primary: colors.textPrimary, secondary: colors.textSecondary, disabled: colors.disabledText },
+    divider: colors.border,
+    success: { main: colors.success }, warning: { main: colors.warning }, error: { main: colors.error },
+    info: { main: colors.primary, contrastText: colors.onPrimary },
+    action: { hover: '#F5F0FE', selected: colors.selected, disabled: colors.disabledText, disabledBackground: colors.disabledSurface },
+  },
+  // Keep the sx spacing multiplier stable; component radii are explicit below.
+  shape: { borderRadius: 4 },
+  typography: {
+    fontFamily: bodyFont,
+    h1: { fontFamily: headingFont, fontWeight: 800, fontSize: '2rem', lineHeight: 1.25 },
+    h2: { fontFamily: headingFont, fontWeight: 800, fontSize: '2rem', lineHeight: 1.25 },
+    h3: { fontFamily: headingFont, fontWeight: 800, fontSize: '1.75rem', lineHeight: 1.3 },
+    h4: { fontFamily: headingFont, fontWeight: 800, fontSize: '2rem', lineHeight: 1.25,
+      '@media (max-width:599.95px)': { fontSize: '1.625rem', lineHeight: '2rem' } },
+    h5: { fontFamily: headingFont, fontWeight: 800, fontSize: '1.375rem', lineHeight: '1.875rem' },
+    h6: { fontFamily: headingFont, fontWeight: 800, fontSize: '1.125rem', lineHeight: '1.625rem' },
+    body1: { fontSize: '1rem', lineHeight: 1.5 }, body2: { fontSize: '.875rem', lineHeight: '1.25rem' },
+    caption: { fontSize: '.75rem', lineHeight: '1rem' }, button: { textTransform: 'none', fontWeight: 600 },
   },
   components: {
-    MuiToggleButton: {
-      styleOverrides: {
-        root: {
-          color: '#fff',
-          borderColor: 'rgba(255,255,255,0.5)',
-
-          '&.Mui-selected': {
-            color: '#fff',
-            backgroundColor: 'rgba(255,255,255,0.2)',
-          },
-
-          '&:hover': {
-            backgroundColor: 'rgba(255,255,255,0.1)',
-          },
-
-        },
-      },
-    },
+    MuiCssBaseline: { styleOverrides: {
+      html: { fontSize: '100%' }, body: { margin: 0, '--quantum-primary': colors.primary },
+      'a:focus-visible, button:focus-visible, [role="button"]:focus-visible, .Mui-focusVisible': { outline: `3px solid ${colors.focus}`, outlineOffset: 3 },
+      '@media (prefers-reduced-motion: reduce)': { '*, *::before, *::after': { animation: 'none !important', transition: 'none !important', scrollBehavior: 'auto !important' } },
+    } },
+    MuiButton: { defaultProps: { disableElevation: true }, styleOverrides: {
+      root: { minHeight: 44, minWidth: 44, borderRadius: 12, overflowWrap: 'anywhere',
+        '&.MuiButton-contained.MuiButton-colorPrimary:not(.Mui-disabled)': { boxShadow: `0 3px 0 ${colors.onSelected}` } },
+      outlined: { borderColor: colors.controlBorder },
+    } },
+    MuiIconButton: { defaultProps: { color: 'primary' }, styleOverrides: { root: { minWidth: 44, minHeight: 44 } } },
+    MuiPaper: { styleOverrides: { rounded: { borderRadius: 12 } } },
+    MuiCard: { styleOverrides: { root: { borderRadius: 20, border: `1px solid ${colors.border}`, boxShadow: '0 3px 0 #EDE5F7' } } },
+    MuiCardContent: { styleOverrides: { root: { padding: 20, '&:last-child': { paddingBottom: 20 } } } },
+    MuiOutlinedInput: { styleOverrides: { root: { minHeight: 44, backgroundColor: colors.surface, borderRadius: 12 }, notchedOutline: { borderColor: colors.controlBorder }, input: { fontSize: '1rem', minWidth: 0 } } },
+    MuiInputLabel: { styleOverrides: { root: { color: colors.textSecondary } } },
+    MuiToggleButton: { styleOverrides: { root: {
+      minHeight: 44, minWidth: 44, borderRadius: 12, textTransform: 'none', color: colors.textSecondary, borderColor: colors.controlBorder,
+      '&.Mui-selected': { color: colors.onSelected, backgroundColor: colors.selected, '&:hover': { backgroundColor: colors.selected } },
+      '&:hover': { backgroundColor: '#F5F0FE' },
+    } } },
+    MuiMenu: { styleOverrides: { paper: { border: `1px solid ${colors.border}`, borderRadius: 16, boxShadow: '0 16px 48px #29234426', maxWidth: 'calc(100vw - 32px)' } } },
+    MuiMenuItem: { styleOverrides: { root: { minHeight: 44, whiteSpace: 'normal', overflowWrap: 'anywhere' } } },
+    MuiDialog: { styleOverrides: { paper: { borderRadius: 24, boxShadow: '0 16px 48px #29234426' }, paperFullScreen: { borderRadius: 0 } } },
+    MuiDialogTitle: { styleOverrides: { root: { fontFamily: headingFont, fontWeight: 800 } } },
+    MuiChip: { styleOverrides: { root: { borderRadius: 8, fontSize: '.875rem', maxWidth: '100%', height: 'auto', minHeight: 32 },
+      sizeSmall: { minHeight: 24 }, label: { whiteSpace: 'normal', paddingTop: 4, paddingBottom: 4 } } },
+    MuiTooltip: { styleOverrides: { tooltip: { fontSize: '.875rem' } } },
+    MuiAvatar: { styleOverrides: { colorDefault: { color: colors.onSelected, backgroundColor: colors.selected } } },
+    MuiSkeleton: { styleOverrides: { root: { backgroundColor: colors.disabledSurface } } },
+    MuiAlert: { styleOverrides: { root: { borderRadius: 16,
+      '&.MuiAlert-standard.MuiAlert-colorSuccess': { backgroundColor: colors.successSurface, color: colors.success },
+      '&.MuiAlert-standard.MuiAlert-colorWarning': { backgroundColor: colors.warningSurface, color: colors.warning },
+      '&.MuiAlert-standard.MuiAlert-colorError': { backgroundColor: colors.errorSurface, color: colors.error },
+    } } },
   },
 });

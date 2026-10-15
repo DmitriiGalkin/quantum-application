@@ -7,6 +7,7 @@ import type { PageMeta } from 'entities';
 import { AuthProvider } from './providers/AuthProvider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme/theme';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 const FRONTEND_SERVER = import.meta.env.FRONTEND_SERVER ?? 'http://localhost:4000';
@@ -108,6 +109,7 @@ export async function render(url: string) {
       <QueryClientProvider client={queryClient}>
         <StaticRouter location={url}>
           <ThemeProvider theme={theme}>
+            <CssBaseline />
             <AuthProvider>
               <Routers />
             </AuthProvider>

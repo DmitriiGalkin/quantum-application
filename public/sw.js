@@ -1,6 +1,6 @@
-const CACHE_NAME = 'quantum-pwa-v1';
+const CACHE_NAME = 'quantum-pwa-v3';
 
-const STATIC_ASSETS = ['/', '/manifest.webmanifest', '/icons/192.png', '/icons/512.png'];
+const STATIC_ASSETS = ['/', '/manifest.webmanifest', '/icons/192.png', '/icons/512.png', '/fonts/nunito.css', '/fonts/nunito-800.ttf'];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -15,7 +15,7 @@ self.addEventListener('activate', event => {
       .then(cacheNames =>
         Promise.all(
           cacheNames
-            .filter(cacheName => cacheName !== CACHE_NAME)
+            .filter(cacheName => cacheName.startsWith('quantum-pwa-') && cacheName !== CACHE_NAME)
             .map(cacheName => caches.delete(cacheName)),
         ),
       )
@@ -24,9 +24,9 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') {
+  if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) {
     return;
   }
 
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+  event.respondWith(fetch(event.request).catch(async () => (await caches.match(event.request)) ?? Response.error()));
 });

@@ -25,7 +25,7 @@ export default function ConversationPanel({ conversationId }: { conversationId: 
     },
   });
   if (!passport) return null;
-  if (history.isPending) return <Typography>Загрузка сообщений…</Typography>;
+  if (history.isPending) return <Typography role="status">Загрузка сообщений…</Typography>;
   if (history.isError) return <Alert severity="error" action={<Button onClick={() => void history.refetch()}>Повторить</Button>}>Диалог недоступен или не удалось загрузить сообщения.</Alert>;
   return <Stack spacing={2} sx={{ minWidth: 0 }}>
     <Typography component="h2" variant="h6">{history.data.conversation.counterpart?.title || 'Диалог'}</Typography>
@@ -41,7 +41,7 @@ export default function ConversationPanel({ conversationId }: { conversationId: 
     </Stack>
     {!history.data.messages.length && <Typography color="text.secondary">Сообщений пока нет. Напишите первым.</Typography>}
     <Box component="form" onSubmit={event => { event.preventDefault(); if (text.trim() && !send.isPending) send.mutate(text.trim()); }}
-      sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
+      sx={{ display: 'flex', gap: 1, alignItems: { xs: 'stretch', sm: 'flex-end' }, flexDirection: { xs: 'column', sm: 'row' } }}>
       <TextField fullWidth multiline maxRows={5} label="Сообщение" value={text} disabled={send.isPending} onChange={event => setText(event.target.value)} />
       <Button type="submit" variant="contained" disabled={send.isPending || !text.trim()}>Отправить</Button>
     </Box>

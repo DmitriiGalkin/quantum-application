@@ -18,7 +18,7 @@ export function RentalDialog({ form, rooms }: { form: ReturnType<typeof useRenta
   const field = (key: 'start' | 'end' | 'participants' | 'comment', value: string) => setValues({ ...values, [key]: value });
   return <Dialog open={form.open} onClose={() => form.setOpen(false)} fullWidth maxWidth="sm">
     <DialogTitle>Заявка на аренду</DialogTitle>
-    <DialogContent><Stack spacing={2} sx={{ pt: 1 }}>
+    <DialogContent><Stack spacing={2} sx={{ pt: 1, minWidth: 0, overflowWrap: 'anywhere' }}>
       <Typography>Время по Москве. Изменение времени — новая заявка после отмены прежней.</Typography>
       <TextField select label="Зал" value={values.locationId} onChange={e => setValues({ ...values, locationId: Number(e.target.value) })}>
         {rooms.filter(room => room.rentalEnabled).map(room => <MenuItem key={room.id} value={room.id}>{room.title}</MenuItem>)}
@@ -38,7 +38,7 @@ export function RentalDialog({ form, rooms }: { form: ReturnType<typeof useRenta
       {mutation.isError && <Alert severity="error">{mutation.error.message}</Alert>}
       {mutation.isSuccess && <Alert severity="success">Заявка отправлена. Она появится в разделе «Моя аренда».</Alert>}
     </Stack></DialogContent>
-    <DialogActions><Button onClick={() => form.setOpen(false)}>Закрыть</Button>
+    <DialogActions sx={{ flexWrap: 'wrap', gap: 1 }}><Button onClick={() => form.setOpen(false)}>Закрыть</Button>
       <Button variant="contained" disabled={mutation.isPending || mutation.isSuccess || Boolean(passport && !passport.isTeacher) || !values.start || !values.end || !values.locationId || Number(values.participants) < 1} onClick={form.submit}>
         {passport ? 'Отправить заявку' : 'Войти и продолжить'}
       </Button>

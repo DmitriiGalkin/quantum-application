@@ -54,9 +54,10 @@ export function LandingPlacePage() {
           variant="h2"
           sx={{
             fontSize: {
-              xs: '3.0em',
-              sm: 'inherit',
+              xs: '2rem',
+              sm: '2.5rem',
             },
+            overflowWrap: 'anywhere',
           }}
         >
           Повысьте эффективность и масштаб работы образовательного центра
@@ -69,13 +70,13 @@ export function LandingPlacePage() {
             Создать образовательный центр
           </Button>
 
-          <Button variant="outlined" size="large" sx={{ color: 'white ' }}>
+          <Button variant="outlined" size="large" href="#how-it-works">
             Подробнее
           </Button>
         </Stack>
       </Hero>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container id="how-it-works" maxWidth="lg" sx={{ py: 8 }}>
         <Stack spacing={10}>
           <Grid container spacing={4}>
             {[

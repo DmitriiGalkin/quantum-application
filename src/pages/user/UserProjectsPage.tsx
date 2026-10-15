@@ -1,5 +1,9 @@
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
+import FamilyAccess from '../../features/user/FamilyAccess.tsx';
 //import '../../App.css';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserProjects } from '../../requests.ts';
@@ -8,8 +12,8 @@ import Projects from '../../features/project/ui/Projects.tsx';
 import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function UserProjectsPage() {
-  const { userId } = useAuth();
-  const filter = useFilters({ projects: true });
+  const { userId, role } = useAuth();
+  const filter = useFilters({ projects: true, compactViews: true });
 
   const {
     data: projects = [],
@@ -19,16 +23,19 @@ function UserProjectsPage() {
   } = useQuery({
     queryKey: ['projects', 'user', userId],
     queryFn: fetchUserProjects,
+    enabled: role === 'user' && Boolean(userId),
   });
 
   return (
-    <Box component="section">
-      {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
+    <FamilyAccess><Box component="section">
+      {isProjectsLoading && <Typography role="status">Загрузка проектов…</Typography>}
+      {isProjectsError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить проекты.</Alert>}
 
-      {!isProjectsLoading && !isProjectsError && Boolean(projects.length) && (
-        <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea />
+      {!isProjectsLoading && !isProjectsError && (
+        <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea emptyText="У ребёнка пока нет проектов." />
       )}
-    </Box>
+      <Button component={Link} to="/" sx={{ mt: 2 }}>Выбрать проект</Button>
+    </Box></FamilyAccess>
   );
 }
 

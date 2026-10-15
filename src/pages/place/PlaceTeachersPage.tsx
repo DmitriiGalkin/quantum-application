@@ -12,7 +12,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../../components/ClosableDialogTitle.tsx';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import { useAuth } from '../../providers/auth-context.ts';
@@ -30,8 +30,9 @@ export default function PlaceTeachersPage() {
   const [isPersonAddModalOpen, setIsPersonAddModalOpen] = useState(false);
 
   const [passportId, setPassportId] = useState('');
+  const [copyFeedback, setCopyFeedback] = useState('');
 
-  const { data: teachers, refetch } = useQuery({
+  const { data: teachers, refetch, isPending, isError } = useQuery({
     queryKey: ['place-teachers', placeId],
     queryFn: fetchPlaceTeachers,
     enabled: Boolean(placeId),
@@ -56,7 +57,11 @@ export default function PlaceTeachersPage() {
 
   async function handleCopy() {
     const browser = getBrowser();
-    if (browser) await browser.navigator.clipboard.writeText(`${browser.location.origin}/place/${placeId}/invite`);
+    if (!browser) return;
+    try {
+      await browser.navigator.clipboard.writeText(`${browser.location.origin}/place/${placeId}/invite`);
+      setCopyFeedback('Ссылка приглашения скопирована');
+    } catch { setCopyFeedback('Не удалось скопировать ссылку. Попробуйте ещё раз.'); }
   }
 
   async function handleShare() {
@@ -78,22 +83,25 @@ export default function PlaceTeachersPage() {
     }
   }
 
-  if (!placeId) return null;
+  if (!placeId) return <Typography>Выберите центр в меню профиля.</Typography>;
 
   return (
     <Box>
       <Stack spacing={1}>
         <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h5" sx={{ color: 'white' }}>
+          <Typography variant="h5" sx={{ color: 'text.primary' }}>
             Учителя центра
           </Typography>
 
           <IconButton aria-label="Добавить преподавателя" onClick={() => setIsPersonAddModalOpen(true)}>
-            <PersonAddIcon sx={{ color: 'white' }} />
+            <PersonAddIcon sx={{ color: 'text.primary' }} />
           </IconButton>
         </Stack>
 
         <Stack spacing={2}>
+          {isPending && <Typography role="status">Загрузка преподавателей…</Typography>}
+          {isError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить преподавателей.</Alert>}
+          {!isPending && !isError && teachers?.length === 0 && <Typography>Преподаватели пока не добавлены.</Typography>}
           {(removeTeacher.error || leaveTeacher.error) && <Alert severity="error">{(removeTeacher.error ?? leaveTeacher.error)?.message}</Alert>}
           {teachers?.map(teacher => {
             const menuItems: MenuItemType[] = [];
@@ -108,18 +116,21 @@ export default function PlaceTeachersPage() {
         </Stack>
       </Stack>
 
-      <Dialog open={isPersonAddModalOpen} fullScreen={false} onClose={() => setIsPersonAddModalOpen(false)}>
-        <DialogTitle>Добавьте учителя удобным способом</DialogTitle>
+      <Dialog open={isPersonAddModalOpen} fullScreen={false} onClose={() => setIsPersonAddModalOpen(false)} fullWidth maxWidth="sm">
+        <ClosableDialogTitle onClose={() => setIsPersonAddModalOpen(false)}>Добавить преподавателя</ClosableDialogTitle>
 
         <DialogContent dividers>
           <Stack direction="column" spacing={2}>
-            <Stack direction="row" spacing={2}>
-              <TextField label="Passport ID" value={passportId} onChange={e => setPassportId(e.target.value)} />
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <TextField label="Номер аккаунта преподавателя" type="number" value={passportId} onChange={e => setPassportId(e.target.value)} />
 
-              <Button variant="contained" onClick={() => addTeacher.mutate()}>
+              <Button variant="contained" disabled={addTeacher.isPending || !Number.isSafeInteger(Number(passportId)) || Number(passportId) <= 0} onClick={() => addTeacher.mutate()}>
                 Добавить
               </Button>
             </Stack>
+            {addTeacher.isError && <Alert severity="error">{addTeacher.error.message}</Alert>}
+            {addTeacher.isSuccess && <Alert severity="success">Преподаватель добавлен.</Alert>}
+            {copyFeedback && <Typography role="status">{copyFeedback}</Typography>}
 
             <Stack direction="column" spacing={2}>
               <Button variant="outlined" startIcon={<ContentCopyIcon />} onClick={handleCopy}>

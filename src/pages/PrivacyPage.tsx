@@ -238,7 +238,7 @@ export default function PrivacyPage() {
   );
 
   return (
-    <Box sx={{ bgcolor: '#fafafa', minHeight: '100vh', py: 6 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 6, overflowWrap: 'anywhere' }}>
       <Container maxWidth="md">
         <Stack spacing={1} sx={{ mb: 4 }}>
           <Typography variant="h4">Политика конфиденциальности</Typography>

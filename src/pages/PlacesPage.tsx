@@ -4,7 +4,6 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -43,7 +42,7 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
   if (profile.isError) return <Alert severity="error" action={<Button onClick={() => void profile.refetch()}>Повторить</Button>}>{profile.error.message}</Alert>;
   const { place, rooms, teachers, schedule } = profile.data;
   const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-  return <Container maxWidth="lg"><Stack spacing={4}>
+  return <Stack spacing={4} sx={{ minWidth: 0, overflowWrap: 'anywhere' }}>
     <Card><CardContent><Stack spacing={2}>
       <Typography variant="h3" component="h1">{place.title ?? 'Образовательный центр'}</Typography>
       <Stack spacing={0.5}>
@@ -84,5 +83,6 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
       {Number.isFinite(Number(place.latitude)) && Number.isFinite(Number(place.longitude)) && <PlaceMap lat={Number(place.latitude)} lng={Number(place.longitude)} zoom={15} places={[place]} />}
       <Button component="a" href={`https://yandex.ru/maps/?rtext=~${encodeURIComponent(`${place.latitude},${place.longitude}`)}&rtt=auto`} target="_blank" rel="noopener noreferrer">Построить маршрут</Button>
     </Stack>
-  </Stack><RoomContactDialog room={rooms.find(room => room.id === selectedRoomId)} place={place} onClose={() => setSelectedRoomId(null)} /></Container>;
+    <RoomContactDialog room={rooms.find(room => room.id === selectedRoomId)} place={place} onClose={() => setSelectedRoomId(null)} />
+  </Stack>;
 }

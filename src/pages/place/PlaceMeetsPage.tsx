@@ -15,7 +15,8 @@ export default function PlaceMeetsPage() {
     enabled: Boolean(placeId),
   });
 
-  if (!placeId || isPending) return <Typography role="status">Загрузка расписания…</Typography>;
+  if (!placeId) return <Typography>Выберите центр в меню профиля.</Typography>;
+  if (isPending) return <Typography role="status">Загрузка расписания…</Typography>;
   if (error) return <Alert severity="error" action={<Button onClick={() => refetch()}>Повторить</Button>}>Не удалось загрузить расписание: {error.message}</Alert>;
   if (!meets) return null;
 

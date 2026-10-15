@@ -8,7 +8,7 @@ import { expect, it, vi } from 'vitest';
 import type { IdeaDashboard } from '../entities/idea.ts';
 
 vi.mock('../providers/auth-context.ts', () => ({ useAuth: () => ({ passport: null, role: 'guest', authHandler: vi.fn() }) }));
-vi.mock('../requests.ts', () => ({ fetchIdea: vi.fn(), fetchCreateProject: vi.fn(), generateImage: vi.fn(), fetchCreateProjectUser: vi.fn(), fetchCreateUser: vi.fn(), fetchProjectLeave: vi.fn(), fetchUpdateProject: vi.fn() }));
+vi.mock('../requests.ts', () => ({ fetchIdea: vi.fn(), fetchPlaces: vi.fn(async () => []), fetchCreateProject: vi.fn(), generateImage: vi.fn(), fetchCreateProjectUser: vi.fn(), fetchCreateUser: vi.fn(), fetchProjectLeave: vi.fn(), fetchUpdateProject: vi.fn() }));
 vi.mock('../components/ChatDialog.tsx', () => ({ default: () => null }));
 import IdeaPage from './IdeaPage.tsx';
 
@@ -38,7 +38,7 @@ it('hydrates the full idea and gallery before projects, defaults to table and pr
     expect(host.querySelector('[aria-label="Таблица проектов"]')).not.toBeNull();
     const projectLinks = () => [...host.querySelectorAll('a[href^="/project/"]')].map(a => a.getAttribute('href'));
     expect(projectLinks()).toEqual(['/project/100', '/project/101']);
-    await act(async () => host.querySelector<HTMLButtonElement>('button[aria-label="module"]')!.click());
+    await act(async () => host.querySelector<HTMLButtonElement>('button[aria-label="Карточки"]')!.click());
     expect(host.querySelector('[aria-label="Таблица проектов"]')).toBeNull();
     expect(projectLinks()).toEqual(['/project/100', '/project/101']);
     await act(async () => host.querySelector<HTMLButtonElement>('button[aria-label="Таблица"]')!.click());

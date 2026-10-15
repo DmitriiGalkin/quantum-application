@@ -11,6 +11,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useLocation } from '../shared/lib/useLocation.ts';
 import Typography from '@mui/material/Typography';
 import IdeaGrids from '../features/idea/ui/IdeaGrids.tsx';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
 function IdeasPage() {
   const { filters, setView, setSort, setWhen } = useFilters();
@@ -23,16 +25,19 @@ function IdeasPage() {
       : {}),
   };
 
-  const { data: ideas = [], isLoading } = useQuery({
+  const { data: ideas = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['ideas', query],
     queryFn: () => fetchIdeas(query),
   });
 
   return (
     <Stack spacing={2}>
+      <Typography component="h1" variant="h4">Библиотека идей</Typography>
       {/*{activeContext.role === 'guest' && <AIIdeaBanner />}*/}
 
-      <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} />
+      <Filter filters={filters} setView={setView} setSort={setSort} setWhen={setWhen} withoutGroups />
+      {isError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить идеи.</Alert>}
+      {!isLoading && !isError && !ideas.length && <Typography>Идей по выбранным условиям пока нет. Измените дату или сортировку.</Typography>}
       {(isLoading || (filters.sort === 'nearby' && location.status === 'loading')) && (
         <Box
           sx={{
@@ -42,7 +47,7 @@ function IdeasPage() {
             alignItems: 'center',
           }}
         >
-          <CircularProgress sx={{ color: 'white' }} />
+          <CircularProgress sx={{ color: 'text.primary' }} />
         </Box>
       )}
       {filters.sort === 'nearby' && location.status === 'error' && (
@@ -59,12 +64,12 @@ function IdeasPage() {
             borderColor: 'divider',
             overflow: 'hidden',
           }}
-          aria-labelledby="auth-section-title"
+          aria-label="Центры и встречи на карте"
         >
           <MeetMap lat={55.75} lng={37.62} zoom={12} />
         </Paper>
       )}
-      {filters.view === 'module' && <IdeaGrids ideas={ideas} />}
+      {(filters.view === 'module' || filters.view === 'group') && <IdeaGrids ideas={ideas} />}
     </Stack>
   );
 }

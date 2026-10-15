@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { IdeaDto } from '../../../entities/idea.ts';
 import { ideaGallery } from '../../../shared/lib/idea-photos.ts';
+import ProjectImage from '../../../components/ProjectImage.tsx';
 
 function GalleryImage({ url, title, full = false }: { url: string; title: string; full?: boolean }) {
   const [failed, setFailed] = useState(false);
@@ -20,6 +21,7 @@ export default function IdeaGallery({ idea }: { idea: IdeaDto }) {
   const photos = ideaGallery(idea);
   const [selectedId, setSelectedId] = useState<string>();
   const [open, setOpen] = useState(false);
+  if (!photos.length && !idea.image) return <ProjectImage alt={idea.title} />;
   const active = photos.find(photo => photo.id === selectedId) ?? photos.find(photo => photo.isCover) ?? photos[0];
   const index = active ? photos.indexOf(active) : 0;
   const url = active?.url || idea.image || '/bg.jpeg';

@@ -7,6 +7,7 @@ import 'normalize.css';
 import { AuthProvider } from './providers/AuthProvider.tsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme/theme';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ hydrateRoot(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <AuthProvider>
           <Routers />
         </AuthProvider>

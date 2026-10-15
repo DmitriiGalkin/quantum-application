@@ -4,7 +4,7 @@ import { fetchPassport } from '../requests.ts';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../components/ClosableDialogTitle.tsx';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
@@ -99,14 +99,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       <>
         {children}
         <Dialog
-          sx={{
-            zIndex: theme => theme.zIndex.appBar - 1,
-          }}
           open={open}
           fullScreen={false}
           onClose={() => setOpen(false)}
         >
-          <DialogTitle>Авторизуйтесь одним нажатием</DialogTitle>
+          <ClosableDialogTitle onClose={() => setOpen(false)}>Авторизуйтесь одним нажатием</ClosableDialogTitle>
 
           <DialogContent dividers>
             <Stack

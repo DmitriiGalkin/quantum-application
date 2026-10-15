@@ -15,14 +15,14 @@ import { useAuth } from '../providers/auth-context.ts';
 import ConversationPanel from '../components/ConversationPanel.tsx';
 
 export default function ChatPage() {
-  const { passport, authHandler, isPending } = useAuth();
+  const { passport, token, authHandler, isPending } = useAuth();
   const { id } = useParams();
   const location = useLocation();
   const conversations = useQuery({
     queryKey: ['conversations', passport?.id], queryFn: fetchConversations, enabled: !!passport,
     refetchInterval: 10000, retry: false,
   });
-  if (isPending) return <Typography>Загрузка аккаунта…</Typography>;
+  if (token && isPending) return <Typography role="status">Загрузка аккаунта…</Typography>;
   if (!passport) return <Stack spacing={2}>
     <Typography component="h1" variant="h4">Сообщения</Typography>
     <Typography>Войдите, чтобы открыть свои диалоги.</Typography>
@@ -36,7 +36,7 @@ export default function ChatPage() {
   </Paper>;
   return <Stack spacing={2}>
     <Typography component="h1" variant="h4">Сообщения</Typography>
-    {conversations.isPending ? <Typography>Загрузка диалогов…</Typography>
+    {conversations.isPending ? <Typography role="status">Загрузка диалогов…</Typography>
       : conversations.isError ? <Alert severity="error" action={<Button onClick={() => void conversations.refetch()}>Повторить</Button>}>Не удалось загрузить диалоги.</Alert>
         : <Paper><List aria-label="Диалоги">
           {conversations.data.map(conversation => <ListItemButton component={Link} to={`/chats/${conversation.id}`} key={conversation.id}>

@@ -4,33 +4,36 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-export default function CreateProjectBlock() {
+export default function CreateProjectBlock({ onCreate }: { onCreate: () => void }) {
   return (
     <Paper
       elevation={0}
       sx={{
         p: 3,
         borderRadius: 3,
-        background: 'linear-gradient(135deg, #f5f7ff 0%, #eef2ff 100%)',
-        border: '1px solid #e0e7ff',
+        bgcolor: 'action.selected',
+        border: 1,
+        borderColor: 'divider',
       }}
     >
-      <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} sx={{ alignItems: 'center' }}>
         <Box
           component="img"
           src="/teacher.svg"
           alt="Создание проекта"
           sx={{
-            width: 300,
+            width: { xs: '100%', sm: 240 },
+            maxWidth: '100%',
+            flexShrink: 0,
             height: 200,
             borderRadius: 2,
             objectFit: 'cover',
           }}
         />
 
-        <Box>
+        <Box sx={{ minWidth: 0, overflowWrap: 'anywhere' }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-            Primary CTA: Создайте свой проект
+            Создайте свой проект
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
@@ -38,6 +41,7 @@ export default function CreateProjectBlock() {
           </Typography>
 
           <Button
+            onClick={onCreate}
             variant="contained"
             size="small"
             sx={{

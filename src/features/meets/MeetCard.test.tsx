@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
-import { act } from 'react';
+import { act, type ComponentProps } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,7 +14,10 @@ vi.mock('../../requests.ts', () => ({
   fetchDeleteMeetUser: vi.fn(), fetchUpdateMeetStatus: vi.fn(),
 }));
 vi.mock('./EditMeetDialog.tsx', () => ({ EditMeetDialog: () => null }));
-import MeetCard from './MeetCard.tsx';
+import MeetCardView from './MeetCard.tsx';
+function MeetCard(props: ComponentProps<typeof MeetCardView>) {
+  return <MemoryRouter><MeetCardView {...props} /></MemoryRouter>;
+}
 import { fetchPlace, fetchUpdateMeetStatus } from '../../requests.ts';
 
 const meet = {

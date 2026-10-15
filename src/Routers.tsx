@@ -35,6 +35,7 @@ const TeacherUserIdeasPage = lazy(() => import('./pages/teacher/TeacherUserIdeas
 const TeachersPage = lazy(() => import('./pages/TeachersPage.tsx'));
 const ChatPage = lazy(() => import('./pages/ChatPage.tsx'));
 const UserHomePage = lazy(() => import('./pages/user/UserHomePage.tsx'));
+const UserProfilePage = lazy(() => import('./pages/user/UserProfilePage.tsx'));
 const PlaceUsersPage = lazy(() => import('./pages/place/PlaceUsersPage.tsx'));
 const PlaceLocationsPage = lazy(() => import('./pages/place/PlaceLocationsPage.tsx'));
 const PlacesPage = lazy(() => import('./pages/PlacesPage.tsx'));
@@ -48,12 +49,13 @@ function Routers() {
         <Route index element={<ProjectsPage />} />
         <Route path="ideas" element={<IdeasPage />} />
         <Route path="craft-school-program" element={<CraftSchoolProgramPage />} />
-        <Route path="users/:id" element={<div>UserPage</div>} />
+        <Route path="users/:id" element={<UserProfilePage />} />
         <Route path="idea/:id" element={<IdeaPage />} />
         <Route path="projects" element={<ProjectsRedirect />} />
         <Route path="project/:id" element={<ProjectPage />} />
         <Route path="teachers/:id" element={<TeachersPage />} />
         <Route path="places/:id" element={<PlacesPage />} />
+        <Route path="place/:id/invite" element={<PlaceInvitePage />} />
         <Route path="chats" element={<ChatPage />} />
         <Route path="chats/:id" element={<ChatPage />} />
 
@@ -88,6 +90,7 @@ function Routers() {
           <Route path="success" element={<PaymentSuccessPage />} />
           <Route path="fail" element={<PaymentFailPage />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Route>
 
       <Route element={<AppLayout withoutPaddings />}>
@@ -100,7 +103,6 @@ function Routers() {
         <Route path="terms" element={<TermsPage />} />
       </Route>
 
-      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

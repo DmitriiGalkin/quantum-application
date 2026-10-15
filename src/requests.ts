@@ -33,6 +33,7 @@ import {
   type UpdateMeet,
   type UserDashboardDto,
   type UserDto,
+  type UpdateUserInput,
 } from 'entities';
 import { del, get, post, put, patch, toQuery, postMultipart } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
@@ -98,6 +99,7 @@ export const fetchLeavePlace = (id: number) => del<void>(`/place/${id}/leave`);
 
 export const fetchPassport = () => get<PassportExtendedDto>('/passport');
 export const fetchCreateUser = (params: { title: string; description?: string }) => post<number>('/user', params);
+export const fetchUpdateUser = (id: number, params: UpdateUserInput) => put<void>(`/user/${id}`, params);
 
 export const fetchPayment = (id: number) => get<PaymentDto>(`/payment/${id}`);
 export const fetchCreatePayment = (params: PaymentCreateDto) => post<PaymentCreateResponseDto>('/payments', params);

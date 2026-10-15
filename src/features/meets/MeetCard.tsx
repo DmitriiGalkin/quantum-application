@@ -34,6 +34,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import { EditMeetDialog } from './EditMeetDialog.tsx';
 import { canManageMeet, type MeetManagement } from './management.ts';
 import { moscowFormat } from './moscow-time.ts';
+import { Link } from 'react-router-dom';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import ClosableDialogTitle from '../../components/ClosableDialogTitle.tsx';
+import SelectMeetChildDialog from './SelectMeetChildDialog.tsx';
 
 interface Props {
   meet: MeetDto;
@@ -49,6 +55,9 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   };
   const { authHandler, passport, role, userId } = useAuth();
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectChild, setSelectChild] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState(false);
+  const [refundInfo, setRefundInfo] = useState(false);
 
   const canEdit = canManageMeet(meet, management) || (role === 'teacher' && passport?.id === meet.passport.id);
   const canApprove = role === 'place' && management?.placeId === meet.place.id;
@@ -60,7 +69,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
 
   const mutationUnlike = useMutation({
     mutationFn: fetchDeleteMeetUser,
-    onSuccess: refreshMeets,
+    onSuccess: async () => { setConfirmLeave(false); await refreshMeets(); },
   });
 
   const mutationDeleteMeet = useMutation({
@@ -88,14 +97,12 @@ export default function MeetCard({ meet, refetch, management }: Props) {
         targetId: meet.id,
         userId,
       });
-    } else {
-      console.log('Ты как сюда попал');
     }
   };
 
   const onJoin = async () => {
     if (!userId) {
-      authHandler();
+      authHandler(`/project/${meet.projectId}#meet-${meet.id}`);
       return;
     }
 
@@ -154,9 +161,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
       key: 'refund',
       label: 'Запросить возврат средств',
       icon: <PaymentIcon fontSize="small" />,
-      onClick: () => {
-        console.log('Прошу возврат');
-      },
+      onClick: () => setRefundInfo(true),
     });
   }
 
@@ -166,7 +171,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
       sx: { color: 'error.main' },
       label: 'Отменить участие',
       icon: <PersonRemoveIcon fontSize="small" />,
-      onClick: onExit,
+      onClick: () => setConfirmLeave(true),
     });
   }
 
@@ -202,10 +207,11 @@ export default function MeetCard({ meet, refetch, management }: Props) {
           borderColor: 'primary.main',
         },
         opacity: meet.deletedAt ? 0.5 : 1,
+        minWidth: 0, overflowWrap: 'anywhere', scrollMarginTop: 120,
       }}
     >
       <Stack spacing={2}>
-        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
           <Chip label={status.label} color={status.color} size="small" />
 
           <Typography variant="body2" color="text.secondary">
@@ -225,7 +231,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
         </Stack>
 
         <Stack direction="row" spacing={2}>
-          <Stack spacing={1} sx={{ flex: 1 }}>
+          <Stack spacing={1} sx={{ flex: 1, minWidth: 0 }}>
             {/* title */}
             <Box>
               <Typography
@@ -242,8 +248,8 @@ export default function MeetCard({ meet, refetch, management }: Props) {
             {/* location */}
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
               <LocationOnOutlinedIcon fontSize="small" color="disabled" />
-              <Stack>
-                <Typography variant="body2">{meet.place.title || 'Центр не указан'} · {meet.location?.title || 'Зал не выбран'}</Typography>
+              <Stack sx={{ minWidth: 0 }}>
+                <Typography variant="body2"><Box component={Link} to={`/places/${meet.place.id}`} sx={{ color: 'inherit' }}>{meet.place.title || 'Центр не указан'}</Box> · {meet.location?.title || 'Зал не выбран'}</Typography>
                 <Typography variant="body2">{meet.place.address || 'Адрес не указан'}</Typography>
               </Stack>
             </Stack>
@@ -254,7 +260,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
             src={meet.projectImage}
             alt={meet.projectTitle || 'Проект'}
             sx={{
-              height: 56,
+              height: 56, width: 72, flexShrink: 0,
               objectFit: 'cover',
               borderRadius: 2,
               display: 'block',
@@ -266,7 +272,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
             {/* Преподаватель */}
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
               <PersonIcon fontSize="small" color="disabled" />
-              <Typography variant="body2">{name}</Typography>
+              <Typography component={Link} to={`/teachers/${meet.passport.id}`} variant="body2" sx={{ color: 'inherit' }}>{name}</Typography>
             </Stack>
 
             {/* duration */}
@@ -285,7 +291,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
             </Stack>
 
             {meet.price ? (
-              <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+              <Stack direction="row" sx={{ justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <CurrencyRubleIcon fontSize="small" color="disabled" />
 
@@ -303,18 +309,45 @@ export default function MeetCard({ meet, refetch, management }: Props) {
 
         {role === 'user' && (
           <>
+            <Typography variant="body2">Участник: {passport?.users?.find(user => user.id === userId)?.title || 'выбранный ребёнок'}</Typography>
             {!isMember && (
               <Button variant="contained" fullWidth disabled={full || meet.status !== 'published' || Boolean(meet.deletedAt) || mutationLike.isPending} onClick={onJoin}>
                 Присоединиться
               </Button>
             )}
             {isMember && meet.price && isPending && (
-              <Button variant="contained" fullWidth onClick={onPay}>
-                Оплатить
+              <Button variant="contained" fullWidth disabled={createPayment.isPending} onClick={onPay}>
+                {createPayment.isPending ? 'Переход к оплате…' : 'Оплатить'}
               </Button>
             )}
           </>
         )}
+        {role !== 'user' && !canEdit && <Button variant="contained"
+          disabled={full || meet.status !== 'published' || Boolean(meet.deletedAt)}
+          onClick={() => passport ? setSelectChild(true) : authHandler(`/project/${meet.projectId}#meet-${meet.id}`)}>
+          {passport ? 'Выбрать ребёнка для записи' : 'Войти и записать ребёнка'}
+        </Button>}
+        {selectChild && <SelectMeetChildDialog open onClose={() => setSelectChild(false)} />}
+        {refundInfo && <Dialog open onClose={() => setRefundInfo(false)} fullWidth maxWidth="sm">
+          <ClosableDialogTitle onClose={() => setRefundInfo(false)}>Возврат оплаты</ClosableDialogTitle>
+          <DialogContent><Stack spacing={2}>
+            <Typography>Для обсуждения возврата свяжитесь с преподавателем или центром. Запрос на возврат автоматически не отправляется.</Typography>
+            <Button component={Link} to={`/teachers/${meet.passport.id}`}>Связаться с преподавателем</Button>
+            <Button component={Link} to={`/places/${meet.place.id}`}>Контакты центра</Button>
+          </Stack></DialogContent>
+        </Dialog>}
+        {confirmLeave && <Dialog open onClose={mutationUnlike.isPending ? undefined : () => setConfirmLeave(false)} fullWidth maxWidth="sm">
+          <ClosableDialogTitle onClose={() => setConfirmLeave(false)} disabled={mutationUnlike.isPending}>Отменить участие?</ClosableDialogTitle>
+          <DialogContent>
+            <Typography>{meet.projectTitle} · {date}, {time} МСК</Typography>
+            {isPaid && <Typography sx={{ mt: 2 }}>Отмена участия не оформляет возврат оплаты. Для возврата свяжитесь с организатором.</Typography>}
+            {mutationUnlike.isError && <Alert severity="error">{mutationUnlike.error.message}</Alert>}
+          </DialogContent>
+          <DialogActions sx={{ flexWrap: 'wrap', gap: 1 }}>
+            <Button disabled={mutationUnlike.isPending} onClick={() => setConfirmLeave(false)}>Оставить участие</Button>
+            <Button color="error" disabled={mutationUnlike.isPending} onClick={onExit}>Отменить участие</Button>
+          </DialogActions>
+        </Dialog>}
         {role === 'place' && meet.status === 'published' && (
           <Typography variant="body2" color="text.secondary">
             Опубликовано

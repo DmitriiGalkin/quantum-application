@@ -32,6 +32,12 @@ export default function ProjectsPage() {
     return next;
   });
   const loading = isLoading || (filters.sort === 'nearby' && location.status === 'loading');
+  const resetConditions = () => setParams(previous => {
+    const next = new URLSearchParams(previous);
+    next.delete('q');
+    next.delete('when');
+    return next;
+  });
   return <Stack spacing={3}>
     <Stack spacing={1} sx={{ textAlign: 'center', pt: 2 }}>
       <Typography component="h1" variant="h4">Образовательные проекты для детей</Typography>
@@ -47,5 +53,7 @@ export default function ProjectsPage() {
       : isError ? <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить проекты.</Alert>
         : <Projects filter={filter} projects={projects} catalog preserveOrder withoutIdea withoutFilters
           emptyText={q || filters.when ? 'Ничего не найдено. Попробуйте другие слова или измените фильтр даты.' : 'Сейчас нет проектов с запланированными встречами. Загляните позже.'} />}
+    {!loading && !isError && !projects.length && (q || filters.when) &&
+      <Button onClick={resetConditions} sx={{ alignSelf: 'flex-start' }}>Сбросить поиск и дату</Button>}
   </Stack>;
 }

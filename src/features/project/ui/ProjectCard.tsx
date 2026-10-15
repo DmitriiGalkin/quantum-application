@@ -17,7 +17,7 @@ import { fetchCreateProjectUser, fetchCreateUser, fetchProjectLeave, fetchUpdate
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../../../components/ClosableDialogTitle.tsx';
 import DialogContent from '@mui/material/DialogContent';
 import { CreateUserForm } from '../../user/CreateUserForm.tsx';
 import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
@@ -25,7 +25,7 @@ import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.t
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 import { statusConfig } from '../../meets/helper.ts';
 import { upcomingPublishedMeets, moscowMeetStatus } from './project-card-meeting.ts';
-import CardMedia from '@mui/material/CardMedia';
+import ProjectImage from '../../../components/ProjectImage.tsx';
 import LinkIcon from '@mui/icons-material/Link';
 import ChatDialog from '../../../components/ChatDialog.tsx'; // Добавлен импорт
 import ProjectForm, { type ProjectFormValues } from './ProjectForm.tsx';
@@ -42,9 +42,10 @@ type Props = {
   project: ProjectDto;
   withoutIdea?: boolean;
   refetch?: () => void;
+  detailed?: boolean;
 };
 
-function ProjectCard({ project, refetch }: Props) {
+function ProjectCard({ project, refetch, detailed = false }: Props) {
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const { passport, authHandler, refetch: refetchPassport, userId, role } = useAuth();
@@ -178,12 +179,11 @@ function ProjectCard({ project, refetch }: Props) {
     <Card sx={{ borderRadius: 3 }}>
       <>
         <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}>
-          <CardMedia component="img" image={project.image || '/bg.jpeg'} alt={project.title || 'Проект'}
-            sx={{ height: { xs: 280, sm: 320 }, objectFit: 'cover', display: 'block', bgcolor: 'background.default', boxSizing: 'border-box' }} />
+          <ProjectImage src={project.image} alt={project.title || 'Проект'} />
         </CardActionArea>
         <CardContent>
           <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
-            <Typography component="h2" variant="h6" sx={{ flex: '1 1 140px', minWidth: 0, fontWeight: 600, overflowWrap: 'anywhere' }}>
+            <Typography component={detailed ? 'h1' : 'h2'} variant={detailed ? 'h4' : 'h6'} sx={{ flex: '1 1 140px', minWidth: 0, fontWeight: 600, overflowWrap: 'anywhere' }}>
               <Box component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', textDecoration: 'none' }}>{project.title}</Box>
             </Typography>
             {project.idea?.id && <Tooltip title="Посмотреть исходную идею проекта">
@@ -192,7 +192,7 @@ function ProjectCard({ project, refetch }: Props) {
             </Button>
             </Tooltip>}
           </Stack>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'anywhere' }}>
+          <Typography variant={detailed ? 'body1' : 'body2'} color="text.secondary" sx={{ mt: 1, ...(!detailed && { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }), whiteSpace: detailed ? 'pre-line' : undefined, overflowWrap: 'anywhere' }}>
             {project.description}
           </Typography>
         </CardContent>
@@ -269,13 +269,13 @@ function ProjectCard({ project, refetch }: Props) {
         )}
 
       <Dialog open={isUserModalOpen} onClose={() => setUserModalOpen(false)}>
-        <DialogTitle>Создать ребенка</DialogTitle>
+        <ClosableDialogTitle onClose={() => setUserModalOpen(false)}>Создать ребенка</ClosableDialogTitle>
         <DialogContent>
           <CreateUserForm onSubmit={data => handleUserCreate(data.title)} />
         </DialogContent>
       </Dialog>
       <Dialog open={isEditModalOpen} onClose={() => setEditModalOpen(false)} fullWidth maxWidth="md">
-        <DialogTitle>Редактирование проекта</DialogTitle>
+        <ClosableDialogTitle onClose={() => setEditModalOpen(false)}>Редактирование проекта</ClosableDialogTitle>
 
         <DialogContent sx={{ pt: 2 }}>
           <ProjectForm

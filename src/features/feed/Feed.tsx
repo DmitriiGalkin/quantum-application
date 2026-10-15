@@ -61,7 +61,7 @@ function CommentCard({
 
 function JoinCard({ user }: { user: UserDto }) {
   return (
-    <Divider variant="middle" sx={{ color: 'background.paper', borderColor: 'primary.main', display: 'flex', alignItems: 'center' }}>
+    <Divider variant="middle" sx={{ color: 'text.secondary', borderColor: 'divider', display: 'flex', alignItems: 'center', overflowWrap: 'anywhere', '& .MuiDivider-wrapper': { whiteSpace: 'normal' } }}>
       <Typography variant="body2">
         {user?.title} присоединился к проекту
       </Typography>

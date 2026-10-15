@@ -10,23 +10,28 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
 import Title from 'components/Title.tsx';
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
+import FamilyAccess from '../../features/user/FamilyAccess.tsx';
 
 function IdeasPage() {
-  const { userId } = useAuth();
+  const { userId, role } = useAuth();
   const [openCreateIdea, setOpenCreateIdea] = useState(false);
 
   const {
     data: ideas = [],
     isLoading: isIdeasLoading,
     isError: isIdeasError,
+    refetch,
   } = useQuery({
     queryKey: ['ideas', userId],
     queryFn: fetchUserIdeas,
+    enabled: role === 'user' && Boolean(userId),
   });
 
   return (
-    <Stack spacing={2}>
-      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+    <FamilyAccess><Stack spacing={2}>
+      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
         <Title text="Идеи ученика" />
         <Button variant="contained" onClick={() => setOpenCreateIdea(true)}>
           Создать идею
@@ -35,7 +40,10 @@ function IdeasPage() {
         <CreateIdeaDialog open={openCreateIdea} onClose={() => setOpenCreateIdea(false)} />
       </Stack>
 
-      {isIdeasError && <Alert severity="error">Не удалось загрузить идеи.</Alert>}
+      {isIdeasLoading && <Typography role="status">Загрузка идей…</Typography>}
+      {isIdeasError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить идеи.</Alert>}
+      {!isIdeasLoading && !isIdeasError && !ideas.length && <Typography>Сохранённых идей пока нет. Создайте свою идею или посмотрите библиотеку.</Typography>}
+      <Button component={Link} to="/ideas" sx={{ alignSelf: 'flex-start' }}>Библиотека идей</Button>
 
       {!isIdeasLoading && !isIdeasError && (
         <Box
@@ -55,7 +63,7 @@ function IdeasPage() {
           ))}
         </Box>
       )}
-    </Stack>
+    </Stack></FamilyAccess>
   );
 }
 

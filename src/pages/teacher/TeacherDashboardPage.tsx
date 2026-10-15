@@ -8,20 +8,35 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeacherDashboard } from '../../requests.ts';
 import MeetGrids from '../../features/meets/MeetGrids.tsx';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import { useState } from 'react';
+import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
+import { upcomingPublishedMeets } from '../../features/project/ui/project-card-meeting.ts';
 
 export default function TeacherDashboardPage() {
-  const { data, refetch } = useQuery({
+  const [createIdea, setCreateIdea] = useState(false);
+  const { data, refetch, isPending, isError } = useQuery({
     queryKey: ['teacher-dashboard'],
     queryFn: fetchTeacherDashboard,
   });
 
-  if (!data) return null;
+  if (isPending) return <Typography role="status">Загрузка кабинета преподавателя…</Typography>;
+  if (isError) return <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить кабинет преподавателя.</Alert>;
+  if (!data) return <Typography>Сведения о кабинете пока недоступны.</Typography>;
+  const upcoming = upcomingPublishedMeets(data.bmeets);
+  const pending = data.bmeets.filter(meet => meet.status === 'pending' && !meet.deletedAt).length;
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h5" sx={{ color: 'white' }}>
+      <Typography component="h1" variant="h4" sx={{ color: 'text.primary' }}>
         Кабинет учителя
       </Typography>
+      {pending > 0 && <Alert severity="info" action={<Button component={Link} to="/teacher/meets">Открыть</Button>}>Ожидают подтверждения центра: {pending} встреч.</Alert>}
+      <Typography component="h2" variant="h5">Ближайшие встречи</Typography>
+      {upcoming.length ? <MeetGrids meets={upcoming} refetch={refetch} />
+        : <Typography>Ближайших подтверждённых встреч пока нет. Откройте проект, чтобы запланировать встречу.</Typography>}
+      <Button component={Link} to="/teacher/projects" sx={{ alignSelf: 'flex-start' }}>Мои проекты и планирование</Button>
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 6, md: 3 }}>
@@ -96,7 +111,7 @@ export default function TeacherDashboardPage() {
 
         <Grid size={{ xs: 12, md: 3 }}>
           <Card>
-            <CardActionArea component={Link} to="/teacher/ideas">
+            <CardActionArea component={Link} to="/teacher/userIdeas">
               <CardContent>
                 <Typography>Идеи учеников</Typography>
 
@@ -108,7 +123,7 @@ export default function TeacherDashboardPage() {
 
         <Grid size={{ xs: 12, md: 3 }}>
           <Card>
-            <CardActionArea component={Link} to="/teacher/ideas/create">
+            <CardActionArea onClick={() => setCreateIdea(true)}>
               <CardContent>
                 <Typography>Создать идею</Typography>
 
@@ -119,9 +134,7 @@ export default function TeacherDashboardPage() {
         </Grid>
       </Grid>
 
-      <Typography variant="h5">Ближайшие встречи</Typography>
-
-      <MeetGrids meets={data.bmeets} refetch={refetch} />
+      <CreateIdeaDialog open={createIdea} onClose={() => setCreateIdea(false)} />
     </Stack>
   );
 }

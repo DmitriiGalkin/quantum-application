@@ -10,7 +10,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import type { FilterProps } from '../hooks/useFilters.ts';
 
-function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWhen, projects, compactViews }: FilterProps & { withOutLocation?: boolean; withOutWhen?: boolean; projects?: boolean; compactViews?: boolean }) {
+function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWhen, projects, compactViews, withoutGroups }: FilterProps & { withOutLocation?: boolean; withOutWhen?: boolean; projects?: boolean; compactViews?: boolean; withoutGroups?: boolean }) {
   const sortOptions = [
     ...(withOutLocation ? [] : [{ value: 'nearby', label: 'Поблизости' }]),
     { value: 'popular', label: 'Популярные' },
@@ -23,7 +23,7 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
   const viewOptions = [
     { value: 'module', icon: <ViewModuleIcon /> },
     ...(withOutLocation || compactViews ? [] : [{ value: 'map', icon: <MapIcon /> }]),
-    ...(compactViews ? [] : [{ value: 'group', icon: <LightbulbIcon /> }]),
+    ...(compactViews || withoutGroups ? [] : [{ value: 'group', icon: <LightbulbIcon /> }]),
     ...(projects ? [{ value: 'table', icon: <TableRowsIcon /> }] : []),
   ];
 
@@ -36,33 +36,6 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
           size="small"
           value={filters.sort}
           onChange={e => setSort(e.target.value as Sort)}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              color: '#fff', // текст
-
-              '& fieldset': {
-                borderColor: 'rgba(255,255,255,0.5)', // обычный бордер
-              },
-              '&:hover fieldset': {
-                borderColor: '#fff',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#fff', // фокус
-              },
-            },
-
-            '& .MuiInputLabel-root': {
-              color: 'rgba(255,255,255,0.7)', // label
-            },
-            '& .MuiInputLabel-root.Mui-focused': {
-              color: '#fff',
-            },
-
-            '& .MuiSelect-icon': {
-              color: '#fff',
-            },
-          }}
-          color="secondary"
           variant="outlined"
         >
           {sortOptions.map(opt => (
@@ -92,7 +65,9 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
           size="small"
         >
           {viewOptions.map(opt => (
-            <ToggleButton key={opt.value} value={opt.value} aria-label={opt.value === 'table' ? 'Таблица' : opt.value} title={opt.value === 'table' ? 'Таблица' : undefined}>
+            <ToggleButton key={opt.value} value={opt.value}
+              aria-label={opt.value === 'map' && !projects ? 'Центры на карте' : { module: 'Карточки', table: 'Таблица', map: 'Карта', group: 'Группы' }[opt.value]}
+              title={{ module: 'Карточки', table: 'Таблица', map: 'Карта', group: 'Группы' }[opt.value]}>
               {opt.icon}
             </ToggleButton>
           ))}

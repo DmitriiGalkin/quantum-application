@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { colors } from '../theme/design-tokens';
 
 type Props = {
   title: string;
@@ -17,8 +18,8 @@ export default function AIBanner({ title, description, buttonText, onClick }: Pr
       sx={{
         p: { xs: 2, sm: 3 },
         borderRadius: 3,
-        background: 'linear-gradient(135deg, #FFB628 0%, #FFD978 100%)',
-        color: '#111',
+        bgcolor: colors.peach,
+        color: colors.onPeach,
         mb: 2,
       }}
     >
@@ -31,7 +32,7 @@ export default function AIBanner({ title, description, buttonText, onClick }: Pr
         <Box>
           <Typography variant="h6">{title}</Typography>
 
-          <Typography variant="body2" sx={{ mt: 0.5, opacity: 0.8 }}>
+          <Typography variant="body2" sx={{ mt: 0.5 }}>
             {description}
           </Typography>
         </Box>
@@ -42,12 +43,7 @@ export default function AIBanner({ title, description, buttonText, onClick }: Pr
           startIcon={<AutoAwesomeIcon />}
           onClick={onClick}
           sx={{
-            backgroundColor: 'secondary.main',
-            color: '#fff',
             whiteSpace: 'nowrap',
-            '&:hover': {
-              backgroundColor: '#3B1992',
-            },
           }}
         >
           {buttonText}

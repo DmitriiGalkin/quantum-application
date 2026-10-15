@@ -34,5 +34,6 @@ export function useCreatePlace() {
     setForm,
     onSubmit: () => createPlace.mutate(form),
     loading: createPlace.isPending,
+    error: createPlace.isError,
   };
 }

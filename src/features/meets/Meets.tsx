@@ -41,7 +41,7 @@ export default function Meets({ title, meets, refetch, management }: Props) {
   };
   return <Stack spacing={2}>
     <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-      <Typography variant="h5" sx={{ color: 'white' }}>{title}</Typography>
+      <Typography variant="h5" sx={{ color: 'text.primary' }}>{title}</Typography>
       <ToggleButtonGroup value={view} exclusive size="small" onChange={(_, next: 'week' | 'module' | null) => { if (next) setView(next); }}>
         <ToggleButton value="module" aria-label="Список встреч"><ViewModuleIcon /></ToggleButton>
         <ToggleButton value="week" aria-label="Недельный календарь"><ViewWeekIcon /></ToggleButton>

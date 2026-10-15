@@ -53,7 +53,7 @@ const sections = [
 
 export default function TermsPage() {
   return (
-    <Box sx={{ bgcolor: '#fafafa', minHeight: '100vh', py: 6 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 6, overflowWrap: 'anywhere' }}>
       <Container maxWidth="md">
         {/* HEADER */}
         <Stack spacing={1} sx={{ mb: 4 }}>

@@ -90,7 +90,7 @@ export default function PlaceForm({ values, loading = false, error = false, subm
           })
         }
       />
-      ;{error && <Alert severity="error">Не удалось сохранить учебный центр</Alert>}
+      {error && <Alert severity="error">Не удалось сохранить учебный центр</Alert>}
       <Button
         variant="contained"
         size="large"

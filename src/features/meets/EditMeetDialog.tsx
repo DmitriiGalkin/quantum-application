@@ -1,5 +1,5 @@
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import ClosableDialogTitle from '../../components/ClosableDialogTitle.tsx';
 import DialogContent from '@mui/material/DialogContent';
 import MeetForm from './MeetForm.tsx';
 import { useEditMeet } from './hooks/useEditMeet.ts';
@@ -14,7 +14,7 @@ export function EditMeetDialog({ meet, open, onClose, schedule }: { meet: MeetDt
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Редактирование встречи</DialogTitle>
+      <ClosableDialogTitle onClose={onClose}>Редактирование встречи</ClosableDialogTitle>
 
       <DialogContent sx={{ pt: 2 }}>
         <MeetForm values={form} onChange={setForm} schedule={schedule ?? place.data?.schedule ?? []} onSubmit={onSubmit} loading={loading}

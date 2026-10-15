@@ -10,6 +10,7 @@ import AISelectIdeaBanner from '../../features/idea/ui/AISelectIdeaBanner.tsx';
 import { CreateProjectDialog } from '../../features/project/ui/CreateProjectDialog.tsx';
 import { useState } from 'react';
 import Projects from '../../features/project/ui/Projects.tsx';
+import Typography from '@mui/material/Typography';
 import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function TeacherProjectsPage() {
@@ -19,6 +20,7 @@ function TeacherProjectsPage() {
   const {
     data: projects = [],
     isError: isProjectsError,
+    isPending,
       refetch,
   } = useQuery({
     queryKey: ['projects', 'passport'],
@@ -36,11 +38,12 @@ function TeacherProjectsPage() {
         <CreateProjectDialog open={isCreateProjectDialogOpen} onClose={() => setIsCreateProjectDialogOpen(false)} />
       </Stack>
 
-      {isProjectsError && <Alert severity="error">Не удалось загрузить проекты.</Alert>}
+      {isPending && <Typography role="status">Загрузка проектов…</Typography>}
+      {isProjectsError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить проекты.</Alert>}
       <AISelectIdeaBanner />
-      {!projects.length && <CreateProjectBlock />}
+      {!isPending && !isProjectsError && !projects.length && <CreateProjectBlock onCreate={() => setIsCreateProjectDialogOpen(true)} />}
 
-      <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea />
+      {!isPending && !isProjectsError && <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea />}
     </Box>
   );
 }
