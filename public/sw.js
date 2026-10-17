@@ -30,3 +30,27 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(fetch(event.request).catch(async () => (await caches.match(event.request)) ?? Response.error()));
 });
+
+self.addEventListener('push', event => {
+  event.waitUntil((async () => {
+    let payload = {};
+    try { payload = event.data?.json() || {}; } catch { payload = {}; }
+    await self.registration.showNotification(payload.title || 'Quantum', {
+      body: payload.body || 'Есть новые сообщения или важные изменения',
+      icon: '/icons/192.png', badge: '/icons/192.png', tag: payload.tag || 'quantum',
+      data: { url: typeof payload.url === 'string' && payload.url.startsWith('/') && !payload.url.startsWith('//') ? payload.url : '/chats' },
+    });
+    if (navigator.setAppBadge) await navigator.setAppBadge();
+  })());
+});
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil((async () => {
+    const url = new URL(event.notification.data?.url || '/chats',self.location.origin);
+    if (url.origin !== self.location.origin) return;
+    const windows = await self.clients.matchAll({ type:'window',includeUncontrolled:true });
+    const existing = windows.find(client => new URL(client.url).origin === url.origin);
+    if (existing) { await existing.navigate(url.href); await existing.focus(); }
+    else await self.clients.openWindow(url.href);
+  })());
+});

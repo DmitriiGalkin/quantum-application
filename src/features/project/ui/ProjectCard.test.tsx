@@ -59,7 +59,7 @@ it.each([null, { id: 5, title: 'мастерская' }])('hydrates a card with 
     await act(async () => { join.click(); });
     expect(fetchCreateProjectUser).toHaveBeenCalledWith({ userId: 7, projectId: 100 }, expect.anything());
     expect(host.querySelector('output')?.textContent).toBe('/');
-    expect(host.querySelector('a[aria-label="Исходная идея"]')?.getAttribute('href')).toBe('/idea/54');
+    expect(host.querySelector('a[aria-label="Исходная идея"]')).toBeNull();
     await act(async () => { pictureAction.click(); });
     expect(host.querySelector('output')?.textContent).toBe('/project/100');
   } finally { await act(async () => root.unmount()); host.remove(); queryClient.clear(); }

@@ -1,15 +1,16 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-13T18:53:54.430Z
+Дата выгрузки: 2026-10-16T21:44:49.683Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
-Таблицы и представления: 23.
+Таблицы и представления: 28.
 
 ## Объекты
 
 | Название | Тип | Движок | Сопоставление | Комментарий |
 | --- | --- | --- | --- | --- |
+| appNotification | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | conversation | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | conversationPassport | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | demoSeedRecord | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
@@ -17,11 +18,14 @@
 | ideaPhoto | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | ideaUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | meet | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| meetBookingChange | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| meetChangeParticipant | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | meetUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | message2 | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | passport | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | passport_session | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | payment | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| paymentRefund | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | place | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placeLocation | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placeLocationPhoto | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
@@ -30,9 +34,57 @@
 | placeSchedule | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | project | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | projectUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| pushSubscription | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | quantumMigration | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | teacherUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | user | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+
+## appNotification
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | int unsigned | NO | NULL | PRI | auto_increment |  |
+| passportId | int unsigned | NO | NULL | MUL |  |  |
+| eventKey | varchar(190) | NO | NULL |  |  |  |
+| title | varchar(255) | NO | NULL |  |  |  |
+| body | text | NO | NULL |  |  |  |
+| url | varchar(500) | NO | NULL |  |  |  |
+| readAt | datetime | YES | NULL |  |  |  |
+| createdAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+| pushedAt | datetime | YES | NULL |  |  |  |
+| attempts | int unsigned | NO | 0 |  |  |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| ix_notification_event | Да | 1 | passportId | NULL | BTREE |
+| ix_notification_event | Да | 2 | eventKey | NULL | BTREE |
+| ix_notification_unread | Нет | 1 | passportId | NULL | BTREE |
+| ix_notification_unread | Нет | 2 | readAt | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### DDL
+
+```sql
+CREATE TABLE `appNotification` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `passportId` int unsigned NOT NULL,
+  `eventKey` varchar(190) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `body` text NOT NULL,
+  `url` varchar(500) NOT NULL,
+  `readAt` datetime DEFAULT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pushedAt` datetime DEFAULT NULL,
+  `attempts` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_notification_event` (`passportId`,`eventKey`),
+  KEY `ix_notification_unread` (`passportId`,`readAt`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
 
 ## conversation
 
@@ -62,7 +114,7 @@ CREATE TABLE `conversation` (
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## conversationPassport
@@ -77,6 +129,8 @@ CREATE TABLE `conversation` (
 | isArchived | tinyint(1) | NO | 0 |  |  |  |
 | isMuted | tinyint(1) | NO | 0 |  |  |  |
 | createdAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+| lastDeliveredMessageId | int unsigned | YES | NULL |  |  |  |
+| lastReadMessageId | int unsigned | YES | NULL |  |  |  |
 
 ### Индексы
 
@@ -101,6 +155,8 @@ CREATE TABLE `conversationPassport` (
   `isArchived` tinyint(1) NOT NULL DEFAULT '0',
   `isMuted` tinyint(1) NOT NULL DEFAULT '0',
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastDeliveredMessageId` int unsigned DEFAULT NULL,
+  `lastReadMessageId` int unsigned DEFAULT NULL,
   PRIMARY KEY (`conversationId`,`passportId`),
   CONSTRAINT `fk_conversationPassport_conversation` FOREIGN KEY (`conversationId`) REFERENCES `conversation` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
@@ -184,7 +240,7 @@ CREATE TABLE `idea` (
   `catalogMetadata` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_idea_catalogId` (`catalogId`)
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## ideaPhoto
@@ -269,6 +325,8 @@ CREATE TABLE `ideaUser` (
 | placeId | int | NO | NULL |  |  |  |
 | locationId | int | YES | NULL | MUL |  |  |
 | maxParticipants | int | YES | NULL |  |  |  |
+| bookingState | varchar(24) | NO | requested |  |  |  |
+| bookingRevision | int unsigned | NO | 0 |  |  |  |
 
 ### Индексы
 
@@ -301,12 +359,91 @@ CREATE TABLE `meet` (
   `placeId` int NOT NULL,
   `locationId` int DEFAULT NULL,
   `maxParticipants` int DEFAULT NULL,
+  `bookingState` varchar(24) NOT NULL DEFAULT 'requested',
+  `bookingRevision` int unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_meet_teacher_time` (`passportId`,`startedAt`),
   KEY `idx_meet_location_time` (`locationId`,`startedAt`),
   CONSTRAINT `fk_meet_location` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`) ON DELETE SET NULL,
   CONSTRAINT `chk_meet_max_participants` CHECK (((`maxParticipants` is null) or (`maxParticipants` > 0)))
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## meetBookingChange
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | int unsigned | NO | NULL | PRI | auto_increment |  |
+| meetId | int unsigned | NO | NULL | MUL |  |  |
+| revision | int unsigned | NO | NULL |  |  |  |
+| oldPlaceId | int unsigned | NO | NULL |  |  |  |
+| oldLocationId | int unsigned | YES | NULL |  |  |  |
+| newPlaceId | int unsigned | NO | NULL |  |  |  |
+| newLocationId | int unsigned | YES | NULL |  |  |  |
+| reason | varchar(2000) | NO | NULL |  |  |  |
+| actorPassportId | int unsigned | NO | NULL |  |  |  |
+| createdAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| ix_meet_change | Да | 1 | meetId | NULL | BTREE |
+| ix_meet_change | Да | 2 | revision | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### DDL
+
+```sql
+CREATE TABLE `meetBookingChange` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `meetId` int unsigned NOT NULL,
+  `revision` int unsigned NOT NULL,
+  `oldPlaceId` int unsigned NOT NULL,
+  `oldLocationId` int unsigned DEFAULT NULL,
+  `newPlaceId` int unsigned NOT NULL,
+  `newLocationId` int unsigned DEFAULT NULL,
+  `reason` varchar(2000) NOT NULL,
+  `actorPassportId` int unsigned NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_meet_change` (`meetId`,`revision`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## meetChangeParticipant
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| meetId | int unsigned | NO | NULL | PRI |  |  |
+| revision | int unsigned | NO | NULL | PRI |  |  |
+| userId | int unsigned | NO | NULL | PRI |  |  |
+| response | varchar(16) | NO | pending |  |  |  |
+| respondedAt | datetime | YES | NULL |  |  |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| PRIMARY | Да | 1 | meetId | NULL | BTREE |
+| PRIMARY | Да | 2 | revision | NULL | BTREE |
+| PRIMARY | Да | 3 | userId | NULL | BTREE |
+
+### DDL
+
+```sql
+CREATE TABLE `meetChangeParticipant` (
+  `meetId` int unsigned NOT NULL,
+  `revision` int unsigned NOT NULL,
+  `userId` int unsigned NOT NULL,
+  `response` varchar(16) NOT NULL DEFAULT 'pending',
+  `respondedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`meetId`,`revision`,`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## meetUser
@@ -380,7 +517,7 @@ CREATE TABLE `message2` (
   PRIMARY KEY (`id`),
   KEY `idx_message_conversation` (`conversationId`,`createdAt`),
   CONSTRAINT `fk_message_conversation` FOREIGN KEY (`conversationId`) REFERENCES `conversation` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## passport
@@ -421,7 +558,7 @@ CREATE TABLE `passport` (
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `accessToken` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## passport_session
@@ -544,6 +681,43 @@ CREATE TABLE `payment` (
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
+## paymentRefund
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | int unsigned | NO | NULL | PRI | auto_increment |  |
+| paymentId | int unsigned | NO | NULL | UNI |  |  |
+| status | varchar(20) | NO | queued |  |  |  |
+| requestId | varchar(100) | YES | NULL |  |  |  |
+| error | varchar(2000) | YES | NULL |  |  |  |
+| createdAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+| updatedAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| ix_refund_payment | Да | 1 | paymentId | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### DDL
+
+```sql
+CREATE TABLE `paymentRefund` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `paymentId` int unsigned NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'queued',
+  `requestId` varchar(100) DEFAULT NULL,
+  `error` varchar(2000) DEFAULT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_refund_payment` (`paymentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
 ## place
 
 ### Столбцы
@@ -626,7 +800,7 @@ CREATE TABLE `placeLocation` (
   PRIMARY KEY (`id`),
   CONSTRAINT `chk_room_capacity` CHECK (((`capacity` is null) or (`capacity` > 0))),
   CONSTRAINT `chk_room_rate` CHECK (((`hourlyRate` is null) or (`hourlyRate` >= 0)))
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeLocationPhoto
@@ -665,7 +839,7 @@ CREATE TABLE `placeLocationPhoto` (
   PRIMARY KEY (`id`),
   KEY `ix_room_photo` (`locationId`,`position`),
   CONSTRAINT `fk_room_photo` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placePassport
@@ -696,7 +870,7 @@ CREATE TABLE `placePassport` (
   `role` enum('admin','teacher') NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeRental
@@ -767,7 +941,7 @@ CREATE TABLE `placeRental` (
   CONSTRAINT `fk_rental_room` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`),
   CONSTRAINT `chk_rental_interval` CHECK (((`endedAt` > `startedAt`) and (`endedAt` <= (`startedAt` + interval 24 hour)))),
   CONSTRAINT `chk_rental_participants` CHECK ((`participants` > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeSchedule
@@ -864,7 +1038,7 @@ CREATE TABLE `project` (
   PRIMARY KEY (`id`),
   KEY `idx_project_location` (`locationId`),
   CONSTRAINT `fk_project_location` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## projectUser
@@ -894,6 +1068,43 @@ CREATE TABLE `projectUser` (
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=352 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## pushSubscription
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | int unsigned | NO | NULL | PRI | auto_increment |  |
+| passportId | int unsigned | NO | NULL | MUL |  |  |
+| endpoint | text | NO | NULL |  |  |  |
+| endpointHash | char(64) | NO | NULL | UNI |  |  |
+| subscription | json | NO | NULL |  |  |  |
+| createdAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| ix_push_endpoint | Да | 1 | endpointHash | NULL | BTREE |
+| ix_push_passport | Нет | 1 | passportId | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+
+### DDL
+
+```sql
+CREATE TABLE `pushSubscription` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `passportId` int unsigned NOT NULL,
+  `endpoint` text NOT NULL,
+  `endpointHash` char(64) NOT NULL,
+  `subscription` json NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_push_endpoint` (`endpointHash`),
+  KEY `ix_push_passport` (`passportId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## quantumMigration

@@ -6,7 +6,10 @@ import { MemoryRouter, useLocation } from 'react-router-dom';
 import { expect, it, vi } from 'vitest';
 const auth = vi.hoisted(() => ({ role: 'guest', passport: null as null | { id: number }, authHandler: vi.fn() }));
 vi.mock('../providers/auth-context.ts', () => ({ useAuth: () => auth }));
-import Header from './Header.tsx';
+import HeaderView from './Header.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+vi.mock('../requests.ts', () => ({ fetchConversations: vi.fn().mockResolvedValue([]), fetchNotifications: vi.fn().mockResolvedValue([]) }));
+function Header() { return <QueryClientProvider client={new QueryClient({ defaultOptions:{queries:{retry:false}} })}><HeaderView /></QueryClientProvider>; }
 import Menu from './Menu.tsx';
 import ProjectsRedirect from '../pages/ProjectsRedirect.tsx';
 import { Footer } from './Footer2.tsx';

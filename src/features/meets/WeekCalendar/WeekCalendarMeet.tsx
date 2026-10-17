@@ -112,7 +112,7 @@ export default function WeekCalendarMeet({ meet, top, height, onClick, draggable
         </Typography>
         {role === 'place' && management?.placeId === meet.place?.id && meet.status === 'pending' && <Stack direction="row">
           <IconButton size="small" aria-label="Подтвердить" disabled={updateStatus.isPending} onMouseDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('published'); }}><CheckIcon color="success" fontSize="small" /></IconButton>
-          <IconButton size="small" aria-label="Отклонить" disabled={updateStatus.isPending} onMouseDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('cancelled'); }}><CloseIcon color="error" fontSize="small" /></IconButton>
+          <IconButton size="small" aria-label="Отклонить" disabled={updateStatus.isPending} onMouseDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); onClick?.(); }}><CloseIcon color="error" fontSize="small" /></IconButton>
         </Stack>}
       </Stack>
 

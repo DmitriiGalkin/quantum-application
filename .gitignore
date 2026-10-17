@@ -17,6 +17,12 @@ dist/
 *.local
 .cache
 docs/image-prompts/
+!docs/image-prompts/
+docs/image-prompts/*
+!docs/image-prompts/catalog/
+docs/image-prompts/catalog/*
+!docs/image-prompts/catalog/craft-square-pine-stool-v1.md
+!docs/image-prompts/catalog/craft-portable-tiered-shelf-v1.md
 
 # IDE / Editor
 .idea/

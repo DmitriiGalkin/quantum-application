@@ -15,6 +15,17 @@ class RobokassaService {
   requireConfiguration(): void {
     if (!this.merchantLogin || !this.password1 || !this.password2) throw new HttpError('Оплата временно недоступна', 503);
   }
+  async operationKey(paymentId: number): Promise<string> {
+    this.requireConfiguration();
+    if (this.isTest) throw new HttpError('OpKey недоступен для тестового платежа',409);
+    const params = new URLSearchParams({ MerchantLogin:this.merchantLogin,InvoiceID:String(paymentId),
+      Signature:this.md5(`${this.merchantLogin}:${paymentId}:${this.password2}`) });
+    const response = await fetch(`https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt?${params}`,{ signal:AbortSignal.timeout(15000) });
+    const xml = await response.text();
+    const key = /<OpKey>([A-Za-z0-9-]{40,60})<\/OpKey>/.exec(xml)?.[1];
+    if (!response.ok || !/<Code>0<\/Code>/.test(xml) || !key) throw new HttpError('Не удалось получить OpKey оплаченной операции',502);
+    return key;
+  }
 
   private md5(value: string): string {
     return crypto.createHash('md5').update(value).digest('hex');

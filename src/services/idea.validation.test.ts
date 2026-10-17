@@ -37,8 +37,8 @@ describe('idea catalog validation', () => {
   it('preserves every source field, explicit null and assumption', () => {
     const catalog = validateIdeaCatalog(source);
     expect(catalog).toEqual(source);
-    expect(catalog.items).toHaveLength(74);
-    expect(catalog.items.flatMap(item => item.photos)).toHaveLength(181);
+    expect(catalog.items).toHaveLength(76);
+    expect(catalog.items.flatMap(item => item.photos)).toHaveLength(197);
     expect(catalog.items[0].canMakeWithChildren).toBeNull();
     expect(catalog.items[0].manufacturingNotes).toEqual([{ text: 'Обработан на фрезерном станке', source: 'со слов пользователя' }]);
   });

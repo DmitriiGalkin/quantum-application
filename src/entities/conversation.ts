@@ -14,6 +14,7 @@ export interface ConversationRow extends RowDataPacket {
 }
 
 export interface Conversation {
+  unreadCount?: number;
   counterpart?: PassportDto | null;
   lastMessage?: Message | null;
   id: number;
@@ -37,6 +38,7 @@ export interface StartConversationResponse {
 }
 
 export interface ConversationHistory {
+  receipts?: import('./operations.js').MessageReceipt[];
   conversation: Conversation;
   messages: Message[];
 }

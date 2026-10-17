@@ -2,6 +2,7 @@ import { requireId } from '../utils/validation.js';
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import type { CreateMeet, GetMeetsQuery, MeetDto, MeetStatus, UpdateMeet } from 'entities';
 import { MeetService } from '../services/meet.service.js';
+import { MeetChangeResponseService } from '../services/meet-change-response.service.js';
 
 const create: ControllerWithAuth<number, CreateMeet> = async (req, res) => {
   const meetId = await MeetService.create(req.passport!, req.body);
@@ -58,9 +59,9 @@ const findById: Controller<MeetDto> = async (req, res) => {
   ok(res, meet);
 };
 
-const updateStatus: ControllerWithAuth<void, { status: MeetStatus }> = async (req, res) => {
+const updateStatus: ControllerWithAuth<void, { status: MeetStatus; reason?: string }> = async (req, res) => {
   await MeetService.updateStatus(requireId(req.params.id), req.body.status, req.passport.id,
-    req.viewer?.role === 'place' ? requireId(req.viewer.placeId) : undefined);
+    req.viewer?.role === 'place' ? requireId(req.viewer.placeId) : undefined, req.body.reason);
 
   ok(res, '1');
 };
@@ -74,7 +75,21 @@ const getPlaceMeets: ControllerWithAuth<MeetDto[]> = async (req, res) => {
   ok(res, meets);
 };
 
+const cancel: ControllerWithAuth<unknown,{ reason: string; full?: boolean }> = async (req,res) => {
+  await MeetService.cancelBooking(requireId(req.params.id),req.passport.id,req.body.reason,
+    req.viewer?.role === 'place' ? requireId(req.viewer.placeId) : undefined,req.body.full === true);
+  ok(res,true);
+};
 export default {
+  changeResponse: (async (req,res) => {
+    if (typeof req.body.accepted !== 'boolean') fail('Укажите подтверждение или отказ',400);
+    await MeetChangeResponseService.respond(requireId(req.params.id),req.passport.id,requireId(req.body.userId),requireId(req.body.revision),req.body.accepted === true);
+    ok(res,true);
+  }) as ControllerWithAuth<unknown,{ userId:number; revision:number; accepted:boolean }>,
+  getChange: (async (req,res) => {
+    ok(res,await MeetChangeResponseService.get(requireId(req.params.id),req.passport.id,requireId(req.query.userId)));
+  }) as ControllerWithAuth<unknown>,
+  cancel,
   create,
   update,
   delete: remove,

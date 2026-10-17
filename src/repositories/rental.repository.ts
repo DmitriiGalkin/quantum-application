@@ -9,7 +9,7 @@ const rental = (row: Rental): Rental => ({ ...row, startedAt: new Date(row.start
 
 export class RentalRepository {
   static async findById(id: number, conn?: PoolConnection): Promise<Rental | null> {
-    const sql = 'SELECT * FROM placeRental WHERE id = ?';
+    const sql = 'SELECT * FROM placeRental WHERE id = ?' + (conn ? ' FOR UPDATE' : '');
     const rows = conn ? (await conn.query<(RowDataPacket & Rental)[]>(sql, [id]))[0] : await db.query<Rental>(sql, [id]);
     return rows[0] ? rental(rows[0]) : null;
   }

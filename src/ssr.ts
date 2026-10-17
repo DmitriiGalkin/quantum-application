@@ -28,6 +28,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const isProd = process.env.NODE_ENV === 'production';
+const clientRoot = isProd ? __dirname : path.resolve(__dirname, '..');
 
 async function ssr() {
   const app = express();
@@ -38,7 +39,7 @@ async function ssr() {
 
   if (!isProd) {
     vite = await createServer({
-      root: __dirname,
+      root: clientRoot,
       server: {
         middlewareMode: true,
       },
@@ -75,7 +76,7 @@ async function ssr() {
       }>;
 
       if (vite) {
-        template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+        template = fs.readFileSync(path.resolve(clientRoot, 'index.html'), 'utf-8');
         template = await vite.transformIndexHtml(url, template);
         render = (await vite.ssrLoadModule('/src/ssr-application.tsx')).render;
       } else {

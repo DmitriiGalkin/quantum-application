@@ -4,9 +4,9 @@ import type { PoolConnection } from 'mysql2/promise';
 const connection = vi.hoisted(() => ({}));
 vi.mock('../utils/dbNext.js', () => ({ db: { transaction: vi.fn(async (fn: (conn: PoolConnection) => Promise<unknown>) => fn(connection as PoolConnection)) } }));
 vi.mock('../repositories/conversation.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn(), create: vi.fn() } }));
-vi.mock('../repositories/conversation-passport.repository.js', () => ({ default: { findByPassportIds: vi.fn(), findByConversationIds: vi.fn(), findPassports: vi.fn() } }));
+vi.mock('../repositories/conversation-passport.repository.js', () => ({ default: { acknowledge:vi.fn(), findByPassportIds: vi.fn(), findByConversationIds: vi.fn(), findPassports: vi.fn() } }));
 vi.mock('../repositories/passport.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn(), lockByIds: vi.fn() } }));
-vi.mock('../repositories/message2.repository.js', () => ({ default: { latestByConversations: vi.fn(), getByConversation: vi.fn() } }));
+vi.mock('../repositories/message2.repository.js', () => ({ default: { findById:vi.fn(), unread: vi.fn().mockResolvedValue(0), latestByConversations: vi.fn(), getByConversation: vi.fn() } }));
 import Conversations from '../repositories/conversation.repository.js';
 import Members from '../repositories/conversation-passport.repository.js';
 import Passports from '../repositories/passport.repository.js';
@@ -14,6 +14,12 @@ import Messages from '../repositories/message2.repository.js';
 import { ConversationService } from './conversation.service.js';
 
 beforeEach(() => vi.resetAllMocks());
+it('rejects a read receipt for a message belonging to a different conversation',async()=>{
+  vi.mocked(Members.findPassports).mockResolvedValue([{passportId:10}] as ConversationPassportRow[]);
+  vi.mocked(Messages.findById).mockResolvedValue({id:5,conversationId:99} as Awaited<ReturnType<typeof Messages.findById>>);
+  await expect(ConversationService.acknowledge(1,10,5,true)).rejects.toMatchObject({status:400});
+  expect(Members.acknowledge).not.toHaveBeenCalled();
+});
 it('returns the existing parent/teacher direct chat after locking the same pair, without messages or another chat', async () => {
   vi.mocked(Passports.findById).mockResolvedValue({ id: 80 } as Passport);
   vi.mocked(Members.findByPassportIds).mockResolvedValue([{ conversationId: 3, passportId: 42 }, { conversationId: 3, passportId: 80 }] as ConversationPassportRow[]);

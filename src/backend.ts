@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import app from './app.js';
+import { NotificationService } from './services/notification.service.js';
+import { RefundService } from './services/refund.service.js';
 import http from 'http';
 import https from 'https';
 import fs from 'fs';
@@ -8,6 +10,15 @@ import path, { resolve } from 'path'; // Импортируем весь мод�
 // 2. Конфигурация
 const port = process.env.PORT || 4000;
 const isDev = process.env.NODE_ENV === 'development';
+let dispatching = false;
+const operationsTimer = setInterval(() => {
+  if (dispatching) return;
+  dispatching = true;
+  void (async () => { await NotificationService.dispatch(); await RefundService.dispatch(); })()
+    .catch(() => console.error('Не удалось обработать очередь уведомлений/возвратов; состояние сохранено в БД'))
+    .finally(() => { dispatching = false; });
+},30000);
+operationsTimer.unref();
 
 // 7. Запуск сервера (HTTP или HTTPS)
 if (!isDev) {

@@ -3,6 +3,11 @@ import type { Message, Message2Row, UpdateMessageRequest } from 'entities';
 import { db } from '../utils/dbNext.js';
 
 class Message2Repository {
+  static async unread(conversationId: number, passportId: number, lastReadId: number, lastReadAt: string | null) {
+    const [row] = await db.query<{ count: number }>(`SELECT COUNT(*) count FROM message2 WHERE conversationId=? AND senderPassportId<>? AND deletedAt IS NULL
+      AND id>? AND (? IS NULL OR createdAt>?)`, [conversationId,passportId,lastReadId,lastReadId ? null : lastReadAt,lastReadId ? null : lastReadAt]);
+    return Number(row.count);
+  }
   static async latestByConversations(ids: number[]): Promise<Message[]> {
     if (!ids.length) return [];
     return db.query<Message>(`SELECT id, conversationId, senderPassportId, text, createdAt, updatedAt FROM (
@@ -21,15 +26,15 @@ class Message2Repository {
     return rows[0] ?? null;
   }
   // Create a new message
-  static async create(conversationId: number, senderPassportId: number, text: string): Promise<Message> {
-    const result = await db.execute<ResultSetHeader>(
+  static async create(conversationId: number, senderPassportId: number, text: string, conn?: PoolConnection): Promise<Message> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO message2 (conversationId, senderPassportId, text)
        VALUES (?, ?, ?)`,
       [conversationId, senderPassportId, text],
     );
 
     return {
-      id: result.insertId,
+      id: (Array.isArray(result) ? result[0] : result).insertId,
       conversationId,
       senderPassportId,
       text,

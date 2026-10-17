@@ -8,14 +8,13 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import MenuButton from '../../components/MenuButton.tsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Alert from '@mui/material/Alert';
 import LinearProgress from '@mui/material/LinearProgress';
 import { invalidateMeetQueries } from './hooks/queries.ts';
 import {
   fetchCreateMeetUser,
   fetchCreatePayment,
-  fetchDeleteMeet,
   fetchDeleteMeetUser,
   fetchUpdateMeetStatus,
 } from '../../requests.ts';
@@ -41,6 +40,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import ClosableDialogTitle from '../../components/ClosableDialogTitle.tsx';
 import SelectMeetChildDialog from './SelectMeetChildDialog.tsx';
+import AddressLine from '../../components/AddressLine.tsx';
+import TextField from '@mui/material/TextField';
+import { fetchCancelBooking, fetchMeetChange, fetchMeetChangeResponse } from '../../requests.ts';
 
 interface Props {
   meet: MeetDto;
@@ -59,6 +61,14 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   const [selectChild, setSelectChild] = useState(false);
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [refundInfo, setRefundInfo] = useState(false);
+  const [cancelMode,setCancelMode] = useState<'booking' | 'meet' | null>(null);
+  const [cancelReason,setCancelReason] = useState('');
+  const change = useQuery({ queryKey:['meet-change',meet.id,userId,meet.bookingRevision],queryFn:() => fetchMeetChange(meet.id,userId!),
+    enabled:role === 'user' && !!userId && !!meet.bookingRevision && meet.status === 'published',retry:false });
+  const response = useMutation({ mutationFn:(accepted: boolean) => fetchMeetChangeResponse(meet.id,userId!,change.data!.revision,accepted),
+    onSuccess:async () => { await queryClient.invalidateQueries({ queryKey:['meet-change',meet.id] }); await refreshMeets(); } });
+  const cancelBooking = useMutation({ mutationFn:() => fetchCancelBooking(meet.id,cancelReason,cancelMode === 'meet'),
+    onSuccess:async () => { setCancelMode(null); setCancelReason(''); await refreshMeets(); } });
 
   const canEdit = canManageMeet(meet, management) || (role === 'teacher' && passport?.id === meet.passport.id);
   const canApprove = role === 'place' && management?.placeId === meet.place.id;
@@ -73,10 +83,6 @@ export default function MeetCard({ meet, refetch, management }: Props) {
     onSuccess: async () => { setConfirmLeave(false); await refreshMeets(); },
   });
 
-  const mutationDeleteMeet = useMutation({
-    mutationFn: fetchDeleteMeet,
-    onSuccess: refreshMeets,
-  });
 
   const createPayment = useMutation({
     mutationFn: fetchCreatePayment,
@@ -118,9 +124,6 @@ export default function MeetCard({ meet, refetch, management }: Props) {
     else authHandler();
   };
 
-  const onDelete = async () => {
-    mutationDeleteMeet.mutate(meet.id);
-  };
 
   const paymentStatus = meet.isPaid ? 'paid' : meet.price && meet.price > 0 ? 'pending' : undefined;
   const meetUserStatus = userId && (meet.users || []).map(u => u.id).includes(userId) ? 'member' : 'not_member';
@@ -150,12 +153,12 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   const occupancy = limit != null ? Math.min(100, Math.round(count / limit * 100)) : null;
   const free = limit != null ? Math.max(0, limit - count) : null;
   const placesLabel = free !== null && free % 10 === 1 && free % 100 !== 11 ? 'место' : free !== null && free % 10 >= 2 && free % 10 <= 4 && (free % 100 < 12 || free % 100 > 14) ? 'места' : 'мест';
-  const actionError = updateStatus.error || mutationLike.error || mutationUnlike.error || mutationDeleteMeet.error || createPayment.error;
+  const actionError = updateStatus.error || mutationLike.error || mutationUnlike.error || createPayment.error;
 
   const meetStatus = getMeetStatus(meet);
   const statusKey = canApprove && meet.status === 'published' && meetStatus !== 'completed' && meetStatus !== 'cancelled' ? 'confirmed' : meetStatus;
   const status = statusKey ? statusConfig[statusKey] : null;
-  const pendingRequest = canApprove && meet.status === 'pending';
+  const pendingRequest = canApprove && meet.status === 'pending' && meet.bookingState !== 'needs_location';
 
   const menuItems = [];
 
@@ -179,6 +182,9 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   }
 
   if (canEdit) {
+    if (meet.status !== 'cancelled' && meet.bookingState !== 'needs_location') menuItems.push({
+      key:'cancel-booking',label:'Отменить бронирование',icon:<DeleteIcon fontSize="small" />,onClick:() => setCancelMode('booking'),
+    });
     menuItems.push({
       key: 'edit',
       label: 'Изменить',
@@ -189,9 +195,9 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   if (role === 'teacher' && passport?.id === meet.passport.id) {
     menuItems.push({
       key: 'delete',
-      label: 'Удалить встречу',
+      label: 'Отменить встречу',
       icon: <DeleteIcon fontSize="small" />,
-      onClick: onDelete,
+      onClick: () => setCancelMode('meet'),
     });
   }
 
@@ -214,11 +220,26 @@ export default function MeetCard({ meet, refetch, management }: Props) {
       }}
     >
       <Stack spacing={2}>
+        {change.data?.response === 'pending' && <Alert severity="info">
+          Условия встречи изменились. Подтвердите участие на новой площадке.
+          <Stack direction="row" sx={{ gap:1,flexWrap:'wrap',mt:1 }}><Button disabled={response.isPending} onClick={() => response.mutate(true)}>Участвуем</Button><Button color="error" disabled={response.isPending} onClick={() => response.mutate(false)}>Отказаться с возвратом оплаты</Button></Stack>
+          {response.error?.message}
+        </Alert>}
+        {meet.bookingState === 'needs_location' && meet.status !== 'cancelled' && <Alert severity="warning">Требуется новая площадка. Записи учеников сохранены; новая запись и оплата закрыты.</Alert>}
+        {cancelMode && <Dialog open onClose={cancelBooking.isPending ? undefined : () => setCancelMode(null)} fullWidth maxWidth="sm">
+          <ClosableDialogTitle onClose={() => setCancelMode(null)} disabled={cancelBooking.isPending}>{cancelMode === 'meet' ? 'Отменить встречу?' : 'Отменить бронирование?'}</ClosableDialogTitle>
+          <DialogContent><Stack spacing={2} sx={{ pt:1 }}>
+            <Typography>{cancelMode === 'meet' ? 'Участники получат уведомление об отмене. Оплаченные места будут поставлены в очередь возврата.' : 'Зал освободится. Записи учеников и оплаты сохранятся, новая запись закроется до подтверждения другой площадки.'}</Typography>
+            <TextField required label="Причина" multiline value={cancelReason} onChange={e => setCancelReason(e.target.value)} slotProps={{ htmlInput:{ maxLength:2000 } }} />
+            {cancelBooking.error && <Alert severity="error">{cancelBooking.error.message}</Alert>}
+          </Stack></DialogContent>
+          <DialogActions><Button disabled={cancelBooking.isPending} onClick={() => setCancelMode(null)}>Назад</Button><Button color="error" disabled={cancelBooking.isPending || !cancelReason.trim()} onClick={() => cancelBooking.mutate()}>Подтвердить отмену</Button></DialogActions>
+        </Dialog>}
         <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
           {status && <Chip icon={statusKey === 'confirmed' ? <CheckIcon /> : undefined} label={status.label} color={status.color} size="small" />}
 
           <Typography variant="body2" color="text.secondary">
-            {date} • {time} — {endTime} МСК
+            {management?.placeId ? '' : `${date} • `}{time}–{endTime}
           </Typography>
 
           <MenuButton menuItems={menuItems} />
@@ -253,7 +274,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
               <LocationOnOutlinedIcon fontSize="small" color="disabled" />
               <Stack sx={{ minWidth: 0 }}>
                 <Typography variant="body2"><Box component={Link} to={`/places/${meet.place.id}`} sx={{ color: 'inherit' }}>{meet.place.title || 'Центр не указан'}</Box> · {meet.location?.title || 'Зал не выбран'}</Typography>
-                <Typography variant="body2">{meet.place.address || 'Адрес не указан'}</Typography>
+                <AddressLine address={meet.place.address} />
               </Stack>
             </Stack>
           </Stack>
@@ -319,7 +340,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
               </Button>
             )}
             {isMember && meet.price && isPending && (
-              <Button variant="contained" fullWidth disabled={createPayment.isPending} onClick={onPay}>
+              <Button variant="contained" fullWidth disabled={createPayment.isPending || meet.status !== 'published' || meet.bookingState === 'needs_location'} onClick={onPay}>
                 {createPayment.isPending ? 'Переход к оплате…' : 'Оплатить'}
               </Button>
             )}
@@ -365,13 +386,13 @@ export default function MeetCard({ meet, refetch, management }: Props) {
         )}
 
         {actionError && <Alert severity="error">{actionError.message}</Alert>}
-        {canApprove && meet.status === 'pending' && (
+        {pendingRequest && (
           <Stack spacing={1}>
             <Button color="success" variant="contained" disabled={updateStatus.isPending} onClick={() => updateStatus.mutate('published')}>
               Подтвердить
             </Button>
 
-            <Button color="error" variant="outlined" disabled={updateStatus.isPending} onClick={() => updateStatus.mutate('cancelled')}>
+            <Button color="error" variant="outlined" disabled={updateStatus.isPending} onClick={() => setCancelMode('booking')}>
               Отклонить
             </Button>
           </Stack>

@@ -11,6 +11,8 @@ import type { LocationDto, PlaceScheduleDayDto } from 'entities';
 import { meetStart, withinPlaceHours } from '../../shared/lib/meet-time.ts';
 
 export interface MeetFormValues {
+  placeId?: number;
+  reason?: string;
   projectId: number;
 
   date: string;

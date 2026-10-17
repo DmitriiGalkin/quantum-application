@@ -9,7 +9,6 @@ import { useAuth } from 'providers/auth-context.ts';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import Toolbar from '@mui/material/Toolbar';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -36,11 +35,7 @@ interface MenuSection {
 }
 
 function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boolean) => void; compact?: boolean }) {
-  const { role, passport, userId, placeId } = useAuth();
-  const contextTitle = role === 'user' ? passport?.users?.find(user => user.id === userId)?.title || 'Семейный кабинет'
-    : role === 'place' ? passport?.places?.find(place => place.id === placeId)?.title || 'Кабинет центра'
-      : role === 'teacher' ? 'Кабинет преподавателя' : 'Мой аккаунт';
-
+  const { role, passport } = useAuth();
   const MENU: {
     guest: MenuSection[];
     user: MenuSection[];
@@ -194,10 +189,6 @@ function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boo
   if (!passport) return null;
   return (
     <Stack component="nav" aria-label="Мой кабинет" sx={{ width: compact ? 72 : sidebarWidth, minHeight: '100%', p: compact ? 0 : 1.5 }}>
-      {!compact && <Toolbar>
-        <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>{contextTitle}</Typography>
-      </Toolbar>}
-      <Divider />
       <List>
         {menuSections.map((section, sectionIndex) => (
           <Box key={sectionIndex}>
@@ -215,7 +206,7 @@ function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boo
                 aria-label={item.label}
                 component={item.disabled ? 'div' : NavLink}
                 to={item.disabled ? undefined : item.to}
-                end={!item.disabled}
+                end={item.disabled ? undefined : true}
                 disabled={item.disabled}
                 onClick={() => {
                   if (!item.disabled) {

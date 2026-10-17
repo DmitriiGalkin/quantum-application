@@ -7,8 +7,16 @@ import { db } from '../utils/dbNext.js';
 import { HttpError } from '../utils/http-error.js';
 import { requireId } from '../utils/validation.js';
 import type { Conversation, ConversationHistory, StartConversationRequest, StartConversationResponse } from 'entities';
+import { NotificationRepository } from '../repositories/notification.repository.js';
 
 export class ConversationService {
+  static async acknowledge(id: number, passportId: number, messageId: number, read: boolean) {
+    await this.requireParticipant(id,passportId);
+    const message = await Message2Repository.findById(requireId(messageId));
+    if (!message || message.conversationId !== id) throw new HttpError('Сообщение не найдено в диалоге',400);
+    await ConversationPassportRepository.acknowledge(id,passportId,messageId,read);
+    if (read) await NotificationRepository.readConversation(passportId,id,messageId);
+  }
   static async startConversation(request: StartConversationRequest): Promise<StartConversationResponse> {
     const targetId = requireId(request.targetPassportId);
     if (!(await PassportRepository.findById(targetId))) throw new HttpError('Получатель не найден', 404);
@@ -47,15 +55,18 @@ export class ConversationService {
     const passports = await PassportRepository.findByIds(participants.filter(member => member.passportId !== passportId).map(member => member.passportId));
     const passportById = new Map(passports.map(passport => [passport.id, passport]));
     const messageByConversation = new Map(messages.map(message => [message.conversationId, message]));
-    return rows.map(row => {
+    return (await Promise.all(rows.map(async row => {
       const member = participants.find(member => member.conversationId === row.id && member.passportId !== passportId);
       const other = member ? passportById.get(member.passportId) : undefined;
       return {
         ...mapConversationRow(row, passportId),
         counterpart: other ? { id: other.id, title: other.title, image: other.image, description: other.description } : null,
         lastMessage: messageByConversation.get(row.id) ?? null,
+        unreadCount: await Message2Repository.unread(row.id,passportId,
+          Number(participants.find(p => p.conversationId === row.id && p.passportId === passportId)?.lastReadMessageId ?? 0),
+          participants.find(p => p.conversationId === row.id && p.passportId === passportId)?.lastReadAt ?? null),
       };
-    }).sort((a, b) => new Date(b.lastMessage?.createdAt ?? b.createdAt).getTime() - new Date(a.lastMessage?.createdAt ?? a.createdAt).getTime() || b.id - a.id);
+    }))).sort((a, b) => new Date(b.lastMessage?.createdAt ?? b.createdAt).getTime() - new Date(a.lastMessage?.createdAt ?? a.createdAt).getTime() || b.id - a.id);
   }
 
   static async getConversationHistory(id: number, passportId: number): Promise<ConversationHistory | null> {
@@ -69,6 +80,6 @@ export class ConversationService {
     return { conversation: {
       ...mapConversationRow(row, passportId),
       counterpart: other ? { id: other.id, title: other.title, image: other.image, description: other.description } : null,
-    }, messages };
+    }, messages, receipts: await ConversationPassportRepository.receipts(id) };
   }
 }

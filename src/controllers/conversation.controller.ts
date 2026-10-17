@@ -25,7 +25,12 @@ const findById: ControllerWithAuth<ConversationHistory> = async (req, res) => {
   ok(res, history);
 };
 
+const acknowledge: ControllerWithAuth<unknown,{ messageId: number; read: boolean }> = async (req,res) => {
+  await ConversationService.acknowledge(requireId(req.params.id),req.passport.id,requireId(req.body.messageId),req.body.read === true);
+  ok(res,true);
+};
 export default {
+  acknowledge,
   findAll,
   start,
   findById,

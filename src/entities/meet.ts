@@ -6,6 +6,8 @@ import type { PlaceDto } from './place.js';
 import type { LocationDto } from './location.js';
 
 export interface MeetRow extends RowDataPacket {
+  bookingState?: 'requested' | 'confirmed' | 'needs_location';
+  bookingRevision?: number;
   locationId: number | null;
   maxParticipants: number | null;
   id: number;
@@ -24,6 +26,8 @@ export interface MeetWithProjectTitleRow extends MeetRow {
 }
 
 export interface Meet {
+  bookingState?: 'requested' | 'confirmed' | 'needs_location';
+  bookingRevision?: number;
   locationId: number | null;
   maxParticipants: number | null;
   id: number;
@@ -67,6 +71,9 @@ export type CreateMeetInput = {
 };
 
 export type UpdateMeetInput = Partial<{
+  placeId: number;
+  bookingState: 'requested' | 'confirmed' | 'needs_location';
+  bookingRevision: number;
   locationId: number | null;
   maxParticipants: number | null;
   startedAt: string;
@@ -84,7 +91,7 @@ export interface CreateMeet {
   startedAt: string;
 }
 
-export type UpdateMeet = Omit<UpdateMeetInput, 'status'>;
+export type UpdateMeet = Omit<UpdateMeetInput, 'status' | 'bookingState' | 'bookingRevision'> & { reason?: string };
 
 export interface GetMeetsQuery {
   userId?: number;

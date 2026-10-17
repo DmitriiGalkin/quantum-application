@@ -9,6 +9,8 @@ import { meetStart, moscowInput } from '../../../shared/lib/meet-time.ts';
 export function useEditMeet(meet: MeetDto, onClose: () => void) {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<MeetFormValues>({
+    placeId: meet.place.id,
+    reason: '',
     projectId: meet.projectId,
     ...moscowInput(meet.startedAt),
     duration: meet.duration ?? 60,
@@ -19,7 +21,7 @@ export function useEditMeet(meet: MeetDto, onClose: () => void) {
 
   const updateMeet = useMutation({
     mutationFn: (form: MeetFormValues) => {
-      return fetchUpdateMeet(meet.id, { price: form.price, duration: form.duration, locationId: form.locationId,
+      return fetchUpdateMeet(meet.id, { placeId: form.placeId, reason: form.reason, price: form.price, duration: form.duration, locationId: form.locationId,
         maxParticipants: form.maxParticipants === '' ? null : form.maxParticipants, startedAt: meetStart(form.date, form.time) });
     },
 

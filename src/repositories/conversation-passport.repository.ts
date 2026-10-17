@@ -3,6 +3,12 @@ import { db } from '../utils/dbNext.js';
 import type { ConversationPassportRow } from 'entities';
 
 class ConversationPassportRepository {
+  static receipts(id: number) { return db.query<import('entities').MessageReceipt>('SELECT passportId,lastDeliveredMessageId,lastReadMessageId FROM conversationPassport WHERE conversationId=?', [id]); }
+  static async acknowledge(id: number, passportId: number, messageId: number, read: boolean) {
+    await db.execute(`UPDATE conversationPassport SET lastDeliveredMessageId=GREATEST(COALESCE(lastDeliveredMessageId,0),?),
+      lastReadMessageId=IF(?,GREATEST(COALESCE(lastReadMessageId,0),?),lastReadMessageId),lastReadAt=IF(?,NOW(),lastReadAt)
+      WHERE conversationId=? AND passportId=?`, [messageId,read,messageId,read,id,passportId]);
+  }
   static async findByConversationIds(ids: number[]): Promise<ConversationPassportRow[]> {
     if (!ids.length) return [];
     return db.query<ConversationPassportRow>('SELECT * FROM conversationPassport WHERE conversationId IN (?)', [ids]);

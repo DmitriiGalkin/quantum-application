@@ -27,6 +27,10 @@ import type { ActiveRole } from 'entities';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Badge from '@mui/material/Badge';
+import { useQuery } from '@tanstack/react-query';
+import { fetchConversations } from '../requests.ts';
+import NotificationCenter from './NotificationCenter.tsx';
 import { colors, headerHeight, sidebarWidth } from '../theme/design-tokens';
 
 function Header() {
@@ -39,6 +43,8 @@ function Header() {
   const [accountMenuAnchor, setAccountMenuAnchor] = useState<null | HTMLElement>(null);
   const isAccountMenuOpen = Boolean(accountMenuAnchor);
   const activeUser = passport?.users?.find(user => user.id === userId);
+  const conversations = useQuery({ queryKey:['conversations',passport?.id],queryFn:fetchConversations,enabled:!!passport,refetchInterval:10000,retry:false });
+  const unread = (conversations.data ?? []).reduce((sum,item) => sum + (item.unreadCount ?? 0),0);
   const activePlace = passport?.places?.find(place => place.id === placeId);
   const roleLabel = role === 'teacher' ? 'Кабинет преподавателя'
     : role === 'place' ? `Центр · ${activePlace?.title || 'Кабинет центра'}`
@@ -101,11 +107,12 @@ function Header() {
               Quantum
             </Typography>
           </Link>
-          <Button component={Link} to="/" sx={{ minWidth: 0, px: 1 }}>Проекты</Button>
+          <Button component={Link} to="/" sx={{ minWidth: 0, px: 1, display:{ xs:'none',sm:'inline-flex' } }}>Проекты</Button>
           <IconButton aria-label="Сообщения" title="Сообщения"
             onClick={() => passport ? navigate('/chats') : authHandler('/chats')}>
-            <ChatBubbleOutlineIcon />
+            <Badge variant="dot" color="error" invisible={!unread}><ChatBubbleOutlineIcon /></Badge>
           </IconButton>
+          <NotificationCenter messageCount={unread} />
 
             {passport ? (
               <>
@@ -239,7 +246,6 @@ function Header() {
               </IconButton>
             )}
         </Toolbar>
-        {passport && <Typography variant="body2" color="text.secondary" sx={{ display: { xs: 'block', md: 'none' }, px: 2, pb: 1, overflowWrap: 'anywhere' }}>{roleLabel}</Typography>}
       </AppBar>
 
       {passport && <Drawer

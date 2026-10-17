@@ -40,6 +40,7 @@ export default function Meets({ title, meets, refetch, management }: Props) {
     setWeekStart(moscowWeek(new Date())); setSelectedDay(moscowDay(new Date()));
   };
   return <Stack spacing={2}>
+    <Typography variant="caption" color="text.secondary">Время встреч — по Москве (UTC+3)</Typography>
     <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
       <Typography variant="h5" sx={{ color: 'text.primary' }}>{title}</Typography>
       <ToggleButtonGroup value={view} exclusive size="small" onChange={(_, next: 'week' | 'module' | null) => { if (next) setView(next); }}>

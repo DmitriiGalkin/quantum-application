@@ -18,6 +18,7 @@ import type {
   MeetUser,
 } from 'entities';
 
+vi.mock('./repositories/notification.repository.js', () => ({ NotificationRepository:{ create:vi.fn() } }));
 // HTTP and business services are real; persistence and identity use isolated fixtures.
 const state = vi.hoisted(() => {
   process.env.ROBOKASSA_LOGIN = 'workflow-test';

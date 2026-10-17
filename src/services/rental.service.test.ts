@@ -2,10 +2,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { PoolConnection } from 'mysql2/promise';
 import type { PlaceLocation, Rental } from 'entities';
 
+vi.mock('../repositories/notification.repository.js', () => ({ NotificationRepository:{ create:vi.fn() } }));
 vi.mock('../utils/dbNext.js', () => ({ db: { transaction: vi.fn(async (fn: (conn: PoolConnection) => Promise<unknown>) => fn({} as PoolConnection)) } }));
 vi.mock('../repositories/passport.repository.js', () => ({ default: { lockByIds: vi.fn() } }));
 vi.mock('../repositories/place-location.repository.js', () => ({ default: { lockByIds: vi.fn(), findByIds: vi.fn() } }));
-vi.mock('../repositories/place-passport.repository.js', () => ({ default: { findMembership: vi.fn() } }));
+vi.mock('../repositories/place-passport.repository.js', () => ({ default: { members:vi.fn().mockResolvedValue([]), findMembership: vi.fn() } }));
 vi.mock('../repositories/place-schedule.repository.js', () => ({ default: { findByPlaceId: vi.fn() } }));
 vi.mock('../repositories/project.repository.js', () => ({ default: { hasProjects: vi.fn() } }));
 vi.mock('../repositories/meet.repository.js', () => ({ default: { roomBusy: vi.fn() } }));
@@ -73,8 +74,8 @@ describe('rental validation and access', () => {
   });
   it('allows applicant cancellation of confirmed rentals and prevents reopening terminal states', async () => {
     vi.mocked(RentalRepository.findById).mockResolvedValue({ ...pending, status: 'confirmed' });
-    await RentalService.changeStatus(1, 10, 'cancelled', null);
-    expect(RentalRepository.setStatus).toHaveBeenCalledWith(1, 'cancelled', null, expect.anything());
+    await RentalService.changeStatus(1, 10, 'cancelled', 'Изменились планы');
+    expect(RentalRepository.setStatus).toHaveBeenCalledWith(1, 'cancelled', 'Изменились планы', expect.anything());
     vi.mocked(RentalRepository.findById).mockResolvedValue({ ...pending, status: 'cancelled' });
     await expect(RentalService.changeStatus(1, 30, 'confirmed', null, 3)).rejects.toMatchObject({ status: 409 });
   });

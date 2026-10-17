@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Idea, Meet, Passport, Place, Project, ProjectUser, User } from 'entities';
 
+vi.mock('../repositories/notification.repository.js', () => ({ NotificationRepository:{ create:vi.fn() } }));
+vi.mock('./booking-change.service.js', () => ({ BookingChangeService:{announce:vi.fn()},changeReason:(value:string) => value }));
 vi.mock('../utils/dbNext.js', () => ({ db: { transaction: async (fn: (conn: unknown) => Promise<unknown>) => fn({}) } }));
 vi.mock('../repositories/project.repository.js', () => ({ default: { findAll: vi.fn(), findByIds: vi.fn(), findById: vi.fn(), update: vi.fn() } }));
 vi.mock('../repositories/meet.repository.js', () => ({ default: { findAll: vi.fn(), findById: vi.fn(), findConflict: vi.fn(), findByProjectIds: vi.fn(), findByProjectId: vi.fn(), update: vi.fn(), updateStatus: vi.fn() } }));
@@ -11,7 +13,7 @@ vi.mock('../repositories/place-schedule.repository.js', () => ({ default: { find
 vi.mock('../repositories/idea.repository.js', () => ({ default: { findByTeacherId: vi.fn() } }));
 vi.mock('../repositories/user.repository.js', () => ({ default: { findByIds: vi.fn(), findByProjectId: vi.fn() } }));
 vi.mock('../repositories/project-user.repository.js', () => ({ default: { findByProjectIds: vi.fn(), findByProjectId: vi.fn() } }));
-vi.mock('../repositories/meet-user.repository.js', () => ({ default: { findByMeetIds: vi.fn() } }));
+vi.mock('../repositories/meet-user.repository.js', () => ({ default: { findParticipants: vi.fn().mockResolvedValue([]), findByMeetIds: vi.fn() } }));
 vi.mock('../repositories/place-passport.repository.js', () => ({ default: { findMembership: vi.fn() } }));
 vi.mock('../repositories/rental.repository.js', () => ({ RentalRepository: { conflicts: vi.fn().mockResolvedValue(false) } }));
 vi.mock('../repositories/payment.repository.js', () => ({ default: { findPaidMeetIdsByUser: vi.fn() } }));
@@ -42,6 +44,7 @@ const joins: ProjectUser[] = users.map(user => ({ id: user.id, userId: user.id, 
 
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.mocked(MeetUserRepository.findParticipants).mockResolvedValue([]);
   vi.mocked(PassportRepository.findByIds).mockResolvedValue([passport]);
   vi.mocked(PlaceRepository.findByIds).mockResolvedValue([place]);
   vi.mocked(PlaceRepository.findById).mockResolvedValue(place);
@@ -58,7 +61,7 @@ beforeEach(() => {
 describe('ownership checks', () => {
   it('returns a meeting to approval when only its duration changes', async () => {
     vi.mocked(MeetRepository.findById).mockResolvedValue({ ...meet, duration: 60, status: 'published' });
-    await MeetService.update({ id: meet.id, duration: 90 }, meet.passportId);
+    await MeetService.update({ id: meet.id, duration: 90, reason:'' }, meet.passportId);
     expect(MeetRepository.update).toHaveBeenCalledWith(meet.id, expect.objectContaining({ duration: 90, status: 'pending' }), expect.anything());
   });
 
@@ -76,10 +79,10 @@ describe('ownership checks', () => {
 
   it('allows the centre administrator to approve a meeting, but rejects an unrelated teacher', async () => {
     vi.mocked(MeetRepository.findById).mockResolvedValue(meet);
-    vi.mocked(PlacePassportRepository.findMembership).mockResolvedValueOnce({ id: 1, role: 'admin' }).mockResolvedValueOnce({ id: 2, role: 'teacher' });
+    vi.mocked(PlacePassportRepository.findMembership).mockResolvedValueOnce({ id: 1, role: 'admin' }).mockResolvedValueOnce({ id: 1, role: 'admin' }).mockResolvedValueOnce({ id: 2, role: 'teacher' });
     await MeetService.updateStatus(20, 'published', 99, 3);
-    expect(MeetRepository.update).toHaveBeenCalledWith(20, { status: 'published' }, expect.anything());
-    await expect(MeetService.updateStatus(20, 'cancelled', 98, 3)).rejects.toMatchObject({ status: 403 });
+    expect(MeetRepository.update).toHaveBeenCalledWith(20, { status: 'published', bookingState:'confirmed' }, expect.anything());
+    await expect(MeetService.updateStatus(20, 'cancelled', 98, 3, 'Нет свободного зала')).rejects.toMatchObject({ status: 403 });
     expect(MeetRepository.update).toHaveBeenCalledTimes(1);
   });
 

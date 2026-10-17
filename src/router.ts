@@ -28,6 +28,7 @@ import message2Controller from './controllers/message2.controller.js';
 import type { ActiveRole, Passport } from 'entities';
 import { ParticipantsService } from './services/participants.service.js';
 import rental from './controllers/rental.controller.js';
+import notification from './controllers/notification.controller.js';
 
 const router = express.Router();
 const privateRouter = express.Router();
@@ -147,6 +148,9 @@ privateRouter.post('/meet', withAuth(meet.create));
 privateRouter.put('/meet/:id', withAuth(meet.update));
 privateRouter.delete('/meet/:id', withAuth(meet.delete));
 privateRouter.put('/meet/:id/status', withAuth(meet.updateStatus));
+privateRouter.post('/meet/:id/cancel-booking', withAuth(meet.cancel));
+privateRouter.get('/meet/:id/change', withAuth(meet.getChange));
+privateRouter.post('/meet/:id/change-response', withAuth(meet.changeResponse));
 privateRouter.post('/meetUser', withAuth(meetUser.create));
 privateRouter.delete('/meetUser', withAuth(meetUser.delete));
 
@@ -182,6 +186,12 @@ privateRouter.delete('/place/:id/leave', withAuth(placeTeacherController.leave))
 privateRouter.get('/conversation', withAuth(conversationController.findAll));
 privateRouter.post('/conversation/start', withAuth(conversationController.start));
 privateRouter.get('/conversation/:id', withAuth(conversationController.findById));
+privateRouter.put('/conversation/:id/receipt', withAuth(conversationController.acknowledge));
+privateRouter.get('/notifications', withAuth(notification.list));
+privateRouter.put('/notification/:id/read', withAuth(notification.read));
+privateRouter.get('/push/config', withAuth(notification.config));
+privateRouter.post('/push/subscription', withAuth(notification.subscribe));
+privateRouter.post('/push/unsubscribe', withAuth(notification.unsubscribe));
 
 // Message routes
 privateRouter.post('/conversation/:id/messages', withAuth(message2Controller.create));

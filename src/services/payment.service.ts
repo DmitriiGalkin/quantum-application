@@ -6,6 +6,9 @@ import type { CreatePaymentDto, PaymentDto } from 'entities';
 import { MeetService } from './meet.service.js';
 import { HttpError } from '../utils/http-error.js';
 import { requireId } from '../utils/validation.js';
+import { db } from '../utils/dbNext.js';
+import { RefundService } from './refund.service.js';
+import { MeetChangeParticipantRepository } from '../repositories/meet-change-participant.repository.js';
 
 export class PaymentService {
   static async createForPassport(passportId: number, data: Omit<CreatePaymentDto, 'passportId'>) {
@@ -34,7 +37,7 @@ export class PaymentService {
         const meet = await MeetRepository.findById(targetId);
 
         if (!meet || meet.deletedAt) throw new HttpError('Встреча не найдена', 404);
-        if (meet.status === 'cancelled') throw new HttpError('Встреча отменена', 409);
+        if (meet.status !== 'published' || meet.bookingState === 'needs_location') throw new HttpError('Оплата доступна после подтверждения площадки', 409);
         if (typeof meet.price !== 'number' || !Number.isSafeInteger(meet.price) || meet.price <= 0)
           throw new HttpError('Встреча бесплатная или цена некорректна', 400);
 
@@ -121,7 +124,7 @@ export class PaymentService {
       throw new HttpError('Стоимость не совпадает', 400);
     }
 
-    if (payment.status !== 'paid') {
+    if (payment.status !== 'paid' && payment.status !== 'refunded') {
       if (payment.status !== 'pending') throw new HttpError('Платёж уже закрыт', 409);
       await PaymentService.markPaid(payment.id);
     }
@@ -130,7 +133,15 @@ export class PaymentService {
   }
 
   static async markPaid(paymentId: number) {
-    await PaymentRepository.setPaid(paymentId);
+    const payment = await PaymentRepository.getById(paymentId);
+    if (!payment) throw new HttpError('Платёж не найден',404);
+    if (payment.targetType !== 'meet' || !payment.targetId) return PaymentRepository.setPaid(paymentId);
+    await db.transaction(async conn => {
+      const meet = await MeetRepository.findById(payment.targetId!,conn);
+      await PaymentRepository.setPaid(paymentId,conn);
+      const change = meet?.bookingRevision && payment.userId ? await MeetChangeParticipantRepository.get(meet.id,meet.bookingRevision,payment.userId) : null;
+      if (meet?.status === 'cancelled' || change?.response === 'declined') await RefundService.enqueueForMeet(payment.targetId!,payment.userId ?? undefined,conn);
+    });
   }
 
   static async markFailed(paymentId: number) {

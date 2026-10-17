@@ -52,7 +52,7 @@ export default function RentalsPage({ centre = false }: { centre?: boolean }) {
         <Button disabled={mutation.isPending} onClick={() => mutation.mutate({ id: rental.id, status: 'confirmed' })}>Подтвердить</Button>
         <Button disabled={mutation.isPending} onClick={() => { setRejecting(rental.id); setReason(''); mutation.reset(); }}>Отклонить</Button>
       </Stack>}
-      {!centre && ['pending', 'confirmed'].includes(rental.status) && <Button disabled={mutation.isPending} onClick={() => { mutation.reset(); setCancelling(rental); }}>Отменить до начала</Button>}
+      {['pending', 'confirmed'].includes(rental.status) && <Button disabled={mutation.isPending} onClick={() => { mutation.reset(); setReason(''); setCancelling(rental); }}>Отменить до начала</Button>}
     </Stack></CardContent></Card>)}
     <Dialog open={rejecting !== null} onClose={() => setRejecting(null)} fullWidth maxWidth="sm">
       <DialogTitle>Причина отклонения</DialogTitle><DialogContent><TextField autoFocus fullWidth multiline minRows={3} value={reason} onChange={e => setReason(e.target.value)} label="Причина" sx={{ mt: 1 }} />{mutation.isError && <Alert severity="error">{mutation.error.message}</Alert>}</DialogContent>
@@ -63,11 +63,12 @@ export default function RentalsPage({ centre = false }: { centre?: boolean }) {
       <DialogContent>
         <Typography sx={{ overflowWrap: 'anywhere' }}>{cancelling?.placeTitle} · {cancelling?.locationTitle}</Typography>
         {cancelling && <Typography>{informationDateTime(cancelling.startedAt)} (МСК)</Typography>}
+        <TextField fullWidth required label="Причина отмены" multiline value={reason} onChange={e => setReason(e.target.value)} sx={{ mt:2 }} />
         {mutation.isError && <Alert severity="error">{mutation.error.message}</Alert>}
       </DialogContent>
       <DialogActions sx={{ flexWrap: 'wrap', gap: 1 }}>
         <Button disabled={mutation.isPending} onClick={() => setCancelling(null)}>Оставить заявку</Button>
-        <Button color="error" disabled={mutation.isPending || !cancelling} onClick={() => cancelling && mutation.mutate({ id: cancelling.id, status: 'cancelled' })}>Отменить заявку</Button>
+        <Button color="error" disabled={mutation.isPending || !cancelling || !reason.trim()} onClick={() => cancelling && mutation.mutate({ id: cancelling.id, status: 'cancelled',reason })}>Отменить заявку</Button>
       </DialogActions>
     </Dialog>
   </Stack>;

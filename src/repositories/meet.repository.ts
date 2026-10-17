@@ -84,7 +84,7 @@ class MeetRepository {
 
   // ✅ UPDATE (нормальный partial)
   static async update(id: number, data: UpdateMeetInput, conn?: PoolConnection): Promise<boolean> {
-    const keys = ['startedAt', 'duration', 'price', 'status', 'locationId', 'maxParticipants'] as const;
+    const keys = ['startedAt', 'duration', 'price', 'status', 'locationId', 'maxParticipants', 'placeId', 'bookingState', 'bookingRevision'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;

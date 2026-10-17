@@ -7,17 +7,20 @@ import { Feed } from '../features/feed/Feed.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlace, fetchProject } from '../requests.ts';
 import { useLocation, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getBrowser } from '../shared/lib/browser.ts';
 import { useAuth } from 'providers/auth-context.ts';
 import ProjectCard from '../features/project/ui/ProjectCard.tsx';
-import Paper from '@mui/material/Paper';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import ClosableDialogTitle from '../components/ClosableDialogTitle.tsx';
 import CreateMeet from '../features/meets/CreateMeet.tsx';
 import MeetCard from '../features/meets/MeetCard.tsx';
 import { upcomingPublishedMeets } from '../features/project/ui/project-card-meeting.ts';
 import type { FeedItem } from 'entities';
 
 export default function ProjectPage() {
+  const [planning, setPlanning] = useState(false);
   const { id } = useParams<{ id: string }>();
   const { role, passport } = useAuth();
   const { hash } = useLocation();
@@ -61,12 +64,17 @@ export default function ProjectPage() {
           {upcoming.length ? upcoming.map(meet => <MeetCard key={meet.id} meet={meet} refetch={refetch} />)
             : <Typography color="text.secondary">Ближайшая встреча пока не назначена.</Typography>}
           {canCreateMeet && (
-            <Paper sx={{ p: 2 }}>
-              <Typography component="h2" variant="h5" sx={{ mb: 2 }}>Запланировать встречу</Typography>
+            <>
+            <Button variant="contained" onClick={() => setPlanning(true)}>Запланировать встречу</Button>
+            <Dialog open={planning} onClose={() => setPlanning(false)} fullWidth maxWidth="md">
+              <ClosableDialogTitle onClose={() => setPlanning(false)}>Запланировать встречу</ClosableDialogTitle>
+              <DialogContent sx={{ pt: 2 }}>
               {place.isPending ? <Typography role="status">Загрузка расписания центра…</Typography>
                 : place.isError ? <Alert severity="error" action={<Button onClick={() => void place.refetch()}>Повторить</Button>}>Не удалось загрузить расписание центра.</Alert>
-                  : <CreateMeet projectId={project.id} placeId={project.place.id} locationId={project.locationId} schedule={place.data?.schedule || []} refetch={refetch} />}
-            </Paper>
+                  : <CreateMeet projectId={project.id} placeId={project.place.id} locationId={project.locationId} schedule={place.data?.schedule || []} refetch={() => { setPlanning(false); void refetch(); }} />}
+              </DialogContent>
+            </Dialog>
+            </>
           )}
 
           {Boolean(history.length) && <>

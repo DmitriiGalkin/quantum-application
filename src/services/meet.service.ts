@@ -16,6 +16,10 @@ import { requireId } from '../utils/validation.js';
 import { withinPlaceHours } from '../shared/lib/meet-time.js';
 import type { PoolConnection } from 'mysql2/promise';
 import { RentalRepository } from '../repositories/rental.repository.js';
+import { BookingChangeService, changeReason } from './booking-change.service.js';
+import { NotificationService } from './notification.service.js';
+import { RefundService } from './refund.service.js';
+import UserRepository from '../repositories/user.repository.js';
 
 export class MeetService {
   private static limit(value: unknown): number {
@@ -57,6 +61,11 @@ export class MeetService {
       throw new HttpError('Укажите положительную длительность в минутах', 400);
     }
     const schedule = await PlaceScheduleRepository.findByPlaceId(meet.placeId, conn);
+    if (meet.locationId !== null) {
+      const [room] = await PlaceLocationRepository.findByIds([meet.locationId],conn);
+      if (room?.capacity != null && meet.maxParticipants != null && meet.maxParticipants > room.capacity) throw new HttpError('Число мест превышает вместимость зала',409);
+      if (room?.capacity != null && (await MeetUserRepository.findParticipants(meet.id,conn)).length > room.capacity) throw new HttpError('В новом зале недостаточно мест для записанных учеников',409);
+    }
     if (!withinPlaceHours(meet.startedAt, meet.duration, schedule)) throw new HttpError('Весь интервал встречи должен входить в часы работы центра (МСК)', 400);
     if (meet.status === 'cancelled') return;
     if (meet.locationId !== null && await RentalRepository.conflicts(meet.locationId, meet.startedAt,
@@ -93,7 +102,7 @@ export class MeetService {
     }, true);
   }
 
-  static async update(data: { id: number } & UpdateMeetInput, passportId: number, activePlaceId?: number) {
+  static async update(data: { id: number; reason?: string } & UpdateMeetInput, passportId: number, activePlaceId?: number) {
     const { id, ...fields } = data;
 
     const existingMeet = await MeetRepository.findById(id);
@@ -105,11 +114,17 @@ export class MeetService {
       await PassportRepository.lockByIds([existingMeet.passportId], conn);
       const current = await MeetRepository.findById(id, conn, false);
       if (!current || current.deletedAt) throw new HttpError('Встреча не найдена', 404);
-      const locationId = fields.locationId === undefined ? current.locationId : await this.location(current.placeId, fields.locationId, conn);
+      await this.access(current,passportId,activePlaceId);
+      if (current.status === 'cancelled') throw new HttpError('Отменённую встречу изменить нельзя; создайте новую',409);
+      const placeId = fields.placeId === undefined ? current.placeId : requireId(fields.placeId, 'центра');
+      if (admin && placeId !== current.placeId) throw new HttpError('Перенести встречу в другой центр может преподаватель',403);
+      if (placeId !== current.placeId && !(await PlaceRepository.findById(placeId))) throw new HttpError('Центр не найден',404);
+      if (placeId !== current.placeId && fields.locationId == null) throw new HttpError('Выберите зал нового центра',400);
+      const locationId = fields.locationId === undefined ? current.locationId : await this.location(placeId, fields.locationId, conn);
       await PlaceLocationRepository.lockByIds([current.locationId, locationId].filter((id): id is number => id !== null), conn);
       await MeetRepository.findById(id, conn);
-      if (fields.locationId !== undefined) await this.location(current.placeId, locationId, conn);
-      const updateData: UpdateMeetInput = { startedAt: fields.startedAt, duration: fields.duration, price: fields.price,
+      if (fields.locationId !== undefined) await this.location(placeId, locationId, conn);
+      const updateData: UpdateMeetInput = { placeId, startedAt: fields.startedAt, duration: fields.duration, price: fields.price,
         locationId: fields.locationId, maxParticipants: fields.maxParticipants };
       if (fields.maxParticipants !== undefined) {
         if (fields.maxParticipants === null && current.maxParticipants !== null) throw new HttpError('Установленный лимит нельзя очистить', 400);
@@ -120,17 +135,45 @@ export class MeetService {
         }
       }
       if (fields.startedAt !== undefined) this.start(fields.startedAt);
-      const candidate: Meet = { ...current, startedAt: fields.startedAt ?? current.startedAt,
-        duration: fields.duration === undefined ? current.duration : fields.duration, locationId };
+      const candidate: Meet = { ...current, placeId, startedAt: fields.startedAt ?? current.startedAt,
+        duration: fields.duration === undefined ? current.duration : fields.duration,
+        maxParticipants: fields.maxParticipants === undefined ? current.maxParticipants : fields.maxParticipants, locationId };
       const slotChanged = new Date(candidate.startedAt).getTime() !== new Date(current.startedAt).getTime() ||
-        candidate.duration !== current.duration || candidate.locationId !== current.locationId;
+        candidate.duration !== current.duration || candidate.locationId !== current.locationId || candidate.placeId !== current.placeId;
       if (slotChanged) {
-        if (!admin) updateData.status = 'pending';
+        updateData.status = placeId !== current.placeId || !admin ? 'pending' : current.status;
+        updateData.bookingState = updateData.status === 'published' ? 'confirmed' : 'requested';
+        updateData.bookingRevision = (current.bookingRevision ?? 0) + 1;
         await this.validateSlot({ ...candidate, status: updateData.status ?? current.status }, conn);
       }
+      if (!slotChanged && fields.maxParticipants !== undefined) await this.validateSlot(candidate,conn);
       if (fields.startedAt !== undefined) updateData.startedAt = this.start(fields.startedAt);
-      return MeetRepository.update(id, updateData, conn);
+      const result = await MeetRepository.update(id, updateData, conn);
+      const definedChanges = Object.fromEntries(Object.entries(updateData).filter(([,value]) => value !== undefined)) as UpdateMeetInput;
+      if (slotChanged) await BookingChangeService.announce(current, { ...candidate, ...definedChanges, startedAt: candidate.startedAt }, passportId,
+        placeId !== current.placeId || (fields.reason !== undefined && fields.reason !== '') ? changeReason(fields.reason) : 'Изменение времени или зала встречи', conn);
+      return result;
     }, true);
+  }
+
+  static async cancelBooking(id: number, passportId: number, reason: unknown, activePlaceId?: number, full = false) {
+    const why = changeReason(reason);
+    const existing = await MeetRepository.findById(id);
+    if (!existing) throw new HttpError('Встреча не найдена',404);
+    await this.access(existing,passportId,activePlaceId);
+    return db.transaction(async conn => {
+      await PassportRepository.lockByIds([existing.passportId],conn);
+      await PlaceLocationRepository.lockByIds(existing.locationId === null ? [] : [existing.locationId],conn);
+      const current = await MeetRepository.findById(id,conn);
+      if (!current || current.deletedAt) throw new HttpError('Встреча не найдена',404);
+      await this.access(current,passportId,activePlaceId);
+      if (current.status === 'cancelled' || (!full && current.bookingState === 'needs_location')) return;
+      if (Date.parse(current.startedAt) <= Date.now()) throw new HttpError('Начавшуюся встречу отменить нельзя',409);
+      const next: Meet = { ...current,status:full ? 'cancelled' : 'pending',locationId:null,bookingState:'needs_location',bookingRevision:(current.bookingRevision ?? 0)+1 };
+      await MeetRepository.update(id,next,conn);
+      await BookingChangeService.announce(current,next,passportId,why,conn);
+      if (full) await RefundService.enqueueForMeet(id,undefined,conn);
+    },true);
   }
 
   static async remove(id: number, passportId: number) {
@@ -144,7 +187,7 @@ export class MeetService {
       throw new HttpError('Нет доступа к встрече', 403);
     }
 
-    return MeetRepository.delete(id);
+    return this.cancelBooking(id,passportId,'Встреча отменена преподавателем',undefined,true);
   }
 
   static async findById(id: number): Promise<MeetDto | null> {
@@ -189,7 +232,8 @@ export class MeetService {
     });
   }
 
-  static async updateStatus(id: number, status: MeetStatus, passportId: number, activePlaceId?: number) {
+  static async updateStatus(id: number, status: MeetStatus, passportId: number, activePlaceId?: number, reason?: string) {
+    if (status === 'cancelled') return this.cancelBooking(id,passportId,reason,activePlaceId);
     const meet = await MeetRepository.findById(id);
     if (!meet) throw new HttpError('Встреча не найдена', 404);
     if (!['pending', 'published', 'cancelled'].includes(status)) throw new HttpError('Некорректный статус встречи', 400);
@@ -200,12 +244,19 @@ export class MeetService {
       const current = await MeetRepository.findById(id, conn, false);
       if (!current || current.deletedAt) throw new HttpError('Встреча не найдена', 404);
       await PlaceLocationRepository.lockByIds(current.locationId === null ? [] : [current.locationId], conn);
+      await this.access(current,passportId,activePlaceId);
       await MeetRepository.findById(id, conn);
-      if (status !== 'cancelled') {
+      {
+        if (current.status === 'cancelled') throw new HttpError('Отменённую встречу подтвердить нельзя',409);
         await this.location(current.placeId, current.locationId, conn);
         await this.validateSlot({ ...current, status }, conn);
       }
-      return MeetRepository.update(id, { status }, conn);
+      if (current.bookingState === 'needs_location') throw new HttpError('Сначала выберите новый зал',409);
+      const result = await MeetRepository.update(id, { status,bookingState:status === 'published' ? 'confirmed' : 'requested' }, conn);
+      const families = await UserRepository.findByIds((await MeetUserRepository.findParticipants(id,conn)).map(j => j.userId));
+      await NotificationService.notify([current.passportId,...families.map(u => u.passportId)],`meet-${id}-${current.bookingRevision ?? 0}-${status}`,'Статус бронирования обновлён',
+        status === 'published' ? 'Центр подтвердил встречу' : 'Заявка ожидает подтверждения',`/project/${current.projectId}#meet-${id}`,conn);
+      return result;
     }, true);
   }
 }

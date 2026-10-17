@@ -14,7 +14,7 @@ beforeEach(() => { vi.resetAllMocks(); Object.assign(globalThis, { IS_REACT_ACT_
 it('initializes editing in Moscow and keeps the entered hall and limit after a failed save', async () => {
   const client = new QueryClient(); const host = globalThis.document.createElement('div'); globalThis.document.body.append(host);
   const root = createRoot(host); const onClose = vi.fn(); let hook: ReturnType<typeof useEditMeet>;
-  const meet = { id: 1, projectId: 2, startedAt: '2030-01-06T22:15:00Z', duration: null, price: 0, locationId: 5, maxParticipants: null } as MeetDto;
+  const meet = { id: 1, place: { id:3 }, projectId: 2, startedAt: '2030-01-06T22:15:00Z', duration: null, price: 0, locationId: 5, maxParticipants: null } as MeetDto;
   function Form() { hook = useEditMeet(meet, onClose); return <output>{JSON.stringify(hook.form)}{hook.error}</output>; }
   vi.mocked(fetchUpdateMeet).mockRejectedValue(new Error('Зал занят'));
   try {

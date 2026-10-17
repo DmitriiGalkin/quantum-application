@@ -7,6 +7,12 @@ import type { PaymentRow, CreatePaymentInput, Payment } from 'entities';
 import { toPayment } from '../mappers/payment.mapper.js';
 
 class PaymentRepository {
+  static async setRefunded(id: number,conn: PoolConnection) {
+    await conn.execute("UPDATE payment SET status='refunded' WHERE id=? AND status='paid'",[id]);
+  }
+  static async paidForMeet(meetId: number, userId: number | undefined, conn: PoolConnection): Promise<PaymentRow[]> {
+    return (await conn.query<PaymentRow[]>("SELECT * FROM payment WHERE targetType='meet' AND targetId=? AND status='paid'" + (userId === undefined ? '' : ' AND userId=?') + ' FOR UPDATE',userId === undefined ? [meetId] : [meetId,userId]))[0];
+  }
   static async moveSeedTarget(id: number, ideaId: number, conn: PoolConnection): Promise<void> {
     await conn.execute("UPDATE payment SET targetId = ? WHERE id = ? AND targetType = 'idea'", [ideaId, id]);
   }
@@ -52,7 +58,11 @@ class PaymentRepository {
   }
 
   // ✅ READ
-  static async getById(id: number): Promise<Payment | null> {
+  static async getById(id: number, conn?: PoolConnection): Promise<Payment | null> {
+    if (conn) {
+      const [rows] = await conn.query<PaymentRow[]>('SELECT * FROM payment WHERE id=? FOR UPDATE',[id]);
+      return rows[0] ? toPayment(rows[0]) : null;
+    }
     const rows = await db.execute<PaymentRow[]>(
       `SELECT *
          FROM payment
@@ -99,17 +109,17 @@ class PaymentRepository {
     );
   }
 
-  static async setPaid(id: number): Promise<void> {
-    const result = await db.execute<ResultSetHeader>(
+  static async setPaid(id: number, conn?: PoolConnection): Promise<void> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(
       `UPDATE payment
           SET status = 'paid',
               paidAt = NOW()
         WHERE id = ? AND status = 'pending'`,
       [id],
     );
-    if (!result.affectedRows) {
-      const payment = await this.getById(id);
-      if (payment?.status !== 'paid') throw new Error('Payment could not be confirmed');
+    if (!(Array.isArray(result) ? result[0] : result).affectedRows) {
+      const payment = await this.getById(id,conn);
+      if (payment?.status !== 'paid' && payment?.status !== 'refunded') throw new Error('Payment could not be confirmed');
     }
   }
 

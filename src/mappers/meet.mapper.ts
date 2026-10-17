@@ -2,6 +2,8 @@ import type { Meet, MeetWithProjectTitle, MeetRow, MeetWithProjectTitleRow } fro
 
 export function toMeet(row: MeetRow): Meet {
   return {
+    bookingState: row.bookingState,
+    bookingRevision: row.bookingRevision,
     locationId: row.locationId ?? null,
     maxParticipants: row.maxParticipants ?? null,
     id: row.id,

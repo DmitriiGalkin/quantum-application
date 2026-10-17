@@ -37,6 +37,12 @@ import {
 } from 'entities';
 import { del, get, post, put, patch, toQuery, postMultipart } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
+export const fetchMessageReceipt = (id: number, messageId: number, read: boolean) => put<void>(`/conversation/${id}/receipt`, { messageId,read });
+export const fetchNotifications = () => get<import('entities').AppNotification[]>('/notifications');
+export const fetchReadNotification = (id: number) => put<void>(`/notification/${id}/read`, {});
+export const fetchPushConfig = () => get<{ publicKey: string | null }>('/push/config');
+export const fetchPushSubscribe = (subscription: PushSubscriptionJSON) => post<void>('/push/subscription',subscription);
+export const fetchPushUnsubscribe = (endpoint: string) => post<void>('/push/unsubscribe',{ endpoint });
 import type { PlaceProfile, RoomDto, UpdateLocation, BusyInterval, CreateRental, RentalDto, RentalStatus } from 'entities';
 
 export const fetchPlaceProfile = (id: number) => get<PlaceProfile>(`/place/${id}/profile`);
@@ -74,7 +80,10 @@ export const fetchProjectLeave = (id: number) => del<void>(`/project/${id}/leave
 export const fetchMeets = () => get<MeetDto[]>(`/user/meets`);
 export const fetchCreateMeet = (params: CreateMeet) => post<void>('/meet', params);
 export const fetchUpdateMeet = (id: number, params: UpdateMeet) => put<void>(`/meet/${id}`, params);
-export const fetchUpdateMeetStatus = (id: number, params: { status: MeetStatus }) => put<void>(`/meet/${id}/status`, params);
+export const fetchUpdateMeetStatus = (id: number, params: { status: MeetStatus; reason?: string }) => put<void>(`/meet/${id}/status`, params);
+export const fetchCancelBooking = (id: number, reason: string, full = false) => post<void>(`/meet/${id}/cancel-booking`,{ reason,full });
+export const fetchMeetChange = (id: number,userId: number) => get<{ revision:number; response?:string }>(`/meet/${id}/change?userId=${userId}`);
+export const fetchMeetChangeResponse = (id: number,userId: number,revision: number,accepted: boolean) => post<void>(`/meet/${id}/change-response`,{ userId,revision,accepted });
 export const fetchDeleteMeet = (id: number) => del<void>(`/meet/${id}`);
 export const fetchCreateMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', params);
 export const fetchDeleteMeetUser = ({ userId, meetId }: DeleteMeetUser) => del<void>(`/meetUser?userId=${userId}&meetId=${meetId}`);

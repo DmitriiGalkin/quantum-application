@@ -12,6 +12,7 @@ import PlaceScheduleRepository from '../repositories/place-schedule.repository.j
 import ProjectRepository from '../repositories/project.repository.js';
 import MeetRepository from '../repositories/meet.repository.js';
 import { RentalRepository } from '../repositories/rental.repository.js';
+import { NotificationService } from './notification.service.js';
 
 export function rentalInterval(startedAt: unknown, endedAt: unknown, now = Date.now()): number {
   const valid = (value: unknown): value is string => typeof value === 'string' &&
@@ -74,13 +75,16 @@ export class RentalService {
     const existing = await RentalRepository.findById(id);
     if (!existing) throw new HttpError('Заявка не найдена', 404);
     if (status === 'cancelled') {
-      if (existing.passportId !== passportId) throw new HttpError('Нельзя отменить чужую заявку', 403);
+      if (existing.passportId !== passportId) {
+        if (placeId !== existing.placeId) throw new HttpError('Заявка другого центра',403);
+        await this.requireAdmin(passportId,existing.placeId);
+      }
     } else {
       if (placeId !== existing.placeId) throw new HttpError('Заявка другого центра', 403);
       await this.requireAdmin(passportId, existing.placeId);
     }
-    const rejectionReason = status === 'rejected' && typeof reason === 'string' ? reason.trim() : null;
-    if (status === 'rejected' && (!rejectionReason || rejectionReason.length > 5000)) throw new HttpError('Укажите причину отклонения (до 5000 символов)', 400);
+    const rejectionReason = status !== 'confirmed' && typeof reason === 'string' ? reason.trim() : null;
+    if (status !== 'confirmed' && (!rejectionReason || rejectionReason.length > 5000)) throw new HttpError('Укажите причину (до 5000 символов)', 400);
     await db.transaction(async conn => {
       await PassportRepository.lockByIds([existing.passportId], conn);
       await PlaceLocationRepository.lockByIds([existing.locationId], conn);
@@ -90,6 +94,9 @@ export class RentalService {
       if (status === 'cancelled' ? !['pending', 'confirmed'].includes(current.status) : current.status !== 'pending') throw new HttpError('Статус заявки уже изменён', 409);
       if (status === 'confirmed') await this.validate(current, await this.room(current.locationId, conn), conn);
       await RentalRepository.setStatus(id, status, rejectionReason, conn);
+      const admins = (await PlacePassportRepository.members(current.placeId)).filter(p => p.role === 'admin').map(p => p.passportId);
+      await NotificationService.notify([current.passportId,...admins],`rental-${id}-${status}`,'Статус аренды изменился',
+        rejectionReason || 'Аренда подтверждена','/chats',conn);
     }, true);
   }
 

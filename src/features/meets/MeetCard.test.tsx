@@ -48,7 +48,7 @@ it('renders real project/centre/hall data, Moscow time and meeting occupancy dur
   const html = renderToString(<QueryClientProvider client={client}><MeetCard meet={meet} /></QueryClientProvider>);
   expect(html).toContain('Создаём робота'); expect(html).toContain('robot.jpg');
   expect(html).toContain('Центр творчества'); expect(html).toContain('Мастерская'); expect(html).toContain('Улица, 1');
-  expect(html).toContain('16:00'); expect(html).toContain('17:00'); expect(html).toContain('МСК');
+  expect(html).toContain('16:00'); expect(html).toContain('17:00'); expect(html).not.toContain('МСК');
   expect(html).toContain('из 12'); expect(html).toContain('17%'); expect(html).toContain('Свободно 10 мест');
   expect(html).not.toContain('99 участников'); expect(fetchPlace).not.toHaveBeenCalled();
   client.clear();

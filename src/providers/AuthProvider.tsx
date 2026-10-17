@@ -62,7 +62,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [queryClient]);
 
   const login = useCallback((value: string) => storeAuth(value), []);
-  const logout = useCallback(() => storeAuth(null), []);
+  const logout = useCallback(() => {
+    const browser = getBrowser();
+    if (browser && 'serviceWorker' in browser.navigator) {
+      void browser.navigator.serviceWorker.getRegistration().then(async registration => {
+        const subscription = await registration?.pushManager.getSubscription();
+        if (subscription) await subscription.unsubscribe();
+      }).catch(() => console.error('Не удалось отключить Push-подписку устройства при выходе'));
+    }
+    storeAuth(null);
+  }, []);
   useEffect(() => {
     const browser = getBrowser();
     browser?.addEventListener(AUTH_401_EVENT, logout);

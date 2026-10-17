@@ -1,5 +1,6 @@
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -40,6 +41,7 @@ export default function ChatPage() {
       : conversations.isError ? <Alert severity="error" action={<Button onClick={() => void conversations.refetch()}>Повторить</Button>}>Не удалось загрузить диалоги.</Alert>
         : <Paper><List aria-label="Диалоги">
           {conversations.data.map(conversation => <ListItemButton component={Link} to={`/chats/${conversation.id}`} key={conversation.id}>
+            {!!conversation.unreadCount && <Chip size="small" color="primary" label={conversation.unreadCount} aria-label="Непрочитанные сообщения" sx={{ mr: 1 }} />}
             <ListItemAvatar><Avatar src={conversation.counterpart?.image || undefined} /></ListItemAvatar>
             <ListItemText primary={conversation.counterpart?.title || 'Собеседник'} sx={{ overflowWrap: 'anywhere' }}
               secondary={conversation.lastMessage ? `${conversation.lastMessage.text} · ${informationDateTime(conversation.lastMessage.createdAt)} МСК` : 'Сообщений пока нет'}

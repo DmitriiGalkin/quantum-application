@@ -42,10 +42,10 @@ class MeetUserRepository {
   }
 
   // ✅ DELETE
-  static async delete({meetId, userId}: DeleteMeetUser): Promise<boolean> {
-    const result = await db.execute<ResultSetHeader>(`DELETE FROM meetUser WHERE meetId = ? AND userId = ?`, [meetId, userId]);
+  static async delete({meetId, userId}: DeleteMeetUser, conn?: PoolConnection): Promise<boolean> {
+    const result = await (conn ?? db).execute<ResultSetHeader>(`DELETE FROM meetUser WHERE meetId = ? AND userId = ?`, [meetId, userId]);
 
-    return result.affectedRows > 0;
+    return (Array.isArray(result) ? result[0] : result).affectedRows > 0;
   }
 
   // ✅ FIND BY ID

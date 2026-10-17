@@ -7580,6 +7580,168 @@
           "isCover": false
         }
       ]
+    },
+    {
+      "id": "craft-square-pine-stool-v1",
+      "name": "Табуретка из дерева",
+      "description": "Деревянная табуретка с квадратным сиденьем, четырьмя прямыми ножками, царгами и нижними перекладинами. По фотографиям образца участники знакомятся с устройством каркасной мебели, делают эскиз и разметку, обрабатывают заготовки, собирают и шлифуют изделие под руководством преподавателя. Размеры, допустимая нагрузка и соединения уточняются с мастером; по фотографиям они не установлены. Обложка создана ИИ по образцу, оригинальные фотографии доступны в галерее.",
+      "photos": [
+        {
+          "id": "craft-square-pine-stool-v1-cover",
+          "fileName": "stool-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/e4361b5254c1470d02e52099fc7c7bb7e50464ca35b56553554ceb198deddeca.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "craft-square-pine-stool-v1-1A-cvQlg4cJYtbFnxiS1FFUjP22nL4gfa",
+            "craft-square-pine-stool-v1-1gpnF32NYPCojcHGHJYHrJ8pIDWVRHDTn",
+            "craft-square-pine-stool-v1-1ncC-cuKW_RJWNX5E_wME4t9EnRnmdXz5",
+            "craft-square-pine-stool-v1-1Nh8v_ZxJBlkxrwV0-4OlASRBWCpeSW0a",
+            "craft-square-pine-stool-v1-1Sr11dn0sHYg4xJVx70V3Azxn1EV969sL",
+            "craft-square-pine-stool-v1-1XkNbH0CGt7D4zSz_51URiJGoBEuOLksr"
+          ],
+          "promptFile": "docs/image-prompts/catalog/craft-square-pine-stool-v1.md"
+        },
+        {
+          "id": "craft-square-pine-stool-v1-1A-cvQlg4cJYtbFnxiS1FFUjP22nL4gfa",
+          "fileName": "stool-1A-cvQlg4cJYtbFnxiS1FFUjP22nL4gfa.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/0db5e5b84a71f21bd45b02f4875ec89dab09a664332581f4c1221775c8be0c7c.jpg",
+          "isCover": false,
+          "driveFileId": "1A-cvQlg4cJYtbFnxiS1FFUjP22nL4gfa",
+          "sha256": "0db5e5b84a71f21bd45b02f4875ec89dab09a664332581f4c1221775c8be0c7c"
+        },
+        {
+          "id": "craft-square-pine-stool-v1-1gpnF32NYPCojcHGHJYHrJ8pIDWVRHDTn",
+          "fileName": "stool-1gpnF32NYPCojcHGHJYHrJ8pIDWVRHDTn.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/094e5df6aa3826662c3811e2c88dedd9e0cee50a8f66d63ad074e5f1274a5450.jpg",
+          "isCover": false,
+          "driveFileId": "1gpnF32NYPCojcHGHJYHrJ8pIDWVRHDTn",
+          "sha256": "094e5df6aa3826662c3811e2c88dedd9e0cee50a8f66d63ad074e5f1274a5450"
+        },
+        {
+          "id": "craft-square-pine-stool-v1-1ncC-cuKW_RJWNX5E_wME4t9EnRnmdXz5",
+          "fileName": "stool-1ncC-cuKW_RJWNX5E_wME4t9EnRnmdXz5.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/97ab76022414ff9d45c5f4ee01fa30d6c0bd0af96d9a1698be69d03983fc2083.jpg",
+          "isCover": false,
+          "driveFileId": "1ncC-cuKW_RJWNX5E_wME4t9EnRnmdXz5",
+          "sha256": "97ab76022414ff9d45c5f4ee01fa30d6c0bd0af96d9a1698be69d03983fc2083"
+        },
+        {
+          "id": "craft-square-pine-stool-v1-1Nh8v_ZxJBlkxrwV0-4OlASRBWCpeSW0a",
+          "fileName": "stool-1Nh8v_ZxJBlkxrwV0-4OlASRBWCpeSW0a.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/c3b4cc0f366d5ad754a0824c6ab36e9dd4e5c28eaf8660469479db9d25765271.jpg",
+          "isCover": false,
+          "driveFileId": "1Nh8v_ZxJBlkxrwV0-4OlASRBWCpeSW0a",
+          "sha256": "c3b4cc0f366d5ad754a0824c6ab36e9dd4e5c28eaf8660469479db9d25765271"
+        },
+        {
+          "id": "craft-square-pine-stool-v1-1Sr11dn0sHYg4xJVx70V3Azxn1EV969sL",
+          "fileName": "stool-1Sr11dn0sHYg4xJVx70V3Azxn1EV969sL.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/6e8b8c4df3860a65a157be4dbd8ae5fb4654dace0576706ff996d56b15b233fe.jpg",
+          "isCover": false,
+          "driveFileId": "1Sr11dn0sHYg4xJVx70V3Azxn1EV969sL",
+          "sha256": "6e8b8c4df3860a65a157be4dbd8ae5fb4654dace0576706ff996d56b15b233fe"
+        },
+        {
+          "id": "craft-square-pine-stool-v1-1XkNbH0CGt7D4zSz_51URiJGoBEuOLksr",
+          "fileName": "stool-1XkNbH0CGt7D4zSz_51URiJGoBEuOLksr.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/2caf30753dacd2c5319872d27513084ead2ffbf30fd70bab3796e1926db45532.jpg",
+          "isCover": false,
+          "driveFileId": "1XkNbH0CGt7D4zSz_51URiJGoBEuOLksr",
+          "sha256": "2caf30753dacd2c5319872d27513084ead2ffbf30fd70bab3796e1926db45532"
+        }
+      ]
+    },
+    {
+      "id": "craft-portable-tiered-shelf-v1",
+      "name": "Переносная многоярусная полочка",
+      "description": "Переносная деревянная полочка с четырьмя открытыми лотками с бортиками. Лотки закреплены между вертикальными стойками, соединёнными сверху перекладиной для переноски. У образца коричневая отделка с видимой текстурой дерева. Учебные этапы: эскиз и разметка деталей, подготовка заготовок взрослым, обработка поверхностей, сборка лотков и стоек, шлифовка и отделка под руководством преподавателя. Размеры, нагрузку и соединения определяет мастер. Обложка создана ИИ по образцу; галерея содержит исходные фотографии.",
+      "photos": [
+        {
+          "id": "craft-portable-tiered-shelf-v1-cover",
+          "fileName": "shelf-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/6233bcbfd2c186f1becbe1e32ebb9df659df61febfb4ace2190220369f4b3aee.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "craft-portable-tiered-shelf-v1-1-GK8svEeZA_RC8NgIv_99NuUPn2Q0wKh",
+            "craft-portable-tiered-shelf-v1-1-TXOjBzkKb9725Qoa6vln-jo_lekb80C",
+            "craft-portable-tiered-shelf-v1-13Pkizh-6hQdA2iZrM1gW7Ds3D9V4TrF_",
+            "craft-portable-tiered-shelf-v1-1HVMMGBywrV8WKmC5qyI-38fSl3Q0bqfw",
+            "craft-portable-tiered-shelf-v1-1mfCoRnI8MlAbHFhLPDp9prOYU7NA0dqT",
+            "craft-portable-tiered-shelf-v1-1smuaxUDxBigbRywGdVAZZK3vKiYKwPHY",
+            "craft-portable-tiered-shelf-v1-1Sxn3HLtdvO5-lfD4CZ8vjYEwULxmTAv0",
+            "craft-portable-tiered-shelf-v1-1ZzNccwuj1sWIUDyZaO8tuIjYEOkkMmAO"
+          ],
+          "promptFile": "docs/image-prompts/catalog/craft-portable-tiered-shelf-v1.md"
+        },
+        {
+          "id": "craft-portable-tiered-shelf-v1-1-GK8svEeZA_RC8NgIv_99NuUPn2Q0wKh",
+          "fileName": "shelf-1-GK8svEeZA_RC8NgIv_99NuUPn2Q0wKh.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/1729dbeeca6ecdcaa4df02f09ec86106a101f062c182e43bdce5a4db7255c8c3.jpg",
+          "isCover": false,
+          "driveFileId": "1-GK8svEeZA_RC8NgIv_99NuUPn2Q0wKh",
+          "sha256": "1729dbeeca6ecdcaa4df02f09ec86106a101f062c182e43bdce5a4db7255c8c3"
+        },
+        {
+          "id": "craft-portable-tiered-shelf-v1-1-TXOjBzkKb9725Qoa6vln-jo_lekb80C",
+          "fileName": "shelf-1-TXOjBzkKb9725Qoa6vln-jo_lekb80C.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/c0e783cc90645220147e74c3f63dd0dc666e8c4285e46aeae1e5e7832a025fcb.jpg",
+          "isCover": false,
+          "driveFileId": "1-TXOjBzkKb9725Qoa6vln-jo_lekb80C",
+          "sha256": "c0e783cc90645220147e74c3f63dd0dc666e8c4285e46aeae1e5e7832a025fcb"
+        },
+        {
+          "id": "craft-portable-tiered-shelf-v1-13Pkizh-6hQdA2iZrM1gW7Ds3D9V4TrF_",
+          "fileName": "shelf-13Pkizh-6hQdA2iZrM1gW7Ds3D9V4TrF_.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/7a4eb7c3122b535dee8f5a38258332450ddc5a76013d07e4366588984d4afb28.jpg",
+          "isCover": false,
+          "driveFileId": "13Pkizh-6hQdA2iZrM1gW7Ds3D9V4TrF_",
+          "sha256": "7a4eb7c3122b535dee8f5a38258332450ddc5a76013d07e4366588984d4afb28"
+        },
+        {
+          "id": "craft-portable-tiered-shelf-v1-1HVMMGBywrV8WKmC5qyI-38fSl3Q0bqfw",
+          "fileName": "shelf-1HVMMGBywrV8WKmC5qyI-38fSl3Q0bqfw.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/62e0cc2684469fb7868e0f7b7153b1ae0350a9a500c9fdf07b4619406033cbc4.jpg",
+          "isCover": false,
+          "driveFileId": "1HVMMGBywrV8WKmC5qyI-38fSl3Q0bqfw",
+          "sha256": "62e0cc2684469fb7868e0f7b7153b1ae0350a9a500c9fdf07b4619406033cbc4"
+        },
+        {
+          "id": "craft-portable-tiered-shelf-v1-1mfCoRnI8MlAbHFhLPDp9prOYU7NA0dqT",
+          "fileName": "shelf-1mfCoRnI8MlAbHFhLPDp9prOYU7NA0dqT.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/9c596164c97af78d837052c83189abbfe055f6594fe2f96e0c581ff5d0561d64.jpg",
+          "isCover": false,
+          "driveFileId": "1mfCoRnI8MlAbHFhLPDp9prOYU7NA0dqT",
+          "sha256": "9c596164c97af78d837052c83189abbfe055f6594fe2f96e0c581ff5d0561d64"
+        },
+        {
+          "id": "craft-portable-tiered-shelf-v1-1smuaxUDxBigbRywGdVAZZK3vKiYKwPHY",
+          "fileName": "shelf-1smuaxUDxBigbRywGdVAZZK3vKiYKwPHY.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/686353e01f06863b2a0bf8d6894dea1cb803d87ad924355b10849fc9d71900d4.jpg",
+          "isCover": false,
+          "driveFileId": "1smuaxUDxBigbRywGdVAZZK3vKiYKwPHY",
+          "sha256": "686353e01f06863b2a0bf8d6894dea1cb803d87ad924355b10849fc9d71900d4"
+        },
+        {
+          "id": "craft-portable-tiered-shelf-v1-1Sxn3HLtdvO5-lfD4CZ8vjYEwULxmTAv0",
+          "fileName": "shelf-1Sxn3HLtdvO5-lfD4CZ8vjYEwULxmTAv0.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/7239704729c519d3176c51ebaba4eeed2e1c7312f9d0a49b6e16fba77c5635bd.jpg",
+          "isCover": false,
+          "driveFileId": "1Sxn3HLtdvO5-lfD4CZ8vjYEwULxmTAv0",
+          "sha256": "7239704729c519d3176c51ebaba4eeed2e1c7312f9d0a49b6e16fba77c5635bd"
+        },
+        {
+          "id": "craft-portable-tiered-shelf-v1-1ZzNccwuj1sWIUDyZaO8tuIjYEOkkMmAO",
+          "fileName": "shelf-1ZzNccwuj1sWIUDyZaO8tuIjYEOkkMmAO.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/content-update-2026-10/0707cf685e37a91743257b9857e41a9073c51ee7ccfa0e4117a1e14d99e9bd2f.jpg",
+          "isCover": false,
+          "driveFileId": "1ZzNccwuj1sWIUDyZaO8tuIjYEOkkMmAO",
+          "sha256": "0707cf685e37a91743257b9857e41a9073c51ee7ccfa0e4117a1e14d99e9bd2f"
+        }
+      ]
     }
   ],
   "legacyIdeas": [
