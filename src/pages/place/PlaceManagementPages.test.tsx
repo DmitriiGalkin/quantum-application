@@ -21,7 +21,7 @@ import { fetchRemoveTeacher, fetchLeavePlace } from '../../requests.ts';
 
 const teacher = { id: 44, title: 'Анна', description: 'Преподаватель ремесла', image: 'https://example.com/anna.png' };
 const room: RoomDto = { id: 5, placeId: 597, title: 'Мастерская', description: 'Светлый зал', capacity: 12,
-  hourlyRate: 1000, rentalEnabled: true, deletedAt: null,
+  hourlyRate: 1000, deletedAt: null,
   photos: [{ id: 1, locationId: 5, position: 0, url: 'https://example.com/room.png' }] };
 
 function setup(page: 'teachers' | 'rooms') {

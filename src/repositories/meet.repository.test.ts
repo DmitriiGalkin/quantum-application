@@ -25,7 +25,7 @@ describe('meetings for multiple centres', () => {
       startedAt: '2020-01-01T00:00:00.000Z', deletedAt: '2020-01-02', status: 'cancelled', locationId: null, maxParticipants: null,
     };
     vi.mocked(db.query).mockResolvedValue([row]);
-    expect(await MeetRepository.findByPlaceIds([4, 5, 4])).toEqual([row]);
+    expect(await MeetRepository.findByPlaceIds([4, 5, 4])).toEqual([expect.objectContaining({ ...row, venuePrice: null, venueQuoteVersion: 0 })]);
     expect(db.query).toHaveBeenCalledExactlyOnceWith('SELECT * FROM meet WHERE placeId IN (?)', [[4, 5]]);
   });
 });

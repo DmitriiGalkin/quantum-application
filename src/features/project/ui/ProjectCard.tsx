@@ -1,16 +1,13 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import type { ProjectDto } from 'entities';
-import AvatarGroupUsers from 'components/AvatarGroupUsers.tsx';
 import { useAuth } from '../../../providers/auth-context.ts';
 import { useMutation } from '@tanstack/react-query';
 import { fetchCreateProjectUser, fetchCreateUser, fetchProjectLeave, fetchUpdateProject } from '../../../requests.ts';
@@ -25,17 +22,16 @@ import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.t
 import { statusConfig } from '../../meets/helper.ts';
 import { upcomingPublishedMeets, moscowMeetStatus } from './project-card-meeting.ts';
 import { informationDate } from '../../meets/moscow-time.ts';
-import AddressLine from '../../../components/AddressLine.tsx';
 import ProjectImage from '../../../components/ProjectImage.tsx';
 import LinkIcon from '@mui/icons-material/Link';
 import ChatDialog from '../../../components/ChatDialog.tsx'; // Добавлен импорт
 import ProjectForm, { type ProjectFormValues } from './ProjectForm.tsx';
 import MenuButton from '../../../components/MenuButton.tsx';
 import LogoutIcon from '@mui/icons-material/Logout';
-import PlaceIcon from '@mui/icons-material/Place';
 import EditIcon from '@mui/icons-material/Edit';
 import ChatIcon from '@mui/icons-material/Chat'; // Добавлен ChatIcon
 import Tooltip from '@mui/material/Tooltip';
+import ProjectCardMeta from './ProjectCardMeta.tsx';
 
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 
@@ -200,29 +196,12 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
             {project.description}
           </Typography>
         </CardContent>
-        <CardHeader
-          avatar={<Avatar component={Link} to={`/teachers/${project.passport.id}`} alt={project.passport.title}
-            src={project.passport.image || ''} variant="rounded">{project.passport.title?.[0]}</Avatar>}
-          title={<Typography component={Link} to={`/teachers/${project.passport.id}`} variant="subtitle2"
-            sx={{ color: 'text.primary', textDecoration: 'none', overflowWrap: 'anywhere' }}>{project.passport.title}</Typography>}
-          subheader="Мастер проекта"
-          action={<Stack direction="row">
+        <ProjectCardMeta project={project} meet={firstMeet} action={<Stack direction="row">
             {project.passport.id !== passport?.id && <Tooltip title="Написать учителю">
               <IconButton onClick={openChat} aria-label="Написать учителю" size="small"><ChatIcon fontSize="small" /></IconButton>
             </Tooltip>}
             <MenuButton menuItems={menuItems} />
-          </Stack>}
-          sx={{ borderTop: 1, borderColor: 'divider', '& .MuiCardHeader-content': { minWidth: 0 } }} />
-        <Stack direction="row" spacing={1} sx={{ px: 2, pb: 2, alignItems: 'flex-start' }}>
-          <PlaceIcon fontSize="small" color="action" />
-          <Box sx={{ minWidth: 0 }}>
-            <Typography variant="body2" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>
-              <Box component={Link} to={`/places/${project.place.id}`} sx={{ color: 'inherit' }}>{project.place.title}</Box>
-              {project.location?.title?.trim() && <Box component="span" sx={{ color: 'text.secondary', fontWeight: 400 }}>{' · '}{project.location.title}</Box>}
-            </Typography>
-            <AddressLine address={project.place.address} full={detailed} />
-          </Box>
-        </Stack>
+          </Stack>} />
       </>
       <CardContent sx={{ bgcolor: 'action.hover', borderTop: 1, borderColor: 'divider', flexGrow: 1 }}>
         {firstMeet ? <Stack spacing={1}>
@@ -237,37 +216,9 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
         </Stack> : <Typography variant="body2" color="text.secondary">Ближайшая встреча не назначена</Typography>}
       </CardContent>
 
-        {(Boolean(project.users.length) || role === 'user') && (
+        {role === 'user' && !isMember && (
           <CardContent sx={{ bgcolor: 'action.hover' }}>
-            <Stack direction="row" sx={{ gap: 2, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
-              {Boolean(project.users.length) && (
-                <Box sx={{ maxWidth: '100%' }}>
-                  <Typography component="div" variant="caption" sx={{ color: 'text.secondary', mb: 0.5 }}>
-                    Участники проекта
-                  </Typography>
-                  <AvatarGroupUsers users={project.users || []} limit={10} />
-                </Box>
-              )}
-
-              {role === 'user' && !project.users.length && !isMember && (
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Станьте первым участником и помогите запустить проект
-                </Typography>
-              )}
-
-              {role === 'user' && !isMember && (
-                <Button
-                  variant="contained"
-                  size="small"
-                  onClick={onJoin}
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Вступить
-                </Button>
-              )}
-            </Stack>
+            <Button variant="contained" size="small" onClick={onJoin}>Вступить</Button>
           </CardContent>
         )}
 

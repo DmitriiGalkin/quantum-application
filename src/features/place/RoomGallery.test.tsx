@@ -35,7 +35,7 @@ it('hydrates the main photo and supports keyboard navigation, wrapping and Escap
 });
 
 it('handles no photos and a single photo without carousel controls', () => {
-  expect(renderToString(<RoomGallery title="Зал" photos={[]} />)).toBe('');
+  expect(renderToString(<RoomGallery title="Зал" photos={[]} />)).toContain('Фото зала «Зал» отсутствует');
   const html = renderToString(<RoomGallery title="Зал" photos={[{ id: 1, locationId: 1, position: 0, url: '/room.jpg' }]} />);
   expect(html).toContain('/room.jpg');
   expect(html).not.toContain('Следующее фото');

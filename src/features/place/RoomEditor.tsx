@@ -3,12 +3,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -19,7 +17,7 @@ import { photoFileError } from '../../shared/lib/idea-photos.ts';
 export function RoomEditor({ room, onClose }: { room: RoomDto; onClose: () => void }) {
   const client = useQueryClient();
   const [values, setValues] = useState<UpdateLocation>({ title: room.title, description: room.description,
-    capacity: room.capacity, hourlyRate: room.hourlyRate, rentalEnabled: room.rentalEnabled, photoUrls: room.photos.map(photo => photo.url) });
+    capacity: room.capacity, hourlyRate: room.hourlyRate, photoUrls: room.photos.map(photo => photo.url) });
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -53,7 +51,6 @@ export function RoomEditor({ room, onClose }: { room: RoomDto; onClose: () => vo
       <TextField label="Описание, оснащение и условия" multiline minRows={4} value={values.description ?? ''} onChange={e => setValues({ ...values, description: e.target.value || null })} />
       <TextField label="Вместимость (необязательно)" type="number" value={values.capacity ?? ''} onChange={e => setValues({ ...values, capacity: e.target.value === '' ? null : Number(e.target.value) })} slotProps={{ htmlInput: { min: 1, step: 1 } }} />
       <TextField label="Стоимость за час, руб. (необязательно)" type="number" value={values.hourlyRate ?? ''} onChange={e => setValues({ ...values, hourlyRate: e.target.value === '' ? null : Number(e.target.value) })} slotProps={{ htmlInput: { min: 0, step: 0.01 } }} />
-      <FormControlLabel label="Доступен для аренды" control={<Checkbox checked={values.rentalEnabled} onChange={e => setValues({ ...values, rentalEnabled: e.target.checked })} />} />
       <Typography>Первая фотография — основная. До 10 файлов JPEG, PNG или WebP, каждый до 10 МиБ.</Typography>
       <Button component="label" disabled={pending || values.photoUrls.length >= 10}>Добавить фотографии
         <input hidden type="file" multiple accept="image/jpeg,image/png,image/webp" onChange={e => { void upload(Array.from(e.target.files ?? [])); e.target.value = ''; }} />

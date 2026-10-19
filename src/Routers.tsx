@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { lazy } from 'react';
 
 import { AppLayout } from './components/AppLayout.tsx';
@@ -7,6 +7,7 @@ import NotFound from './components/NotFound.tsx';
 import ProjectsRedirect from './pages/ProjectsRedirect.tsx';
 
 const IdeasPage = lazy(() => import('./pages/IdeasPage.tsx'));
+const CardsPage = lazy(() => import('./pages/CardsPage.tsx'));
 const IdeaPage = lazy(() => import('./pages/IdeaPage.tsx'));
 const ProjectPage = lazy(() => import('./pages/ProjectPage.tsx'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage.tsx'));
@@ -39,7 +40,6 @@ const UserProfilePage = lazy(() => import('./pages/user/UserProfilePage.tsx'));
 const PlaceUsersPage = lazy(() => import('./pages/place/PlaceUsersPage.tsx'));
 const PlaceLocationsPage = lazy(() => import('./pages/place/PlaceLocationsPage.tsx'));
 const PlacesPage = lazy(() => import('./pages/PlacesPage.tsx'));
-const RentalsPage = lazy(() => import('./pages/RentalsPage.tsx'));
 const CraftSchoolProgramPage = lazy(() => import('./pages/CraftSchoolProgramPage.tsx'));
 
 function Routers() {
@@ -48,6 +48,7 @@ function Routers() {
       <Route element={<AppLayout />}>
         <Route index element={<ProjectsPage />} />
         <Route path="ideas" element={<IdeasPage />} />
+        <Route path="cards" element={<CardsPage />} />
         <Route path="craft-school-program" element={<CraftSchoolProgramPage />} />
         <Route path="users/:id" element={<UserProfilePage />} />
         <Route path="idea/:id" element={<IdeaPage />} />
@@ -70,7 +71,7 @@ function Routers() {
           <Route index element={<TeacherDashboardPage />} />
           <Route path="projects" element={<TeacherProjectsPage />} />
           <Route path="meets" element={<TeacherMeetsPage />} />
-          <Route path="rentals" element={<RentalsPage />} />
+          <Route path="rentals" element={<Navigate to="/teacher/meets" replace />} />
           <Route path="ideas" element={<TeacherIdeasPage />} />
           <Route path="userIdeas" element={<TeacherUserIdeasPage />} />
         </Route>
@@ -79,7 +80,7 @@ function Routers() {
           <Route index element={<PlaceDashboardPage />} />
           <Route path="teachers" element={<PlaceTeachersPage />} />
           <Route path="locations" element={<PlaceLocationsPage />} />
-          <Route path="rentals" element={<RentalsPage centre />} />
+          <Route path="rentals" element={<Navigate to="/place/meets" replace />} />
           <Route path="projects" element={<PlaceProjectsPage />} />
           <Route path="users" element={<PlaceUsersPage />} />
           <Route path="meets" element={<PlaceMeetsPage />} />

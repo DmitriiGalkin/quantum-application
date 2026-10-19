@@ -8,14 +8,14 @@ import { expect, it, vi } from 'vitest';
 import type { PlaceProfile } from 'entities';
 
 vi.mock('../providers/auth-context.ts', () => ({ useAuth: () => ({ passport: null, authHandler: vi.fn() }) }));
-vi.mock('../requests.ts', () => ({ fetchPlaceProfile: vi.fn(), fetchProjects: vi.fn(async () => []), fetchRoomBusy: vi.fn(async () => []), fetchCreateRental: vi.fn() }));
+vi.mock('../requests.ts', () => ({ fetchPlaceProfile: vi.fn(), fetchProjects: vi.fn(async () => []) }));
 vi.mock('../features/place/ui/PlaceMap.tsx', () => ({ PlaceMap: () => <div>Карта центра</div> }));
 import PlacesPage from './PlacesPage.tsx';
 import { fetchPlaceProfile } from '../requests.ts';
 
 const profile: PlaceProfile = {
   place: { id: 1, title: 'Центр', description: 'Описание центра', image: 'https://example.com/logo.png', address: 'Адрес центра', latitude: 55, longitude: 37, phone: '+79990000000', priceFrom: null },
-  rooms: [{ id: 1, placeId: 1, title: 'Зал', deletedAt: null, description: null, capacity: null, hourlyRate: null, rentalEnabled: true, photos: [] }],
+  rooms: [{ id: 1, placeId: 1, title: 'Зал', deletedAt: null, description: null, capacity: null, hourlyRate: null, photos: [] }],
   meets: [], teachers: [], schedule: [{ weekday: 1, enabled: true, startTime: '08:00:00', endTime: '20:00:00' }],
 };
 
@@ -34,14 +34,13 @@ it('renders every public section, empty messages, optional room fields and hydra
     expect(errors).toEqual([]);
     expect(host.querySelector('h1')?.textContent).toBe('Центр');
     expect(host.querySelector('img')?.getAttribute('alt')).toBe('Центр');
-    for (const text of ['Проекты центра', 'Преподаватели', 'Залы', 'Как добраться', 'Режим работы', 'Цена по согласованию', 'Проектов центра пока нет.', 'Преподаватели пока не добавлены.', '08:00–20:00 (МСК)']) expect(host.textContent).toContain(text);
+    for (const text of ['Проекты центра', 'Преподаватели', 'Залы', 'Как добраться', 'Режим работы', 'Проектов центра пока нет.', 'Преподаватели пока не добавлены.', '08:00–20:00 (МСК)']) expect(host.textContent).toContain(text);
+    expect(host.textContent).not.toContain('Цена по согласованию');
     expect(host.textContent).not.toContain('Ближайшие занятия');
     expect(host.querySelector('[href="#upcoming"]')).toBeNull();
     expect(host.textContent).not.toContain('Вместимость:');
     expect(host.querySelector('a[href^="tel:"]')?.textContent).toBe('+79990000000');
-    await act(async () => [...host.querySelectorAll('button')].find(button => button.textContent === 'Арендовать')!.click());
-    expect(globalThis.document.querySelector('[role="dialog"]')?.textContent).toContain('Чтобы уточнить доступность');
-    expect(globalThis.document.querySelector('[role="dialog"] a')?.getAttribute('href')).toBe('tel:+79990000000');
+    expect([...host.querySelectorAll('button')].find(button => button.textContent === 'Арендовать')).toBeUndefined();
   } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
 });
 

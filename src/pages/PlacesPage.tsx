@@ -13,7 +13,6 @@ import Projects from '../features/project/ui/Projects.tsx';
 import { useFilters } from '../features/idea/hooks/useFilters.ts';
 import LocationCard from '../features/place/LocationCard.tsx';
 import TeacherCard from '../features/teacher/TeacherCard.tsx';
-import { RoomContactDialog } from '../features/place/RoomContactDialog.tsx';
 import { PlaceGallery } from '../features/place/PlaceGallery.tsx';
 import { PlaceMap } from '../features/place/ui/PlaceMap.tsx';
 import { getBrowser } from '../shared/lib/browser.ts';
@@ -28,7 +27,6 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
   const [shareMessage, setShareMessage] = useState('');
   const profile = useQuery({ queryKey: ['place-profile', id], queryFn: () => fetchPlaceProfile(Number(id)), enabled: Boolean(id) });
   const projects = useQuery({ queryKey: ['projects', id, filter.filters], queryFn: () => fetchProjects({ ...filter.filters, placeId: Number(id) }), enabled: Boolean(id) });
-  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
   const share = async () => {
     const browser = getBrowser();
     if (!browser) return;
@@ -76,13 +74,12 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
       <Typography variant="h4" component="h2">Залы</Typography>
       {!rooms.length && <Typography>Залы пока не добавлены.</Typography>}
       <Grid container spacing={2}>{rooms.map(room => <Grid key={room.id} size={{ xs: 12, md: 6 }}>
-        <LocationCard location={room} actions={<Button variant="contained" sx={{ mt: 'auto', alignSelf: 'flex-start' }} onClick={() => setSelectedRoomId(room.id)}>Арендовать</Button>} />
+        <LocationCard location={room} />
       </Grid>)}</Grid>
     </Stack>
     <Stack spacing={2}><Typography variant="h4" component="h2">Как добраться</Typography><Typography>{place.address}</Typography>
       {Number.isFinite(Number(place.latitude)) && Number.isFinite(Number(place.longitude)) && <PlaceMap lat={Number(place.latitude)} lng={Number(place.longitude)} zoom={15} places={[place]} />}
       <Button component="a" href={`https://yandex.ru/maps/?rtext=~${encodeURIComponent(`${place.latitude},${place.longitude}`)}&rtt=auto`} target="_blank" rel="noopener noreferrer">Построить маршрут</Button>
     </Stack>
-    <RoomContactDialog room={rooms.find(room => room.id === selectedRoomId)} place={place} onClose={() => setSelectedRoomId(null)} />
   </Stack>;
 }

@@ -12,6 +12,21 @@ vi.mock('../../../requests.ts', () => ({ fetchCreateProjectUser: vi.fn().mockRes
 vi.mock('../../../components/ChatDialog.tsx', () => ({ default: ({ open, teacherId }: { open: boolean; teacherId: number }) => open ? <output data-chat>{teacherId}</output> : null }));
 import { fetchCreateProjectUser } from '../../../requests.ts';
 import ProjectCard from './ProjectCard.tsx';
+import ProjectGrids from './ProjectGrids.tsx';
+
+it('uses the main project card in the project grid', () => {
+  const project = { id: 10, title: 'Project', description: 'Description', image: null,
+    passport: { id: 42, title: 'Teacher', description: null },
+    place: { id: 3, title: 'Center', address: 'Full address', description: null, latitude: 0, longitude: 0, priceFrom: null },
+    meets: [], users: [], idea: null } satisfies ProjectDto;
+  const client = new QueryClient();
+  try {
+    const html = renderToString(<QueryClientProvider client={client}><MemoryRouter><ProjectGrids projects={[project]} /></MemoryRouter></QueryClientProvider>);
+    const host = globalThis.document.createElement('div'); host.innerHTML = html;
+    expect(host.querySelector('[aria-label="Открыть проект Project"]')).not.toBeNull();
+    expect(host.textContent).toContain('Ближайшая встреча не назначена');
+  } finally { client.clear(); }
+});
 
 it('keeps project exit on details and removes it from listing cards', async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
@@ -29,7 +44,8 @@ it('keeps project exit on details and removes it from listing cards', async () =
     expect(menu).not.toBeNull();
     await act(async () => menu!.click());
     expect(globalThis.document.body.textContent).toContain('Выйти из проекта');
-    expect(host.querySelector('[aria-label^="Полный адрес"]')).toBeNull();
+    expect(host.querySelector('[aria-label="Показать адрес центра Center"]')).not.toBeNull();
+    expect(host.textContent).not.toContain('Full address');
   } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
 });
 
@@ -52,7 +68,7 @@ it.each([null, { id: 5, title: 'мастерская' }])('hydrates a card with 
     const pictureAction = host.querySelector<HTMLButtonElement>('[aria-label="Открыть проект Robot workshop"]')!;
     expect(pictureAction.querySelector('img')).not.toBeNull();
     expect(pictureAction.querySelector('a')).toBeNull();
-    expect(host.textContent).toContain('Master'); expect(host.textContent).toContain('Center'); expect(host.textContent).toContain('Address');
+    expect(host.textContent).toContain('Master'); expect(host.textContent).toContain('Center'); expect(host.textContent).not.toContain('Address');
     if (location) expect(host.textContent).toContain(`Center · ${location.title}`);
     else expect(host.textContent).not.toContain('Center ·');
     const join = [...host.querySelectorAll('button')].find(button => button.textContent === 'Вступить')!;
@@ -81,8 +97,7 @@ it('restores a guest chat on the matching card after authentication and hides th
   auth.role = 'guest';
   try {
     await act(async () => root.render(render()));
-    expect(host.querySelectorAll('img[src^="/users/"]')).toHaveLength(20);
-    expect(host.textContent).toContain('+3');
+    expect(host.querySelectorAll('img[src^="/users/"]')).toHaveLength(0);
     expect(host.querySelector('a[aria-label="Исходная идея"]')).toBeNull();
     await act(async () => host.querySelectorAll<HTMLButtonElement>('[aria-label="Написать учителю"]')[1].click());
     expect(auth.authHandler).toHaveBeenCalled();

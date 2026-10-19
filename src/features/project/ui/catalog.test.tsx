@@ -5,7 +5,6 @@ import { renderToString } from 'react-dom/server';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, expect, it, vi } from 'vitest';
 import type { MeetDto, ProjectDto } from 'entities';
-import ProjectShowcaseCard from './ProjectShowcaseCard.tsx';
 import ProjectTable from './ProjectTable.tsx';
 import ProjectSearch from './ProjectSearch.tsx';
 
@@ -16,9 +15,9 @@ const project: ProjectDto = { id: 1, title: 'Длинное название '.r
   passport: { id: 42, title: 'Учитель', description: null }, place: { ...place, id: 10, title: 'Другой центр' },
   meets: [meet], users: [{ id: 1, title: 'Ученик', image: '/users/1.jpg', age: null }], idea: null };
 
-it.each(['grid', 'table'])('hydrates the %s showcase with independent links and no participant faces', async view => {
+it('hydrates the catalog table with independent links and no participant faces', async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
-  const render = () => <MemoryRouter>{view === 'grid' ? <ProjectShowcaseCard project={project} /> : <ProjectTable projects={[project]} catalog />}</MemoryRouter>;
+  const render = () => <MemoryRouter><ProjectTable projects={[project]} catalog /></MemoryRouter>;
   const host = globalThis.document.createElement('div');
   host.innerHTML = renderToString(render());
   const errors: unknown[] = [];

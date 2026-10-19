@@ -3,7 +3,7 @@ import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js'
 import { PlaceService } from '../services/place.service.js';
 import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto, PlaceProfile, PageMeta } from 'entities';
 import { PlaceProfileService } from '../services/place-profile.service.js';
-import { RentalService } from '../services/rental.service.js';
+import PlaceLocationService from '../services/placeLocation.service.js';
 
 const findAll: Controller<PlaceDto[]> = async (_req, res) => {
   const places = await PlaceService.findAll();
@@ -16,7 +16,7 @@ const create: ControllerWithAuth<number, CreatePlace> = async (req, res) => {
 };
 
 const update: ControllerWithAuth<void, PlaceUpdateDto> = async (req, res) => {
-  await RentalService.requireAdmin(req.passport.id, requireId(req.viewer?.placeId));
+  await PlaceLocationService.requireAdmin(req.passport.id, requireId(req.viewer?.placeId));
   await PlaceService.update({
     ...req.body,
     id: requireId(req.viewer?.placeId),

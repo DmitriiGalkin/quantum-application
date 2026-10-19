@@ -13,6 +13,7 @@ const sections = [
       { label: 'Проекты', href: '/' },
       { label: 'Библиотека идей', href: '/ideas' },
       { label: 'Программа ремесла', href: '/craft-school-program' },
+      { label: 'Карточки интерфейса', href: '/cards' },
       { label: 'Родителям', href: '/landing/parent' },
       { label: 'Учителям', href: '/landing/teacher' },
       { label: 'Центрам', href: '/landing/place' },

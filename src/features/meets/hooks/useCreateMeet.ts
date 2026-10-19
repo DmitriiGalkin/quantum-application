@@ -18,18 +18,21 @@ export function useCreateMeet(projectId: number, refetch: ()=>void, locationId: 
   });
 
   const createMeetMutation = useMutation({
-    mutationFn: (form: MeetFormValues) =>
+    mutationFn: ({ form, expectedVenueHourlyRate }: { form: MeetFormValues; expectedVenueHourlyRate: number }) =>
       fetchCreateMeet({
         projectId: form.projectId, price: form.price, duration: form.duration, locationId: form.locationId,
-        maxParticipants: Number(form.maxParticipants), startedAt: meetStart(form.date, form.time),
+        maxParticipants: Number(form.maxParticipants), startedAt: meetStart(form.date, form.time), expectedVenueHourlyRate,
       }),
+    onError: async error => {
+      if (error.message.includes('Ставка зала изменилась')) await queryClient.invalidateQueries({ queryKey: ['locations'] });
+    },
   });
 
   return {
     form,
     setForm,
-    onSubmit: () =>
-      createMeetMutation.mutate(form, {
+    onSubmit: (expectedVenueHourlyRate: number) =>
+      createMeetMutation.mutate({ form, expectedVenueHourlyRate }, {
         onSuccess: async () => {
           await invalidateMeetQueries(queryClient, projectId);
           refetch();

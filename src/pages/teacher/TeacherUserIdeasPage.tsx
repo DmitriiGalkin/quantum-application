@@ -5,7 +5,7 @@ import { fetchTeacherIdeas } from '../../requests.ts';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import StudentIdeaCard from '../../features/idea/ui/StudentIdeaCard.tsx';
+import IdeaCard from '../../features/idea/ui/IdeaCard.tsx';
 
 export default function TeacherUserIdeasPage() {
   const { data: allIdeas = [], isLoading, isError, refetch } = useQuery({
@@ -27,7 +27,7 @@ export default function TeacherUserIdeasPage() {
         <Button component={Link} to="/ideas" sx={{ alignSelf: 'flex-start' }}>Библиотека идей</Button>
 
         {ideas.map(idea => (
-          <StudentIdeaCard key={idea.id} idea={idea} />
+          <IdeaCard key={idea.id} idea={idea} />
         ))}
       </Stack>
   );

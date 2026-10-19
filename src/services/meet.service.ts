@@ -15,11 +15,12 @@ import { db } from '../utils/dbNext.js';
 import { requireId } from '../utils/validation.js';
 import { withinPlaceHours } from '../shared/lib/meet-time.js';
 import type { PoolConnection } from 'mysql2/promise';
-import { RentalRepository } from '../repositories/rental.repository.js';
 import { BookingChangeService, changeReason } from './booking-change.service.js';
 import { NotificationService } from './notification.service.js';
 import { RefundService } from './refund.service.js';
 import UserRepository from '../repositories/user.repository.js';
+import { MeetVenueQuoteRepository } from '../repositories/meet-venue-quote.repository.js';
+import { venuePriceForDuration } from '../shared/lib/venue-price.js';
 
 export class MeetService {
   private static limit(value: unknown): number {
@@ -46,6 +47,18 @@ export class MeetService {
     return id;
   }
 
+  private static async venueTerms(placeId: number, locationId: number | null, duration: number | null, expectedRate: number | undefined, conn: PoolConnection) {
+    if (locationId === null) throw new HttpError('Выберите зал для заявки', 400);
+    if (!Number.isSafeInteger(duration) || duration === null || duration <= 0 || duration > 1440) {
+      throw new HttpError('Укажите длительность встречи', 400);
+    }
+    const [room] = await PlaceLocationRepository.findByIds([locationId], conn);
+    if (!room || room.deletedAt || room.placeId !== placeId) throw new HttpError('Выберите активный зал этого центра', 400);
+    if (room.hourlyRate === null || !Number.isFinite(room.hourlyRate)) throw new HttpError('Для зала не указана стоимость аренды', 409);
+    if (expectedRate !== room.hourlyRate) throw new HttpError('Ставка зала изменилась. Обновите форму и проверьте стоимость', 409);
+    return { venueHourlyRate: room.hourlyRate, venuePrice: venuePriceForDuration(room.hourlyRate, duration) };
+  }
+
   private static async access(meet: Meet, passportId: number, activePlaceId?: number): Promise<boolean> {
     if (activePlaceId !== undefined) {
       const membership = await PlacePassportRepository.findMembership(passportId, activePlaceId);
@@ -68,10 +81,6 @@ export class MeetService {
     }
     if (!withinPlaceHours(meet.startedAt, meet.duration, schedule)) throw new HttpError('Весь интервал встречи должен входить в часы работы центра (МСК)', 400);
     if (meet.status === 'cancelled') return;
-    if (meet.locationId !== null && await RentalRepository.conflicts(meet.locationId, meet.startedAt,
-      new Date(Date.parse(meet.startedAt) + (meet.duration ?? 60) * 60000).toISOString(), conn)) {
-      throw new HttpError('Выбранный зал занят подтверждённой арендой', 409);
-    }
     const conflict = await MeetRepository.findConflict({ ...meet, startedAt: this.start(meet.startedAt) }, conn);
     if (conflict) throw new HttpError(conflict.passportId === meet.passportId
       ? 'Преподаватель занят другой встречей в это время'
@@ -94,22 +103,24 @@ export class MeetService {
       await PassportRepository.lockByIds([passport.id], conn);
       await PlaceLocationRepository.lockByIds(locationId === null ? [] : [locationId], conn);
       await this.location(project.placeId, locationId, conn);
+      const venue = await this.venueTerms(project.placeId, locationId, data.duration, data.expectedVenueHourlyRate, conn);
       const meet: Meet = { id: 0, projectId: project.id, passportId: passport.id, placeId: project.placeId,
         price: data.price, duration: data.duration, startedAt: data.startedAt, locationId, maxParticipants,
-        status: 'pending', deletedAt: null };
+        status: 'pending', deletedAt: null, ...venue };
       await this.validateSlot(meet, conn);
-      return MeetRepository.create({ ...meet, startedAt: this.start(meet.startedAt) }, conn);
+      return MeetRepository.create({ ...meet, startedAt: this.start(meet.startedAt), ...venue }, conn);
     }, true);
   }
 
-  static async update(data: { id: number; reason?: string } & UpdateMeetInput, passportId: number, activePlaceId?: number) {
-    const { id, ...fields } = data;
+  static async update(data: { id: number; reason?: string; expectedVenueHourlyRate?: number } & UpdateMeetInput, passportId: number, activePlaceId?: number) {
+    const { id, expectedVenueHourlyRate, ...fields } = data;
 
     const existingMeet = await MeetRepository.findById(id);
     if (!existingMeet) {
       throw new HttpError('Встреча не найдена', 404);
     }
     const admin = await this.access(existingMeet, passportId, activePlaceId);
+    if (admin) throw new HttpError('Условия встречи может изменить только преподаватель', 403);
     return db.transaction(async conn => {
       await PassportRepository.lockByIds([existingMeet.passportId], conn);
       const current = await MeetRepository.findById(id, conn, false);
@@ -141,10 +152,17 @@ export class MeetService {
       const slotChanged = new Date(candidate.startedAt).getTime() !== new Date(current.startedAt).getTime() ||
         candidate.duration !== current.duration || candidate.locationId !== current.locationId || candidate.placeId !== current.placeId;
       if (slotChanged) {
-        updateData.status = placeId !== current.placeId || !admin ? 'pending' : current.status;
-        updateData.bookingState = updateData.status === 'published' ? 'confirmed' : 'requested';
+        const venue = candidate.locationId !== current.locationId || candidate.duration !== current.duration
+          || current.venuePrice == null || current.venueHourlyRate == null
+          ? await this.venueTerms(placeId, locationId, candidate.duration, expectedVenueHourlyRate, conn)
+          : { venuePrice: current.venuePrice, venueHourlyRate: current.venueHourlyRate };
+        updateData.status = 'pending';
+        updateData.bookingState = 'requested';
         updateData.bookingRevision = (current.bookingRevision ?? 0) + 1;
+        updateData.venuePrice = venue.venuePrice;
+        updateData.venueHourlyRate = venue.venueHourlyRate;
         await this.validateSlot({ ...candidate, status: updateData.status ?? current.status }, conn);
+        await MeetVenueQuoteRepository.supersede(id, conn);
       }
       if (!slotChanged && fields.maxParticipants !== undefined) await this.validateSlot(candidate,conn);
       if (fields.startedAt !== undefined) updateData.startedAt = this.start(fields.startedAt);
@@ -169,7 +187,8 @@ export class MeetService {
       await this.access(current,passportId,activePlaceId);
       if (current.status === 'cancelled' || (!full && current.bookingState === 'needs_location')) return;
       if (Date.parse(current.startedAt) <= Date.now()) throw new HttpError('Начавшуюся встречу отменить нельзя',409);
-      const next: Meet = { ...current,status:full ? 'cancelled' : 'pending',locationId:null,bookingState:'needs_location',bookingRevision:(current.bookingRevision ?? 0)+1 };
+      const next: Meet = { ...current,status:full ? 'cancelled' : 'pending',locationId:null,bookingState:'needs_location',bookingRevision:(current.bookingRevision ?? 0)+1,venuePrice:null,venueHourlyRate:null };
+      await MeetVenueQuoteRepository.supersede(id, conn);
       await MeetRepository.update(id,next,conn);
       await BookingChangeService.announce(current,next,passportId,why,conn);
       if (full) await RefundService.enqueueForMeet(id,undefined,conn);
@@ -234,9 +253,9 @@ export class MeetService {
 
   static async updateStatus(id: number, status: MeetStatus, passportId: number, activePlaceId?: number, reason?: string) {
     if (status === 'cancelled') return this.cancelBooking(id,passportId,reason,activePlaceId);
+    if (status !== 'published') throw new HttpError('Некорректный статус встречи', 400);
     const meet = await MeetRepository.findById(id);
     if (!meet) throw new HttpError('Встреча не найдена', 404);
-    if (!['pending', 'published', 'cancelled'].includes(status)) throw new HttpError('Некорректный статус встречи', 400);
     const admin = await this.access(meet, passportId, activePlaceId);
     if (!admin) throw new HttpError('Подтверждать и отклонять заявки может администратор активного центра', 403);
     return db.transaction(async conn => {
@@ -246,16 +265,15 @@ export class MeetService {
       await PlaceLocationRepository.lockByIds(current.locationId === null ? [] : [current.locationId], conn);
       await this.access(current,passportId,activePlaceId);
       await MeetRepository.findById(id, conn);
-      {
-        if (current.status === 'cancelled') throw new HttpError('Отменённую встречу подтвердить нельзя',409);
-        await this.location(current.placeId, current.locationId, conn);
-        await this.validateSlot({ ...current, status }, conn);
-      }
-      if (current.bookingState === 'needs_location') throw new HttpError('Сначала выберите новый зал',409);
-      const result = await MeetRepository.update(id, { status,bookingState:status === 'published' ? 'confirmed' : 'requested' }, conn);
+      if (current.status !== 'pending' || current.bookingState !== 'requested' || current.locationId === null
+        || current.venuePrice == null || current.venueHourlyRate == null) throw new HttpError('Для встречи нужна новая заявка с указанной стоимостью зала', 409);
+      if (Date.parse(current.startedAt) <= Date.now()) throw new HttpError('Встреча уже началась', 409);
+      await this.location(current.placeId, current.locationId, conn);
+      await this.validateSlot({ ...current, status }, conn);
+      const result = await MeetRepository.update(id, { status: 'published',bookingState:'confirmed' }, conn);
       const families = await UserRepository.findByIds((await MeetUserRepository.findParticipants(id,conn)).map(j => j.userId));
-      await NotificationService.notify([current.passportId,...families.map(u => u.passportId)],`meet-${id}-${current.bookingRevision ?? 0}-${status}`,'Статус бронирования обновлён',
-        status === 'published' ? 'Центр подтвердил встречу' : 'Заявка ожидает подтверждения',`/project/${current.projectId}#meet-${id}`,conn);
+      await NotificationService.notify([current.passportId,...families.map(u => u.passportId)],`meet-${id}-${current.bookingRevision ?? 0}-confirmed`,'Бронирование подтверждено',
+        'Центр подтвердил зал для встречи',`/project/${current.projectId}#meet-${id}`,conn);
       return result;
     }, true);
   }

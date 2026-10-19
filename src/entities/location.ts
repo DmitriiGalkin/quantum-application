@@ -13,7 +13,6 @@ export interface PlaceLocation extends LocationDto {
   description: string | null;
   capacity: number | null;
   hourlyRate: number | null;
-  rentalEnabled: boolean;
 }
 
 export interface LocationPhoto {
@@ -32,6 +31,10 @@ export interface UpdateLocation {
   description: string | null;
   capacity: number | null;
   hourlyRate: number | null;
-  rentalEnabled: boolean;
   photoUrls: string[];
+}
+
+export interface BusyInterval {
+  startedAt: string;
+  endedAt: string;
 }

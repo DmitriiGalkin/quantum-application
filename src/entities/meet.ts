@@ -6,8 +6,11 @@ import type { PlaceDto } from './place.js';
 import type { LocationDto } from './location.js';
 
 export interface MeetRow extends RowDataPacket {
-  bookingState?: 'requested' | 'confirmed' | 'needs_location';
+  bookingState?: 'requested' | 'awaiting_teacher' | 'confirmed' | 'needs_location';
   bookingRevision?: number;
+  venuePrice?: number | null;
+  venueHourlyRate?: number | null;
+  venueQuoteVersion?: number;
   locationId: number | null;
   maxParticipants: number | null;
   id: number;
@@ -26,8 +29,11 @@ export interface MeetWithProjectTitleRow extends MeetRow {
 }
 
 export interface Meet {
-  bookingState?: 'requested' | 'confirmed' | 'needs_location';
+  bookingState?: 'requested' | 'awaiting_teacher' | 'confirmed' | 'needs_location';
   bookingRevision?: number;
+  venuePrice?: number | null;
+  venueHourlyRate?: number | null;
+  venueQuoteVersion?: number;
   locationId: number | null;
   maxParticipants: number | null;
   id: number;
@@ -61,6 +67,8 @@ export interface MeetDto extends Omit<Meet, 'passportId' | 'placeId'> {
 
 export type CreateMeetInput = {
   locationId?: number | null;
+  venuePrice?: number | null;
+  venueHourlyRate?: number | null;
   maxParticipants?: number | null;
   passportId: number;
   projectId: number;
@@ -72,8 +80,11 @@ export type CreateMeetInput = {
 
 export type UpdateMeetInput = Partial<{
   placeId: number;
-  bookingState: 'requested' | 'confirmed' | 'needs_location';
+  bookingState: 'requested' | 'awaiting_teacher' | 'confirmed' | 'needs_location';
   bookingRevision: number;
+  venuePrice: number | null;
+  venueHourlyRate: number | null;
+  venueQuoteVersion: number;
   locationId: number | null;
   maxParticipants: number | null;
   startedAt: string;
@@ -84,6 +95,7 @@ export type UpdateMeetInput = Partial<{
 
 export interface CreateMeet {
   locationId?: number | null;
+  expectedVenueHourlyRate?: number;
   maxParticipants: number;
   projectId: number;
   price: number | null;
@@ -91,7 +103,7 @@ export interface CreateMeet {
   startedAt: string;
 }
 
-export type UpdateMeet = Omit<UpdateMeetInput, 'status' | 'bookingState' | 'bookingRevision'> & { reason?: string };
+export type UpdateMeet = Omit<UpdateMeetInput, 'status' | 'bookingState' | 'bookingRevision' | 'venuePrice' | 'venueHourlyRate' | 'venueQuoteVersion'> & { reason?: string; expectedVenueHourlyRate?: number };
 
 export interface GetMeetsQuery {
   userId?: number;

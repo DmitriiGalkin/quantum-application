@@ -5,18 +5,13 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { moscowFormat } from '../moscow-time.ts';
 import { useAuth } from '../../../providers/auth-context.ts';
-import IconButton from '@mui/material/IconButton';
 import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
 import Chip from '@mui/material/Chip';
 import { getMeetStatus, statusConfig } from '../helper.ts';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 
-import type { MeetDto, MeetStatus } from 'entities';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchUpdateMeetStatus } from '../../../requests.ts';
-import { invalidateMeetQueries } from '../hooks/queries.ts';
+import type { MeetDto } from 'entities';
 import type { MeetManagement } from '../management.ts';
 
 interface Props {
@@ -33,14 +28,13 @@ interface Props {
   onError?(message: string): void;
 }
 
-export default function WeekCalendarMeet({ meet, top, height, onClick, draggable = false, saving, management, onError }: Props) {
+export default function WeekCalendarMeet({ meet, top, height, onClick, draggable = false, saving, management }: Props) {
   const started = new Date(meet.startedAt);
   const { role } = useAuth();
   const baseStatus = getMeetStatus(meet);
   const statusKey = role === 'place' && management?.placeId === meet.place?.id && meet.status === 'published'
     && baseStatus !== 'completed' && baseStatus !== 'cancelled' ? 'confirmed' : baseStatus;
   const status = statusKey ? statusConfig[statusKey] : null;
-  const queryClient = useQueryClient();
   
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: meet.id,
@@ -52,11 +46,6 @@ export default function WeekCalendarMeet({ meet, top, height, onClick, draggable
     transform: CSS.Translate.toString(transform),
   };
 
-  const updateStatus = useMutation({
-    mutationFn: (status: MeetStatus) => fetchUpdateMeetStatus(meet.id, { status }),
-    onSuccess: () => invalidateMeetQueries(queryClient, meet.projectId),
-    onError: error => onError?.(error.message),
-  });
 
   return (
     <Box
@@ -110,10 +99,6 @@ export default function WeekCalendarMeet({ meet, top, height, onClick, draggable
         >
           {moscowFormat(started, { hour: '2-digit', minute: '2-digit' })} — {moscowFormat(started.getTime() + (meet.duration ?? 60) * 60000, { hour: '2-digit', minute: '2-digit' })}
         </Typography>
-        {role === 'place' && management?.placeId === meet.place?.id && meet.status === 'pending' && <Stack direction="row">
-          <IconButton size="small" aria-label="Подтвердить" disabled={updateStatus.isPending} onMouseDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); updateStatus.mutate('published'); }}><CheckIcon color="success" fontSize="small" /></IconButton>
-          <IconButton size="small" aria-label="Отклонить" disabled={updateStatus.isPending} onMouseDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); onClick?.(); }}><CloseIcon color="error" fontSize="small" /></IconButton>
-        </Stack>}
       </Stack>
 
       <Typography

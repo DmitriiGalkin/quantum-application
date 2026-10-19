@@ -6,10 +6,10 @@ vi.mock('../repositories/meet.repository.js',() => ({default:{findById:vi.fn(),u
 vi.mock('../repositories/passport.repository.js',() => ({default:{lockByIds:vi.fn()}}));
 vi.mock('../repositories/place.repository.js',() => ({default:{findById:vi.fn()}}));
 vi.mock('../repositories/place-location.repository.js',() => ({default:{lockByIds:vi.fn(),findByIds:vi.fn()}}));
-vi.mock('../repositories/place-passport.repository.js',() => ({default:{findMembership:vi.fn()}}));
+vi.mock('../repositories/place-passport.repository.js',() => ({default:{findMembership:vi.fn(),members:vi.fn().mockResolvedValue([{passportId:50,role:'admin'}])}}));
 vi.mock('../repositories/place-schedule.repository.js',() => ({default:{findByPlaceId:vi.fn()}}));
 vi.mock('../repositories/meet-user.repository.js',() => ({default:{findParticipants:vi.fn(),delete:vi.fn()}}));
-vi.mock('../repositories/rental.repository.js',() => ({RentalRepository:{conflicts:vi.fn()}}));
+vi.mock('../repositories/meet-venue-quote.repository.js',() => ({MeetVenueQuoteRepository:{supersede:vi.fn()}}));
 vi.mock('./booking-change.service.js',async () => {
   const actual = await vi.importActual<typeof import('./booking-change.service.js')>('./booking-change.service.js');
   return {...actual,BookingChangeService:{announce:vi.fn()}};
@@ -29,13 +29,15 @@ import { MeetService } from './meet.service.js';
 import { RefundService } from './refund.service.js';
 import { BookingChangeService, changeReason } from './booking-change.service.js';
 import { validatePushSubscription } from './notification.service.js';
+import { venuePriceForDuration } from '../shared/lib/venue-price.js';
 const meet:Meet = {id:9,projectId:3,passportId:42,placeId:597,locationId:6,maxParticipants:8,price:500,duration:60,startedAt:'2099-01-05T10:00:00+03:00',status:'published',deletedAt:null,bookingRevision:0,bookingState:'confirmed'};
 beforeEach(()=>{
   vi.resetAllMocks();
   vi.mocked(Meets.findById).mockResolvedValue({...meet});
-  vi.mocked(Rooms.findByIds).mockResolvedValue([{id:6,placeId:597,capacity:12}] as PlaceLocation[]);
+  vi.mocked(Rooms.findByIds).mockResolvedValue([{id:6,placeId:597,capacity:12,hourlyRate:1000}] as PlaceLocation[]);
   vi.mocked(Schedule.findByPlaceId).mockResolvedValue([{id:1,placeId:597,weekday:1,enabled:true,startTime:'08:00',endTime:'18:00'}]);
   vi.mocked(Members.findMembership).mockResolvedValue({id:1,role:'admin'});
+  vi.mocked(Members.members).mockResolvedValue([{passportId:50,role:'admin'}]);
   vi.mocked(Participants.findParticipants).mockResolvedValue([]);
 });
 it('cancels a confirmed booking without deleting enrolments or requesting refunds',async()=>{
@@ -60,9 +62,20 @@ it('rejects a room belonging to a different destination centre',async()=>{
   await expect(MeetService.update({id:9,placeId:598,locationId:6,reason:'Перенос'},42)).rejects.toMatchObject({status:400});
   expect(Meets.update).not.toHaveBeenCalled();
 });
-it('does not let an old centre approve a meeting after a concurrent relocation',async()=>{
+it('does not let an old centre confirm a meeting after a concurrent relocation',async()=>{
   vi.mocked(Meets.findById).mockResolvedValueOnce(meet).mockResolvedValueOnce({...meet,placeId:598});
   await expect(MeetService.updateStatus(9,'published',50,597)).rejects.toMatchObject({status:403});
+  expect(Meets.update).not.toHaveBeenCalled();
+});
+it('confirms only a pending booking with a saved hourly rate and total',async()=>{
+  vi.mocked(Meets.findById).mockResolvedValue({...meet,status:'pending',bookingState:'requested',venueHourlyRate:1000,venuePrice:1500});
+  await MeetService.updateStatus(9,'published',50,597);
+  expect(Meets.update).toHaveBeenCalledWith(9,{status:'published',bookingState:'confirmed'},conn);
+});
+it('blocks an unpriced pending booking and centre edits',async()=>{
+  vi.mocked(Meets.findById).mockResolvedValue({...meet,status:'pending',bookingState:'requested',venuePrice:null,venueHourlyRate:null});
+  await expect(MeetService.updateStatus(9,'published',50,597)).rejects.toMatchObject({status:409});
+  await expect(MeetService.update({id:9,duration:90},50,597)).rejects.toMatchObject({status:403});
   expect(Meets.update).not.toHaveBeenCalled();
 });
 it('requires an explanation before cancelling and cannot cancel another teacher meeting',async()=>{
@@ -72,15 +85,34 @@ it('requires an explanation before cancelling and cannot cancel another teacher 
 });
 it('moves a meeting to the destination centre while keeping its identity and enrolments',async()=>{
   vi.mocked(Places.findById).mockResolvedValue({id:598} as Awaited<ReturnType<typeof Places.findById>>);
-  vi.mocked(Rooms.findByIds).mockResolvedValue([{id:9,placeId:598,capacity:12}] as PlaceLocation[]);
-  await MeetService.update({id:9,placeId:598,locationId:9,reason:'Переезд мастерской'},42);
+  vi.mocked(Rooms.findByIds).mockResolvedValue([{id:9,placeId:598,capacity:12,hourlyRate:1000}] as PlaceLocation[]);
+  await MeetService.update({id:9,placeId:598,locationId:9,reason:'Переезд мастерской',expectedVenueHourlyRate:1000},42);
   expect(Meets.update).toHaveBeenCalledWith(9,expect.objectContaining({placeId:598,locationId:9,status:'pending',bookingState:'requested',bookingRevision:1}),conn);
   expect(Participants.delete).not.toHaveBeenCalled();
   expect(BookingChangeService.announce).toHaveBeenCalledWith(meet,expect.objectContaining({id:9,projectId:3,price:500,maxParticipants:8}),42,'Переезд мастерской',conn);
+});
+it('keeps the agreed amount when only the time changes after the room rate increases',async()=>{
+  vi.mocked(Meets.findById).mockResolvedValue({...meet,duration:90,venueHourlyRate:1000,venuePrice:1500});
+  vi.mocked(Rooms.findByIds).mockResolvedValue([{id:6,placeId:597,capacity:12,hourlyRate:1200}] as PlaceLocation[]);
+  await MeetService.update({id:9,startedAt:'2099-01-05T11:00:00+03:00'},42);
+  expect(Meets.update).toHaveBeenCalledWith(9,expect.objectContaining({venueHourlyRate:1000,venuePrice:1500,bookingState:'requested'}),conn);
+});
+it('recalculates the amount when the teacher changes duration and blocks an unrated room',async()=>{
+  vi.mocked(Rooms.findByIds).mockResolvedValue([{id:6,placeId:597,capacity:12,hourlyRate:1200}] as PlaceLocation[]);
+  await expect(MeetService.update({id:9,duration:90,expectedVenueHourlyRate:1000},42)).rejects.toMatchObject({status:409});
+  await MeetService.update({id:9,duration:90,expectedVenueHourlyRate:1200},42);
+  expect(Meets.update).toHaveBeenCalledWith(9,expect.objectContaining({venueHourlyRate:1200,venuePrice:1800}),conn);
+  vi.mocked(Rooms.findByIds).mockResolvedValue([{id:6,placeId:597,capacity:12,hourlyRate:null}] as PlaceLocation[]);
+  await expect(MeetService.update({id:9,duration:90,expectedVenueHourlyRate:1200},42)).rejects.toMatchObject({status:409});
 });
 it('rejects private network and lookalike push endpoints',()=>{
   const keys={p256dh:'abc',auth:'xyz'};
   expect(()=>validatePushSubscription({endpoint:'https://127.0.0.1/private',keys})).toThrow();
   expect(()=>validatePushSubscription({endpoint:'https://fcm.googleapis.com.attacker.test/send',keys})).toThrow();
   expect(validatePushSubscription({endpoint:'https://fcm.googleapis.com/send/123',keys}).endpoint).toContain('googleapis.com');
+});
+it('rounds fractional-hour venue rent to kopecks',()=>{
+  expect(venuePriceForDuration(1000,45)).toBe(750);
+  expect(venuePriceForDuration(0,90)).toBe(0);
+  expect(venuePriceForDuration(100.01,20)).toBe(33.34);
 });

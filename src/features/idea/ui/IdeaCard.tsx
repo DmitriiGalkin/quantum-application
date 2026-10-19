@@ -1,10 +1,18 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import ChatIcon from '@mui/icons-material/Chat';
 import ProjectImage from '../../../components/ProjectImage.tsx';
 import Typography from '@mui/material/Typography';
-import type { IdeaDto } from 'entities';
+import type { IdeaDto, TeacherStudentIdeaDto } from 'entities';
 import CardActionArea from '@mui/material/CardActionArea';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import ChatDialog from '../../../components/ChatDialog.tsx';
+import { DAY_MS, informationDate, moscowDay } from '../../meets/moscow-time.ts';
 
 interface IdeaCardData {
   id: number;
@@ -14,11 +22,20 @@ interface IdeaCardData {
 }
 
 type IdeaCardProps = {
-  idea: IdeaDto | IdeaCardData;
-  onSelect?: () => void;
+  idea: IdeaDto | IdeaCardData | TeacherStudentIdeaDto;
 };
 
+function isStudentIdea(idea: IdeaCardProps['idea']): idea is TeacherStudentIdeaDto {
+  return 'canContactParent' in idea && 'projects' in idea && idea.user != null;
+}
+
 function IdeaCard({ idea }: IdeaCardProps) {
+  const [contact, setContact] = useState(false);
+  const studentIdea = isStudentIdea(idea) ? idea : null;
+  const validDate = studentIdea && Number.isFinite(new Date(studentIdea.createdAt).getTime());
+  const days = validDate && studentIdea
+    ? Math.max(0, Math.floor((moscowDay(new Date()) - moscowDay(studentIdea.createdAt)) / DAY_MS)) : 0;
+  const age = days === 0 ? 'создана сегодня' : days === 1 ? 'создана вчера' : `с момента создания: ${days} дн.`;
   return (
     <Card
       elevation={1}
@@ -51,11 +68,23 @@ function IdeaCard({ idea }: IdeaCardProps) {
           </Typography>
         </CardContent>
       </CardActionArea>
-
-      {/*<CardActions sx={{ justifyContent: 'space-between', pr: 2 }}>*/}
-      {/*  <Like ideaId={idea.id} isLiked={idea.isLiked} likesCount={idea.userCount} />*/}
-      {/*  <Author user={idea.user} />*/}
-      {/*</CardActions>*/}
+      {studentIdea && <CardContent sx={{ pt: 0, overflowWrap: 'anywhere' }}>
+        <Stack spacing={2}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <Avatar src={studentIdea.user.image ?? undefined} alt={studentIdea.user.title}>{studentIdea.user.title[0]}</Avatar>
+            <Typography sx={{ minWidth: 0, flex: 1, overflowWrap: 'anywhere' }}>
+              {studentIdea.user.title}{studentIdea.user.age != null ? ` · ${studentIdea.user.age} лет` : ''}
+            </Typography>
+            {studentIdea.canContactParent && <Tooltip title="Написать сообщение">
+              <IconButton onClick={() => setContact(true)} aria-label="Написать сообщение" size="small">
+                <ChatIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>}
+          </Stack>
+          <Typography variant="body2" color="text.secondary">{validDate ? `${informationDate(studentIdea.createdAt)} · ${age}` : 'Дата не указана'}</Typography>
+        </Stack>
+      </CardContent>}
+      {studentIdea && contact && <ChatDialog open parentUserId={studentIdea.user.id} onClose={() => setContact(false)} />}
     </Card>
   );
 }

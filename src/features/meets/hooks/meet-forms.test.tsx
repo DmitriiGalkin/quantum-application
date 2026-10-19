@@ -21,7 +21,7 @@ it('initializes editing in Moscow and keeps the entered hall and limit after a f
     await act(async () => root.render(<QueryClientProvider client={client}><Form /></QueryClientProvider>));
     expect(hook!.form).toMatchObject({ date: '2030-01-07', time: '01:15', duration: 60, locationId: 5, maxParticipants: '' });
     await act(async () => hook!.setForm({ ...hook!.form, locationId: null, maxParticipants: 8, time: '10:15' }));
-    await act(async () => hook!.onSubmit());
+    await act(async () => hook!.onSubmit(1000));
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)); });
     expect(fetchUpdateMeet).toHaveBeenCalledWith(1, expect.objectContaining({ locationId: null, maxParticipants: 8, startedAt: '2030-01-07T10:15:00+03:00' }));
     expect(hook!.form).toMatchObject({ locationId: null, maxParticipants: 8, time: '10:15' });
@@ -38,7 +38,7 @@ it('starts creation with the project hall and keeps manually entered capacity af
     await act(async () => root.render(<QueryClientProvider client={client}><Form /></QueryClientProvider>));
     expect(hook!.form).toMatchObject({ locationId: 5, maxParticipants: '' });
     await act(async () => hook!.setForm({ ...hook!.form, date: '2030-01-07', time: '10:15', maxParticipants: 12 }));
-    await act(async () => hook!.onSubmit());
+    await act(async () => hook!.onSubmit(1000));
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)); });
     expect(fetchCreateMeet).toHaveBeenCalledWith(expect.objectContaining({ locationId: 5, maxParticipants: 12, startedAt: '2030-01-07T10:15:00+03:00' }));
     expect(hook!.form.maxParticipants).toBe(12); expect(host.textContent).toContain('Преподаватель занят'); expect(refresh).not.toHaveBeenCalled();

@@ -4,6 +4,9 @@ export function toMeet(row: MeetRow): Meet {
   return {
     bookingState: row.bookingState,
     bookingRevision: row.bookingRevision,
+    venuePrice: row.venuePrice == null ? null : Number(row.venuePrice),
+    venueHourlyRate: row.venueHourlyRate == null ? null : Number(row.venueHourlyRate),
+    venueQuoteVersion: row.venueQuoteVersion ?? 0,
     locationId: row.locationId ?? null,
     maxParticipants: row.maxParticipants ?? null,
     id: row.id,

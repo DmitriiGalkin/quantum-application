@@ -6,6 +6,7 @@ vi.mock('./booking-change.service.js', () => ({ BookingChangeService:{announce:v
 vi.mock('../utils/dbNext.js', () => ({ db: { transaction: async (fn: (conn: unknown) => Promise<unknown>) => fn({}) } }));
 vi.mock('../repositories/project.repository.js', () => ({ default: { findAll: vi.fn(), findByIds: vi.fn(), findById: vi.fn(), update: vi.fn() } }));
 vi.mock('../repositories/meet.repository.js', () => ({ default: { findAll: vi.fn(), findById: vi.fn(), findConflict: vi.fn(), findByProjectIds: vi.fn(), findByProjectId: vi.fn(), update: vi.fn(), updateStatus: vi.fn() } }));
+vi.mock('../repositories/meet-venue-quote.repository.js', () => ({ MeetVenueQuoteRepository: { supersede: vi.fn(), offer: vi.fn(), resolve: vi.fn() } }));
 vi.mock('../repositories/passport.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn(), lockByIds: vi.fn() } }));
 vi.mock('../repositories/place.repository.js', () => ({ default: { findByIds: vi.fn(), findById: vi.fn(), findByPassportId: vi.fn() } }));
 vi.mock('../repositories/place-location.repository.js', () => ({ default: { findByIds: vi.fn(), lockByIds: vi.fn() } }));
@@ -15,7 +16,6 @@ vi.mock('../repositories/user.repository.js', () => ({ default: { findByIds: vi.
 vi.mock('../repositories/project-user.repository.js', () => ({ default: { findByProjectIds: vi.fn(), findByProjectId: vi.fn() } }));
 vi.mock('../repositories/meet-user.repository.js', () => ({ default: { findParticipants: vi.fn().mockResolvedValue([]), findByMeetIds: vi.fn() } }));
 vi.mock('../repositories/place-passport.repository.js', () => ({ default: { findMembership: vi.fn() } }));
-vi.mock('../repositories/rental.repository.js', () => ({ RentalRepository: { conflicts: vi.fn().mockResolvedValue(false) } }));
 vi.mock('../repositories/payment.repository.js', () => ({ default: { findPaidMeetIdsByUser: vi.fn() } }));
 vi.mock('./idea.service.js', () => ({ IdeaService: { findByIds: vi.fn() } }));
 
@@ -29,11 +29,11 @@ import PlaceLocationRepository from '../repositories/place-location.repository.j
 import UserRepository from '../repositories/user.repository.js';
 import ProjectUserRepository from '../repositories/project-user.repository.js';
 import MeetUserRepository from '../repositories/meet-user.repository.js';
-import PlacePassportRepository from '../repositories/place-passport.repository.js';
 import { IdeaService } from './idea.service.js';
 import { TeacherService } from './teacher.service.js';
 import IdeaRepository from '../repositories/idea.repository.js';
 import PlaceScheduleRepository from '../repositories/place-schedule.repository.js';
+import PlacePassportRepository from '../repositories/place-passport.repository.js';
 
 const passport: Passport = { id: 10, title: 'Teacher', provider: 'test', providerId: '10', accessToken: '', description: null, image: null, email: '' };
 const place: Place = { id: 3, title: 'School', description: null, latitude: 0, longitude: 0, address: '', provider: null, providerId: null, phone: null, priceFrom: null };
@@ -60,8 +60,9 @@ beforeEach(() => {
 
 describe('ownership checks', () => {
   it('returns a meeting to approval when only its duration changes', async () => {
-    vi.mocked(MeetRepository.findById).mockResolvedValue({ ...meet, duration: 60, status: 'published' });
-    await MeetService.update({ id: meet.id, duration: 90, reason:'' }, meet.passportId);
+    vi.mocked(MeetRepository.findById).mockResolvedValue({ ...meet, locationId: 5, duration: 60, status: 'published' });
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: 1000 }]);
+    await MeetService.update({ id: meet.id, duration: 90, reason:'', expectedVenueHourlyRate:1000 }, meet.passportId);
     expect(MeetRepository.update).toHaveBeenCalledWith(meet.id, expect.objectContaining({ duration: 90, status: 'pending' }), expect.anything());
   });
 
@@ -77,13 +78,11 @@ describe('ownership checks', () => {
     expect(MeetRepository.update).not.toHaveBeenCalled();
   });
 
-  it('allows the centre administrator to approve a meeting, but rejects an unrelated teacher', async () => {
-    vi.mocked(MeetRepository.findById).mockResolvedValue(meet);
-    vi.mocked(PlacePassportRepository.findMembership).mockResolvedValueOnce({ id: 1, role: 'admin' }).mockResolvedValueOnce({ id: 1, role: 'admin' }).mockResolvedValueOnce({ id: 2, role: 'teacher' });
-    await MeetService.updateStatus(20, 'published', 99, 3);
-    expect(MeetRepository.update).toHaveBeenCalledWith(20, { status: 'published', bookingState:'confirmed' }, expect.anything());
-    await expect(MeetService.updateStatus(20, 'cancelled', 98, 3, 'Нет свободного зала')).rejects.toMatchObject({ status: 403 });
-    expect(MeetRepository.update).toHaveBeenCalledTimes(1);
+  it('requires saved venue terms before confirming a meeting', async () => {
+    vi.mocked(PlacePassportRepository.findMembership).mockResolvedValue({ role: 'admin' } as Awaited<ReturnType<typeof PlacePassportRepository.findMembership>>);
+    vi.mocked(MeetRepository.findById).mockResolvedValue({ ...meet, locationId: 5, status: 'pending', bookingState: 'requested', venuePrice: null, venueHourlyRate: null });
+    await expect(MeetService.updateStatus(20, 'published', 99, 3)).rejects.toMatchObject({ status: 409 });
+    expect(MeetRepository.update).not.toHaveBeenCalled();
   });
 
   it('ignores service fields supplied with a project update', async () => {
@@ -94,7 +93,7 @@ describe('ownership checks', () => {
 
   it('preserves a selected hall on an older client update and supports clearing it', async () => {
     vi.mocked(ProjectRepository.findById).mockResolvedValue({ ...project, locationId: 5 });
-    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null, rentalEnabled: false }]);
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null }]);
     const data = { title: 'Changed', description: '', image: '', placeId: 3 };
     await ProjectService.update(1, data, 10);
     expect(ProjectRepository.update).toHaveBeenLastCalledWith(1, expect.objectContaining({ locationId: 5 }));
@@ -105,7 +104,7 @@ describe('ownership checks', () => {
   it('clears the hall when changing centers and rejects assigning a hall from another center', async () => {
     vi.mocked(ProjectRepository.findById).mockResolvedValue({ ...project, locationId: 5 });
     vi.mocked(PlaceRepository.findById).mockResolvedValue({ ...place, id: 4 });
-    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null, rentalEnabled: false }]);
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null }]);
     const data = { title: 'Changed', description: '', image: '', placeId: 4 };
     await ProjectService.update(1, data, 10);
     expect(ProjectRepository.update).toHaveBeenCalledExactlyOnceWith(1, expect.objectContaining({ placeId: 4, locationId: null }));
@@ -117,7 +116,7 @@ describe('ownership checks', () => {
 describe('list composition', () => {
   it('hydrates project media and meeting halls in batches and counts registrations with unavailable student profiles', async () => {
     vi.mocked(ProjectRepository.findByIds).mockResolvedValue([project, { ...project, id: 2, title: 'Art', image: 'art.jpg' }]);
-    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null, rentalEnabled: false }]);
+    vi.mocked(PlaceLocationRepository.findByIds).mockResolvedValue([{ id: 5, title: 'Workshop', placeId: 3, deletedAt: null, description: null, capacity: null, hourlyRate: null }]);
     vi.mocked(MeetUserRepository.findByMeetIds).mockResolvedValue([
       { id: 1, meetId: 20, userId: 1 }, { id: 2, meetId: 20, userId: 2 }, { id: 3, meetId: 20, userId: 999 },
     ]);

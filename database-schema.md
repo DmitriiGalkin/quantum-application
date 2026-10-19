@@ -1,6 +1,6 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-16T21:44:49.683Z
+Дата выгрузки: 2026-10-19T15:00:17.566Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
@@ -21,6 +21,7 @@
 | meetBookingChange | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | meetChangeParticipant | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | meetUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| meetVenueQuote | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | message2 | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | passport | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | passport_session | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
@@ -30,7 +31,6 @@
 | placeLocation | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placeLocationPhoto | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placePassport | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
-| placeRental | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placeSchedule | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | project | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | projectUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
@@ -83,7 +83,7 @@ CREATE TABLE `appNotification` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_notification_event` (`passportId`,`eventKey`),
   KEY `ix_notification_unread` (`passportId`,`readAt`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## conversation
@@ -114,7 +114,7 @@ CREATE TABLE `conversation` (
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## conversationPassport
@@ -240,7 +240,7 @@ CREATE TABLE `idea` (
   `catalogMetadata` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_idea_catalogId` (`catalogId`)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## ideaPhoto
@@ -327,6 +327,9 @@ CREATE TABLE `ideaUser` (
 | maxParticipants | int | YES | NULL |  |  |  |
 | bookingState | varchar(24) | NO | requested |  |  |  |
 | bookingRevision | int unsigned | NO | 0 |  |  |  |
+| venuePrice | decimal(12,2) | YES | NULL |  |  |  |
+| venueHourlyRate | decimal(10,2) | YES | NULL |  |  |  |
+| venueQuoteVersion | int unsigned | NO | 0 |  |  |  |
 
 ### Индексы
 
@@ -361,6 +364,9 @@ CREATE TABLE `meet` (
   `maxParticipants` int DEFAULT NULL,
   `bookingState` varchar(24) NOT NULL DEFAULT 'requested',
   `bookingRevision` int unsigned NOT NULL DEFAULT '0',
+  `venuePrice` decimal(12,2) DEFAULT NULL,
+  `venueHourlyRate` decimal(10,2) DEFAULT NULL,
+  `venueQuoteVersion` int unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_meet_teacher_time` (`passportId`,`startedAt`),
   KEY `idx_meet_location_time` (`locationId`,`startedAt`),
@@ -473,6 +479,57 @@ CREATE TABLE `meetUser` (
 ) ENGINE=InnoDB AUTO_INCREMENT=425 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
+## meetVenueQuote
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | int unsigned | NO | NULL | PRI | auto_increment |  |
+| meetId | int | NO | NULL | MUL |  |  |
+| version | int unsigned | NO | NULL |  |  |  |
+| amount | decimal(12,2) | NO | NULL |  |  |  |
+| actorPassportId | int | NO | NULL |  |  |  |
+| status | enum('offered','accepted','declined','superseded','cancelled') | NO | offered |  |  |  |
+| createdAt | timestamp | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+| resolvedAt | timestamp | YES | NULL |  |  |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| ix_meet_venue_quote_status | Нет | 1 | meetId | NULL | BTREE |
+| ix_meet_venue_quote_status | Нет | 2 | status | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+| uq_meet_venue_quote_version | Да | 1 | meetId | NULL | BTREE |
+| uq_meet_venue_quote_version | Да | 2 | version | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_meet_venue_quote_meet | meetId | meet | id | NO ACTION | NO ACTION |
+
+### DDL
+
+```sql
+CREATE TABLE `meetVenueQuote` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `meetId` int NOT NULL,
+  `version` int unsigned NOT NULL,
+  `amount` decimal(12,2) NOT NULL,
+  `actorPassportId` int NOT NULL,
+  `status` enum('offered','accepted','declined','superseded','cancelled') NOT NULL DEFAULT 'offered',
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `resolvedAt` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_meet_venue_quote_version` (`meetId`,`version`),
+  KEY `ix_meet_venue_quote_status` (`meetId`,`status`),
+  CONSTRAINT `fk_meet_venue_quote_meet` FOREIGN KEY (`meetId`) REFERENCES `meet` (`id`),
+  CONSTRAINT `chk_meet_venue_quote_amount` CHECK ((`amount` >= 0))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
 ## message2
 
 ### Столбцы
@@ -517,7 +574,7 @@ CREATE TABLE `message2` (
   PRIMARY KEY (`id`),
   KEY `idx_message_conversation` (`conversationId`,`createdAt`),
   CONSTRAINT `fk_message_conversation` FOREIGN KEY (`conversationId`) REFERENCES `conversation` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## passport
@@ -761,7 +818,7 @@ CREATE TABLE `place` (
   `priceFrom` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `place_provider_unique` (`provider`,`providerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=598 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=599 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeLocation
@@ -777,7 +834,6 @@ CREATE TABLE `place` (
 | description | text | YES | NULL |  |  |  |
 | capacity | int | YES | NULL |  |  |  |
 | hourlyRate | decimal(10,2) | YES | NULL |  |  |  |
-| rentalEnabled | tinyint(1) | NO | 0 |  |  |  |
 
 ### Индексы
 
@@ -796,11 +852,10 @@ CREATE TABLE `placeLocation` (
   `description` text,
   `capacity` int DEFAULT NULL,
   `hourlyRate` decimal(10,2) DEFAULT NULL,
-  `rentalEnabled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   CONSTRAINT `chk_room_capacity` CHECK (((`capacity` is null) or (`capacity` > 0))),
   CONSTRAINT `chk_room_rate` CHECK (((`hourlyRate` is null) or (`hourlyRate` >= 0)))
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeLocationPhoto
@@ -839,7 +894,7 @@ CREATE TABLE `placeLocationPhoto` (
   PRIMARY KEY (`id`),
   KEY `ix_room_photo` (`locationId`,`position`),
   CONSTRAINT `fk_room_photo` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placePassport
@@ -870,78 +925,7 @@ CREATE TABLE `placePassport` (
   `role` enum('admin','teacher') NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-```
-
-## placeRental
-
-### Столбцы
-
-| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
-| --- | --- | --- | --- | --- | --- | --- |
-| id | int | NO | NULL | PRI | auto_increment |  |
-| placeId | int | NO | NULL | MUL |  |  |
-| locationId | int | NO | NULL | MUL |  |  |
-| passportId | int | NO | NULL | MUL |  |  |
-| startedAt | datetime | NO | NULL |  |  |  |
-| endedAt | datetime | NO | NULL |  |  |  |
-| participants | int | NO | NULL |  |  |  |
-| comment | text | NO | NULL |  |  |  |
-| status | enum('pending','confirmed','rejected','cancelled') | NO | pending |  |  |  |
-| rejectionReason | text | YES | NULL |  |  |  |
-| hourlyRate | decimal(10,2) | YES | NULL |  |  |  |
-| estimatedTotal | decimal(12,2) | YES | NULL |  |  |  |
-| createdAt | timestamp | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
-
-### Индексы
-
-| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
-| --- | --- | --- | --- | --- | --- |
-| ix_rental_applicant | Нет | 1 | passportId | NULL | BTREE |
-| ix_rental_applicant | Нет | 2 | startedAt | NULL | BTREE |
-| ix_rental_place | Нет | 1 | placeId | NULL | BTREE |
-| ix_rental_place | Нет | 2 | startedAt | NULL | BTREE |
-| ix_rental_room_slot | Нет | 1 | locationId | NULL | BTREE |
-| ix_rental_room_slot | Нет | 2 | status | NULL | BTREE |
-| ix_rental_room_slot | Нет | 3 | startedAt | NULL | BTREE |
-| ix_rental_room_slot | Нет | 4 | endedAt | NULL | BTREE |
-| PRIMARY | Да | 1 | id | NULL | BTREE |
-
-### Внешние ключи
-
-| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
-| --- | --- | --- | --- | --- | --- |
-| fk_rental_applicant | passportId | passport | id | NO ACTION | NO ACTION |
-| fk_rental_place | placeId | place | id | NO ACTION | NO ACTION |
-| fk_rental_room | locationId | placeLocation | id | NO ACTION | NO ACTION |
-
-### DDL
-
-```sql
-CREATE TABLE `placeRental` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `placeId` int NOT NULL,
-  `locationId` int NOT NULL,
-  `passportId` int NOT NULL,
-  `startedAt` datetime NOT NULL,
-  `endedAt` datetime NOT NULL,
-  `participants` int NOT NULL,
-  `comment` text NOT NULL,
-  `status` enum('pending','confirmed','rejected','cancelled') NOT NULL DEFAULT 'pending',
-  `rejectionReason` text,
-  `hourlyRate` decimal(10,2) DEFAULT NULL,
-  `estimatedTotal` decimal(12,2) DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `ix_rental_room_slot` (`locationId`,`status`,`startedAt`,`endedAt`),
-  KEY `ix_rental_applicant` (`passportId`,`startedAt`),
-  KEY `ix_rental_place` (`placeId`,`startedAt`),
-  CONSTRAINT `fk_rental_applicant` FOREIGN KEY (`passportId`) REFERENCES `passport` (`id`),
-  CONSTRAINT `fk_rental_place` FOREIGN KEY (`placeId`) REFERENCES `place` (`id`),
-  CONSTRAINT `fk_rental_room` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`),
-  CONSTRAINT `chk_rental_interval` CHECK (((`endedAt` > `startedAt`) and (`endedAt` <= (`startedAt` + interval 24 hour)))),
-  CONSTRAINT `chk_rental_participants` CHECK ((`participants` > 0))
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## placeSchedule
@@ -988,7 +972,7 @@ CREATE TABLE `placeSchedule` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_placeSchedule` (`placeId`,`weekday`),
   CONSTRAINT `fk_placeSchedule_place` FOREIGN KEY (`placeId`) REFERENCES `place` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## project

@@ -21,6 +21,11 @@ class MeetRepository {
     return rows.map(row => ({ startedAt: new Date(row.startedAt).toISOString(), endedAt: new Date(row.endedAt).toISOString() }));
   }
 
+  static async hasFutureActive(locationId: number, conn: PoolConnection): Promise<boolean> {
+    const [rows] = await conn.query<RowDataPacket[]>("SELECT id FROM meet WHERE locationId = ? AND deletedAt IS NULL AND status IN ('pending', 'published') AND startedAt > NOW() LIMIT 1", [locationId]);
+    return rows.length > 0;
+  }
+
   static async publicUpcoming(placeId: number): Promise<Meet[]> {
     return (await db.query<MeetRow>("SELECT * FROM meet WHERE placeId = ? AND status = 'published' AND deletedAt IS NULL AND startedAt > NOW() ORDER BY startedAt", [placeId])).map(toMeet);
   }
@@ -74,9 +79,9 @@ class MeetRepository {
 
   static async create(data: CreateMeetInput, conn?: PoolConnection): Promise<number> {
     const result = await (conn ?? db).execute<ResultSetHeader>(
-      `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId, locationId, maxParticipants)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [data.passportId, data.projectId, data.price, data.duration, data.startedAt, data.placeId, data.locationId ?? null, data.maxParticipants ?? null],
+      `INSERT INTO meet (passportId, projectId, price, duration, startedAt, placeId, locationId, maxParticipants, venuePrice, venueHourlyRate)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [data.passportId, data.projectId, data.price, data.duration, data.startedAt, data.placeId, data.locationId ?? null, data.maxParticipants ?? null, data.venuePrice ?? null, data.venueHourlyRate ?? null],
     );
 
     return (Array.isArray(result) ? result[0] : result).insertId;
@@ -84,7 +89,7 @@ class MeetRepository {
 
   // ✅ UPDATE (нормальный partial)
   static async update(id: number, data: UpdateMeetInput, conn?: PoolConnection): Promise<boolean> {
-    const keys = ['startedAt', 'duration', 'price', 'status', 'locationId', 'maxParticipants', 'placeId', 'bookingState', 'bookingRevision'] as const;
+    const keys = ['startedAt', 'duration', 'price', 'status', 'locationId', 'maxParticipants', 'placeId', 'bookingState', 'bookingRevision', 'venuePrice', 'venueHourlyRate', 'venueQuoteVersion'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;

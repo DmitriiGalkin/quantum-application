@@ -41,7 +41,7 @@ function Projects({ title, filter, projects, refetch, withoutIdea, catalog, pres
 
       {filter.filters.view === 'map' && <div>Карта</div>}
 
-      {filter.filters.view === 'module' && !!projects.length && <ProjectGrids catalog={catalog} projects={sortedProjects} refetch={refetch} />}
+      {filter.filters.view === 'module' && !!projects.length && <ProjectGrids projects={sortedProjects} refetch={refetch} />}
 
       {filter.filters.view === 'group' && <ProjectGroups projects={sortedProjects} refetch={refetch} withoutIdea={withoutIdea} />}
       {filter.filters.view === 'table' && <ProjectTable catalog={catalog} projects={sortedProjects} />}

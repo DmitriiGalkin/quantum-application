@@ -8,11 +8,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { LocationPhoto } from 'entities';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 
 export function RoomGallery({ title, photos }: { title: string; photos: LocationPhoto[] }) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
-  if (!photos.length) return null;
+  if (!photos.length) return <Box role="img" aria-label={`Фото зала «${title}» отсутствует`} sx={{ height: 260, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'action.hover' }}><MeetingRoomIcon sx={{ fontSize: 48 }} color="action" /></Box>;
   const activeIndex = Math.min(index, photos.length - 1);
   const move = (delta: number) => setIndex((activeIndex + delta + photos.length) % photos.length);
   return <>

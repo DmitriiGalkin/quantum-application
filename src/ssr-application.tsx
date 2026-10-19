@@ -14,6 +14,13 @@ const FRONTEND_SERVER = import.meta.env.FRONTEND_SERVER ?? 'http://localhost:400
 
 async function getMetaByUrl(url: string): Promise<PageMeta> {
   url = new URL(url, 'http://localhost').pathname;
+  if (url === '/cards') {
+    return {
+      title: 'Карточки интерфейса — Quantum', description: 'Галерея карточек Quantum: проекты, встречи, идеи, преподаватели, центры и залы.',
+      ogTitle: 'Карточки интерфейса Quantum', ogDescription: 'Примеры карточек приложения и их основных состояний.',
+      ogType: 'website', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/forIndex.png`,
+    };
+  }
   if (url === '/' || url === '/projects') {
     return {
       title: 'Quantum — образовательные проекты для детей',

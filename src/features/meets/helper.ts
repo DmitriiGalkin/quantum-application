@@ -8,6 +8,7 @@ export const statusConfig = {
   cancelled: { label: 'Отменена', color: 'error' as const },
   rejected: { label: 'Отклонена', color: 'error' as const },
   pending: { label: 'На подтверждении', color: 'warning' as const },
+  needs_location: { label: 'Нужен зал', color: 'warning' as const },
   confirmed: { label: 'Подтверждена', color: 'success' as const },
 };
 
@@ -15,6 +16,8 @@ export const getMeetStatus = (meet: MeetDto, now = new Date()): keyof typeof sta
   if (meet.deletedAt) {
     return 'cancelled';
   }
+  if (meet.status === 'pending' && meet.bookingState === 'awaiting_teacher') return 'needs_location';
+  if (meet.status === 'pending' && meet.bookingState === 'needs_location') return 'needs_location';
   if (meet.status === 'pending') return 'pending';
   if (meet.status === 'cancelled') return 'cancelled';
 

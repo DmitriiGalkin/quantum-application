@@ -97,7 +97,6 @@ function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boo
             to: '/teacher/meets',
             icon: <CalendarMonthIcon />,
           },
-          { label: 'Моя аренда', to: '/teacher/rentals', icon: <DomainIcon /> },
           {
             label: 'Проекты',
             to: '/teacher/projects',
@@ -158,7 +157,6 @@ function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boo
             to: `/place/locations`,
             icon: <DomainIcon />,
           },
-          { label: 'Заявки на аренду', to: '/place/rentals', icon: <CalendarMonthIcon /> },
         ],
       },
       {

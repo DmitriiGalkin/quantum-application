@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlaces, fetchLocationsByPlace } from '../../../requests.ts';
+import { formatMoney } from '../../../utils/time.ts';
 
 export interface ProjectFormValues {
   title: string;
@@ -43,7 +44,7 @@ export default function ProjectForm({ values, loading = false, error = false, su
         onChange={e => onChange({ ...values, locationId: e.target.value === '' ? null : Number(e.target.value) })}>
         <MenuItem value="">Не выбран</MenuItem>
         {values.locationId && !locations.some(location => location.id === values.locationId) && <MenuItem value={values.locationId} disabled>Зал недоступен</MenuItem>}
-        {locations.map(location => <MenuItem key={location.id} value={location.id}>{location.title}</MenuItem>)}
+        {locations.map(location => <MenuItem key={location.id} value={location.id}>{location.title} · {location.hourlyRate === null ? 'ставка не указана' : `${formatMoney(location.hourlyRate)} / час`}</MenuItem>)}
       </TextField>
       <TextField
         label="Название"

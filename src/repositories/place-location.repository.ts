@@ -4,7 +4,7 @@ import type { PlaceLocation, UpdateLocation } from 'entities';
 
 const room = (row: PlaceLocation): PlaceLocation => ({ ...row, description: row.description ?? null,
   capacity: row.capacity == null ? null : Number(row.capacity),
-  hourlyRate: row.hourlyRate == null ? null : Number(row.hourlyRate), rentalEnabled: Boolean(row.rentalEnabled) });
+  hourlyRate: row.hourlyRate == null ? null : Number(row.hourlyRate) });
 
 class PlaceLocationRepository {
   static async lockByIds(ids: number[], conn: PoolConnection): Promise<void> {
@@ -47,8 +47,8 @@ class PlaceLocationRepository {
   }
 
   static async update(id: number, data: Omit<UpdateLocation, 'photoUrls'>, conn: PoolConnection): Promise<void> {
-    await conn.execute('UPDATE placeLocation SET title = ?, description = ?, capacity = ?, hourlyRate = ?, rentalEnabled = ? WHERE id = ?',
-      [data.title, data.description, data.capacity, data.hourlyRate, data.rentalEnabled, id]);
+    await conn.execute('UPDATE placeLocation SET title = ?, description = ?, capacity = ?, hourlyRate = ? WHERE id = ?',
+      [data.title, data.description, data.capacity, data.hourlyRate, id]);
   }
 
   // ✅ DELETE (soft)

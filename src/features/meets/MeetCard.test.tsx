@@ -33,11 +33,11 @@ afterEach(() => { auth.role = 'user'; vi.clearAllMocks(); });
 it('uses one pending chip without empty attendance or occupancy, and a check chip for approved future meetings', () => {
   auth.role = 'place';
   const client = new QueryClient();
-  const html = (status: MeetDto['status']) => renderToString(<QueryClientProvider client={client}><MeetCard meet={{ ...meet, status, users: [], participantCount: 0 }} management={{ placeId: 3 }} /></QueryClientProvider>);
+  const html = (status: MeetDto['status']) => renderToString(<QueryClientProvider client={client}><MeetCard meet={{ ...meet, status, bookingState: status === 'pending' ? 'requested' : 'confirmed', venuePrice: 1000, venueHourlyRate: 1000, users: [], participantCount: 0 }} management={{ placeId: 3 }} /></QueryClientProvider>);
   const pending = html('pending');
   expect(pending.match(/На подтверждении/g)).toHaveLength(1);
   expect(pending).not.toContain('Записано'); expect(pending).not.toContain('progressbar');
-  expect(pending).toContain('Подтвердить'); expect(pending).toContain('Отклонить');
+  expect(pending).toContain('Подтвердить зал'); expect(pending).toContain('Отклонить');
   const published = html('published');
   expect(published).toContain('Подтверждена'); expect(published).toContain('CheckIcon');
   expect(published).not.toContain('Опубликовано'); client.clear();
@@ -47,9 +47,10 @@ it('renders real project/centre/hall data, Moscow time and meeting occupancy dur
   const client = new QueryClient();
   const html = renderToString(<QueryClientProvider client={client}><MeetCard meet={meet} /></QueryClientProvider>);
   expect(html).toContain('Создаём робота'); expect(html).toContain('robot.jpg');
-  expect(html).toContain('Центр творчества'); expect(html).toContain('Мастерская'); expect(html).toContain('Улица, 1');
+  expect(html).toContain('Центр творчества'); expect(html).toContain('Мастерская'); expect(html).not.toContain('Улица, 1');
   expect(html).toContain('16:00'); expect(html).toContain('17:00'); expect(html).not.toContain('МСК');
-  expect(html).toContain('из 12'); expect(html).toContain('17%'); expect(html).toContain('Свободно 10 мест');
+  expect(html).not.toContain('Записано'); expect(html).not.toContain('60 мин');
+  expect(html).toContain('17%'); expect(html).toContain('Свободно 10 мест');
   expect(html).not.toContain('99 участников'); expect(fetchPlace).not.toHaveBeenCalled();
   client.clear();
 });
@@ -60,7 +61,7 @@ it('shows missing hall/limit/image explicitly and omits progress without a limit
   host.innerHTML = renderToString(<QueryClientProvider client={client}><MeetCard meet={{ ...meet, projectImage: null, location: null, maxParticipants: null, users: [] }} /></QueryClientProvider>);
   expect(host.querySelector('img')).toBeNull(); expect(host.querySelector('[role="progressbar"]')).toBeNull();
   expect(host.textContent).toContain('Зал не выбран'); expect(host.textContent).not.toContain('Лимит мест не задан');
-  expect(host.textContent).toContain('Записано 0'); client.clear();
+  expect(host.textContent).not.toContain('Записано'); client.clear();
 });
 
 it.each([false, true])('blocks new enrolment at capacity and preserves an existing member action: member=%s', member => {
@@ -74,22 +75,17 @@ it.each([false, true])('blocks new enrolment at capacity and preserves an existi
   client.clear();
 });
 
-it('restricts approval to the managed centre, disables both buttons while saving, and shows a conflict', async () => {
+it('shows venue confirmation only to the managed centre', async () => {
   auth.role = 'place'; Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
-  let reject: (error: Error) => void = () => {};
-  vi.mocked(fetchUpdateMeetStatus).mockImplementation(() => new Promise((_, rejectPromise) => { reject = rejectPromise; }));
+  vi.mocked(fetchUpdateMeetStatus).mockResolvedValue();
   const client = new QueryClient(); const host = globalThis.document.createElement('div'); globalThis.document.body.append(host);
   const root = createRoot(host);
-  const render = (placeId: number) => <QueryClientProvider client={client}><MeetCard meet={{ ...meet, status: 'pending' }} management={{ placeId }} /></QueryClientProvider>;
+  const render = (placeId: number) => <QueryClientProvider client={client}><MeetCard meet={{ ...meet, status: 'pending', bookingState: 'requested', venuePrice: 1000, venueHourlyRate: 1000 }} management={{ placeId }} /></QueryClientProvider>;
   try {
     await act(async () => root.render(render(9)));
-    expect([...host.querySelectorAll('button')].find(button => button.textContent === 'Подтвердить')).toBeUndefined();
+    expect([...host.querySelectorAll('button')].find(button => button.textContent === 'Подтвердить зал')).toBeUndefined();
     await act(async () => root.render(render(3)));
-    await act(async () => { [...host.querySelectorAll('button')].find(button => button.textContent === 'Подтвердить')!.click(); });
-    await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)); });
-    for (const label of ['Подтвердить', 'Отклонить']) expect([...host.querySelectorAll('button')].find(button => button.textContent === label)?.disabled).toBe(true);
-    await act(async () => { reject(new Error('Зал занят')); });
-    await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)); });
-    expect(host.textContent).toContain('Зал занят');
+    expect([...host.querySelectorAll('button')].find(button => button.textContent === 'Подтвердить зал')).toBeDefined();
+    expect(fetchUpdateMeetStatus).not.toHaveBeenCalled();
   } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
 });

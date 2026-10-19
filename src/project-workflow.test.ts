@@ -59,7 +59,7 @@ vi.mock('./repositories/idea-photo.repository.js', () => ({
   },
 }));
 vi.mock('./repositories/location-photo.repository.js', () => ({ LocationPhotoRepository: { findByLocationIds: async () => [] } }));
-vi.mock('./repositories/rental.repository.js', () => ({ RentalRepository: { conflicts: async () => false } }));
+vi.mock('./repositories/meet-venue-quote.repository.js', () => ({ MeetVenueQuoteRepository: { supersede: async () => undefined } }));
 vi.mock('./repositories/project.repository.js', () => ({
   default: {
     create: async (data: CreateProjectInput) => {
@@ -76,7 +76,7 @@ vi.mock('./repositories/meet.repository.js', () => ({
     create: async (data: CreateMeetInput) => {
       const id = state.meets.size + 1;
       state.meets.set(id, { ...data, locationId: data.locationId ?? null, maxParticipants: data.maxParticipants ?? null,
-        startedAt: data.startedAt.replace(' ', 'T') + '+03:00', id, status: 'pending', deletedAt: null });
+        startedAt: data.startedAt.replace(' ', 'T') + '+03:00', id, status: 'pending', bookingState: 'requested', deletedAt: null });
       return id;
     },
     findById: async (id: number) => state.meets.get(id) ?? null,
@@ -100,11 +100,11 @@ vi.mock('./repositories/place-location.repository.js', () => ({
   default: {
     lockByIds: async () => undefined,
     findLocations: async (placeId: number) => [
-      { id: 5, title: 'Workshop', placeId: 3, deletedAt: null },
+      { id: 5, title: 'Workshop', placeId: 3, deletedAt: null, hourlyRate: 1200 },
       { id: 7, title: 'Deleted hall', placeId: 3, deletedAt: '2026-10-11' },
     ].filter(location => location.placeId === placeId),
     findByIds: async (ids: number[]) => [
-      { id: 5, title: 'Workshop', placeId: 3, deletedAt: null },
+      { id: 5, title: 'Workshop', placeId: 3, deletedAt: null, hourlyRate: 1200 },
       { id: 6, title: 'Other center hall', placeId: 4, deletedAt: null },
       { id: 7, title: 'Deleted hall', placeId: 3, deletedAt: '2026-10-11' },
     ].filter(location => ids.includes(location.id)),
@@ -113,6 +113,7 @@ vi.mock('./repositories/place-location.repository.js', () => ({
 vi.mock('./repositories/place-passport.repository.js', () => ({
   default: {
     findMembership: async (passportId: number, placeId: number) => (passportId === 30 && placeId === 3 ? { id: 1, role: 'admin' } : null),
+    members: async () => [{ passportId: 30, role: 'admin' }],
   },
 }));
 vi.mock('./repositories/passport.repository.js', () => ({
@@ -242,10 +243,10 @@ describe('project lifecycle through HTTP', () => {
     });
     expect(ideaResponse.status).toBe(201);
     const ideaId: number = await ideaResponse.json();
-    const projectResponse = await request('/project', 20, { ideaId, placeId: 3, title: 'Workshop', description: 'Making a toy', image: '' });
+    const projectResponse = await request('/project', 20, { ideaId, placeId: 3, locationId: 5, title: 'Workshop', description: 'Making a toy', image: '' });
     expect(projectResponse.status).toBe(200);
     const projectId: number = await projectResponse.json();
-    const meetResponse = await request('/meet', 20, { projectId, price: 1000, duration: 60, maxParticipants: 12, startedAt: '2099-01-05T10:00:00.000Z' });
+    const meetResponse = await request('/meet', 20, { projectId, price: 1000, duration: 60, maxParticipants: 12, startedAt: '2099-01-05T10:00:00.000Z', expectedVenueHourlyRate: 1200 });
     expect(meetResponse.status).toBe(200);
     const meetId: number = await meetResponse.json();
     const approval = await request(`/meet/${meetId}/status`, 30, { status: 'published' }, 'PUT', { 'X-Role': 'place', 'X-Place-Id': '3' });

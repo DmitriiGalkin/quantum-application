@@ -2,7 +2,6 @@ import { requireId } from '../utils/validation.js';
 import { type Controller, type ControllerWithAuth, ok } from './helper.js';
 import PlaceLocationService from '../services/placeLocation.service.js';
 import type { CreateLocation, RoomDto, UpdateLocation } from 'entities';
-import { RentalService } from '../services/rental.service.js';
 
 const create: ControllerWithAuth<number, CreateLocation> = async (req, res) => {
   const placeId = requireId(req.viewer?.placeId);
@@ -12,7 +11,7 @@ const create: ControllerWithAuth<number, CreateLocation> = async (req, res) => {
 };
 
 const findAll: ControllerWithAuth<RoomDto[]> = async (req, res) => {
-  await RentalService.requireAdmin(req.passport.id, requireId(req.viewer?.placeId));
+  await PlaceLocationService.requireAdmin(req.passport.id, requireId(req.viewer?.placeId));
   const data = await PlaceLocationService.findAll(requireId(req.viewer?.placeId));
 
   ok(res, data);

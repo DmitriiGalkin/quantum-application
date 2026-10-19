@@ -20,9 +20,13 @@ export function useEditMeet(meet: MeetDto, onClose: () => void) {
   });
 
   const updateMeet = useMutation({
-    mutationFn: (form: MeetFormValues) => {
-      return fetchUpdateMeet(meet.id, { placeId: form.placeId, reason: form.reason, price: form.price, duration: form.duration, locationId: form.locationId,
+    mutationFn: ({ form, expectedVenueHourlyRate }: { form: MeetFormValues; expectedVenueHourlyRate: number }) => {
+      return fetchUpdateMeet(meet.id, { placeId: form.placeId, reason: form.reason, price: form.price, duration: form.duration, locationId: form.locationId, expectedVenueHourlyRate,
         maxParticipants: form.maxParticipants === '' ? null : form.maxParticipants, startedAt: meetStart(form.date, form.time) });
+    },
+
+    onError: async error => {
+      if (error.message.includes('Ставка зала изменилась')) await queryClient.invalidateQueries({ queryKey: ['locations'] });
     },
 
     onSuccess: async () => {
@@ -35,7 +39,7 @@ export function useEditMeet(meet: MeetDto, onClose: () => void) {
   return {
     form,
     setForm,
-    onSubmit: () => updateMeet.mutate(form),
+    onSubmit: (expectedVenueHourlyRate: number) => updateMeet.mutate({ form, expectedVenueHourlyRate }),
     loading: updateMeet.isPending,
     error: updateMeet.error?.message,
   };
