@@ -64,6 +64,7 @@ export default function CardsPage() {
       <Preview title="Основная карточка · платная встреча"><ProjectCard project={project} /></Preview>
       <Preview title="Основная карточка · бесплатно"><ProjectCard project={{ ...project, meets: [{ ...meet, price: 0 }] }} /></Preview>
       <Preview title="Без обложки и назначенной встречи"><ProjectCard project={{ ...project, image: null, meets: [], users: [] }} /></Preview>
+      <Preview title="Регулярный кружок · ближайшая встреча не назначена"><ProjectCard project={{ ...project, kind: 'regular', weeklySchedule: [{ weekday: 2, startTime: '15:15', duration: 60 }, { weekday: 4, startTime: '15:15', duration: 60 }], meets: [], users: [] }} /></Preview>
       <Preview title="Подробная карточка на странице проекта"><ProjectCard project={project} detailed /></Preview>
     </Section>
     <Section id="meets" title="Встречи">
@@ -84,7 +85,6 @@ export default function CardsPage() {
       <Preview title="С обложкой"><IdeaCard idea={{ id: -1, title: 'Табуретка из дерева', description: project.description ?? '', image: cover }} /></Preview>
       <Preview title="Без изображения · длинное название"><IdeaCard idea={{ id: -2, title: 'Переносная многоярусная полочка для любимых книг, инструментов и маленьких сокровищ', description: 'Придумываем конструкцию, которая легко переносится и помогает хранить всё под рукой.', image: null }} /></Preview>
       <Preview title="Идея ученика · можно написать сообщение"><IdeaCard idea={studentIdea} /></Preview>
-      <Preview title="Идея ученика · без связи с родителем"><IdeaCard idea={{ ...studentIdea, id: -2, projects: [], canContactParent: false }} /></Preview>
     </Section>
     <Section id="teachers" title="Преподаватели">
       <Preview title="Обычная карточка"><TeacherCard teacher={teacher} /></Preview>

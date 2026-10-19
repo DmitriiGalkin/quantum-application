@@ -9,6 +9,8 @@ export function useCreateProject() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState<ProjectFormValues>({
+    kind: 'project',
+    weeklySchedule: [],
     title: '',
     description: '',
     image: '',

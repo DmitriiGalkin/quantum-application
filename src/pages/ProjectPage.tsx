@@ -62,7 +62,9 @@ export default function ProjectPage() {
         <Stack spacing={2}>
           <Typography component="h2" variant="h5">Ближайшие встречи</Typography>
           {upcoming.length ? upcoming.map(meet => <MeetCard key={meet.id} meet={meet} refetch={refetch} />)
-            : <Typography color="text.secondary">Ближайшая встреча пока не назначена.</Typography>}
+            : <Typography color="text.secondary">{project.kind === 'regular'
+              ? 'Запись на ближайшее занятие пока недоступна. Следите за расписанием кружка.'
+              : 'Ближайшая встреча пока не назначена.'}</Typography>}
           {canCreateMeet && (
             <>
             <Button variant="contained" onClick={() => setPlanning(true)}>Запланировать встречу</Button>

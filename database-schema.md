@@ -1,6 +1,6 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-19T15:00:17.566Z
+Дата выгрузки: 2026-10-19T19:49:54.065Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
@@ -991,6 +991,8 @@ CREATE TABLE `placeSchedule` (
 | description | text | NO | NULL |  |  |  |
 | image | varchar(255) | YES | NULL |  |  |  |
 | locationId | int | YES | NULL | MUL |  |  |
+| kind | enum('project','regular') | NO | project |  |  |  |
+| weeklySchedule | json | YES | NULL |  |  |  |
 
 ### Индексы
 
@@ -1019,6 +1021,8 @@ CREATE TABLE `project` (
   `description` text NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `locationId` int DEFAULT NULL,
+  `kind` enum('project','regular') NOT NULL DEFAULT 'project',
+  `weeklySchedule` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_project_location` (`locationId`),
   CONSTRAINT `fk_project_location` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`)

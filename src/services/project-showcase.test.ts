@@ -19,6 +19,12 @@ describe('project showcase eligibility', () => {
     expect(selectShowcaseProjects(projects, {}, now)).toHaveLength(6);
     expect(selectShowcaseProjects(projects, { upcomingOnly: 'false' }, now)).toHaveLength(6);
   });
+  it('shows scheduled clubs without a meeting in the general catalog but not a specific day', () => {
+    const club = { ...project(7, []), kind: 'regular' as const,
+      weeklySchedule: [{ weekday: 1, startTime: '15:00', duration: 60 }] };
+    expect(selectShowcaseProjects([club], { upcomingOnly: true }, now)).toEqual([club]);
+    expect(selectShowcaseProjects([club], { upcomingOnly: true, when: 'tomorrow' }, now)).toEqual([]);
+  });
   it('applies the Moscow date and publication requirements to the same meeting', () => {
     const projects = [project(1, [meet()]), project(2, [meet({ startedAt: '2030-01-01T20:30:00Z' })]),
       project(3, [meet({ status: 'pending' }), meet({ startedAt: '2030-01-01T19:00:00Z' })])];

@@ -32,6 +32,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ChatIcon from '@mui/icons-material/Chat'; // Добавлен ChatIcon
 import Tooltip from '@mui/material/Tooltip';
 import ProjectCardMeta from './ProjectCardMeta.tsx';
+import { formatWeeklySchedule } from './weekly-schedule.ts';
 
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 
@@ -55,12 +56,14 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
   const temporalStatus = firstMeet ? moscowMeetStatus(firstMeet) : null;
   const status = temporalStatus ? statusConfig[temporalStatus] : undefined;
   const startedAt = firstMeet ? new Date(firstMeet.startedAt) : undefined;
-  const date = startedAt ? informationDate(startedAt) : undefined;
+  const date = startedAt ? informationDate(startedAt, { month: 'short' }) : undefined;
   const time = startedAt?.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' });
   const endTime = startedAt && firstMeet?.duration != null
     ? new Date(startedAt.getTime() + firstMeet.duration * 60000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' }) : undefined;
 
   const [form, setForm] = useState<ProjectFormValues>({
+    kind: project.kind ?? 'project',
+    weeklySchedule: project.weeklySchedule ?? [],
     title: project.title || '',
     description: project.description || '',
     image: project.image ?? '',
@@ -186,6 +189,7 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
             <Typography component={detailed ? 'h1' : 'h2'} variant={detailed ? 'h4' : 'h6'} sx={{ flex: '1 1 140px', minWidth: 0, fontWeight: 600, overflowWrap: 'anywhere' }}>
               <Box component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', textDecoration: 'none' }}>{project.title}</Box>
             </Typography>
+            {project.kind === 'regular' && <Chip label="Кружок / секция" size="small" />}
             {detailed && project.idea?.id && <Tooltip title="Посмотреть исходную идею проекта">
             <Button component={Link} to={`/idea/${project.idea.id}`} aria-label="Исходная идея" size="small" startIcon={<LinkIcon fontSize="small" />}>
               Исходная идея
@@ -204,21 +208,31 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
           </Stack>} />
       </>
       <CardContent sx={{ bgcolor: 'action.hover', borderTop: 1, borderColor: 'divider', flexGrow: 1 }}>
+        {project.kind === 'regular' && Boolean(project.weeklySchedule?.length) && <Typography variant="body2" sx={{ mb: 1 }}>
+          Занятия (МСК): {formatWeeklySchedule(project.weeklySchedule!)}
+        </Typography>}
         {firstMeet ? <Stack spacing={1}>
-          <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
-            <Typography component={Link} to={`/project/${project.id}#meet-${firstMeet.id}`} variant="body2" sx={{ fontWeight: 600, color: 'inherit' }}>{date}</Typography>
-            {status && <Chip label={status.label} color={status.color} size="small" />}
+          <Stack direction="row" sx={{ alignItems: 'center', gap: 1, minWidth: 0 }}>
+            <Typography component={Link} to={`/project/${project.id}#meet-${firstMeet.id}`} variant="body2"
+              title={`${date} ${time}${endTime ? `–${endTime}` : ''}`}
+              sx={{ fontWeight: 600, color: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flexShrink: 1 }}>
+              {date} {time}{endTime ? `–${endTime}` : ''}
+            </Typography>
+            <Box sx={{ flex: 1, minWidth: 8, borderBottom: 1, borderColor: 'divider', borderStyle: 'dotted' }} />
+            {firstMeet.price === 0 ? <Chip size="small" label="Бесплатно" /> : <Typography variant="body2" sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{firstMeet.price == null ? 'Цена не указана' : `${firstMeet.price} ₽`}</Typography>}
           </Stack>
-          <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-            <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>{time}{endTime ? `–${endTime}` : ''}</Typography>
-            {firstMeet.price === 0 ? <Chip size="small" label="Бесплатно" /> : <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>{firstMeet.price == null ? 'Цена не указана' : `${firstMeet.price} ₽`}</Typography>}
-          </Stack>
-        </Stack> : <Typography variant="body2" color="text.secondary">Ближайшая встреча не назначена</Typography>}
+          {status && <Chip label={status.label} color={status.color} size="small" sx={{ alignSelf: 'flex-start' }} />}
+        </Stack> : <Typography variant="body2" color="text.secondary">
+          {project.kind === 'regular' ? 'Запись на ближайшее занятие пока недоступна' : 'Ближайшая встреча не назначена'}
+        </Typography>}
       </CardContent>
 
         {role === 'user' && !isMember && (
           <CardContent sx={{ bgcolor: 'action.hover' }}>
             <Button variant="contained" size="small" onClick={onJoin}>Вступить</Button>
+            {project.kind === 'regular' && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+              Участие в кружке не бронирует место на отдельных занятиях.
+            </Typography>}
           </CardContent>
         )}
 

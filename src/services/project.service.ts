@@ -16,6 +16,7 @@ import { db } from '../utils/dbNext.js';
 import { requireId } from '../utils/validation.js';
 import PlaceLocationRepository from '../repositories/place-location.repository.js';
 import { selectShowcaseProjects } from './project-showcase.js';
+import { validateProjectSchedule } from './project-weekly-schedule.js';
 
 export class ProjectService {
   private static async validateLocation(placeId: number, value: unknown): Promise<number | null> {
@@ -33,12 +34,17 @@ export class ProjectService {
     const placeId = requireId(data.placeId, 'центра');
     if (!await PlaceRepository.findById(placeId)) throw new HttpError('Центр не найден', 404);
     const locationId = await this.validateLocation(placeId, data.locationId);
+    const kind = data.kind ?? 'project';
+    if (kind !== 'project' && kind !== 'regular') throw new HttpError('Неизвестный формат проекта', 400);
+    const weeklySchedule = validateProjectSchedule(kind, data.weeklySchedule ?? []);
 
     return ProjectRepository.create({
       ...data,
       placeId,
       locationId,
       passportId: passport.id,
+      kind,
+      weeklySchedule,
     });
   }
 
@@ -50,9 +56,15 @@ export class ProjectService {
     if (!await PlaceRepository.findById(placeId)) throw new HttpError('Центр не найден', 404);
     const locationId = await this.validateLocation(placeId,
       data.locationId === undefined && placeId === project.placeId ? project.locationId : data.locationId);
+    const hasScheduleChange = data.kind !== undefined || data.weeklySchedule !== undefined;
+    const kind = data.kind ?? project.kind ?? 'project';
+    if (kind !== 'project' && kind !== 'regular') throw new HttpError('Неизвестный формат проекта', 400);
+    const weeklySchedule = hasScheduleChange
+      ? validateProjectSchedule(kind, data.weeklySchedule ?? project.weeklySchedule ?? []) : undefined;
     return ProjectRepository.update(projectId, {
       title: data.title, description: data.description, image: data.image,
       placeId, locationId, ideaId: data.ideaId,
+      ...(hasScheduleChange ? { kind, weeklySchedule } : {}),
     });
   }
 
@@ -103,6 +115,7 @@ export class ProjectService {
       const location = project.locationId ? locationById.get(project.locationId) : undefined;
       return {
         id: project.id, title: project.title, description: project.description, image: project.image,
+        kind: project.kind ?? 'project', weeklySchedule: project.weeklySchedule ?? [],
         locationId: project.locationId ?? null,
         location: location?.placeId === place.id ? { id: location.id, title: location.title } : null,
         idea: project.ideaId ? ideaById.get(project.ideaId) ?? null : null,

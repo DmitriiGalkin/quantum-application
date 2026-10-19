@@ -28,6 +28,23 @@ it('uses the main project card in the project grid', () => {
   } finally { client.clear(); }
 });
 
+it('shows a club schedule and keeps project membership separate from meeting booking', () => {
+  const project = { id: 10, title: 'Столярный кружок', description: 'Занятия каждую неделю', image: null,
+    kind: 'regular' as const, weeklySchedule: [{ weekday: 1, startTime: '15:00', duration: 60 }],
+    passport: { id: 42, title: 'Teacher', description: null },
+    place: { id: 3, title: 'Center', address: 'Address', description: null, latitude: 0, longitude: 0, priceFrom: null },
+    meets: [], users: [], idea: null } satisfies ProjectDto;
+  const client = new QueryClient();
+  try {
+    const html = renderToString(<QueryClientProvider client={client}><MemoryRouter><ProjectCard project={project} /></MemoryRouter></QueryClientProvider>);
+    const host = globalThis.document.createElement('div'); host.innerHTML = html;
+    expect(host.textContent).toContain('Пн, 15:00–16:00');
+    expect(host.textContent).toContain('Запись на ближайшее занятие пока недоступна');
+    expect(host.textContent).toContain('Участие в кружке не бронирует место');
+    expect([...host.querySelectorAll('button')].some(button => button.textContent === 'Вступить')).toBe(true);
+  } finally { client.clear(); }
+});
+
 it('keeps project exit on details and removes it from listing cards', async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   const project = { id: 10, title: 'Project', description: '', image: null,

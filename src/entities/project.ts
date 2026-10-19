@@ -7,7 +7,17 @@ import type { MeetDto } from './meet.js';
 import type { IdeaDto } from './idea.js';
 import type { LocationDto } from './location.js';
 
+export type ProjectKind = 'project' | 'regular';
+
+export interface ProjectWeeklySlot {
+  weekday: number;
+  startTime: string;
+  duration: number;
+}
+
 export interface ProjectRow extends RowDataPacket {
+  kind?: ProjectKind;
+  weeklySchedule?: ProjectWeeklySlot[] | string | null;
   locationId: number | null;
   id: number;
   title: string;
@@ -21,6 +31,8 @@ export interface ProjectRow extends RowDataPacket {
 }
 
 export interface Project {
+  kind?: ProjectKind;
+  weeklySchedule?: ProjectWeeklySlot[];
   locationId?: number | null;
   id: number;
   title: string;
@@ -58,6 +70,8 @@ export interface ProjectDto extends Omit<Project, 'passportId' | 'placeId' | 'id
 }
 
 export type CreateProjectInput = {
+  kind?: ProjectKind;
+  weeklySchedule?: ProjectWeeklySlot[];
   locationId?: number | null;
   placeId: number;
   title: string;
@@ -68,6 +82,8 @@ export type CreateProjectInput = {
 };
 
 export interface CreateProject {
+  kind?: ProjectKind;
+  weeklySchedule?: ProjectWeeklySlot[];
   locationId?: number | null;
   title: string;
   description: string;

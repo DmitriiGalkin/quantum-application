@@ -4,7 +4,7 @@ export function selectShowcaseProjects(projects: ProjectDto[], params: GetProjec
   const upcomingOnly = params.upcomingOnly === true || params.upcomingOnly === 'true';
   const day = (date: Date) => new Date(date.getTime() + 3 * 3600000).toISOString().slice(0, 10);
   const targetDay = day(new Date(now.getTime() + (params.when === 'tomorrow' ? 86400000 : 0)));
-  const result = upcomingOnly ? projects.filter(project => project.meets.some(meet => {
+  const result = upcomingOnly ? projects.filter(project => (!params.when && project.kind === 'regular' && Boolean(project.weeklySchedule?.length)) || project.meets.some(meet => {
     const start = new Date(meet.startedAt);
     return !meet.deletedAt && meet.status === 'published' && start.getTime() > now.getTime()
       && (!params.when || day(start) === targetDay);

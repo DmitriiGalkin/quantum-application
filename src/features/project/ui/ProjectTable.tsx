@@ -1,4 +1,5 @@
 import AddressLine from '../../../components/AddressLine.tsx';
+import { formatWeeklySchedule } from './weekly-schedule.ts';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -30,6 +31,9 @@ export default function ProjectTable({ projects, catalog }: { projects: ProjectD
           <Box>
             <Typography component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', fontWeight: 600, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{project.title}</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{project.description}</Typography>
+            {project.kind === 'regular' && Boolean(project.weeklySchedule?.length) && <Typography variant="caption" color="text.secondary">
+              Занятия (МСК): {formatWeeklySchedule(project.weeklySchedule!)}
+            </Typography>}
           </Box>
           <Typography component={Link} to={`/teachers/${project.passport.id}`} variant="body2" sx={{ color: 'inherit' }}>{project.passport.title || 'Преподаватель'}</Typography>
           <Box>
@@ -41,7 +45,9 @@ export default function ProjectTable({ projects, catalog }: { projects: ProjectD
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
               {catalog ? meetingPrice(meet.price) : <>{meet.duration != null && `${meet.duration} минут`}{meet.duration != null && meet.price != null && ' · '}{meet.price != null && `${meet.price} ₽`}</>}
             </Typography>
-          </Box> : <Typography variant="body2" color="text.secondary">Ближайшая встреча не назначена</Typography>}
+          </Box> : <Typography variant="body2" color="text.secondary">
+            {project.kind === 'regular' ? 'Запись на ближайшее занятие пока недоступна' : 'Ближайшая встреча не назначена'}
+          </Typography>}
           {!catalog && <Box>
             <Typography variant="caption" color="text.secondary">Участники проекта</Typography>
             {project.users.length ? <AvatarGroupUsers users={project.users} limit={10} /> : <Typography variant="body2" color="text.secondary">Пока нет участников</Typography>}

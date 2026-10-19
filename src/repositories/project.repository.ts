@@ -42,22 +42,24 @@ class ProjectRepository {
   // ✅ CREATE
   static async create(data: CreateProjectInput, conn?: PoolConnection): Promise<number> {
     const result = await (conn ?? db).execute<ResultSetHeader>(
-      `INSERT INTO project (ideaId, passportId, placeId, title, description, image, locationId)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [data.ideaId || null, data.passportId, data.placeId, data.title, data.description, data.image, data.locationId ?? null],
+      `INSERT INTO project (ideaId, passportId, placeId, title, description, image, locationId, kind, weeklySchedule)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [data.ideaId || null, data.passportId, data.placeId, data.title, data.description, data.image,
+        data.locationId ?? null, data.kind ?? 'project', JSON.stringify(data.weeklySchedule ?? [])],
     );
 
     return (Array.isArray(result) ? result[0] : result).insertId;
   }
 
   static async update(id: number, data: Partial<CreateProjectInput>, conn?: PoolConnection): Promise<boolean> {
-    const keys = ['title', 'description', 'image', 'placeId', 'ideaId', 'locationId'] as const;
+    const keys = ['title', 'description', 'image', 'placeId', 'ideaId', 'locationId', 'kind', 'weeklySchedule'] as const;
     const entries = keys.filter(key => data[key] !== undefined).map(key => [key, data[key]] as const);
 
     if (entries.length === 0) return false;
 
     const fields = entries.map(([k]) => `${k} = ?`).join(', ');
-    const values = entries.map(([, v]) => v ?? null);
+    const values = entries.map(([key]) => key === 'weeklySchedule'
+      ? JSON.stringify(data.weeklySchedule ?? []) : (data[key] as string | number | null) ?? null);
 
     const result = await (conn ?? db).execute<ResultSetHeader>(`UPDATE project SET ${fields} WHERE id = ?`, [...values, id]);
 
