@@ -36,10 +36,13 @@ it('shows a club schedule and keeps project membership separate from meeting boo
     meets: [], users: [], idea: null } satisfies ProjectDto;
   const client = new QueryClient();
   try {
-    const html = renderToString(<QueryClientProvider client={client}><MemoryRouter><ProjectCard project={project} /></MemoryRouter></QueryClientProvider>);
-    const host = globalThis.document.createElement('div'); host.innerHTML = html;
+    const host = globalThis.document.createElement('div');
+    host.innerHTML = renderToString(<QueryClientProvider client={client}><MemoryRouter><ProjectCard project={project} /></MemoryRouter></QueryClientProvider>);
     expect(host.textContent).toContain('Пн, 15:00–16:00');
     expect(host.textContent).toContain('Запись на ближайшее занятие пока недоступна');
+    expect(host.textContent).not.toContain('Участие в кружке не бронирует место');
+    expect([...host.querySelectorAll('button')].some(button => button.textContent === 'Вступить')).toBe(false);
+    host.innerHTML = renderToString(<QueryClientProvider client={client}><MemoryRouter><ProjectCard project={project} detailed /></MemoryRouter></QueryClientProvider>);
     expect(host.textContent).toContain('Участие в кружке не бронирует место');
     expect([...host.querySelectorAll('button')].some(button => button.textContent === 'Вступить')).toBe(true);
   } finally { client.clear(); }
@@ -67,14 +70,14 @@ it('keeps project exit on details and removes it from listing cards', async () =
 });
 
 function Location() { return <output>{useLocation().pathname}</output>; }
-it.each([null, { id: 5, title: 'мастерская' }])('hydrates a card with hall %j; join does not navigate, picture does', async location => {
+it.each([null, { id: 5, title: 'мастерская' }])('hydrates a detailed card with hall %j; join does not navigate, picture does', async location => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   const project: ProjectDto = { id: 100, title: 'Robot workshop', description: 'A detailed workshop description', image: 'https://storage.yandexcloud.net/quantum-education/idea-catalog/toy-001-generated-cover-v1.png',
     passport: { id: 42, title: 'Master', description: null },
     place: { id: 575, title: 'Center', address: 'Address', description: null, latitude: 55.75, longitude: 37.62, priceFrom: null },
     location, meets: [], users: [], idea: { id: 54, title: 'Robot', user: null, today: false, image: null, photos: [] } };
   const queryClient = new QueryClient();
-  const render = () => <QueryClientProvider client={queryClient}><MemoryRouter><ProjectCard project={project} /><Location /></MemoryRouter></QueryClientProvider>;
+  const render = () => <QueryClientProvider client={queryClient}><MemoryRouter><ProjectCard project={project} detailed /><Location /></MemoryRouter></QueryClientProvider>;
   const host = globalThis.document.createElement('div'); globalThis.document.body.append(host);
   host.innerHTML = renderToString(render());
   const errors: unknown[] = [];
@@ -92,7 +95,7 @@ it.each([null, { id: 5, title: 'мастерская' }])('hydrates a card with 
     await act(async () => { join.click(); });
     expect(fetchCreateProjectUser).toHaveBeenCalledWith({ userId: 7, projectId: 100 }, expect.anything());
     expect(host.querySelector('output')?.textContent).toBe('/');
-    expect(host.querySelector('a[aria-label="Исходная идея"]')).toBeNull();
+    expect(host.querySelector('a[aria-label="Исходная идея"]')).not.toBeNull();
     await act(async () => { pictureAction.click(); });
     expect(host.querySelector('output')?.textContent).toBe('/project/100');
   } finally { await act(async () => root.unmount()); host.remove(); queryClient.clear(); }

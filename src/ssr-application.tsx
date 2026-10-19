@@ -18,7 +18,7 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
     return {
       title: 'Карточки интерфейса — Quantum', description: 'Галерея карточек Quantum: проекты, встречи, идеи, преподаватели, центры и залы.',
       ogTitle: 'Карточки интерфейса Quantum', ogDescription: 'Примеры карточек приложения и их основных состояний.',
-      ogType: 'website', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/forIndex.png`,
+      ogType: 'website', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/brand-preview.png`,
     };
   }
   if (url === '/' || url === '/projects') {
@@ -27,7 +27,7 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
       description: 'Выберите проект для ребёнка: преподаватели, места, ближайшие встречи и стоимость участия.',
       ogTitle: 'Образовательные проекты для детей',
       ogDescription: 'Выберите проект для ребёнка: преподаватели, места, ближайшие встречи и стоимость участия.',
-      ogImage: `${FRONTEND_SERVER}/forIndex.png`,
+      ogImage: `${FRONTEND_SERVER}/brand-preview.png`,
       ogType: 'article',
       ogSiteName: 'Quantum',
     };
@@ -39,7 +39,7 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
       description: 'Программа ремесла для 1–12 классов: направления работы и идеи изделий.',
       ogTitle: 'Программа вальдорфской школы по ремеслу',
       ogDescription: 'Программа ремесла для 1–12 классов: направления работы и идеи изделий.',
-      ogType: 'article', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/forIndex.png`,
+      ogType: 'article', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/brand-preview.png`,
     };
   }
 
@@ -47,7 +47,7 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
     return {
       title: 'Quantum — библиотека идей', description: 'Идеи образовательных проектов для детей и преподавателей.',
       ogTitle: 'Библиотека идей', ogDescription: 'Вдохновение для новых образовательных проектов.',
-      ogType: 'website', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/forIndex.png`,
+      ogType: 'website', ogSiteName: 'Quantum', ogImage: `${FRONTEND_SERVER}/brand-preview.png`,
     };
   }
   if (url === '/landing/parent') {
@@ -89,7 +89,7 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
         description: meta.description ?? 'Quantum',
         ogTitle: meta.ogTitle ?? meta.title ?? 'Quantum',
         ogDescription: meta.ogDescription ?? meta.description ?? 'Quantum',
-        ogImage: meta.ogImage ?? FRONTEND_SERVER + '/forIndex.png',
+        ogImage: meta.ogImage ?? FRONTEND_SERVER + '/brand-preview.png',
         ogType: meta.ogType ?? 'article',
         ogSiteName: meta.ogSiteName ?? 'Quantum',
       };
@@ -101,7 +101,7 @@ async function getMetaByUrl(url: string): Promise<PageMeta> {
     description: 'Quantum',
     ogTitle: 'Quantum',
     ogDescription: 'Quantum',
-    ogImage: `${FRONTEND_SERVER}/forIndex.png`,
+    ogImage: `${FRONTEND_SERVER}/brand-preview.png`,
     ogType: 'website',
     ogSiteName: 'Quantum',
   };

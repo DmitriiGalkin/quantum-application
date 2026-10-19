@@ -65,7 +65,7 @@ export default function CardsPage() {
       <Preview title="Основная карточка · бесплатно"><ProjectCard project={{ ...project, meets: [{ ...meet, price: 0 }] }} /></Preview>
       <Preview title="Без обложки и назначенной встречи"><ProjectCard project={{ ...project, image: null, meets: [], users: [] }} /></Preview>
       <Preview title="Регулярный кружок · ближайшая встреча не назначена"><ProjectCard project={{ ...project, kind: 'regular', weeklySchedule: [{ weekday: 2, startTime: '15:15', duration: 60 }, { weekday: 4, startTime: '15:15', duration: 60 }], meets: [], users: [] }} /></Preview>
-      <Preview title="Подробная карточка на странице проекта"><ProjectCard project={project} detailed /></Preview>
+      <Preview title="Подробная карточка на странице проекта" role="user"><ProjectCard project={{ ...project, kind: 'regular', weeklySchedule: [{ weekday: 2, startTime: '15:15', duration: 60 }] }} detailed /></Preview>
     </Section>
     <Section id="meets" title="Встречи">
       <Preview title="Опубликована · есть свободные места"><MeetCard meet={meet} /></Preview>

@@ -102,8 +102,7 @@ function Header() {
                 color: 'text.primary', fontSize: { xs: 18, sm: 24 }, whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 1,
               }}
             >
-              <Box component="span" aria-hidden="true" sx={{ display: { xs: 'none', sm: 'grid' }, placeItems: 'center', width: 34, height: 34,
-                bgcolor: 'secondary.main', border: '2px solid', borderColor: 'text.primary', borderRadius: '12px 12px 6px 12px', transform: 'rotate(-6deg)', fontSize: 22 }}>q</Box>
+              <Box component="img" src="/brand-mark.svg" alt="" aria-hidden="true" sx={{ display: { xs: 'none', sm: 'block' }, width: 34, height: 34, borderRadius: 1, flexShrink: 0 }} />
               Quantum
             </Typography>
           </Link>

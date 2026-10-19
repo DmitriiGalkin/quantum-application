@@ -227,7 +227,7 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
         </Typography>}
       </CardContent>
 
-        {role === 'user' && !isMember && (
+        {detailed && role === 'user' && !isMember && (
           <CardContent sx={{ bgcolor: 'action.hover' }}>
             <Button variant="contained" size="small" onClick={onJoin}>Вступить</Button>
             {project.kind === 'regular' && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>

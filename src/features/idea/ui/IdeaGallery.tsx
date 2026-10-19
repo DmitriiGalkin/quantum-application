@@ -24,7 +24,7 @@ export default function IdeaGallery({ idea }: { idea: IdeaDto }) {
   if (!photos.length && !idea.image) return <ProjectImage alt={idea.title} />;
   const active = photos.find(photo => photo.id === selectedId) ?? photos.find(photo => photo.isCover) ?? photos[0];
   const index = active ? photos.indexOf(active) : 0;
-  const url = active?.url || idea.image || '/bg.jpeg';
+  const url = active?.url || idea.image || '/brand-background.svg';
   const title = `${idea.title}, фотография ${index + 1}`;
   const step = (direction: number) => setSelectedId(photos[(index + direction + photos.length) % photos.length].id);
   return <>

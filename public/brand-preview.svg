@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Quantum — образовательные проекты для детей">
+  <rect width="1200" height="630" fill="#FAF8FF"/>
+  <circle cx="1100" cy="55" r="260" fill="#EEE7FF"/>
+  <circle cx="1130" cy="585" r="235" fill="#FFE8DA"/>
+  <path d="M0 530c190-105 310-12 462 57H0Z" fill="#EEE7FF"/>
+  <rect x="78" y="85" width="110" height="110" rx="24" fill="#6742B8"/>
+  <rect x="102" y="108" width="65" height="65" rx="16" fill="#FFC653" transform="rotate(-6 134 141)"/>
+  <circle cx="133" cy="138" r="19" fill="none" stroke="#292344" stroke-width="10"/>
+  <path d="m145 152 11 11" stroke="#292344" stroke-width="10" stroke-linecap="round"/>
+  <text x="215" y="166" fill="#292344" font-family="Nunito, Arial, sans-serif" font-size="69" font-weight="800">Quantum</text>
+  <text x="80" y="305" fill="#292344" font-family="Nunito, Arial, sans-serif" font-size="54" font-weight="800">Учиться, создавая</text>
+  <text x="82" y="369" fill="#625B73" font-family="Arial, sans-serif" font-size="29">Проекты, встречи и идеи для детей</text>
+  <rect x="80" y="425" width="330" height="64" rx="18" fill="#6742B8"/>
+  <text x="108" y="467" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="25" font-weight="600">Найдите своё дело</text>
+  <rect x="803" y="194" width="258" height="258" rx="62" fill="#FFC653" transform="rotate(-6 932 323)"/>
+  <circle cx="928" cy="318" r="74" fill="none" stroke="#292344" stroke-width="34"/>
+  <path d="m970 363 39 39" stroke="#292344" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="1020" cy="225" r="12" fill="#FFE8DA"/>
+</svg>

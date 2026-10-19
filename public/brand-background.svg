@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Иллюстрация Quantum">
+  <rect width="1200" height="800" fill="#FAF8FF"/>
+  <circle cx="1070" cy="100" r="350" fill="#EEE7FF"/>
+  <circle cx="70" cy="765" r="340" fill="#FFE8DA"/>
+  <path d="M600 745c170-103 360-107 600-12v67H600Z" fill="#EEE7FF"/>
+  <rect x="424" y="225" width="350" height="350" rx="84" fill="#FFC653" transform="rotate(-6 599 400)"/>
+  <circle cx="588" cy="388" r="99" fill="none" stroke="#292344" stroke-width="48"/>
+  <path d="m645 445 51 51" fill="none" stroke="#292344" stroke-width="48" stroke-linecap="round"/>
+  <circle cx="718" cy="272" r="18" fill="#FFE8DA"/>
+</svg>

@@ -7,7 +7,7 @@ function worker() {
   const addAll = vi.fn().mockResolvedValue(undefined);
   const caches = {
     open: vi.fn().mockResolvedValue({ addAll }),
-    keys: vi.fn().mockResolvedValue(['quantum-pwa-v1', 'quantum-pwa-v2', 'quantum-pwa-v3', 'other-app']),
+    keys: vi.fn().mockResolvedValue(['quantum-pwa-v1', 'quantum-pwa-v2', 'quantum-pwa-v3', 'quantum-pwa-v4', 'other-app']),
     delete: vi.fn().mockResolvedValue(true),
     match: vi.fn().mockResolvedValue(undefined),
   };
@@ -27,7 +27,7 @@ it('removes only obsolete Quantum caches before taking control', async () => {
   let completion: Promise<unknown> | undefined;
   listeners.get('activate')!({ waitUntil: (promise: Promise<unknown>) => { completion = promise; } });
   await completion;
-  expect(caches.delete.mock.calls.map(([name]) => name)).toEqual(['quantum-pwa-v1', 'quantum-pwa-v2']);
+  expect(caches.delete.mock.calls.map(([name]) => name)).toEqual(['quantum-pwa-v1', 'quantum-pwa-v2', 'quantum-pwa-v3']);
   expect(self.clients.claim).toHaveBeenCalledOnce();
 });
 
@@ -36,8 +36,8 @@ it('installs the local heading font alongside the new manifest', async () => {
   let completion: Promise<unknown> | undefined;
   listeners.get('install')!({ waitUntil: (promise: Promise<unknown>) => { completion = promise; } });
   await completion;
-  expect(caches.open).toHaveBeenCalledWith('quantum-pwa-v3');
-  expect(addAll.mock.calls[0][0]).toEqual(expect.arrayContaining(['/manifest.webmanifest', '/fonts/nunito.css', '/fonts/nunito-800.ttf']));
+  expect(caches.open).toHaveBeenCalledWith('quantum-pwa-v4');
+  expect(addAll.mock.calls[0][0]).toEqual(expect.arrayContaining(['/manifest.webmanifest', '/brand-mark.svg', '/icons/maskable-512.png', '/fonts/nunito.css', '/fonts/nunito-800.ttf']));
 });
 
 it('returns cached resources offline and an error response for a cache miss', async () => {

@@ -1,6 +1,6 @@
-const CACHE_NAME = 'quantum-pwa-v3';
+const CACHE_NAME = 'quantum-pwa-v4';
 
-const STATIC_ASSETS = ['/', '/manifest.webmanifest', '/icons/192.png', '/icons/512.png', '/fonts/nunito.css', '/fonts/nunito-800.ttf'];
+const STATIC_ASSETS = ['/', '/manifest.webmanifest', '/brand-mark.svg', '/icons/192.png', '/icons/512.png', '/icons/maskable-512.png', '/fonts/nunito.css', '/fonts/nunito-800.ttf'];
 
 self.addEventListener('install', event => {
   self.skipWaiting();

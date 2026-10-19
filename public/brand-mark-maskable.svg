@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Quantum">
+  <rect width="512" height="512" fill="#6742B8"/>
+  <rect x="131" y="131" width="250" height="250" rx="60" fill="#FFC653" transform="rotate(-6 256 256)"/>
+  <circle cx="252" cy="249" r="68" fill="none" stroke="#292344" stroke-width="34"/>
+  <path d="m291 291 37 37" fill="none" stroke="#292344" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="344" cy="163" r="10" fill="#FFE8DA"/>
+</svg>
