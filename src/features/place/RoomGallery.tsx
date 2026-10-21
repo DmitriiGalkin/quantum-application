@@ -13,12 +13,12 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 export function RoomGallery({ title, photos }: { title: string; photos: LocationPhoto[] }) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
-  if (!photos.length) return <Box role="img" aria-label={`Фото зала «${title}» отсутствует`} sx={{ height: 260, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'action.hover' }}><MeetingRoomIcon sx={{ fontSize: 48 }} color="action" /></Box>;
+  if (!photos.length) return <Box role="img" aria-label={`Фото зала «${title}» отсутствует`} sx={{ height: { xs: 160, sm: 260 }, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'action.hover' }}><MeetingRoomIcon sx={{ fontSize: 48 }} color="action" /></Box>;
   const activeIndex = Math.min(index, photos.length - 1);
   const move = (delta: number) => setIndex((activeIndex + delta + photos.length) % photos.length);
   return <>
     <Button onClick={() => setOpen(true)} aria-label={`Открыть фотографии: ${title}`} sx={{ p: 0, width: '100%' }}>
-      <Box component="img" src={photos[activeIndex].url} alt={`${title}, фото ${activeIndex + 1}`} sx={{ width: '100%', height: 260, objectFit: 'cover' }} />
+      <Box component="img" src={photos[activeIndex].url} alt={`${title}, фото ${activeIndex + 1}`} sx={{ width: '100%', height: { xs: 160, sm: 260 }, objectFit: 'cover' }} />
     </Button>
     {photos.length > 1 && <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', px: 1, py: 0.5 }}>
       <Button aria-label={`Предыдущее фото: ${title}`} onClick={() => move(-1)}>←</Button>

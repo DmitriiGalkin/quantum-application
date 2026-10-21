@@ -8,6 +8,7 @@ import Title from 'components/Title.tsx';
 import ProjectGroups from './ProjectGroups.tsx'; // Добавлен импорт
 import ProjectTable from './ProjectTable.tsx';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 type Props = {
   title?: string;
@@ -22,9 +23,10 @@ type Props = {
   compactViews?: boolean;
   action?: ReactNode;
   emptyContent?: ReactNode;
+  cardVariant?: 'standard' | 'catalog' | 'compact';
 };
 
-function Projects({ title, filter, projects, refetch, withoutIdea, catalog, preserveOrder, emptyText, withoutFilters, compactViews, action, emptyContent }: Props) {
+function Projects({ title, filter, projects, refetch, withoutIdea, catalog, preserveOrder, emptyText, withoutFilters, compactViews, action, emptyContent, cardVariant = 'standard' }: Props) {
   const sortedProjects = preserveOrder ? projects : [...projects].sort((a, b) => b.meets.length - a.meets.length);
 
   return (
@@ -39,12 +41,13 @@ function Projects({ title, filter, projects, refetch, withoutIdea, catalog, pres
         {action}
       </Stack>
 
-      {filter.filters.view === 'map' && <div>Карта</div>}
-
-      {filter.filters.view === 'module' && !!projects.length && <ProjectGrids projects={sortedProjects} refetch={refetch} />}
+      {filter.filters.view === 'module' && !!projects.length && <ProjectGrids projects={sortedProjects} refetch={refetch} variant={catalog ? 'catalog' : cardVariant} />}
 
       {filter.filters.view === 'group' && <ProjectGroups projects={sortedProjects} refetch={refetch} withoutIdea={withoutIdea} />}
-      {filter.filters.view === 'table' && <ProjectTable catalog={catalog} projects={sortedProjects} />}
+      {filter.filters.view === 'table' && !!projects.length && <>
+        <Box sx={{ display: { xs: 'block', sm: 'none' } }}><ProjectGrids projects={sortedProjects} refetch={refetch} variant={catalog ? 'catalog' : cardVariant} /></Box>
+        <Box sx={{ display: { xs: 'none', sm: 'block' } }}><ProjectTable catalog={catalog} projects={sortedProjects} /></Box>
+      </>}
       {!projects.length && (emptyContent ?? <Typography color="text.secondary">{emptyText ?? 'Проектов пока нет.'}</Typography>)}
     </Stack>
   );

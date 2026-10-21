@@ -53,7 +53,7 @@ export default function ProjectForm({ values, loading = false, error = false, su
         <MenuItem value="regular">Кружок / секция</MenuItem>
       </TextField>
       {values.kind === 'regular' && <Stack spacing={1.5}>
-        <Typography variant="subtitle2">Еженедельное расписание · МСК</Typography>
+        <Typography variant="subtitle2">Еженедельное расписание</Typography>
         <Typography variant="body2" color="text.secondary">
           Расписание показывает обычное время занятий. Для записи преподаватель отдельно создаёт и согласует встречи.
         </Typography>

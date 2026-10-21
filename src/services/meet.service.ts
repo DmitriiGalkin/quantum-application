@@ -32,7 +32,7 @@ export class MeetService {
 
   private static start(value: string): string {
     if (typeof value !== 'string' || !/(Z|[+-]\d{2}:\d{2})$/.test(value) || !Number.isFinite(Date.parse(value))) {
-      throw new HttpError('Укажите дату и время с часовым поясом (МСК +03:00)', 400);
+      throw new HttpError('Укажите дату и время в полном формате', 400);
     }
     return new Date(Date.parse(value) + 3 * 3600000).toISOString().slice(0, 19).replace('T', ' ');
   }
@@ -79,7 +79,7 @@ export class MeetService {
       if (room?.capacity != null && meet.maxParticipants != null && meet.maxParticipants > room.capacity) throw new HttpError('Число мест превышает вместимость зала',409);
       if (room?.capacity != null && (await MeetUserRepository.findParticipants(meet.id,conn)).length > room.capacity) throw new HttpError('В новом зале недостаточно мест для записанных учеников',409);
     }
-    if (!withinPlaceHours(meet.startedAt, meet.duration, schedule)) throw new HttpError('Весь интервал встречи должен входить в часы работы центра (МСК)', 400);
+    if (!withinPlaceHours(meet.startedAt, meet.duration, schedule)) throw new HttpError('Весь интервал встречи должен входить в часы работы центра', 400);
     if (meet.status === 'cancelled') return;
     const conflict = await MeetRepository.findConflict({ ...meet, startedAt: this.start(meet.startedAt) }, conn);
     if (conflict) throw new HttpError(conflict.passportId === meet.passportId

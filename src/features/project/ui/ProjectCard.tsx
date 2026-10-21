@@ -21,7 +21,7 @@ import { usePostAuthAction } from '../../../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../../../shared/lib/useRunPostAuthAction.ts';
 import { statusConfig } from '../../meets/helper.ts';
 import { upcomingPublishedMeets, moscowMeetStatus } from './project-card-meeting.ts';
-import { informationDate } from '../../meets/moscow-time.ts';
+import { meetingDate } from '../../meets/moscow-time.ts';
 import ProjectImage from '../../../components/ProjectImage.tsx';
 import LinkIcon from '@mui/icons-material/Link';
 import ChatDialog from '../../../components/ChatDialog.tsx'; // Добавлен импорт
@@ -31,8 +31,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import EditIcon from '@mui/icons-material/Edit';
 import ChatIcon from '@mui/icons-material/Chat'; // Добавлен ChatIcon
 import Tooltip from '@mui/material/Tooltip';
-import ProjectCardMeta from './ProjectCardMeta.tsx';
 import { formatWeeklySchedule } from './weekly-schedule.ts';
+import CardTeacherLine from '../../../components/CardTeacherLine.tsx';
+import CardVenueLine from '../../../components/CardVenueLine.tsx';
 
 const CREATE_PROJECT_USER_TYPE = 'create-project-user';
 
@@ -41,9 +42,10 @@ type Props = {
   withoutIdea?: boolean;
   refetch?: () => void;
   detailed?: boolean;
+  variant?: 'standard' | 'catalog' | 'compact';
 };
 
-function ProjectCard({ project, refetch, detailed = false }: Props) {
+function ProjectCard({ project, refetch, detailed = false, variant = 'standard' }: Props) {
   const navigate = useNavigate();
   const { setAction } = usePostAuthAction();
   const { passport, authHandler, refetch: refetchPassport, userId, role } = useAuth();
@@ -56,10 +58,14 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
   const temporalStatus = firstMeet ? moscowMeetStatus(firstMeet) : null;
   const status = temporalStatus ? statusConfig[temporalStatus] : undefined;
   const startedAt = firstMeet ? new Date(firstMeet.startedAt) : undefined;
-  const date = startedAt ? informationDate(startedAt, { month: 'short' }) : undefined;
+  const date = startedAt ? meetingDate(startedAt, { month: 'short' }) : undefined;
   const time = startedAt?.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' });
   const endTime = startedAt && firstMeet?.duration != null
     ? new Date(startedAt.getTime() + firstMeet.duration * 60000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' }) : undefined;
+  const meetingPlace = firstMeet?.place ?? project.place;
+  const meetingRoom = firstMeet?.location ?? project.location;
+  const freePlaces = firstMeet?.maxParticipants == null ? null
+    : Math.max(0, firstMeet.maxParticipants - (firstMeet.participantCount ?? firstMeet.users?.length ?? 0));
 
   const [form, setForm] = useState<ProjectFormValues>({
     kind: project.kind ?? 'project',
@@ -178,59 +184,89 @@ function ProjectCard({ project, refetch, detailed = false }: Props) {
     });
   }
 
+  const metaAction = <Stack direction="row">
+    {project.passport.id !== passport?.id && <Tooltip title="Написать учителю">
+      <IconButton onClick={openChat} aria-label="Написать учителю" size="small"><ChatIcon fontSize="small" /></IconButton>
+    </Tooltip>}
+    <MenuButton menuItems={menuItems} />
+  </Stack>;
+  const meetingSummary = <Stack spacing={0.5}>
+    {project.kind === 'regular' && Boolean(project.weeklySchedule?.length) && <Typography variant="body2">
+      Занятия: {formatWeeklySchedule(project.weeklySchedule!)}
+    </Typography>}
+    {firstMeet ? <>
+      <Stack direction="row" sx={{ alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.5 }}>
+        <Typography component={Link} to={`/project/${project.id}#meet-${firstMeet.id}`} variant="body2"
+          sx={{ fontWeight: 700, color: 'inherit', overflowWrap: 'anywhere' }}>
+          {date} · {time}{endTime ? `–${endTime}` : ''}
+        </Typography>
+        {firstMeet.price === 0 ? <Chip size="small" label="Бесплатно" />
+          : <Typography variant="body2" sx={{ fontWeight: 600 }}>{firstMeet.price == null ? 'Цена не указана' : `${firstMeet.price} ₽`}</Typography>}
+      </Stack>
+      {freePlaces !== null && <Typography variant="caption" color={freePlaces === 0 ? 'error' : 'text.secondary'}>
+        {freePlaces === 0 ? 'Мест нет' : `Свободно мест: ${freePlaces}`}
+      </Typography>}
+      {status && <Chip label={status.label} color={status.color} size="small" sx={{ alignSelf: 'flex-start' }} />}
+    </> : <Typography variant="body2" color="text.secondary">
+      {project.kind === 'regular' ? 'Запись на ближайшее занятие пока недоступна' : 'Ближайшая встреча не назначена'}
+    </Typography>}
+  </Stack>;
+  const title = <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+    <Typography component={detailed ? 'h1' : 'h2'} variant={detailed ? 'h4' : 'h6'}
+      sx={{ flex: '1 1 140px', minWidth: 0, fontWeight: 600, overflowWrap: 'anywhere' }}>
+      <Box component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', textDecoration: 'none' }}>{project.title}</Box>
+    </Typography>
+    {project.kind === 'regular' && <Chip label="Кружок / секция" size="small" />}
+    {detailed && project.idea?.id && <Tooltip title="Посмотреть исходную идею проекта">
+      <Button component={Link} to={`/idea/${project.idea.id}`} aria-label="Исходная идея" size="small" startIcon={<LinkIcon fontSize="small" />}>
+        Исходная идея
+      </Button>
+    </Tooltip>}
+  </Stack>;
+  const description = project.description && <Typography variant={detailed ? 'body1' : 'body2'} color="text.secondary"
+    sx={{ mt: 1, ...(!detailed && { display: '-webkit-box', WebkitLineClamp: variant === 'catalog' ? 2 : 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }),
+      whiteSpace: detailed ? 'pre-line' : undefined, overflowWrap: 'anywhere' }}>
+    {project.description}
+  </Typography>;
+
   return (
-    <Card sx={{ borderRadius: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <>
+    <Card sx={{ borderRadius: 3, height: '100%', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+      {variant === 'compact' && !detailed ? <>
+        <Stack direction="row" sx={{ minWidth: 0 }}>
+          <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}
+            sx={{ width: 104, flexShrink: 0, alignSelf: 'flex-start' }}>
+            <ProjectImage src={project.image} alt={project.title || 'Проект'} aspectRatio="1 / 1" />
+          </CardActionArea>
+          <CardContent sx={{ minWidth: 0, p: 1.5, '&:last-child': { pb: 1.5 } }}>
+            {title}
+            <Box sx={{ mt: 1 }}>{meetingSummary}</Box>
+          </CardContent>
+        </Stack>
+        <Box sx={{ px: 1.5, pb: 1.5 }}><CardVenueLine id={meetingPlace.id} title={meetingPlace.title || 'Центр не указан'}
+          address={meetingPlace.address} room={meetingRoom?.title} /></Box>
+        <Stack sx={{ borderTop: 1, borderColor: 'divider', px: 1.5, py: 1 }}>
+          <CardTeacherLine id={project.passport.id} title={project.passport.title} image={project.passport.image} action={metaAction} />
+        </Stack>
+      </> : <>
         <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}>
           <ProjectImage src={project.image} alt={project.title || 'Проект'} />
         </CardActionArea>
-        <CardContent>
-          <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
-            <Typography component={detailed ? 'h1' : 'h2'} variant={detailed ? 'h4' : 'h6'} sx={{ flex: '1 1 140px', minWidth: 0, fontWeight: 600, overflowWrap: 'anywhere' }}>
-              <Box component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', textDecoration: 'none' }}>{project.title}</Box>
-            </Typography>
-            {project.kind === 'regular' && <Chip label="Кружок / секция" size="small" />}
-            {detailed && project.idea?.id && <Tooltip title="Посмотреть исходную идею проекта">
-            <Button component={Link} to={`/idea/${project.idea.id}`} aria-label="Исходная идея" size="small" startIcon={<LinkIcon fontSize="small" />}>
-              Исходная идея
-            </Button>
-            </Tooltip>}
-          </Stack>
-          <Typography variant={detailed ? 'body1' : 'body2'} color="text.secondary" sx={{ mt: 1, ...(!detailed && { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }), whiteSpace: detailed ? 'pre-line' : undefined, overflowWrap: 'anywhere' }}>
-            {project.description}
-          </Typography>
+        <CardContent sx={{ flexGrow: variant === 'catalog' ? 1 : undefined }}>
+          {title}
+          <Box sx={{ mt: 1.5, p: 1.25, borderRadius: 2, bgcolor: 'action.hover' }}>{meetingSummary}</Box>
+          <Box sx={{ mt: 1.5 }}><CardVenueLine id={meetingPlace.id} title={meetingPlace.title || 'Центр не указан'}
+            address={meetingPlace.address} room={meetingRoom?.title} /></Box>
+          {description}
         </CardContent>
-        <ProjectCardMeta project={project} meet={firstMeet} action={<Stack direction="row">
-            {project.passport.id !== passport?.id && <Tooltip title="Написать учителю">
-              <IconButton onClick={openChat} aria-label="Написать учителю" size="small"><ChatIcon fontSize="small" /></IconButton>
-            </Tooltip>}
-            <MenuButton menuItems={menuItems} />
-          </Stack>} />
-      </>
-      <CardContent sx={{ bgcolor: 'action.hover', borderTop: 1, borderColor: 'divider', flexGrow: 1 }}>
-        {project.kind === 'regular' && Boolean(project.weeklySchedule?.length) && <Typography variant="body2" sx={{ mb: 1 }}>
-          Занятия (МСК): {formatWeeklySchedule(project.weeklySchedule!)}
-        </Typography>}
-        {firstMeet ? <Stack spacing={1}>
-          <Stack direction="row" sx={{ alignItems: 'center', gap: 1, minWidth: 0 }}>
-            <Typography component={Link} to={`/project/${project.id}#meet-${firstMeet.id}`} variant="body2"
-              title={`${date} ${time}${endTime ? `–${endTime}` : ''}`}
-              sx={{ fontWeight: 600, color: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flexShrink: 1 }}>
-              {date} {time}{endTime ? `–${endTime}` : ''}
-            </Typography>
-            <Box sx={{ flex: 1, minWidth: 8, borderBottom: 1, borderColor: 'divider', borderStyle: 'dotted' }} />
-            {firstMeet.price === 0 ? <Chip size="small" label="Бесплатно" /> : <Typography variant="body2" sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{firstMeet.price == null ? 'Цена не указана' : `${firstMeet.price} ₽`}</Typography>}
-          </Stack>
-          {status && <Chip label={status.label} color={status.color} size="small" sx={{ alignSelf: 'flex-start' }} />}
-        </Stack> : <Typography variant="body2" color="text.secondary">
-          {project.kind === 'regular' ? 'Запись на ближайшее занятие пока недоступна' : 'Ближайшая встреча не назначена'}
-        </Typography>}
-      </CardContent>
+        <Stack sx={{ borderTop: 1, borderColor: 'divider', px: 2, py: 1.5 }}>
+          <CardTeacherLine id={project.passport.id} title={project.passport.title} image={project.passport.image} action={metaAction} />
+        </Stack>
+      </>}
 
         {detailed && role === 'user' && !isMember && (
-          <CardContent sx={{ bgcolor: 'action.hover' }}>
+          <CardContent sx={{ bgcolor: 'action.hover', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
             <Button variant="contained" size="small" onClick={onJoin}>Вступить</Button>
-            {project.kind === 'regular' && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+            {project.kind === 'regular' && <Typography variant="caption" color="text.secondary" sx={{ flex: '1 1 180px' }}>
               Участие в кружке не бронирует место на отдельных занятиях.
             </Typography>}
           </CardContent>

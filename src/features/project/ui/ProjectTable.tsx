@@ -11,7 +11,7 @@ import { formatMoscowMeet, upcomingPublishedMeets } from './project-card-meeting
 import { meetingPrice } from './meeting-price.ts';
 
 export default function ProjectTable({ projects, catalog }: { projects: ProjectDto[]; catalog?: boolean }) {
-  return <Stack spacing={1} aria-label="Таблица проектов">
+  return <Stack spacing={1} aria-label="Список проектов">
     {projects.map(project => {
       const meet = upcomingPublishedMeets(project.meets)[0];
       const place = catalog && meet ? meet.place : project.place;
@@ -19,26 +19,20 @@ export default function ProjectTable({ projects, catalog }: { projects: ProjectD
         display: 'flex', border: 1, borderColor: 'divider', borderRadius: 2, overflow: 'hidden',
         bgcolor: 'background.paper', overflowWrap: 'anywhere',
       }}>
-        <Box sx={{ position: 'relative', width: { xs: 80, lg: 96 }, minHeight: 96, flexShrink: 0, alignSelf: 'stretch' }}>
+        <Box sx={{ position: 'relative', width: { xs: 64, sm: 80, lg: 96 }, height: { xs: 64, sm: 80, lg: 96 }, flexShrink: 0, alignSelf: 'flex-start' }}>
           <Avatar variant="square" src={project.image || undefined} alt={project.title}
             sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', '& .MuiAvatar-img': { objectFit: 'cover' }, '& .MuiSvgIcon-root': { width: 32, height: 32 } }} />
         </Box>
         <Box sx={{
           flex: 1, minWidth: 0, display: 'grid',
-          gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: catalog ? 'minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1.4fr)' : 'minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1.4fr) minmax(220px, 1fr)' },
+          gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: catalog ? 'minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 1.2fr) minmax(0, 1fr)' : 'minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(220px, 1fr)' },
           alignItems: 'center', gap: 2, p: 2, '& > *': { minWidth: 0 },
         }}>
-          <Box>
+        <Box>
             <Typography component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', fontWeight: 600, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{project.title}</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{project.description}</Typography>
             {project.kind === 'regular' && Boolean(project.weeklySchedule?.length) && <Typography variant="caption" color="text.secondary">
-              Занятия (МСК): {formatWeeklySchedule(project.weeklySchedule!)}
+              Занятия: {formatWeeklySchedule(project.weeklySchedule!)}
             </Typography>}
-          </Box>
-          <Typography component={Link} to={`/teachers/${project.passport.id}`} variant="body2" sx={{ color: 'inherit' }}>{project.passport.title || 'Преподаватель'}</Typography>
-          <Box>
-            <Typography component={Link} to={`/places/${place.id}`} variant="body2" sx={{ color: 'inherit' }}>{place.title || 'Центр'}</Typography>
-            <AddressLine address={place.address} />
           </Box>
           {meet ? <Box>
             <Typography component={Link} to={`/project/${project.id}#meet-${meet.id}`} variant="body2" sx={{ color: 'inherit' }}>{formatMoscowMeet(meet)}</Typography>
@@ -48,6 +42,11 @@ export default function ProjectTable({ projects, catalog }: { projects: ProjectD
           </Box> : <Typography variant="body2" color="text.secondary">
             {project.kind === 'regular' ? 'Запись на ближайшее занятие пока недоступна' : 'Ближайшая встреча не назначена'}
           </Typography>}
+          <Box>
+            <Typography component={Link} to={`/places/${place.id}`} variant="body2" sx={{ color: 'inherit' }}>{place.title || 'Центр'}</Typography>
+            <AddressLine address={place.address} />
+          </Box>
+          <Typography component={Link} to={`/teachers/${project.passport.id}`} variant="body2" sx={{ color: 'inherit' }}>{project.passport.title || 'Преподаватель'}</Typography>
           {!catalog && <Box>
             <Typography variant="caption" color="text.secondary">Участники проекта</Typography>
             {project.users.length ? <AvatarGroupUsers users={project.users} limit={10} /> : <Typography variant="body2" color="text.secondary">Пока нет участников</Typography>}

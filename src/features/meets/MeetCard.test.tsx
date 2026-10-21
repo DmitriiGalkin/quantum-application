@@ -35,7 +35,11 @@ it('uses one pending chip without empty attendance or occupancy, and a check chi
   const client = new QueryClient();
   const html = (status: MeetDto['status']) => renderToString(<QueryClientProvider client={client}><MeetCard meet={{ ...meet, status, bookingState: status === 'pending' ? 'requested' : 'confirmed', venuePrice: 1000, venueHourlyRate: 1000, users: [], participantCount: 0 }} management={{ placeId: 3 }} /></QueryClientProvider>);
   const pending = html('pending');
-  expect(pending.match(/На подтверждении/g)).toHaveLength(1);
+  const pendingHost = globalThis.document.createElement('div'); pendingHost.innerHTML = pending;
+  expect(pendingHost.textContent?.match(/На подтверждении/g)).toHaveLength(1);
+  expect(pending.indexOf('07 янв')).toBeGreaterThan(-1);
+  expect(pending.indexOf('07 янв')).toBeLessThan(pending.indexOf('На подтверждении'));
+  expect(pending).not.toContain('2030');
   expect(pending).not.toContain('Записано'); expect(pending).not.toContain('progressbar');
   expect(pending).toContain('Подтвердить зал'); expect(pending).toContain('Отклонить');
   const published = html('published');
@@ -62,6 +66,16 @@ it('shows missing hall/limit/image explicitly and omits progress without a limit
   expect(host.querySelector('img')).toBeNull(); expect(host.querySelector('[role="progressbar"]')).toBeNull();
   expect(host.textContent).toContain('Зал не выбран'); expect(host.textContent).not.toContain('Лимит мест не задан');
   expect(host.textContent).not.toContain('Записано'); client.clear();
+});
+
+it('disables enrolment after a published meeting has ended', () => {
+  auth.role = 'guest';
+  const client = new QueryClient();
+  const host = globalThis.document.createElement('div');
+  host.innerHTML = renderToString(<QueryClientProvider client={client}><MeetCard meet={{ ...meet, startedAt: '2020-01-07T13:00:00Z' }} /></QueryClientProvider>);
+  const booking = [...host.querySelectorAll('button')].find(button => button.textContent === 'Запись завершена');
+  expect(booking?.disabled).toBe(true);
+  client.clear();
 });
 
 it.each([false, true])('blocks new enrolment at capacity and preserves an existing member action: member=%s', member => {

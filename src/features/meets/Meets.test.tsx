@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act } from 'react';
 import { renderToString } from 'react-dom/server';
-import { hydrateRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { afterEach, expect, it, vi } from 'vitest';
 import type { MeetDto } from '../../entities/meet.ts';
 const state = vi.hoisted(() => ({ mobile: false }));
@@ -45,4 +45,24 @@ it('groups a Moscow midnight crossing together and formats 16:00 regardless of p
   const early = { id: 2, startedAt: '2026-10-12T01:00:00Z' } as MeetDto;
   expect([...groupMeets([early, late]).values()]).toEqual([[late, early]]);
   expect(moscowFormat('2026-10-12T13:00:00Z', { hour: '2-digit', minute: '2-digit' })).toBe('16:00');
+});
+
+it('lets a centre focus on meetings that need a venue decision', async () => {
+  Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
+  const managed = [
+    { ...rows[0], place: { id: 3 }, passport: { id: 9 }, status: 'pending', bookingState: 'requested' },
+    { ...rows[1], id: 122, place: { id: 3 }, passport: { id: 9 }, status: 'published', bookingState: 'confirmed' },
+  ] as MeetDto[];
+  const host = globalThis.document.createElement('div');
+  const root = createRoot(host);
+  try {
+    await act(async () => root.render(<Meets title="Расписание" meets={managed} management={{ placeId: 3 }} />));
+    expect(host.textContent).toContain('121:pending');
+    expect(host.textContent).toContain('122:published');
+    const filter = [...host.querySelectorAll('button')].find(button => button.textContent === 'Требуют внимания: 1')!;
+    await act(async () => filter.click());
+    expect(filter.getAttribute('aria-pressed')).toBe('true');
+    expect(host.textContent).toContain('121:pending');
+    expect(host.textContent).not.toContain('122:published');
+  } finally { await act(async () => root.unmount()); }
 });

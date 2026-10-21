@@ -7,9 +7,11 @@ export function informationDate(value: number | Date | string, options: Intl.Dat
   return moscowFormat(value, { day: 'numeric', month: 'long', ...options,
     year: forceYear || moscowYear(value) !== moscowYear(now) ? 'numeric' : undefined });
 }
-export function informationRange(start: number | Date | string, end: number | Date | string, now = new Date()): string {
-  const crossYear = moscowYear(start) !== moscowYear(end);
-  return `${informationDate(start, { month: 'short' }, now, crossYear)} — ${informationDate(end, { month: 'short' }, now, crossYear)}`;
+export function meetingDate(value: number | Date | string, options: Intl.DateTimeFormatOptions = {}): string {
+  return moscowFormat(value, { day: 'numeric', month: 'long', ...options, year: undefined });
+}
+export function informationRange(start: number | Date | string, end: number | Date | string): string {
+  return `${meetingDate(start, { month: 'short' })} — ${meetingDate(end, { month: 'short' })}`;
 }
 export function informationDateTime(value: number | Date | string): string {
   return `${informationDate(value)}, ${moscowFormat(value, { hour: '2-digit', minute: '2-digit' })}`;

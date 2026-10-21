@@ -4,6 +4,10 @@ import MeetUserRepository from '../repositories/meet-user.repository.js';
 import UserRepository from '../repositories/user.repository.js';
 import type { CreateMeetUser, DeleteMeetUser } from 'entities';
 import { db } from '../utils/dbNext.js';
+import { ProjectCampaignService } from './project-campaign.service.js';
+import ProjectCampaignRepository from '../repositories/project-campaign.repository.js';
+import ProjectCampaignVisitRepository from '../repositories/project-campaign-visit.repository.js';
+import ProjectCampaignBookingRepository from '../repositories/project-campaign-booking.repository.js';
 
 export class MeetUserService {
   static async create(passportId: number, body: CreateMeetUser) {
@@ -11,6 +15,9 @@ export class MeetUserService {
 
     if (!meetId || !userId) {
       throw new HttpError('meetId и userId обязательны', 400);
+    }
+    if (body.visitorId !== undefined && !ProjectCampaignService.validVisitorId(body.visitorId)) {
+      throw new HttpError('Некорректный идентификатор перехода', 400);
     }
 
     const allowedUsers = await UserRepository.findByPassportId(passportId);
@@ -26,7 +33,13 @@ export class MeetUserService {
       if (participants.some(p => p.userId === userId)) throw new HttpError('Участие уже существует', 409);
       if (meet.status !== 'published') throw new HttpError('Запись доступна только на подтверждённую встречу', 409);
       if (meet.maxParticipants !== null && participants.length >= meet.maxParticipants) throw new HttpError('Мест нет', 409);
-      return MeetUserRepository.create({ meetId, userId }, conn);
+      const meetUserId = await MeetUserRepository.create({ meetId, userId }, conn);
+      if (body.visitorId) {
+        const campaigns = await ProjectCampaignRepository.findByProjectIds([meet.projectId], conn);
+        const campaignId = await ProjectCampaignVisitRepository.latestForCampaigns(body.visitorId, campaigns.map(campaign => campaign.id), conn);
+        if (campaignId) await ProjectCampaignBookingRepository.create(meetUserId, campaignId, conn);
+      }
+      return meetUserId;
     });
   }
 

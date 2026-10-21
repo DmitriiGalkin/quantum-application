@@ -1,14 +1,16 @@
 import { expect, it } from 'vitest';
 import type { MeetDto } from 'entities';
-import { informationDate, informationRange } from './moscow-time.ts';
+import { informationDate, informationRange, meetingDate } from './moscow-time.ts';
 import { getMeetStatus } from './helper.ts';
 
-it('uses Moscow year and prints both years for a range crossing New Year', () => {
+it('formats meeting dates without a year across New Year while retaining years for other dated content', () => {
   const now = new Date('2026-12-31T21:00:00Z');
+  expect(meetingDate('2026-12-31T21:05:00Z')).toBe('1 января');
+  expect(meetingDate('2026-12-31T20:59:00Z')).toBe('31 декабря');
   expect(informationDate('2026-12-31T21:05:00Z', {}, now)).toBe('1 января');
   expect(informationDate('2026-12-31T20:59:00Z', {}, now)).toContain('2026');
-  const range = informationRange('2026-12-31T20:59:00Z', '2026-12-31T21:05:00Z', now);
-  expect(range).toContain('2026'); expect(range).toContain('2027');
+  const range = informationRange('2026-12-31T20:59:00Z', '2026-12-31T21:05:00Z');
+  expect(range).not.toMatch(/2026|2027/);
 });
 
 it('shows today/tomorrow only around Moscow midnight and preserves operational statuses', () => {

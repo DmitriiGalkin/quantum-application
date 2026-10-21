@@ -12,7 +12,7 @@ import type { MeetDto } from 'entities';
 import WeekCalendar from './WeekCalendar/WeekCalendar.tsx';
 import { groupMeets } from './groupMeets.ts';
 import MeetGroupGrids from './MeetGroupGrids.tsx';
-import { DAY_MS, informationDate, informationRange, moscowDay, moscowFormat, moscowWeek } from './moscow-time.ts';
+import { DAY_MS, informationRange, meetingDate, moscowDay, moscowFormat, moscowWeek } from './moscow-time.ts';
 import type { MeetManagement } from './management.ts';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -25,12 +25,20 @@ export default function Meets({ title, meets, refetch, management }: Props) {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('md'));
   const [view, setView] = useState<'week' | 'module'>('module');
+  const [attentionOnly, setAttentionOnly] = useState(false);
   const [selectedDay, setSelectedDay] = useState(() => moscowDay(new Date()));
   const [weekStart, setWeekStart] = useState(() => moscowWeek(new Date()));
   const [editing, setEditing] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const selectedMeet = meets.find(meet => meet.id === selectedId);
-  const grouped = groupMeets(meets);
+  const needsAttention = (meet: MeetDto) => Boolean(
+    (management?.placeId === meet.place.id && meet.status === 'pending' && meet.bookingState === 'requested')
+    || (management?.teacherId === meet.passport.id && (meet.bookingState === 'needs_location' || meet.bookingState === 'awaiting_teacher')),
+  );
+  const attentionCount = management ? meets.filter(needsAttention).length : 0;
+  const showAttention = attentionOnly && attentionCount > 0;
+  const visibleMeets = showAttention ? meets.filter(needsAttention) : meets;
+  const grouped = groupMeets(visibleMeets);
   const days = Array.from({ length: 7 }, (_, index) => weekStart + index * DAY_MS);
   const moveWeek = (direction: number) => {
     const next = weekStart + direction * 7 * DAY_MS;
@@ -40,7 +48,6 @@ export default function Meets({ title, meets, refetch, management }: Props) {
     setWeekStart(moscowWeek(new Date())); setSelectedDay(moscowDay(new Date()));
   };
   return <Stack spacing={2}>
-    <Typography variant="caption" color="text.secondary">Время встреч — по Москве (UTC+3)</Typography>
     <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
       <Typography variant="h5" sx={{ color: 'text.primary' }}>{title}</Typography>
       <ToggleButtonGroup value={view} exclusive size="small" onChange={(_, next: 'week' | 'module' | null) => { if (next) setView(next); }}>
@@ -48,13 +55,17 @@ export default function Meets({ title, meets, refetch, management }: Props) {
         <ToggleButton value="week" aria-label="Недельный календарь"><ViewWeekIcon /></ToggleButton>
       </ToggleButtonGroup>
     </Stack>
+    {attentionCount > 0 && <Button variant={showAttention ? 'contained' : 'outlined'} aria-pressed={showAttention}
+      onClick={() => setAttentionOnly(value => !value)} sx={{ alignSelf: 'flex-start' }}>
+      Требуют внимания: {attentionCount}
+    </Button>}
     {!meets.length && <Typography color="text.secondary">Запланированных встреч нет</Typography>}
     {view === 'module' && [...grouped].map(([day, items]) => <MeetGroupGrids key={day}
-      title={informationDate(day)} meets={items} refetch={refetch} management={management} />)}
+      title={meetingDate(day)} meets={items} refetch={refetch} management={management} />)}
     {view === 'week' && <>
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
         <Button onClick={() => moveWeek(-1)} aria-label="Предыдущая неделя">←</Button>
-        <Typography>{informationRange(days[0], days[6])} МСК</Typography>
+        <Typography>{informationRange(days[0], days[6])}</Typography>
         <Button onClick={() => moveWeek(1)} aria-label="Следующая неделя">→</Button>
         <Button onClick={today}>Сегодня</Button>
         {management && <Button variant={editing ? 'contained' : 'outlined'} aria-pressed={editing}
@@ -69,7 +80,7 @@ export default function Meets({ title, meets, refetch, management }: Props) {
           </Stack>
         </ToggleButton>)}
       </ToggleButtonGroup>}
-      <WeekCalendar meets={meets} visibleDays={mobile ? [selectedDay] : days} single={mobile} management={management}
+      <WeekCalendar meets={visibleMeets} visibleDays={mobile ? [selectedDay] : days} single={mobile} management={management}
         editing={editing} onMeetClick={meet => setSelectedId(meet.id)} />
     </>}
     {selectedMeet && <Dialog open onClose={() => setSelectedId(null)} fullWidth maxWidth="sm">

@@ -34,3 +34,6 @@ export const getMeetStatus = (meet: MeetDto, now = new Date()): keyof typeof sta
 
   return 'completed';
 };
+
+export const canBookMeet = (meet: MeetDto, now = new Date()): boolean =>
+  meet.status === 'published' && !meet.deletedAt && new Date(meet.startedAt).getTime() > now.getTime();

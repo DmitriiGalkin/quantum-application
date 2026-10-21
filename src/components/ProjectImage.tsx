@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { colors } from '../theme/design-tokens';
 
-interface Props { src?: string | null; alt?: string }
+interface Props { src?: string | null; alt?: string; aspectRatio?: string }
 
 function ImageContent({ src }: Pick<Props, 'src'>) {
   const [failed, setFailed] = useState(false);
@@ -19,9 +19,9 @@ function ImageContent({ src }: Pick<Props, 'src'>) {
   </Box>;
 }
 
-export default function ProjectImage({ src, alt }: Props) {
+export default function ProjectImage({ src, alt, aspectRatio = '3 / 2' }: Props) {
   return <Box role={alt ? 'img' : undefined} aria-label={alt || undefined}
-    sx={{ aspectRatio: '3 / 2', overflow: 'hidden', bgcolor: colors.disabledSurface, minWidth: 0 }}>
+    sx={{ aspectRatio, overflow: 'hidden', bgcolor: colors.disabledSurface, minWidth: 0 }}>
     <ImageContent key={src || 'missing'} src={src} />
   </Box>;
 }

@@ -1,5 +1,5 @@
 import type { MeetDto } from '../../../entities/meet.ts';
-import { DAY_MS, informationDate, moscowDay, moscowFormat } from '../../meets/moscow-time.ts';
+import { DAY_MS, meetingDate, moscowDay, moscowFormat } from '../../meets/moscow-time.ts';
 
 export function upcomingPublishedMeets(meets: MeetDto[], now = new Date()): MeetDto[] {
   return meets.filter(meet => !meet.deletedAt && meet.status === 'published'
@@ -8,7 +8,7 @@ export function upcomingPublishedMeets(meets: MeetDto[], now = new Date()): Meet
 }
 
 export function formatMoscowMeet(meet: MeetDto): string {
-  return `${informationDate(meet.startedAt)}, ${moscowFormat(meet.startedAt, { hour: '2-digit', minute: '2-digit' })} МСК`;
+  return `${meetingDate(meet.startedAt)}, ${moscowFormat(meet.startedAt, { hour: '2-digit', minute: '2-digit' })}`;
 }
 
 export function nextProjectMeet(meets: MeetDto[], now = new Date()): MeetDto | undefined {

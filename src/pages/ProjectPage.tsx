@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Feed } from '../features/feed/Feed.tsx';
 import { useQuery } from '@tanstack/react-query';
-import { fetchPlace, fetchProject } from '../requests.ts';
+import { fetchPlace, fetchProject, fetchCampaignVisit } from '../requests.ts';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getBrowser } from '../shared/lib/browser.ts';
@@ -18,12 +18,14 @@ import CreateMeet from '../features/meets/CreateMeet.tsx';
 import MeetCard from '../features/meets/MeetCard.tsx';
 import { upcomingPublishedMeets } from '../features/project/ui/project-card-meeting.ts';
 import type { FeedItem } from 'entities';
+import { campaignVisitorId } from '../shared/lib/campaign-visitor.ts';
+import ProjectCampaigns from '../features/project/ui/ProjectCampaigns.tsx';
 
 export default function ProjectPage() {
   const [planning, setPlanning] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { role, passport } = useAuth();
-  const { hash } = useLocation();
+  const { role, passport, placeId } = useAuth();
+  const { hash, search } = useLocation();
   const validId = Number.isSafeInteger(Number(id)) && Number(id) > 0;
 
   const { data: project, refetch, isPending, isError } = useQuery({
@@ -40,6 +42,11 @@ export default function ProjectPage() {
   useEffect(() => {
     if (project && /^#meet-\d+$/.test(hash)) getBrowser()?.document.getElementById(hash.slice(1))?.scrollIntoView({ block: 'center' });
   }, [project, hash]);
+  useEffect(() => {
+    const token = new URLSearchParams(search).get('campaign');
+    const visitorId = token && campaignVisitorId(true);
+    if (validId && token && visitorId) void fetchCampaignVisit(token, Number(id), visitorId).catch(() => undefined);
+  }, [id, search, validId]);
 
   if (!validId) return <Alert severity="info">Проект не найден.</Alert>;
   if (isPending) return <Typography role="status">Загрузка проекта…</Typography>;
@@ -78,6 +85,7 @@ export default function ProjectPage() {
             </Dialog>
             </>
           )}
+          {(canCreateMeet || (role === 'place' && placeId === project.place.id)) && <ProjectCampaigns projectId={project.id} />}
 
           {Boolean(history.length) && <>
             <Typography component="h2" variant="h5">История проекта и другие встречи</Typography>

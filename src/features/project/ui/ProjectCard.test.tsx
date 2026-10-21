@@ -13,6 +13,7 @@ vi.mock('../../../components/ChatDialog.tsx', () => ({ default: ({ open, teacher
 import { fetchCreateProjectUser } from '../../../requests.ts';
 import ProjectCard from './ProjectCard.tsx';
 import ProjectGrids from './ProjectGrids.tsx';
+import { project as galleryProject } from '../../../pages/card-gallery-data.ts';
 
 it('uses the main project card in the project grid', () => {
   const project = { id: 10, title: 'Project', description: 'Description', image: null,
@@ -25,6 +26,30 @@ it('uses the main project card in the project grid', () => {
     const host = globalThis.document.createElement('div'); host.innerHTML = html;
     expect(host.querySelector('[aria-label="Открыть проект Project"]')).not.toBeNull();
     expect(host.textContent).toContain('Ближайшая встреча не назначена');
+  } finally { client.clear(); }
+});
+
+it('keeps meeting, venue, description and teacher in the same order across card variants', () => {
+  const client = new QueryClient();
+  const render = (variant: 'catalog' | 'compact' | 'standard') => {
+    const host = globalThis.document.createElement('div');
+    host.innerHTML = renderToString(<QueryClientProvider client={client}><MemoryRouter>
+      <ProjectCard project={galleryProject} variant={variant} />
+    </MemoryRouter></QueryClientProvider>);
+    return host;
+  };
+  try {
+    const catalog = render('catalog').textContent!;
+    expect(catalog.indexOf('900 ₽')).toBeLessThan(catalog.indexOf('Творческая школа'));
+    expect(catalog.indexOf('Творческая школа')).toBeLessThan(catalog.indexOf('От эскиза'));
+    const standard = render('standard').textContent!;
+    expect(standard.indexOf('900 ₽')).toBeLessThan(standard.indexOf('Творческая школа'));
+    expect(standard.indexOf('Творческая школа')).toBeLessThan(standard.indexOf('От эскиза'));
+    const compact = render('compact');
+    expect(compact.textContent).toContain('900 ₽');
+    expect(compact.textContent).toContain('Творческая школа');
+    expect(compact.textContent!.indexOf('900 ₽')).toBeLessThan(compact.textContent!.indexOf('Творческая школа'));
+    expect(compact.textContent).not.toContain('От эскиза');
   } finally { client.clear(); }
 });
 

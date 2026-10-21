@@ -50,7 +50,7 @@ export default function MeetForm({ schedule, values, locations = [], error, loca
   const hasRate = room?.hourlyRate != null;
   return (
     <Stack spacing={2}>
-      <Typography variant="body2">Дата и время встречи — МСК (+03:00)</Typography>
+      <Typography variant="body2">Дата и время встречи</Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <TextField select label="Зал" value={values.locationId ?? ''} disabled={locationsLoading}
         onChange={e => onChange({ ...values, locationId: e.target.value === '' ? null : Number(e.target.value) })}>

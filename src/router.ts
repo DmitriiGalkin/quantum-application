@@ -7,6 +7,7 @@ import passportController from './controllers/passport.controller.js';
 import { usePassport } from './middlewares/auth.middleware.js';
 import meet from './controllers/meet.controller.js';
 import meetUser from './controllers/meet-user.controller.js';
+import projectCampaign from './controllers/project-campaign.controller.js';
 import teacherUser from './controllers/teacher-user.controller.js';
 import teacherIdeaController from './controllers/teacher-idea.controller.js';
 
@@ -154,6 +155,10 @@ privateRouter.post('/meetUser', withAuth(meetUser.create));
 privateRouter.delete('/meetUser', withAuth(meetUser.delete));
 
 privateRouter.get('/place/dashboard', withAuth(place.dashboard));
+privateRouter.get('/place/stats', withAuth(place.stats));
+privateRouter.post('/project-campaign', withAuth(projectCampaign.create));
+privateRouter.get('/project/:projectId/campaigns', withAuth(projectCampaign.list));
+publicRouter.post('/project-campaign/visit', projectCampaign.visit);
 privateRouter.get('/place/projects', withAuth(project.findByPlaceId));
 privateRouter.get('/place/users', withAuth(teacherUser.getPlaceUsers));
 privateRouter.get('/place/teachers', withAuth(placeTeacherController.findAll));

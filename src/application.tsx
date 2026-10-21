@@ -11,7 +11,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 const queryClient = new QueryClient();
 const root = globalThis.document.getElementById('root') as HTMLElement;
-const mount = root.hasChildNodes() ? hydrateRoot : (element: HTMLElement, app: Parameters<typeof hydrateRoot>[1]) => createRoot(element).render(app);
+const mount = root.firstElementChild ? hydrateRoot : (element: HTMLElement, app: Parameters<typeof hydrateRoot>[1]) => createRoot(element).render(app);
 
 mount(
   root,

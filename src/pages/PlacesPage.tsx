@@ -23,7 +23,7 @@ export default function PlacesPage() {
 }
 
 function PlaceProfilePage({ id }: { id: string | undefined }) {
-  const filter = useFilters({ projects: true });
+  const filter = useFilters({ projects: true, compactViews: true, allowWhen: false, allowNearby: false });
   const [shareMessage, setShareMessage] = useState('');
   const profile = useQuery({ queryKey: ['place-profile', id], queryFn: () => fetchPlaceProfile(Number(id)), enabled: Boolean(id) });
   const projects = useQuery({ queryKey: ['projects', id, filter.filters], queryFn: () => fetchProjects({ ...filter.filters, placeId: Number(id) }), enabled: Boolean(id) });
@@ -46,7 +46,7 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
       <Stack spacing={0.5}>
         <Typography variant="h6" component="h2">Режим работы</Typography>
         {!schedule.length && <Typography>Расписание пока не указано.</Typography>}
-        {schedule.map(day => <Typography key={day.weekday}>{weekdays[day.weekday - 1]}: {day.enabled ? `${day.startTime.slice(0, 5)}–${day.endTime.slice(0, 5)} (МСК)` : 'Выходной'}</Typography>)}
+        {schedule.map(day => <Typography key={day.weekday}>{weekdays[day.weekday - 1]}: {day.enabled ? `${day.startTime.slice(0, 5)}–${day.endTime.slice(0, 5)}` : 'Выходной'}</Typography>)}
       </Stack>
       <PlaceGallery place={place} rooms={rooms} />
       {place.description && <Typography sx={{ whiteSpace: 'pre-line' }}>{place.description}</Typography>}
@@ -62,7 +62,7 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
     </Stack></CardContent></Card>
     {projects.isPending ? <Typography role="status">Загрузка проектов…</Typography> : projects.isError
       ? <Alert severity="error" action={<Button onClick={() => void projects.refetch()}>Повторить</Button>}>Не удалось загрузить проекты</Alert>
-      : <><Projects title="Проекты центра" filter={filter} projects={projects.data} refetch={() => void projects.refetch()} withoutIdea />{!projects.data.length && <Typography>Проектов центра пока нет.</Typography>}</>}
+      : <><Projects title="Проекты центра" filter={filter} projects={projects.data} refetch={() => void projects.refetch()} withoutIdea compactViews cardVariant="catalog" />{!projects.data.length && <Typography>Проектов центра пока нет.</Typography>}</>}
     <Stack spacing={2}>
       <Typography variant="h4" component="h2">Преподаватели</Typography>
       {!teachers.length && <Typography>Преподаватели пока не добавлены.</Typography>}
@@ -74,7 +74,7 @@ function PlaceProfilePage({ id }: { id: string | undefined }) {
       <Typography variant="h4" component="h2">Залы</Typography>
       {!rooms.length && <Typography>Залы пока не добавлены.</Typography>}
       <Grid container spacing={2}>{rooms.map(room => <Grid key={room.id} size={{ xs: 12, md: 6 }}>
-        <LocationCard location={room} />
+        <LocationCard location={room} showRate={false} />
       </Grid>)}</Grid>
     </Stack>
     <Stack spacing={2}><Typography variant="h4" component="h2">Как добраться</Typography><Typography>{place.address}</Typography>

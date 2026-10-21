@@ -30,7 +30,7 @@ it('keeps filters available during loading and errors and preserves them when cl
       </MemoryRouter>
     </QueryClientProvider>));
     expect(host.querySelector('[role="combobox"]')).not.toBeNull();
-    expect(host.querySelector('[aria-label="Таблица"]')).not.toBeNull();
+    expect(host.querySelector('[aria-label="Список"]')).not.toBeNull();
     expect(host.textContent).toContain('Загрузка проектов');
     expect(fetchProjects).toHaveBeenCalledWith({ q: 'wood', upcomingOnly: true, sort: 'popular', when: 'tomorrow' });
     await act(async () => { rejectRequest(new Error('Offline')); await flush(); });

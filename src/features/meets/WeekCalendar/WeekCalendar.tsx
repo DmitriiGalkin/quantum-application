@@ -61,7 +61,7 @@ export default function WeekCalendar({ meets, visibleDays, single, startHour = 0
     setOverrides(current => ({ ...current, [meet.id]: startedAt }));
     try {
       const place = await queryClient.fetchQuery({ queryKey: ['place', meet.place.id], queryFn: () => fetchPlace(meet.place.id) });
-      if (!withinPlaceHours(startedAt, meet.duration, place.schedule ?? [])) throw new Error('Весь интервал встречи должен входить в часы работы центра (МСК)');
+      if (!withinPlaceHours(startedAt, meet.duration, place.schedule ?? [])) throw new Error('Весь интервал встречи должен входить в часы работы центра');
       await fetchUpdateMeet(meet.id, { startedAt });
       await invalidateMeetQueries(queryClient, meet.projectId);
     } catch (cause) {

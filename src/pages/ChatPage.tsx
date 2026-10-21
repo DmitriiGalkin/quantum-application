@@ -44,7 +44,7 @@ export default function ChatPage() {
             {!!conversation.unreadCount && <Chip size="small" color="primary" label={conversation.unreadCount} aria-label="Непрочитанные сообщения" sx={{ mr: 1 }} />}
             <ListItemAvatar><Avatar src={conversation.counterpart?.image || undefined} /></ListItemAvatar>
             <ListItemText primary={conversation.counterpart?.title || 'Собеседник'} sx={{ overflowWrap: 'anywhere' }}
-              secondary={conversation.lastMessage ? `${conversation.lastMessage.text} · ${informationDateTime(conversation.lastMessage.createdAt)} МСК` : 'Сообщений пока нет'}
+              secondary={conversation.lastMessage ? `${conversation.lastMessage.text} · ${informationDateTime(conversation.lastMessage.createdAt)}` : 'Сообщений пока нет'}
               slotProps={{ secondary: { sx: { display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } } }} />
           </ListItemButton>)}
           {!conversations.data.length && <Typography sx={{ p: 2 }}>Диалогов пока нет. Написать преподавателю можно на странице проекта.</Typography>}

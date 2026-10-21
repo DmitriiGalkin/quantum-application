@@ -171,7 +171,6 @@ function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boo
           {
             label: 'Статистика',
             to: `/place/stats`,
-            disabled: true,
             icon: <BarChartIcon />,
           },
         ],

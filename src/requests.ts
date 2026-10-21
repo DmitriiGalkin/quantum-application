@@ -24,7 +24,10 @@ import {
   type PaymentDto,
   type PlaceDashboardDto,
   type PlaceDto,
+  type PlaceStatsDto,
   type ProjectDto,
+  type ProjectCampaign,
+  type CreateProjectCampaign,
   type StartConversationResponse,
   type TeacherDashboardDto,
   type TeacherDto,
@@ -36,6 +39,7 @@ import {
 } from 'entities';
 import { del, get, post, put, patch, toQuery, postMultipart } from './utils/api.ts';
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
+import { campaignVisitorId } from './shared/lib/campaign-visitor.ts';
 export const fetchMessageReceipt = (id: number, messageId: number, read: boolean) => put<void>(`/conversation/${id}/receipt`, { messageId,read });
 export const fetchNotifications = () => get<import('entities').AppNotification[]>('/notifications');
 export const fetchReadNotification = (id: number) => put<void>(`/notification/${id}/read`, {});
@@ -80,7 +84,7 @@ export const fetchCancelBooking = (id: number, reason: string, full = false) => 
 export const fetchMeetChange = (id: number,userId: number) => get<{ revision:number; response?:string }>(`/meet/${id}/change?userId=${userId}`);
 export const fetchMeetChangeResponse = (id: number,userId: number,revision: number,accepted: boolean) => post<void>(`/meet/${id}/change-response`,{ userId,revision,accepted });
 export const fetchDeleteMeet = (id: number) => del<void>(`/meet/${id}`);
-export const fetchCreateMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', params);
+export const fetchCreateMeetUser = (params: CreateMeetUser) => post<void>('/meetUser', { ...params, visitorId: campaignVisitorId() });
 export const fetchDeleteMeetUser = ({ userId, meetId }: DeleteMeetUser) => del<void>(`/meetUser?userId=${userId}&meetId=${meetId}`);
 export const fetchTeacherMeets = () => get<MeetDto[]>('/teacher/meets');
 
@@ -92,6 +96,7 @@ export const fetchAddTeacher = (passportId: number) => post<void>('/place/teache
 export const fetchAddTeacher2 = (params: { passportId: number; placeId: number }) => post<number>(`/place/${params.placeId}/teacher`, params);
 export const fetchCreateLocation = (params: CreateLocation) => post<number>('/place/location', params);
 export const fetchPlaceDashboard = () => get<PlaceDashboardDto>(`/place/dashboard`);
+export const fetchPlaceStats = (days: 7 | 30 | 90) => get<PlaceStatsDto>(`/place/stats?days=${days}`);
 export const fetchPlaceTeachers = () => get<TeacherDto[]>(`/place/teachers`);
 export const fetchPlaceProjects = () => get<ProjectDto[]>(`/place/projects`);
 export const fetchPlaceMeets = () => get<MeetDto[]>(`/place/meets`);
@@ -113,6 +118,9 @@ export const fetchUserDashboard = () => get<UserDashboardDto>(`/user/dashboard`)
 
 export const fetchTeacher = (id: number) => get<TeacherPublicDto>(`/teachers/${id}`);
 export const fetchTeacherDashboard = () => get<TeacherDashboardDto>(`/teacher/dashboard`);
+export const fetchProjectCampaigns = (projectId: number) => get<ProjectCampaign[]>(`/project/${projectId}/campaigns`);
+export const fetchCreateProjectCampaign = (body: CreateProjectCampaign) => post<number>('/project-campaign', body);
+export const fetchCampaignVisit = (token: string, projectId: number, visitorId: string) => post<void>('/project-campaign/visit', { token, projectId, visitorId });
 
 // Conversation methods
 export const fetchConversations = () => get<Conversation[]>('/conversation');

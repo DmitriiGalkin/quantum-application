@@ -65,6 +65,7 @@ export interface MeetUserFull {
 export interface CreateMeetUser {
   meetId: number;
   userId: number;
+  visitorId?: string;
 }
 export interface DeleteMeetUser {
   meetId: number;

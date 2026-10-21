@@ -21,6 +21,7 @@ const PlaceTeachersPage = lazy(() => import('./pages/place/PlaceTeachersPage.tsx
 const PlaceProjectsPage = lazy(() => import('./pages/place/PlaceProjectsPage.tsx'));
 const PlaceMeetsPage = lazy(() => import('./pages/place/PlaceMeetsPage.tsx'));
 const PlaceDashboardPage = lazy(() => import('./pages/place/PlaceDashboardPage.tsx'));
+const PlaceStatsPage = lazy(() => import('./pages/place/PlaceStatsPage.tsx'));
 const TeacherDashboardPage = lazy(() => import('./pages/teacher/TeacherDashboardPage.tsx'));
 const MissionPage = lazy(() => import('./pages/MissionPage.tsx'));
 const AboutPage = lazy(() => import('./pages/AboutPage.tsx'));
@@ -84,6 +85,7 @@ function Routers() {
           <Route path="projects" element={<PlaceProjectsPage />} />
           <Route path="users" element={<PlaceUsersPage />} />
           <Route path="meets" element={<PlaceMeetsPage />} />
+          <Route path="stats" element={<PlaceStatsPage />} />
           <Route path="invite" element={<PlaceInvitePage />} />
         </Route>
 

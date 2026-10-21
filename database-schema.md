@@ -1,10 +1,10 @@
 # Структура базы данных MySQL
 
-Дата выгрузки: 2026-10-19T19:49:54.065Z
+Дата выгрузки: 2026-10-20T19:29:23.636Z
 
 Выгружены только метаданные доступных объектов; строки таблиц и реквизиты подключения не включены.
 
-Таблицы и представления: 28.
+Таблицы и представления: 31.
 
 ## Объекты
 
@@ -33,6 +33,9 @@
 | placePassport | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | placeSchedule | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | project | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| projectCampaign | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| projectCampaignBooking | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
+| projectCampaignVisit | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | projectUser | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | pushSubscription | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
 | quantumMigration | BASE TABLE | InnoDB | utf8mb4_0900_ai_ci |  |
@@ -1027,6 +1030,135 @@ CREATE TABLE `project` (
   KEY `idx_project_location` (`locationId`),
   CONSTRAINT `fk_project_location` FOREIGN KEY (`locationId`) REFERENCES `placeLocation` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## projectCampaign
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | int | NO | NULL | PRI | auto_increment |  |
+| projectId | int | NO | NULL | MUL |  |  |
+| creatorPassportId | int | NO | NULL |  |  |  |
+| initiator | enum('teacher','place') | NO | NULL |  |  |  |
+| channel | varchar(120) | NO | NULL |  |  |  |
+| token | char(36) | NO | NULL | UNI |  |  |
+| createdAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| idx_project_campaign_project | Нет | 1 | projectId | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+| uq_project_campaign_token | Да | 1 | token | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_project_campaign_project | projectId | project | id | NO ACTION | NO ACTION |
+
+### DDL
+
+```sql
+CREATE TABLE `projectCampaign` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `projectId` int NOT NULL,
+  `creatorPassportId` int NOT NULL,
+  `initiator` enum('teacher','place') NOT NULL,
+  `channel` varchar(120) NOT NULL,
+  `token` char(36) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_project_campaign_token` (`token`),
+  KEY `idx_project_campaign_project` (`projectId`),
+  CONSTRAINT `fk_project_campaign_project` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## projectCampaignBooking
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| meetUserId | int | NO | NULL | PRI |  |  |
+| campaignId | int | NO | NULL | MUL |  |  |
+| createdAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| idx_campaign_booking_campaign | Нет | 1 | campaignId | NULL | BTREE |
+| PRIMARY | Да | 1 | meetUserId | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_campaign_booking_campaign | campaignId | projectCampaign | id | NO ACTION | NO ACTION |
+| fk_campaign_booking_meet_user | meetUserId | meetUser | id | NO ACTION | CASCADE |
+
+### DDL
+
+```sql
+CREATE TABLE `projectCampaignBooking` (
+  `meetUserId` int NOT NULL,
+  `campaignId` int NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`meetUserId`),
+  KEY `idx_campaign_booking_campaign` (`campaignId`),
+  CONSTRAINT `fk_campaign_booking_campaign` FOREIGN KEY (`campaignId`) REFERENCES `projectCampaign` (`id`),
+  CONSTRAINT `fk_campaign_booking_meet_user` FOREIGN KEY (`meetUserId`) REFERENCES `meetUser` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+## projectCampaignVisit
+
+### Столбцы
+
+| Столбец | Тип | NULL | По умолчанию | Ключ | Дополнительно | Комментарий |
+| --- | --- | --- | --- | --- | --- | --- |
+| id | bigint | NO | NULL | PRI | auto_increment |  |
+| campaignId | int | NO | NULL | MUL |  |  |
+| visitorId | char(36) | NO | NULL | MUL |  |  |
+| visitedOn | date | NO | NULL |  |  |  |
+| visitedAt | datetime | NO | CURRENT_TIMESTAMP |  | DEFAULT_GENERATED |  |
+
+### Индексы
+
+| Название | Уникальный | Позиция | Столбец | Длина префикса | Тип |
+| --- | --- | --- | --- | --- | --- |
+| idx_campaign_visit_visitor | Нет | 1 | visitorId | NULL | BTREE |
+| idx_campaign_visit_visitor | Нет | 2 | visitedAt | NULL | BTREE |
+| PRIMARY | Да | 1 | id | NULL | BTREE |
+| uq_campaign_visitor_day | Да | 1 | campaignId | NULL | BTREE |
+| uq_campaign_visitor_day | Да | 2 | visitorId | NULL | BTREE |
+| uq_campaign_visitor_day | Да | 3 | visitedOn | NULL | BTREE |
+
+### Внешние ключи
+
+| Название | Столбец | Таблица | Столбец назначения | ON UPDATE | ON DELETE |
+| --- | --- | --- | --- | --- | --- |
+| fk_project_campaign_visit_campaign | campaignId | projectCampaign | id | NO ACTION | NO ACTION |
+
+### DDL
+
+```sql
+CREATE TABLE `projectCampaignVisit` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `campaignId` int NOT NULL,
+  `visitorId` char(36) NOT NULL,
+  `visitedOn` date NOT NULL,
+  `visitedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_campaign_visitor_day` (`campaignId`,`visitorId`,`visitedOn`),
+  KEY `idx_campaign_visit_visitor` (`visitorId`,`visitedAt`),
+  CONSTRAINT `fk_project_campaign_visit_campaign` FOREIGN KEY (`campaignId`) REFERENCES `projectCampaign` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## projectUser

@@ -20,7 +20,7 @@ export default function TeacherCard({ teacher, actions, highlighted = false }: T
       <Avatar src={teacher.image ?? undefined} alt={teacher.title} sx={{ width: { xs: 56, sm: 72 }, height: { xs: 56, sm: 72 }, flexShrink: 0 }} />
       <Stack spacing={1} sx={{ minWidth: 0, overflowWrap: 'anywhere', flex: 1 }}>
       <Typography variant="h6">{teacher.title}</Typography>
-      {teacher.description && <Typography>{teacher.description.slice(0, 240)}</Typography>}
+      {teacher.description && <Typography sx={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{teacher.description}</Typography>}
       <Button component={Link} to={`/teachers/${teacher.id}`}>Профиль преподавателя</Button>
       <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1 }}>{actions}</Stack>
     </Stack></Stack></CardContent>

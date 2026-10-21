@@ -26,6 +26,16 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
     ...(compactViews || withoutGroups ? [] : [{ value: 'group', icon: <LightbulbIcon /> }]),
     ...(projects ? [{ value: 'table', icon: <TableRowsIcon /> }] : []),
   ];
+  const changeView = (_: React.MouseEvent<HTMLElement>, nextView: View | null) => {
+    if (nextView) setView(nextView);
+  };
+  const viewButtons = (options: typeof viewOptions) => options.map(opt => (
+    <ToggleButton key={opt.value} value={opt.value} sx={opt.value === 'table' && projects ? { display: { xs: 'none', sm: 'inline-flex' } } : undefined}
+      aria-label={opt.value === 'map' && !projects ? 'Центры на карте' : { module: 'Карточки', table: 'Список', map: 'Карта', group: 'Группы' }[opt.value]}
+      title={{ module: 'Карточки', table: 'Список', map: 'Карта', group: 'Группы' }[opt.value]}>
+      {opt.icon}
+    </ToggleButton>
+  ));
 
   return (
     <Stack direction="row" sx={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 1 }}>
@@ -48,29 +58,21 @@ function Filter({ filters, setView, setSort, setWhen, withOutLocation, withOutWh
 
       <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1 }}>
         {!withOutWhen && (
-          <ToggleButtonGroup value={filters.when} exclusive onChange={(_, val) => setWhen(val)} size="small">
+          <ToggleButtonGroup value={filters.when} exclusive onChange={(_, val) => setWhen(val)} size="small" aria-label="Дата встречи">
             {whenOptions.map(opt => (
-              <ToggleButton key={opt.value} value={opt.value}>
+              <ToggleButton key={opt.value} value={opt.value} aria-label={opt.label}>
                 {opt.label}
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
         )}
-        <ToggleButtonGroup
-          value={filters.view}
-          exclusive
-          onChange={(_, nextView: View | null) => {
-            if (nextView) setView(nextView);
-          }}
-          size="small"
-        >
-          {viewOptions.map(opt => (
-            <ToggleButton key={opt.value} value={opt.value}
-              aria-label={opt.value === 'map' && !projects ? 'Центры на карте' : { module: 'Карточки', table: 'Таблица', map: 'Карта', group: 'Группы' }[opt.value]}
-              title={{ module: 'Карточки', table: 'Таблица', map: 'Карта', group: 'Группы' }[opt.value]}>
-              {opt.icon}
-            </ToggleButton>
-          ))}
+        {projects && filters.view === 'table' && <ToggleButtonGroup value="module" exclusive aria-label="Вид списка"
+          onChange={changeView} size="small" sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
+          {viewButtons(viewOptions.filter(opt => opt.value !== 'table'))}
+        </ToggleButtonGroup>}
+        <ToggleButtonGroup value={filters.view} exclusive aria-label="Вид списка" onChange={changeView} size="small"
+          sx={{ display: { xs: projects && filters.view === 'table' ? 'none' : 'inline-flex', sm: 'inline-flex' } }}>
+          {viewButtons(viewOptions)}
         </ToggleButtonGroup>
       </Stack>
     </Stack>

@@ -23,13 +23,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
-import { getMeetStatus, statusConfig } from './helper.ts';
+import { canBookMeet, getMeetStatus, statusConfig } from './helper.ts';
 
 import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
 import CheckIcon from '@mui/icons-material/Check';
 import { EditMeetDialog } from './EditMeetDialog.tsx';
 import { canManageMeet, type MeetManagement } from './management.ts';
-import { informationDate, moscowFormat } from './moscow-time.ts';
+import { meetingDate, moscowFormat } from './moscow-time.ts';
 import { Link } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -134,7 +134,8 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   const isPaid = paymentStatus === 'paid';
 
   const startedAt = new Date(meet.startedAt);
-  const date = informationDate(startedAt, {
+  const canBook = canBookMeet(meet);
+  const date = meetingDate(startedAt, {
     day: '2-digit',
     month: 'short',
   });
@@ -154,6 +155,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
   const actionError = confirmVenue.error || mutationLike.error || mutationUnlike.error || createPayment.error;
 
   const meetStatus = getMeetStatus(meet);
+  const unavailableLabel = meetStatus === 'completed' ? 'Запись завершена' : 'Запись недоступна';
   const statusKey = canApprove && meet.status === 'published' && meetStatus !== 'completed' && meetStatus !== 'cancelled' ? 'confirmed' : meetStatus;
   const status = statusKey ? statusConfig[statusKey] : null;
   const pendingRequest = canApprove && meet.status === 'pending' && meet.bookingState === 'requested';
@@ -240,14 +242,15 @@ export default function MeetCard({ meet, refetch, management }: Props) {
           </Stack></DialogContent>
           <DialogActions><Button disabled={cancelBooking.isPending} onClick={() => setCancelMode(null)}>Назад</Button><Button color="error" disabled={cancelBooking.isPending || !cancelReason.trim()} onClick={() => cancelBooking.mutate()}>Подтвердить отмену</Button></DialogActions>
         </Dialog>}
-        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap' }}>
-          {status && <Chip icon={statusKey === 'confirmed' ? <CheckIcon /> : undefined} label={status.label} color={status.color} size="small" />}
-
-          <Typography variant="body2" color="text.secondary">
-            {management?.placeId ? '' : `${date} • `}{time}–{endTime}
+        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ minWidth: 0 }}>
+            {date} • {time}–{endTime}
           </Typography>
-
-          <MenuButton menuItems={menuItems} />
+          <Stack direction="row" sx={{ alignItems: 'center', flexShrink: 0 }}>
+            {status && <Chip icon={statusKey === 'confirmed' ? <CheckIcon /> : undefined} label={status.label} title={status.label}
+              color={status.color} size="small" sx={{ maxWidth: { xs: 120, sm: 'none' } }} />}
+            <MenuButton menuItems={menuItems} />
+          </Stack>
 
           {isEditOpen && <EditMeetDialog
             meet={meet}
@@ -288,6 +291,17 @@ export default function MeetCard({ meet, refetch, management }: Props) {
             }}
           />}
         </Stack>
+        {!pendingRequest && limit != null && (
+          <Stack spacing={1}>
+            <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+              <Typography variant="body2" color="text.secondary">
+                {full ? 'Мест нет' : `Свободно ${free} ${placesLabel}`}
+              </Typography>
+              {occupancy !== null && <Chip size="small" label={`${occupancy}%`} color={full ? 'warning' : 'default'} />}
+            </Stack>
+            {occupancy !== null && <LinearProgress variant="determinate" value={occupancy} aria-label="Заполненность встречи" />}
+          </Stack>
+        )}
         <Stack spacing={1.5}>
           <Stack spacing={1}>
             <CardTeacherLine id={meet.passport.id} title={name} image={meet.passport.image} />
@@ -315,8 +329,8 @@ export default function MeetCard({ meet, refetch, management }: Props) {
           <>
             <Typography variant="body2">Участник: {passport?.users?.find(user => user.id === userId)?.title || 'выбранный ребёнок'}</Typography>
             {!isMember && (
-              <Button variant="contained" fullWidth disabled={full || meet.status !== 'published' || Boolean(meet.deletedAt) || mutationLike.isPending} onClick={onJoin}>
-                Присоединиться
+              <Button variant="contained" fullWidth disabled={full || !canBook || mutationLike.isPending} onClick={onJoin}>
+                {canBook ? 'Присоединиться' : unavailableLabel}
               </Button>
             )}
             {isMember && meet.price && isPending && (
@@ -327,9 +341,9 @@ export default function MeetCard({ meet, refetch, management }: Props) {
           </>
         )}
         {role !== 'user' && !canEdit && !canApprove && <Button variant="contained"
-          disabled={full || meet.status !== 'published' || Boolean(meet.deletedAt)}
+          disabled={full || !canBook}
           onClick={() => passport ? setSelectChild(true) : authHandler(`/project/${meet.projectId}#meet-${meet.id}`)}>
-          {passport ? 'Выбрать ребёнка для записи' : 'Войти и записать ребёнка'}
+          {canBook ? (passport ? 'Выбрать ребёнка для записи' : 'Войти и записать ребёнка') : unavailableLabel}
         </Button>}
         {selectChild && <SelectMeetChildDialog open onClose={() => setSelectChild(false)} />}
         {refundInfo && <Dialog open onClose={() => setRefundInfo(false)} fullWidth maxWidth="sm">
@@ -343,7 +357,7 @@ export default function MeetCard({ meet, refetch, management }: Props) {
         {confirmLeave && <Dialog open onClose={mutationUnlike.isPending ? undefined : () => setConfirmLeave(false)} fullWidth maxWidth="sm">
           <ClosableDialogTitle onClose={() => setConfirmLeave(false)} disabled={mutationUnlike.isPending}>Отменить участие?</ClosableDialogTitle>
           <DialogContent>
-            <Typography>{meet.projectTitle} · {date}, {time} МСК</Typography>
+            <Typography>{meet.projectTitle} · {date}, {time}</Typography>
             {isPaid && <Typography sx={{ mt: 2 }}>Отмена участия не оформляет возврат оплаты. Для возврата свяжитесь с организатором.</Typography>}
             {mutationUnlike.isError && <Alert severity="error">{mutationUnlike.error.message}</Alert>}
           </DialogContent>
@@ -352,19 +366,6 @@ export default function MeetCard({ meet, refetch, management }: Props) {
             <Button color="error" disabled={mutationUnlike.isPending} onClick={onExit}>Отменить участие</Button>
           </DialogActions>
         </Dialog>}
-        {!pendingRequest && limit != null && (
-          <Stack spacing={1.5}>
-            <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-              <Typography variant="body2" color="text.secondary">
-                {full ? 'Мест нет' : `Свободно ${free} ${placesLabel}`}
-              </Typography>
-
-              {occupancy !== null && <Chip size="small" label={`${occupancy}%`} color={full ? 'warning' : 'default'} />}
-            </Stack>
-            {occupancy !== null && <LinearProgress variant="determinate" value={occupancy} aria-label="Заполненность встречи" />}
-          </Stack>
-        )}
-
         {actionError && <Alert severity="error">{actionError.message}</Alert>}
         {pendingRequest && (
           <Stack spacing={1}>

@@ -8,7 +8,7 @@ export interface FilterProps {
   setWhen: (when?: When) => void;
 }
 
-export function useFilters(options: { projects?: boolean; defaultView?: View; compactViews?: boolean } = {}): FilterProps {
+export function useFilters(options: { projects?: boolean; defaultView?: View; compactViews?: boolean; allowWhen?: boolean; allowNearby?: boolean } = {}): FilterProps {
   const [params, setParams] = useSearchParams();
   const sort = params.get('sort');
   const when = params.get('when');
@@ -17,8 +17,8 @@ export function useFilters(options: { projects?: boolean; defaultView?: View; co
   const filters = {
     view: (view === 'module' || view === 'map' || view === 'group' || (options.projects && view === 'table')
       ? view : options.projects ? options.defaultView ?? 'module' : 'module') as View,
-    sort: (sort === 'popular' || sort === 'nearby' ? sort : 'new') as Sort,
-    when: (when === 'today' || when === 'tomorrow' ? when : undefined) as When,
+    sort: (sort === 'popular' || (options.allowNearby !== false && sort === 'nearby') ? sort : 'new') as Sort,
+    when: (options.allowWhen !== false && (when === 'today' || when === 'tomorrow') ? when : undefined) as When,
   };
   const setFilter = (key: string, value?: string) => setParams(previous => {
     const next = new URLSearchParams(previous);
@@ -27,8 +27,8 @@ export function useFilters(options: { projects?: boolean; defaultView?: View; co
     return next;
   });
   const setView = (view: View) => { if (view !== 'table' || options.projects) setFilter('view', view); };
-  const setSort = (sort: Sort) => setFilter('sort', sort);
-  const setWhen = (when?: When) => setFilter('when', when);
+  const setSort = (sort: Sort) => { if (sort !== 'nearby' || options.allowNearby !== false) setFilter('sort', sort); };
+  const setWhen = (when?: When) => { if (options.allowWhen !== false) setFilter('when', when); };
 
   return {
     filters,

@@ -31,5 +31,6 @@ it('public lists exclude pending, cancelled, deleted, past and ongoing meetings 
   expect(rows.map(row => row.id)).toEqual([8, 7, 1, 2, 3, 4, 6]);
   expect(formatMoscowMeet(meet(1, '2026-10-12T22:00:00Z'))).toContain('13 октября');
   expect(formatMoscowMeet(meet(1, '2026-10-12T22:00:00Z'))).not.toContain('2026');
-  expect(formatMoscowMeet(meet(1, '2026-10-12T22:00:00Z'))).toContain('01:00 МСК');
+  expect(formatMoscowMeet(meet(1, '2026-10-12T22:00:00Z'))).toContain('01:00');
+  expect(formatMoscowMeet(meet(1, '2026-10-12T22:00:00Z'))).not.toContain('МСК');
 });

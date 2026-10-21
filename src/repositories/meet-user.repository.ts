@@ -8,6 +8,11 @@ import { db } from '../utils/dbNext.js';
 import type { DeleteMeetUser } from 'entities';
 
 class MeetUserRepository {
+  static async findByIds(ids: number[]): Promise<MeetUser[]> {
+    if (!ids.length) return [];
+    const rows = await db.query<MeetUserRow>('SELECT * FROM meetUser WHERE id IN (?)', [ids]);
+    return rows.map(mapMeetUserRow);
+  }
   static async findParticipants(meetId: number, conn: PoolConnection): Promise<MeetUser[]> {
     const [rows] = await conn.query<MeetUserRow[]>('SELECT * FROM meetUser WHERE meetId = ? FOR UPDATE', [meetId]);
     return rows.map(mapMeetUserRow);

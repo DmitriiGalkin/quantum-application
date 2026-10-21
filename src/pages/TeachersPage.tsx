@@ -23,7 +23,7 @@ import { usePostAuthAction } from '../shared/lib/usePostAuthAction.ts';
 import { useRunPostAuthAction } from '../shared/lib/useRunPostAuthAction.ts';
 
 export default function TeachersPage() {
-  const filter = useFilters({ projects: true, defaultView: 'table' });
+  const filter = useFilters({ projects: true, defaultView: 'table', compactViews: true, allowWhen: false, allowNearby: false });
   const { id } = useParams<{ id: string }>();
   const teacherId = Number(id);
   const validId = Number.isSafeInteger(teacherId) && teacherId > 0;
@@ -75,8 +75,7 @@ export default function TeachersPage() {
       </Grid> : <Typography color="text.secondary">Центры работы пока не указаны.</Typography>}
     </Stack>
 
-    <Projects title="Проекты учителя" filter={filter} projects={teacher.projects} refetch={refetch} withoutIdea />
-    <Typography variant="body2" color="text.secondary">Проекты: {teacher.projects.length} · Встречи: {teacher.meets} · Центры: {teacher.centersCount}</Typography>
+    <Projects title="Проекты учителя" filter={filter} projects={teacher.projects} refetch={refetch} withoutIdea compactViews cardVariant="catalog" />
     {!!teacher.ideas.length && <Stack component="section" spacing={2}>
       <Title text="Идеи учителя" />
       <IdeaGrids ideas={teacher.ideas} />

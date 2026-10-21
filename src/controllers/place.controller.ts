@@ -1,7 +1,8 @@
 import { requireId } from '../utils/validation.js';
 import { type Controller, type ControllerWithAuth, fail, ok } from './helper.js';
 import { PlaceService } from '../services/place.service.js';
-import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto, PlaceProfile, PageMeta } from 'entities';
+import type { CreatePlace, PlaceDashboardDto, PlaceDto, PlaceUpdateDto, PlaceProfile, PageMeta, PlaceStatsDto } from 'entities';
+import { PlaceStatsService } from '../services/place-stats.service.js';
 import { PlaceProfileService } from '../services/place-profile.service.js';
 import PlaceLocationService from '../services/placeLocation.service.js';
 
@@ -53,4 +54,8 @@ export default {
   update,
   findById,
   dashboard,
+  stats: (async (req, res) => {
+    const days = req.query.days === undefined ? 30 : Number(req.query.days);
+    ok(res, await PlaceStatsService.get(req.passport.id, requireId(req.viewer?.placeId), days));
+  }) as ControllerWithAuth<PlaceStatsDto>,
 };

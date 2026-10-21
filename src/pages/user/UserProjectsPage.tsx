@@ -13,7 +13,7 @@ import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function UserProjectsPage() {
   const { userId, role } = useAuth();
-  const filter = useFilters({ projects: true, compactViews: true });
+  const filter = useFilters({ projects: true, compactViews: true, allowWhen: false, allowNearby: false });
 
   const {
     data: projects = [],
@@ -32,7 +32,7 @@ function UserProjectsPage() {
       {isProjectsError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить проекты.</Alert>}
 
       {!isProjectsLoading && !isProjectsError && (
-        <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea emptyText="У ребёнка пока нет проектов." />
+        <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea cardVariant="compact" emptyText="У ребёнка пока нет проектов." />
       )}
       <Button component={Link} to="/" sx={{ mt: 2 }}>Выбрать проект</Button>
     </Box></FamilyAccess>

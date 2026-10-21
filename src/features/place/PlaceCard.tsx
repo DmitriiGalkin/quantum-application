@@ -16,8 +16,8 @@ function PlaceCard({ place }: Props) {
   return (
     <Card>
       <CardActionArea component={Link} to={`/places/${place.id}`}>
-      {place.image ? <CardMedia component="img" height="180" image={place.image} alt={place.title || 'Центр'} sx={{ objectFit: 'contain', bgcolor: 'background.default' }} />
-        : <Box sx={{ height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'action.hover' }}><PlaceIcon sx={{ fontSize: 48 }} color="action" /></Box>}
+      {place.image ? <CardMedia component="img" image={place.image} alt={place.title || 'Центр'} sx={{ height: { xs: 140, sm: 180 }, objectFit: 'contain', bgcolor: 'background.default' }} />
+        : <Box sx={{ height: { xs: 140, sm: 180 }, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'action.hover' }}><PlaceIcon sx={{ fontSize: 48 }} color="action" /></Box>}
       <CardContent sx={{ overflowWrap: 'anywhere' }}>
         <Typography variant="h6">{place.title}</Typography>
         <Typography variant="body2">{place.address}</Typography>

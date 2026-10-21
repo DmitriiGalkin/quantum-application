@@ -10,12 +10,9 @@ import { fetchTeacherDashboard } from '../../requests.ts';
 import MeetGrids from '../../features/meets/MeetGrids.tsx';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
-import { CreateIdeaDialog } from '../../features/idea/ui/CreateIdeaDialog.tsx';
 import { upcomingPublishedMeets } from '../../features/project/ui/project-card-meeting.ts';
 
 export default function TeacherDashboardPage() {
-  const [createIdea, setCreateIdea] = useState(false);
   const { data, refetch, isPending, isError } = useQuery({
     queryKey: ['teacher-dashboard'],
     queryFn: fetchTeacherDashboard,
@@ -36,105 +33,59 @@ export default function TeacherDashboardPage() {
       <Typography component="h2" variant="h5">Ближайшие встречи</Typography>
       {upcoming.length ? <MeetGrids meets={upcoming} refetch={refetch} />
         : <Typography>Ближайших подтверждённых встреч пока нет. Откройте проект, чтобы запланировать встречу.</Typography>}
-      <Button component={Link} to="/teacher/projects" sx={{ alignSelf: 'flex-start' }}>Мои проекты и планирование</Button>
 
       <Grid container spacing={2}>
-        <Grid size={{ xs: 6, md: 3 }}>
+        <Grid size={{ xs: 6, md: data.debit === null ? 4 : 3 }}>
           <Card>
-            <CardContent>
+            <CardActionArea component={Link} to="/teacher/projects" aria-label={`Мои проекты: ${data.projects}`}>
+              <CardContent>
               <Typography variant="h4">{data.projects}</Typography>
 
               <Typography color="text.secondary">Проектов</Typography>
-            </CardContent>
+              </CardContent>
+            </CardActionArea>
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 6, md: 3 }}>
+        <Grid size={{ xs: 6, md: data.debit === null ? 4 : 3 }}>
           <Card>
-            <CardContent>
+            <CardActionArea component={Link} to="/teacher/meets" aria-label={`Мои встречи: ${data.meets}`}>
+              <CardContent>
               <Typography variant="h4">{data.meets}</Typography>
 
-              <Typography color="text.secondary">Предстоящих встреч</Typography>
-            </CardContent>
+              <Typography color="text.secondary">Встреч</Typography>
+              </CardContent>
+            </CardActionArea>
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 6, md: 3 }}>
+        <Grid size={{ xs: 6, md: data.debit === null ? 4 : 3 }}>
           <Card>
-            <CardContent>
+            <CardActionArea component={Link} to="/teacher/projects" aria-label={`Ученики в проектах: ${data.students}`}>
+              <CardContent>
               <Typography variant="h4">{data.students}</Typography>
 
-              <Typography color="text.secondary">Учеников</Typography>
-            </CardContent>
+              <Typography color="text.secondary">Учеников в проектах</Typography>
+              </CardContent>
+            </CardActionArea>
           </Card>
         </Grid>
 
         {data.debit !== null && (
           <Grid size={{ xs: 6, md: 3 }}>
             <Card>
-              <CardContent>
+              <CardActionArea component={Link} to="/teacher/meets" aria-label={`Доход от встреч: ${data.debit} рублей`}>
+                <CardContent>
                 <Typography variant="h4">{data.debit} рублей</Typography>
 
                 <Typography color="text.secondary">Доход</Typography>
-              </CardContent>
+                </CardContent>
+              </CardActionArea>
             </Card>
           </Grid>
         )}
       </Grid>
 
-      <Typography variant="h5">Быстрые действия</Typography>
-
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 3 }}>
-          <Card>
-            <CardActionArea component={Link} to="/teacher/projects">
-              <CardContent>
-                <Typography>Мои проекты</Typography>
-
-                <Typography color="text.secondary">Управление проектами</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 3 }}>
-          <Card>
-            <CardActionArea component={Link} to="/teacher/meets">
-              <CardContent>
-                <Typography>Встречи</Typography>
-
-                <Typography color="text.secondary">Расписание занятий</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 3 }}>
-          <Card>
-            <CardActionArea component={Link} to="/teacher/userIdeas">
-              <CardContent>
-                <Typography>Идеи учеников</Typography>
-
-                <Typography color="text.secondary">Новые предложения и заявки</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 3 }}>
-          <Card>
-            <CardActionArea onClick={() => setCreateIdea(true)}>
-              <CardContent>
-                <Typography>Создать идею</Typography>
-
-                <Typography color="text.secondary">Новая идея проекта</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-      </Grid>
-
-      <CreateIdeaDialog open={createIdea} onClose={() => setCreateIdea(false)} />
     </Stack>
   );
 }

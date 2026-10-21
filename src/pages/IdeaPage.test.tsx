@@ -12,7 +12,7 @@ vi.mock('../requests.ts', () => ({ fetchIdea: vi.fn(), fetchPlaces: vi.fn(async 
 vi.mock('../components/ChatDialog.tsx', () => ({ default: () => null }));
 import IdeaPage from './IdeaPage.tsx';
 
-it('hydrates the full idea and gallery before projects, defaults to table and preserves explicit module mode', async () => {
+it('hydrates the full idea and gallery before projects, defaults to list and preserves explicit card mode', async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   const idea: IdeaDashboard = { id: 54, title: 'Robot idea', description: 'Full idea description '.repeat(30), image: '/one.jpg',
     userId: 0, passportId: null, userCount: 0, isLiked: 0, createdAt: '', today: false, user: null,
@@ -35,17 +35,17 @@ it('hydrates the full idea and gallery before projects, defaults to table and pr
     expect(host.textContent).toContain(idea.description);
     expect(host.textContent!.indexOf(idea.description)).toBeLessThan(host.textContent!.indexOf('Проекты по этой идее'));
     expect(host.querySelectorAll('button[aria-label^="Фотография "]')).toHaveLength(2);
-    expect(host.querySelector('[aria-label="Таблица проектов"]')).not.toBeNull();
-    const projectLinks = () => [...host.querySelectorAll('a[href^="/project/"]')].map(a => a.getAttribute('href'));
+    expect(host.querySelector('[aria-label="Список проектов"]')).not.toBeNull();
+    const projectLinks = () => [...new Set([...host.querySelectorAll('a[href^="/project/"]')].map(a => a.getAttribute('href')))];
     expect(projectLinks()).toEqual(['/project/100', '/project/101']);
-    await act(async () => host.querySelector<HTMLButtonElement>('button[aria-label="Карточки"]')!.click());
-    expect(host.querySelector('[aria-label="Таблица проектов"]')).toBeNull();
+    await act(async () => [...host.querySelectorAll<HTMLButtonElement>('button[aria-label="Карточки"]')].at(-1)!.click());
+    expect(host.querySelector('[aria-label="Список проектов"]')).toBeNull();
     expect(projectLinks()).toEqual(['/project/100', '/project/101']);
-    await act(async () => host.querySelector<HTMLButtonElement>('button[aria-label="Таблица"]')!.click());
+    await act(async () => host.querySelector<HTMLButtonElement>('button[aria-label="Список"]')!.click());
     expect(projectLinks()).toEqual(['/project/100', '/project/101']);
     const moduleHost = globalThis.document.createElement('div');
     moduleHost.innerHTML = renderToString(page('?view=module'));
-    expect(moduleHost.querySelector('[aria-label="Таблица проектов"]')).toBeNull();
+    expect(moduleHost.querySelector('[aria-label="Список проектов"]')).toBeNull();
     expect(moduleHost.querySelector('[aria-label="Открыть проект Robot project"]')).not.toBeNull();
   } finally { await act(async () => root.unmount()); host.remove(); client.clear(); }
 });
