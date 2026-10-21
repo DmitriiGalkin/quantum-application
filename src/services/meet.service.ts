@@ -18,7 +18,6 @@ import type { PoolConnection } from 'mysql2/promise';
 import { BookingChangeService, changeReason } from './booking-change.service.js';
 import { NotificationService } from './notification.service.js';
 import { RefundService } from './refund.service.js';
-import UserRepository from '../repositories/user.repository.js';
 import { MeetVenueQuoteRepository } from '../repositories/meet-venue-quote.repository.js';
 import { venuePriceForDuration } from '../shared/lib/venue-price.js';
 
@@ -108,7 +107,13 @@ export class MeetService {
         price: data.price, duration: data.duration, startedAt: data.startedAt, locationId, maxParticipants,
         status: 'pending', deletedAt: null, ...venue };
       await this.validateSlot(meet, conn);
-      return MeetRepository.create({ ...meet, startedAt: this.start(meet.startedAt), ...venue }, conn);
+      const id = await MeetRepository.create({ ...meet, startedAt: this.start(meet.startedAt), ...venue }, conn);
+      const admins = (await PlacePassportRepository.members(project.placeId, conn))
+        .filter(member => member.role === 'admin' && member.passportId !== passport.id)
+        .map(member => member.passportId);
+      await NotificationService.notify(admins, `meet-${id}-request-0`, 'Новая заявка на зал',
+        `Преподаватель отправил заявку на зал для встречи #${id}.`, `/place/meets`, conn);
+      return id;
     }, true);
   }
 
@@ -271,9 +276,8 @@ export class MeetService {
       await this.location(current.placeId, current.locationId, conn);
       await this.validateSlot({ ...current, status }, conn);
       const result = await MeetRepository.update(id, { status: 'published',bookingState:'confirmed' }, conn);
-      const families = await UserRepository.findByIds((await MeetUserRepository.findParticipants(id,conn)).map(j => j.userId));
-      await NotificationService.notify([current.passportId,...families.map(u => u.passportId)],`meet-${id}-${current.bookingRevision ?? 0}-confirmed`,'Бронирование подтверждено',
-        'Центр подтвердил зал для встречи',`/project/${current.projectId}#meet-${id}`,conn);
+      await NotificationService.notify([current.passportId],`meet-${id}-${current.bookingRevision ?? 0}-confirmed`,'Бронирование подтверждено',
+        `Центр подтвердил зал для встречи #${id}.`,`/project/${current.projectId}#meet-${id}`,conn);
       return result;
     }, true);
   }

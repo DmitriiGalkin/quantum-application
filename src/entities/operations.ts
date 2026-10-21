@@ -8,6 +8,11 @@ export interface AppNotification {
   createdAt: string;
 }
 
+export interface NotificationPage {
+  items: AppNotification[];
+  nextCursor: number | null;
+}
+
 export interface MessageReceipt {
   passportId: number;
   lastDeliveredMessageId: number | null;

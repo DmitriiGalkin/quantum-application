@@ -187,6 +187,7 @@ privateRouter.post('/conversation/start', withAuth(conversationController.start)
 privateRouter.get('/conversation/:id', withAuth(conversationController.findById));
 privateRouter.put('/conversation/:id/receipt', withAuth(conversationController.acknowledge));
 privateRouter.get('/notifications', withAuth(notification.list));
+privateRouter.get('/notifications/unread-count', withAuth(notification.unreadCount));
 privateRouter.put('/notification/:id/read', withAuth(notification.read));
 privateRouter.get('/push/config', withAuth(notification.config));
 privateRouter.post('/push/subscription', withAuth(notification.subscribe));

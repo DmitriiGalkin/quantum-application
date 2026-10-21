@@ -2,8 +2,10 @@ import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/prom
 import { db } from '../utils/dbNext.js';
 
 class PlacePassportRepository {
-  static async members(placeId: number): Promise<{ passportId: number; role: 'admin' | 'teacher' }[]> {
-    return db.query('SELECT passportId, role FROM placePassport WHERE placeId = ?', [placeId]);
+  static async members(placeId: number, conn?: PoolConnection): Promise<{ passportId: number; role: 'admin' | 'teacher' }[]> {
+    const sql = 'SELECT passportId, role FROM placePassport WHERE placeId = ?';
+    return conn ? (await conn.query<({ passportId: number; role: 'admin' | 'teacher' } & RowDataPacket)[]>(sql, [placeId]))[0]
+      : db.query(sql, [placeId]);
   }
   static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
     const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM placePassport FOR UPDATE');

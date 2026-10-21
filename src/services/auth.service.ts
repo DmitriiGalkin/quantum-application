@@ -17,7 +17,7 @@ export class AuthService {
       throw new HttpError('Нет полей для обновления', 400);
     }
 
-    await PassportRepository.update(passport.id, { title: data.title, description: data.description });
+    await PassportRepository.update(passport.id, { title: data.title, description: data.description, image: data.image });
   }
 
   static async login(passport: Passport) {

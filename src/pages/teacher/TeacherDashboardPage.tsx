@@ -26,9 +26,10 @@ export default function TeacherDashboardPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography component="h1" variant="h4" sx={{ color: 'text.primary' }}>
-        Кабинет учителя
-      </Typography>
+      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+        <Typography component="h1" variant="h4" sx={{ color: 'text.primary' }}>Кабинет учителя</Typography>
+        <Button component={Link} to="/teacher/profile" variant="outlined">Редактировать профиль</Button>
+      </Stack>
       {pending > 0 && <Alert severity="info" action={<Button component={Link} to="/teacher/meets">Открыть</Button>}>Ожидают подтверждения центра: {pending} встреч.</Alert>}
       <Typography component="h2" variant="h5">Ближайшие встречи</Typography>
       {upcoming.length ? <MeetGrids meets={upcoming} refetch={refetch} />

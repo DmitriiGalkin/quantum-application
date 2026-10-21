@@ -22,6 +22,7 @@ export class NotificationService {
     await PushSubscriptionRepository.save(passportId,validatePushSubscription(input));
   }
   static list = NotificationRepository.list;
+  static unreadCount = NotificationRepository.unreadCount;
   static read = NotificationRepository.read;
   static unsubscribe = PushSubscriptionRepository.remove;
   static async dispatch() {

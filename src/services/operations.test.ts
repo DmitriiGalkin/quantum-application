@@ -2,7 +2,8 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import type { Meet, PlaceLocation } from 'entities';
 const conn = vi.hoisted(() => ({ execute:vi.fn() }));
 vi.mock('../utils/dbNext.js',() => ({ db:{ transaction:vi.fn(async (fn:(value:unknown)=>unknown)=>fn(conn)) } }));
-vi.mock('../repositories/meet.repository.js',() => ({default:{findById:vi.fn(),update:vi.fn(),findConflict:vi.fn()}}));
+vi.mock('../repositories/meet.repository.js',() => ({default:{findById:vi.fn(),create:vi.fn(),update:vi.fn(),findConflict:vi.fn()}}));
+vi.mock('../repositories/project.repository.js',() => ({default:{findById:vi.fn()}}));
 vi.mock('../repositories/passport.repository.js',() => ({default:{lockByIds:vi.fn()}}));
 vi.mock('../repositories/place.repository.js',() => ({default:{findById:vi.fn()}}));
 vi.mock('../repositories/place-location.repository.js',() => ({default:{lockByIds:vi.fn(),findByIds:vi.fn()}}));
@@ -20,6 +21,7 @@ vi.mock('./notification.service.js',async () => {
   return {...actual,NotificationService:{notify:vi.fn()}};
 });
 import Meets from '../repositories/meet.repository.js';
+import Projects from '../repositories/project.repository.js';
 import Places from '../repositories/place.repository.js';
 import Rooms from '../repositories/place-location.repository.js';
 import Members from '../repositories/place-passport.repository.js';
@@ -29,6 +31,7 @@ import { MeetService } from './meet.service.js';
 import { RefundService } from './refund.service.js';
 import { BookingChangeService, changeReason } from './booking-change.service.js';
 import { validatePushSubscription } from './notification.service.js';
+import { NotificationService } from './notification.service.js';
 import { venuePriceForDuration } from '../shared/lib/venue-price.js';
 const meet:Meet = {id:9,projectId:3,passportId:42,placeId:597,locationId:6,maxParticipants:8,price:500,duration:60,startedAt:'2099-01-05T10:00:00+03:00',status:'published',deletedAt:null,bookingRevision:0,bookingState:'confirmed'};
 beforeEach(()=>{
@@ -46,6 +49,14 @@ it('cancels a confirmed booking without deleting enrolments or requesting refund
   expect(Participants.delete).not.toHaveBeenCalled();
   expect(RefundService.enqueueForMeet).not.toHaveBeenCalled();
   expect(BookingChangeService.announce).toHaveBeenCalled();
+});
+it('notifies centre administrators when the teacher creates a booking request',async()=>{
+  vi.mocked(Projects.findById).mockResolvedValue({id:3,passportId:42,placeId:597,locationId:6} as Awaited<ReturnType<typeof Projects.findById>>);
+  vi.mocked(Meets.create).mockResolvedValue(12);
+  await MeetService.create({id:42} as Parameters<typeof MeetService.create>[0],{
+    projectId:3,startedAt:'2099-01-05T10:00:00+03:00',duration:60,price:500,maxParticipants:8,expectedVenueHourlyRate:1000,
+  });
+  expect(NotificationService.notify).toHaveBeenCalledWith([50],'meet-12-request-0','Новая заявка на зал',expect.anything(),'/place/meets',conn);
 });
 it('queues refunds only when cancelling the whole meeting',async()=>{
   await MeetService.cancelBooking(9,42,'Встреча не состоится',undefined,true);

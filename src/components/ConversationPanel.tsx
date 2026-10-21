@@ -34,7 +34,11 @@ export default function ConversationPanel({ conversationId }: { conversationId: 
       const lastReadId = displayed.length ? Math.max(...displayed) : null;
       void fetchMessageReceipt(conversationId,lastMessageId,false)
         .then(() => lastReadId ? fetchMessageReceipt(conversationId,lastReadId,true) : undefined)
-        .then(() => client.invalidateQueries({ queryKey: ['conversations',passport.id] }))
+        .then(() => Promise.all([
+          client.invalidateQueries({ queryKey: ['conversations',passport.id] }),
+          ...(lastReadId ? [client.invalidateQueries({ queryKey: ['notification-count',passport.id] }),
+            client.invalidateQueries({ queryKey: ['notifications',passport.id] })] : []),
+        ]))
         .catch(() => { /* The next history refresh retries the acknowledgement. */ });
     };
     acknowledge();

@@ -90,45 +90,49 @@ export default function PlaceDashboardPage() {
       <Grid container spacing={2}>
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
-            <CardContent>
-              <Typography variant="h4">{stats.teachers}</Typography>
-
-              <Typography color="text.secondary">Учителей</Typography>
-            </CardContent>
+            <CardActionArea component={Link} to="/place/teachers">
+              <CardContent>
+                <Typography variant="h4">{stats.teachers}</Typography>
+                <Typography color="text.secondary">Учителей</Typography>
+              </CardContent>
+            </CardActionArea>
           </Card>
         </Grid>
 
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
-            <CardContent>
-              <Typography variant="h4">{stats.projects}</Typography>
-
-              <Typography color="text.secondary">Проектов</Typography>
-            </CardContent>
+            <CardActionArea component={Link} to="/place/projects">
+              <CardContent>
+                <Typography variant="h4">{stats.projects}</Typography>
+                <Typography color="text.secondary">Проектов</Typography>
+              </CardContent>
+            </CardActionArea>
           </Card>
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
-            <CardContent>
-              <Typography variant="h4">{stats.meets}</Typography>
-
-              <Typography color="text.secondary">Встреч на этой неделе</Typography>
-              {!!stats.pendingPlaceCount && (
-                <Stack sx={{ mt: 1 }}>
-                  <Chip icon={<PendingActionsIcon />} label={`${stats.pendingPlaceCount} заявки на бронирование`} size="small" color="warning" />
-                </Stack>
-              )}
-            </CardContent>
+            <CardActionArea component={Link} to="/place/meets">
+              <CardContent>
+                <Typography variant="h4">{stats.meets}</Typography>
+                <Typography color="text.secondary">Встреч на этой неделе</Typography>
+                {!!stats.pendingPlaceCount && (
+                  <Stack sx={{ mt: 1 }}>
+                    <Chip icon={<PendingActionsIcon />} label={`${stats.pendingPlaceCount} заявки на бронирование`} size="small" color="warning" />
+                  </Stack>
+                )}
+              </CardContent>
+            </CardActionArea>
           </Card>
         </Grid>
 
         <Grid size={{ xs: 6, md: 3 }}>
           <Card>
-            <CardContent>
-              <Typography variant="h4">{stats.users}</Typography>
-
-              <Typography color="text.secondary">Учеников</Typography>
-            </CardContent>
+            <CardActionArea component={Link} to="/place/users">
+              <CardContent>
+                <Typography variant="h4">{stats.users}</Typography>
+                <Typography color="text.secondary">Учеников</Typography>
+              </CardContent>
+            </CardActionArea>
           </Card>
         </Grid>
 
@@ -143,46 +147,6 @@ export default function PlaceDashboardPage() {
             </Card>
           </Grid>
         )}
-      </Grid>
-
-      <Typography variant="h5">Быстрые действия</Typography>
-
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardActionArea component={Link} to={`/place/teachers`}>
-              <CardContent>
-                <Typography>Учителя</Typography>
-
-                <Typography color="text.secondary">Управление преподавателями</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardActionArea component={Link} to={`/place/projects`}>
-              <CardContent>
-                <Typography>Проекты</Typography>
-
-                <Typography color="text.secondary">Все проекты центра</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardActionArea component={Link} to={`/place/meets`}>
-              <CardContent>
-                <Typography>Расписание</Typography>
-
-                <Typography color="text.secondary">Ближайшие встречи</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
       </Grid>
 
       <Dialog open={isPlaceModalOpen} onClose={() => setIsPlaceModalOpen(false)}>

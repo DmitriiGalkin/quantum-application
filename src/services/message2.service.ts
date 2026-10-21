@@ -5,6 +5,8 @@ import type { CreateMessageRequest, Message, UpdateMessageRequest } from 'entiti
 import { db } from '../utils/dbNext.js';
 import ConversationPassportRepository from '../repositories/conversation-passport.repository.js';
 import { NotificationService } from './notification.service.js';
+import ConversationRepository from '../repositories/conversation.repository.js';
+import PassportRepository from '../repositories/passport.repository.js';
 
 export class Message2Service {
   private static async requireOwner(id: number, passportId: number): Promise<void> {
@@ -18,9 +20,16 @@ export class Message2Service {
     await ConversationService.requireParticipant(conversationId, senderPassportId);
     if (typeof request.content !== 'string' || !request.content.trim()) throw new HttpError('Сообщение не должно быть пустым', 400);
     return db.transaction(async conn => {
+      await ConversationRepository.lockById(conversationId, conn);
+      const isFirstMessage = (await Message2Repository.countByConversation(conversationId, conn)) === 0;
       const message = await Message2Repository.create(conversationId, senderPassportId, request.content,conn);
-      const recipients = (await ConversationPassportRepository.findPassports(conversationId)).filter(p => p.passportId !== senderPassportId && !p.isMuted);
-      await NotificationService.notify(recipients.map(p => p.passportId),`message-${message.id}`,'Новое сообщение','Откройте диалог, чтобы прочитать сообщение',`/chats/${conversationId}`,conn);
+      if (isFirstMessage) {
+        const recipients = (await ConversationPassportRepository.findPassports(conversationId,conn))
+          .filter(member => member.passportId !== senderPassportId && !member.isMuted);
+        const sender = await PassportRepository.findById(senderPassportId);
+        await NotificationService.notify(recipients.map(member => member.passportId),`chat-${conversationId}-started`,
+          'Новый чат',`Первое сообщение от ${sender?.title ?? 'пользователя'}.`,`/chats/${conversationId}`,conn);
+      }
       return message;
     });
   }

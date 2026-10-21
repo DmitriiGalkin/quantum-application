@@ -3,6 +3,11 @@ import type { Message, Message2Row, UpdateMessageRequest } from 'entities';
 import { db } from '../utils/dbNext.js';
 
 class Message2Repository {
+  static async countByConversation(conversationId: number, conn: PoolConnection): Promise<number> {
+    const [rows] = await conn.query<(RowDataPacket & { count: number })[]>(
+      'SELECT COUNT(*) AS count FROM message2 WHERE conversationId = ?', [conversationId]);
+    return Number(rows[0].count);
+  }
   static async unread(conversationId: number, passportId: number, lastReadId: number, lastReadAt: string | null) {
     const [row] = await db.query<{ count: number }>(`SELECT COUNT(*) count FROM message2 WHERE conversationId=? AND senderPassportId<>? AND deletedAt IS NULL
       AND id>? AND (? IS NULL OR createdAt>?)`, [conversationId,passportId,lastReadId,lastReadId ? null : lastReadAt,lastReadId ? null : lastReadAt]);

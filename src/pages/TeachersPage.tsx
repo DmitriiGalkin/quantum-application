@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -60,6 +60,7 @@ export default function TeachersPage() {
             <Typography component="h1" variant="h4">{teacher.passport.title}</Typography>
             <Typography sx={{ mt: 2, whiteSpace: 'pre-line' }}>{teacher.passport.description}</Typography>
             <Stack direction="row" spacing={2} sx={{ mt: 2, alignItems: 'center' }}>
+              {passport?.id === teacher.passport.id && <Button component={Link} to="/teacher/profile" variant="outlined">Редактировать профиль</Button>}
               {passport?.id !== teacher.passport.id && <Button variant="contained" startIcon={<MessageIcon />} onClick={handleStartChat}>Написать</Button>}
               <Share title={teacher.passport.title} description={teacher.passport.description || ''} />
             </Stack>

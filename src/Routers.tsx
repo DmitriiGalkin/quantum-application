@@ -23,6 +23,7 @@ const PlaceMeetsPage = lazy(() => import('./pages/place/PlaceMeetsPage.tsx'));
 const PlaceDashboardPage = lazy(() => import('./pages/place/PlaceDashboardPage.tsx'));
 const PlaceStatsPage = lazy(() => import('./pages/place/PlaceStatsPage.tsx'));
 const TeacherDashboardPage = lazy(() => import('./pages/teacher/TeacherDashboardPage.tsx'));
+const TeacherProfilePage = lazy(() => import('./pages/teacher/TeacherProfilePage.tsx'));
 const MissionPage = lazy(() => import('./pages/MissionPage.tsx'));
 const AboutPage = lazy(() => import('./pages/AboutPage.tsx'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage.tsx'));
@@ -36,6 +37,7 @@ const PlaceInvitePage = lazy(() => import('./pages/place/PlaceInvitePage.tsx'));
 const TeacherUserIdeasPage = lazy(() => import('./pages/teacher/TeacherUserIdeasPage.tsx'));
 const TeachersPage = lazy(() => import('./pages/TeachersPage.tsx'));
 const ChatPage = lazy(() => import('./pages/ChatPage.tsx'));
+const NotificationsPage = lazy(() => import('./pages/NotificationsPage.tsx'));
 const UserHomePage = lazy(() => import('./pages/user/UserHomePage.tsx'));
 const UserProfilePage = lazy(() => import('./pages/user/UserProfilePage.tsx'));
 const PlaceUsersPage = lazy(() => import('./pages/place/PlaceUsersPage.tsx'));
@@ -60,6 +62,7 @@ function Routers() {
         <Route path="place/:id/invite" element={<PlaceInvitePage />} />
         <Route path="chats" element={<ChatPage />} />
         <Route path="chats/:id" element={<ChatPage />} />
+        <Route path="notifications" element={<NotificationsPage />} />
 
         <Route path="user">
           <Route index element={<UserHomePage />} />
@@ -70,6 +73,7 @@ function Routers() {
 
         <Route path="teacher">
           <Route index element={<TeacherDashboardPage />} />
+          <Route path="profile" element={<TeacherProfilePage />} />
           <Route path="projects" element={<TeacherProjectsPage />} />
           <Route path="meets" element={<TeacherMeetsPage />} />
           <Route path="rentals" element={<Navigate to="/teacher/meets" replace />} />

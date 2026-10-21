@@ -18,6 +18,7 @@ import {
   type MeetDto,
   type MeetStatus,
   type Message,
+  type NotificationPage,
   type PassportExtendedDto,
   type PaymentCreateDto,
   type PaymentCreateResponseDto,
@@ -33,6 +34,7 @@ import {
   type TeacherDto,
   type TeacherPublicDto,
   type UpdateMeet,
+  type UpdatePassportInput,
   type UserDashboardDto,
   type UserDto,
   type UpdateUserInput,
@@ -41,7 +43,9 @@ import { del, get, post, put, patch, toQuery, postMultipart } from './utils/api.
 import type { PlaceFormValues } from './features/place/PlaceForm.tsx';
 import { campaignVisitorId } from './shared/lib/campaign-visitor.ts';
 export const fetchMessageReceipt = (id: number, messageId: number, read: boolean) => put<void>(`/conversation/${id}/receipt`, { messageId,read });
-export const fetchNotifications = () => get<import('entities').AppNotification[]>('/notifications');
+export const fetchNotifications = (unreadOnly = false, beforeId: number | null = null) =>
+  get<NotificationPage>(`/notifications?unread=${unreadOnly}${beforeId === null ? '' : `&beforeId=${beforeId}`}`);
+export const fetchNotificationUnreadCount = () => get<{ count: number }>('/notifications/unread-count');
 export const fetchReadNotification = (id: number) => put<void>(`/notification/${id}/read`, {});
 export const fetchPushConfig = () => get<{ publicKey: string | null }>('/push/config');
 export const fetchPushSubscribe = (subscription: PushSubscriptionJSON) => post<void>('/push/subscription',subscription);
@@ -107,6 +111,7 @@ export const fetchRemoveTeacher = (placeId: number, passportId: number) => del<v
 export const fetchLeavePlace = (id: number) => del<void>(`/place/${id}/leave`);
 
 export const fetchPassport = () => get<PassportExtendedDto>('/passport');
+export const fetchUpdatePassport = (params: UpdatePassportInput) => put<void>('/passport', params);
 export const fetchCreateUser = (params: { title: string; description?: string }) => post<number>('/user', params);
 export const fetchUpdateUser = (id: number, params: UpdateUserInput) => put<void>(`/user/${id}`, params);
 

@@ -102,6 +102,11 @@ function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boo
             to: '/teacher/projects',
             icon: <WorkIcon />,
           },
+          {
+            label: 'Мой профиль',
+            to: '/teacher/profile',
+            icon: <PersonIcon />,
+          },
         ],
       },
       {
@@ -109,11 +114,6 @@ function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boo
           {
             label: 'Мои идеи',
             to: `/teacher/ideas`,
-            icon: <LightbulbIcon />,
-          },
-          {
-            label: 'Идеи учеников',
-            to: '/teacher/userIdeas',
             icon: <LightbulbIcon />,
           },
         ],
@@ -180,7 +180,10 @@ function Menu({ setIsMenuOpen, compact = false }: { setIsMenuOpen?: (isOpen: boo
 
   const menuSections: MenuSection[] = [
     ...(role === 'guest' ? [] : MENU[role].map((section, index) => ({ ...section, title: index === 0 ? 'Мой кабинет' : section.title }))),
-    ...(role === 'teacher' ? [{ title: 'Вдохновение', items: [{ label: 'Библиотека идей', to: '/ideas', icon: <LightbulbIcon /> }] }] : []),
+    ...(role === 'teacher' ? [{ title: 'Вдохновение', items: [
+      { label: 'Библиотека идей', to: '/ideas', icon: <LightbulbIcon /> },
+      { label: 'Идеи учеников', to: '/teacher/userIdeas', icon: <LightbulbIcon /> },
+    ] }] : []),
   ];
 
   if (!passport) return null;

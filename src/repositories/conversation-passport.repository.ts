@@ -37,13 +37,12 @@ class ConversationPassportRepository {
 
   // Find passports in conversation
   static async findPassports(
-    conversationId: number
+    conversationId: number,
+    conn?: PoolConnection,
   ): Promise<ConversationPassportRow[]> {
-    const rows = await db.query<ConversationPassportRow>(
-      `SELECT * FROM conversationPassport
-       WHERE conversationId = ?`,
-      [conversationId]
-    );
+    const sql = 'SELECT * FROM conversationPassport WHERE conversationId = ?';
+    const rows = conn ? (await conn.query<ConversationPassportRow[]>(sql, [conversationId]))[0]
+      : await db.query<ConversationPassportRow>(sql, [conversationId]);
     return rows;
   }
 }

@@ -3,6 +3,9 @@ import { db } from '../utils/dbNext.js';
 import type { ConversationRow } from 'entities';
 
 class ConversationRepository {
+  static async lockById(id: number, conn: PoolConnection): Promise<void> {
+    await conn.query('SELECT id FROM conversation WHERE id = ? FOR UPDATE', [id]);
+  }
   static async inspectSeedRows(conn: PoolConnection): Promise<Record<string, unknown>[]> {
     const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM conversation FOR UPDATE');
     return rows;

@@ -8,7 +8,7 @@ const auth = vi.hoisted(() => ({ role: 'guest', passport: null as null | { id: n
 vi.mock('../providers/auth-context.ts', () => ({ useAuth: () => auth }));
 import HeaderView from './Header.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-vi.mock('../requests.ts', () => ({ fetchConversations: vi.fn().mockResolvedValue([]), fetchNotifications: vi.fn().mockResolvedValue([]) }));
+vi.mock('../requests.ts', () => ({ fetchConversations: vi.fn().mockResolvedValue([]), fetchNotificationUnreadCount: vi.fn().mockResolvedValue({ count: 0 }) }));
 function Header() { return <QueryClientProvider client={new QueryClient({ defaultOptions:{queries:{retry:false}} })}><HeaderView /></QueryClientProvider>; }
 import Menu from './Menu.tsx';
 import ProjectsRedirect from '../pages/ProjectsRedirect.tsx';
