@@ -18,13 +18,14 @@ import TeacherCard from '../features/teacher/TeacherCard.tsx';
 import PlaceCard from '../features/place/PlaceCard.tsx';
 import LocationCard from '../features/place/LocationCard.tsx';
 import UserCard from '../features/user/UserCard.tsx';
+import PwaInstallPreview from './PwaInstallPreview.tsx';
 import { cover, meet, place, project, pupil, room, studentIdea, teacher } from './card-gallery-data.ts';
 
 const sections = [
   ['projects', 'Проекты'], ['meets', 'Встречи'], ['calendar', 'Календарь'],
   ['ideas', 'Идеи'], ['teachers', 'Преподаватели'],
   ['places', 'Центры'], ['rooms', 'Залы'], ['users', 'Участники'],
-  ['features', 'Возможности'],
+  ['features', 'Возможности'], ['pwa', 'Установка PWA'],
 ] as const;
 
 interface PreviewProps { title: string; children: ReactNode; role?: ActiveRole; passportId?: number; wide?: boolean }
@@ -107,5 +108,6 @@ export default function CardsPage() {
     <Section id="features" title="Возможности платформы">
       <Preview title="Информационная карточка лендинга"><FeatureCard icon={<SchoolOutlinedIcon color="primary" />} title="Учиться, создавая" description="Находим интересную идею, знакомимся с преподавателем и вместе создаём настоящий проект." /></Preview>
     </Section>
+    <PwaInstallPreview />
   </Stack>;
 }
