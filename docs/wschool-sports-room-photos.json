@@ -1,0 +1,35 @@
+{
+  "sourceFolder": "https://drive.google.com/drive/folders/10K_yqV_c-CPkTudVFrEzKX4vHkBIv4vu",
+  "placeId": 597,
+  "locationId": 8,
+  "photos": [
+    {
+      "fileName": "IMG_20261021_120056.jpg",
+      "driveFileId": "1LZQHLOKihZ7Lyt971n2S0M0QzarCmk6M",
+      "sourceUrl": "https://drive.google.com/file/d/1LZQHLOKihZ7Lyt971n2S0M0QzarCmk6M/view",
+      "sha256": "3e0e382cb67e328dcf234e2482e22f2c77268edf38177c3865a67c6e9f5ee4e3",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/centers/597/rooms/8/3e0e382cb67e328dcf234e2482e22f2c77268edf38177c3865a67c6e9f5ee4e3.jpg"
+    },
+    {
+      "fileName": "IMG_20261021_120114.jpg",
+      "driveFileId": "13zlYiAWUSsgnU2ehzur5xuY7gV-iArVN",
+      "sourceUrl": "https://drive.google.com/file/d/13zlYiAWUSsgnU2ehzur5xuY7gV-iArVN/view",
+      "sha256": "7883face1d8488454b394a04b29e14c50d7653b732b367858585cb5d06dfb881",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/centers/597/rooms/8/7883face1d8488454b394a04b29e14c50d7653b732b367858585cb5d06dfb881.jpg"
+    },
+    {
+      "fileName": "IMG_20261021_120124.jpg",
+      "driveFileId": "1z_UNFoTMgtkEq4v0XMSJU7LccW_4LN9t",
+      "sourceUrl": "https://drive.google.com/file/d/1z_UNFoTMgtkEq4v0XMSJU7LccW_4LN9t/view",
+      "sha256": "2d22354da3bd4f0e9829a016ac03017b6ede2145249923a05276652179577519",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/centers/597/rooms/8/2d22354da3bd4f0e9829a016ac03017b6ede2145249923a05276652179577519.jpg"
+    },
+    {
+      "fileName": "IMG_20261021_120135.jpg",
+      "driveFileId": "1LCeB4P9WTnmD8ZVmy8xTwePPqtDxUzva",
+      "sourceUrl": "https://drive.google.com/file/d/1LCeB4P9WTnmD8ZVmy8xTwePPqtDxUzva/view",
+      "sha256": "fe27df5969498b2a9161d0ca32b5ab1a566e5f8d25c9694996d8a5aae1c23557",
+      "storageUrl": "https://storage.yandexcloud.net/quantum-education/centers/597/rooms/8/fe27df5969498b2a9161d0ca32b5ab1a566e5f8d25c9694996d8a5aae1c23557.jpg"
+    }
+  ]
+}
