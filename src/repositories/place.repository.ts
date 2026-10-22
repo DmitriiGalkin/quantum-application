@@ -27,11 +27,12 @@ class PlaceRepository {
   static async create(data: CreatePlaceInput, conn?: PoolConnection): Promise<number> {
     const result = await (conn ?? db).execute<ResultSetHeader>(
       `INSERT INTO place
-       (title, description, latitude, longitude, address, provider, providerId)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+       (title, description, image, latitude, longitude, address, provider, providerId)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         data.title,
         data.description ?? null,
+        data.image || null,
         data.latitude ?? null,
         data.longitude ?? null,
         data.address ?? null,

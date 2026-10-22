@@ -34,6 +34,10 @@ it('renders every public section, empty messages, optional room fields and hydra
     expect(errors).toEqual([]);
     expect(host.querySelector('h1')?.textContent).toBe('Центр');
     expect(host.querySelector('img')?.getAttribute('alt')).toBe('Центр');
+    for (const section of ['projects', 'rooms', 'directions']) {
+      expect(host.querySelector(`a[href="#${section}"]`)).not.toBeNull();
+      expect(host.querySelector(`#${section}`)).not.toBeNull();
+    }
     for (const text of ['Проекты центра', 'Преподаватели', 'Залы', 'Как добраться', 'Режим работы', 'Проектов центра пока нет.', 'Преподаватели пока не добавлены.', '08:00–20:00']) expect(host.textContent).toContain(text);
     expect(host.textContent).not.toContain('Цена по согласованию');
     expect(host.textContent).not.toContain('Ближайшие занятия');

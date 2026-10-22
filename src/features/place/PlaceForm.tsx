@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import {PlaceScheduleField} from './PlaceScheduleField.tsx';
+import ImageUploadField from '../../components/ImageUploadField.tsx';
 
 import type { PlaceScheduleDayDto } from 'entities';
 
@@ -29,6 +31,10 @@ interface PlaceFormProps {
 }
 
 export default function PlaceForm({ values, loading = false, error = false, submitLabel = 'Сохранить', onChange, onSubmit }: PlaceFormProps) {
+  const [imageUploading, setImageUploading] = useState(false);
+  const busy = loading || imageUploading;
+  const latestValues = useRef(values);
+  useEffect(() => { latestValues.current = values; }, [values]);
   return (
     <Stack spacing={3}>
       <TextField label="Телефон" type="tel" value={values.phone ?? ''} onChange={e => onChange({ ...values, phone: e.target.value })} fullWidth />
@@ -58,17 +64,8 @@ export default function PlaceForm({ values, loading = false, error = false, subm
         required
         fullWidth
       />
-      <TextField
-        label="URL изображения"
-        value={values.image}
-        onChange={e =>
-          onChange({
-            ...values,
-            image: e.target.value,
-          })
-        }
-        fullWidth
-      />
+      <ImageUploadField label="Главное изображение центра" alt={values.title || 'Центр'} value={values.image}
+        onChange={image => onChange({ ...latestValues.current, image })} onBusyChange={setImageUploading} disabled={loading} />
       <TextField
         label="Адрес"
         value={values.address}
@@ -95,7 +92,7 @@ export default function PlaceForm({ values, loading = false, error = false, subm
         variant="contained"
         size="large"
         onClick={onSubmit}
-        disabled={loading || !values.title.trim() || !values.description.trim() || !values.address.trim()}
+        disabled={busy || !values.title.trim() || !values.description.trim() || !values.address.trim()}
       >
         {loading ? 'Сохранение...' : submitLabel}
       </Button>

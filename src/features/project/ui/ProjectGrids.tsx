@@ -6,7 +6,7 @@ type Props = {
   projects: ProjectDto[];
   withoutIdea?: boolean;
   refetch?: () => void;
-  variant?: 'standard' | 'catalog' | 'compact';
+  variant?: 'standard' | 'catalog';
 };
 
 function ProjectGrids({ projects, refetch, withoutIdea, variant = 'standard' }: Props) {

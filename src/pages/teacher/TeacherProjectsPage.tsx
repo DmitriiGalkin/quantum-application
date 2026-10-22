@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import { useFilters } from '../../features/idea/hooks/useFilters.ts';
 
 function TeacherProjectsPage() {
-  const filter = useFilters({ projects: true, compactViews: true, defaultView: 'table', allowWhen: false, allowNearby: false });
+  const filter = useFilters({ projects: true, compactViews: true, defaultView: 'module', allowWhen: false, allowNearby: false });
   const [isCreateProjectDialogOpen, setIsCreateProjectDialogOpen] = useState(false);
 
   const {
@@ -34,7 +34,7 @@ function TeacherProjectsPage() {
       {isPending && <Typography role="status">Загрузка проектов…</Typography>}
       {isProjectsError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить проекты.</Alert>}
       <AISelectIdeaBanner />
-      {!isPending && !isProjectsError && <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea compactViews cardVariant="compact"
+      {!isPending && !isProjectsError && <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea compactViews cardVariant="catalog"
         action={projects.length ? <Button variant="contained" sx={{ whiteSpace: 'nowrap' }} onClick={() => setIsCreateProjectDialogOpen(true)}>Создать проект</Button> : undefined}
         emptyContent={<CreateProjectBlock onCreate={() => setIsCreateProjectDialogOpen(true)} />} />}
     </Box>

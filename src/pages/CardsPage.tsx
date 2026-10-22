@@ -64,9 +64,8 @@ export default function CardsPage() {
     <Section id="projects" title="Проекты">
       <Preview title="Каталог · платная встреча"><ProjectCard project={project} variant="catalog" /></Preview>
       <Preview title="Каталог · бесплатно"><ProjectCard project={{ ...project, meets: [{ ...meet, price: 0 }] }} variant="catalog" /></Preview>
-      <Preview title="Каталог · длинное название и неизвестная цена"><ProjectCard project={{ ...project, title: 'Мастерим большую деревянную табуретку для школьной мастерской и семейных проектов', image: null, meets: [{ ...meet, price: null }] }} variant="catalog" /></Preview>
+      <Preview title="Каталог · длинное название и уточняемая стоимость"><ProjectCard project={{ ...project, title: 'Мастерим большую деревянную табуретку для школьной мастерской и семейных проектов', image: null, meets: [{ ...meet, price: null }] }} variant="catalog" /></Preview>
       <Preview title="Без обложки и назначенной встречи"><ProjectCard project={{ ...project, image: null, meets: [], users: [] }} /></Preview>
-      <Preview title="Компактный список кабинета"><ProjectCard project={project} variant="compact" /></Preview>
       <Preview title="Регулярный кружок · ближайшая встреча не назначена"><ProjectCard project={{ ...project, kind: 'regular', weeklySchedule: [{ weekday: 2, startTime: '15:15', duration: 60 }, { weekday: 4, startTime: '15:15', duration: 60 }], meets: [], users: [] }} /></Preview>
       <Preview title="Подробная карточка на странице проекта" role="user" wide><ProjectCard project={{ ...project, kind: 'regular', weeklySchedule: [{ weekday: 2, startTime: '15:15', duration: 60 }] }} detailed /></Preview>
     </Section>

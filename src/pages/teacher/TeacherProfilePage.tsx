@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -10,6 +9,7 @@ import { Link } from 'react-router-dom';
 import type { PassportExtendedDto } from 'entities';
 import { useAuth } from '../../providers/auth-context.ts';
 import { fetchUpdatePassport } from '../../requests.ts';
+import ImageUploadField from '../../components/ImageUploadField.tsx';
 
 interface ProfileValues {
   title: string;
@@ -25,6 +25,7 @@ export default function TeacherProfilePage() {
 
 function Profile({ passport, refetch }: { passport: PassportExtendedDto; refetch: ReturnType<typeof useAuth>['refetch'] }) {
   const client = useQueryClient();
+  const [imageUploading, setImageUploading] = useState(false);
   const [values, setValues] = useState<ProfileValues>({
     title: passport.title,
     description: passport.description ?? '',
@@ -45,18 +46,17 @@ function Profile({ passport, refetch }: { passport: PassportExtendedDto; refetch
   return <Stack spacing={3} sx={{ maxWidth: 640 }}>
     <Typography component="h1" variant="h4">Профиль преподавателя</Typography>
     <Typography color="text.secondary">Эти сведения видны на вашей странице преподавателя.</Typography>
-    <Avatar src={values.image || undefined} alt={values.title} sx={{ width: 96, height: 96 }}>{values.title?.[0]}</Avatar>
-    <Stack component="form" spacing={2} onSubmit={event => { event.preventDefault(); if (values.title.trim()) save.mutate(); }}>
+    <Stack component="form" spacing={2} onSubmit={event => { event.preventDefault(); if (!imageUploading && values.title.trim()) save.mutate(); }}>
       <TextField label="Имя преподавателя" value={values.title} required fullWidth disabled={save.isPending}
         slotProps={{ htmlInput: { maxLength: 255 } }} onChange={event => setValues({ ...values, title: event.target.value })} />
       <TextField label="О себе" value={values.description} multiline minRows={4} fullWidth disabled={save.isPending}
         onChange={event => setValues({ ...values, description: event.target.value })} />
-      <TextField label="URL фотографии" value={values.image} fullWidth disabled={save.isPending}
-        slotProps={{ htmlInput: { maxLength: 255 } }} onChange={event => setValues({ ...values, image: event.target.value })} />
+      <ImageUploadField label="Фотография преподавателя" alt={values.title} variant="avatar" value={values.image}
+        onChange={image => setValues(current => ({ ...current, image }))} onBusyChange={setImageUploading} disabled={save.isPending} />
       {save.isError && <Alert severity="error">Не удалось сохранить профиль: {save.error.message}</Alert>}
       {save.isSuccess && <Alert severity="success">Профиль сохранён.</Alert>}
       <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap' }}>
-        <Button type="submit" variant="contained" disabled={save.isPending || !values.title.trim()}>
+        <Button type="submit" variant="contained" disabled={save.isPending || imageUploading || !values.title.trim()}>
           {save.isPending ? 'Сохранение…' : 'Сохранить профиль'}
         </Button>
         <Button component={Link} to={`/teachers/${passport.id}`}>Посмотреть профиль</Button>

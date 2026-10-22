@@ -31,7 +31,7 @@ function Profile({ user }: { user: UserDto }) {
     onSuccess: async () => { await refetch(); setEditing(false); } });
   return <Stack spacing={3} sx={{ maxWidth: 640, overflowWrap: 'anywhere' }}>
     <Typography component="h1" variant="h4">Профиль ребёнка</Typography>
-    <Avatar src={user.image || undefined} alt={user.title} sx={{ width: 96, height: 96 }}>{user.title?.[0]}</Avatar>
+    {!editing && <Avatar src={user.image || undefined} alt={user.title} sx={{ width: 96, height: 96 }}>{user.title?.[0]}</Avatar>}
     {editing ? <UserProfileForm values={values} onChange={setValues} onSubmit={() => save.mutate()} onCancel={() => setEditing(false)} loading={save.isPending} error={save.error?.message} />
       : <><Typography variant="h5">{user.title}</Typography><Typography>{user.age === null ? 'Возраст не указан' : `Возраст: ${user.age}`}</Typography>
         {save.isSuccess && <Alert severity="success">Профиль сохранён.</Alert>}

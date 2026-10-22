@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -9,6 +10,7 @@ import { fetchPlaces, fetchLocationsByPlace } from '../../../requests.ts';
 import { formatMoney } from '../../../utils/time.ts';
 import type { ProjectKind, ProjectWeeklySlot } from 'entities';
 import { weekdays } from './weekly-schedule.ts';
+import ImageUploadField from '../../../components/ImageUploadField.tsx';
 
 export interface ProjectFormValues {
   kind: ProjectKind;
@@ -31,6 +33,9 @@ interface ProjectFormProps {
 }
 
 export default function ProjectForm({ values, loading = false, error = false, submitLabel = 'Сохранить', onChange, onSubmit }: ProjectFormProps) {
+  const [imageUploading, setImageUploading] = useState(false);
+  const latestValues = useRef(values);
+  useEffect(() => { latestValues.current = values; }, [values]);
   const { data: places = [] } = useQuery({ queryKey: ['places'], queryFn: fetchPlaces });
   const { data: locations = [], isPending: locationsPending, isError: locationsError } = useQuery({
     queryKey: ['public-place-locations', values.placeId],
@@ -112,21 +117,12 @@ export default function ProjectForm({ values, loading = false, error = false, su
         fullWidth
       />
 
-      <TextField
-        label="URL изображения"
-        value={values.image}
-        onChange={e =>
-          onChange({
-            ...values,
-            image: e.target.value,
-          })
-        }
-        fullWidth
-      />
+      <ImageUploadField label="Обложка проекта" alt={values.title || 'Проект'} value={values.image}
+        onChange={image => onChange({ ...latestValues.current, image })} onBusyChange={setImageUploading} disabled={loading} />
 
       {error && <Alert severity="error">Не удалось сохранить проект</Alert>}
 
-      <Button variant="contained" size="large" onClick={onSubmit} disabled={loading || !values.placeId || !values.title.trim() || !values.description.trim() || !scheduleValid}>
+      <Button variant="contained" size="large" onClick={onSubmit} disabled={loading || imageUploading || !values.placeId || !values.title.trim() || !values.description.trim() || !scheduleValid}>
         {loading ? 'Сохранение...' : submitLabel}
       </Button>
     </Stack>

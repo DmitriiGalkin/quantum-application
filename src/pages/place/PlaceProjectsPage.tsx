@@ -23,7 +23,7 @@ export default function PlaceProjectsPage() {
 
   return (
     <Stack spacing={3}>
-      <Projects title="Проекты центра" filter={filter} projects={projects} refetch={refetch} withoutIdea compactViews cardVariant="compact" emptyText="В центре пока нет проектов." />
+      <Projects title="Проекты центра" filter={filter} projects={projects} refetch={refetch} withoutIdea compactViews cardVariant="catalog" emptyText="В центре пока нет проектов." />
     </Stack>
   );
 }

@@ -32,7 +32,7 @@ function UserProjectsPage() {
       {isProjectsError && <Alert severity="error" action={<Button onClick={() => void refetch()}>Повторить</Button>}>Не удалось загрузить проекты.</Alert>}
 
       {!isProjectsLoading && !isProjectsError && (
-        <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea cardVariant="compact" emptyText="У ребёнка пока нет проектов." />
+        <Projects title="Мои проекты" filter={filter} projects={projects} refetch={refetch} withoutIdea cardVariant="catalog" emptyText="У ребёнка пока нет проектов." />
       )}
       <Button component={Link} to="/" sx={{ mt: 2 }}>Выбрать проект</Button>
     </Box></FamilyAccess>

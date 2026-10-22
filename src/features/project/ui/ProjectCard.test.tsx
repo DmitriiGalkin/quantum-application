@@ -31,7 +31,7 @@ it('uses the main project card in the project grid', () => {
 
 it('keeps meeting, venue, description and teacher in the same order across card variants', () => {
   const client = new QueryClient();
-  const render = (variant: 'catalog' | 'compact' | 'standard') => {
+  const render = (variant: 'catalog' | 'standard') => {
     const host = globalThis.document.createElement('div');
     host.innerHTML = renderToString(<QueryClientProvider client={client}><MemoryRouter>
       <ProjectCard project={galleryProject} variant={variant} />
@@ -45,11 +45,18 @@ it('keeps meeting, venue, description and teacher in the same order across card 
     const standard = render('standard').textContent!;
     expect(standard.indexOf('900 ₽')).toBeLessThan(standard.indexOf('Творческая школа'));
     expect(standard.indexOf('Творческая школа')).toBeLessThan(standard.indexOf('От эскиза'));
-    const compact = render('compact');
-    expect(compact.textContent).toContain('900 ₽');
-    expect(compact.textContent).toContain('Творческая школа');
-    expect(compact.textContent!.indexOf('900 ₽')).toBeLessThan(compact.textContent!.indexOf('Творческая школа'));
-    expect(compact.textContent).not.toContain('От эскиза');
+  } finally { client.clear(); }
+});
+
+it('shows an unknown cost without calling it free', () => {
+  const client = new QueryClient();
+  try {
+    const project = { ...galleryProject, meets: [{ ...galleryProject.meets[0], price: null }] };
+    const html = renderToString(<QueryClientProvider client={client}><MemoryRouter>
+      <ProjectCard project={project} variant="catalog" />
+    </MemoryRouter></QueryClientProvider>);
+    expect(html).toContain('Стоимость уточняется');
+    expect(html).not.toContain('Цена не указана');
   } finally { client.clear(); }
 });
 

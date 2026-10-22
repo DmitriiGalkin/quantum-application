@@ -42,7 +42,7 @@ type Props = {
   withoutIdea?: boolean;
   refetch?: () => void;
   detailed?: boolean;
-  variant?: 'standard' | 'catalog' | 'compact';
+  variant?: 'standard' | 'catalog';
 };
 
 function ProjectCard({ project, refetch, detailed = false, variant = 'standard' }: Props) {
@@ -195,34 +195,37 @@ function ProjectCard({ project, refetch, detailed = false, variant = 'standard' 
       Занятия: {formatWeeklySchedule(project.weeklySchedule!)}
     </Typography>}
     {firstMeet ? <>
-      <Stack direction="row" sx={{ alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.5 }}>
-        <Typography component={Link} to={`/project/${project.id}#meet-${firstMeet.id}`} variant="body2"
-          sx={{ fontWeight: 700, color: 'inherit', overflowWrap: 'anywhere' }}>
-          {date} · {time}{endTime ? `–${endTime}` : ''}
-        </Typography>
+      <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.5 }}>
+        <Stack direction="row" sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 0.75 }}>
+          <Typography component={Link} to={`/project/${project.id}#meet-${firstMeet.id}`} variant="body2"
+            sx={{ fontWeight: 700, color: 'inherit', overflowWrap: 'anywhere' }}>
+            {date} · {time}{endTime ? `–${endTime}` : ''}
+          </Typography>
+          {status && <Chip label={status.label} color={status.color} size="small" />}
+        </Stack>
         {firstMeet.price === 0 ? <Chip size="small" label="Бесплатно" />
-          : <Typography variant="body2" sx={{ fontWeight: 600 }}>{firstMeet.price == null ? 'Цена не указана' : `${firstMeet.price} ₽`}</Typography>}
+          : <Typography variant="body2" sx={{ fontWeight: 600 }}>{firstMeet.price == null ? 'Стоимость уточняется' : `${firstMeet.price.toLocaleString('ru-RU')} ₽`}</Typography>}
       </Stack>
       {freePlaces !== null && <Typography variant="caption" color={freePlaces === 0 ? 'error' : 'text.secondary'}>
         {freePlaces === 0 ? 'Мест нет' : `Свободно мест: ${freePlaces}`}
       </Typography>}
-      {status && <Chip label={status.label} color={status.color} size="small" sx={{ alignSelf: 'flex-start' }} />}
     </> : <Typography variant="body2" color="text.secondary">
       {project.kind === 'regular' ? 'Запись на ближайшее занятие пока недоступна' : 'Ближайшая встреча не назначена'}
     </Typography>}
   </Stack>;
-  const title = <Stack direction="row" sx={{ gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+  const title = <><Stack direction="row" sx={{ gap: 1, alignItems: 'flex-start', minWidth: 0 }}>
+    {project.kind === 'regular' && <Chip label="Кружок / секция" size="small" sx={{ flexShrink: 0 }} />}
     <Typography component={detailed ? 'h1' : 'h2'} variant={detailed ? 'h4' : 'h6'}
-      sx={{ flex: '1 1 140px', minWidth: 0, fontWeight: 600, overflowWrap: 'anywhere' }}>
+      sx={{ flex: '1 1 0', minWidth: 0, fontWeight: 600, overflowWrap: 'anywhere' }}>
       <Box component={Link} to={`/project/${project.id}`} sx={{ color: 'inherit', textDecoration: 'none' }}>{project.title}</Box>
     </Typography>
-    {project.kind === 'regular' && <Chip label="Кружок / секция" size="small" />}
+  </Stack>
     {detailed && project.idea?.id && <Tooltip title="Посмотреть исходную идею проекта">
       <Button component={Link} to={`/idea/${project.idea.id}`} aria-label="Исходная идея" size="small" startIcon={<LinkIcon fontSize="small" />}>
         Исходная идея
       </Button>
     </Tooltip>}
-  </Stack>;
+  </>;
   const description = project.description && <Typography variant={detailed ? 'body1' : 'body2'} color="text.secondary"
     sx={{ mt: 1, ...(!detailed && { display: '-webkit-box', WebkitLineClamp: variant === 'catalog' ? 2 : 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }),
       whiteSpace: detailed ? 'pre-line' : undefined, overflowWrap: 'anywhere' }}>
@@ -231,37 +234,19 @@ function ProjectCard({ project, refetch, detailed = false, variant = 'standard' 
 
   return (
     <Card sx={{ borderRadius: 3, height: '100%', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-      {variant === 'compact' && !detailed ? <>
-        <Stack direction="row" sx={{ minWidth: 0 }}>
-          <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}
-            sx={{ width: 104, flexShrink: 0, alignSelf: 'flex-start' }}>
-            <ProjectImage src={project.image} alt={project.title || 'Проект'} aspectRatio="1 / 1" />
-          </CardActionArea>
-          <CardContent sx={{ minWidth: 0, p: 1.5, '&:last-child': { pb: 1.5 } }}>
-            {title}
-            <Box sx={{ mt: 1 }}>{meetingSummary}</Box>
-          </CardContent>
-        </Stack>
-        <Box sx={{ px: 1.5, pb: 1.5 }}><CardVenueLine id={meetingPlace.id} title={meetingPlace.title || 'Центр не указан'}
+      <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}>
+        <ProjectImage src={project.image} alt={project.title || 'Проект'} />
+      </CardActionArea>
+      <CardContent sx={{ flexGrow: variant === 'catalog' ? 1 : undefined }}>
+        {title}
+        <Box sx={{ mt: 1.5, p: 1.25, borderRadius: 2, bgcolor: 'action.hover' }}>{meetingSummary}</Box>
+        <Box sx={{ mt: 1.5 }}><CardVenueLine id={meetingPlace.id} title={meetingPlace.title || 'Центр не указан'}
           address={meetingPlace.address} room={meetingRoom?.title} /></Box>
-        <Stack sx={{ borderTop: 1, borderColor: 'divider', px: 1.5, py: 1 }}>
-          <CardTeacherLine id={project.passport.id} title={project.passport.title} image={project.passport.image} action={metaAction} />
-        </Stack>
-      </> : <>
-        <CardActionArea onClick={() => navigate(`/project/${project.id}`)} aria-label={`Открыть проект ${project.title}`}>
-          <ProjectImage src={project.image} alt={project.title || 'Проект'} />
-        </CardActionArea>
-        <CardContent sx={{ flexGrow: variant === 'catalog' ? 1 : undefined }}>
-          {title}
-          <Box sx={{ mt: 1.5, p: 1.25, borderRadius: 2, bgcolor: 'action.hover' }}>{meetingSummary}</Box>
-          <Box sx={{ mt: 1.5 }}><CardVenueLine id={meetingPlace.id} title={meetingPlace.title || 'Центр не указан'}
-            address={meetingPlace.address} room={meetingRoom?.title} /></Box>
-          {description}
-        </CardContent>
-        <Stack sx={{ borderTop: 1, borderColor: 'divider', px: 2, py: 1.5 }}>
-          <CardTeacherLine id={project.passport.id} title={project.passport.title} image={project.passport.image} action={metaAction} />
-        </Stack>
-      </>}
+        {description}
+      </CardContent>
+      <Stack sx={{ borderTop: 1, borderColor: 'divider', px: 2, py: 1.5 }}>
+        <CardTeacherLine id={project.passport.id} title={project.passport.title} image={project.passport.image} action={metaAction} />
+      </Stack>
 
         {detailed && role === 'user' && !isMember && (
           <CardContent sx={{ bgcolor: 'action.hover', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>

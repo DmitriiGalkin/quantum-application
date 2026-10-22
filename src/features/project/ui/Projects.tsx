@@ -23,7 +23,7 @@ type Props = {
   compactViews?: boolean;
   action?: ReactNode;
   emptyContent?: ReactNode;
-  cardVariant?: 'standard' | 'catalog' | 'compact';
+  cardVariant?: 'standard' | 'catalog';
 };
 
 function Projects({ title, filter, projects, refetch, withoutIdea, catalog, preserveOrder, emptyText, withoutFilters, compactViews, action, emptyContent, cardVariant = 'standard' }: Props) {

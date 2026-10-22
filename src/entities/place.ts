@@ -32,6 +32,7 @@ export interface Place {
 export type CreatePlaceInput = {
   title: string;
   description?: string | null;
+  image?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   address?: string | null;
