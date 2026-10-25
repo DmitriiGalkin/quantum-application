@@ -1,6 +1,6 @@
-const CACHE_NAME = 'quantum-pwa-v4';
+const CACHE_NAME = 'quantum-pwa-v5';
 
-const STATIC_ASSETS = ['/', '/manifest.webmanifest', '/brand-mark.svg', '/icons/192.png', '/icons/512.png', '/icons/maskable-512.png', '/fonts/nunito.css', '/fonts/nunito-800.ttf'];
+const STATIC_ASSETS = ['/', '/manifest.webmanifest', '/brand-mark.svg', '/icons/192.png', '/icons/512.png', '/icons/maskable-512.png', '/icons/notification-badge.png', '/fonts/nunito.css', '/fonts/nunito-800.ttf'];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -37,7 +37,7 @@ self.addEventListener('push', event => {
     try { payload = event.data?.json() || {}; } catch { payload = {}; }
     await self.registration.showNotification(payload.title || 'Quantum', {
       body: payload.body || 'Есть новые сообщения или важные изменения',
-      icon: '/icons/192.png', badge: '/icons/192.png', tag: payload.tag || 'quantum',
+      icon: '/icons/192.png', badge: '/icons/notification-badge.png', tag: payload.tag || 'quantum',
       data: { url: typeof payload.url === 'string' && payload.url.startsWith('/') && !payload.url.startsWith('//') ? payload.url : '/chats' },
     });
     if (navigator.setAppBadge) await navigator.setAppBadge();

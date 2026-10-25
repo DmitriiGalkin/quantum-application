@@ -7742,6 +7742,746 @@
           "sha256": "0707cf685e37a91743257b9857e41a9073c51ee7ccfa0e4117a1e14d99e9bd2f"
         }
       ]
+    },
+    {
+      "id": "craft-bookshelf-20261025",
+      "name": "Книжный стеллаж из дерева",
+      "description": "Высокий открытый стеллаж для книг. Изучаем разметку одинаковых полок, сборку прямоугольного каркаса и проверку диагоналей. Крепление высокого изделия к стене и допустимую нагрузку определяет взрослый.",
+      "photos": [
+        {
+          "id": "craft-bookshelf-20261025-cover-v1",
+          "fileName": "bookshelf-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-bookshelf-20261025/6f70b7704ddf7ca0931ac754abacea474004f777f470e5ce8e80da206a672646.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1QeVxNQrxZXkXVcul1h4IdYuhyUwihjwa",
+            "1ap-vVX-LMEqUY8LM0BV5tZ6_eWdPjUaH",
+            "13ppdBLfqFeRp1tGqrYwyGFzNP4_US1Ai"
+          ],
+          "referencePhotoIds": [
+            "1QeVxNQrxZXkXVcul1h4IdYuhyUwihjwa",
+            "13ppdBLfqFeRp1tGqrYwyGFzNP4_US1Ai"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-bookshelf-20261025-original-1",
+          "fileName": "IMG_20261025_142022.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-bookshelf-20261025/d7e07d399f86d752848ee20a6fdcdf71d04ebd95cd7d4ede99a424b638cccab8.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1QeVxNQrxZXkXVcul1h4IdYuhyUwihjwa",
+          "sha256": "d7e07d399f86d752848ee20a6fdcdf71d04ebd95cd7d4ede99a424b638cccab8"
+        },
+        {
+          "id": "craft-bookshelf-20261025-original-2",
+          "fileName": "IMG_20261025_142032.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-bookshelf-20261025/46c92e48e874eb6cfcaf908b6000209fe349794c57c4e0079549c1bdd2131f6e.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1ap-vVX-LMEqUY8LM0BV5tZ6_eWdPjUaH",
+          "sha256": "46c92e48e874eb6cfcaf908b6000209fe349794c57c4e0079549c1bdd2131f6e"
+        },
+        {
+          "id": "craft-bookshelf-20261025-original-3",
+          "fileName": "IMG_20261025_142039.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-bookshelf-20261025/e4bb01579fe9356cec933fbbb24a926a04504a39944dfd8ddb983800519b77e0.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "13ppdBLfqFeRp1tGqrYwyGFzNP4_US1Ai",
+          "sha256": "e4bb01579fe9356cec933fbbb24a926a04504a39944dfd8ddb983800519b77e0"
+        }
+      ]
+    },
+    {
+      "id": "craft-play-frame-20261025",
+      "name": "Деревянный лазательный модуль",
+      "description": "Уличный модуль с лестницами и панелью. Рассматриваем геометрию каркаса, поперечины и аккуратную обработку кромок. Несущие соединения, устойчивость и безопасность детского использования рассчитывает и проверяет специалист.",
+      "photos": [
+        {
+          "id": "craft-play-frame-20261025-cover-v1",
+          "fileName": "play-frame-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-play-frame-20261025/b8f56262ed4ced369b9357665f25a3c378ef53e97b1608343d21e32fb7c49900.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1ONpcp3pXtWcxVPvQryPGMiXnta9GiYzO",
+            "1tKUr6OO5iGA-_ews4tQyE5Rw3ias3jaY",
+            "1X0VTJaRTsdInE3i_w37l9p3Ibb3204hr",
+            "1mxKW5hiiaezw-3brqXgoA9l1yvQHm_kN"
+          ],
+          "referencePhotoIds": [
+            "1ONpcp3pXtWcxVPvQryPGMiXnta9GiYzO",
+            "1mxKW5hiiaezw-3brqXgoA9l1yvQHm_kN"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-play-frame-20261025-original-1",
+          "fileName": "IMG_20261025_142106.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-play-frame-20261025/10df504bfe48a65517dcd95d581547df18f051bfc834808386dcbbe870b9b3b6.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1ONpcp3pXtWcxVPvQryPGMiXnta9GiYzO",
+          "sha256": "10df504bfe48a65517dcd95d581547df18f051bfc834808386dcbbe870b9b3b6"
+        },
+        {
+          "id": "craft-play-frame-20261025-original-2",
+          "fileName": "IMG_20261025_142112.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-play-frame-20261025/2fca32123a46e2506524c3295f71657c0cee13f6e86ae540c3b83cee0a655db4.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1tKUr6OO5iGA-_ews4tQyE5Rw3ias3jaY",
+          "sha256": "2fca32123a46e2506524c3295f71657c0cee13f6e86ae540c3b83cee0a655db4"
+        },
+        {
+          "id": "craft-play-frame-20261025-original-3",
+          "fileName": "IMG_20261025_142118.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-play-frame-20261025/49bda5db9abf54c31a1fe5d7dfb58abadf86262277f79001c04b66191d8d87d8.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1X0VTJaRTsdInE3i_w37l9p3Ibb3204hr",
+          "sha256": "49bda5db9abf54c31a1fe5d7dfb58abadf86262277f79001c04b66191d8d87d8"
+        },
+        {
+          "id": "craft-play-frame-20261025-original-4",
+          "fileName": "IMG_20261025_142124.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-play-frame-20261025/456d20da4277f6938f2fc238aa1e5750d2d38f84883a1640606e588fc95c4a19.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1mxKW5hiiaezw-3brqXgoA9l1yvQHm_kN",
+          "sha256": "456d20da4277f6938f2fc238aa1e5750d2d38f84883a1640606e588fc95c4a19"
+        }
+      ]
+    },
+    {
+      "id": "craft-picnic-20261025",
+      "name": "Детский стол со скамейками для пикника",
+      "description": "Невысокий стол с двумя соединёнными скамьями. Учимся размечать симметричные детали, соединять опоры и обрабатывать доски. Устойчивость, нагрузку и безопасность готовой мебели проверяет взрослый.",
+      "photos": [
+        {
+          "id": "craft-picnic-20261025-cover-v1",
+          "fileName": "picnic-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-picnic-20261025/d85040f354c3bf3d1c4147a641655041b94ebedf9ea68db5384a8a4c0d6f3c9c.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1GSvDzhd0lNy5IMAYXJXjH9qA4kIbeOkK",
+            "1SOV5c8Siypd3whJOJM-3yJORNFLLPdYy",
+            "1StwwtbDX1UxUzA9Og9PlivHw-XCcBRLM",
+            "1goM-meWuk7KhBMJmOGkVCVZzJWLC61lo"
+          ],
+          "referencePhotoIds": [
+            "1GSvDzhd0lNy5IMAYXJXjH9qA4kIbeOkK",
+            "1goM-meWuk7KhBMJmOGkVCVZzJWLC61lo"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-picnic-20261025-original-1",
+          "fileName": "IMG_20261025_142136.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-picnic-20261025/ac48e72239358b8dfda7d7595f1d2c2c9745b5c5bb8172d0fe925d7df57a29b8.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1GSvDzhd0lNy5IMAYXJXjH9qA4kIbeOkK",
+          "sha256": "ac48e72239358b8dfda7d7595f1d2c2c9745b5c5bb8172d0fe925d7df57a29b8"
+        },
+        {
+          "id": "craft-picnic-20261025-original-2",
+          "fileName": "IMG_20261025_142144.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-picnic-20261025/29306c5a5f759fe3970345a48c20aa7e4f01ba36133bf04a5dfde15ac2d281ff.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1SOV5c8Siypd3whJOJM-3yJORNFLLPdYy",
+          "sha256": "29306c5a5f759fe3970345a48c20aa7e4f01ba36133bf04a5dfde15ac2d281ff"
+        },
+        {
+          "id": "craft-picnic-20261025-original-3",
+          "fileName": "IMG_20261025_142147.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-picnic-20261025/c32f11637240a4bfdf456ff0be8bb0c5980126469e60a626e5b535a54c6c6423.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1StwwtbDX1UxUzA9Og9PlivHw-XCcBRLM",
+          "sha256": "c32f11637240a4bfdf456ff0be8bb0c5980126469e60a626e5b535a54c6c6423"
+        },
+        {
+          "id": "craft-picnic-20261025-original-4",
+          "fileName": "IMG_20261025_142155.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-picnic-20261025/5abe413f67738101462045e0ecad1b6741351ecef04f531712d3adcba06cfffa.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1goM-meWuk7KhBMJmOGkVCVZzJWLC61lo",
+          "sha256": "5abe413f67738101462045e0ecad1b6741351ecef04f531712d3adcba06cfffa"
+        }
+      ]
+    },
+    {
+      "id": "craft-step-shelf-20261025",
+      "name": "Складная деревянная этажерка",
+      "description": "Открытая этажерка с наклонными боковыми опорами и несколькими полками. Изучаем одинаковые уровни, соединение реек и устойчивую постановку. Подвижные соединения и фиксацию конструкции проверяет взрослый.",
+      "photos": [
+        {
+          "id": "craft-step-shelf-20261025-cover-v1",
+          "fileName": "step-shelf-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-step-shelf-20261025/2372f168b3b1078e1b385bc879c175b66f15e1452a6770abaf1ce41d09b37571.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1YUkdufiMLMebTsOXpAUmi72o_Xceo53s",
+            "1GU-VkdSi3WAtSGkMBiDSKOo_5HtLmGJx",
+            "14KA0BWidd5byyQoZqrB5LvnMsPYj_NsB",
+            "1RXOLD8HyJEdHjDeU1WlD0xl_MX99LdFW"
+          ],
+          "referencePhotoIds": [
+            "1YUkdufiMLMebTsOXpAUmi72o_Xceo53s",
+            "1RXOLD8HyJEdHjDeU1WlD0xl_MX99LdFW"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-step-shelf-20261025-original-1",
+          "fileName": "IMG_20261025_142221.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-step-shelf-20261025/803d45336a5e102e6ac68958a5ea4a65d600969ae2346316342206a8e23acd60.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1YUkdufiMLMebTsOXpAUmi72o_Xceo53s",
+          "sha256": "803d45336a5e102e6ac68958a5ea4a65d600969ae2346316342206a8e23acd60"
+        },
+        {
+          "id": "craft-step-shelf-20261025-original-2",
+          "fileName": "IMG_20261025_142226.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-step-shelf-20261025/c0818edcfb84dfa68bc59dc0b4f621e389e9414cd7f8b5e3ed0aac414d4e96d3.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1GU-VkdSi3WAtSGkMBiDSKOo_5HtLmGJx",
+          "sha256": "c0818edcfb84dfa68bc59dc0b4f621e389e9414cd7f8b5e3ed0aac414d4e96d3"
+        },
+        {
+          "id": "craft-step-shelf-20261025-original-3",
+          "fileName": "IMG_20261025_142232.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-step-shelf-20261025/c4c06b5ba23a5e3e41bc50c692e0b868dc651fb1169a1aa5b816b8009a185e34.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "14KA0BWidd5byyQoZqrB5LvnMsPYj_NsB",
+          "sha256": "c4c06b5ba23a5e3e41bc50c692e0b868dc651fb1169a1aa5b816b8009a185e34"
+        },
+        {
+          "id": "craft-step-shelf-20261025-original-4",
+          "fileName": "IMG_20261025_142252.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-step-shelf-20261025/5500a0afe531b02ab9afd5d90be9449d268c93a3910bcae5d39eacea4554d2ee.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1RXOLD8HyJEdHjDeU1WlD0xl_MX99LdFW",
+          "sha256": "5500a0afe531b02ab9afd5d90be9449d268c93a3910bcae5d39eacea4554d2ee"
+        }
+      ]
+    },
+    {
+      "id": "craft-wash-bench-20261025",
+      "name": "Детская игровая мойка из дерева",
+      "description": "Невысокая деревянная игровая мойка с металлической чашей и нижней полкой. Учимся размечать проём под чашу и собирать каркас. Кромки, устойчивость и безопасное использование проверяет взрослый.",
+      "photos": [
+        {
+          "id": "craft-wash-bench-20261025-cover-v1",
+          "fileName": "wash-bench-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wash-bench-20261025/96e5c8901abd3c169944475cf73e616634436f8bbc4dda158639ab3c1d352e09.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "147HWHmzBl_R0D_j5OOeHgUj41tYSR0I1",
+            "1G_c4fCPtC-md-1mTVd6KS7I2CQlWtXbP",
+            "1epxT2bkLUXQQVrx1OKVZlNmGG2Bzp3MW",
+            "1Skn9CdSIekhPQzTttc-msrSOTcjHwZSG",
+            "12nH41h_1YaII3NvoPCsH5yXytMM4zeUe",
+            "1pRBCDuFwmzUtPXRiQoEqXaIpnrOqA1vK"
+          ],
+          "referencePhotoIds": [
+            "147HWHmzBl_R0D_j5OOeHgUj41tYSR0I1",
+            "1pRBCDuFwmzUtPXRiQoEqXaIpnrOqA1vK"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-wash-bench-20261025-original-1",
+          "fileName": "IMG_20261025_142529.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wash-bench-20261025/ea30de52a7926f2508ff4f8895f1b23184e0d84ac5e47c4679613dcde8355c8b.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "147HWHmzBl_R0D_j5OOeHgUj41tYSR0I1",
+          "sha256": "ea30de52a7926f2508ff4f8895f1b23184e0d84ac5e47c4679613dcde8355c8b"
+        },
+        {
+          "id": "craft-wash-bench-20261025-original-2",
+          "fileName": "IMG_20261025_142532.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wash-bench-20261025/207b398ea3ec148efca11463270adf20a91ce234102b88a80338e167f3b7e71c.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1G_c4fCPtC-md-1mTVd6KS7I2CQlWtXbP",
+          "sha256": "207b398ea3ec148efca11463270adf20a91ce234102b88a80338e167f3b7e71c"
+        },
+        {
+          "id": "craft-wash-bench-20261025-original-3",
+          "fileName": "IMG_20261025_142557.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wash-bench-20261025/56bae7c7339795eb21a6a18a210ae2a9ed933fc9e5d3edb6ab0b9d1ee8fd37cd.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1epxT2bkLUXQQVrx1OKVZlNmGG2Bzp3MW",
+          "sha256": "56bae7c7339795eb21a6a18a210ae2a9ed933fc9e5d3edb6ab0b9d1ee8fd37cd"
+        },
+        {
+          "id": "craft-wash-bench-20261025-original-4",
+          "fileName": "IMG_20261025_142602.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wash-bench-20261025/b2e68c16cdcb44e8944311e1dd1d75f88417867e9408fce89ddd2e7292984eaf.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1Skn9CdSIekhPQzTttc-msrSOTcjHwZSG",
+          "sha256": "b2e68c16cdcb44e8944311e1dd1d75f88417867e9408fce89ddd2e7292984eaf"
+        },
+        {
+          "id": "craft-wash-bench-20261025-original-5",
+          "fileName": "IMG_20261025_142609.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wash-bench-20261025/2505342ff31f420bfee4d5000195736bbc4cfdad2cd1ccf7413a916f2b0a86f2.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "12nH41h_1YaII3NvoPCsH5yXytMM4zeUe",
+          "sha256": "2505342ff31f420bfee4d5000195736bbc4cfdad2cd1ccf7413a916f2b0a86f2"
+        },
+        {
+          "id": "craft-wash-bench-20261025-original-6",
+          "fileName": "IMG_20261025_142616.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wash-bench-20261025/8fbb32002c8e091b5cee2ca78da4997c181b16cc56b7ba6d49d07d2254afe8d5.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1pRBCDuFwmzUtPXRiQoEqXaIpnrOqA1vK",
+          "sha256": "8fbb32002c8e091b5cee2ca78da4997c181b16cc56b7ba6d49d07d2254afe8d5"
+        }
+      ]
+    },
+    {
+      "id": "craft-flower-stand-20261025",
+      "name": "Напольная этажерка с фигурными боковинами",
+      "description": "Лёгкая деревянная этажерка с несколькими полками и треугольными боковыми вершинами. Учимся повторять форму деталей, выдерживать уровни полок и проверять диагонали каркаса.",
+      "photos": [
+        {
+          "id": "craft-flower-stand-20261025-cover-v1",
+          "fileName": "flower-stand-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-flower-stand-20261025/8c932e211a35d91b036af0c4fbeb546dca934a6dbe9ec60706dcf97cf33b54cf.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1WDbkDSaWDMXNHjWOZanwFNCditevyoRG",
+            "1qx40cMlB_wwxo6tUOMMaADIFur42WfYH",
+            "1ft7LyCN7aus61eb4rG5jVB0fRzmndVJK",
+            "1DQFzOIcEaH-BWEbzsuwRLd66Yz48EPSp",
+            "1d29jUjZs4PIJkkj_iENFgbZDcOxvDAkG"
+          ],
+          "referencePhotoIds": [
+            "1WDbkDSaWDMXNHjWOZanwFNCditevyoRG",
+            "1d29jUjZs4PIJkkj_iENFgbZDcOxvDAkG"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-flower-stand-20261025-original-1",
+          "fileName": "IMG_20261025_142655.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-flower-stand-20261025/de8ce8d5d309ee4eb96b2a89fb67c6e19aa33c7ce342bcf76d171b960b3c7a8c.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1WDbkDSaWDMXNHjWOZanwFNCditevyoRG",
+          "sha256": "de8ce8d5d309ee4eb96b2a89fb67c6e19aa33c7ce342bcf76d171b960b3c7a8c"
+        },
+        {
+          "id": "craft-flower-stand-20261025-original-2",
+          "fileName": "IMG_20261025_142704.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-flower-stand-20261025/90973b9c19c5f66f8c0988c43044000ecd5ca370aeac9a95967bf0b36cf04462.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1qx40cMlB_wwxo6tUOMMaADIFur42WfYH",
+          "sha256": "90973b9c19c5f66f8c0988c43044000ecd5ca370aeac9a95967bf0b36cf04462"
+        },
+        {
+          "id": "craft-flower-stand-20261025-original-3",
+          "fileName": "IMG_20261025_142709.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-flower-stand-20261025/5a982794ee0b30017032366c8f888371fc62f2fba59f321d700fd48f9f81db12.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1ft7LyCN7aus61eb4rG5jVB0fRzmndVJK",
+          "sha256": "5a982794ee0b30017032366c8f888371fc62f2fba59f321d700fd48f9f81db12"
+        },
+        {
+          "id": "craft-flower-stand-20261025-original-4",
+          "fileName": "IMG_20261025_142712.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-flower-stand-20261025/4895c851fc54d6b43fe55e37f10c87a7bf67c052e8ca637c9ef1fb159e759f5e.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1DQFzOIcEaH-BWEbzsuwRLd66Yz48EPSp",
+          "sha256": "4895c851fc54d6b43fe55e37f10c87a7bf67c052e8ca637c9ef1fb159e759f5e"
+        },
+        {
+          "id": "craft-flower-stand-20261025-original-5",
+          "fileName": "IMG_20261025_142717.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-flower-stand-20261025/8a447c0a3ac52e90579f6b42e2d6e6d685de9ba98042b743ee34ccb7ba8a1ef6.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1d29jUjZs4PIJkkj_iENFgbZDcOxvDAkG",
+          "sha256": "8a447c0a3ac52e90579f6b42e2d6e6d685de9ba98042b743ee34ccb7ba8a1ef6"
+        }
+      ]
+    },
+    {
+      "id": "craft-chair-ladder-20261025",
+      "name": "Стул-стремянка из дерева",
+      "description": "Стул с нижней ступенью и боковыми опорами. Изучаем расположение ступени, сиденья и устойчивых ножек. Прочность и безопасность использования как ступени проверяет специалист; ребёнок собирает изделие только под руководством взрослого.",
+      "photos": [
+        {
+          "id": "craft-chair-ladder-20261025-cover-v1",
+          "fileName": "chair-ladder-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-chair-ladder-20261025/86f542649e001aeb74eed5919111fba38259c4dc7c931b7f0981de0c911c3810.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1PTh3QlJ3rCL1GfSuKgM8c7DbYQms8wp-",
+            "1bom8RrhjbUdIMYsv-rKoErbf6i7TXhLY",
+            "1PKfIGqwK-tlcDoRl1VcG8YDgLiy-59C4",
+            "1YZF9Y0Cbdo-vkLPrek4Z8yXL1g1YX7wy",
+            "1zekK-GI_xu20B_COMdXNLk-e_Crp_S6E",
+            "1xCx9pgYawBlRoTiyh9YMgR2pylZgREIF"
+          ],
+          "referencePhotoIds": [
+            "1PTh3QlJ3rCL1GfSuKgM8c7DbYQms8wp-",
+            "1xCx9pgYawBlRoTiyh9YMgR2pylZgREIF"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-chair-ladder-20261025-original-1",
+          "fileName": "IMG_20261025_142814.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-chair-ladder-20261025/76797310cd680d78354a667719014a9b6a4edad2de702f2347a26a75328e51f7.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1PTh3QlJ3rCL1GfSuKgM8c7DbYQms8wp-",
+          "sha256": "76797310cd680d78354a667719014a9b6a4edad2de702f2347a26a75328e51f7"
+        },
+        {
+          "id": "craft-chair-ladder-20261025-original-2",
+          "fileName": "IMG_20261025_142816.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-chair-ladder-20261025/9e5663842912b6310cae567b13b5e2ad8ed3b73d4874fa1d512238dbbb97dcb9.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1bom8RrhjbUdIMYsv-rKoErbf6i7TXhLY",
+          "sha256": "9e5663842912b6310cae567b13b5e2ad8ed3b73d4874fa1d512238dbbb97dcb9"
+        },
+        {
+          "id": "craft-chair-ladder-20261025-original-3",
+          "fileName": "IMG_20261025_142821.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-chair-ladder-20261025/d33319f48777fdbbda42152072e9a7243e5509ddaa6ded0c5b528bba733875e5.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1PKfIGqwK-tlcDoRl1VcG8YDgLiy-59C4",
+          "sha256": "d33319f48777fdbbda42152072e9a7243e5509ddaa6ded0c5b528bba733875e5"
+        },
+        {
+          "id": "craft-chair-ladder-20261025-original-4",
+          "fileName": "IMG_20261025_142829.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-chair-ladder-20261025/6543c64188aeb042fc0213bb59b2afbed5d39a47275635a62a142213c4a6f5c7.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1YZF9Y0Cbdo-vkLPrek4Z8yXL1g1YX7wy",
+          "sha256": "6543c64188aeb042fc0213bb59b2afbed5d39a47275635a62a142213c4a6f5c7"
+        },
+        {
+          "id": "craft-chair-ladder-20261025-original-5",
+          "fileName": "IMG_20261025_142832.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-chair-ladder-20261025/1f82a6c457b0c46e65f01ac8b14d5ac813aae397c9349c784cc937f1fadd4046.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1zekK-GI_xu20B_COMdXNLk-e_Crp_S6E",
+          "sha256": "1f82a6c457b0c46e65f01ac8b14d5ac813aae397c9349c784cc937f1fadd4046"
+        },
+        {
+          "id": "craft-chair-ladder-20261025-original-6",
+          "fileName": "IMG_20261025_142837.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-chair-ladder-20261025/f1489da9bb85b4602d1d494a68825f311892819fdf2201d374af075ff7556fa3.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1xCx9pgYawBlRoTiyh9YMgR2pylZgREIF",
+          "sha256": "f1489da9bb85b4602d1d494a68825f311892819fdf2201d374af075ff7556fa3"
+        }
+      ]
+    },
+    {
+      "id": "craft-slatted-rack-20261025",
+      "name": "Высокий стеллаж с решётчатыми полками",
+      "description": "Узкий открытый стеллаж с несколькими реечными полками для корзин. Учимся выдерживать одинаковые зазоры и собирать прямой каркас. Для высокого предмета взрослый предусматривает крепление к стене.",
+      "photos": [
+        {
+          "id": "craft-slatted-rack-20261025-cover-v1",
+          "fileName": "slatted-rack-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-slatted-rack-20261025/f2a785eaf2a9aea6534675ae38f7d36bef6def1affce3751015125fe01eaac95.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1X4b5BCforOcHGFmmfG3cxNLWoSUifEOY",
+            "1fq-GFNGqX4dh78DGnOwCHziycPYO--JT",
+            "14Vx2AA3wz1wGFEKKDEDTR9Idqsvp8vmd",
+            "12J9Xydu5lHdbNkj3frOd7qm-NKeU-JcG",
+            "1IUXBtvjJcvv4tBUnUxIXEJh-mfX_utgk"
+          ],
+          "referencePhotoIds": [
+            "1X4b5BCforOcHGFmmfG3cxNLWoSUifEOY",
+            "1IUXBtvjJcvv4tBUnUxIXEJh-mfX_utgk"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-slatted-rack-20261025-original-1",
+          "fileName": "IMG_20261025_143113.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-slatted-rack-20261025/3e93b2ba6ccd4281738cf714ef348bab653a0f51abbb58db98a4217cf6686247.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1X4b5BCforOcHGFmmfG3cxNLWoSUifEOY",
+          "sha256": "3e93b2ba6ccd4281738cf714ef348bab653a0f51abbb58db98a4217cf6686247"
+        },
+        {
+          "id": "craft-slatted-rack-20261025-original-2",
+          "fileName": "IMG_20261025_143125.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-slatted-rack-20261025/f2428efdf01cea5540d3cf8aa62259b48bc329cd65bea0097329ca45dbeae60e.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1fq-GFNGqX4dh78DGnOwCHziycPYO--JT",
+          "sha256": "f2428efdf01cea5540d3cf8aa62259b48bc329cd65bea0097329ca45dbeae60e"
+        },
+        {
+          "id": "craft-slatted-rack-20261025-original-3",
+          "fileName": "IMG_20261025_143154.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-slatted-rack-20261025/e429a41f31dfbd57ee04bce1c03dab236d2374da223c02112e16eb8b975b627f.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "14Vx2AA3wz1wGFEKKDEDTR9Idqsvp8vmd",
+          "sha256": "e429a41f31dfbd57ee04bce1c03dab236d2374da223c02112e16eb8b975b627f"
+        },
+        {
+          "id": "craft-slatted-rack-20261025-original-4",
+          "fileName": "IMG_20261025_143157.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-slatted-rack-20261025/d26201689bba4549bc29971815bd72f7f03d7d95cae74c637ea10c683c4da4e1.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "12J9Xydu5lHdbNkj3frOd7qm-NKeU-JcG",
+          "sha256": "d26201689bba4549bc29971815bd72f7f03d7d95cae74c637ea10c683c4da4e1"
+        },
+        {
+          "id": "craft-slatted-rack-20261025-original-5",
+          "fileName": "IMG_20261025_143201.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-slatted-rack-20261025/d23ea4d6ee10a581a55f50c3a1eb448cfd1e9a438e817f71dc4dae17dcb18db2.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1IUXBtvjJcvv4tBUnUxIXEJh-mfX_utgk",
+          "sha256": "d23ea4d6ee10a581a55f50c3a1eb448cfd1e9a438e817f71dc4dae17dcb18db2"
+        }
+      ]
+    },
+    {
+      "id": "craft-wood-panel-20261025",
+      "name": "Геометрическое панно из деревянных реек",
+      "description": "Декоративное панно с симметричным узором из цветных деревянных реек. Учимся строить эскиз, размечать углы и собирать рисунок от центра к краям.",
+      "photos": [
+        {
+          "id": "craft-wood-panel-20261025-cover-v1",
+          "fileName": "wood-panel-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/d5309babb86b95749fd14413e5304f1b3ec7977c13d0fd8d9f11314df23bbd79.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1-icjkzoDg0pIG_ImZJ3aZ_8paOm6aalJ",
+            "1RxnJlUzkyyigauXkZbHg0UPF8MUKQWsd",
+            "1MyECa__a1oda22ez5KY_RAHSShYo1HkM",
+            "1jDUL6mS8rmcykDlYDGU3ovE49LRrTPOx",
+            "1uh8AoN-mfOJV9Nu73UXTdjSf_2ujWZph",
+            "1zohIzgUNQh4iI4CXr5ZHIt-heRbZ_5Cq",
+            "1oFhBXJx1AnC3_VJlsW_iAQjJ_V4Oc6WW",
+            "10SLCFPQzZtBehJmiToaI_VmfJM095cEB"
+          ],
+          "referencePhotoIds": [
+            "1-icjkzoDg0pIG_ImZJ3aZ_8paOm6aalJ",
+            "10SLCFPQzZtBehJmiToaI_VmfJM095cEB"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-wood-panel-20261025-original-1",
+          "fileName": "IMG_20261025_143641.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/63cff1e9b56d3f8f99431983892587a6e3331bce4d8dd1b4736f7c65c6adefb1.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1-icjkzoDg0pIG_ImZJ3aZ_8paOm6aalJ",
+          "sha256": "63cff1e9b56d3f8f99431983892587a6e3331bce4d8dd1b4736f7c65c6adefb1"
+        },
+        {
+          "id": "craft-wood-panel-20261025-original-2",
+          "fileName": "IMG_20261025_143642.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/1ebd9dd39ae36e0594b8e25b2cd48d49be97b53c9d6296352479fab5a3f3384b.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1RxnJlUzkyyigauXkZbHg0UPF8MUKQWsd",
+          "sha256": "1ebd9dd39ae36e0594b8e25b2cd48d49be97b53c9d6296352479fab5a3f3384b"
+        },
+        {
+          "id": "craft-wood-panel-20261025-original-3",
+          "fileName": "IMG_20261025_143648.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/08119f34b60df45c31f6ef5a9ec697f0f6880ce72256792fd01704d9b1a85fc7.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1MyECa__a1oda22ez5KY_RAHSShYo1HkM",
+          "sha256": "08119f34b60df45c31f6ef5a9ec697f0f6880ce72256792fd01704d9b1a85fc7"
+        },
+        {
+          "id": "craft-wood-panel-20261025-original-4",
+          "fileName": "IMG_20261025_143708.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/8fed02dbb9705f96f871625378d37b03c3ba4d8011eef20b488c0836579ef740.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1jDUL6mS8rmcykDlYDGU3ovE49LRrTPOx",
+          "sha256": "8fed02dbb9705f96f871625378d37b03c3ba4d8011eef20b488c0836579ef740"
+        },
+        {
+          "id": "craft-wood-panel-20261025-original-5",
+          "fileName": "IMG_20261025_143718.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/81a0ec6fafdd30bfba1d721b150a7a216cb32868211d90293abdbb06c5a5e80d.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1uh8AoN-mfOJV9Nu73UXTdjSf_2ujWZph",
+          "sha256": "81a0ec6fafdd30bfba1d721b150a7a216cb32868211d90293abdbb06c5a5e80d"
+        },
+        {
+          "id": "craft-wood-panel-20261025-original-6",
+          "fileName": "IMG_20261025_143729.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/0891db916b363eed1fa15675a2d1a93797d237f5e5b6c6bf1972fe9f45d61559.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1zohIzgUNQh4iI4CXr5ZHIt-heRbZ_5Cq",
+          "sha256": "0891db916b363eed1fa15675a2d1a93797d237f5e5b6c6bf1972fe9f45d61559"
+        },
+        {
+          "id": "craft-wood-panel-20261025-original-7",
+          "fileName": "IMG_20261025_143734.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/dfb6786cb56c46447566e798a52655debefb950d4b80fac81ba8e0f81057e936.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1oFhBXJx1AnC3_VJlsW_iAQjJ_V4Oc6WW",
+          "sha256": "dfb6786cb56c46447566e798a52655debefb950d4b80fac81ba8e0f81057e936"
+        },
+        {
+          "id": "craft-wood-panel-20261025-original-8",
+          "fileName": "IMG_20261025_143740.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-wood-panel-20261025/7167bef889e62361e4f3f364fd4605f58c11086de00d2496a27380656412db88.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "10SLCFPQzZtBehJmiToaI_VmfJM095cEB",
+          "sha256": "7167bef889e62361e4f3f364fd4605f58c11086de00d2496a27380656412db88"
+        }
+      ]
+    },
+    {
+      "id": "craft-learning-tower-20261025",
+      "name": "Детская башня-помощник из дерева",
+      "description": "Высокая подставка с площадкой и ограждением. Изучаем каркас, высоту площадки и равномерную сборку. Устойчивость, прочность, размеры ограждения и безопасность использования ребёнком проверяет специалист.",
+      "photos": [
+        {
+          "id": "craft-learning-tower-20261025-cover-v1",
+          "fileName": "learning-tower-cover.png",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-learning-tower-20261025/b9bd9ce4e17e06512c33e71a07f65b1b215bf87211ac4ea52b65bf944dada6d3.png",
+          "isCover": true,
+          "origin": "generated",
+          "generatedBy": "imagegen",
+          "sourcePhotoIds": [
+            "1dMXDJdQQTq3LLeC5duwZ8Ko8QreHio8r",
+            "1w-wbgfi4ma6WYY0bGhBUFJDxS8JGQxRj",
+            "166-XvPDpcvEpdvsaFm5KvFuSVZXZbqKA"
+          ],
+          "referencePhotoIds": [
+            "1dMXDJdQQTq3LLeC5duwZ8Ko8QreHio8r",
+            "166-XvPDpcvEpdvsaFm5KvFuSVZXZbqKA"
+          ],
+          "promptFile": "docs/new-toys-20261025-prompts.md",
+          "imageSize": {
+            "width": 1536,
+            "height": 1024
+          }
+        },
+        {
+          "id": "craft-learning-tower-20261025-original-1",
+          "fileName": "IMG_20261025_143850.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-learning-tower-20261025/def80740c656b7f0521ef89a311ec68a6655cad6146c4beb88f8e3d48ba1faff.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1dMXDJdQQTq3LLeC5duwZ8Ko8QreHio8r",
+          "sha256": "def80740c656b7f0521ef89a311ec68a6655cad6146c4beb88f8e3d48ba1faff"
+        },
+        {
+          "id": "craft-learning-tower-20261025-original-2",
+          "fileName": "IMG_20261025_143859.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-learning-tower-20261025/f9c01a9ef030d0cbd0d315491f03efab77e4b0e4ba88fc7f36bcf382e98eec78.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "1w-wbgfi4ma6WYY0bGhBUFJDxS8JGQxRj",
+          "sha256": "f9c01a9ef030d0cbd0d315491f03efab77e4b0e4ba88fc7f36bcf382e98eec78"
+        },
+        {
+          "id": "craft-learning-tower-20261025-original-3",
+          "fileName": "IMG_20261025_143911.jpg",
+          "url": "https://storage.yandexcloud.net/quantum-education/idea-catalog/craft-learning-tower-20261025/46838b5627b0dcbf9b58b20fe449d86d7ac943906d051e5178a828a8774e5a5f.jpg",
+          "isCover": false,
+          "origin": "original",
+          "driveFileId": "166-XvPDpcvEpdvsaFm5KvFuSVZXZbqKA",
+          "sha256": "46838b5627b0dcbf9b58b20fe449d86d7ac943906d051e5178a828a8774e5a5f"
+        }
+      ]
     }
   ],
   "legacyIdeas": [
